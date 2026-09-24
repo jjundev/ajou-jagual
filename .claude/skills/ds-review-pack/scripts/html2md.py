@@ -531,6 +531,8 @@ def convert(path, out_path, ctx, intro):
 
 
 MD_MATH_RE = re.compile(r"\$\$.*?\$\$|\$[^$]+?\$", re.S)
+# 펜스 코드 블록(``` 또는 ````). 수식 개수를 셀 때만 걷어낸다 — 코드 속 $ 가 본문 수식 짝을 어긋나게 하지 않도록.
+MD_FENCE_RE = re.compile(r"^(`{3,})[^\n]*\n.*?^\1[ \t]*$", re.M | re.S)
 SKIP_CHECK = {"script", "style", "svg", "nav", "pre"}
 SKIP_CHECK_CLASSES = {"controls", "topbar"}
 
@@ -589,7 +591,7 @@ def check_md(html_path, md_path):
     problems = []
     maths, ids = html_math_and_ids(html_path)
     want = Counter(_norm_math(m) for m in maths)
-    have = Counter(_norm_math(m) for m in MD_MATH_RE.findall(md))
+    have = Counter(_norm_math(m) for m in MD_MATH_RE.findall(MD_FENCE_RE.sub("", md)))
     first = {}
     for m in maths:
         first.setdefault(_norm_math(m), m)

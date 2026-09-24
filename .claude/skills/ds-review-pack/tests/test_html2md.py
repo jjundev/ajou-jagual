@@ -145,11 +145,12 @@ class TestHtml2Md(unittest.TestCase):
     def test_pre_with_dollar_is_not_math(self):
         d = self.tmp / "pre-dollar"
         d.mkdir()
-        note, review = small_pack(d, '<section id="s"><h2>A</h2><pre><code>printf("$%d$", x);</code></pre></section>',
+        note, review = small_pack(d, '<section id="s"><h2>A</h2><pre><code>printf("$%d", x);</code></pre>'
+                                     '<p>then $a$ and $b$.</p></section>',
                                   '<section id="q"><h2>Q</h2><p>q</p></section>')
         (note_md, _), _ = html2md.convert_pack(note, review)
         md = Path(note_md).read_text(encoding="utf-8")
-        self.assertIn('```\nprintf("$%d$", x);\n```', md)
+        self.assertIn('```\nprintf("$%d", x);\n```', md)
         self.assertEqual(html2md.check_md(note, note_md), [])
 
     def test_check_md_detects_deleted_short_math(self):
