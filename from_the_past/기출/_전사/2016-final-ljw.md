@@ -32,7 +32,7 @@
 ①(    )정렬과 (    ) 정렬 알고리즘의 time complexity는 (    ) 이다.
 ②(    )정렬과 (    ) 정렬 알고리즘의 time complexity는 (    ) 이다.
 
-학생 답안(채점됨): 1) ① insertion ② 장점: 이미 정렬되어 있으면 효율적 ③ 단점: 레코드가 크면 불리(이동). 2) ① 선택, 버블, O(n²) ② 힙, 합병, O(nlogn)
+학생 답안(채점됨): 1) ① insertion ② 장점: 이미 정렬되어 있으면 효율적 ③ 단점: 레코드가 크면 불리 (채점자가 분홍으로 '(이동)', 빨간 펜으로 '—안정성'을 덧붙임). 2) ① 선택, 버블, O(n²) ② 힙, 합병, O(nlogn)
 
 ## 2번
 
@@ -129,7 +129,7 @@
 
 ① binary search (    )회          ②interpolation search (    )회
 
-학생 답안(채점됨): ① 4 ② 1
+학생 답안(채점됨): ① 4 ② 1 (② 칸의 파란 '1' 밑에 연필로 쓴 '2'로 보이는 획이 있다. 파란 펜은 채점 펜과 같고 풀이 쪽에서도 '2번'을 빨간 줄로 지우고 '1'을 썼으므로, '1'은 채점 뒤 고친 값일 수 있다)
 
 ## 8번
 
@@ -144,4 +144,4 @@
 
 [그림: 무방향 가중 그래프. Prague–Helsinki 1845km, Prague–London 1264km, Beijing–Tokyo 1303km, Helsinki–Tokyo 7815km, Beijing–New York 11550km, Beijing–Jakarta 4616km, Beijing–London 8132km, Tokyo–Jakarta 5782km, Tokyo–London 9566km, Tokyo–New York 10838km, London–New York 5567km]
 
-학생 답안(채점됨): 1) London, Helsinki, New York, Beijing, Tokyo, Jakarta 3) Beijing 9396, Helsinki 1845, Tokyo 9660, (두 번째 Helsinki 칸 사선), Jakarta 14012, Newyork 6831, London 1264
+학생 답안(채점됨): 1) London, Helsinki, New York, Beijing, Tokyo, Jakarta 3) Beijing 9396, Helsinki 1845, Tokyo 9660, (두 Helsinki 칸 모두 파란 사선: 첫 칸은 머리글과 1845에, 둘째 칸은 빈칸에), Jakarta 14012, Newyork 6831, London 1264
