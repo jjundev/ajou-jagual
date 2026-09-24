@@ -23,6 +23,13 @@
 <script id="widget-<name>-ui">(function () { /* 수학 + 그리기, 전역 오염 금지 */ })();</script>
 ```
 - 스크립트는 조각 파일 끝에 둔다. 조립기가 `</body>` 앞으로 옮긴다. 외부 라이브러리 금지.
+- 버튼: 템플릿에 위젯용 버튼 클래스는 없다. `.btn-ghost`·`.btn-primary`는 페이저용이라 `justify-self:start/end`로 줄마다 흩어지고, 고스트는 `.widget`과 같은 `--surface` 배경이라 다크모드에서 안 보인다(0921 하노이). 버튼을 두면 이렇게 인라인으로 덮는다.
+  ```html
+  <div class="controls" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+    <button class="btn btn-ghost" id="<name>-prev" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">이전</button>
+    <button class="btn btn-primary" id="<name>-next" type="button" style="justify-self:auto;min-width:0;padding:0 16px">다음</button>
+  </div>
+  ```
 - 그래프 선·점은 템플릿 CSS 클래스(`axis`, `tick`, `plot-truth`, `plot-fit`, `pt-train`, `pt-test`, `plot-like`, `plot-prior`, `plot-post`, `mark-ml`, `mark-map`, `fig-*`)를 쓴다.
 
 ## `.widget-static` (필수 — 없으면 check_html이 실패)
