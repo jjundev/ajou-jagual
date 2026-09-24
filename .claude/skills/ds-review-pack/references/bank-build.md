@@ -20,7 +20,7 @@ id와 메타데이터는 이 표로 고정한다(전사 에이전트가 정하�
 | `unk-final-ltk` | `자료구조및알고리즘이해 기출 소스/자료구조 기말(이태권).pdf` | null | 기말 | 이태권 | text |
 
 - 출제자는 파일명이나 원본 글에 이름이 있을 때만 적는다. 분반 코드 같은 간접 근거로 추측하지 않는다.
-- `reviewed`: `text`·`hwp`·`txt`는 `true`, `scan`·`photo`는 `false`. 이전 은행(`RUN/previous-bank.json`)에 같은 id가 `reviewed: true`로 있으면 `true`를 그대로 둔다.
+- `reviewed`: `text`·`hwp`·`txt`는 다시 전사해도 `true`. `scan`·`photo`는 새로 전사하면 항상 `false`이고, 이전 은행(`RUN/previous-bank.json`)에서 `true`였던 `scan`·`photo` 원본은 다시 전사하지 않고 이전 항목을 그대로 쓴다(SKILL.md B1).
 - `has_key`: 전사 에이전트가 원본에 답(모범답안, 괄호 속 답)이 있는지 보고 적는다.
 
 ## 정규화 (메인 에이전트, 결과는 `RUN/work/`)

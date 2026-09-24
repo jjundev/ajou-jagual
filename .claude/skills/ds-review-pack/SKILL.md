@@ -31,22 +31,22 @@ description: 자료구조및알고리즘이해(자구알) 수업의 STT·강의�
 ### B1. 준비
 1. `REPO/from_the_past/기출/`이 있는지 확인한다. 없으면 "자구알 저장소에서만 동작합니다"라고 알리고 멈춘다.
 2. 실행 폴더를 만든다: `mkdir -p "$RUN"/{parts,work} && ln -sfn "$REPO" "$RUN/repo"`
-3. `BANK`가 이미 있으면 `RUN/previous-bank.json`으로 복사한다(`reviewed` 값을 이어받는 데 쓴다).
+3. `BANK`가 이미 있으면 `RUN/previous-bank.json`으로 복사한다(`reviewed` 값을 이어받는 데 쓴다). 이전 은행에서 `reviewed: true`인 `scan`·`photo` 원본은 B2·B3을 건너뛰고, 그 원본의 `sources`·`problems` 항목과 `REPO/from_the_past/기출/_전사/<id>.md`를 그대로 가져온다(사용자 검수와 수정을 지킨다). 다시 전사하려면 사용자가 먼저 그 원본의 `reviewed`를 `false`로 바꾼다.
 4. 원본 목록과 id는 `references/bank-build.md`의 원본 표를 따른다. 표에 없는 파일이 `from_the_past/기출/` 아래에 있으면 보고서 "새 원본"에 적고 이번에는 넣지 않는다.
 
 ### B2. 정규화
-`references/bank-build.md`의 "정규화"대로 원본을 `RUN/work/`에 읽을 수 있는 형태로 만든다(cp949 → UTF-8, hwp → PDF, PDF → 텍스트·쪽 이미지).
+`references/bank-build.md`의 "정규화"대로 원본(B1에서 그대로 가져온 원본은 빼고)을 `RUN/work/`에 읽을 수 있는 형태로 만든다(cp949 → UTF-8, hwp → PDF, PDF → 텍스트·쪽 이미지).
 
 ### B3. 전사 (병렬)
-원본마다 전사 에이전트 1명을 **한 메시지에서 병렬로** 띄운다(opus, `lite`이면 sonnet). 브리프는 `references/bank-build.md`의 "전사 브리프"이며 `<source-id>`, `<원본 경로들>`, `<RUN>`, `<SKILL>`을 채워 넘긴다. 각자 `RUN/parts/<source-id>.json`과 `RUN/parts/<source-id>.md`를 쓴다.
+B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 **한 메시지에서 병렬로** 띄운다(opus, `lite`이면 sonnet). 브리프는 `references/bank-build.md`의 "전사 브리프"이며 `<source-id>`, `<원본 경로들>`, `<RUN>`, `<SKILL>`을 채워 넘긴다. 각자 `RUN/parts/<source-id>.json`과 `RUN/parts/<source-id>.md`를 쓴다.
 
 ### B4. 합치기·검증·저장
-1. 조각을 합쳐 `RUN/bank.json`(`{"version": 1, "sources": [...], "problems": [...]}`)을 만든다. `sources`는 원본 표 값에 조각의 `has_key`와 `reviewed` 규칙(`references/bank-build.md`)을 더한다.
+1. 조각을 합쳐 `RUN/bank.json`(`{"version": 1, "sources": [...], "problems": [...]}`)을 만든다. `sources`는 원본 표 값에 조각의 `has_key`와 `reviewed` 규칙(`references/bank-build.md`)을 더한다. B1에서 가져온 원본의 `sources`·`problems` 항목은 바꾸지 않고 그대로 넣는다(2~4단계도 새로 전사한 원본에만 한다).
 2. 챕터 태그를 `references/bank-build.md`의 챕터 표로 다시 본다.
 3. 중복 문항(`duplicate_of`)을 `references/bank-build.md`의 "중복 문항"대로 채운다.
 4. 정답을 `references/bank-build.md`의 "정답 검증"대로 확인해 `answer`, `answer_origin`을 정한다.
 5. `python3 "$SKILL/scripts/bank.py" validate "$RUN/bank.json"` 결과가 `OK`여야 한다. 아니면 고치고 다시 검사한다.
-6. 저장소에 쓴다(메인 에이전트만): `RUN/bank.json` → `BANK`, `RUN/parts/<id>.md` → `REPO/from_the_past/기출/_전사/<id>.md`, `RUN/work/verify_<id>.py` → `REPO/from_the_past/기출/_정답검증/<id>.py`.
+6. 저장소에 쓴다(메인 에이전트만): `RUN/bank.json` → `BANK`, `RUN/parts/<id>.md` → `REPO/from_the_past/기출/_전사/<id>.md`(B1에서 가져온 원본의 `_전사/<id>.md`는 덮어쓰지 않는다), `RUN/work/verify_<id>.py` → `REPO/from_the_past/기출/_정답검증/<id>.py`.
 7. 보고한다:
 ```
 ## 문제은행 완료

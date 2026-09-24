@@ -49,6 +49,7 @@ class TestSkillFiles(unittest.TestCase):
         for n in range(1, 5):
             with self.subTest(step=n):
                 self.assertRegex(self.text, rf"\n### B{n}\. ")
+        self.assertIn("`reviewed: true`인 `scan`·`photo` 원본은 B2·B3을 건너뛰고", self.text)
 
     def test_no_ml_leftovers(self):
         for path in [SKILL_MD, *sorted((SKILL / "references").glob("*.md"))]:
