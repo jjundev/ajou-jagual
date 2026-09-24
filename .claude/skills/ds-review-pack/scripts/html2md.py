@@ -6,6 +6,7 @@ r"""정리노트/복습문제 HTML → GitHub 마크다운 변환기 (표준 라
 - 인라인 SVG 그림은 figures_<range>/ 에 스타일을 인라인한 독립 SVG로 내보낸다.
 - 위젯은 .widget-static(정적 SVG·표)으로 대체한다. 없으면 "HTML 버전에서 조작" 안내만 남긴다.
 - 표 안 수식의 \| 는 \Vert, | 는 \vert 로 바꾼다(GFM 표 구분자 충돌 방지).
+- <pre> 코드는 펜스 코드 블록으로 옮기고, 수식 누락 검사에서 뺀다.
 CLI:
   html2md.py NOTE.html REVIEW.html            # 같은 폴더에 .md 두 개 + figures_<range>/
   html2md.py NOTE.html REVIEW.html --check    # 변환 후 누락 검사(수식·앵커·그림·링크)
@@ -210,7 +211,7 @@ def inline(node, ctx):
 
 BLOCK = {"p", "div", "section", "article", "main", "ul", "ol", "li", "table", "blockquote", "figure", "details",
          "h1", "h2", "h3", "h4", "header", "footer", "label", "figcaption", "summary", "thead", "tbody", "tr", "svg",
-         "nav", "hr", "dl"}
+         "nav", "hr", "dl", "pre"}
 
 
 def is_block(n):
@@ -307,6 +308,15 @@ def render_table(node, ctx):
     return lines
 
 
+def render_code(node):
+    """<pre><code class="language-c"> → 펜스 코드 블록. 공백·줄바꿈은 그대로 둔다."""
+    code = next((c for c in node.children if isinstance(c, Node) and c.tag == "code"), None)
+    lang = next((c[len("language-"):] for c in sorted(code.classes) if c.startswith("language-")), "") if code else ""
+    body = node.text().strip("\n")
+    fence = "````" if "```" in body else "```"
+    return [fence + lang, *body.split("\n"), fence]
+
+
 def _fig_name(svg, ctx, name):
     sid = name or svg.attrs.get("id")
     if not sid:
@@ -396,6 +406,8 @@ def block(node, ctx):
         items = [c for c in node.children if isinstance(c, Node) and c.tag == "li"]
         lettered = items and all(re.match(r"\s*\([a-z]\)", c.text()) for c in items)
         return render_list(node, ctx, t == "ol" and not lettered)
+    if t == "pre":
+        return render_code(node)
     if t == "table":
         return render_table(node, ctx)
     if t == "blockquote":
@@ -519,7 +531,7 @@ def convert(path, out_path, ctx, intro):
 
 
 MD_MATH_RE = re.compile(r"\$\$.*?\$\$|\$[^$]+?\$", re.S)
-SKIP_CHECK = {"script", "style", "svg", "nav"}
+SKIP_CHECK = {"script", "style", "svg", "nav", "pre"}
 SKIP_CHECK_CLASSES = {"controls", "topbar"}
 
 
