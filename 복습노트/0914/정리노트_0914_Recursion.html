@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>자료구조및알고리즘이해 정리노트 0914</title>
+  <meta name="description" content="이정원 교수님 자료구조및알고리즘이해 · 0914 수업 (Software_1 자료구조및알고리즘 · Software_2 Recursion)">
+  <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']})"></script>
+  <style>
+    /* ---------- 토큰 ---------- */
+    :root {
+      color-scheme: light;
+      --bg: #ffffff; --surface: #f7f8fa; --ink: #111111; --ink-2: #6b7280; --line: #d9dee7;
+      --accent: #1677ff; --accent-ink: #1b64da; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #b54708; --prof: #6941c6; --supp: #067647; --danger: #d92d20;
+      --font: 'Pretendard', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --fs-title: clamp(28px, 6vw, 36px); --fs-h3: clamp(26px, 5.4vw, 32px); --fs-layer: 19px; --fs-lead: 22px; --fs-body: 17px; --fs-sub: 15px; --fs-small: 14px; --fs-label: 13px; --fs-fig: 12px;
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+      --radius: 8px; --measure: 680px; --tap: 48px; --btn-min: 160px;
+      --dur: 220ms; --dur-exit: 150ms; --ease-out: cubic-bezier(.2, .8, .2, 1);
+      /* 예전 조각이 참조할 수 있는 이름 */
+      --surface-2: var(--surface); --accent-soft: var(--surface); --warn-soft: var(--surface);
+      --prof-soft: var(--surface); --supp-soft: var(--surface); --eli5: var(--accent-ink); --eli5-soft: var(--surface);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+        --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+        --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+      --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+    }
+
+    /* ---------- 기본 ---------- */
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+      background: var(--bg); color: var(--ink); font-family: var(--font); font-size: var(--fs-body); line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+    a { color: var(--accent-ink); text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    [hidden] { display: none !important; }
+
+    /* ---------- 상단 바 ---------- */
+    .topbar { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s2) var(--s4); display: flex; align-items: center; gap: var(--s3); min-height: 56px; }
+    .brand { flex: 1 1 auto; min-width: 0; font-size: var(--fs-body); font-weight: 700; white-space: nowrap; }
+    .text-btn { flex: none; min-height: 44px; min-width: 44px; padding: 0 var(--s3); border: 0; border-radius: var(--radius);
+      background: transparent; color: var(--ink); font: 600 var(--fs-small)/1 var(--font); cursor: pointer; }
+    .bar { height: 2px; background: var(--line); overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+
+    /* ---------- 본문 ---------- */
+    main { flex: 1 0 auto; width: 100%; max-width: var(--measure); margin: 0 auto; padding: var(--s6) var(--s5) var(--s7); }
+    .hero h1 { font-size: var(--fs-title); line-height: 1.3; margin: 0 0 var(--s3); letter-spacing: -0.02em; }
+    .hero p { color: var(--ink-2); margin: 0; }
+    section { margin-top: var(--s7); }
+    section > h2 { font-size: 22px; line-height: 1.4; margin: 0 0 var(--s4); }
+    .topic { padding: var(--s6) 0; border-top: 1px solid var(--line); }
+    .topic h3 { margin: 0 0 var(--s2); font-size: var(--fs-h3); font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; }
+    .tags { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); }
+    .tag { font-size: var(--fs-label); line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); white-space: nowrap; }
+
+    /* 레이어: 배경 없이 라벨과 구분선으로 나눈다 */
+    .layer { margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); }
+    .layer.eli5 { margin-top: 0; padding-top: 0; border-top: 0; }
+    .layer > :first-child { margin-top: 0; }
+    .layer > :last-child { margin-bottom: 0; }
+    .layer-title { display: block; font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; color: var(--ink); margin-bottom: var(--s3); }
+    .layer.eli5 .layer-title { color: var(--accent-ink); }
+    .layer.eli5 .lead { font-size: var(--fs-lead); font-weight: 700; line-height: 1.5; letter-spacing: -0.01em; margin: 0 0 var(--s4); }
+    /* 정확히 말하면: 본문 크기 그대로, 굵은 첫머리만 진하게 */
+    .layer.formal b { font-weight: 700; color: var(--ink); }
+    /* 교수님 말씀 · 주의: 보조 정보는 한 단계 작게 */
+    .layer.prof, .layer.warn { font-size: var(--fs-sub); line-height: 1.7; }
+    .layer.prof blockquote { font-size: var(--fs-sub); }
+    .layer.prof .layer-title { color: var(--prof); }
+    .layer.warn { background: var(--surface); border-top: 0; border-radius: var(--radius); padding: var(--s4); }
+    .layer.warn .layer-title { color: var(--warn); font-size: var(--fs-body); }
+    .layer.supp .badge.supp { margin-bottom: var(--s2); }
+    .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
+    .badge.supp { color: var(--supp); }
+    blockquote { margin: var(--s3) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
+    pre { margin: var(--s3) 0; padding: var(--s3) var(--s4); overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      font: var(--fs-small)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; white-space: pre; word-break: normal; overflow-wrap: normal; tab-size: 4; }
+    code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: .92em; }
+    pre code { font-size: inherit; }
+    ol.steps { padding-left: 1.4em; }
+    ol.steps li { margin: var(--s2) 0; }
+
+    /* 그림 · 수식 · 표 */
+    .figure { margin: var(--s4) 0; text-align: center; }
+    .figure svg { width: 100%; height: auto; max-width: 560px; color: var(--ink); }
+    .figure figcaption { font-size: var(--fs-small); color: var(--ink-2); margin-top: var(--s1); }
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: var(--s1) 0; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
+    th, td { border-bottom: 1px solid var(--line); padding: var(--s2); text-align: left; vertical-align: top; }
+    th { color: var(--ink-2); font-weight: 600; }
+    td:first-child, th:first-child { min-width: 6em; }
+
+    /* 위젯 */
+    .widget { background: var(--surface); border-radius: var(--radius); padding: var(--s4); margin: var(--s5) 0; }
+    .widget h4 { margin: 0 0 var(--s1); font-size: var(--fs-layer); line-height: 1.4; }
+    .widget-help { font-size: var(--fs-small); color: var(--ink-2); margin: 0 0 var(--s3); }
+    .controls { display: grid; gap: var(--s2); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: var(--s2); font-size: var(--fs-small); }
+    .controls label { display: flex; align-items: center; gap: var(--s2); min-height: 44px; }
+    .controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+    .widget svg { width: 100%; height: auto; background: var(--bg); border-radius: var(--radius); }
+    .readout { font-size: var(--fs-small); margin-top: var(--s2); }
+    .legend { font-size: var(--fs-label); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: var(--s3); }
+    .sw { display: inline-block; width: 14px; height: 4px; vertical-align: middle; margin-right: var(--s1); border-radius: 2px; }
+    .sw.truth { background: var(--ink-2); } .sw.fit { background: var(--accent); } .sw.train { background: var(--accent); height: 10px; width: 10px; border-radius: 50%; }
+    .sw.test { background: var(--warn); height: 10px; width: 10px; border-radius: 50%; } .sw.like { background: var(--accent); } .sw.prior { background: var(--prof); } .sw.post { background: var(--supp); }
+    .axis { stroke: var(--line); stroke-width: 1.5; }
+    .tick { fill: var(--ink-2); font-size: 11px; }
+    .plot-truth { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .plot-fit { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+    .pt-train { fill: var(--accent); }
+    .pt-test { fill: var(--warn); }
+    .plot-like { fill: none; stroke: var(--accent); stroke-width: 2; }
+    .plot-prior { fill: none; stroke: var(--prof); stroke-width: 2; stroke-dasharray: 6 4; }
+    .plot-post { fill: none; stroke: var(--supp); stroke-width: 3; }
+    .mark-ml { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .mark-map { stroke: var(--supp); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .fig-ink { stroke: currentColor; fill: none; stroke-width: 2; }
+    .fig-accent { stroke: var(--accent); fill: none; stroke-width: 2.5; }
+    .fig-danger { stroke: var(--danger); fill: none; stroke-width: 2.5; }
+    .fig-dot { fill: var(--accent); }
+    .fig-text { fill: currentColor; font-size: 13px; font-family: inherit; }
+    .fig-muted { fill: var(--ink-2); font-size: var(--fs-fig); font-family: inherit; }
+
+    footer { width: 100%; max-width: var(--measure); margin: 0 auto; padding: 0 var(--s5) var(--s6); color: var(--ink-2); font-size: var(--fs-small); }
+
+    /* ---------- 하단 이동 바 ---------- */
+    .pager { position: sticky; bottom: 0; z-index: 10; background: var(--bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+    .pager-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s3) var(--s4); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--s3); }
+    .pager-count { font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; min-width: 4em; }
+    .btn { min-height: var(--tap); min-width: var(--btn-min); padding: 0 var(--s6); border-radius: var(--radius); border: 0; font: 700 var(--fs-body)/1 var(--font); cursor: pointer; white-space: nowrap;
+      transition: background-color 150ms ease-out, opacity 150ms ease-out; }
+    .btn-ghost { justify-self: start; background: var(--surface); color: var(--ink); }
+    .btn-primary { justify-self: end; background: var(--btn-bg); color: var(--on-btn); }
+    .btn:disabled { opacity: .4; cursor: default; }
+    @media (hover: hover) {
+      .text-btn:hover, .btn-ghost:not(:disabled):hover { background: var(--line); }
+      .btn-primary:not(:disabled):hover { box-shadow: inset 0 0 0 100px rgba(0, 0, 0, .14); }
+    }
+
+    /* ---------- 목차 시트 ---------- */
+    .sheet { width: min(100%, var(--measure)); max-width: 100%; max-height: 80dvh; margin: auto auto 0; padding: 0; border: 0;
+      border-radius: 16px 16px 0 0; background: var(--bg); color: var(--ink); }
+    .sheet::backdrop { background: rgba(0, 0, 0, .4); }
+    .sheet-inner { padding: var(--s4) var(--s5) calc(var(--s5) + env(safe-area-inset-bottom)); }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    .sheet-head h2 { margin: 0; font-size: var(--fs-lead); }
+    .toc { display: flex; flex-direction: column; }
+    .toc > a, .toc-group > a { display: block; padding: var(--s3) 0 var(--s1); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); text-decoration: none; }
+    .toc-list { list-style: none; margin: 0 0 var(--s2); padding: 0; }
+    .toc-list a { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); padding: var(--s2) var(--s3); margin: 0 calc(-1 * var(--s3));
+      border-radius: var(--radius); color: var(--ink); text-decoration: none; line-height: 1.4; }
+    .toc-list a[aria-current="true"] { background: var(--surface); font-weight: 700; color: var(--accent-ink); }
+    .toc-list .toc-title { flex: 1 1 0; min-width: 0; }
+    @media (hover: hover) { .toc-list a:hover { background: var(--surface); } }
+
+    /* ---------- 한 화면에 하나씩 (JS가 켤 때만) ---------- */
+    html:not(.js) .pager, html:not(.js) #toc-open { display: none; }
+    html:not(.js) .sheet { display: block; position: static; width: 100%; max-height: none; margin: 0 auto; border-radius: 0; border-bottom: 1px solid var(--line); }
+    html:not(.js) .sheet-close { display: none; }
+    .js main > .hero:not(.is-current), .js main > section:not(.is-on), .js .screen:not(.is-current) { display: none; }
+    .js main > section { margin-top: 0; }
+    .js main > section > h2 { font-size: var(--fs-small); font-weight: 600; color: var(--accent-ink); margin: 0 0 var(--s2); }
+    .js .topic { padding: 0; border-top: 0; }
+    .js .hero { padding-top: 12vh; }
+    .js footer { display: none; }
+    .js body.at-end footer { display: block; }
+    .screen.enter-next { animation: enter-next var(--dur) var(--ease-out); }
+    .screen.enter-prev { animation: enter-prev var(--dur) var(--ease-out); }
+    @keyframes enter-next { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    @keyframes enter-prev { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .screen.enter-next, .screen.enter-prev { animation: none; }
+      .bar > span, .btn { transition: none; }
+    }
+    @media (max-width: 480px) {
+      main { padding: var(--s5) var(--s4) var(--s6); }
+      footer { padding: 0 var(--s4) var(--s5); }
+      .btn { min-width: 120px; padding: 0 var(--s5); }
+    }
+    @media print {
+      .topbar, .pager, .sheet { display: none !important; }
+      .js main > .hero, .js main > section, .js .screen, .js footer { display: block !important; }
+    }
+
+    /* ---------- 좌우 패널 (drawer) ---------- */
+    :root { --panel-l: clamp(240px, 18vw, 320px); --panel-r-min: 320px; --panel-r-max: 720px; --scrollbar: 16px; --drawer-l: 304px; --drawer-r: 360px; --fs-panel: 16px; --scrim: rgba(0, 0, 0, .4); }
+    body { height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+    .topbar-inner { max-width: none; padding: var(--s2) var(--s3); gap: var(--s2); }
+    .panel-toggle { display: inline-flex; align-items: center; gap: var(--s1); padding: 0 var(--s2); }
+    .panel-toggle svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .panel-toggle .strip { fill: transparent; stroke: none; transition: fill 150ms ease-out; }
+    .panel-toggle[aria-expanded="true"] { color: var(--accent-ink); }
+    .panel-toggle[aria-expanded="true"] .strip { fill: currentColor; }
+    .theme-toggle { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+    .theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .theme-toggle .i-sun { display: none; }
+    :root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+    :root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .i-sun { display: block; }
+      :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+    }
+
+    .layout { display: grid; grid-template-columns: auto minmax(320px, 1fr) auto; min-height: 0; }
+    .content { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding-top: var(--s4); }
+    .panel { position: relative; display: flex; flex-direction: column; min-height: 0; overflow: hidden; background: var(--bg); color: var(--ink); font-size: var(--fs-panel); line-height: 1.6; }
+    .panel-left { grid-column: 1; border-right: 1px solid var(--line); }
+    .content { grid-column: 2; }
+    .panel-right { grid-column: 3; border-left: 1px solid var(--line); }
+    .panel-inner { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s4) var(--s4) var(--s6); }
+    .panel-resize { display: none; }
+    .panel-head { display: flex; align-items: center; gap: var(--s2); min-height: 44px; margin-bottom: var(--s2); }
+    .panel-head h2 { flex: 1 1 0; min-width: 0; margin: 0; font-size: var(--fs-lead); line-height: 1.4; }
+    .panel-sub { margin: 0 0 var(--s4); font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
+    .panel-empty { margin: 0; color: var(--ink-2); }
+    .panel-label { display: block; margin: var(--s5) 0 var(--s2); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+
+    /* 진행 상태 */
+    .panel-meta { margin: 0 0 var(--s2); font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+    .panel-meta b { color: var(--ink); }
+    .progress { height: 4px; margin-bottom: var(--s3); border-radius: 2px; background: var(--line); overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+    .panel .toc-list a { margin: 0 calc(-1 * var(--s2)); padding: var(--s2); font-size: var(--fs-panel); }
+    .toc-mark { flex: none; display: block; width: 20px; height: 20px; color: var(--ink-2); }
+    .toc-mark svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .toc-mark.is-done { color: var(--accent-ink); }
+
+    /* 복습문제: 원문 · 힌트 · 풀이 */
+    .aid details:last-of-type { border-bottom: 1px solid var(--line); }
+    .aid details.original > summary { font-size: var(--fs-panel); }
+    .solved-btn { display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%; min-height: var(--tap); margin-top: var(--s5); padding: 0 var(--s4);
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 700 var(--fs-panel)/1.2 var(--font); cursor: pointer; }
+    .solved-btn svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .solved-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); }
+
+    /* 정리노트: 페이지 요약 */
+    .sum-lead { margin: 0; font-size: var(--fs-body); font-weight: 700; line-height: 1.6; }
+    .eq-list { list-style: none; margin: 0; padding: 0; }
+    .eq-list li { padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+    .eq-list li:first-child { padding-top: 0; }
+    .eq-name { display: block; font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+    .eq-list .katex-display { margin: var(--s1) 0 0; text-align: left; }
+    .eq-list .katex-display > .katex { text-align: left; }
+    .terms { margin: 0; }
+    .terms dt { font-size: var(--fs-panel); font-weight: 700; margin-top: var(--s4); }
+    .terms dt:first-child { margin-top: 0; }
+    .terms dd { margin: var(--s1) 0 0; font-size: var(--fs-sub); line-height: 1.6; color: var(--ink-2); }
+    .flow { margin: 0; padding-left: 1.4em; font-size: var(--fs-sub); }
+    .flow li { margin: var(--s2) 0; }
+
+    @media (hover: hover) { .solved-btn:hover { background: var(--surface); } }
+
+    /* 넓은 화면: 본문 옆에 붙는 패널 */
+    @media (min-width: 1024px) {
+      .layout { --l: var(--panel-l-user, var(--panel-l)); }
+      .layout[data-left="closed"] { --l: 0px; }
+      .panel-left { width: var(--l); }
+      /* 기본값: 왼쪽 패널과 본문 폭을 뺀 나머지를 오른쪽 패널이 차지 → 본문 옆 빈 여백이 생기지 않는다 */
+      .panel-right { width: var(--panel-r-user, clamp(var(--panel-r-min), calc(100vw - var(--l) - var(--measure) - var(--scrollbar)), var(--panel-r-max))); }
+      .panel-resize { display: block; position: absolute; top: 0; bottom: 0; z-index: 2; width: 12px; padding: 0; border: 0; background: transparent; cursor: col-resize; touch-action: none; }
+      .panel-left .panel-resize { right: 0; }
+      .panel-right .panel-resize { left: 0; }
+      .panel-resize::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: 0; transition: opacity 150ms ease-out; }
+      .panel-left .panel-resize::after { right: 0; }
+      .panel-right .panel-resize::after { left: 0; }
+      .panel-resize:focus-visible { outline: none; }
+      .panel-resize:focus-visible::after, .is-resizing .panel-resize:active::after { opacity: 1; }
+      @media (hover: hover) { .panel-resize:hover::after { opacity: 1; } }
+      body.is-resizing { cursor: col-resize; user-select: none; }
+      .layout[data-left="closed"] .panel-left, .layout[data-right="closed"] .panel-right { display: none; }
+      .panel.is-shown { animation: panel-fade var(--dur) var(--ease-out); }
+      .scrim, .panel-close { display: none; }
+    }
+    @keyframes panel-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* 좁은 화면: 가장자리에서 밀려 나오는 drawer */
+    @media (max-width: 1023.98px) {
+      .panel { position: fixed; top: 0; bottom: 0; z-index: 40; visibility: hidden;
+        transition: transform var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .panel-left { left: 0; width: min(var(--drawer-l), 88vw); transform: translateX(-100%); }
+      .panel-right { right: 0; width: min(var(--drawer-r), 88vw); transform: translateX(100%); }
+      .panel.is-open { visibility: visible; transform: none; transition: transform var(--dur) var(--ease-out); }
+      .panel-inner { padding-top: calc(var(--s3) + env(safe-area-inset-top)); padding-bottom: calc(var(--s6) + env(safe-area-inset-bottom)); }
+      .scrim { position: fixed; inset: 0; z-index: 35; background: var(--scrim); opacity: 0; visibility: hidden;
+        transition: opacity var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .scrim.is-on { opacity: 1; visibility: visible; transition: opacity var(--dur) var(--ease-out); }
+      html:not(.js) .panel-left { display: none; }
+    }
+    @media (max-width: 480px) { .panel-toggle { padding: 0 var(--s1); } }
+    html:not(.js) .panel-toggle, html:not(.js) .panel-right, html:not(.js) .scrim { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .panel.is-open, .scrim, .scrim.is-on, .progress > span, .panel-toggle .strip { transition: none; }
+      .panel.is-shown { animation: none; }
+      .panel-resize::after { transition: none; }
+    }
+    @media print {
+      body { display: block; height: auto; overflow: visible; }
+      .layout { display: block; }
+      .content { overflow: visible; }
+      .panel, .scrim { display: none !important; }
+    }
+  </style>
+</head>
+<body data-screens="article.topic" data-panels="note" data-range="0914">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
+      <strong class="brand">정리노트</strong>
+      <button class="text-btn theme-toggle" id="theme-toggle" type="button" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="text-btn panel-toggle" id="toggle-right" type="button" aria-controls="panel-right" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="15" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span>요약</span></button>
+    </div>
+    <div class="bar" aria-hidden="true"><span id="pager-bar"></span></div>
+  </header>
+  <div class="layout" data-left="open" data-right="closed">
+    <aside class="panel panel-left" id="panel-left" aria-labelledby="panel-left-title">
+      <div class="panel-resize" data-side="left" role="separator" aria-orientation="vertical" aria-controls="panel-left" aria-label="왼쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-left-title">목차</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-meta">읽은 토픽 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+        <nav class="toc" aria-label="목차"><a href="#s0">1 ADT</a><a href="#s1">2 성능 분석</a><a href="#s2">3 빅오</a><a href="#s3">4 C 표현</a><a href="#s4">5 순환</a><a href="#s5">6 요약·예고</a></nav>
+      </div>
+    </aside>
+    <div class="content">
+  <main>
+    <div class="hero">
+      <h1>알고리즘 성능 분석과 순환 — 5살도 이해하는 정리노트</h1>
+      <p>이정원 교수님 자료구조및알고리즘이해 · 0914 수업 (Software_1 자료구조및알고리즘 · Software_2 Recursion)</p>
+    </div>
+    <section id="s0"><h2>1. 추상 데이터 타입</h2>
+<article class="topic" id="s0-adt-def"><h3>1.1 데이터 타입과 추상 데이터 타입</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p22–23</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">물건을 담는 상자를 만들 때는 무엇을 담고 무엇을 할 수 있는지부터 정해요.</p>
+    <figure class="figure"><svg id="fig-adt-box" viewBox="0 0 360 200" role="img" aria-label="테두리 상자 안에 색칠된 점 다섯 개가 들어 있고, 상자 테두리 바깥쪽에 넣기, 꺼내기, 더하기라고 적힌 테두리 버튼 세 개가 붙어 있는 그림">
+      <rect class="fig-ink" x="90" y="30" width="180" height="140" rx="12" fill="none"/>
+      <text class="fig-text" x="180" y="52" text-anchor="middle" font-size="13">담는 값</text>
+      <circle class="fig-dot" cx="130" cy="90" r="9"/>
+      <circle class="fig-dot" cx="170" cy="80" r="9"/>
+      <circle class="fig-dot" cx="215" cy="95" r="9"/>
+      <circle class="fig-dot" cx="150" cy="130" r="9"/>
+      <circle class="fig-dot" cx="200" cy="135" r="9"/>
+      <rect class="fig-accent" x="10" y="60" width="70" height="30" rx="8" fill="none"/>
+      <text class="fig-text" x="45" y="80" text-anchor="middle" font-size="13">넣기</text>
+      <rect class="fig-accent" x="10" y="110" width="70" height="30" rx="8" fill="none"/>
+      <text class="fig-text" x="45" y="130" text-anchor="middle" font-size="13">꺼내기</text>
+      <rect class="fig-accent" x="280" y="85" width="70" height="30" rx="8" fill="none"/>
+      <text class="fig-text" x="315" y="105" text-anchor="middle" font-size="13">더하기</text>
+      <text class="fig-muted" x="180" y="192" text-anchor="middle" font-size="12">어떻게 만드는지는 아직 안 정했어요</text>
+    </svg><figcaption>색칠된 점은 담을 값이고, 테두리 버튼은 그 값으로 할 수 있는 일이에요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><strong>데이터 타입(data type)</strong>은 <strong>데이터의 집합과 연산의 집합</strong>이에요 (S1 p22).</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>예: <code>int</code> 데이터 타입</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr><td>데이터</td><td>$\{\dots,-2,-1,0,1,2,\dots\}$</td></tr>
+        <tr><td>연산</td><td><code>+</code>, <code>-</code>, <code>/</code>, <code>*</code>, <code>%</code></td></tr>
+      </tbody>
+    </table></div>
+    <p>수업에서는 데이터 타입을 메모리의 <strong>사이즈와 규격</strong>을 정해 주는 것으로 설명했어요.</p>
+    <ul>
+      <li><code>int</code>는 개념상 정수지만, 실제로는 32비트 크기에 맨 앞은 부호(sign), 뒤는 값(value)이라는 규격이에요 (S1 p3 복습).</li>
+      <li>그래서 담을 수 있는 범위(range)가 정해져 있어요.</li>
+      <li>범위를 넘으면 오버플로우(overflow)가 나요.</li>
+    </ul>
+    <p><strong>추상 데이터 타입(ADT: Abstract Data Type)</strong>은 데이터 타입을 추상적(수학적)으로 정의한 것이에요.</p>
+    <ul>
+      <li>데이터나 연산이 <strong>무엇(what)</strong>인지는 정의해요.</li>
+      <li>그 데이터나 연산을 컴퓨터에서 <strong>어떻게(how)</strong> 구현할지는 정의하지 않아요.</li>
+      <li>"추상(abstract)"은 아직 확실히 정해지지 않았다는 뜻이에요. 그래서 보는 사람마다 다르게 구현할 수 있어요.</li>
+      <li>ADT는 실제로 돌아가는 코드가 아니에요. 문제를 푸는 스케치, 곧 <strong>밑그림</strong>이에요.</li>
+    </ul>
+    <p>ADT는 두 부분으로 정의해요 (S1 p23). 자료구조와 알고리즘을 달리 부르면 <strong>객체와 연산</strong>이에요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>구성</th><th>슬라이드 정의</th><th>수업 설명</th></tr></thead>
+      <tbody>
+        <tr><td>객체(object)</td><td>ADT에 속하는 객체가 정의된다.</td><td>풀려는 문제의 입력·출력 데이터예요. 사이즈와 규격, 값의 범위를 판단하게 해 줘요.</td></tr>
+        <tr><td>연산(operation)</td><td>객체들 사이의 연산이 정의된다.</td><td>ADT와 외부를 연결하는 <strong>인터페이스</strong> 역할을 해요.</td></tr>
+      </tbody>
+    </table></div>
+    <p><code>int</code>, <code>float</code>, <code>char</code> 같은 빌트인(built-in) 타입만 쓸 필요는 없어요. 필요한 타입은 객체와 연산을 정해서 직접 정의해요. 예시는 <a href="#s0-nat-no">1.2 추상 데이터 타입의 예: 자연수</a>에 있어요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>프로그래밍 전 설계는 그림의 밑그림이에요. 수채화를 바로 칠하지 않고, 원근법을 생각하며 밑그림부터 그려요 (0914 07:40).</p>
+    <blockquote>프로그래밍을 할 때 막바로 코딩하면 절대 안 된다 그랬죠. (0914 07:23)</blockquote>
+    <p>"추상"의 뜻은 이렇게 풀었어요.</p>
+    <blockquote>보는 사람마다 다르게 구현할 수도 있다는 소리입니다. (0914 07:14)</blockquote>
+    <p>알고리즘은 게임의 무기와 같아요. 그래프라는 자료구조를 고르면 DFS, BFS, 최단 경로, 다익스트라(Dijkstra) 알고리즘이 줄줄이 따라와요 (0914 08:28).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">추상 데이터 타입은 무엇을 담고 무엇을 할지만 정하고, 어떻게 구현할지는 남겨 둔 밑그림이에요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>데이터 타입(data type)</dt><dd>데이터의 집합과 연산의 집합</dd>
+      <dt>추상 데이터 타입(ADT: Abstract Data Type)</dt><dd>무엇(what)은 정의하고 어떻게(how)는 정의하지 않은 데이터 타입</dd>
+      <dt>인터페이스</dt><dd>ADT와 외부를 연결하는 연산</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s0-nat-no"><h3>1.2 추상 데이터 타입의 예: 자연수</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p24</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">자연수 상자는 0부터 가장 큰 수까지만 담는 번호 줄이에요.</p>
+    <figure class="figure"><svg id="fig-natno-line" viewBox="0 0 360 150" role="img" aria-label="0, 1, 2, 3이 적힌 테두리 칸이 한 줄로 놓이고 그 뒤 말줄임표 다음에 가장 큰 수 칸이 있으며, 칸 사이를 다음 수 화살표가 잇고, 가장 큰 수 칸 오른쪽에 굵은 선으로 그린 벽이 서 있는 그림">
+      <rect class="fig-ink" x="10" y="55" width="44" height="40" rx="6" fill="none"/>
+      <text class="fig-text" x="32" y="80" text-anchor="middle" font-size="14">0</text>
+      <rect class="fig-ink" x="74" y="55" width="44" height="40" rx="6" fill="none"/>
+      <text class="fig-text" x="96" y="80" text-anchor="middle" font-size="14">1</text>
+      <rect class="fig-ink" x="138" y="55" width="44" height="40" rx="6" fill="none"/>
+      <text class="fig-text" x="160" y="80" text-anchor="middle" font-size="14">2</text>
+      <rect class="fig-ink" x="202" y="55" width="44" height="40" rx="6" fill="none"/>
+      <text class="fig-text" x="224" y="80" text-anchor="middle" font-size="14">3</text>
+      <path class="fig-accent" d="M32 50 Q64 20 94 50" fill="none" stroke-width="2"/>
+      <path class="fig-accent" d="M88 44 L94 50 L96 42" fill="none" stroke-width="2"/>
+      <path class="fig-accent" d="M96 50 Q128 20 158 50" fill="none" stroke-width="2"/>
+      <path class="fig-accent" d="M152 44 L158 50 L160 42" fill="none" stroke-width="2"/>
+      <text class="fig-muted" x="96" y="22" text-anchor="middle" font-size="12">다음 수</text>
+      <text class="fig-muted" x="262" y="80" text-anchor="middle" font-size="14">…</text>
+      <rect class="fig-ink" x="278" y="55" width="50" height="40" rx="6" fill="none"/>
+      <text class="fig-text" x="303" y="80" text-anchor="middle" font-size="12">가장 큰</text>
+      <path class="fig-danger" d="M340 40 L340 110" fill="none" stroke-width="4"/>
+      <text class="fig-muted" x="303" y="125" text-anchor="middle" font-size="12">여기서 끝</text>
+    </svg><figcaption>다음 수로 한 칸씩 가다가 가장 큰 수의 벽에 닿으면 더 못 가요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>자연수를 ADT로 정의한 예가 <strong>Nat_No</strong>예요 (S1 p24). 객체와 연산을 슬라이드 그대로 옮기면 이래요.</p>
+<pre><code class="language-c">Nat_No
+객체: 0에서 시작하여 INT_MAX까지의 순서화된 정수의 부분범위
+연산:
+    zero()       ::= return 0;
+    is_zero()    ::= if (x) return FALSE;
+                     else return TRUE;
+    add(x,y)     ::= if( (x+y) &lt;= INT_MAX ) return x+y;
+                     else return INT_MAX
+    sub(x,y)     ::= if ( x&lt;y ) return 0;
+                     else return x-y;
+    equal(x,y)   ::= if( x=y ) return TRUE;
+                     else return FALSE;
+    successor(x) ::= if( (x+1) &lt;= INT_MAX )
+                         return x+1;</code></pre>
+    <p><code>::=</code>는 "왼쪽 연산을 오른쪽처럼 정의한다"는 ADT 표기예요. C 코드가 아니어서 <code>x=y</code>도 대입이 아니라 같은지 비교하는 뜻으로 읽어요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>연산</th><th>하는 일</th></tr></thead>
+      <tbody>
+        <tr><td><code>zero()</code></td><td>0을 돌려줘요.</td></tr>
+        <tr><td><code>is_zero()</code></td><td>x가 0이 아니면 FALSE, 0이면 TRUE를 돌려줘요.</td></tr>
+        <tr><td><code>add(x,y)</code></td><td>합이 INT_MAX 이하면 x+y, 넘으면 INT_MAX를 돌려줘요.</td></tr>
+        <tr><td><code>sub(x,y)</code></td><td>x가 y보다 작으면 0, 아니면 x-y를 돌려줘요. 자연수라서 음수가 나오지 않게 해요.</td></tr>
+        <tr><td><code>equal(x,y)</code></td><td>x와 y가 같으면 TRUE, 다르면 FALSE를 돌려줘요.</td></tr>
+        <tr><td><code>successor(x)</code></td><td>x+1이 INT_MAX 이하면 다음 수 x+1을 돌려줘요.</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>컴퓨터가 다루는 수는 대부분 유한해야 해요. 그래서 상한을 <code>INT_MAX</code>로 둬요.</li>
+      <li>연산(function)은 <strong>옵셔널</strong>이에요. 필요 없는 연산은 정의하지 않아도 돼요.</li>
+      <li>객체를 <code>unsigned int</code>로 정의해도 돼요. 어떻게(how) 구현할지는 정하는 사람 몫이에요.</li>
+      <li>ADT의 목적은 코드를 플랫(flat)하게 늘어놓지 않고, 모든 기능을 function으로 만들어 <strong>작은 패키지</strong>로 꺼내 쓰게 하는 거예요.</li>
+    </ul>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>연산이 옵셔널인 이유를 이렇게 말했어요.</p>
+    <blockquote>"내가 equal이 필요 없는데, 제가 왜 equal을 디파인해요?" 필요 없으면 안 해도 됩니다. (0914 12:18)</blockquote>
+    <blockquote>나는 객체와 연산을 정의해서 꼭 써봐야 되겠다. (0914 12:29)</blockquote>
+    <p>플랫한 코딩은 여행 가방에 짐을 마구잡이로 집어넣는 것과 같아요. 연산을 function으로 나눠 작은 패키지로 정리해야 해요 (0914 12:43).</p>
+    <blockquote>플랫하게 짜면 절대 안 된다고 그랬어요. (0914 12:43)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">Nat_No는 0부터 INT_MAX까지의 정수를 객체로, zero·add·successor 같은 함수를 연산으로 정의한 ADT예요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>Nat_No</dt><dd>자연수를 정의한 ADT 예시</dd>
+      <dt>INT_MAX</dt><dd>객체 범위의 상한</dd>
+      <dt>successor(x)</dt><dd>x+1이 INT_MAX 이하면 x+1을 돌려주는 연산</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s0-vending"><h3>1.3 추상 데이터 타입과 자판기</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p25</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">자판기는 동전을 넣고 버튼만 누르면 음료가 나와요.</p>
+    <figure class="figure"><svg id="fig-vending-box" viewBox="0 0 360 210" role="img" aria-label="테두리로 그린 자판기 앞면에 버튼 세 개와 동전 구멍, 음료 나오는 곳이 있고, 옆에 점선으로 그린 안쪽 기계 상자가 흐리게 가려져 있는 그림">
+      <rect class="fig-ink" x="20" y="15" width="150" height="180" rx="10" fill="none"/>
+      <rect class="fig-accent" x="40" y="40" width="30" height="22" rx="5" fill="none"/>
+      <rect class="fig-accent" x="80" y="40" width="30" height="22" rx="5" fill="none"/>
+      <rect class="fig-accent" x="120" y="40" width="30" height="22" rx="5" fill="none"/>
+      <text class="fig-text" x="95" y="82" text-anchor="middle" font-size="12">버튼</text>
+      <path class="fig-ink" d="M140 100 L140 120" fill="none" stroke-width="3"/>
+      <text class="fig-text" x="95" y="115" text-anchor="middle" font-size="12">동전</text>
+      <rect class="fig-ink" x="45" y="150" width="100" height="30" rx="5" fill="none"/>
+      <text class="fig-text" x="95" y="170" text-anchor="middle" font-size="12">음료 나오는 곳</text>
+      <rect class="fig-muted" x="210" y="40" width="130" height="130" rx="10" fill="none" stroke-dasharray="6 5"/>
+      <circle class="fig-muted" cx="255" cy="90" r="18" fill="none" stroke-dasharray="4 4"/>
+      <circle class="fig-muted" cx="295" cy="120" r="14" fill="none" stroke-dasharray="4 4"/>
+      <text class="fig-muted" x="275" y="160" text-anchor="middle" font-size="12">안쪽 기계</text>
+      <text class="fig-muted" x="275" y="30" text-anchor="middle" font-size="12">몰라도 돼요</text>
+    </svg><figcaption>안쪽 기계를 바꿔도 버튼이 그대로면 똑같이 쓸 수 있어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>슬라이드는 ADT를 <strong>VCR</strong>(비디오 녹화기)에 빗대요 (S1 p25). 수업에서는 같은 비유를 <strong>자판기</strong>(vending machine)로 바꿔 설명했어요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>VCR</th><th>추상 데이터 타입</th></tr></thead>
+      <tbody>
+        <tr><td>VCR의 인터페이스가 제공하는 작업만 할 수 있어요.</td><td>사용자는 ADT가 제공하는 연산만 쓸 수 있어요.</td></tr>
+        <tr><td>비디오를 보려면 무엇을 해야 하는지 알아야 해요.</td><td>사용자는 ADT를 어떻게 사용하는지 알아야 해요.</td></tr>
+        <tr><td>VCR의 내부를 볼 수 없어요.</td><td>사용자는 ADT 내부의 데이터에 접근할 수 없어요.</td></tr>
+        <tr><td>내부에서 무슨 일이 일어나는지 몰라도 쓸 수 있어요.</td><td>어떻게 구현되었는지 몰라도 쓸 수 있어요.</td></tr>
+        <tr><td>내부 기계장치를 바꿔도 인터페이스만 그대로면 쓸 수 있어요.</td><td>다른 사람이 구현을 바꿔도 인터페이스가 변경되지 않으면 쓸 수 있어요.</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>자판기 사용자는 동전을 넣고 음료를 꺼내는 UI, 곧 인터페이스에만 관심이 있어요.</li>
+      <li>ADT도 마찬가지로 외부에는 연산(인터페이스)만 드러내고, 내부 구현은 감춰요.</li>
+      <li>그래서 인터페이스가 변경되지 않으면 내부를 바꿔도 쓰는 쪽 코드는 그대로 돌아가요.</li>
+    </ul>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>ADT를 자판기(벤딩 머신)에 빗대 설명했어요 (0914 13:06).</p>
+    <blockquote>벤딩 머신에 동전을 넣고 음료수를 꺼내 먹으면서 그 내부를 궁금해하는 사람은 없죠. (0914 13:06)</blockquote>
+    <p>사람들은 자판기의 UI에만 관심이 있다고 덧붙였어요 (0914 13:34).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">ADT는 자판기처럼 인터페이스만 보여 주고 내부는 감춰서, 인터페이스가 변경되지 않으면 내부를 바꿔도 그대로 쓸 수 있어요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>인터페이스</dt><dd>사용자가 쓸 수 있는 연산, 자판기의 버튼</dd>
+      <dt>내부</dt><dd>사용자가 볼 수 없고 몰라도 되는 구현</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s1"><h2>2. 알고리즘의 성능 분석</h2>
+<article class="topic" id="s1-measure"><h3>2.1 수행 시간 측정</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p26–27</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">두 친구의 달리기를 초시계로 재려면, 둘 다 끝까지 달려야 하고 같은 운동장에서 달려야 해요.</p>
+    <figure class="figure">
+      <svg id="fig-measure-race" viewBox="0 0 520 190" role="img" aria-label="같은 운동장의 두 줄 달리기 길. 왼쪽 출발선과 오른쪽 도착선이 선으로 그려져 있고, 두 친구를 뜻하는 색칠된 점이 각 줄 출발선에 있으며 위에 초시계 테두리 원이 있다">
+        <line class="fig-ink" x1="60" y1="60" x2="460" y2="60"/>
+        <line class="fig-ink" x1="60" y1="110" x2="460" y2="110"/>
+        <line class="fig-ink" x1="60" y1="160" x2="460" y2="160"/>
+        <line class="fig-accent" x1="90" y1="55" x2="90" y2="165"/>
+        <line class="fig-danger" x1="430" y1="55" x2="430" y2="165"/>
+        <circle class="fig-dot" cx="110" cy="85" r="9"/>
+        <circle class="fig-dot" cx="110" cy="135" r="9"/>
+        <text class="fig-text" x="130" y="90">친구 가</text>
+        <text class="fig-text" x="130" y="140">친구 나</text>
+        <path class="fig-ink" d="M200 85 H400 M400 85 l-8 -5 M400 85 l-8 5"/>
+        <path class="fig-ink" d="M200 135 H400 M400 135 l-8 -5 M400 135 l-8 5"/>
+        <text class="fig-muted" x="70" y="185">출발 (재기 시작)</text>
+        <text class="fig-muted" x="370" y="185">도착 (재기 끝)</text>
+        <circle class="fig-ink" cx="260" cy="28" r="18"/>
+        <line class="fig-ink" x1="260" y1="28" x2="260" y2="16"/>
+        <line class="fig-ink" x1="260" y1="28" x2="269" y2="33"/>
+        <text class="fig-muted" x="288" y="33">같은 운동장, 같은 초시계</text>
+      </svg>
+      <figcaption>도착선까지 가 봐야 누가 빠른지 알 수 있어서, 느리면 처음부터 다시 만들어야 해요.</figcaption>
+    </figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>알고리즘의 성능 분석 기법은 두 가지예요. 수행 시간 측정과 알고리즘의 복잡도 분석이에요. 이 토픽은 첫째인 수행 시간 측정을 다뤄요.</p>
+    <p>수행 시간 측정은 두 알고리즘의 실제 수행 시간을 재서 비교하는 방법이에요. 조건이 두 가지 있어요.</p>
+    <ul>
+      <li>두 알고리즘 모두 실제로 구현이 끝나 있어야 해요.</li>
+      <li>동일한 하드웨어를 사용해야 해요. 빠른 머신과 느린 머신에서 잰 값은 비교할 수 없어요.</li>
+    </ul>
+    <p>C에서는 주로 <code>&lt;time.h&gt;</code>의 <code>clock</code> 함수를 써요. 원형은 <code>clock_t clock(void);</code>이에요. 호출된 순간의 시스템 시각을 <code>CLOCKS_PER_SEC</code> 단위로 돌려줘요. 그래서 두 시각의 차이를 <code>CLOCKS_PER_SEC</code>로 나누면 초가 나와요.</p>
+    <p>수행 시간을 측정하는 전형적인 프로그램이에요(S1 p27).</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+void main( void )
+{
+    clock_t start, finish;
+    double duration;
+    start = clock();
+    // 수행시간을 측정하고 하는 코드....
+    // ....
+    finish = clock();
+    duration = (double)(finish - start) / CLOCKS_PER_SEC;
+    printf("%f 초입니다.\n", duration);
+}</code></pre>
+    <p>(표준 C에서는 <code>int main(void)</code>로 쓰고 끝에 <code>return 0;</code>을 둬요)</p>
+    <ol class="steps">
+      <li><code>start = clock();</code> → 측정할 코드 직전의 시각을 저장해요.</li>
+      <li>측정할 코드 실행</li>
+      <li><code>finish = clock();</code> → 코드가 끝난 직후의 시각을 저장해요.</li>
+      <li><code>duration = (double)(finish - start) / CLOCKS_PER_SEC;</code> → 차이를 초 단위로 바꿔요. <code>(double)</code> 변환 덕분에 정수 나눗셈으로 잘리지 않아요.</li>
+    </ol>
+    <p>이 방법의 약점은 프로젝트가 다 끝난 뒤에야 잴 수 있다는 거예요. 잰 시간이 사용자가 요구한 스펙에 못 미치면 다시 개발해야 해요. 그래서 수업은 구현하지 않고도 수행 시간을 분석하는 <a href="#s1-complexity">복잡도 분석과 시간복잡도 함수</a>로 넘어가요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>하드웨어는 크기와 통과 시간이 눈에 보여서 성능 고민이 자연스러워요. 소프트웨어 과제는 개집 짓기와 같았어요. 개집을 한 달에 지을지 일 년에 지을지는 고민하지 않잖아요.</p>
+    <blockquote>개집 짓는데 이게 한 달 걸릴지, 일 년 걸릴지 고민할 이유가 있습니까? (0914 14:02)</blockquote>
+    <p>회사에서 성능을 재야 하는데 다 만든 뒤에 쟀더니 느리면 다시 개발해야 해요. 교수님은 그게 말이 안 되는 고단한 작업이라고 했어요.</p>
+    <blockquote>다 끝나서 쟀는데 느려. … 그럼 어떻게 해요? 다시 개발해요? (0914 15:31)</blockquote>
+    <p>그래서 실측 방식은 쓰지 않는다고 못 박았어요.</p>
+    <blockquote>자, 그런데 이렇게 하지 않습니다. 절대로. (0914 20:08)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">수행 시간 측정은 구현이 끝난 두 프로그램을 동일한 하드웨어에서 clock으로 재는 방법이라, 수업에서는 쓰지 않아요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>수행 시간 측정</dt><dd>실제로 구현한 두 알고리즘을 동일한 하드웨어에서 돌려 시간을 재는 방법</dd>
+      <dt>CLOCKS_PER_SEC</dt><dd>clock이 돌려주는 시각의 단위. 차이를 이 값으로 나누면 초</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s1-complexity"><h3>2.2 복잡도 분석과 시간복잡도 함수</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p26–28</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">달려 보지 않고도 걸음 수만 세면 누가 빨리 끝날지 알 수 있어요.</p>
+    <figure class="figure">
+      <svg id="fig-complexity-steps" viewBox="0 0 520 170" role="img" aria-label="위 줄 프로그램 가는 색칠된 점 8개, 아래 줄 프로그램 나는 색칠된 점 26개. 같은 일을 하는데 가가 걸음이 적다">
+        <text class="fig-text" x="10" y="45">프로그램 가</text>
+        <circle class="fig-dot" cx="115" cy="40" r="6"/><circle class="fig-dot" cx="131" cy="40" r="6"/><circle class="fig-dot" cx="147" cy="40" r="6"/><circle class="fig-dot" cx="163" cy="40" r="6"/>
+        <circle class="fig-dot" cx="179" cy="40" r="6"/><circle class="fig-dot" cx="195" cy="40" r="6"/><circle class="fig-dot" cx="211" cy="40" r="6"/><circle class="fig-dot" cx="227" cy="40" r="6"/>
+        <text class="fig-muted" x="245" y="45">8걸음</text>
+        <text class="fig-text" x="10" y="105">프로그램 나</text>
+        <circle class="fig-dot" cx="115" cy="100" r="6"/><circle class="fig-dot" cx="131" cy="100" r="6"/><circle class="fig-dot" cx="147" cy="100" r="6"/><circle class="fig-dot" cx="163" cy="100" r="6"/>
+        <circle class="fig-dot" cx="179" cy="100" r="6"/><circle class="fig-dot" cx="195" cy="100" r="6"/><circle class="fig-dot" cx="211" cy="100" r="6"/><circle class="fig-dot" cx="227" cy="100" r="6"/>
+        <circle class="fig-dot" cx="243" cy="100" r="6"/><circle class="fig-dot" cx="259" cy="100" r="6"/><circle class="fig-dot" cx="275" cy="100" r="6"/><circle class="fig-dot" cx="291" cy="100" r="6"/>
+        <circle class="fig-dot" cx="307" cy="100" r="6"/>
+        <circle class="fig-dot" cx="115" cy="120" r="6"/><circle class="fig-dot" cx="131" cy="120" r="6"/><circle class="fig-dot" cx="147" cy="120" r="6"/><circle class="fig-dot" cx="163" cy="120" r="6"/>
+        <circle class="fig-dot" cx="179" cy="120" r="6"/><circle class="fig-dot" cx="195" cy="120" r="6"/><circle class="fig-dot" cx="211" cy="120" r="6"/><circle class="fig-dot" cx="227" cy="120" r="6"/>
+        <circle class="fig-dot" cx="243" cy="120" r="6"/><circle class="fig-dot" cx="259" cy="120" r="6"/><circle class="fig-dot" cx="275" cy="120" r="6"/><circle class="fig-dot" cx="291" cy="120" r="6"/>
+        <circle class="fig-dot" cx="307" cy="120" r="6"/>
+        <text class="fig-muted" x="325" y="115">26걸음</text>
+        <text class="fig-muted" x="10" y="160">같은 두 개를 넣고, 같은 답을 내요</text>
+      </svg>
+      <figcaption>답이 같다면 걸음이 적은 쪽을 골라요.</figcaption>
+    </figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>알고리즘의 복잡도(complexity) 분석은 직접 구현하지 않고서도 수행 시간을 분석하는 방법이에요. 프로그램이 오류가 나 있어도 분석할 수 있어요. 알고리즘이 수행하는 연산의 횟수를 세어 비교해요.</p>
+    <p>복잡도 분석은 두 가지예요.</p>
+    <ul>
+      <li>시간 복잡도(time complexity): 수행 시간을 분석해요.</li>
+      <li>공간 복잡도(space complexity): 수행하는 동안 필요한 메모리 공간을 분석해요.</li>
+    </ul>
+    <p>이 수업에서는 공간 복잡도를 다루지 않아요. 시간 복잡도만 다뤄요.</p>
+    <p>시간 복잡도는 알고리즘을 이루는 연산들이 몇 번 수행되는지를 숫자로 나타낸 거예요. 기본 연산 네 가지를 세요.</p>
+    <ul>
+      <li>산술 연산: 덧셈, 뺄셈, 곱셈, 나눗셈</li>
+      <li>대입 연산: <code>=</code>는 오른쪽 값을 왼쪽에 저장하는 연산이에요.</li>
+      <li>비교 연산</li>
+      <li>이동 연산</li>
+    </ul>
+    <p>연산의 수행 횟수는 고정된 숫자가 아니라 입력의 개수 $n$에 대한 함수예요. 입력이 10개면 $n = 10$, 1000개면 $n = 1000$이에요. 이 함수를 시간복잡도 함수라 하고 $T(n)$으로 써요.</p>
+    <p>예(S1 p28): 같은 출력을 내는 두 프로그램이 있어요.</p>
+    <ul>
+      <li>프로그램 A: $T(n) = 3n + 2$</li>
+      <li>프로그램 B: $T(n) = 5n^2 + 6$</li>
+    </ul>
+    <p>데이터 두 개($n = 2$)를 넣으면 이렇게 돼요.</p>
+    <ol class="steps">
+      <li>A: $3 \cdot 2 + 2 = 8$ → 연산 8번</li>
+      <li>B: $5 \cdot 2^2 + 6 = 20 + 6 = 26$ → 연산 26번</li>
+      <li>기능과 답이 같으므로 연산이 적은 A를 써요.</li>
+    </ol>
+    <p>$3n + 2$ 같은 식을 세는 방법은 <a href="#s1-n-times">n을 n번 더하는 세 알고리즘</a>에서 이어져요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>교수님이 공부할 때는 시간과 공간을 똑같이 중요하게 배웠어요. 메모리가 비싸고 집적도가 낮아서, 메모리를 오가는 시간이 컴퓨터를 느리게 했기 때문이에요.</p>
+    <blockquote>제가 공부할 때는요, 두 개를 똑같이 중요하게 배웠습니다. (0914 17:26)</blockquote>
+    <p>작은 그릇 하나에 스크린만 한 양의 음식을 담아 옮긴다고 생각해 보래요. 넣었다 뺐다를 계속 반복해야 해요. 옛날에는 연산보다 이렇게 메모리에 넣었다 빼는 비용이 컸어요.</p>
+    <p>요즘은 메모리가 모자라면 꽂아서 늘릴 수 있어요. 휴대폰도 예전 PC 이상이에요.</p>
+    <blockquote>최근에는 space complexity 얘기를 하지 않습니다. (0914 17:51)</blockquote>
+    <blockquote>자, 그래서 space complexity 얘기는 이 수업에서 하지 않겠습니다. (0914 18:52)</blockquote>
+    <p>복잡도의 수학적 증명은 이 수업에서 하지 않아요. 소프트웨어학부 학생들은 '알고리즘' 수업에서 따로 증명한다고 했어요(0914 19:05).</p>
+    <p>연산 개수를 센다는 말에 "10만 라인이면 어떡하죠?" 하는 걱정이 들 수 있어요. 교수님은 그렇지 않으니 걱정하지 말라고 했어요(0914 16:31).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">복잡도 분석은 구현 없이 연산 횟수를 입력 개수 n의 함수로 세는 방법이고, 이 수업은 시간 복잡도만 다뤄요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">프로그램 A</span>$$T(n) = 3n + 2$$</li>
+      <li><span class="eq-name">프로그램 B</span>$$T(n) = 5n^2 + 6$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>시간 복잡도(time complexity)</dt><dd>알고리즘의 연산이 몇 번 수행되는지 나타낸 수치</dd>
+      <dt>공간 복잡도(space complexity)</dt><dd>수행하는 동안 필요한 메모리 공간. 이 수업에서는 다루지 않음</dd>
+      <dt>시간복잡도 함수</dt><dd>연산 횟수를 입력 개수 n의 함수로 쓴 것, $T(n)$</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s1-n-times"><h3>2.3 n을 n번 더하는 세 알고리즘</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p29–30</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">같은 문제라도 한 번에 곱하는 사람, 하나씩 더하는 사람, 더 잘게 쪼개 더하는 사람의 일 양이 크게 달라요.</p>
+    <figure class="figure">
+      <svg id="fig-ntimes-growth" viewBox="0 0 520 260" role="img" aria-label="가로축은 넣는 개수, 세로축은 해야 할 일. 한 번에 곱하기는 수평 선, 하나씩 더하기는 곧게 올라가는 선, 잘게 쪼개 더하기는 점점 가파르게 휘어 오르는 선">
+        <path class="fig-ink" d="M50 230 H490 M490 230 l-8 -5 M490 230 l-8 5"/>
+        <path class="fig-ink" d="M50 230 V20 M50 20 l-5 8 M50 20 l5 8"/>
+        <text class="fig-muted" x="390" y="252">넣는 개수</text>
+        <text class="fig-muted" x="58" y="24">해야 할 일</text>
+        <line class="fig-accent" x1="50" y1="190" x2="470" y2="190"/>
+        <line class="fig-ink" x1="50" y1="228" x2="470" y2="120"/>
+        <path class="fig-danger" d="M50 228 Q260 220 360 25"/>
+        <text class="fig-text" x="380" y="205">한 번에 곱하기</text>
+        <text class="fig-text" x="370" y="118">하나씩 더하기</text>
+        <text class="fig-text" x="368" y="40">잘게 쪼개 더하기</text>
+      </svg>
+      <figcaption>넣는 개수가 늘어도 한 번에 곱하는 선은 그대로이고, 잘게 쪼갠 선은 금방 하늘로 치솟아요.</figcaption>
+    </figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>문제: $n$을 $n$번 더하는 알고리즘을 짜요. 세 사람이 다음처럼 짰어요. C가 아니라 수도코드(pseudocode)예요. 구현이 안 되어 있으니 실측은 할 수 없고 연산 개수를 세요.</p>
+<pre><code class="language-text">알고리즘 A        알고리즘 B              알고리즘 C
+sum ←n*n;        sum ←0;                 sum ←0;
+                 for i ←1 to n do        for i←1 to n do
+                     sum ←sum + n;           for j←1 to n do
+                                                 sum ←sum + 1;</code></pre>
+    <ul>
+      <li>A: $n$을 $n$번 더하는 것은 곱셈의 기본 원리예요. 그래서 $n \times n$을 바로 계산해요.</li>
+      <li>B: 루프를 $n$번 돌며 매번 <code>sum</code>에 $n$을 더해요. 대부분이 떠올리는 방법이에요.</li>
+      <li>C: 바깥 루프는 $n$번 돌지만, $n$을 더하는 대신 안쪽 루프에서 1을 $n$번 더해요. 3을 세 번 더하라고 했더니 3을 1 + 1 + 1로 만든 셈이에요.</li>
+    </ul>
+    <p>세는 규칙: for 루프 제어 연산은 고려하지 않아요. 루프는 1부터 $n$까지이므로 안쪽 연산이 $n$번 실행된다고만 셈해요.</p>
+    <ol class="steps">
+      <li>A: 곱셈 1 + 대입 1 → 전체 2</li>
+      <li>B: 대입은 <code>sum ←0;</code> 1번 + 루프 안 $n$번 → $n + 1$</li>
+      <li>B: 덧셈은 루프 안에만 있으므로 $n$ → 전체 $2n + 1$</li>
+      <li>C: 안쪽 문장은 $n \cdot n$번 실행 → 대입 $n \cdot n + 1$, 덧셈 $n \cdot n$</li>
+      <li>C: 전체 $2n^2 + 1$</li>
+    </ol>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th>알고리즘 A</th><th>알고리즘 B</th><th>알고리즘 C</th></tr></thead>
+      <tbody>
+        <tr><th>대입연산</th><td>1</td><td>$n + 1$</td><td>$n \cdot n + 1$</td></tr>
+        <tr><th>덧셈연산</th><td>0</td><td>$n$</td><td>$n \cdot n$</td></tr>
+        <tr><th>곱셈연산</th><td>1</td><td>0</td><td>0</td></tr>
+        <tr><th>전체연산수</th><td>2</td><td>$2n + 1$</td><td>$2n^2 + 1$</td></tr>
+      </tbody>
+    </table></div>
+    <p>$n = 3$을 넣어 보면 A는 2번, B는 $2 \cdot 3 + 1 = 7$번, C는 $2 \cdot 9 + 1 = 19$번이에요.</p>
+    <p>그래프로 그리면 이렇게 해석해요(S1 p30, 가로축 입력의 개수 $n$, 세로축 연산의 횟수).</p>
+    <ul>
+      <li>A(상수): $n$이 들어가지 않아요. $n$이 백만이 되어도 연산은 2번이에요. 가로로 평평한 직선이에요.</li>
+      <li>B(선형): 일정한 기울기로 늘어나서 데이터가 1,000개든 100만 개든 증가량을 예측할 수 있어요. 선형 알고리즘은 매우 좋은 알고리즘이고, 흔하지도 않아요.</li>
+      <li>C($n^2$): 어느 $n$까지는 B와 비슷하게 가요. 그 크기를 넘으면 가파르게 올라가 나빠질 수 있어요.</li>
+    </ul>
+    <p>이렇게 일일이 세지 않는 방법은 <a href="#s2-bigo-def">빅오 표기법의 정의</a>에서 배워요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>C처럼 짜는 학생이 채점하다 보면 실제로 있다고 했어요. 중첩 루프를 쓸 때 이런 실수를 하고 있지 않은지 살펴보래요. 두 개까지는 괜찮지만, 세 개 이상 중첩을 요구하는 문제는 거의 없어요.</p>
+    <blockquote>내가 세 개의 포 루프가 중첩이 돼 있다? 내가 이거 문제 잘못 짜고 있는 거 아니야? (0914 25:32)</blockquote>
+    <p>상수로 떨어지는 A는 "어마어마하게 기적적인 일"이라고 했어요(0914 28:14). 선형 그래프를 보면 공학도로서 "예측 가능하다"는 생각이 들어야 한대요(0914 28:32).</p>
+    <p>가장 가파르게 오르는 C 같은 알고리즘은 개집도 아닌 고인돌이라고 했어요.</p>
+    <blockquote>그냥 이렇게 고인돌? 어, 그런 알고리즘이야. 쓸 일이 없습니다. (0914 30:09)</blockquote>
+    <p>자료구조와 알고리즘을 배우는 이유도 여기서 짚었어요.</p>
+    <blockquote>성능을 좋게 하려고 배우는 거예요. fast하고 little storage를 쓰려고 배우는 겁니다. (0914 29:44)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">같은 문제도 짜는 법에 따라 연산 수가 상수, 선형, 제곱으로 갈리고, for 루프 제어 연산은 세지 않아요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">알고리즘 B</span>$$2n + 1$$</li>
+      <li><span class="eq-name">알고리즘 C</span>$$2n^2 + 1$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>수도코드(pseudocode)</dt><dd>특정 언어가 아닌, 알고리즘을 적는 약식 코드</dd>
+      <dt>for 루프 제어 연산</dt><dd>루프 변수의 대입·비교. 연산 개수를 셀 때 제외</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s1-arraymax"><h3>2.4 ArrayMax 연산 세기</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p31</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">카드를 하나씩 보면서 손에 든 카드보다 큰 카드를 만나면 바꿔 들어요.</p>
+    <figure class="figure">
+      <svg id="fig-arraymax-cards" viewBox="0 0 520 170" role="img" aria-label="1부터 5까지 커지는 순서로 놓인 카드 다섯 장이 테두리 상자로 그려져 있고, 둘째 카드부터 매 카드 위에 바꿔 들기 화살표 선이 있다">
+        <rect class="fig-ink" x="40" y="90" width="70" height="56" rx="6"/>
+        <rect class="fig-ink" x="130" y="90" width="70" height="56" rx="6"/>
+        <rect class="fig-ink" x="220" y="90" width="70" height="56" rx="6"/>
+        <rect class="fig-ink" x="310" y="90" width="70" height="56" rx="6"/>
+        <rect class="fig-ink" x="400" y="90" width="70" height="56" rx="6"/>
+        <text class="fig-text" x="70" y="123">1</text>
+        <text class="fig-text" x="160" y="123">2</text>
+        <text class="fig-text" x="250" y="123">3</text>
+        <text class="fig-text" x="340" y="123">4</text>
+        <text class="fig-text" x="430" y="123">5</text>
+        <path class="fig-accent" d="M75 85 Q120 45 165 85 M165 85 l-2 -9 M165 85 l-9 -2"/>
+        <path class="fig-accent" d="M165 85 Q210 45 255 85 M255 85 l-2 -9 M255 85 l-9 -2"/>
+        <path class="fig-accent" d="M255 85 Q300 45 345 85 M345 85 l-2 -9 M345 85 l-9 -2"/>
+        <path class="fig-accent" d="M345 85 Q390 45 435 85 M435 85 l-2 -9 M435 85 l-9 -2"/>
+        <text class="fig-muted" x="170" y="30">볼 때마다 바꿔 들기</text>
+        <text class="fig-muted" x="40" y="165">처음 든 카드</text>
+      </svg>
+      <figcaption>카드가 점점 커지게 놓인 날은 볼 때마다 바꿔야 해서 가장 바빠요.</figcaption>
+    </figure>
+    <p>일을 셀 때는 이렇게 가장 바쁜 날을 기준으로 세요.</p>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>최댓값 찾기 알고리즘(S1 p17–21에서 본 것)을 수도코드로 쓰고 연산을 세어요. 배열 <code>A</code>에 원소가 $n$개 있어요.</p>
+<pre><code class="language-text">ArrayMax(A,n)
+tmp ←A[0];               1번의 대입 연산
+  for i←1 to n-1 do      루프 제어 연산은 제외
+    if tmp &lt; A[i] then   n-1번의 비교 연산
+      tmp ←A[i];         n-1번의 대입 연산(최대)
+return tmp;              1번의 반환 연산
+                         총 연산수= 2n(최대)</code></pre>
+    <ol class="steps">
+      <li><code>tmp ←A[0];</code> → 대입 1번</li>
+      <li><code>for i←1 to n-1 do</code> → 루프 제어 연산은 세지 않고, 루프가 $n-1$번 돈다는 것만 써요.</li>
+      <li><code>if tmp &lt; A[i] then</code> → 비교 $n-1$번</li>
+      <li><code>tmp ←A[i];</code> → <code>tmp</code>와 <code>A[i]</code> 값에 따라 실행될 수도 안 될 수도 있어요. 최악의 경우, 즉 매번 실행된다고 보고 대입 $n-1$번</li>
+      <li><code>return tmp;</code> → 반환 연산 1번. <code>tmp</code>를 <code>ArrayMax</code>의 결과로 넣는 대입과 같아서 연산으로 세요.</li>
+      <li>합계: $1 + (n-1) + (n-1) + 1 = 2n$ (최대)</li>
+    </ol>
+    <p>예: <code>A = {1, 2, 3, 4, 5}</code>, $n = 5$면 매번 더 큰 값이 나와서 최악의 경우가 돼요. 대입 1 + 비교 4 + 대입 4 + 반환 1 = 10 = $2 \cdot 5$예요.</p>
+    <p>이처럼 코드를 분석하면 수행되는 연산의 횟수를 입력 크기의 함수로 만들 수 있어요. ArrayMax의 시간복잡도 함수는 $T(n) = 2n$이에요. 최악·최선·평균의 구분은 <a href="#s2-cases">최선, 평균, 최악의 경우</a>에서 이어져요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p><code>if</code> 안의 문장처럼 할 수도 있고 안 할 수도 있는 연산은 논리회로 때처럼 최악의 경우로 가정해요.</p>
+    <blockquote>그럴 때는 꼭 논리회로 때랑 똑같이 최악의 경우, 하는 걸로 가요. 안 하는 걸로 가지 않고. (0914 31:19)</blockquote>
+    <p><code>return</code>은 연산이 아닌 것 같지만, 함수 이름 뒤에 숨은 대입이에요.</p>
+    <blockquote>쟤는 TMP를 어레이 맥스에다가 넣어주세요 하는 대입 연산자였어요. (0914 31:55)</blockquote>
+    <p>끝으로 "계속 무식하게 세는 게 싫죠?"라고 물으며, 일일이 세지 않아도 되는 방법으로 넘어갔어요(0914 32:30).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">ArrayMax는 최악의 경우 대입·비교·대입·반환을 모두 세어 2n번 연산해요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">ArrayMax 총 연산수</span>$$1 + (n-1) + (n-1) + 1 = 2n$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>최악의 경우</dt><dd>조건문 안 연산이 매번 실행된다고 가정해 세는 기준</dd>
+      <dt>반환 연산</dt><dd><code>return</code>. 결과를 함수에 넣는 대입이라 1번으로 셈</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s2"><h2>3. 빅오 표기법</h2>
+<article class="topic" id="s2-bigo-def"><h3>3.1 빅오 표기법의 정의</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p32</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">일이 아주 많아지면 제일 큰 덩어리만 봐도 전체 크기를 거의 알 수 있어요.</p>
+    <figure class="figure"><svg id="fig-bigo-share" viewBox="0 0 520 150" role="img" aria-label="긴 테두리 상자 하나가 거의 전부를 차지하고 오른쪽 끝에 아주 얇은 테두리 상자 하나가 붙어 있다. 긴 상자에는 제일 큰 덩어리, 얇은 상자에는 나머지라고 적혀 있다.">
+      <rect class="fig-accent" x="20" y="40" width="455" height="50" rx="4"/>
+      <rect class="fig-ink" x="479" y="40" width="10" height="50" rx="2"/>
+      <text class="fig-text" x="247" y="70" text-anchor="middle">제일 큰 덩어리 (거의 전부)</text>
+      <path class="fig-ink" d="M484 94 L484 118"/>
+      <path class="fig-ink" d="M478 110 L484 118 L490 110"/>
+      <text class="fig-muted" x="484" y="136" text-anchor="middle">나머지</text>
+      <text class="fig-muted" x="20" y="28">일이 천 개일 때 전체 일의 양</text>
+    </svg><figcaption>긴 상자 하나만 봐도 전체와 거의 같아서 작은 조각은 빼고 봐요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>빅오 표기법(Big-O notation)은 연산의 횟수를 대략적(점근적)으로 나타내는 방법이에요. O는 오더(order), 곧 차수를 뜻해요. 그래서 "상수형", "선형 $n$", "$n^2$"처럼 차수로 말해요.</p>
+    <p><strong>왜 최고차항만 봐도 되나요?</strong> 시간복잡도 함수가 $T(n) = n^2 + n + 1$ 이고 $n=1000$ 이면 값은 1,001,001이에요.</p>
+    <ul>
+      <li>$n^2$ 항은 1,000,000으로 전체의 약 99%예요.</li>
+      <li>나머지 $n + 1$ 은 1,001로 전체의 약 1%예요.</li>
+      <li>자료가 많을수록 차수가 가장 큰 항의 몫이 커지고, 다른 항은 상대적으로 무시할 수 있어요.</li>
+      <li>프로그램이 아직 완성되지 않은 설계 단계에서는 큰 루프 구조(골격)만 보고 판단해요.</li>
+    </ul>
+    <p><strong>정의.</strong> 두 함수 $f(n)$ 과 $g(n)$ 이 있을 때, 모든 $n \ge n_0$ 에 대하여</p>
+    <p>$$|f(n)| \le c|g(n)|$$</p>
+    <p>를 만족하는 두 상수 $c$ 와 $n_0$ 가 존재하면 $f(n)=O(g(n))$ 이라고 써요. 빅오는 함수의 상한(upper bound)을 나타내요. $n$ 이 $n_0$ 보다 큰 구간에서 $f(n)$ 이 $c|g(n)|$ 을 넘지 않는다는 뜻이에요.</p>
+    <figure class="figure"><svg id="fig-bigo-bound" viewBox="0 0 520 250" role="img" aria-label="가로축은 입력의 개수 n, 세로축은 연산의 횟수인 그래프. 강조색 선 c 곱하기 g(n)과 기본색 선 f(n)이 n₀ 근처에서 만나고, n₀ 오른쪽에서는 강조색 선이 늘 기본색 선 위에 있다. n₀ 에는 세로 점선이 있다.">
+      <line class="axis" x1="50" y1="215" x2="500" y2="215"/>
+      <line class="axis" x1="50" y1="215" x2="50" y2="20"/>
+      <path class="fig-ink" d="M50 190 C 90 150, 140 150, 200 140 S 330 110, 470 60"/>
+      <path class="fig-accent" d="M50 205 C 100 170, 120 150, 140 146 S 280 90, 470 25"/>
+      <path class="fig-ink" d="M140 146 L140 215" stroke-dasharray="4 4"/>
+      <text class="fig-muted" x="140" y="232" text-anchor="middle">n₀</text>
+      <text class="fig-text" x="474" y="30">c·g(n)</text>
+      <text class="fig-text" x="474" y="66">f(n)</text>
+      <text class="fig-muted" x="500" y="246" text-anchor="end">입력의 개수 n</text>
+      <text class="fig-muted" x="58" y="16">연산의 횟수</text>
+    </svg><figcaption>n₀ 오른쪽에서는 c·g(n) 선이 f(n) 선보다 늘 위에 있어요. 그래서 c·g(n)이 상한이에요.</figcaption></figure>
+    <p><strong>예.</strong> $n \ge 5$ 이면 $2n+1 \lt 10n$ 이에요. 따라서 $c = 10$, $n_0 = 5$ 로 잡으면 $2n+1 = O(n)$ 이에요. $n \lt n_0$ 구간의 작은 입력은 실제로 잘 쓰지 않으니 신경 쓰지 않아요.</p>
+    <p><strong>실전 규칙.</strong></p>
+    <ol class="steps">
+      <li>최고차항만 남기고 나머지 항은 버려요.</li>
+      <li>최고차항의 계수도 떼요. $2n^2+1$ 은 $O(n^2)$ 이에요.</li>
+      <li>상수는 $O(2)$ 나 $O(1000)$ 이 아니라 모두 $O(1)$ 로 써요.</li>
+    </ol>
+    <p>앞에서 센 연산 수에 적용하면 이렇게 돼요(<a href="#s1-n-times">2.3 n을 n번 더하는 세 알고리즘</a>, <a href="#s1-arraymax">2.4 ArrayMax 연산 세기</a>).</p>
+    <div class="table-wrap"><table>
+      <tr><th>알고리즘</th><th>연산 수</th><th>빅오</th></tr>
+      <tr><td>A (<code>sum ←n*n;</code>)</td><td>$2$</td><td>$O(1)$</td></tr>
+      <tr><td>B (루프 1개)</td><td>$2n+1$</td><td>$O(n)$</td></tr>
+      <tr><td>C (루프 2개 중첩)</td><td>$2n^2+1$</td><td>$O(n^2)$</td></tr>
+      <tr><td>ArrayMax</td><td>$2n$</td><td>$O(n)$</td></tr>
+    </table></div>
+    <p>익숙해지면 하나하나 세지 않아요. 1부터 $n-1$ 까지 도는 for 루프 하나를 보면 바로 $O(n)$ 이라고 읽어요. 다만 루프의 개수만 세면 안 되고, 각 루프가 몇 번 도는지도 봐야 해요.</p>
+    <p>빅오를 이론으로 다루면 증명이 많이 필요해요. 이 수업에서는 정의만 쓰고 증명은 하지 않아요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>회사에서 1000개는 많은 데이터가 아니에요. 테스트용 최소 규모이고, 실제 데이터는 백만 개에서 테라바이트 단위까지 가요.</p>
+    <blockquote>"그럼 다 1000, 많은 데이터 아닙니다, 절대로." (0914 34:23)</blockquote>
+    <blockquote>"최고차항만 봅시다, 이게 빅오 표기법입니다." (0914 37:39)</blockquote>
+    <p>1 ms와 1000 ms는 소프트웨어 실행에서 큰 차이가 아니라고 했어요. 상수배 차이는 중요하지 않아서 계수를 떼는 거예요.</p>
+    <blockquote>"계속 개집 생각하지 말라니까요." (0914 38:23)</blockquote>
+    <p>정의에서 무엇이 중요하냐고 되물으며 짚은 부분이에요.</p>
+    <blockquote>"n이 n0보다 큰 구간이겠죠?" (0914 37:44)</blockquote>
+    <p>루프 개수만 세서 $n^2$, $n^3$ 로 가면 안 된다며 강조했어요.</p>
+    <blockquote>"얘도 중요합니다. 얼마나 가는지." (0914 40:35)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">빅오는 최고차항만 남기고 계수를 뗀, 연산 횟수의 상한이에요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">정의</span>$$|f(n)| \le c|g(n)|$$</li>
+      <li><span class="eq-name">예</span>$$2n+1 = O(n)$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>빅오 표기법(Big-O notation)</dt><dd>연산의 횟수를 대략적(점근적)으로 나타내는 방법</dd>
+      <dt>상한(upper bound)</dt><dd>$n \ge n_0$ 에서 $f(n)$ 이 넘지 않는 선 $c|g(n)|$</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s2-bigo-kinds"><h3>3.2 빅오 표기법의 종류</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p33</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">일이 늘어날 때 걸리는 시간이 그대로인 방법도 있고, 눈덩이처럼 불어나는 방법도 있어요.</p>
+    <figure class="figure"><svg id="fig-bigo-growth" viewBox="0 0 520 240" role="img" aria-label="가로축은 일의 양, 세로축은 걸리는 시간인 그래프에 선 세 개가 있다. 기본색 선은 수평으로 그대로이고, 강조색 선은 고르게 비스듬히 올라가고, 경고색 선은 처음엔 낮다가 갑자기 위로 치솟는다.">
+      <line class="axis" x1="50" y1="200" x2="500" y2="200"/>
+      <line class="axis" x1="50" y1="200" x2="50" y2="20"/>
+      <path class="fig-ink" d="M50 180 L470 180"/>
+      <path class="fig-accent" d="M50 196 L470 90"/>
+      <path class="fig-danger" d="M50 198 C 250 196, 330 170, 380 30"/>
+      <text class="fig-text" x="474" y="176">그대로</text>
+      <text class="fig-text" x="474" y="94">고르게</text>
+      <text class="fig-text" x="388" y="34">치솟음</text>
+      <text class="fig-muted" x="500" y="224" text-anchor="end">일의 양</text>
+      <text class="fig-muted" x="58" y="16">걸리는 시간</text>
+    </svg><figcaption>치솟는 선을 고르는 방법은 일이 조금만 늘어도 끝나지 않아요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>빅오 표기법의 종류는 느리게 자라는 것부터 이 순서예요.</p>
+    <div class="table-wrap"><table>
+      <tr><th>빅오</th><th>이름</th></tr>
+      <tr><td>$O(1)$</td><td>상수형</td></tr>
+      <tr><td>$O(\log n)$</td><td>로그형</td></tr>
+      <tr><td>$O(n)$</td><td>선형</td></tr>
+      <tr><td>$O(n\log n)$</td><td>로그선형</td></tr>
+      <tr><td>$O(n^2)$</td><td>2차형</td></tr>
+      <tr><td>$O(n^3)$</td><td>3차형</td></tr>
+      <tr><td>$O(n^k)$</td><td>k차형</td></tr>
+      <tr><td>$O(2^n)$</td><td>지수형</td></tr>
+      <tr><td>$O(n!)$</td><td>팩토리얼형</td></tr>
+    </table></div>
+    <p>$$O(1) \lt O(\log n) \lt O(n) \lt O(n\log n) \lt O(n^2) \lt O(n^3) \lt O(n^k) \lt O(2^n) \lt O(n!)$$</p>
+    <p>입력 개수 $n$ 에 따른 연산 횟수는 슬라이드 표와 같아요(로그의 밑은 2).</p>
+    <div class="table-wrap"><table>
+      <tr><th>시간복잡도</th><th>n=1</th><th>2</th><th>4</th><th>8</th><th>16</th><th>32</th></tr>
+      <tr><td>$1$</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>$\log n$</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+      <tr><td>$n$</td><td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td>32</td></tr>
+      <tr><td>$n\log n$</td><td>0</td><td>2</td><td>8</td><td>24</td><td>64</td><td>160</td></tr>
+      <tr><td>$n^2$</td><td>1</td><td>4</td><td>16</td><td>64</td><td>256</td><td>1024</td></tr>
+      <tr><td>$n^3$</td><td>1</td><td>8</td><td>64</td><td>512</td><td>4096</td><td>32768</td></tr>
+      <tr><td>$2^n$</td><td>2</td><td>4</td><td>16</td><td>256</td><td>65536</td><td>4294967296</td></tr>
+      <tr><td>$n!$</td><td>1</td><td>2</td><td>24</td><td>40320</td><td>20922789888000</td><td>약 2.63×10³⁵</td></tr>
+    </table></div>
+    <p>(슬라이드 표에는 8!이 40326, 32!이 26313×10³³로 적혀 있어요. 실제 값은 8! = 40320, 32! ≈ 2.63×10³⁵예요.)</p>
+    <ul>
+      <li>상수형은 입력이 1에서 32로 늘어도 1로 그대로예요.</li>
+      <li>$\log 32 = 5$ 예요. 이진 탐색(binary search)이 $O(\log n)$ 이에요.</li>
+      <li>$n\log n$ 은 $n=32$ 에서 160이에요. $n$ 보다는 빠르게, $n^2$ 보다는 느리게 자라요.</li>
+      <li>$\log n$ 은 증가가 점점 느려질 뿐 어떤 값에 수렴하지 않아요. $n$ 이 커지면 끝없이 커져요.</li>
+      <li>$n!$ 은 $n=32$ 에서 약 2.63×10³⁵로 현실적으로 계산할 수 없어요. $2^n$ 도 $n$ 이 조금만 커지면 금방 그렇게 돼요.</li>
+    </ul>
+    <p>실제로 받아들일 만한 한계는 대체로 $n\log n$ 에서 $n^2$ 정도까지예요. $n^3$ 은 좋지 않아요. 3중 루프가 나오면 분할 정복(divide and conquer)처럼 2중 루프 둘로 쪼갤 수 있는지 먼저 따져 봐요.</p>
+    <p><strong>확장성(scalability)</strong>은 입력 데이터가 늘어나도 실행 시간 성능을 어느 정도 유지할 수 있다는 뜻이에요. 차수가 낮은 알고리즘일수록 확장성이 좋아요.</p>
+    <div class="widget" id="widget-bigo"><h4>직접 해 보기: 차수별 연산 횟수 비교</h4>
+      <p class="widget-help">입력 개수 n 슬라이더를 움직이면 여섯 가지 차수의 연산 횟수가 막대로 바뀌어요.</p>
+      <div class="controls">
+        <label>입력 개수 n <input type="range" id="bigo-n" min="1" max="32" step="1" value="8"> <b id="bigo-n-val">8</b></label>
+        <label>눈금 <select id="bigo-scale"><option value="log" selected>로그 눈금</option><option value="lin">보통 눈금 (1024에서 자름)</option></select></label>
+      </div>
+      <svg id="bigo-plot" viewBox="0 0 560 300" role="img" aria-label="1, log n, n, n log n, n², 2ⁿ 여섯 줄의 색칠된 가로 막대. 막대 길이는 연산 횟수이고, 보통 눈금에서 1024를 넘는 막대는 오른쪽 끝에 경고색 지그재그 선과 잘림 표시가 붙는다."><line class="axis" x1="96" y1="34" x2="96" y2="276"/><line class="axis" x1="96" y1="276" x2="440" y2="276"/><line class="axis" x1="127.3" y1="276" x2="127.3" y2="281"/><text class="tick" x="127.3" y="294" text-anchor="middle">1</text><line class="axis" x1="189.8" y1="276" x2="189.8" y2="281"/><text class="tick" x="189.8" y="294" text-anchor="middle">10²</text><line class="axis" x1="252.4" y1="276" x2="252.4" y2="281"/><text class="tick" x="252.4" y="294" text-anchor="middle">10⁴</text><line class="axis" x1="314.9" y1="276" x2="314.9" y2="281"/><text class="tick" x="314.9" y="294" text-anchor="middle">10⁶</text><line class="axis" x1="377.5" y1="276" x2="377.5" y2="281"/><text class="tick" x="377.5" y="294" text-anchor="middle">10⁸</text><line class="axis" x1="440.0" y1="276" x2="440.0" y2="281"/><text class="tick" x="440.0" y="294" text-anchor="middle">10¹⁰</text><text class="fig-muted" x="440" y="28" text-anchor="end">로그 눈금</text><text class="fig-text" x="86" y="59" text-anchor="end">1</text><rect class="fig-dot" x="96" y="44" width="31.3" height="20"/><text class="fig-muted" x="133.3" y="59">1</text><text class="fig-text" x="86" y="97" text-anchor="end">log n</text><rect class="fig-dot" x="96" y="82" width="46.2" height="20"/><text class="fig-muted" x="148.2" y="97">3</text><text class="fig-text" x="86" y="135" text-anchor="end">n</text><rect class="fig-dot" x="96" y="120" width="59.5" height="20"/><text class="fig-muted" x="161.5" y="135">8</text><text class="fig-text" x="86" y="173" text-anchor="end">n log n</text><rect class="fig-dot" x="96" y="158" width="74.4" height="20"/><text class="fig-muted" x="176.4" y="173">24</text><text class="fig-text" x="86" y="211" text-anchor="end">n²</text><rect class="fig-dot" x="96" y="196" width="87.8" height="20"/><text class="fig-muted" x="189.8" y="211">64</text><text class="fig-text" x="86" y="249" text-anchor="end">2ⁿ</text><rect class="fig-dot" x="96" y="234" width="106.6" height="20"/><text class="fig-muted" x="208.6" y="249">256</text></svg>
+      <p class="readout">n = <b id="bigo-out-n">8</b>일 때 연산 횟수(log 의 밑은 2): <b id="bigo-out">1 = 1, log n = 3, n = 8, n log n = 24, n² = 64, 2ⁿ = 256</b></p>
+      <p class="legend"><span><span class="sw fit"></span>색칠된 막대: 연산 횟수</span><span>경고색 지그재그 선: 눈금 밖으로 잘린 막대</span></p>
+      <div class="widget-static" hidden>
+        <figure class="figure"><svg id="widget-bigo-static-1" viewBox="0 0 560 300" role="img" aria-label="n=8, 로그 눈금에서 여섯 차수의 색칠된 막대"><line class="axis" x1="96" y1="34" x2="96" y2="276"/><line class="axis" x1="96" y1="276" x2="440" y2="276"/><line class="axis" x1="127.3" y1="276" x2="127.3" y2="281"/><text class="tick" x="127.3" y="294" text-anchor="middle">1</text><line class="axis" x1="189.8" y1="276" x2="189.8" y2="281"/><text class="tick" x="189.8" y="294" text-anchor="middle">10²</text><line class="axis" x1="252.4" y1="276" x2="252.4" y2="281"/><text class="tick" x="252.4" y="294" text-anchor="middle">10⁴</text><line class="axis" x1="314.9" y1="276" x2="314.9" y2="281"/><text class="tick" x="314.9" y="294" text-anchor="middle">10⁶</text><line class="axis" x1="377.5" y1="276" x2="377.5" y2="281"/><text class="tick" x="377.5" y="294" text-anchor="middle">10⁸</text><line class="axis" x1="440.0" y1="276" x2="440.0" y2="281"/><text class="tick" x="440.0" y="294" text-anchor="middle">10¹⁰</text><text class="fig-muted" x="440" y="28" text-anchor="end">로그 눈금</text><text class="fig-text" x="86" y="59" text-anchor="end">1</text><rect class="fig-dot" x="96" y="44" width="31.3" height="20"/><text class="fig-muted" x="133.3" y="59">1</text><text class="fig-text" x="86" y="97" text-anchor="end">log n</text><rect class="fig-dot" x="96" y="82" width="46.2" height="20"/><text class="fig-muted" x="148.2" y="97">3</text><text class="fig-text" x="86" y="135" text-anchor="end">n</text><rect class="fig-dot" x="96" y="120" width="59.5" height="20"/><text class="fig-muted" x="161.5" y="135">8</text><text class="fig-text" x="86" y="173" text-anchor="end">n log n</text><rect class="fig-dot" x="96" y="158" width="74.4" height="20"/><text class="fig-muted" x="176.4" y="173">24</text><text class="fig-text" x="86" y="211" text-anchor="end">n²</text><rect class="fig-dot" x="96" y="196" width="87.8" height="20"/><text class="fig-muted" x="189.8" y="211">64</text><text class="fig-text" x="86" y="249" text-anchor="end">2ⁿ</text><rect class="fig-dot" x="96" y="234" width="106.6" height="20"/><text class="fig-muted" x="208.6" y="249">256</text></svg></figure>
+        <figure class="figure"><svg id="widget-bigo-static-2" viewBox="0 0 560 300" role="img" aria-label="n=32, 로그 눈금에서 여섯 차수의 색칠된 막대"><line class="axis" x1="96" y1="34" x2="96" y2="276"/><line class="axis" x1="96" y1="276" x2="440" y2="276"/><line class="axis" x1="127.3" y1="276" x2="127.3" y2="281"/><text class="tick" x="127.3" y="294" text-anchor="middle">1</text><line class="axis" x1="189.8" y1="276" x2="189.8" y2="281"/><text class="tick" x="189.8" y="294" text-anchor="middle">10²</text><line class="axis" x1="252.4" y1="276" x2="252.4" y2="281"/><text class="tick" x="252.4" y="294" text-anchor="middle">10⁴</text><line class="axis" x1="314.9" y1="276" x2="314.9" y2="281"/><text class="tick" x="314.9" y="294" text-anchor="middle">10⁶</text><line class="axis" x1="377.5" y1="276" x2="377.5" y2="281"/><text class="tick" x="377.5" y="294" text-anchor="middle">10⁸</text><line class="axis" x1="440.0" y1="276" x2="440.0" y2="281"/><text class="tick" x="440.0" y="294" text-anchor="middle">10¹⁰</text><text class="fig-muted" x="440" y="28" text-anchor="end">로그 눈금</text><text class="fig-text" x="86" y="59" text-anchor="end">1</text><rect class="fig-dot" x="96" y="44" width="31.3" height="20"/><text class="fig-muted" x="133.3" y="59">1</text><text class="fig-text" x="86" y="97" text-anchor="end">log n</text><rect class="fig-dot" x="96" y="82" width="53.1" height="20"/><text class="fig-muted" x="155.1" y="97">5</text><text class="fig-text" x="86" y="135" text-anchor="end">n</text><rect class="fig-dot" x="96" y="120" width="78.3" height="20"/><text class="fig-muted" x="180.3" y="135">32</text><text class="fig-text" x="86" y="173" text-anchor="end">n log n</text><rect class="fig-dot" x="96" y="158" width="100.2" height="20"/><text class="fig-muted" x="202.2" y="173">160</text><text class="fig-text" x="86" y="211" text-anchor="end">n²</text><rect class="fig-dot" x="96" y="196" width="125.4" height="20"/><text class="fig-muted" x="227.4" y="211">1,024</text><text class="fig-text" x="86" y="249" text-anchor="end">2ⁿ</text><rect class="fig-dot" x="96" y="234" width="332.5" height="20"/><text class="fig-muted" x="434.5" y="249">4,294,967,296</text></svg></figure>
+        <figure class="figure"><svg id="widget-bigo-static-3" viewBox="0 0 560 300" role="img" aria-label="n=32, 1024에서 자른 보통 눈금. 2ⁿ 막대만 경고색 지그재그 선과 잘림 표시가 붙어 있다"><line class="axis" x1="96" y1="34" x2="96" y2="276"/><line class="axis" x1="96" y1="276" x2="440" y2="276"/><line class="axis" x1="96.0" y1="276" x2="96.0" y2="281"/><text class="tick" x="96.0" y="294" text-anchor="middle">0</text><line class="axis" x1="182.0" y1="276" x2="182.0" y2="281"/><text class="tick" x="182.0" y="294" text-anchor="middle">256</text><line class="axis" x1="268.0" y1="276" x2="268.0" y2="281"/><text class="tick" x="268.0" y="294" text-anchor="middle">512</text><line class="axis" x1="354.0" y1="276" x2="354.0" y2="281"/><text class="tick" x="354.0" y="294" text-anchor="middle">768</text><line class="axis" x1="440.0" y1="276" x2="440.0" y2="281"/><text class="tick" x="440.0" y="294" text-anchor="middle">1024</text><text class="fig-muted" x="440" y="28" text-anchor="end">보통 눈금, 1024에서 자름</text><text class="fig-text" x="86" y="59" text-anchor="end">1</text><rect class="fig-dot" x="96" y="44" width="0.3" height="20"/><text class="fig-muted" x="102.3" y="59">1</text><text class="fig-text" x="86" y="97" text-anchor="end">log n</text><rect class="fig-dot" x="96" y="82" width="1.7" height="20"/><text class="fig-muted" x="103.7" y="97">5</text><text class="fig-text" x="86" y="135" text-anchor="end">n</text><rect class="fig-dot" x="96" y="120" width="10.8" height="20"/><text class="fig-muted" x="112.8" y="135">32</text><text class="fig-text" x="86" y="173" text-anchor="end">n log n</text><rect class="fig-dot" x="96" y="158" width="53.8" height="20"/><text class="fig-muted" x="155.8" y="173">160</text><text class="fig-text" x="86" y="211" text-anchor="end">n²</text><rect class="fig-dot" x="96" y="196" width="344.0" height="20"/><text class="fig-muted" x="446.0" y="211">1,024</text><text class="fig-text" x="86" y="249" text-anchor="end">2ⁿ</text><rect class="fig-dot" x="96" y="234" width="344.0" height="20"/><path class="fig-danger" d="M432 231 L438 239 L430 248 L436 257"/><text class="fig-muted" x="446" y="249">잘림</text></svg></figure>
+        <div class="table-wrap"><table>
+          <tr><th>설정</th><th>결과</th></tr>
+          <tr><td>n = 8, 로그 눈금</td><td>1 = 1, log n = 3, n = 8, n log n = 24, n² = 64, 2ⁿ = 256</td></tr>
+          <tr><td>n = 32, 로그 눈금</td><td>1 = 1, log n = 5, n = 32, n log n = 160, n² = 1,024, 2ⁿ = 4,294,967,296</td></tr>
+          <tr><td>n = 32, 보통 눈금</td><td>1 = 1, log n = 5, n = 32, n log n = 160, n² = 1,024, 2ⁿ = 4,294,967,296 (2ⁿ 막대 잘림)</td></tr>
+        </table></div>
+      </div>
+    </div>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>$n^2$ 짜리 알고리즘을 $n\log n$ 으로 줄이면 논문을 쓸 수 있을 만큼 큰 성과라고 했어요.</p>
+    <blockquote>"하지만 여러분들이 이 시간에 배울 건 이미 잘 알려진 훌륭한 n log n짜리 알고리즘을 배울 겁니다." (0914 42:45)</blockquote>
+    <p>프로그램을 짤 때는 가능한 한 $n\log n$ 에서 $n^2$ 정도 안에 들도록 노력해야 한다고 했어요(0914 45:09). $n^3$ 은 피하라는 뜻이에요.</p>
+    <p>scalable의 scale은 동물의 비늘이 아니라 규모가 커진다는 뜻이라고 짚었어요(0914 44:52).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">차수가 낮을수록 입력이 늘어도 연산 횟수가 덜 불어나요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">순서</span>$$O(1) \lt O(\log n) \lt O(n) \lt O(n\log n) \lt O(n^2) \lt O(n^3) \lt O(n^k) \lt O(2^n) \lt O(n!)$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>확장성(scalability)</dt><dd>입력 데이터가 늘어나도 실행 시간 성능을 어느 정도 유지하는 성질</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s2-cases"><h3>3.3 최선, 평균, 최악의 경우</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p34</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">같은 방법이라도 어떤 일을 받느냐에 따라 빨리 끝나기도 하고 늦게 끝나기도 해요.</p>
+    <figure class="figure"><svg id="fig-cases-bars" viewBox="0 0 520 230" role="img" aria-label="높이가 서로 다른 테두리 막대 일곱 개. 가장 높은 막대 위쪽에 경고색 선으로 가장 느림, 가장 낮은 막대 높이에 강조색 선으로 가장 빠름이 표시되어 있다.">
+      <line class="axis" x1="40" y1="200" x2="360" y2="200"/>
+      <line class="axis" x1="40" y1="200" x2="40" y2="20"/>
+      <rect class="fig-ink" x="55" y="40" width="30" height="160"/>
+      <rect class="fig-ink" x="98" y="94" width="30" height="106"/>
+      <rect class="fig-ink" x="141" y="72" width="30" height="128"/>
+      <rect class="fig-ink" x="184" y="40" width="30" height="160"/>
+      <rect class="fig-ink" x="227" y="120" width="30" height="80"/>
+      <rect class="fig-ink" x="270" y="56" width="30" height="144"/>
+      <rect class="fig-ink" x="313" y="104" width="30" height="96"/>
+      <path class="fig-danger" d="M40 40 L370 40" stroke-dasharray="6 4"/>
+      <path class="fig-accent" d="M40 120 L370 120" stroke-dasharray="6 4"/>
+      <text class="fig-text" x="380" y="44">가장 느림</text>
+      <text class="fig-text" x="380" y="124">가장 빠름</text>
+      <text class="fig-muted" x="200" y="222" text-anchor="middle">받은 일 일곱 가지</text>
+    </svg><figcaption>그래서 가장 느린 경우를 기준으로 약속하면 믿을 수 있어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>알고리즘의 수행 시간은 입력 자료 집합에 따라 다를 수 있어요. 예를 들어 어떤 정렬 알고리즘은 이미 정렬된 입력에서 더 빨리 끝나요.</p>
+    <div class="table-wrap"><table>
+      <tr><th>경우</th><th>뜻</th><th>슬라이드 평가</th></tr>
+      <tr><td>최선의 경우(best case)</td><td>수행 시간이 가장 빠른 경우</td><td>의미가 없는 경우가 많아요</td></tr>
+      <tr><td>평균의 경우(average case)</td><td>수행 시간이 평균적인 경우(모든 입력의 시간을 더해 입력 수로 나눔)</td><td>계산하기가 상당히 어려워요</td></tr>
+      <tr><td>최악의 경우(worst case)</td><td>수행 시간이 가장 늦은 경우</td><td>가장 널리 쓰여요. 계산하기 쉽고 응용에 따라 중요한 의미를 가져요</td></tr>
+    </table></div>
+    <p>슬라이드 그래프는 입력 집합 A~G 일곱 개의 수행 시간을 막대로 그렸어요. 가장 높은 막대(약 100)가 최악의 경우, 가장 낮은 막대(약 50)가 최선의 경우, 그 사이가 평균적인 경우예요.</p>
+    <p>시간복잡도는 원칙적으로 최악의 경우로 말해요. 뒤에서 소개할 몇몇 알고리즘은 평균의 경우로 말하기도 해서, 이 원칙에는 조금 융통성이 있어요.</p>
+    <p>예는 <a href="#s2-seq-search">3.4 순차 탐색의 경우 분석</a>에서 이어져요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>논리회로 부품 매뉴얼에는 worst, best, typical 조건이 따로 나와요. 소프트웨어도 똑같이 경우를 나눠요.</p>
+    <blockquote>"그래서 소프트웨어도 마찬가지로 최악의 경우를 구해야 돼요." (0914 45:43)</blockquote>
+    <blockquote>"최선의 경우로 생각하라고요? 아니요. 최선의 경우로 하면 안 되죠." (0914 48:09)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">수행 시간은 입력에 따라 달라서, 원칙적으로 최악의 경우로 말해요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>최선의 경우(best case)</dt><dd>수행 시간이 가장 빠른 경우</dd>
+      <dt>평균의 경우(average case)</dt><dd>수행 시간이 평균적인 경우</dd>
+      <dt>최악의 경우(worst case)</dt><dd>수행 시간이 가장 늦은 경우</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s2-seq-search"><h3>3.4 순차 탐색의 경우 분석</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p35</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">줄 선 카드를 앞에서부터 한 장씩 넘겨 보며 찾는 숫자를 찾아요.</p>
+    <figure class="figure"><svg id="fig-seq-cards" viewBox="0 0 520 170" role="img" aria-label="숫자 5, 9, 10, 17, 21, 29, 33, 37, 38, 43 이 적힌 테두리 칸 열 개가 한 줄로 있다. 맨 앞 칸 5 위에는 강조색 화살표와 한 번에 찾음, 맨 뒤 칸 43 위에는 경고색 화살표와 열 번 만에 찾음이 적혀 있다.">
+      <rect class="fig-ink" x="30" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="50" y="95" text-anchor="middle">5</text><text class="fig-muted" x="50" y="128" text-anchor="middle">0</text><rect class="fig-ink" x="75" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="95" y="95" text-anchor="middle">9</text><text class="fig-muted" x="95" y="128" text-anchor="middle">1</text><rect class="fig-ink" x="120" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="140" y="95" text-anchor="middle">10</text><text class="fig-muted" x="140" y="128" text-anchor="middle">2</text><rect class="fig-ink" x="165" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="185" y="95" text-anchor="middle">17</text><text class="fig-muted" x="185" y="128" text-anchor="middle">3</text><rect class="fig-ink" x="210" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="230" y="95" text-anchor="middle">21</text><text class="fig-muted" x="230" y="128" text-anchor="middle">4</text><rect class="fig-ink" x="255" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="275" y="95" text-anchor="middle">29</text><text class="fig-muted" x="275" y="128" text-anchor="middle">5</text><rect class="fig-ink" x="300" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="320" y="95" text-anchor="middle">33</text><text class="fig-muted" x="320" y="128" text-anchor="middle">6</text><rect class="fig-ink" x="345" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="365" y="95" text-anchor="middle">37</text><text class="fig-muted" x="365" y="128" text-anchor="middle">7</text><rect class="fig-ink" x="390" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="410" y="95" text-anchor="middle">38</text><text class="fig-muted" x="410" y="128" text-anchor="middle">8</text><rect class="fig-ink" x="435" y="70" width="40" height="40" rx="3"/><text class="fig-text" x="455" y="95" text-anchor="middle">43</text><text class="fig-muted" x="455" y="128" text-anchor="middle">9</text>
+      <path class="fig-accent" d="M50 40 L50 64"/>
+      <path class="fig-accent" d="M44 56 L50 64 L56 56"/>
+      <text class="fig-text" x="30" y="30">한 번에 찾음</text>
+      <path class="fig-danger" d="M455 40 L455 64"/>
+      <path class="fig-danger" d="M449 56 L455 64 L461 56"/>
+      <text class="fig-text" x="490" y="30" text-anchor="end">열 번 만에 찾음</text>
+      <text class="fig-muted" x="260" y="150" text-anchor="middle">앞에서부터 한 장씩 넘겨요</text>
+    </svg><figcaption>찾는 숫자가 맨 뒤에 있으면 전부 넘겨 봐야 해서 가장 오래 걸려요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>순차 탐색(sequential search)은 배열의 앞에서부터 한 칸씩 비교하며 찾는 값을 찾아요. 슬라이드 예의 배열은 <code>5 9 10 17 21 29 33 37 38 43</code>(인덱스 0~9)이에요.</p>
+    <ol class="steps">
+      <li>최선의 경우: 찾는 값 5가 맨 앞(인덱스 0)에 있어요. 비교 1번 → $O(1)$</li>
+      <li>최악의 경우: 찾는 값 43이 맨 뒤(인덱스 9)에 있어요. 비교 10번, 곧 $n$ 번 → $O(n)$</li>
+      <li>평균적인 경우: 각 요소가 균일하게 탐색된다고 가정해요. 슬라이드의 다른 배열 <code>2 7 16 19 20 26 35 42 46 50</code>에서 26은 인덱스 5에 있어 비교 6번이에요.</li>
+    </ol>
+    <p>찾는 값이 $k$ 번째 칸에 있으면 비교는 $k$ 번이에요. $k = 1, 2, \ldots, n$ 이 모두 같은 확률이면 평균 비교 횟수는</p>
+    <p>$$\frac{1+2+\cdots+n}{n} = \frac{n(n+1)/2}{n} = \frac{n+1}{2}$$</p>
+    <p>이고, 계수를 떼면 $O(n)$ 이에요.</p>
+    <p>따라서 순차 탐색의 시간복잡도를 물으면 최악의 경우 기준으로 $O(n)$ 이라고 답해요. 이름에 "순차"가 들어간 알고리즘은 기본적으로 $O(n)$ 이라고 보면 돼요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>맨 뒤에서 겨우 찾고 나면 이런 생각이 든다며 최악의 경우를 설명했어요.</p>
+    <blockquote>"아 뒤부터 찾을 걸" (0914 47:26)</blockquote>
+    <blockquote>"시퀀셜 서치의 컴플렉시티가 뭐냐라고 했을 때 … 오더 오브 n이다라고 대답을 해야 합니다." (0914 48:21)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">순차 탐색은 최선 $O(1)$, 평균과 최악 $O(n)$ 이고, 답은 $O(n)$ 이에요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">평균 비교 횟수</span>$$\frac{1+2+\cdots+n}{n} = \frac{n(n+1)/2}{n} = \frac{n+1}{2}$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>순차 탐색(sequential search)</dt><dd>앞에서부터 한 칸씩 비교하며 찾는 탐색</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s3"><h2>4. 자료구조의 C언어 표현</h2>
+<article class="topic" id="s3-typedef"><h3>4.1 typedef와 구조체</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p36</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">여러 칸을 한 가방에 담고, 뜻이 드러나는 이름표를 붙여요.</p>
+    <figure class="figure"><svg id="fig-typedef-box" viewBox="0 0 420 200" role="img" aria-label="테두리로 그린 세 층짜리 철가방이 있고, 선으로 이어진 이름표가 옆에 달려 있어요">
+      <path class="fig-ink" d="M110 40 Q150 10 190 40" fill="none" stroke-width="2"/>
+      <rect class="fig-ink" x="80" y="40" width="140" height="140" rx="6" fill="none" stroke-width="2"/>
+      <line class="fig-ink" x1="80" y1="86" x2="220" y2="86" stroke-width="2"/>
+      <line class="fig-ink" x1="80" y1="133" x2="220" y2="133" stroke-width="2"/>
+      <text class="fig-text" x="150" y="68" text-anchor="middle" font-size="14">1층</text>
+      <text class="fig-text" x="150" y="115" text-anchor="middle" font-size="14">2층</text>
+      <text class="fig-text" x="150" y="162" text-anchor="middle" font-size="14">3층</text>
+      <line class="fig-accent" x1="220" y1="60" x2="280" y2="60" stroke-width="2"/>
+      <rect class="fig-accent" x="280" y="42" width="110" height="36" rx="6" fill="none" stroke-width="2"/>
+      <text class="fig-text" x="335" y="65" text-anchor="middle" font-size="14">이름표</text>
+      <text class="fig-muted" x="335" y="110" text-anchor="middle" font-size="12">이름 하나로</text>
+      <text class="fig-muted" x="335" y="128" text-anchor="middle" font-size="12">통째로 불러요</text>
+    </svg><figcaption>이름표만 부르면 세 층짜리 철가방이 통째로 따라와요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>자료구조와 관련된 데이터는 구조체(struct)로 정의해요. 연산을 호출할 때는 그 구조체를 함수의 파라미터로 전달해요.</p>
+    <pre><code class="language-c">// 자료구조스택과관련된자료들을정의
+typedef int element;
+typedef struct {
+    int top;
+    element stack[MAX_STACK_SIZE];
+} StackType;
+// 자료구조스택과관련된연산들을정의
+void push(StackType *s, element item)
+{
+    if( s-&gt;top &gt;= (MAX_STACK_SIZE -1)){
+        stack_full();
+        return;
+    }
+    s-&gt;stack[++(s-&gt;top)] = item;
+}</code></pre>
+    <ul>
+      <li><code>typedef int element;</code>는 <code>int</code>에 <code>element</code>라는 별명을 붙여요. 이 프로그램 안에서는 <code>int</code>와 <code>element</code>를 둘 다 쓸 수 있어요.</li>
+      <li>별명을 붙이는 이유는 의미를 주기 위해서예요. <code>int</code>는 수학적인 정의(정수)에 치우친 이름이에요. <code>element</code>라고 쓰면 "배열의 각 요소"라는 뜻이 드러나요.</li>
+      <li><code>typedef struct { … } StackType;</code>는 중괄호 안의 덩어리(<code>top</code>과 <code>stack</code> 배열)를 앞으로 <code>StackType</code>이라 부르겠다는 뜻이에요. <code>StackType</code>이라고 쓰는 순간 그 덩어리가 통째로 따라와요.</li>
+      <li><code>push</code>는 구조체를 파라미터(<code>StackType *s</code>)로 받는 연산의 예예요. 함수 본문의 동작은 스택 장에서 다뤄요.</li>
+    </ul>
+    <p>이름 짓는 규칙과 <code>typedef</code>의 일반 형태는 <a href="#s3-naming">4.2 이름 짓기 규칙</a>에 있어요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>친구에게 별명을 붙이는 이유와 같아요. <code>typedef</code>도 타입의 특징을 드러내려고 별명을 지어 줘요.</p>
+    <blockquote>별명을 왜 지어요? 그 사람의 특징을 온전히 드러내고 싶어서. (0914 49:47)</blockquote>
+    <p>구조체는 중국집 철가방이에요. 어느 정도 규격은 있지만 1층, 2층, 3층에 무엇을 담을지, 크기는 어떨지는 가게마다 달라요.</p>
+    <blockquote>스택 타입이라고 쓰는 순간 철가방이 하나 푹 딸려 오는 거예요. (0914 51:01)</blockquote>
+    <p>잘 짜 놓은 프로그램에는 이런 별명이 많아요. 지금은 와닿지 않아도 종강할 즈음에는 elegant한 프로그램을 짤 수 있게 된다고 하셨어요(0914 52:07).</p>
+    <blockquote>그래서 typedef 같은 거 많이 이용하세요. (0914 51:13)</blockquote>
+    <blockquote>이게 엘레강트해지는 비결이에요. (0914 51:28)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead"><code>typedef</code>로 타입에 뜻이 드러나는 별명을 붙이고, 관련 데이터는 구조체 하나로 묶어요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>typedef</dt><dd>기존 타입에 새 이름(별명)을 붙여요. 예: <code>typedef int element;</code></dd>
+      <dt>구조체(struct)</dt><dd>관련 데이터를 한 덩어리로 묶어요. 예: <code>StackType</code></dd>
+    </dl>
+  </div>
+</article>
+<article class="topic" id="s3-naming"><h3>4.2 이름 짓기 규칙</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p37</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">이름만 봐도 무슨 일을 하는지 알 수 있게 지어요.</p>
+    <figure class="figure"><svg id="fig-naming-join" viewBox="0 0 440 170" role="img" aria-label="왼쪽에는 뜻을 알 수 없는 글자 하나가 테두리 상자에 있고, 오른쪽에는 학생과 수 두 낱말 상자가 화살표를 따라 학생 수라는 이름 상자로 이어져요">
+      <rect class="fig-danger" x="20" y="50" width="70" height="50" rx="6" fill="none" stroke-width="2"/>
+      <text class="fig-text" x="55" y="81" text-anchor="middle" font-size="14">가</text>
+      <text class="fig-muted" x="55" y="125" text-anchor="middle" font-size="12">무슨 뜻?</text>
+      <rect class="fig-ink" x="140" y="25" width="80" height="40" rx="6" fill="none" stroke-width="2"/>
+      <text class="fig-text" x="180" y="50" text-anchor="middle" font-size="14">학생</text>
+      <rect class="fig-ink" x="140" y="90" width="80" height="40" rx="6" fill="none" stroke-width="2"/>
+      <text class="fig-text" x="180" y="115" text-anchor="middle" font-size="14">수</text>
+      <line class="fig-ink" x1="220" y1="45" x2="290" y2="72" stroke-width="2"/>
+      <line class="fig-ink" x1="220" y1="110" x2="290" y2="82" stroke-width="2"/>
+      <path class="fig-ink" d="M290 77 L280 70 L282 82 Z" fill="none" stroke-width="2"/>
+      <rect class="fig-accent" x="300" y="55" width="120" height="44" rx="6" fill="none" stroke-width="2"/>
+      <text class="fig-text" x="360" y="82" text-anchor="middle" font-size="14">학생 수</text>
+      <text class="fig-muted" x="360" y="125" text-anchor="middle" font-size="12">바로 알아요</text>
+    </svg><figcaption>뜻이 있는 낱말 둘을 이어 붙이면 이름만 보고도 쓰임을 알 수 있어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <div class="table-wrap"><table>
+      <thead><tr><th>대상</th><th>규칙</th><th>예</th></tr></thead>
+      <tbody>
+        <tr><td>상수</td><td>대문자로 표기해요.</td><td><code>#define MAX_ELEMENT 100</code></td></tr>
+        <tr><td>변수</td><td>소문자를 쓰고, 언더라인(<code>_</code>)으로 단어와 단어를 나눠요.</td><td><code>int increment;</code><br><code>int new_node;</code></td></tr>
+        <tr><td>함수</td><td>동사로 함수가 하는 작업을 나타내요.</td><td><code>int add(ListNode *node)</code> (혼동이 없는 경우)<br><code>int list_add(ListNode *node)</code> (혼동이 생길 우려가 있는 경우)</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>변수 이름을 <code>a</code>, <code>b</code>, <code>c</code>처럼 짓지 않아요. 인덱스 <code>i</code>, <code>j</code>까지는 괜찮아요. 그보다 깊어지면 인덱스에도 <code>student_count</code>처럼 뜻이 있는 이름을 줘요.</li>
+      <li>좋은 이름은 합성어예요. <code>increment</code>는 무언가를 증가시키는 데 쓰는 정수 값, <code>new_node</code>는 새로 생성된 노드라고 읽혀요.</li>
+      <li>함수 이름도 같아요. <code>list_add</code>는 리스트에 더하는 함수라고 읽혀요.</li>
+      <li>회사마다 네이밍 룰(naming rule)이 있어요. 그 규칙을 따르면 돼요.</li>
+    </ul>
+    <p><code>typedef</code>는 C언어에서 사용자 정의 데이터 타입을 만들 때 쓰는 키워드예요. 일반 형태는 <code>typedef &lt;새로운 타입의 정의&gt; &lt;새로운 타입 이름&gt;;</code>이에요.</p>
+    <pre><code class="language-c">typedef int element;
+typedef struct ListNode {
+    element data;
+    struct ListNode *link;
+} ListNode;</code></pre>
+    <p>구조체 <code>struct ListNode</code>를 새 타입 이름 <code>ListNode</code>로도 부를 수 있게 해요. 별명을 붙이는 이유는 <a href="#s3-typedef">4.1 typedef와 구조체</a>에 있어요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>변수 이름을 지을 때 너무 중요합니다. (0914 52:28)</blockquote>
+    <blockquote>여러분들 변수 이름 지을 때 a, b, c 절대 이렇게 짓지 마세요. (0914 52:31)</blockquote>
+    <p>이름은 "철수야, 영희야"처럼 아무렇게나 부르는 게 아니라 생각해서 지어 줘야 해요(0914 53:04). <code>student_count</code>라고 쓰면 인덱스가 늘 때 학생이 늘어나는구나 하고 받아들일 수 있어요(0914 52:57).</p>
+    <p>그냥 <code>add</code>라고 하면 재미없다고 하셨어요. 교수님은 앞 단어를 소문자로, 이어지는 단어 첫 글자를 대문자로 써서 <code>listAdd</code>처럼 쓰신대요. 대문자에서 합성어가 끊어지는 게 한눈에 보이기 때문이에요.</p>
+    <blockquote>이거는 개취예요. (0914 54:00)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">상수는 대문자, 변수는 뜻 있는 합성어, 함수는 동사로 이름을 지어요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>합성어</dt><dd>뜻 있는 단어를 이어 붙인 이름이에요. 예: <code>new_node</code></dd>
+      <dt>네이밍 룰(naming rule)</dt><dd>회사마다 정한 이름 짓기 규칙이에요.</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s4"><h2>5. 순환</h2>
+<article class="topic" id="s4-recursion-def"><h3>5.1 순환이란</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S2 p1–2</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">내가 할 일을 조금 작게 줄여서 또 나에게 맡기는 방법이에요.</p>
+    <figure class="figure"><svg id="fig-recursion-nest" viewBox="0 0 560 240" role="img" aria-label="테두리만 있는 상자 세 개가 겹겹이 들어 있고, 가장 안쪽 상자 가운데에 색칠된 점이 있는 그림">
+      <rect class="fig-ink" x="40" y="10" width="480" height="220" rx="12"/>
+      <text class="fig-text" x="60" y="36">큰 일</text>
+      <rect class="fig-ink" x="100" y="50" width="360" height="160" rx="10"/>
+      <text class="fig-text" x="120" y="76">조금 작은 일</text>
+      <rect class="fig-accent" x="160" y="90" width="240" height="100" rx="8"/>
+      <text class="fig-text" x="180" y="116">더 작은 일</text>
+      <circle class="fig-dot" cx="236" cy="156" r="10"/>
+      <text class="fig-text" x="254" y="161">바로 답해요</text>
+    </svg><figcaption>일이 한 겹씩 작아지다가 가운데 색칠된 점에서 바로 답이 나와요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><b>순환(recursion)</b>은 알고리즘이나 함수가 수행 도중에 <b>자기 자신</b>을 다시 호출해 문제를 해결하는 기법이에요.</p>
+    <p>정의 자체가 순환적으로 되어 있는 경우에 알맞아요. 강의록의 예제 중 몇 가지예요.</p>
+    <ul>
+      <li>팩토리얼 값 구하기</li>
+      <li>피보나치 수열</li>
+      <li>이항계수</li>
+      <li>이진탐색</li>
+    </ul>
+    <p>강의록의 나머지 예제는 다음 시간에 봐요(<a href="#s5-next">다음 시간 예고</a>).</p>
+    <p><b>팩토리얼</b>은 팩토리얼을 물었는데 팩토리얼로 답하는 정의예요. $n$을 물으면 $n-1$로 답해요.</p>
+    $$n! = n \cdot (n-1)! \quad (n \ge 1)$$
+    $$0! = 1$$
+    <p>$5!$을 이 정의대로 풀면 한 단계씩 내려갔다가 거꾸로 올라와요.</p>
+    <ol class="steps">
+      <li>$5! = 5 \cdot 4!$</li>
+      <li>$4! = 4 \cdot 3!$</li>
+      <li>$3! = 3 \cdot 2!$</li>
+      <li>$2! = 2 \cdot 1!$</li>
+      <li>$1! = 1$ (여기서 멈춤)</li>
+      <li>올라오며 계산: $2! = 2$, $3! = 6$, $4! = 24$, $5! = 120$</li>
+    </ol>
+    <p><b>피보나치</b>는 앞의 두 수를 더해 다음 수를 만들어요. 앞 항이 없는 $n = 0$, $n = 1$은 시작값을 정해 줘요.</p>
+    $$fib(n) = fib(n-2) + fib(n-1) \quad (n \ge 2)$$
+    $$fib(0) = 0, \quad fib(1) = 1$$
+    <p><b>이항계수</b>는 강의록에 식만 있고 수업에서는 이름만 나왔어요.</p>
+    $$C^n_k = C^{n-1}_{k-1} + C^{n-1}_{k} \quad (0 \lt k \lt n)$$
+    $$C^n_0 = C^n_n = 1$$
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>사람은 순차적으로 생각하고 컴퓨터는 순환적으로 계산한다고 하셨어요. 컴퓨터의 사고 방식을 배우면 편해진다고 하셨어요.</p>
+    <blockquote>리커시브 어렵다 그렇게 생각하지 마시고 … 내가 할 일을 얘가 다 해준다더라. (0914 55:26)</blockquote>
+    <p>시험 비유: "시험 어떻게 하면 잘 봐요?" "열심히 공부하면 돼." "어떻게 열심히요?" "시간을 많이 들이면 돼." 질문이 조금씩 달라지며 돌고 돌다가 열 번, 스무 번 만에 답에 닿을 수도 있어요(0914 55:48).</p>
+    <p>친구에게 5 팩토리얼을 물었더니 "5 곱하기 4 팩토리얼이야", 다시 물으니 "4 곱하기 3 팩토리얼"… 마지막에 "1 팩토리얼은 1"이라고 해요. 거꾸로 올라오면 답이 나와요. 이런 친구는 "좀 때리고 싶"지만 참으라고 하셨어요(0914 57:05).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">순환은 함수가 수행 도중에 자기 자신을 다시 호출해 문제를 푸는 기법이에요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">팩토리얼</span>$$n! = n \cdot (n-1)! \quad (n \ge 1)$$</li>
+      <li><span class="eq-name">피보나치</span>$$fib(n) = fib(n-2) + fib(n-1) \quad (n \ge 2)$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>순환(recursion)</dt><dd>수행 도중에 자기 자신을 다시 호출해 문제를 해결하는 기법</dd></dl>
+  </div>
+</article>
+
+<article class="topic" id="s4-two-conditions"><h3>5.2 순환으로 풀 수 있는 문제의 두 조건</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S2 p2</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">멈추는 곳이 있고, 물을 때마다 일이 작아지면 이 방법으로 풀 수 있어요.</p>
+    <figure class="figure"><svg id="fig-shrink-stairs" viewBox="0 0 560 220" role="img" aria-label="테두리만 있는 막대 세 개가 아래로 갈수록 짧아지고, 맨 아래에 가장 짧은 색칠된 막대가 있는 그림">
+      <rect class="fig-ink" x="40" y="10" width="400" height="36" rx="6"/>
+      <text class="fig-text" x="452" y="33">처음 질문</text>
+      <line class="fig-accent" x1="70" y1="48" x2="70" y2="62"/>
+      <path class="fig-accent" d="M64 56 L70 63 L76 56"/>
+      <rect class="fig-ink" x="40" y="65" width="300" height="36" rx="6"/>
+      <text class="fig-text" x="352" y="88">조금 작아진 질문</text>
+      <line class="fig-accent" x1="70" y1="103" x2="70" y2="117"/>
+      <path class="fig-accent" d="M64 111 L70 118 L76 111"/>
+      <rect class="fig-ink" x="40" y="120" width="200" height="36" rx="6"/>
+      <text class="fig-text" x="252" y="143">더 작아진 질문</text>
+      <line class="fig-accent" x1="70" y1="158" x2="70" y2="172"/>
+      <path class="fig-accent" d="M64 166 L70 173 L76 166"/>
+      <rect class="fig-dot" x="40" y="175" width="100" height="36" rx="6"/>
+      <text class="fig-text" x="152" y="198">여기서 멈춰요</text>
+    </svg><figcaption>질문이 점점 짧아지다가 색칠된 막대에서 멈춰요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>순환으로 풀 수 있는 문제는 두 조건을 갖춰야 해요. 다음 시간 강의록 내용을 교수님이 말로 먼저 설명하셨어요.</p>
+    <ol>
+      <li><b>끝나는 조건</b>을 알려 줄 수 있어요. 이것을 종단 조건(base case)이라고 해요. 문제를 쪼개 내려가다가 "여기까지 오면 끝이고, 그 값은 이것"이라고 말할 수 있어야 해요.</li>
+      <li>물을 때마다 문제의 <b>크기가 줄어든다</b>는 조건이에요. 1씩, 반씩, 2씩 줄어도 괜찮아요.</li>
+    </ol>
+    <div class="table-wrap"><table>
+      <tr><th>문제</th><th>끝나는 조건</th><th>줄어드는 방식</th></tr>
+      <tr><td>팩토리얼</td><td>$0! = 1$</td><td>$n$을 물으면 $n-1$로 답해요</td></tr>
+      <tr><td>피보나치</td><td>$fib(0) = 0$, $fib(1) = 1$</td><td>$n$을 물으면 $n-2$와 $n-1$로 답해요</td></tr>
+    </table></div>
+    <p>$0! = 1$은 증명하지 않고 정해 두는 값이에요. 피보나치의 $fib(0) = 0$, $fib(1) = 1$은 앞 항이 없어서 정해 준 시작값이에요.</p>
+    <p>줄어드는 것이 숫자가 아니어도 돼요. 문자열 <code>university</code>(10글자)를 맨 뒤 글자부터 하나씩 지우면 크기가 10, 9, 8, …로 줄어들어요.</p>
+    <ol class="steps">
+      <li><code>university</code> → 10글자</li>
+      <li><code>universit</code> → 9글자</li>
+      <li><code>universi</code> → 8글자</li>
+      <li>…</li>
+      <li><code>u</code> → 1글자</li>
+    </ol>
+    <p>이렇게 한 글자씩 줄여 가는 문제도 순환으로 처리할 수 있어요. 이 장에서는 이진탐색도 순환으로 구현해요. 이진탐색은 수업에서 "업다운 게임"이라고 부른, 반씩 줄어드는 예예요.</p>
+    <p>한 학생이 리커시브 펑션(recursive function)을 왜 써야 하느냐고 물었어요. 답은 이랬어요. 수학 계산만 떠올리지 말고, 끝나는 조건이 있고 크기가 줄어드는 모든 문제에 쓸 수 있다고 생각하라는 거예요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>$0! = 1$을 두고 이렇게 말씀하셨어요.</p>
+    <blockquote>절대불멸의 어떤 액시옴 (0914 59:07)</blockquote>
+    <p>끝나는 조건은 드릴다운했을 때 답이 정해지는 지점이라고 하셨어요.</p>
+    <blockquote>이렇게까지 나오면 이거 끝입니다. 그 값은 얼마예요? (0914 60:20)</blockquote>
+    <blockquote>이럴 수만 있으면 이건 리커시브 펑션으로 만들 수가 있습니다. (0914 58:24)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">끝나는 조건이 있고, 물을 때마다 크기가 줄어드는 문제는 순환으로 풀 수 있어요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">팩토리얼의 끝나는 조건</span>$$0! = 1$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>종단 조건(base case)</dt><dd>여기까지 오면 끝이고 값이 정해지는 조건</dd>
+      <dt>크기가 줄어든다</dt><dd>물을 때마다 1씩, 반씩, 2씩 문제가 작아져요</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s4-factorial-code"><h3>5.3 팩토리얼 프로그래밍 #1·#2</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S2 p3–4</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">같은 일을 할 도우미를 따로 만들지 않고, 나 자신을 다시 불러요.</p>
+    <figure class="figure"><svg id="fig-self-call" viewBox="0 0 560 200" role="img" aria-label="왼쪽은 테두리 상자 나에서 다른 도우미 상자로 선 화살표가 가고, 오른쪽은 테두리 상자 나에서 나온 선 화살표가 다시 자기에게 돌아오는 그림">
+      <text class="fig-text" x="156" y="30" text-anchor="middle">첫 번째 방법</text>
+      <rect class="fig-ink" x="30" y="70" width="90" height="50" rx="8"/>
+      <text class="fig-text" x="75" y="100" text-anchor="middle">나</text>
+      <line class="fig-accent" x1="122" y1="95" x2="168" y2="95"/>
+      <path class="fig-accent" d="M161 88 L170 95 L161 102"/>
+      <rect class="fig-ink" x="172" y="70" width="110" height="50" rx="8"/>
+      <text class="fig-text" x="227" y="100" text-anchor="middle">다른 도우미</text>
+      <text class="fig-text" x="420" y="30" text-anchor="middle">두 번째 방법</text>
+      <rect class="fig-ink" x="375" y="90" width="90" height="50" rx="8"/>
+      <text class="fig-text" x="420" y="120" text-anchor="middle">나</text>
+      <path class="fig-accent" d="M445 88 C 475 40, 365 40, 395 88"/>
+      <path class="fig-accent" d="M388 80 L395 89 L402 81"/>
+      <text class="fig-muted" x="420" y="168" text-anchor="middle">나를 다시 불러요</text>
+    </svg><figcaption>왼쪽은 다른 도우미에게 맡기고, 오른쪽은 선 화살표로 나에게 다시 맡겨요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>함수는 이름 → 받을 값(정수 <code>n</code>) → <b>반환 타입</b> 순서로 만들어요. 앞에 적은 반환 타입과 <code>return</code> 하는 값의 타입이 일치해야 해요.</p>
+    <p>함수는 안에서 무슨 일을 하든 결국 함수 이름으로 값 하나를 돌려주고 끝나요. <code>void</code> 함수는 값을 돌려주지 않고, 포인터 같은 것을 넘겨 함수 안팎이 결과를 공유해요. 이 방식은 뒤에서 설명한다고 하셨어요.</p>
+    <p><b>팩토리얼 프로그래밍 #1</b>은 정의대로 구현하되, $(n-1)!$을 구하는 서브함수 <code>factorial_n_1</code>을 따로 만들어요.</p>
+<pre><code class="language-c">int factorial(int n)
+{
+    if( n&lt;= 1 ) return(1);
+    else return (n * factorial_n_1(n-1) );
+}</code></pre>
+    <p>조건을 <code>n &lt;= 1</code>로 둔 것은 $1!$도 계산하지 않고 바로 1을 돌려주려는 거예요.</p>
+    <p><b>팩토리얼 프로그래밍 #2</b>는 서브함수를 새로 만들지 않아요. $(n-1)!$을 지금 작성 중인 함수를 다시 호출해 계산해요. 이것을 <b>순환 호출</b>(recursive call)이라고 해요.</p>
+<pre><code class="language-c">int factorial(int n)
+{
+    if( n &lt;= 1 ) return(1);
+    else return (n * factorial(n-1) );
+}</code></pre>
+    <p>두 코드는 <code>else</code> 줄에서 부르는 함수만 달라요. #1은 <code>factorial_n_1</code>을, #2는 자기 자신인 <code>factorial</code>을 불러요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>수학 정의가 있으면 코드는 그대로 옮겨 적으면 된다고 하셨어요.</p>
+    <blockquote>수학적인 데피니션이 있으면 그거를 C 코드로 옮기는 거는 굉장히 쉬워요. (0914 64:29)</blockquote>
+    <p>함수라고 하는 것은 궁극적으로 함수 이름으로 값 하나를 돌려주고 끝난다고 강조하셨어요(0914 62:54).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">#1은 서브함수를 따로 부르고, #2는 자기 자신을 다시 부르는 순환 호출로 팩토리얼을 구해요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>순환 호출(recursive call)</dt><dd>지금 작성 중인 함수를 다시 호출하는 것</dd>
+      <dt>반환 타입</dt><dd>함수 앞에 적는 타입. <code>return</code> 값의 타입과 일치해야 해요</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s4-factorial-trace"><h3>5.4 factorial(3)의 호출과 스택</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S2 p4–5</span><span class="tag slide">S2 p7</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">선생님이 물으면 꼬마들이 조금 작은 질문을 옆 친구에게 넘기고, 답은 거꾸로 돌아와요.</p>
+    <figure class="figure"><svg id="fig-kids-relay" viewBox="0 0 560 210" role="img" aria-label="테두리 동그라미 선생님과 테두리 동그라미 꼬마 두 명, 색칠된 동그라미 꼬마 한 명이 한 줄로 서 있고, 위쪽 선 화살표로 질문이 오른쪽으로 가고 아래쪽 선 화살표로 1, 2, 6이 왼쪽으로 돌아오는 그림">
+      <circle class="fig-ink" cx="70" cy="90" r="24"/>
+      <circle class="fig-ink" cx="210" cy="90" r="24"/>
+      <circle class="fig-ink" cx="350" cy="90" r="24"/>
+      <circle class="fig-dot" cx="490" cy="90" r="24"/>
+      <text class="fig-text" x="70" y="196" text-anchor="middle">선생님</text>
+      <text class="fig-text" x="210" y="196" text-anchor="middle">꼬마 1</text>
+      <text class="fig-text" x="350" y="196" text-anchor="middle">꼬마 2</text>
+      <text class="fig-text" x="490" y="196" text-anchor="middle">꼬마 3</text>
+      <line class="fig-ink" x1="98" y1="50" x2="182" y2="50"/><path class="fig-ink" d="M175 44 L183 50 L175 56"/>
+      <line class="fig-ink" x1="238" y1="50" x2="322" y2="50"/><path class="fig-ink" d="M315 44 L323 50 L315 56"/>
+      <line class="fig-ink" x1="378" y1="50" x2="462" y2="50"/><path class="fig-ink" d="M455 44 L463 50 L455 56"/>
+      <text class="fig-muted" x="140" y="38" text-anchor="middle">물어봐요</text>
+      <text class="fig-muted" x="280" y="38" text-anchor="middle">물어봐요</text>
+      <text class="fig-muted" x="420" y="38" text-anchor="middle">물어봐요</text>
+      <line class="fig-accent" x1="462" y1="132" x2="378" y2="132"/><path class="fig-accent" d="M385 126 L377 132 L385 138"/>
+      <line class="fig-accent" x1="322" y1="132" x2="238" y2="132"/><path class="fig-accent" d="M245 126 L237 132 L245 138"/>
+      <line class="fig-accent" x1="182" y1="132" x2="98" y2="132"/><path class="fig-accent" d="M105 126 L97 132 L105 138"/>
+      <text class="fig-text" x="420" y="158" text-anchor="middle">1</text>
+      <text class="fig-text" x="280" y="158" text-anchor="middle">2</text>
+      <text class="fig-text" x="140" y="158" text-anchor="middle">6</text>
+    </svg><figcaption>색칠된 마지막 꼬마가 1이라고 답하면 2와 6이 차례로 선생님에게 돌아와요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>강의록 S2 p4 그림에서 선생님이 $3!$을 물어요. 첫 번째 꼬마는 $3! = 3 \cdot 2!$, 두 번째 꼬마는 $2! = 2 \cdot 1!$, 마지막 꼬마는 "$1!$은 1"이라고 답해요. 바닥을 치면 답이 1 → 2 → 6으로 올라와요.</p>
+    <p>코드로 보면 <code>factorial(3)</code>을 부를 때 컴퓨터 안의 <b>스택</b>(stack)이 이렇게 바뀌어요. 스택은 아래에서 위로 적어요.</p>
+    <div class="table-wrap"><table>
+      <tr><th>단계</th><th>동작</th><th>스택(아래 → 위)</th></tr>
+      <tr><td>①</td><td><code>factorial(3)</code>: <code>3 &lt;= 1</code> 거짓. <code>3 * factorial(2)</code>를 계산하려고 <code>factorial(2)</code> 호출</td><td><code>factorial(3)</code></td></tr>
+      <tr><td>②</td><td><code>factorial(2)</code>: <code>2 &lt;= 1</code> 거짓. <code>2 * factorial(1)</code>을 계산하려고 <code>factorial(1)</code> 호출</td><td><code>factorial(3)</code>, <code>factorial(2)</code></td></tr>
+      <tr><td>③</td><td><code>factorial(1)</code>: <code>1 &lt;= 1</code> 참. 바닥 조건이라 1을 돌려줘요</td><td><code>factorial(3)</code>, <code>factorial(2)</code>, <code>factorial(1)</code></td></tr>
+      <tr><td>④</td><td><code>factorial(1)</code>이 빠지고, <code>factorial(2)</code>가 <code>2*1 = 2</code>를 돌려줘요</td><td><code>factorial(3)</code></td></tr>
+      <tr><td>⑤</td><td><code>factorial(3)</code>이 <code>3*2 = 6</code>을 돌려줘요</td><td>(비어 있음)</td></tr>
+    </table></div>
+    <p>강의록 S2 p5는 <code>factorial(5)</code>의 호출 순서를 이렇게 펼쳐 보여요. 수업에서는 <code>factorial(3)</code>의 순서만 말로 짚었어요.</p>
+<pre><code class="language-c">factorial(5) = 5 * factorial(4)
+             = 5 * 4 * factorial(3)
+             = 5 * 4 * 3 * factorial(2)
+             = 5 * 4 * 3 * 2 * factorial(1)
+             = 5 * 4 * 3 * 2 * 1
+             = 120</code></pre>
+    <p><b>순환이 편한 이유</b>: 반복문으로 같은 흐름을 짜려면 들어갈 때마다 중간값을 프로그래머가 직접 기억해 둬야 해요. 순환 호출은 컴퓨터가 내부에서 스택을 만들어 임시 기억과 되돌아오며 반환하는 일을 대신 해 줘요. 프로그래머는 정의만 적으면 돼요.</p>
+    <div class="widget" id="widget-fact"><h4>직접 해 보기: factorial 호출 상자 쌓고 풀기</h4>
+      <p class="widget-help">n을 고르고 다음 단계를 누르면 호출 상자가 하나씩 쌓이고, 바닥 조건에 닿은 뒤에는 값을 돌려주며 하나씩 빠져요.</p>
+      <div class="controls">
+        <label>n <input type="range" id="fact-n" min="1" max="5" step="1" value="3"> <b id="fact-n-val">3</b></label>
+        <button type="button" class="btn btn-ghost" id="fact-reset">처음부터</button>
+        <button type="button" class="btn btn-primary" id="fact-next">다음 단계</button>
+      </div>
+      <svg id="fact-plot" viewBox="0 0 560 300" role="img" aria-label="factorial 호출 상자가 쌓인 스택. 맨 위 상자는 강조색 테두리, 기다리는 상자는 기본색 테두리"></svg>
+      <p class="readout">단계 <b id="fact-count">0 / 6</b>: <span id="fact-desc">다음 단계를 누르면 factorial(3) 을 불러요.</span></p>
+      <p class="readout">최종 반환값: <b id="fact-out">아직 없어요</b></p>
+      <p class="legend"><span><span class="sw fit"></span>지금 실행 중인 호출(맨 위 상자)</span><span><span class="sw truth"></span>아래 호출의 값을 기다리는 상자</span></p>
+      <div class="widget-static" hidden>
+        <figure class="figure"><svg id="widget-fact-static-1" viewBox="0 0 560 300" role="img" aria-label="n = 3, 단계 3 / 6. 스택에 호출 상자 3개. factorial(1) 상자가 쌓여요. 1 &lt;= 1 이 참이라서 바닥 조건에 닿았어요."><line class="fig-ink" x1="90" y1="274" x2="470" y2="274"/><text class="fig-muted" x="470" y="292" text-anchor="end">스택 바닥</text><rect class="fig-ink" x="120" y="230" width="320" height="40" rx="6"/><text class="fig-text" x="280" y="255" text-anchor="middle">factorial(3): 3 * factorial(2)</text><rect class="fig-ink" x="120" y="184" width="320" height="40" rx="6"/><text class="fig-text" x="280" y="209" text-anchor="middle">factorial(2): 2 * factorial(1)</text><rect class="fig-accent" x="120" y="138" width="320" height="40" rx="6"/><text class="fig-text" x="280" y="163" text-anchor="middle">factorial(1): 1 &lt;= 1, 1 을 돌려줌</text></svg><figcaption>n = 3, 단계 3 / 6: factorial(1) 상자가 쌓여요. 1 &lt;= 1 이 참이라서 바닥 조건에 닿았어요.</figcaption></figure>
+        <figure class="figure"><svg id="widget-fact-static-2" viewBox="0 0 560 300" role="img" aria-label="n = 3, 단계 5 / 6. 스택에 호출 상자 1개. factorial(2) 가 2 * 1 = 2 를 돌려줘요. 상자가 스택에서 빠져요."><line class="fig-ink" x1="90" y1="274" x2="470" y2="274"/><text class="fig-muted" x="470" y="292" text-anchor="end">스택 바닥</text><rect class="fig-accent" x="120" y="230" width="320" height="40" rx="6"/><text class="fig-text" x="280" y="255" text-anchor="middle">factorial(3): 3 * 2</text></svg><figcaption>n = 3, 단계 5 / 6: factorial(2) 가 2 * 1 = 2 를 돌려줘요. 상자가 스택에서 빠져요.</figcaption></figure>
+        <figure class="figure"><svg id="widget-fact-static-3" viewBox="0 0 560 300" role="img" aria-label="n = 5, 단계 5 / 10. 스택에 호출 상자 5개. factorial(1) 상자가 쌓여요. 1 &lt;= 1 이 참이라서 바닥 조건에 닿았어요."><line class="fig-ink" x1="90" y1="274" x2="470" y2="274"/><text class="fig-muted" x="470" y="292" text-anchor="end">스택 바닥</text><rect class="fig-ink" x="120" y="230" width="320" height="40" rx="6"/><text class="fig-text" x="280" y="255" text-anchor="middle">factorial(5): 5 * factorial(4)</text><rect class="fig-ink" x="120" y="184" width="320" height="40" rx="6"/><text class="fig-text" x="280" y="209" text-anchor="middle">factorial(4): 4 * factorial(3)</text><rect class="fig-ink" x="120" y="138" width="320" height="40" rx="6"/><text class="fig-text" x="280" y="163" text-anchor="middle">factorial(3): 3 * factorial(2)</text><rect class="fig-ink" x="120" y="92" width="320" height="40" rx="6"/><text class="fig-text" x="280" y="117" text-anchor="middle">factorial(2): 2 * factorial(1)</text><rect class="fig-accent" x="120" y="46" width="320" height="40" rx="6"/><text class="fig-text" x="280" y="71" text-anchor="middle">factorial(1): 1 &lt;= 1, 1 을 돌려줌</text></svg><figcaption>n = 5, 단계 5 / 10: factorial(1) 상자가 쌓여요. 1 &lt;= 1 이 참이라서 바닥 조건에 닿았어요.</figcaption></figure>
+        <figure class="figure"><svg id="widget-fact-static-4" viewBox="0 0 560 300" role="img" aria-label="n = 5, 단계 10 / 10. 스택에 호출 상자 0개. factorial(5) 가 5 * 24 = 120 를 돌려줘요. 상자가 스택에서 빠져요. 스택이 비었어요."><line class="fig-ink" x1="90" y1="274" x2="470" y2="274"/><text class="fig-muted" x="470" y="292" text-anchor="end">스택 바닥</text><text class="fig-muted" x="280" y="250" text-anchor="middle">스택이 비었어요. 최종 반환값 120</text></svg><figcaption>n = 5, 단계 10 / 10: factorial(5) 가 5 * 24 = 120 를 돌려줘요. 상자가 스택에서 빠져요. 스택이 비었어요.</figcaption></figure>
+        <div class="table-wrap"><table><tr><th>설정</th><th>결과</th></tr><tr><td>n = 1</td><td><code>factorial(1)</code> = 1</td></tr><tr><td>n = 2</td><td><code>factorial(2)</code> = 2</td></tr><tr><td>n = 3</td><td><code>factorial(3)</code> = 6</td></tr><tr><td>n = 4</td><td><code>factorial(4)</code> = 24</td></tr><tr><td>n = 5</td><td><code>factorial(5)</code> = 120</td></tr></table></div>
+      </div>
+    </div>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>여러분은 <b>선생님</b>이고, 안에서 생기는 <b>일꾼</b> 여러 명이 계산한다고 하셨어요. 그 일꾼들이 쌓이는 곳이 스택이에요(0914 66:09).</p>
+    <blockquote>얘는 내부에서 자기가 스택을 만들어 줘서 그런데 이거 기억해야 돼요. (0914 66:31)</blockquote>
+    <blockquote>프로그램만 내가 리커시브하게 콜을 해 주면 내부의 기억은 다 알아서 처리해 주는 거예요. (0914 67:30)</blockquote>
+    <p>팩토리얼은 반복문으로 짜도 단순해서, 스택과 내부 변수를 쓰는 순환이 왜 필요한지는 아직 와닿지 않을 수 있다고 하셨어요(0914 68:05).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">순환 호출은 호출 상자를 스택에 쌓았다가, 바닥 조건에 닿으면 값을 돌려주며 하나씩 빼요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>스택(stack)</dt><dd>순환 호출마다 상자를 쌓아 중간 기억을 대신 맡는 곳</dd>
+      <dt>순환 호출</dt><dd><code>factorial(3)</code>이 <code>3 * factorial(2)</code>를 계산하려고 자기 자신을 다시 부르는 것</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s5"><h2>6. 요약 · 예고</h2>
+<article class="topic" id="s5-cheatsheet"><h3>요약표</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p22–37</span><span class="tag slide">S2 p1–5</span></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>주제</th><th>핵심</th><th>한 줄로 기억하기</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#s0-adt-def">추상 데이터 타입(ADT)</a></td><td>데이터 타입은 데이터의 집합과 연산의 집합이에요. ADT는 무엇(what)만 정하고 어떻게(how)는 정하지 않아요. 자료구조·알고리즘은 객체와 연산이에요. 예: <a href="#s0-nat-no">자연수 Nat_No</a>는 0부터 <code>INT_MAX</code>까지예요.</td><td>ADT는 <a href="#s0-vending">자판기</a>예요. 쓰는 사람은 겉(인터페이스)만 봐요.</td></tr>
+      <tr><td><a href="#s1-measure">성능 분석 1: 수행 시간 측정</a></td><td><code>clock()</code>으로 시작과 끝 시각을 재요. 두 프로그램 모두 구현이 끝나 있어야 하고 같은 하드웨어에서 돌려야 해요.</td><td>수업 결론은 "이렇게 하지 않습니다"예요.</td></tr>
+      <tr><td><a href="#s1-complexity">성능 분석 2: 복잡도 분석</a></td><td>구현하지 않고 연산 횟수를 입력 개수 $n$의 함수로 세요. 시간 복잡도(time complexity)만 다루고 공간 복잡도(space complexity)는 이 수업에서 다루지 않아요.</td><td>산술·대입·비교·이동 연산을 세고 루프 제어 연산은 빼요.</td></tr>
+      <tr><td><a href="#s1-n-times">시간복잡도 함수</a></td><td>연산 횟수 $T(n)$이에요. n을 n번 더하기는 A가 $2$, B가 $2n+1$, C가 $2n^2+1$이에요. <a href="#s1-arraymax">ArrayMax</a>는 $1+(n-1)+(n-1)+1 = 2n$(최대)이에요.</td><td>결과가 같으면 연산이 적은 쪽을 써요.</td></tr>
+      <tr><td><a href="#s2-bigo-def">빅오 규칙</a></td><td>모든 $n \ge n_0$에서 $|f(n)| \le c\,|g(n)|$이면 $f(n)=O(g(n))$이에요. 최고차항만 남기고 계수를 떼요. 상수는 $O(1)$이에요. 예: $2n+1 = O(n)$</td><td><a href="#s2-bigo-kinds">종류</a>: $O(1) \lt O(\log n) \lt O(n) \lt O(n\log n) \lt O(n^2) \lt O(n^3) \lt O(2^n) \lt O(n!)$</td></tr>
+      <tr><td><a href="#s2-cases">최선·평균·최악</a></td><td>입력에 따라 수행 시간이 달라요. 원칙은 최악의 경우(worst case)로 말하는 거예요. <a href="#s2-seq-search">순차 탐색</a>은 최선 $O(1)$, 평균 $\dfrac{n+1}{2}$번, 최악 $O(n)$이에요.</td><td>순차 탐색의 복잡도는 $O(n)$이라고 답해요.</td></tr>
+      <tr><td><a href="#s3-typedef">typedef와 구조체</a></td><td><code>typedef int element;</code>는 <code>int</code>에 별명을 붙여 의미를 줘요. 자료구조의 데이터는 구조체(<code>StackType</code>)로 묶고, 연산 함수에 파라미터로 넘겨요.</td><td>구조체는 중국집 철가방이에요.</td></tr>
+      <tr><td><a href="#s3-naming">이름 짓기 규칙</a></td><td>상수는 대문자(<code>#define MAX_ELEMENT 100</code>), 변수는 의미 있는 합성어(<code>new_node</code>), 함수는 동사(<code>int list_add(ListNode *node)</code>)로 지어요.</td><td>변수 이름을 a, b, c로 짓지 않아요.</td></tr>
+      <tr><td><a href="#s4-two-conditions">순환의 두 조건</a></td><td>순환(recursion)은 함수가 자기 자신을 다시 부르는 기법이에요. 끝나는 조건(base case)이 있어야 하고, 부를 때마다 문제가 줄어들어야 해요.</td><td>$n! = n\cdot(n-1)!$, $0! = 1$</td></tr>
+      <tr><td><a href="#s4-factorial-code">팩토리얼 순환 코드</a></td><td><pre><code class="language-c">int factorial(int n)
+{
+    if( n &lt;= 1 ) return(1);
+    else return (n * factorial(n-1) );
+}</code></pre></td><td><a href="#s4-factorial-trace">factorial(3)</a>은 f(3), f(2), f(1)이 스택에 쌓였다가 1, 2, 6 순서로 값을 돌려줘요.</td></tr>
+    </tbody>
+  </table></div>
+</article>
+<article class="topic" id="s5-next"><h3>다음 시간 예고</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S2 p6–20</span></div>
+  <ul>
+    <li>순환 알고리즘의 구조 (S2 p6)</li>
+    <li>순환과 반복 비교 (S2 p7–8)</li>
+    <li>거듭제곱 (S2 p9–11)</li>
+    <li>피보나치 수열의 계산 (S2 p12–14)</li>
+    <li>하노이탑 (S2 p15–20)</li>
+    <li>실습·과제 공지 (0914 70:04)</li>
+  </ul>
+</article>
+<article class="topic" id="s5-links"><h3>함께 보면 좋은 자료</h3><div class="tags"><span class="tag date">0914 수업</span></div>
+  <ul>
+    <li><a href="복습문제_0914_Recursion.html">0914 복습문제</a></li>
+    <li><a href="../../자료구조_강의록_2026/Software_2_Recursion.pdf">강의록 Software_2_Recursion.pdf</a></li>
+  </ul>
+</article>
+    </section>
+  </main>
+  <footer>출처: 이정원 교수님 강의록(Software_1–2) · 수업 녹음 전사(0914).</footer>
+    </div>
+    <aside class="panel panel-right" id="panel-right" aria-labelledby="panel-right-title">
+      <div class="panel-resize" data-side="right" role="separator" aria-orientation="vertical" aria-controls="panel-right" aria-label="오른쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-right-title">페이지 요약</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-sub" id="sum-for">전체 흐름</p>
+        <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
+        <div class="sums"></div>
+      </div>
+    </aside>
+  </div>
+  <div class="scrim" id="panel-scrim" aria-hidden="true"></div>
+  <nav class="pager" aria-label="화면 이동">
+    <div class="pager-inner">
+      <button class="btn btn-ghost" id="pager-prev" type="button">이전</button>
+      <span class="pager-count" id="pager-count"></span>
+      <button class="btn btn-primary" id="pager-next" type="button">시작하기</button>
+    </div>
+  </nav>
+  <p class="sr-only" id="pager-status" aria-live="polite"></p>
+  <script id="widget-bigo-ui">(function () {
+var W = 560, X0 = 96, X1 = 440, ROW0 = 44, ROWH = 38, BARH = 20, CAP = 1024;
+var KINDS = [
+  { label: '1',       f: function (n) { return 1; } },
+  { label: 'log n',   f: function (n) { return Math.log2(n); } },
+  { label: 'n',       f: function (n) { return n; } },
+  { label: 'n log n', f: function (n) { return n * Math.log2(n); } },
+  { label: 'n²',      f: function (n) { return n * n; } },
+  { label: '2ⁿ',      f: function (n) { return Math.pow(2, n); } }
+];
+function fmt(v) {
+  if (Number.isInteger(v)) return v.toLocaleString('en-US');
+  return (Math.round(v * 100) / 100).toString();
+}
+// 로그 눈금: 0.1 ~ 10^10 을 X0~X1 에. 0 은 길이 0.
+function posLog(v) { return v <= 0 ? X0 : X0 + (Math.log10(v) + 1) / 11 * (X1 - X0); }
+function posLin(v) { return X0 + Math.min(v, CAP) / CAP * (X1 - X0); }
+function svgInner(n, mode) {
+  var s = '';
+  var pos = mode === 'log' ? posLog : posLin;
+  var yAxis = ROW0 + KINDS.length * ROWH + 4;
+  s += '<line class="axis" x1="' + X0 + '" y1="' + (ROW0 - 10) + '" x2="' + X0 + '" y2="' + yAxis + '"/>';
+  s += '<line class="axis" x1="' + X0 + '" y1="' + yAxis + '" x2="' + X1 + '" y2="' + yAxis + '"/>';
+  var ticks = mode === 'log'
+    ? [[1, '1'], [100, '10²'], [1e4, '10⁴'], [1e6, '10⁶'], [1e8, '10⁸'], [1e10, '10¹⁰']]
+    : [[0, '0'], [256, '256'], [512, '512'], [768, '768'], [1024, '1024']];
+  ticks.forEach(function (t) {
+    var x = pos(t[0]).toFixed(1);
+    s += '<line class="axis" x1="' + x + '" y1="' + yAxis + '" x2="' + x + '" y2="' + (yAxis + 5) + '"/>';
+    s += '<text class="tick" x="' + x + '" y="' + (yAxis + 18) + '" text-anchor="middle">' + t[1] + '</text>';
+  });
+  s += '<text class="fig-muted" x="' + X1 + '" y="' + (ROW0 - 16) + '" text-anchor="end">' +
+       (mode === 'log' ? '로그 눈금' : '보통 눈금, 1024에서 자름') + '</text>';
+  KINDS.forEach(function (k, i) {
+    var v = k.f(n), y = ROW0 + i * ROWH;
+    var x = pos(v), w = Math.max(0, x - X0);
+    var clipped = mode !== 'log' && v > CAP;
+    s += '<text class="fig-text" x="' + (X0 - 10) + '" y="' + (y + 15) + '" text-anchor="end">' + k.label + '</text>';
+    s += '<rect class="fig-dot" x="' + X0 + '" y="' + y + '" width="' + w.toFixed(1) + '" height="' + BARH + '"/>';
+    if (clipped) {
+      var xe = X1;
+      s += '<path class="fig-danger" d="M' + (xe - 8) + ' ' + (y - 3) + ' L' + (xe - 2) + ' ' + (y + 5) + ' L' + (xe - 10) + ' ' + (y + 14) + ' L' + (xe - 4) + ' ' + (y + 23) + '"/>';
+      s += '<text class="fig-muted" x="' + (xe + 6) + '" y="' + (y + 15) + '">잘림</text>';
+    } else {
+      s += '<text class="fig-muted" x="' + (x + 6).toFixed(1) + '" y="' + (y + 15) + '">' + fmt(v) + '</text>';
+    }
+  });
+  return s;
+}
+function readout(n) {
+  return KINDS.map(function (k) { return k.label + ' = ' + fmt(k.f(n)); }).join(', ');
+}
+  var slider = document.getElementById('bigo-n');
+  var scale = document.getElementById('bigo-scale');
+  var plot = document.getElementById('bigo-plot');
+  if (!slider || !scale || !plot) return;
+  function draw() {
+    var n = parseInt(slider.value, 10);
+    document.getElementById('bigo-n-val').textContent = n;
+    document.getElementById('bigo-out-n').textContent = n;
+    document.getElementById('bigo-out').textContent = readout(n);
+    plot.innerHTML = svgInner(n, scale.value);
+  }
+  slider.addEventListener('input', draw);
+  scale.addEventListener('change', draw);
+  draw();
+})();</script>
+  <script id="widget-fact-ui">(function () {
+var FACT = (function () {
+    // 한 단계 = { stack: [{k, got}], text, result }
+    // got: 아래 호출에게서 받은 값(없으면 null)
+    function buildSteps(n) {
+        var steps = [];
+        var stack = [];
+        function snap(text, result) {
+            steps.push({
+                stack: stack.map(function (f) { return { k: f.k, got: f.got }; }),
+                text: text,
+                result: result
+            });
+        }
+        snap('다음 단계를 누르면 factorial(' + n + ') 을 불러요.', null);
+        for (var k = n; k >= 1; k--) {
+            stack.push({ k: k, got: null });
+            if (k > 1) {
+                snap('factorial(' + k + ') 상자가 쌓여요. ' + k + ' <= 1 이 아니라서 ' + k + ' * factorial(' + (k - 1) + ') 을 계산하려고 factorial(' + (k - 1) + ') 을 불러요.', null);
+            } else {
+                snap('factorial(1) 상자가 쌓여요. 1 <= 1 이 참이라서 바닥 조건에 닿았어요.', null);
+            }
+        }
+        var value = 1;
+        for (var j = 1; j <= n; j++) {
+            var top = stack.pop();
+            var text;
+            if (top.k === 1) {
+                value = 1;
+                text = 'factorial(1) 이 1 을 돌려줘요. 상자가 스택에서 빠져요.';
+            } else {
+                var prev = value;
+                value = top.k * prev;
+                text = 'factorial(' + top.k + ') 가 ' + top.k + ' * ' + prev + ' = ' + value + ' 를 돌려줘요. 상자가 스택에서 빠져요.';
+            }
+            if (stack.length > 0) {
+                stack[stack.length - 1].got = value;
+                snap(text, null);
+            } else {
+                snap(text + ' 스택이 비었어요.', value);
+            }
+        }
+        return steps;
+    }
+
+    function esc(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // 560x300 SVG 안쪽 마크업
+    function render(step) {
+        var W = 560, boxW = 320, boxH = 40, gap = 6, x = (W - boxW) / 2, base = 270;
+        var out = [];
+        out.push('<line class="fig-ink" x1="' + (x - 30) + '" y1="' + (base + 4) + '" x2="' + (x + boxW + 30) + '" y2="' + (base + 4) + '"/>');
+        out.push('<text class="fig-muted" x="' + (x + boxW + 30) + '" y="' + (base + 22) + '" text-anchor="end">스택 바닥</text>');
+        var st = step.stack;
+        for (var i = 0; i < st.length; i++) {
+            var f = st[i];
+            var y = base - (i + 1) * (boxH + gap) + gap;
+            var isTop = i === st.length - 1;
+            out.push('<rect class="' + (isTop ? 'fig-accent' : 'fig-ink') + '" x="' + x + '" y="' + y + '" width="' + boxW + '" height="' + boxH + '" rx="6"/>');
+            var label;
+            if (f.k === 1) label = 'factorial(1): 1 <= 1, 1 을 돌려줌';
+            else if (f.got === null) label = 'factorial(' + f.k + '): ' + f.k + ' * factorial(' + (f.k - 1) + ')';
+            else label = 'factorial(' + f.k + '): ' + f.k + ' * ' + f.got;
+            out.push('<text class="fig-text" x="' + (W / 2) + '" y="' + (y + boxH / 2 + 5) + '" text-anchor="middle">' + esc(label) + '</text>');
+        }
+        if (st.length === 0) {
+            var msg = step.result === null ? '스택이 비어 있어요' : '스택이 비었어요. 최종 반환값 ' + step.result;
+            out.push('<text class="fig-muted" x="' + (W / 2) + '" y="' + (base - 20) + '" text-anchor="middle">' + esc(msg) + '</text>');
+        }
+        return out.join('');
+    }
+
+    function fact(n) { return n <= 1 ? 1 : n * fact(n - 1); }
+
+    return { buildSteps: buildSteps, render: render, fact: fact };
+})();
+
+    var nIn = document.getElementById('fact-n');
+    if (!nIn) return;
+    var nVal = document.getElementById('fact-n-val');
+    var plot = document.getElementById('fact-plot');
+    var cnt = document.getElementById('fact-count');
+    var desc = document.getElementById('fact-desc');
+    var out = document.getElementById('fact-out');
+    var next = document.getElementById('fact-next');
+    var reset = document.getElementById('fact-reset');
+    var steps = [], i = 0;
+    function draw() {
+        var s = steps[i];
+        plot.innerHTML = FACT.render(s);
+        plot.setAttribute('aria-label', 'factorial 호출 상자 ' + s.stack.length + '개가 쌓인 스택. ' + s.text);
+        cnt.textContent = i + ' / ' + (steps.length - 1);
+        desc.textContent = s.text;
+        out.textContent = s.result === null ? '아직 없어요' : String(s.result);
+        next.disabled = i >= steps.length - 1;
+    }
+    function start() {
+        var n = parseInt(nIn.value, 10);
+        nVal.textContent = String(n);
+        steps = FACT.buildSteps(n);
+        i = 0;
+        draw();
+    }
+    nIn.addEventListener('input', start);
+    reset.addEventListener('click', start);
+    next.addEventListener('click', function () {
+        if (i < steps.length - 1) { i += 1; draw(); }
+    });
+    start();
+})();</script>
+  <script id="theme-ui">
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const sysDark = matchMedia('(prefers-color-scheme: dark)');
+      const KEY = 'od-theme';
+      const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : sysDark.matches;
+      function label() {
+        const next = isDark() ? '라이트 모드로 전환' : '다크 모드로 전환';
+        btn.setAttribute('aria-label', next);
+        btn.title = next;
+      }
+      btn.addEventListener('click', () => {
+        const t = isDark() ? 'light' : 'dark';
+        // 시스템 설정과 같아지면 저장을 지워 다시 시스템을 따른다
+        if ((t === 'dark') === sysDark.matches) { delete root.dataset.theme; try { localStorage.removeItem(KEY); } catch (e) {} }
+        else { root.dataset.theme = t; try { localStorage.setItem(KEY, t); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+        label();
+      });
+      sysDark.addEventListener('change', label);
+      window.addEventListener('storage', (e) => {
+        if (e.key !== KEY) return;
+        if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue; else delete root.dataset.theme;
+        label();
+      });
+      label();
+    })();
+  </script>
+  <script id="panels-ui">
+    (function () {
+      const body = document.body;
+      const layout = document.querySelector('.layout');
+      const kind = body.dataset.panels;
+      const panels = { left: document.getElementById('panel-left'), right: document.getElementById('panel-right') };
+      const toggles = { left: document.getElementById('toggle-left'), right: document.getElementById('toggle-right') };
+      const scrim = document.getElementById('panel-scrim');
+      const blockers = [document.querySelector('.topbar'), document.querySelector('.content'), document.querySelector('.pager')];
+      const wideMq = matchMedia('(min-width: 1024px)');
+      const roomyMq = matchMedia('(min-width: 1280px)');
+      const store = {
+        get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+      };
+      const PREF = 'od-panels:' + kind;
+      // 팩마다 문제·토픽 id가 p1, s1-…로 겹치므로 진행 기록은 기간별로 나눈다
+      const RANGE = body.dataset.range || '';
+      const ICON_TODO = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>';
+      const ICON_DONE = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 10"/></svg>';
+      let overlay = null;
+
+      // ---------- 열고 닫기 ----------
+      function docked() {
+        const pref = store.get(PREF, {});
+        return { left: pref.left ?? true, right: pref.right ?? roomyMq.matches };
+      }
+      function sync() {
+        const wide = wideMq.matches;
+        const d = docked();
+        ['left', 'right'].forEach((side) => {
+          const open = wide ? d[side] : overlay === side;
+          const p = panels[side];
+          layout.dataset[side] = open ? 'open' : 'closed';
+          p.classList.toggle('is-open', !wide && open);
+          p.inert = !open;
+          if (!wide && open) { p.setAttribute('role', 'dialog'); p.setAttribute('aria-modal', 'true'); }
+          else { p.removeAttribute('role'); p.removeAttribute('aria-modal'); }
+          toggles[side].setAttribute('aria-expanded', String(open));
+        });
+        const drawer = !wide && overlay !== null;
+        scrim.classList.toggle('is-on', drawer);
+        body.classList.toggle('drawer-open', drawer);
+        blockers.forEach((el) => { el.inert = drawer; });
+      }
+      function openDrawer(side) {
+        overlay = side;
+        sync();
+        requestAnimationFrame(() => panels[side].querySelector('[data-panel-close]').focus());
+      }
+      function closeDrawer(refocus) {
+        if (overlay === null) return;
+        const side = overlay;
+        overlay = null;
+        sync();
+        if (refocus) toggles[side].focus();
+      }
+      function toggle(side) {
+        if (wideMq.matches) {
+          const d = docked();
+          d[side] = !d[side];
+          store.set(PREF, d);
+          sync();
+          if (d[side]) { const p = panels[side]; p.classList.remove('is-shown'); void p.offsetWidth; p.classList.add('is-shown'); }
+        } else if (overlay === side) closeDrawer(true);
+        else openDrawer(side);
+      }
+
+      toggles.left.addEventListener('click', () => toggle('left'));
+      toggles.right.addEventListener('click', () => toggle('right'));
+      scrim.addEventListener('click', () => closeDrawer(true));
+      document.querySelectorAll('[data-panel-close]').forEach((b) => b.addEventListener('click', () => closeDrawer(true)));
+      panels.left.addEventListener('click', (e) => { if (e.target.closest('.toc a')) closeDrawer(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay !== null) { e.preventDefault(); closeDrawer(true); } });
+
+      // ---------- 패널 너비: 기본은 화면 폭에 맞춰 자동, 경계를 끌면 직접 조절 ----------
+      const WIDTH = { left: { min: 220, max: 480, prop: '--panel-l-user' }, right: { min: 280, max: 720, prop: '--panel-r-user' } };
+      function applyWidths() {
+        const w = store.get(PREF + ':w', {});
+        ['left', 'right'].forEach((side) => {
+          if (w[side]) layout.style.setProperty(WIDTH[side].prop, w[side] + 'px');
+          else layout.style.removeProperty(WIDTH[side].prop);
+        });
+      }
+      function maxFor(side) {
+        const other = side === 'left' ? panels.right : panels.left;
+        const otherW = layout.dataset[side === 'left' ? 'right' : 'left'] === 'open' ? other.getBoundingClientRect().width : 0;
+        return Math.max(WIDTH[side].min, Math.min(WIDTH[side].max, window.innerWidth - otherW - 400));
+      }
+      function setWidth(side, px, save) {
+        const v = Math.round(Math.min(Math.max(px, WIDTH[side].min), maxFor(side)));
+        layout.style.setProperty(WIDTH[side].prop, v + 'px');
+        panels[side].querySelector('.panel-resize').setAttribute('aria-valuenow', String(v));
+        if (save) { const w = store.get(PREF + ':w', {}); w[side] = v; store.set(PREF + ':w', w); }
+      }
+      function resetWidth(side) {
+        const w = store.get(PREF + ':w', {});
+        delete w[side];
+        store.set(PREF + ':w', w);
+        layout.style.removeProperty(WIDTH[side].prop);
+      }
+      document.querySelectorAll('.panel-resize').forEach((handle) => {
+        const side = handle.dataset.side;
+        const dir = side === 'left' ? 1 : -1;
+        handle.setAttribute('aria-valuemin', String(WIDTH[side].min));
+        handle.setAttribute('aria-valuemax', String(WIDTH[side].max));
+        handle.addEventListener('pointerdown', (e) => {
+          if (!wideMq.matches || e.button !== 0) return;
+          e.preventDefault();
+          const startX = e.clientX;
+          const startW = panels[side].getBoundingClientRect().width;
+          handle.setPointerCapture(e.pointerId);
+          body.classList.add('is-resizing');
+          const move = (ev) => setWidth(side, startW + dir * (ev.clientX - startX), false);
+          const up = () => {
+            handle.removeEventListener('pointermove', move);
+            handle.removeEventListener('pointerup', up);
+            handle.removeEventListener('pointercancel', up);
+            body.classList.remove('is-resizing');
+            setWidth(side, panels[side].getBoundingClientRect().width, true);
+          };
+          handle.addEventListener('pointermove', move);
+          handle.addEventListener('pointerup', up);
+          handle.addEventListener('pointercancel', up);
+        });
+        handle.addEventListener('dblclick', () => resetWidth(side));
+        handle.addEventListener('keydown', (e) => {
+          const step = e.shiftKey ? 64 : 16;
+          const cur = panels[side].getBoundingClientRect().width;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            e.stopPropagation();
+            setWidth(side, cur + (e.key === 'ArrowRight' ? step : -step) * dir, true);
+          } else if (e.key === 'Home') { e.preventDefault(); resetWidth(side); }
+        });
+      });
+      applyWidths();
+      const onMq = () => { overlay = null; sync(); };
+      wideMq.addEventListener('change', onMq);
+      roomyMq.addEventListener('change', onMq);
+
+      // ---------- 목차의 진행 표시 ----------
+      const progressN = document.getElementById('progress-n');
+      const progressBar = document.getElementById('progress-bar');
+      const progressTotal = document.getElementById('progress-total');
+      function markToc(done, total, doneLabel) {
+        panels.left.querySelectorAll('.toc-list a').forEach((a) => {
+          const id = decodeURIComponent(a.getAttribute('href').slice(1));
+          let mark = a.querySelector('.toc-mark');
+          if (!mark) {
+            mark = document.createElement('span');
+            mark.className = 'toc-mark';
+            mark.setAttribute('aria-hidden', 'true');
+            const state = document.createElement('span');
+            state.className = 'sr-only toc-state';
+            a.append(mark, state);
+          }
+          const isDone = done.has(id);
+          mark.classList.toggle('is-done', isDone);
+          mark.innerHTML = isDone ? ICON_DONE : ICON_TODO;
+          a.querySelector('.toc-state').textContent = isDone ? ' (' + doneLabel + ')' : '';
+        });
+        progressN.textContent = String(done.size);
+        progressTotal.textContent = String(total);
+        progressBar.style.transform = 'scaleX(' + (total ? done.size / total : 0) + ')';
+      }
+      function revealCurrent() {
+        const link = panels.left.querySelector('.toc-list a[aria-current="true"]');
+        if (link && layout.dataset.left === 'open') link.scrollIntoView({ block: 'nearest' });
+      }
+
+      // ---------- 복습문제: 오른쪽 = 원문 · 힌트 · 풀이 ----------
+      function setupReview() {
+        const KEY = 'od-review-solved:' + RANGE;
+        const cards = Array.from(document.querySelectorAll('main article.card'));
+        const aids = panels.right.querySelector('.aids');
+        const sub = document.getElementById('aid-for');
+        const empty = panels.right.querySelector('.panel-empty');
+        const btn = document.getElementById('solved-btn');
+        const groups = {};
+        const solved = new Set(store.get(KEY, []).filter((id) => cards.some((c) => c.id === id)));
+        cards.forEach((card) => {
+          const g = document.createElement('div');
+          g.className = 'aid';
+          g.hidden = true;
+          card.querySelectorAll(':scope > details').forEach((d) => g.appendChild(d));
+          aids.appendChild(g);
+          groups[card.id] = g;
+        });
+        let curId = null;
+        function paintBtn() {
+          const on = solved.has(curId);
+          btn.setAttribute('aria-pressed', String(on));
+          btn.innerHTML = (on ? ICON_DONE : ICON_TODO) + '<span>' + (on ? '푼 문제 · 표시 해제' : '푼 문제로 표시') + '</span>';
+        }
+        btn.addEventListener('click', () => {
+          if (!curId) return;
+          if (solved.has(curId)) solved.delete(curId); else solved.add(curId);
+          store.set(KEY, Array.from(solved));
+          paintBtn();
+          markToc(solved, cards.length, '푼 문제');
+        });
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          curId = s.matches('article.card') ? s.id : null;
+          Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
+          empty.hidden = Boolean(curId);
+          btn.hidden = !curId;
+          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';
+          sub.hidden = !curId;
+          if (curId) paintBtn();
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(solved, cards.length, '푼 문제');
+          revealCurrent();
+        });
+      }
+
+      // ---------- 정리노트: 오른쪽 = 페이지(토픽)별 요약 ----------
+      function setupNote() {
+        const KEY = 'od-note-read:' + RANGE;
+        const topics = Array.from(document.querySelectorAll('main article.topic'));
+        const read = new Set(store.get(KEY, []).filter((id) => topics.some((t) => t.id === id)));
+        // 조각의 <div class="sum" hidden> 을 오른쪽 패널로 옮긴다. 없으면 안내 문구만 보인다.
+        const box = panels.right.querySelector('.sums');
+        const sums = {};
+        topics.forEach((t) => {
+          const el = t.querySelector(':scope > .sum');
+          if (!el) return;
+          el.hidden = true;
+          box.appendChild(el);
+          sums[t.id] = el;
+        });
+        const sub = document.getElementById('sum-for');
+        const empty = document.getElementById('sum-empty');
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          const key = s.matches('article.topic') ? s.id : 'intro';
+          Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
+          empty.hidden = Boolean(sums[key]);
+          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
+          if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(read, topics.length, '읽음');
+          revealCurrent();
+        });
+      }
+
+      if (kind === 'review') setupReview();
+      if (kind === 'note') setupNote();
+      sync();
+    })();
+  </script>
+  <script id="pager-ui">
+    (function () {
+      const root = document.documentElement;
+      const main = document.querySelector('main');
+      const hero = main.querySelector('.hero');
+      const screens = [hero].concat(Array.from(main.querySelectorAll(document.body.dataset.screens)));
+      if (screens.length < 2) { root.classList.remove('js'); return; }
+      screens.forEach((s) => s.classList.add('screen'));
+
+      const last = screens.length - 1;
+      const prevBtn = document.getElementById('pager-prev');
+      const nextBtn = document.getElementById('pager-next');
+      const count = document.getElementById('pager-count');
+      const bar = document.getElementById('pager-bar');
+      const status = document.getElementById('pager-status');
+      const toc = document.querySelector('#panel-left .toc');
+      const scroller = document.querySelector('.content');
+      const titleOf = (s) => ((s.querySelector('h3') || s.querySelector('h1') || {}).textContent || '').trim();
+      let cur = -1;
+
+      // 목차: 섹션 링크 아래에 화면(토픽·카드) 목록을 붙인다
+      const tocLinks = [];
+      Array.from(toc.querySelectorAll(':scope > a')).forEach((a) => {
+        const sec = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+        const group = document.createElement('div');
+        group.className = 'toc-group';
+        a.replaceWith(group);
+        group.appendChild(a);
+        if (!sec) return;
+        const list = document.createElement('ol');
+        list.className = 'toc-list';
+        screens.forEach((s, i) => {
+          if (!sec.contains(s)) return;
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#' + s.id;
+          link.innerHTML = '<span class="toc-title"></span>';
+          link.firstChild.textContent = titleOf(s);
+          li.appendChild(link);
+          list.appendChild(li);
+          tocLinks[i] = link;
+        });
+        group.appendChild(list);
+      });
+
+      function indexFor(hash) {
+        const id = decodeURIComponent((hash || '').replace(/^#/, ''));
+        const el = id && document.getElementById(id);
+        if (!el || !main.contains(el)) return { i: 0 };
+        const i = screens.findIndex((s) => s.contains(el) || el.contains(s));
+        return { i: Math.max(i, 0), target: i >= 0 && screens[i].contains(el) && screens[i] !== el ? el : null };
+      }
+
+      function render(i, target) {
+        const dir = cur < 0 ? '' : i > cur ? 'enter-next' : 'enter-prev';
+        if (i !== cur) {
+          if (cur >= 0) screens[cur].classList.remove('is-current', 'enter-next', 'enter-prev');
+          main.querySelectorAll(':scope > section.is-on').forEach((sec) => sec.classList.remove('is-on'));
+          const s = screens[i];
+          const sec = s.closest('section');
+          if (sec) sec.classList.add('is-on');
+          s.classList.add('is-current');
+          if (dir) { s.classList.remove('enter-next', 'enter-prev'); void s.offsetWidth; s.classList.add(dir); }
+          cur = i;
+          document.body.classList.toggle('at-end', i === last);
+          prevBtn.disabled = i === 0;
+          nextBtn.textContent = i === 0 ? '시작하기' : i === last ? '처음으로' : '다음';
+          count.textContent = i === 0 ? '' : i + ' / ' + last;
+          bar.style.transform = 'scaleX(' + (i / last) + ')';
+          status.textContent = i === 0 ? titleOf(s) : i + ' / ' + last + ', ' + titleOf(s);
+          tocLinks.forEach((link, k) => link && link.setAttribute('aria-current', String(k === i)));
+          document.dispatchEvent(new CustomEvent('od:screen', { detail: { index: i, screen: s } }));
+        }
+        if (target) target.scrollIntoView({ block: 'start' });
+        else scroller.scrollTo(0, 0);
+      }
+
+      function go(i) {
+        i = Math.min(Math.max(i, 0), last);
+        if (i === cur) return;
+        const url = i === 0 ? location.pathname + location.search : '#' + screens[i].id;
+        history.pushState(null, '', url);
+        render(i);
+      }
+
+      prevBtn.addEventListener('click', () => go(cur - 1));
+      nextBtn.addEventListener('click', () => go(cur === last ? 0 : cur + 1));
+      const fromUrl = () => { const r = indexFor(location.hash); render(r.i, r.target); };
+      window.addEventListener('hashchange', fromUrl);
+      window.addEventListener('popstate', fromUrl);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || document.body.classList.contains('drawer-open')) return;
+        if (e.target.closest('input, select, textarea, [contenteditable="true"]')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+      });
+
+      // 좌우로 밀어서 넘기기 (가로로 스크롤되는 영역은 제외)
+      let sx = 0, sy = 0, skip = true;
+      main.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY;
+        skip = e.touches.length > 1 || Boolean(e.target.closest('.widget, .katex-display, .table-wrap, pre, svg, input, details'));
+      }, { passive: true });
+      main.addEventListener('touchend', (e) => {
+        if (skip) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        if (Math.abs(dx) > 64 && Math.abs(dx) > 2 * Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      fromUrl();
+    })();
+  </script>
+</body>
+</html>
