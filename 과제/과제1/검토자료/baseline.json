@@ -1,0 +1,247 @@
+{
+  "source_sha256": "78beddc6e6a48f18075e9ae700aa519822f8bfa26985dd7c554d38515b97bf3e",
+  "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin27.0.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+  "build_command": [
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제1/HW1.c",
+    "-o",
+    "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/tmp/hw1-report/before"
+  ],
+  "build_stderr": "",
+  "cases": [
+    {
+      "name": "example-1",
+      "stdin": "2\n2\n1 0\n0 1\n1 0\n1 1\n1 1\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 2개)\n각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (2 x 2)\n각 프로세스가 최대로 요구하는 자원의 수(MAXIMUM)를 입력하세요. (2 x 2):\n\nNeed matrix:\nP0: 1 0\nP1: 0 1\n가능한 시퀀스의 개수: 1\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": 1,
+      "expected_need": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "example-2",
+      "stdin": "3\n1\n2\n1\n1\n0\n1\n2\n2\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 1개)\n각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (3 x 1)\n각 프로세스가 최대로 요구하는 자원의 수(MAXIMUM)를 입력하세요. (3 x 1):\n\nNeed matrix:\nP0: 0\nP1: 1\nP2: 2\n가능한 시퀀스의 개수: 6\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": 6,
+      "expected_need": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "example-3",
+      "stdin": "3\n2\n1 0\n1 0\n0 1\n0 0\n1 1\n2 1\n0 1\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 2개)\n각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (3 x 2)\n각 프로세스가 최대로 요구하는 자원의 수(MAXIMUM)를 입력하세요. (3 x 2):\n\nNeed matrix:\nP0: 0 1\nP1: 2 0\nP2: 0 1\n가능한 시퀀스의 개수: 0\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": 0,
+      "expected_need": [
+        [
+          0,
+          1
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "eight-processes-zero-resources",
+      "stdin": "8\n0\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 0개)\n각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (8 x 0)\n각 프로세스가 최대로 요구하는 자원의 수(MAXIMUM)를 입력하세요. (8 x 0):\n\nNeed matrix:\nP0:\nP1:\nP2:\nP3:\nP4:\nP5:\nP6:\nP7:\n가능한 시퀀스의 개수: 40320\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": 40320,
+      "expected_need": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "passed": true
+    },
+    {
+      "name": "one-process-five-resources",
+      "stdin": "1\n5\n0 0 0 0 0\n0 0 0 0 0\n0 0 0 0 0\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 5개)\n각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (1 x 5)\n각 프로세스가 최대로 요구하는 자원의 수(MAXIMUM)를 입력하세요. (1 x 5):\n\nNeed matrix:\nP0: 0 0 0 0 0\n가능한 시퀀스의 개수: 1\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": 1,
+      "expected_need": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "passed": true
+    },
+    {
+      "name": "process-negative",
+      "stdin": "-1\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "process-zero",
+      "stdin": "0\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "process-nine",
+      "stdin": "9\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "resource-negative",
+      "stdin": "1\n-1\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "resource-six",
+      "stdin": "1\n6\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "available-negative",
+      "stdin": "1\n1\n-1\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 1개)\n잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "allocation-negative",
+      "stdin": "1\n1\n0\n-1\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 1개)\n각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (1 x 1)\n잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "maximum-negative",
+      "stdin": "1\n1\n0\n0\n-1\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 1개)\n각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (1 x 1)\n각 프로세스가 최대로 요구하는 자원의 수(MAXIMUM)를 입력하세요. (1 x 1):\n잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "maximum-below-allocation",
+      "stdin": "1\n1\n0\n2\n1\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 1개)\n각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (1 x 1)\n각 프로세스가 최대로 요구하는 자원의 수(MAXIMUM)를 입력하세요. (1 x 1):\n잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "nonnumeric-process",
+      "stdin": "x\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "nonnumeric-available",
+      "stdin": "1\n1\nx\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 1개)\n잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "empty-input",
+      "stdin": "",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    },
+    {
+      "name": "missing-maximum",
+      "stdin": "1\n1\n0\n0\n",
+      "stdout": "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5): 현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 종류 1개)\n각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (1 x 1)\n각 프로세스가 최대로 요구하는 자원의 수(MAXIMUM)를 입력하세요. (1 x 1):\n잘못된 값을 입력하셨습니다.\n",
+      "stderr": "",
+      "returncode": 0,
+      "expected_count": null,
+      "expected_need": null,
+      "passed": true
+    }
+  ]
+}
