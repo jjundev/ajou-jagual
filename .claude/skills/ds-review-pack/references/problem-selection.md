@@ -1,38 +1,52 @@
-# 문제 선별 규칙 (MML 전용)
+# 문제 선별 규칙 (기출 문제은행 전용)
 
 ## 원칙
-- 문제는 **MML 교과서에서만** 가져온다. 자작 문제 금지. 숫자만 바꾼 변형은 본문 예제(`variant: true`)에 한해 허용한다(카드에 출처·변형 배지는 달지 않는다).
-- 출처가 `Example N.M`이면 그 Example의 **회색 상자 안** 내용만 쓴다. PDF 쪽을 열어 상자가 어디서 끝나는지 확인한다. 상자 밖 본문 설명·식(예: Example 8.8 뒤의 동전 실험)은 문제 출처가 아니다.
-- "변형"은 숫자·데이터 값만 바꾼다. 구조(그래프 모양과 노드 수, 변수 수, 식의 꼴, 예제를 문제로 바꾸는 것 이상의 질문)를 바꾸면 자작 문제다.
-- 수업에서 배운 내용만으로 풀 수 있어야 한다. 풀이에 수업에서 안 다룬 개념이 한 단계라도 필요하면 제외.
-- 8~12문항. 난이도 개념 확인(level 1) : 계산(2) : 도전(3) ≈ 5 : 4 : 1.
+- 문제는 **기출 문제은행(`from_the_past/기출/문제은행.json`)에서만** 가져온다. 자작 문제 금지.
+- 변형은 원본 문항이 8개보다 적을 때만 만든다. 숫자·데이터 값만 바꾸고, 구조(자료구조 종류와 크기, 연산 순서의 꼴, 코드 모양, 묻는 것)는 그대로 둔다. 구조를 바꾸면 자작 문제다.
+- 수업에서 배운 내용만으로 풀 수 있어야 한다. `bank.py select`의 챕터 조건이 먼저 거르고, 메인 에이전트가 문항 글을 읽어 수업에서 안 다룬 개념(같은 챕터라도 슬라이드 대조표에서 "안 다룸"인 연산 등)이 한 단계라도 필요하면 뺀다. 뺀 문항과 이유는 보고서 "스킬이 정한 사항"에 적는다.
+- 개수: 8~12문항.
 
-## 수업 범위가 Part II(8~12장)일 때 — Part II에는 연습문제가 없다
-1. **Part A**: 그 장 본문의 `Example N.M` 중 수업에서 다룬 것을 문제로 바꾼다(`variant: true`). 원문은 카드의 "교과서 원문 보기" 토글에 짧게.
-2. **Part B**: Part I(2~7장) 연습문제 중 **핵심 개념이 수업에서 다뤄진 것**만. 예: MLE/MAP를 배웠으면 6장 Beta-Bernoulli, 조건부확률; 최소제곱을 배웠으면 5장 기울기, 7장 정상점.
-3. 이전 복습팩에서 이미 쓴 문제는 다시 쓰지 않는다(`복습노트/*/복습문제_*.html`의 `data-source` 확인).
+## 순서
+1. 후보를 뽑는다(이미 쓴 문항은 빠진다):
+   ```bash
+   python3 "$SKILL/scripts/bank.py" select "$BANK" --range-ch <range_ch> --taught <taught> --used-dir "$REPO/복습노트"
+   ```
+   출력은 이미 우선순위 순이다(출제자 이정원 > 미상 > 그 밖, 유형 trace·code-read > blank·short·code-write > essay > ox, 최근 연도, OX 최대 2개).
+2. 위에서부터 읽으며 12개까지 고른다. 같은 개념(예: 원형 큐 front/rear 계산)이 셋 이상 겹치면 뒤의 것을 건너뛴다.
+3. 고른 원본 문항이 8개 미만이면 변형을 더해 8개로 맞춘다.
+   - 변형 후보: `--used-dir` 없이 다시 `select`한 목록(이전 팩에서 쓴 문항 포함) 중 `trace`, `code-read`, `blank`.
+   - 변형 문항의 manifest `source`는 원래 문항 id, `variant: true`, `part: "partC"`.
+4. 변형까지 더해도 4개가 안 되면 있는 만큼 쓰고 보고서 "미해결"에 "문항 부족(N개)"을 적는다.
 
-## 수업 범위가 Part I(2~7장)일 때
-- 그 장의 연습문제를 우선하고, 본문 Example은 보조로.
+## parts
+| id | title | short | 들어가는 문항 |
+|---|---|---|---|
+| `partA` | `A. 이정원 교수님 기출` | `A 이정원 기출` | 출제자 이정원, 원본 그대로 |
+| `partB` | `B. 다른 기출` | `B 다른 기출` | 출제자 미상·그 밖, 원본 그대로 |
+| `partC` | `C. 기출 변형` | `C 변형` | `variant: true` |
 
-## 위치 찾기
-- 연습문제 PDF: `교과서/연습문제/Chapter_0{2..7}_*_Exercises.pdf`(없으면 아래 목차 방법).
-- MML 목차의 `Exercises` 항목(PDF 1-기준 쪽): 2장 70, 3장 102, 4장 143, 5장 176, 6장 228, 7장 253. **책 쪽 = PDF 쪽 − 6.**
-- 스니펫:
-  ```bash
-  REPO=… python3 - <<'EOF'
-  import fitz, os, re
-  d = fitz.open(os.path.join(os.environ["REPO"], "교과서/Mathematics_for_Machine_Learning.pdf"))
-  print([(t, p) for lvl, t, p in d.get_toc() if t == "Exercises"])
-  first = {}
-  for i in range(d.page_count):
-      for m in re.finditer(r"Example (\d+)\.(\d+)", d[i].get_text()):
-          first.setdefault(m.group(0), i + 1)
-  print({k: v for k, v in first.items() if k.startswith("Example 9.")})  # 필요한 장
-  EOF
-  ```
-  `Example N.M`의 첫 등장 쪽이 본문 참조일 수 있으니 해당 쪽을 열어 예제 본문인지 확인한다.
+문항이 0개인 part는 뺀다.
+
+## level
+| level | 유형 |
+|---|---|
+| 1 | `ox`, `blank` |
+| 2 | `trace`, `code-read`, `short` |
+| 3 | `code-write`, `essay`, 또는 배점 10점 이상 |
+
+## 문항 원문 모으기
+카드 작성자가 볼 `<RUN>/problems.md`를 메인 에이전트가 만든다. 고른 문항마다:
+```
+## <은행 문항 id>  (manifest id pN, variant true/false)
+- 원본: <연도> <시험> <번호>번 · <배점>점 · <출제자> — <sources.file>
+- 문제 글: <은행 text 그대로>
+- 그림: <은행 figure 또는 "없음">
+- 은행 정답: <answer> (<answer_origin>)
+- 변형 값: <변형이면 바꾼 숫자, 아니면 "없음">
+- 전사 기록: <from_the_past/기출/_전사/<source-id>.md 에서 그 번호 절 그대로>
+```
 
 ## 정답
-- 모든 수치 정답은 `fractions.Fraction`(필요하면 `math`)으로 계산해 manifest `answer`와 카드 `terms`에 넣는다.
-- 기호 정답(식)은 풀이 단계를 역으로 대입해 한 번 더 확인한다.
+- 모든 정답을 `<RUN>/answers.py`에서 다시 계산한다. 자료구조 연산은 Python으로 그대로 시뮬레이션하고(리스트로 만든 스택·큐·힙, 딕셔너리로 만든 트리), C 코드를 읽는 문제는 `<RUN>/work/`에서 `cc -std=c11 -Wall -o <이름> <이름>.c`로 컴파일해 실행한다.
+- 은행 `answer`와 다르면 실행값을 쓰고 보고서 "은행과 다른 답"에 적는다. 은행 파일은 고치지 않는다(다음 `bank` 실행 때 반영).
+- 그림으로 답하는 문제(트리 그리기 등)는 결과를 순회 순서나 배열 표현 같은 글자로도 적어 manifest `terms`에 넣는다(예: 레벨 순서 `60 40 30 15 12 6 10 5`).

@@ -12,6 +12,7 @@ import unittest
 from _util import SKILL
 
 SKILL_MD = SKILL / "SKILL.md"
+ML_WORDS = ("MML", "머신러닝", "정방철", "교과서", "머러기", "Lecture", "강의노트/")
 
 
 class TestSkillFiles(unittest.TestCase):
@@ -43,6 +44,13 @@ class TestSkillFiles(unittest.TestCase):
         for n in range(10):
             with self.subTest(step=n):
                 self.assertRegex(self.text, rf"\n### {n}\. ")
+
+    def test_no_ml_leftovers_in_references(self):
+        for path in sorted((SKILL / "references").glob("*.md")):
+            text = path.read_text(encoding="utf-8")
+            for word in ML_WORDS:
+                with self.subTest(file=path.name, word=word):
+                    self.assertNotIn(word, text)
 
 
 class TestBackupSnippet(unittest.TestCase):
