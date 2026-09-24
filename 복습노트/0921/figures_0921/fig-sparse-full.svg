@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="250" viewBox="0 0 480 250" role="img" aria-label="왼쪽은 가로세로 세 칸인 작은 격자, 오른쪽은 가로세로 여섯 칸인 큰 격자예요. 값이 든 칸은 강조색 테두리로, 0이 든 칸은 가는 선 테두리에 흐린 글자로 그렸어요. 작은 격자는 아홉 칸 중 두 칸이, 큰 격자는 서른여섯 칸 중 스물아홉 칸이 0이에요."><style>
+svg { color: #1b2130; font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+.fig-ink { stroke: #1b2130; fill: none; stroke-width: 2; }
+.fig-accent { stroke: #2f6fdb; fill: none; stroke-width: 2.5; }
+.fig-danger { stroke: #d92d20; fill: none; stroke-width: 2.5; }
+.fig-dot { fill: #2f6fdb; }
+.fig-text { fill: #1b2130; font-size: 13px; }
+.fig-muted { fill: #4a5468; font-size: 12px; }
+.axis { stroke: #dde2ea; stroke-width: 1.5; }
+.tick { fill: #4a5468; font-size: 11px; }
+.plot-truth { fill: none; stroke: #4a5468; stroke-width: 1.5; stroke-dasharray: 5 4; }
+.plot-fit { fill: none; stroke: #2f6fdb; stroke-width: 2.5; }
+.pt-train { fill: #2f6fdb; }
+.pt-test { fill: #b54708; }
+.mark-ml { stroke: #2f6fdb; stroke-width: 1.5; stroke-dasharray: 3 3; }
+.mark-map { stroke: #067647; stroke-width: 1.5; stroke-dasharray: 3 3; }
+.plot-like { fill: none; stroke: #2f6fdb; stroke-width: 2; }
+.plot-prior { fill: none; stroke: #6941c6; stroke-width: 2; stroke-dasharray: 6 4; }
+.plot-post { fill: none; stroke: #067647; stroke-width: 3; }
+</style><rect x="0" y="0" width="480" height="250" rx="10" fill="#ffffff"/>
+<text class="fig-muted" x="55" y="54" font-size="12" text-anchor="middle">0</text>
+<text class="fig-muted" x="85" y="54" font-size="12" text-anchor="middle">1</text>
+<text class="fig-muted" x="115" y="54" font-size="12" text-anchor="middle">2</text>
+<text class="fig-muted" x="32" y="79" font-size="12" text-anchor="end">0</text>
+<text class="fig-muted" x="32" y="109" font-size="12" text-anchor="end">1</text>
+<text class="fig-muted" x="32" y="139" font-size="12" text-anchor="end">2</text>
+<rect class="fig-accent" x="42" y="62" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="55" y="80" font-size="13" text-anchor="middle" font-weight="700">2</text>
+<rect class="fig-accent" x="72" y="62" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="85" y="80" font-size="13" text-anchor="middle" font-weight="700">3</text>
+<rect class="fig-ink" x="100" y="60" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="115" y="80" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="42" y="92" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="55" y="110" font-size="13" text-anchor="middle" font-weight="700">8</text>
+<rect class="fig-accent" x="72" y="92" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="85" y="110" font-size="13" text-anchor="middle" font-weight="700">9</text>
+<rect class="fig-accent" x="102" y="92" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="115" y="110" font-size="13" text-anchor="middle" font-weight="700">1</text>
+<rect class="fig-accent" x="42" y="122" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="55" y="140" font-size="13" text-anchor="middle" font-weight="700">7</text>
+<rect class="fig-ink" x="70" y="120" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="85" y="140" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="102" y="122" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="115" y="140" font-size="13" text-anchor="middle" font-weight="700">5</text>
+<text class="fig-muted" x="85" y="175" font-size="12" text-anchor="middle">9칸 중 빈 칸 2개</text>
+<text class="fig-muted" x="265" y="34" font-size="12" text-anchor="middle">0</text>
+<text class="fig-muted" x="295" y="34" font-size="12" text-anchor="middle">1</text>
+<text class="fig-muted" x="325" y="34" font-size="12" text-anchor="middle">2</text>
+<text class="fig-muted" x="355" y="34" font-size="12" text-anchor="middle">3</text>
+<text class="fig-muted" x="385" y="34" font-size="12" text-anchor="middle">4</text>
+<text class="fig-muted" x="415" y="34" font-size="12" text-anchor="middle">5</text>
+<text class="fig-muted" x="242" y="59" font-size="12" text-anchor="end">0</text>
+<text class="fig-muted" x="242" y="89" font-size="12" text-anchor="end">1</text>
+<text class="fig-muted" x="242" y="119" font-size="12" text-anchor="end">2</text>
+<text class="fig-muted" x="242" y="149" font-size="12" text-anchor="end">3</text>
+<text class="fig-muted" x="242" y="179" font-size="12" text-anchor="end">4</text>
+<text class="fig-muted" x="242" y="209" font-size="12" text-anchor="end">5</text>
+<rect class="fig-ink" x="250" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="265" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="280" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="310" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="342" y="42" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="355" y="60" font-size="13" text-anchor="middle" font-weight="700">7</text>
+<rect class="fig-ink" x="370" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="400" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="415" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="252" y="72" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="265" y="90" font-size="13" text-anchor="middle" font-weight="700">9</text>
+<rect class="fig-ink" x="280" y="70" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="90" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="310" y="70" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="90" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="340" y="70" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="90" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="70" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="90" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="402" y="72" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="415" y="90" font-size="13" text-anchor="middle" font-weight="700">8</text>
+<rect class="fig-ink" x="250" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="265" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="280" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="310" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="340" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="400" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="415" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="252" y="132" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="265" y="150" font-size="13" text-anchor="middle" font-weight="700">6</text>
+<rect class="fig-accent" x="282" y="132" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="295" y="150" font-size="13" text-anchor="middle" font-weight="700">5</text>
+<rect class="fig-ink" x="310" y="130" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="150" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="340" y="130" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="150" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="130" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="150" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="400" y="130" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="415" y="150" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="250" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="265" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="280" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="310" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="340" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="402" y="162" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="415" y="180" font-size="13" text-anchor="middle" font-weight="700">1</text>
+<rect class="fig-ink" x="250" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="265" y="210" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="280" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="210" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="312" y="192" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="325" y="210" font-size="13" text-anchor="middle" font-weight="700">2</text>
+<rect class="fig-ink" x="340" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="210" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="210" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="400" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="415" y="210" font-size="13" text-anchor="middle">0</text>
+<text class="fig-muted" x="340" y="238" font-size="12" text-anchor="middle">36칸 중 빈 칸 29개</text>
+</svg>
