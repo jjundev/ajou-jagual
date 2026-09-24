@@ -5,7 +5,7 @@ description: 자료구조및알고리즘이해(자구알) 수업의 STT·강의�
 
 # 자구알 복습팩
 
-수업 녹음 전사(STT)와 강의록(`자료구조_강의록_2026/`), 기출 문제은행으로 한 기간의 복습팩을 만든다. 문제은행은 `bank` 모드로 먼저 한 번 만들어 둔다. 중간에 사용자에게 묻지 않고 끝에 한 번 보고한다. 커밋은 제안만 한다.
+수업 녹음 전사(STT)와 강의록(`자료구조_강의록_2026/`), 기출 문제은행으로 한 기간의 복습팩을 만든다. 문제은행은 `bank` 모드로 먼저 한 번 만들어 둔다. 중간에 사용자에게 묻지 않고(`bank` 모드의 hwp 외부 변환 허락만 B2 전에 한 번 묻는다) 끝에 한 번 보고한다. 커밋은 제안만 한다.
 
 **모드**
 - `bank`: 기출 원본을 전사해 문제은행을 만들거나 다시 만든다. 절차는 "문제은행 모드" B1~B4.
@@ -32,7 +32,7 @@ description: 자료구조및알고리즘이해(자구알) 수업의 STT·강의�
 1. `REPO/from_the_past/기출/`이 있는지 확인한다. 없으면 "자구알 저장소에서만 동작합니다"라고 알리고 멈춘다.
 2. 실행 폴더를 만든다: `mkdir -p "$RUN"/{parts,work} && ln -sfn "$REPO" "$RUN/repo"`
 3. `BANK`가 이미 있으면 `RUN/previous-bank.json`으로 복사한다(`reviewed` 값을 이어받는 데 쓴다). 이전 은행에서 `reviewed: true`인 `scan`·`photo` 원본은 B2·B3을 건너뛰고, 그 원본의 `sources`·`problems` 항목과 `REPO/from_the_past/기출/_전사/<id>.md`를 그대로 가져온다(사용자 검수와 수정을 지킨다). 다시 전사하려면 사용자가 먼저 그 원본의 `reviewed`를 `false`로 바꾼다.
-4. 원본 목록과 id는 `references/bank-build.md`의 원본 표를 따른다. 표에 없는 파일이 `from_the_past/기출/` 아래에 있으면 보고서 "새 원본"에 적고 이번에는 넣지 않는다.
+4. 원본 목록과 id는 `references/bank-build.md`의 원본 표를 따른다. 표에 없는 파일이 `from_the_past/기출/` 아래에 있으면(숨김 파일(`.DS_Store` 등)과 은행 산출물 `문제은행.json`, `_전사/`, `_정답검증/`은 빼고) 보고서 "새 원본"에 적고 이번에는 넣지 않는다.
 
 ### B2. 정규화
 `references/bank-build.md`의 "정규화"대로 원본(B1에서 그대로 가져온 원본은 빼고)을 `RUN/work/`에 읽을 수 있는 형태로 만든다(cp949 → UTF-8, hwp → PDF, PDF → 텍스트·쪽 이미지).
@@ -46,15 +46,16 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 3. 중복 문항(`duplicate_of`)을 `references/bank-build.md`의 "중복 문항"대로 채운다.
 4. 정답을 `references/bank-build.md`의 "정답 검증"대로 확인해 `answer`, `answer_origin`을 정한다.
 5. `python3 "$SKILL/scripts/bank.py" validate "$RUN/bank.json"` 결과가 `OK`여야 한다. 아니면 고치고 다시 검사한다.
-6. 저장소에 쓴다(메인 에이전트만): `RUN/bank.json` → `BANK`, `RUN/parts/<id>.md` → `REPO/from_the_past/기출/_전사/<id>.md`(B1에서 가져온 원본의 `_전사/<id>.md`는 덮어쓰지 않는다), `RUN/work/verify_<id>.py` → `REPO/from_the_past/기출/_정답검증/<id>.py`.
+6. 저장소에 쓴다(메인 에이전트만): `RUN/bank.json` → `BANK`, `RUN/parts/<id>.md` → `REPO/from_the_past/기출/_전사/<id>.md`(B1에서 가져온 원본의 `_전사/<id>.md`는 덮어쓰지 않는다), `RUN/work/verify_<id>.py` → `REPO/from_the_past/기출/_정답검증/<id>.py`(새로 전사한 원본만. B1에서 가져온 원본은 `verify_<id>.py`가 없고 저장소의 파일을 그대로 둔다).
 7. 보고한다:
 ```
 ## 문제은행 완료
 - 파일: from_the_past/기출/문제은행.json (원본 N개, 문항 M개), _전사/ N개, _정답검증/ N개
 - 챕터별 문항 수: 1장 a · 2장 b · …
-- 검수 대기(reviewed: false): 2015-ljw(스캔), 2016-final-ljw(사진) — _전사/<id>.md를 원본과 대조한 뒤 문제은행.json의 그 원본 reviewed를 true로 바꿔 주세요
+- 검수 대기(reviewed: false): 2015-ljw(스캔), 2016-final-ljw(사진) — _전사/<id>.md를 원본과 대조해 틀린 곳을 고치고, 문제은행.json의 그 원본 문항(`text`, `answer`(답을 바꾸면 `answer_origin`을 `unverified`로), `chapters`)도 똑같이 고친 뒤 그 원본 reviewed를 true로 바꿔 주세요
 - unverified 문항: … (없으면 "없음")
 - 모범답안과 다른 답: … (실행값 채택, 없으면 "없음")
+- 에이전트 답과 다른 답: … (실행값 채택, 없으면 "없음")
 - 빠진 원본·새 원본: … (없으면 "없음")
 - 커밋 제안: git add from_the_past/기출/문제은행.json from_the_past/기출/_전사 from_the_past/기출/_정답검증 && git commit -m "data(bank): build past-exam bank"
 ```
@@ -194,6 +195,8 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 - 범위: 배운 쪽 S2 p1–20 … / 예고만: …
 - 문제: P1 2016-final-ljw-q3 (2016 기말 3번, 이정원, trace) … / 변형 K개 (정답은 RUN/answers.py로 검증)
 - 은행과 다른 답: … (없으면 "없음")
+- 은행과 다른 문제 글: … (없으면 "없음")
+- 검수 대기로 뺀 원본: … (없으면 "없음")
 - 스킬이 정한 사항: slug, 섹션 구성, 위젯, 뺀 내용과 이유, 뺀 후보 문항과 이유
 - 미해결: … (없으면 "없음")
 - 커밋 제안: git add 복습노트/<range> && git commit -m "docs(notes): add ds review pack <range>"
@@ -209,7 +212,7 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 | 기간에 해당하는 STT 없음 | 사용 가능한 날짜를 보여 주고 멈춤 |
 | PDF 텍스트 추출 실패 | STT만으로 진행하고 보고서에 표시 |
 | 후보 문항 8개 미만 | `references/problem-selection.md`의 변형 규칙. 4개 미만이면 "미해결"에 문항 부족 |
-| hwp 변환 실패(`bank`) | 그 원본을 빼고 진행, 보고서 "빠진 원본"에 적음 |
+| hwp 변환 실패·외부 변환 허락 없음(`bank`) | 그 원본을 빼고 진행, 보고서 "빠진 원본"에 적음 |
 | 원본 판독 불가(`bank`) | `[?]`로 표시하고 보고서에 적음 |
 | 포트 사용 중 | 다른 빈 포트 사용 |
 | 같은 range의 팩이 이미 있음 | 4단계 첫 조립 전에 기존 html·md·`figures_<range>/`를 새 폴더 `RUN/previous-<시각>-<임의>/`에 복사하고(다시 조립할 때는 복사하지 않음) 백업 경로를 보고서에 적음. 백업 명령이 실패하면 조립하지 않고 원인을 고친다 |
