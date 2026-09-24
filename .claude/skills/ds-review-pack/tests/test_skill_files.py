@@ -59,15 +59,8 @@ class TestSkillFiles(unittest.TestCase):
                     self.assertNotIn(word, text)
 
 
-class TestBackupSnippet(unittest.TestCase):
-    """SKILL.md 4단계 백업 스니펫(python 부분)을 임시 폴더에서 실제로 실행한다."""
-
-    @classmethod
-    def setUpClass(cls):
-        text = SKILL_MD.read_text(encoding="utf-8")
-        m = re.search(r"```bash\nRANGE=<range> REPO=… RUN=… python3 - <<'EOF'\n(.*?)\nEOF\n```", text, re.S)
-        assert m, "SKILL.md 4단계 백업 스니펫을 찾지 못함"
-        cls.code = m.group(1)
+class TestBackupScript(unittest.TestCase):
+    """4단계 백업 스크립트(scripts/backup.py)를 임시 폴더에서 실제로 실행한다."""
 
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
@@ -81,8 +74,9 @@ class TestBackupSnippet(unittest.TestCase):
         self._tmp.cleanup()
 
     def backup(self, range_):
-        env = dict(os.environ, RANGE=range_, REPO=str(self.tmp / "repo"), RUN=str(self.run_dir))
-        return subprocess.run([sys.executable, "-"], input=self.code, env=env, capture_output=True, text=True)
+        cmd = [sys.executable, str(SKILL / "scripts" / "backup.py"),
+               "--range", range_, "--repo", str(self.tmp / "repo"), "--run", str(self.run_dir)]
+        return subprocess.run(cmd, capture_output=True, text=True)
 
     def backups(self):
         return sorted(p for p in self.run_dir.iterdir() if p.name.startswith("previous-"))

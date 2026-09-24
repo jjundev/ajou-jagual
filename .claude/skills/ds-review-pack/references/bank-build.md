@@ -49,7 +49,7 @@ print("쪽", doc.page_count, "→", out)
 EOF
 ```
 
-## 전사 브리프 (원본마다 1명, 병렬, model: opus / lite: sonnet)
+## 전사 브리프 (원본마다 1명, 병렬, 모델은 SKILL.md "에이전트 모델")
 
 ---
 자구알 기출 원본 `<source-id>`를 전사한다.

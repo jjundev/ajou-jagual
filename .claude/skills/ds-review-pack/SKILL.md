@@ -1,6 +1,6 @@
 ---
 name: ds-review-pack
-description: 자료구조및알고리즘이해(자구알) 수업의 STT·강의록으로 ELI5 정리노트 HTML과 기출 기반 복습문제 HTML(+MD, 그림)을 만들어 복습노트/<날짜>/ 폴더에 저장하고, 기출 원본으로 문제은행을 만든다. "자구알 정리노트", "자구알 복습문제", "복습팩", "기출 문제은행 만들어줘"처럼 자구알 수업 정리나 기출 정리를 요청하거나 /ds-review-pack [bank | MMDD | MMDD-MMDD] [lite]로 부를 때 사용한다.
+description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(정리노트·복습문제)이나 기출 문제은행을 만들 때 사용한다. /ds-review-pack [bank | MMDD | MMDD-MMDD] [lite]
 ---
 
 # 자구알 복습팩
@@ -15,7 +15,13 @@ description: 자료구조및알고리즘이해(자구알) 수업의 STT·강의�
 `정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, 같은 이름의 `.md` 두 개, `figures_<range>/`
 
 **인자**: `[bank | MMDD | MMDD-MMDD] [lite]`
-- `lite`: 작성자·요약·전사 에이전트를 sonnet으로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다.
+- `lite`: 작성자·요약·전사 에이전트를 가벼운 모델로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다.
+
+**에이전트 모델** (작성자·요약·전사 공통, 모델은 여기서만 정한다):
+| 실행 환경 | 기본 | `lite` |
+|---|---|---|
+| Claude | opus | sonnet |
+| GPT 등 Claude 아님 | sol | luna |
 
 **진행 표시**: 단계마다 한 줄만 쓴다. 예: `3/9 작성 중: 섹션 4개 + 카드 9개 (병렬)`, `B3 전사 중: 원본 11개 (병렬)`
 
@@ -38,7 +44,7 @@ description: 자료구조및알고리즘이해(자구알) 수업의 STT·강의�
 `references/bank-build.md`의 "정규화"대로 원본(B1에서 그대로 가져온 원본은 빼고)을 `RUN/work/`에 읽을 수 있는 형태로 만든다(cp949 → UTF-8, hwp → PDF, PDF → 텍스트·쪽 이미지).
 
 ### B3. 전사 (병렬)
-B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 **한 메시지에서 병렬로** 띄운다(opus, `lite`이면 sonnet). 브리프는 `references/bank-build.md`의 "전사 브리프"이며 `<source-id>`, `<원본 경로들>`, `<RUN>`, `<SKILL>`을 채워 넘긴다. 각자 `RUN/parts/<source-id>.json`과 `RUN/parts/<source-id>.md`를 쓴다.
+B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 **한 메시지에서 병렬로** 띄운다(모델은 "에이전트 모델" 표). 브리프는 `references/bank-build.md`의 "전사 브리프"이며 `<source-id>`, `<원본 경로들>`, `<RUN>`, `<SKILL>`을 채워 넘긴다. 각자 `RUN/parts/<source-id>.json`과 `RUN/parts/<source-id>.md`를 쓴다.
 
 ### B4. 합치기·검증·저장
 1. 조각을 합쳐 `RUN/bank.json`(`{"version": 1, "sources": [...], "problems": [...]}`)을 만든다. `sources`는 원본 표 값에 조각의 `has_key`와 `reviewed` 규칙(`references/bank-build.md`)을 더한다. B1에서 가져온 원본의 `sources`·`problems` 항목은 바꾸지 않고 그대로 넣는다(2~4단계도 새로 전사한 원본에만 한다).
@@ -81,22 +87,10 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
    에이전트는 `RUN` 밖에 쓰지 않는다. 임시·보조 파일(그림 생성 스크립트, 초안, 복사본)은 `RUN/work/`에만 둔다. 저장소(`STT/`, `자료구조_강의록_2026/`, `from_the_past/`)에는 아무도 쓰지 않고, `복습노트/`에는 메인 에이전트만 쓴다.
 
 ### 1. 범위 파악
-1. **먼저** 관련 강의록 텍스트를 쪽 번호와 함께 `RUN/slides.txt`에 추출한다(몇 초면 끝난다). 요약 에이전트는 이 파일이 있다고 보고 시작하므로 추출이 끝난 뒤에 띄운다.
+1. **먼저** 관련 강의록 텍스트를 쪽 번호와 함께 `RUN/slides.txt`에 추출한다. 요약 에이전트는 이 파일이 있다고 보고 시작하므로 추출이 끝난 뒤에 띄운다.
    - 관련 챕터: 이전 팩 정리노트(`복습노트/*/정리노트_*.html`)의 `<span class="tag slide">S<N> p<k>` 중 가장 큰 챕터(그 챕터 마지막 쪽까지 다뤘으면 그다음 챕터)부터 두 챕터. 이전 팩이 없으면 1~3장. 확실하지 않으면 넉넉히 넣는다.
    ```bash
-   CH="<관련 챕터 번호, 공백 구분>" REPO=… RUN=… python3 - <<'EOF'
-   import fitz, os, re
-   want = {int(x) for x in os.environ["CH"].split()}
-   d = os.path.join(os.environ["REPO"], "자료구조_강의록_2026")
-   with open(os.path.join(os.environ["RUN"], "slides.txt"), "w", encoding="utf-8") as f:
-       for name in sorted(os.listdir(d)):
-           m = re.match(r"Software_(\d+)_", name)
-           if not m or int(m.group(1)) not in want:
-               continue
-           for i, page in enumerate(fitz.open(os.path.join(d, name)), 1):
-               f.write(f"=== S{m.group(1)} p{i} ===\n{page.get_text()}\n")
-   print("slides.txt:", sorted(want))
-   EOF
+   python3 "$SKILL/scripts/extract_slides.py" --repo "$REPO" --run "$RUN" --ch <관련 챕터 번호, 공백 구분>
    ```
    - 추출에 실패하면 STT만으로 진행하고 보고서에 적는다(브리프의 `slides.txt` 줄은 "없음"으로 바꿔 넘긴다).
 2. 그다음 STT 날짜마다 요약 에이전트 1명을 **병렬로** 띄운다. 브리프는 `references/stt-summary-prompt.md`에 있다.
@@ -119,41 +113,15 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 ### 3. 작성
 - 섹션마다 작성자 1명을 띄운다. 브리프는 `references/content-rules.md`, 위젯 규칙은 `references/widget-rules.md`에 있다.
 - 문제 작성자 1명이 모든 카드를 쓴다. 브리프는 `references/card-rules.md`에 있다.
-- 모두 **한 메시지에서 병렬로** 띄운다. 모델은 opus, `lite`이면 sonnet이다.
+- 모두 **한 메시지에서 병렬로** 띄운다. 모델은 "에이전트 모델" 표를 따른다.
 - 브리프의 `<…>` 자리는 실제 경로, id, 금지어 목록(`<forbidden 목록>`), 예고 토픽 id(`<preview_topic>`), 그리고 섹션 작성자에게는 manifest `links` 중 그 섹션 토픽에 속한 것만(`<이 섹션의 links 목록>`) 채워 넣는다.
 - 위젯은 팩 전체에 0~2개다. 병렬 작성자끼리는 서로를 모르므로 **메인 에이전트가 띄우기 전에** 위젯을 둘 토픽(0~2개)을 정하고, 그 토픽의 섹션 작성자 브리프에만 `<위젯>` 자리에 "토픽 `<토픽 id>`에 위젯 1개: <무엇을 누르거나 움직이면 무엇이 보이는지>"를 적는다. 나머지 작성자의 `<위젯>` 자리에는 "위젯 없음"이라고 적는다. 정한 토픽과 이유는 보고서 "스킬이 정한 사항"에 적는다.
 
 ### 4. 조립
 - **처음 조립할 때만**: `복습노트/<range>/`(또는 예전 형식인 `복습노트/` 바로 아래)에 이번 `range`의 산출물(`정리노트_<range>_*`, `복습문제_<range>_*`의 `.html`·`.md`, `figures_<range>/`)이 하나라도 있으면 먼저 백업한다. 다시 조립할 때(5~8단계에서 돌아온 경우)는 백업하지 않는다. 이미 스킬이 만든 초안이 백업에 섞이기 때문이다.
-  - `RANGE`, `REPO`, `RUN`을 모두 실제 값으로 바꿔 한 명령으로 실행한다. 파일명은 NFC로 비교하므로 NFD 파일명도 잡힌다.
-  - 백업은 매번 새 폴더 `RUN/previous-<시각>-<임의>/`에 만든다(이전 백업을 덮어쓰지 않음). `RANGE`가 형식에 안 맞거나, 대상이 있는데 복사된 파일 수가 다르면 종료 코드 1로 멈춘다. 이때는 조립하지 말고 원인을 고친다.
+  - 백업은 매번 새 폴더 `RUN/previous-<시각>-<임의>/`에 만든다. 종료 코드가 1이면 조립하지 말고 원인을 고친다. 백업 경로는 보고서에 적는다.
 ```bash
-RANGE=<range> REPO=… RUN=… python3 - <<'EOF'
-import os, re, shutil, sys, tempfile, time, unicodedata as u
-r, run = os.environ["RANGE"], os.environ["RUN"]
-notes = os.path.join(os.environ["REPO"], "복습노트")
-if not re.fullmatch(r"\d{4}(-\d{4})?", r) or not os.path.isdir(run):
-    sys.exit(f"백업 중단: RANGE={r!r} 또는 RUN={run!r} 잘못됨")
-def want(n):
-    n = u.normalize("NFC", n)
-    return n.startswith((f"정리노트_{r}_", f"복습문제_{r}_")) or n == f"figures_{r}"
-def listdir_nfc(d):  # NFD 폴더명도 찾는다
-    return {u.normalize("NFC", n): os.path.join(d, n) for n in os.listdir(d)} if os.path.isdir(d) else {}
-srcs = [listdir_nfc(notes).get(r), notes]  # 날짜 폴더, 예전 형식(바로 아래)
-hits = sorted({n: p for d in srcs if d and os.path.isdir(d) for n, p in listdir_nfc(d).items() if want(n)}.items())
-if not hits:
-    print("백업할 기존 팩 없음"); sys.exit(0)
-def count(p):
-    return sum(len(f) for _, _, f in os.walk(p)) if os.path.isdir(p) else 1
-dst = tempfile.mkdtemp(prefix=time.strftime("previous-%Y%m%d-%H%M%S-"), dir=run)  # 항상 새 폴더
-for n, a in hits:
-    b = os.path.join(dst, n)
-    shutil.copytree(a, b) if os.path.isdir(a) else shutil.copy2(a, b)
-want_n, got_n = sum(count(a) for _, a in hits), count(dst)
-if got_n != want_n:
-    sys.exit(f"백업 실패: 파일 {want_n}개 중 {got_n}개만 복사됨 → {dst}")
-print(f"백업 {len(hits)}항목(파일 {got_n}개): {dst}", *(a for _, a in hits), sep="\n")
-EOF
+python3 "$SKILL/scripts/backup.py" --range <range> --repo "$REPO" --run "$RUN"
 ```
 ```bash
 python3 "$SKILL/scripts/assemble.py" --run "$RUN" --out "$REPO/복습노트/<range>"
@@ -204,16 +172,10 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 실행 폴더 경로(`RUN`)도 적는다. 수정이 필요하면 조각을 고쳐 4단계부터 다시 돌리면 된다.
 
 ## 오류 처리
+본문 단계에 적힌 경우(저장소·은행·STT 없음, PDF 추출 실패, 백업, 검사 2회 실패) 말고는 이 표를 따른다.
 | 상황 | 동작 |
 |---|---|
-| 저장소가 아님 | 알리고 멈춤 |
-| 문제은행 없음 | "먼저 `/ds-review-pack bank`" 안내 후 멈춤 |
-| 문제은행 검사 실패 | `bank.py validate` 오류를 보여 주고 멈춤 |
-| 기간에 해당하는 STT 없음 | 사용 가능한 날짜를 보여 주고 멈춤 |
-| PDF 텍스트 추출 실패 | STT만으로 진행하고 보고서에 표시 |
 | 후보 문항 8개 미만 | `references/problem-selection.md`의 변형 규칙. 4개 미만이면 "미해결"에 문항 부족 |
 | hwp 변환 실패·외부 변환 허락 없음(`bank`) | 그 원본을 빼고 진행, 보고서 "빠진 원본"에 적음 |
 | 원본 판독 불가(`bank`) | `[?]`로 표시하고 보고서에 적음 |
 | 포트 사용 중 | 다른 빈 포트 사용 |
-| 같은 range의 팩이 이미 있음 | 4단계 첫 조립 전에 기존 html·md·`figures_<range>/`를 새 폴더 `RUN/previous-<시각>-<임의>/`에 복사하고(다시 조립할 때는 복사하지 않음) 백업 경로를 보고서에 적음. 백업 명령이 실패하면 조립하지 않고 원인을 고친다 |
-| 검사 2회 실패 | 멈추지 않고 나머지 단계를 끝낸 뒤 "미해결"로 보고 |
