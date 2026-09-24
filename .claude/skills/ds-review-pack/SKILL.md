@@ -3,65 +3,124 @@ name: ds-review-pack
 description: 자료구조및알고리즘이해(자구알) 수업의 STT·강의록으로 ELI5 정리노트 HTML과 기출 기반 복습문제 HTML(+MD, 그림)을 만들어 복습노트/<날짜>/ 폴더에 저장하고, 기출 원본으로 문제은행을 만든다. "자구알 정리노트", "자구알 복습문제", "복습팩", "기출 문제은행 만들어줘"처럼 자구알 수업 정리나 기출 정리를 요청하거나 /ds-review-pack [bank | MMDD | MMDD-MMDD] [lite]로 부를 때 사용한다.
 ---
 
-# 머신러닝기초 복습팩
+# 자구알 복습팩
 
-수업 녹음 전사(STT)와 강의자료, MML 교과서로 한 기간의 복습팩을 만든다. 중간에 사용자에게 묻지 않고 끝에 한 번 보고한다. 커밋은 제안만 한다.
+수업 녹음 전사(STT)와 강의록(`자료구조_강의록_2026/`), 기출 문제은행으로 한 기간의 복습팩을 만든다. 문제은행은 `bank` 모드로 먼저 한 번 만들어 둔다. 중간에 사용자에게 묻지 않고 끝에 한 번 보고한다. 커밋은 제안만 한다.
 
-**산출물** (`복습노트/<range>/`, 수업 날짜마다 폴더 하나):
+**모드**
+- `bank`: 기출 원본을 전사해 문제은행을 만들거나 다시 만든다. 절차는 "문제은행 모드" B1~B4.
+- 그 밖(`[MMDD | MMDD-MMDD] [lite]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
+
+**산출물** (복습팩, `복습노트/<range>/`, 수업 날짜마다 폴더 하나):
 `정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, 같은 이름의 `.md` 두 개, `figures_<range>/`
 
-**인자**: `[MMDD | MMDD-MMDD] [lite]`
-- `lite`: 작성자·요약 에이전트를 sonnet으로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다.
+**인자**: `[bank | MMDD | MMDD-MMDD] [lite]`
+- `lite`: 작성자·요약·전사 에이전트를 sonnet으로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다.
 
-**진행 표시**: 단계마다 한 줄만 쓴다. 예: `3/9 작성 중: 섹션 5개 + 카드 10개 (병렬)`
+**진행 표시**: 단계마다 한 줄만 쓴다. 예: `3/9 작성 중: 섹션 4개 + 카드 9개 (병렬)`, `B3 전사 중: 원본 11개 (병렬)`
 
 **경로 약속**
-- `SKILL` = 이 파일이 있는 폴더(`.claude/skills/ml-review-pack`)의 절대 경로
+- `SKILL` = 이 파일이 있는 폴더(`.claude/skills/ds-review-pack`)의 절대 경로
 - `REPO` = 저장소 루트
-- `RUN` = `<scratchpad>/review-pack/<range>/`
-- 셸 상태는 Bash 호출 사이에 이어지지 않는다. 아래 명령의 `$SKILL`, `$RUN`, `$REPO`는 실행할 때마다 실제 절대 경로로 바꿔 쓰거나, 같은 명령 앞에 `SKILL=… RUN=… REPO=…`를 붙여 설정한다. `cd`는 쓰지 않고 파일도 절대 경로로 넘긴다.
+- `BANK` = `REPO/from_the_past/기출/문제은행.json`
+- `RUN` = 복습팩은 `<scratchpad>/ds-review-pack/<range>/`, 문제은행은 `<scratchpad>/ds-bank/<YYYYMMDD-HHMMSS>/`
+- 셸 상태는 Bash 호출 사이에 이어지지 않는다. 아래 명령의 `$SKILL`, `$RUN`, `$REPO`, `$BANK`는 실행할 때마다 실제 절대 경로로 바꿔 쓰거나, 같은 명령 앞에 `SKILL=… RUN=… REPO=… BANK=…`를 붙여 설정한다. `cd`는 쓰지 않고 파일도 절대 경로로 넘긴다.
 
-## 절차
+## 문제은행 모드 (`bank`)
+
+### B1. 준비
+1. `REPO/from_the_past/기출/`이 있는지 확인한다. 없으면 "자구알 저장소에서만 동작합니다"라고 알리고 멈춘다.
+2. 실행 폴더를 만든다: `mkdir -p "$RUN"/{parts,work} && ln -sfn "$REPO" "$RUN/repo"`
+3. `BANK`가 이미 있으면 `RUN/previous-bank.json`으로 복사한다(`reviewed` 값을 이어받는 데 쓴다).
+4. 원본 목록과 id는 `references/bank-build.md`의 원본 표를 따른다. 표에 없는 파일이 `from_the_past/기출/` 아래에 있으면 보고서 "새 원본"에 적고 이번에는 넣지 않는다.
+
+### B2. 정규화
+`references/bank-build.md`의 "정규화"대로 원본을 `RUN/work/`에 읽을 수 있는 형태로 만든다(cp949 → UTF-8, hwp → PDF, PDF → 텍스트·쪽 이미지).
+
+### B3. 전사 (병렬)
+원본마다 전사 에이전트 1명을 **한 메시지에서 병렬로** 띄운다(opus, `lite`이면 sonnet). 브리프는 `references/bank-build.md`의 "전사 브리프"이며 `<source-id>`, `<원본 경로들>`, `<RUN>`, `<SKILL>`을 채워 넘긴다. 각자 `RUN/parts/<source-id>.json`과 `RUN/parts/<source-id>.md`를 쓴다.
+
+### B4. 합치기·검증·저장
+1. 조각을 합쳐 `RUN/bank.json`(`{"version": 1, "sources": [...], "problems": [...]}`)을 만든다. `sources`는 원본 표 값에 조각의 `has_key`와 `reviewed` 규칙(`references/bank-build.md`)을 더한다.
+2. 챕터 태그를 `references/bank-build.md`의 챕터 표로 다시 본다.
+3. 중복 문항(`duplicate_of`)을 `references/bank-build.md`의 "중복 문항"대로 채운다.
+4. 정답을 `references/bank-build.md`의 "정답 검증"대로 확인해 `answer`, `answer_origin`을 정한다.
+5. `python3 "$SKILL/scripts/bank.py" validate "$RUN/bank.json"` 결과가 `OK`여야 한다. 아니면 고치고 다시 검사한다.
+6. 저장소에 쓴다(메인 에이전트만): `RUN/bank.json` → `BANK`, `RUN/parts/<id>.md` → `REPO/from_the_past/기출/_전사/<id>.md`, `RUN/work/verify_<id>.py` → `REPO/from_the_past/기출/_정답검증/<id>.py`.
+7. 보고한다:
+```
+## 문제은행 완료
+- 파일: from_the_past/기출/문제은행.json (원본 N개, 문항 M개), _전사/ N개, _정답검증/ N개
+- 챕터별 문항 수: 1장 a · 2장 b · …
+- 검수 대기(reviewed: false): 2015-ljw(스캔), 2016-final-ljw(사진) — _전사/<id>.md를 원본과 대조한 뒤 문제은행.json의 그 원본 reviewed를 true로 바꿔 주세요
+- unverified 문항: … (없으면 "없음")
+- 모범답안과 다른 답: … (실행값 채택, 없으면 "없음")
+- 빠진 원본·새 원본: … (없으면 "없음")
+- 커밋 제안: git add from_the_past/기출/문제은행.json from_the_past/기출/_전사 from_the_past/기출/_정답검증 && git commit -m "data(bank): build past-exam bank"
+```
+
+## 복습팩 절차
 
 ### 0. 준비
-1. `REPO`에 `STT/`, `강의노트/`, `교과서/Mathematics_for_Machine_Learning.pdf`가 모두 있는지 확인한다. 하나라도 없으면 "머신러닝기초 저장소에서만 동작합니다"라고 알리고 멈춘다.
-2. STT 목록은 NFC로 읽는다. macOS에는 NFD 파일명이 섞여 있다.
+1. `REPO`에 `STT/`, `자료구조_강의록_2026/`이 모두 있는지 확인한다. 없으면 "자구알 저장소에서만 동작합니다"라고 알리고 멈춘다.
+2. `BANK`가 없으면 "먼저 `/ds-review-pack bank`로 문제은행을 만들어 주세요"라고 알리고 멈춘다. 있으면 `python3 "$SKILL/scripts/bank.py" validate "$BANK"`가 `OK`여야 한다. 아니면 오류를 보여 주고 멈춘다.
+3. STT 목록은 NFC로 읽는다. macOS에는 NFD 파일명이 섞여 있다.
    ```bash
-   python3 -c "import os,unicodedata as u,re;n=[u.normalize('NFC',f) for f in os.listdir('$REPO/STT')];print(sorted(m.group(1) for f in n if f.endswith('머러기.md') and (m:=re.match(r'(\d{4})',f))))"
+   python3 -c "import os,unicodedata as u,re;n=[u.normalize('NFC',f) for f in os.listdir('$REPO/STT')];print(sorted(m.group(1) for f in n if f.endswith(' 자구알.md') and (m:=re.match(r'(\d{4})',f))))"
    ```
-3. 기간을 정한다.
+4. 기간을 정한다.
    - 인자가 있으면 그 기간을 쓴다.
-   - 인자가 없으면 `복습노트/*/정리노트_<range>_*.html`(예전 형식인 `복습노트/정리노트_*`도 포함) 중 가장 늦은 끝 날짜를 찾고, 그 뒤의 STT를 모두 쓴다. `정리노트_*`가 하나도 없으면 STT 전부를 쓴다.
+   - 인자가 없으면 `복습노트/*/정리노트_<range>_*.html` 중 가장 늦은 끝 날짜를 찾고, 그 뒤의 STT를 모두 쓴다. `정리노트_*`가 하나도 없으면 STT 전부를 쓴다.
    - 해당 STT가 하나도 없으면 사용 가능한 날짜를 보여 주고 멈춘다.
    - `range`는 첫 STT 날짜 하나이거나 `첫-끝` 형식이다.
-4. 실행 폴더를 만든다. 서브에이전트에게는 `RUN`, `RUN/repo`, `SKILL` 경로만 넘긴다.
+5. 실행 폴더를 만든다. 서브에이전트에게는 `RUN`, `RUN/repo`, `SKILL` 경로만 넘긴다.
    ```bash
    mkdir -p "$RUN"/{summaries,sections,cards,work} && ln -sfn "$REPO" "$RUN/repo"
    ```
-   에이전트는 `RUN` 밖에 쓰지 않는다. 임시·보조 파일(그림 생성 스크립트, 초안, 복사본)은 `RUN/work/`에만 둔다. 저장소(`STT/`, `강의노트/`, `교과서/`)에는 아무도 쓰지 않고, `복습노트/`에는 메인 에이전트만 쓴다.
+   에이전트는 `RUN` 밖에 쓰지 않는다. 임시·보조 파일(그림 생성 스크립트, 초안, 복사본)은 `RUN/work/`에만 둔다. 저장소(`STT/`, `자료구조_강의록_2026/`, `from_the_past/`)에는 아무도 쓰지 않고, `복습노트/`에는 메인 에이전트만 쓴다.
 
 ### 1. 범위 파악
-1. **먼저** 관련 `강의노트/Lecture*.pdf` 텍스트를 슬라이드 번호와 함께 `RUN/slides.txt`에 추출한다(PyMuPDF, 쪽마다 `=== LXX sN ===`, 몇 초면 끝난다). 요약 에이전트는 이 파일이 있다고 보고 시작하므로 추출이 끝난 뒤에 띄운다.
-   - 관련 PDF: 이전 팩(`복습노트/*/정리노트_*`)이 끝까지 다루지 않은 Lecture PDF 전부. 확실하지 않으면 넉넉히 넣는다.
+1. **먼저** 관련 강의록 텍스트를 쪽 번호와 함께 `RUN/slides.txt`에 추출한다(몇 초면 끝난다). 요약 에이전트는 이 파일이 있다고 보고 시작하므로 추출이 끝난 뒤에 띄운다.
+   - 관련 챕터: 이전 팩 정리노트(`복습노트/*/정리노트_*.html`)의 `<span class="tag slide">S<N> p<k>` 중 가장 큰 챕터(그 챕터 마지막 쪽까지 다뤘으면 그다음 챕터)부터 두 챕터. 이전 팩이 없으면 1~3장. 확실하지 않으면 넉넉히 넣는다.
+   ```bash
+   CH="<관련 챕터 번호, 공백 구분>" REPO=… RUN=… python3 - <<'EOF'
+   import fitz, os, re
+   want = {int(x) for x in os.environ["CH"].split()}
+   d = os.path.join(os.environ["REPO"], "자료구조_강의록_2026")
+   with open(os.path.join(os.environ["RUN"], "slides.txt"), "w", encoding="utf-8") as f:
+       for name in sorted(os.listdir(d)):
+           m = re.match(r"Software_(\d+)_", name)
+           if not m or int(m.group(1)) not in want:
+               continue
+           for i, page in enumerate(fitz.open(os.path.join(d, name)), 1):
+               f.write(f"=== S{m.group(1)} p{i} ===\n{page.get_text()}\n")
+   print("slides.txt:", sorted(want))
+   EOF
+   ```
    - 추출에 실패하면 STT만으로 진행하고 보고서에 적는다(브리프의 `slides.txt` 줄은 "없음"으로 바꿔 넘긴다).
 2. 그다음 STT 날짜마다 요약 에이전트 1명을 **병렬로** 띄운다. 브리프는 `references/stt-summary-prompt.md`에 있다.
-   - `<LectureXX_*.pdf>`: 그 날짜가 다룬 슬라이드가 들어 있는 PDF(`slides.txt`와 이전 팩의 범위로 판단). 확실하지 않으면 1의 관련 PDF를 모두 적는다.
-   - `<YYYY-MM-DD>`: 연도는 이번 학기 연도(오늘 날짜 기준), 월·일은 `<MMDD>`.
-3. 에이전트가 도는 동안 메인 에이전트는 MML에서 관련 장과 Example·연습문제 위치를 찾는다(`references/problem-selection.md`의 스니펫).
+   - `<Software_N_*.pdf>`: 그 날짜가 다룬 쪽이 들어 있는 강의록(확실하지 않으면 관련 챕터의 강의록을 모두 적는다).
+   - `<MMDD 자구알.md>`: NFC 목록에서 찾은 실제 파일명. `<YYYY-MM-DD>`: 연도는 이번 학기 연도(오늘 날짜 기준), 월·일은 `<MMDD>`.
+3. 에이전트가 도는 동안 메인 에이전트는 관련 챕터로 후보 문항을 미리 본다(`references/problem-selection.md`의 `select` 명령, `--range-ch`와 `--taught`는 관련 챕터로 임시로).
 
 ### 2. manifest
-- 요약들의 슬라이드 대조표와 용어·식 목록으로 `RUN/manifest.json`을 쓴다. 규칙은 `references/manifest-guide.md`에 있다.
+- 요약들의 슬라이드 대조표로 `range_ch`(이번 범위에서 "다룸/일부"인 쪽이 있는 챕터)와 `taught`(1장부터 이번 범위의 마지막 챕터까지)를 정한다.
 - 문제 선별은 `references/problem-selection.md`를 따른다.
-  - 정답은 `RUN/answers.py`(`fractions`)로 계산한다.
-  - 문제별 교과서 쪽은 `RUN/problem-pages.txt`에 적는다.
-- 검증: `python3 "$SKILL/scripts/manifest.py" "$RUN/manifest.json"` 결과가 `OK`여야 한다.
+  - 정답은 `RUN/answers.py`로 다시 계산한다.
+  - 카드 작성자용 문항 원문은 `RUN/problems.md`에 모은다(형식은 `references/problem-selection.md`).
+- manifest는 `references/manifest-guide.md`대로 `RUN/manifest.json`에 쓴다.
+- 검증: 둘 다 `OK`여야 한다.
+  ```bash
+  python3 "$SKILL/scripts/manifest.py" "$RUN/manifest.json"
+  python3 "$SKILL/scripts/bank.py" check-manifest "$BANK" "$RUN/manifest.json"
+  ```
 
 ### 3. 작성
 - 섹션마다 작성자 1명을 띄운다. 브리프는 `references/content-rules.md`, 위젯 규칙은 `references/widget-rules.md`에 있다.
 - 문제 작성자 1명이 모든 카드를 쓴다. 브리프는 `references/card-rules.md`에 있다.
 - 모두 **한 메시지에서 병렬로** 띄운다. 모델은 opus, `lite`이면 sonnet이다.
-- 브리프의 `<…>` 자리는 실제 경로, id, 금지어 목록(`<forbidden 목록>`), 예고 토픽 id(`<preview_topic>`), 섹션 작성자에게 필요한 MML 쪽 번호(`<쪽>`, 1단계 3에서 찾은 PDF 쪽), 그리고 섹션 작성자에게는 manifest `links` 중 그 섹션 토픽에 속한 것만(`<이 섹션의 links 목록>`) 채워 넣는다.
-- 위젯은 팩 전체에 0~2개다. 병렬 작성자끼리는 서로를 모르므로 **메인 에이전트가 띄우기 전에** 위젯을 둘 토픽(0~2개)을 정하고, 그 토픽의 섹션 작성자 브리프에만 `<위젯>` 자리에 "토픽 `<토픽 id>`에 위젯 1개: <무엇을 움직이면 무엇이 보이는지>"를 적는다. 나머지 작성자의 `<위젯>` 자리에는 "위젯 없음"이라고 적는다. 정한 토픽과 이유는 보고서 "스킬이 정한 사항"에 적는다.
+- 브리프의 `<…>` 자리는 실제 경로, id, 금지어 목록(`<forbidden 목록>`), 예고 토픽 id(`<preview_topic>`), 그리고 섹션 작성자에게는 manifest `links` 중 그 섹션 토픽에 속한 것만(`<이 섹션의 links 목록>`) 채워 넣는다.
+- 위젯은 팩 전체에 0~2개다. 병렬 작성자끼리는 서로를 모르므로 **메인 에이전트가 띄우기 전에** 위젯을 둘 토픽(0~2개)을 정하고, 그 토픽의 섹션 작성자 브리프에만 `<위젯>` 자리에 "토픽 `<토픽 id>`에 위젯 1개: <무엇을 누르거나 움직이면 무엇이 보이는지>"를 적는다. 나머지 작성자의 `<위젯>` 자리에는 "위젯 없음"이라고 적는다. 정한 토픽과 이유는 보고서 "스킬이 정한 사항"에 적는다.
 
 ### 4. 조립
 - **처음 조립할 때만**: `복습노트/<range>/`(또는 예전 형식인 `복습노트/` 바로 아래)에 이번 `range`의 산출물(`정리노트_<range>_*`, `복습문제_<range>_*`의 `.html`·`.md`, `figures_<range>/`)이 하나라도 있으면 먼저 백업한다. 다시 조립할 때(5~8단계에서 돌아온 경우)는 백업하지 않는다. 이미 스킬이 만든 초안이 백업에 섞이기 때문이다.
@@ -116,7 +175,7 @@ python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$
 ### 7. 브라우저 검증
 - `references/browser-check.md`대로 한다.
   - http.server를 빈 포트에 띄운다.
-  - 확인: KaTeX 오류 0, 남은 `$` 없음, 375px에서 가로 스크롤 없음, 다크모드, 위젯, 링크, 콘솔 오류
+  - 확인: KaTeX 오류 0, 남은 `$` 없음, 375px에서 가로 스크롤 없음(코드 블록은 자체 스크롤), 다크모드, 위젯, 링크, 콘솔 오류
 - 결함은 5단계와 같은 방식으로 작성자에게 되돌린다. 이것도 최대 2회 규칙에 포함된다.
 - 끝나면 서버를 종료한다.
 
@@ -132,11 +191,12 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 ```
 ## 복습팩 <range> 완료
 - 파일: 복습노트/<range>/… (html 2, md 2, figures_<range>/ N개)
-- 범위: 배운 슬라이드 … / 예고만: …
-- 문제: P1 MML Example 9.1 변형(level 1) … (정답은 RUN/answers.py로 검증)
-- 스킬이 정한 사항: slug, 섹션 구성, 위젯, 뺀 내용과 이유
+- 범위: 배운 쪽 S2 p1–20 … / 예고만: …
+- 문제: P1 2016-final-ljw-q3 (2016 기말 3번, 이정원, trace) … / 변형 K개 (정답은 RUN/answers.py로 검증)
+- 은행과 다른 답: … (없으면 "없음")
+- 스킬이 정한 사항: slug, 섹션 구성, 위젯, 뺀 내용과 이유, 뺀 후보 문항과 이유
 - 미해결: … (없으면 "없음")
-- 커밋 제안: git add 복습노트/<range> && git commit -m "docs(notes): add review pack <range>"
+- 커밋 제안: git add 복습노트/<range> && git commit -m "docs(notes): add ds review pack <range>"
 ```
 실행 폴더 경로(`RUN`)도 적는다. 수정이 필요하면 조각을 고쳐 4단계부터 다시 돌리면 된다.
 
@@ -144,8 +204,13 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 | 상황 | 동작 |
 |---|---|
 | 저장소가 아님 | 알리고 멈춤 |
+| 문제은행 없음 | "먼저 `/ds-review-pack bank`" 안내 후 멈춤 |
+| 문제은행 검사 실패 | `bank.py validate` 오류를 보여 주고 멈춤 |
 | 기간에 해당하는 STT 없음 | 사용 가능한 날짜를 보여 주고 멈춤 |
 | PDF 텍스트 추출 실패 | STT만으로 진행하고 보고서에 표시 |
+| 후보 문항 8개 미만 | `references/problem-selection.md`의 변형 규칙. 4개 미만이면 "미해결"에 문항 부족 |
+| hwp 변환 실패(`bank`) | 그 원본을 빼고 진행, 보고서 "빠진 원본"에 적음 |
+| 원본 판독 불가(`bank`) | `[?]`로 표시하고 보고서에 적음 |
 | 포트 사용 중 | 다른 빈 포트 사용 |
 | 같은 range의 팩이 이미 있음 | 4단계 첫 조립 전에 기존 html·md·`figures_<range>/`를 새 폴더 `RUN/previous-<시각>-<임의>/`에 복사하고(다시 조립할 때는 복사하지 않음) 백업 경로를 보고서에 적음. 백업 명령이 실패하면 조립하지 않고 원인을 고친다 |
 | 검사 2회 실패 | 멈추지 않고 나머지 단계를 끝낸 뒤 "미해결"로 보고 |

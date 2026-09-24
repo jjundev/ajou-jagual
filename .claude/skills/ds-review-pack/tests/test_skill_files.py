@@ -24,13 +24,13 @@ class TestSkillFiles(unittest.TestCase):
         m = re.match(r"---\nname: (.+)\ndescription: (.+)\n---\n", self.text)
         self.assertIsNotNone(m, "frontmatter는 name, description 두 줄")
         self.assertEqual(m.group(1), "ds-review-pack")
-        self.assertIn("정리노트", m.group(2))
-        self.assertIn("복습문제", m.group(2))
+        for word in ("정리노트", "복습문제", "문제은행"):
+            self.assertIn(word, m.group(2))
         self.assertLessEqual(len(m.group(2)), 1024)
 
     def test_referenced_files_exist(self):
         refs = set(re.findall(r"(?:references|scripts|assets)/[\w.-]+\.(?:md|py|html)", self.text))
-        self.assertGreaterEqual(len(refs), 12)
+        self.assertGreaterEqual(len(refs), 14)
         for rel in sorted(refs):
             with self.subTest(rel=rel):
                 self.assertTrue((SKILL / rel).exists(), rel)
@@ -45,8 +45,13 @@ class TestSkillFiles(unittest.TestCase):
             with self.subTest(step=n):
                 self.assertRegex(self.text, rf"\n### {n}\. ")
 
-    def test_no_ml_leftovers_in_references(self):
-        for path in sorted((SKILL / "references").glob("*.md")):
+    def test_bank_steps_present(self):
+        for n in range(1, 5):
+            with self.subTest(step=n):
+                self.assertRegex(self.text, rf"\n### B{n}\. ")
+
+    def test_no_ml_leftovers(self):
+        for path in [SKILL_MD, *sorted((SKILL / "references").glob("*.md"))]:
             text = path.read_text(encoding="utf-8")
             for word in ML_WORDS:
                 with self.subTest(file=path.name, word=word):
