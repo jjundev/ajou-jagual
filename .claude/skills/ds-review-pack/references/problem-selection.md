@@ -9,8 +9,9 @@
 ## 순서
 1. 후보를 뽑는다(이미 쓴 문항은 빠진다):
    ```bash
-   python3 "$SKILL/scripts/bank.py" select "$BANK" --range-ch <range_ch> --taught <taught> --used-dir "$REPO/복습노트"
+   python3 "$SKILL/scripts/bank.py" select "$BANK" --range-ch <range_ch> --taught <taught> --used-dir "$REPO/복습노트" --this-range <range>
    ```
+   `--this-range`는 같은 range를 다시 만들 때 그 팩이 쓴 문항이 이미 쓴 것으로 빠지지 않게 한다.
    출력은 이미 우선순위 순이다(출제자 이정원 > 미상 > 그 밖, 유형 trace·code-read > blank·short·code-write > essay > ox, 최근 연도, OX 최대 2개).
 2. 위에서부터 읽으며 12개까지 고른다. 같은 개념(예: 원형 큐 front/rear 계산)이 셋 이상 겹치면 뒤의 것을 건너뛴다.
 3. 고른 원본 문항이 8개 미만이면 변형을 더해 8개로 맞춘다.

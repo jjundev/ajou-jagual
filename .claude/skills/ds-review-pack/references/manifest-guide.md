@@ -1,7 +1,7 @@
 # manifest.json 작성 규칙 (메인 에이전트)
 
 manifest는 이번 팩의 계약이다. 작성자, 검사기, 조립기가 모두 이 파일을 기준으로 삼는다.
-정본 예시: `tests/fixtures/mini-run/manifest.json`.
+필드 모양 예시: `tests/fixtures/mini-run/manifest.json`(테스트용 축약본이라 요약·예고 섹션의 토픽 일부가 없다. 섹션 구성은 아래 규칙을 따른다).
 작성 후 반드시 두 검사가 모두 `OK`여야 한다:
 `python3 <SKILL>/scripts/manifest.py <RUN>/manifest.json`, `python3 <SKILL>/scripts/bank.py check-manifest <BANK> <RUN>/manifest.json`
 

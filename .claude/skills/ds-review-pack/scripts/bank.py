@@ -3,7 +3,7 @@
 
 CLI:
   bank.py validate BANK                                              # 스키마 검사 → OK
-  bank.py select BANK --range-ch 2,3 --taught 1-3 [--used-dir DIR]   # 후보를 우선순위 순으로 출력
+  bank.py select BANK --range-ch 2,3 --taught 1-3 [--used-dir DIR [--this-range RANGE]]   # 후보를 우선순위 순으로 출력
   bank.py check-manifest BANK MANIFEST                               # manifest 문항 출처가 쓸 수 있는 은행 문항인지
 """
 from __future__ import annotations
@@ -166,12 +166,17 @@ def parse_chapters(spec: str) -> set[int]:
     return out
 
 
-def used_sources(notes_dir: Path | str) -> set[str]:
-    """이전 복습팩 복습문제 페이지(NFC·NFD 이름 모두)의 data-source 값."""
+def used_sources(notes_dir: Path | str, skip_range: str | None = None) -> set[str]:
+    """이전 복습팩 복습문제 페이지(NFC·NFD 이름 모두)의 data-source 값.
+    skip_range를 주면 그 range의 복습문제(다시 만드는 팩 자신)는 세지 않는다."""
     used: set[str] = set()
+    skip = f"복습문제_{skip_range}_" if skip_range else None
     for dirpath, _, files in os.walk(notes_dir):
         for name in files:
-            if REVIEW_NAME_RE.fullmatch(unicodedata.normalize("NFC", name)):
+            nfc = unicodedata.normalize("NFC", name)
+            if skip and nfc.startswith(skip):
+                continue
+            if REVIEW_NAME_RE.fullmatch(nfc):
                 used.update(SOURCE_ATTR_RE.findall(Path(dirpath, name).read_text(encoding="utf-8")))
     return used
 
@@ -235,6 +240,7 @@ def main(argv: list[str] | None = None) -> int:
     sp.add_argument("--range-ch", required=True, help="이번 범위 챕터, 예: 2,3")
     sp.add_argument("--taught", required=True, help="지금까지 배운 챕터, 예: 1-3")
     sp.add_argument("--used-dir", help="이전 팩 폴더(복습노트). 주면 이미 쓴 문항을 뺀다")
+    sp.add_argument("--this-range", help="이번 range. 주면 그 range의 기존 복습문제는 이미 쓴 것으로 치지 않는다")
     cp = sub.add_parser("check-manifest")
     cp.add_argument("bank")
     cp.add_argument("manifest")
@@ -245,7 +251,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"OK: 원본 {len(bank['sources'])}개, 문항 {len(bank['problems'])}개")
             return 0
         if a.cmd == "select":
-            used = used_sources(a.used_dir) if a.used_dir else set()
+            used = used_sources(a.used_dir, a.this_range) if a.used_dir else set()
             rows = select(bank, parse_chapters(a.range_ch), parse_chapters(a.taught), used)
             sources = {s["id"]: s for s in bank["sources"]}
             print("id\t출제자\t유형\t챕터\t정답출처")

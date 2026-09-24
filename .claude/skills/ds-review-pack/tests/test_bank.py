@@ -25,6 +25,18 @@ def S(sid, year, professor, transcribed_from, reviewed=True):
             "has_key": True, "transcribed_from": transcribed_from, "reviewed": reviewed}
 
 
+def make_notes(root):
+    """0921 팩(2016-final-ljw-q1)과 0923 팩(2019-mid-q8)이 든 복습노트 폴더."""
+    notes = root / "복습노트"
+    (notes / "0921").mkdir(parents=True)
+    (notes / "0923").mkdir()
+    (notes / "0921" / "복습문제_0921_Recursion.html").write_text(
+        '<article class="card" data-source="2016-final-ljw-q1">', encoding="utf-8")
+    (notes / "0923" / "복습문제_0923_Stack.html").write_text(
+        '<article class="card" data-source="2019-mid-q8">', encoding="utf-8")
+    return notes
+
+
 def mini_bank():
     return {"version": 1,
             "sources": [S("2016-final-ljw", 2016, "이정원", "photo"),
@@ -141,6 +153,11 @@ class TestSelect(unittest.TestCase):
             self.assertEqual(bank.used_sources(notes), {"2016-final-ljw-q1", "2019-mid-q8"})
             self.assertEqual(bank.used_sources(Path(d) / "없음"), set())
 
+    def test_used_sources_skips_this_range(self):
+        with tempfile.TemporaryDirectory() as d:
+            notes = make_notes(Path(d))
+            self.assertEqual(bank.used_sources(notes, skip_range="0921"), {"2019-mid-q8"})
+
 
 class TestCheckManifest(unittest.TestCase):
     def errors(self, *items):
@@ -196,6 +213,15 @@ class TestCli(unittest.TestCase):
         self.assertEqual(lines[0], "id\t출제자\t유형\t챕터\t정답출처")
         self.assertEqual(lines[1], "2016-final-ljw-q1\t이정원\ttrace\t2\tkey")
         self.assertEqual(len(lines), 1 + len(EXPECTED))
+
+    def test_select_this_range_keeps_own_problems(self):
+        notes = make_notes(self.tmp)
+        r = self.run_cli("select", self.bank, "--range-ch", "2", "--taught", "1-2",
+                         "--used-dir", notes, "--this-range", "0921")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        lines = r.stdout.splitlines()
+        self.assertEqual(lines[1].split("\t")[0], "2016-final-ljw-q1")
+        self.assertNotIn("2019-mid-q8", r.stdout)
 
     def test_check_manifest(self):
         m = self.tmp / "manifest.json"
