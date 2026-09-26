@@ -15,7 +15,7 @@ python3 .agents/skills/notion-report-sync/scripts/notion_report.py pull \
   --output PATH_TO_NOTION_MARKDOWN
 ```
 
-The script refuses incomplete Notion Markdown and rejects an output path that points to the local report. If the output path already contains a download from the same page, the script compares that exact file with the new download before replacing it. A changed previous download is backed up; an unchanged one creates no backup. A first download has no previous version to compare. This is a comparison with the previous local download, not Notion's page version history. Use a separate output path for each page.
+The script refuses incomplete Notion Markdown and rejects an output path that points to the local report. If the output path already contains a download from the same page, the script compares that exact file with the new download before replacing it. A changed previous download is backed up under `<output directory>/검토자료/노션_백업/`; use `--backup-dir` to choose another location. An unchanged one creates no backup. A first download has no previous version to compare. This is a comparison with the previous local download, not Notion's page version history. Use a separate output path for each page.
 
 Report the previous-download comparison first, then the separately labeled diff against the local report. Summarize the actual wording, table-cell, code, heading, blank-line, space, and `<br>` changes instead of pasting a large diff alone. Distinguish Markdown serialization from an actual content edit. For layout that Markdown cannot establish, inspect the live blocks or the user's exported PDF. Do not claim PDF verification from Markdown alone.
 

@@ -266,6 +266,8 @@ class PullReuseTests(unittest.TestCase):
             self.assertEqual(output.read_text(), "# edited\n")
             self.assertEqual(report.read_text(), "# original\n")
             self.assertEqual(backup.read_text(), "# previous\n")
+            self.assertEqual(backup.parent, Path(directory) / "검토자료" / "노션_백업")
+            self.assertEqual(list(Path(directory).glob("notion-backup-*.md")), [])
             self.assertIn("-# original", local_diff)
             self.assertIn("+# edited", local_diff)
             self.assertIn("-# previous", previous_diff)
@@ -291,6 +293,18 @@ class PullReuseTests(unittest.TestCase):
             self.assertEqual(previous_diff, "")
             self.assertIn("-# local", local_diff)
             self.assertEqual(list(Path(directory).glob("notion-backup-*.md")), [])
+
+    def test_pull_accepts_separate_backup_directory(self):
+        from notion_report import save_pulled_markdown
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            output = base / "notion.md"
+            archive = base / "archive"
+            output.write_text("# old\n")
+            backup = save_pulled_markdown("# new\n", output, archive)
+            self.assertEqual(backup.parent, archive)
+            self.assertEqual(backup.read_text(), "# old\n")
+            self.assertEqual(output.read_text(), "# new\n")
 
     def test_first_pull_has_no_previous_comparison(self):
         from notion_report import pull_markdown

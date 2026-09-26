@@ -28,7 +28,7 @@ def markdown_from_response(response: dict) -> str:
     return markdown
 
 
-def save_pulled_markdown(markdown: str, output: Path) -> Path | None:
+def save_pulled_markdown(markdown: str, output: Path, backup_dir: Path | None = None) -> Path | None:
     output.parent.mkdir(parents=True, exist_ok=True)
     backup = None
     if output.exists():
@@ -36,19 +36,22 @@ def save_pulled_markdown(markdown: str, output: Path) -> Path | None:
         if previous == markdown:
             return None
         stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
-        backup = output.with_name(f"{output.stem}-backup-{stamp}{output.suffix}")
+        backup_dir = backup_dir or output.parent / "검토자료" / "노션_백업"
+        backup_dir.mkdir(parents=True, exist_ok=True)
+        backup = backup_dir / f"{output.stem}-backup-{stamp}{output.suffix}"
         backup.write_bytes(output.read_bytes())
     output.write_text(markdown)
     return backup
 
 
-def pull_markdown(api, page_id: str, output: Path, report: Path) -> tuple[str, str | None, Path | None]:
+def pull_markdown(api, page_id: str, output: Path, report: Path,
+                  backup_dir: Path | None = None) -> tuple[str, str | None, Path | None]:
     if output.resolve() == report.resolve():
         raise ValueError("Notion output and local report must differ")
     markdown = markdown_from_response(api.request("GET", f"pages/{page_id}/markdown"))
     source = report.read_text()
     previous = output.read_text() if output.exists() else None
-    backup = save_pulled_markdown(markdown, output)
+    backup = save_pulled_markdown(markdown, output, backup_dir)
     local_diff = "".join(difflib.unified_diff(source.splitlines(keepends=True),
                                               markdown.splitlines(keepends=True),
                                               fromfile=str(report), tofile=str(output)))
@@ -246,6 +249,7 @@ def main():
     pull.add_argument("--page-id", required=True)
     pull.add_argument("--report", type=Path, required=True)
     pull.add_argument("--output", type=Path, required=True)
+    pull.add_argument("--backup-dir", type=Path)
     edit = commands.add_parser("edit")
     edit.add_argument("--page-id", required=True)
     edit.add_argument("--plan", type=Path, required=True)
@@ -254,7 +258,7 @@ def main():
     api = NotionAPI()
     if args.command == "pull":
         local_diff, previous_diff, backup = pull_markdown(
-            api, args.page_id, args.output, args.report)
+            api, args.page_id, args.output, args.report, args.backup_dir)
         if backup:
             print(f"Previous download saved: {backup}")
         print(f"Downloaded Notion Markdown: {args.output}")

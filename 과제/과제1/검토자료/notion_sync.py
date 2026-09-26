@@ -233,7 +233,9 @@ def save_pulled_markdown(markdown: str, output: Path) -> Path | None:
         if previous == markdown:
             return None
         stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
-        backup = output.with_name(f"{output.stem}-backup-{stamp}{output.suffix}")
+        backup_dir = output.parent / "검토자료" / "노션_백업"
+        backup_dir.mkdir(parents=True, exist_ok=True)
+        backup = backup_dir / f"{output.stem}-backup-{stamp}{output.suffix}"
         backup.write_bytes(output.read_bytes())
     else:
         backup = None

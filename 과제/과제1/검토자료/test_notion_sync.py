@@ -62,7 +62,8 @@ class NotionSyncTests(unittest.TestCase):
             c_blocks.append("".join(item["text"]["content"]
                                     for item in left[0]["code"]["rich_text"]))
         nonblank = lambda text: [line.rstrip() for line in text.splitlines() if line.strip()]
-        self.assertEqual(nonblank("\n".join(c_blocks)), nonblank((root / "HW1.c").read_text()))
+        self.assertEqual(nonblank("\n".join(c_blocks)),
+                         nonblank((root / "제출용" / "HW1.c").read_text()))
 
     def test_new_pull_backs_up_previous_download_without_overwriting_it(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -71,6 +72,7 @@ class NotionSyncTests(unittest.TestCase):
             backup = save_pulled_markdown("new Notion edit\n", output)
             self.assertEqual(output.read_text(), "new Notion edit\n")
             self.assertEqual(backup.read_text(), "old Notion edit\n")
+            self.assertEqual(backup.parent, Path(directory) / "검토자료" / "노션_백업")
             self.assertIsNone(save_pulled_markdown("new Notion edit\n", output))
             self.assertEqual(backup.read_text(), "old Notion edit\n")
 

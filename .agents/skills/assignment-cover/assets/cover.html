@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>과제 표지 템플릿</title>
+  <style>
+    @font-face {
+      font-family: Pretendard;
+      src: url("fonts/Pretendard-Regular.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: Pretendard;
+      src: url("fonts/Pretendard-SemiBold.woff2") format("woff2");
+      font-style: normal;
+      font-weight: 600;
+    }
+    @page { size: A4 landscape; margin: 0; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; width: 297mm; height: 210mm; }
+    body { background: #fff; color: #000; font-family: Pretendard, sans-serif; font-synthesis: none; }
+    .page { position: relative; width: 297mm; height: 210mm; overflow: hidden; }
+    .course, .assignment-label, .assignment-topic, .identity-line {
+      position: absolute;
+      width: calc(100% - 144pt);
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+    .course { left: 72pt; top: 66.8pt; font-size: 16pt; font-weight: 400; }
+    .rule { position: absolute; left: 72pt; right: 72pt; top: 105pt; border-top: .8pt solid #000; }
+    .assignment-label { left: 72pt; top: 233.3pt; text-align: center; font-size: 42pt; font-weight: 600; }
+    .assignment-topic { left: 72pt; top: 297.3pt; text-align: center; font-size: 28pt; font-weight: 400; }
+    .identity-line { right: 72pt; text-align: right; font-size: 17pt; font-weight: 400; }
+    .student-id-line { top: 443.8pt; }
+    .student-name-line { top: 475.5pt; }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="과제 표지">
+    <div class="course" data-field="course" data-check-overflow="course">[2026-2] 자료구조 및 알고리즘 이해</div>
+    <div class="rule" aria-hidden="true"></div>
+    <div class="assignment-label" data-field="assignment_label" data-check-overflow="assignment_label">과제 1</div>
+    <div class="assignment-topic" data-field="assignment_topic" data-check-overflow="assignment_topic">Banker's algorithm</div>
+    <div class="identity-line student-id-line" data-check-overflow="student_id">학번 <span data-field="student_id">000000000</span></div>
+    <div class="identity-line student-name-line" data-check-overflow="student_name">이름 <span data-field="student_name">홍길동</span></div>
+  </main>
+</body>
+</html>
