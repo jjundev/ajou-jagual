@@ -5,23 +5,17 @@
 #define MAX_PROCESS 8
 #define MAX_RESOURCE 5
 
-// available: 현재 추가로 할당할 수 있는 자원의 수
-// allocation: 각 프로세스에 이미 할당된 자원의 수
-// maximum: 각 프로세스가 최대로 요구하는 자원의 수
-// need: 완료하기 위해 추가로 필요한 자원의 수
 typedef struct {
-  int n_process, n_resource;
-  int available[MAX_RESOURCE];
-  int allocation[MAX_PROCESS][MAX_RESOURCE];
-  int maximum[MAX_PROCESS][MAX_RESOURCE];
-  int need[MAX_PROCESS][MAX_RESOURCE];
+  int n_process, n_resource; // 프로세스 수와 자원 종류 수
+  int available[MAX_RESOURCE]; // 현재 추가로 할당 가능한 자원
+  int allocation[MAX_PROCESS][MAX_RESOURCE]; // 각 프로세스에 이미 할당된 자원
+  int maximum[MAX_PROCESS][MAX_RESOURCE]; // 각 프로세스의 최대 요구량
+  int need[MAX_PROCESS][MAX_RESOURCE]; // 추가로 필요한 자원
 } SystemState;
 
-// finish: 현재 탐색 경로에서 완료를 가정한 프로세스 표시
-// safe_count: 탐색이 끝난 뒤 저장하는 안전 순서의 총개수
 typedef struct {
-  int finish[MAX_PROCESS];
-  int safe_count;
+  int finish[MAX_PROCESS]; // 현재 탐색 경로에서 완료를 가정한 표시
+  int safe_count; // 안전 순서의 총개수
 } SearchState;
 
 // 여러 함수에서 함께 사용하는 시스템 정보와 탐색 상태
@@ -34,7 +28,6 @@ int can_run(int process);
 int search_safe_sequence(int depth);
 
 int read_state(void) {
-  // 시스템 상태를 입력받는다. 입력이 잘못되면 0, 모두 읽으면 1을 반환한다.
   printf("프로세스의 수를 입력하세요. (1~8): ");
   if (scanf("%d", &system_state.n_process) != 1 ||
       system_state.n_process < 1 || system_state.n_process > MAX_PROCESS) {
@@ -50,7 +43,7 @@ int read_state(void) {
   }
 
   printf("현재 추가로 할당 가능한 각 자원의 수(AVAILABLE)를 입력하세요. (자원 "
-         "종류 %d개)\n",
+         "종류 %d개): \n",
          system_state.n_resource);
   for (int i = 0; i < system_state.n_resource; ++i) {
     if (scanf("%d", &system_state.available[i]) != 1 ||
@@ -61,7 +54,7 @@ int read_state(void) {
   }
 
   printf("각 프로세스에 이미 할당된 자원의 수(ALLOCATION)를 입력하세요. (%d x "
-         "%d)\n",
+         "%d): \n",
          system_state.n_process, system_state.n_resource);
   for (int i = 0; i < system_state.n_process; ++i) {
     for (int j = 0; j < system_state.n_resource; ++j) {
@@ -74,11 +67,11 @@ int read_state(void) {
   }
 
   printf("각 프로세스가 최대로 요구하는 자원의 수(MAXIMUM)를 입력하세요. (%d x "
-         "%d):\n",
+         "%d): \n",
          system_state.n_process, system_state.n_resource);
   for (int i = 0; i < system_state.n_process; ++i) {
     for (int j = 0; j < system_state.n_resource; ++j) {
-      // 최대 요구량이 이미 할당된 양보다 작으면 올바른 상태가 아니다.
+      // 최대 요구량이 기존 할당량보다 작으면 Need가 음수가 되므로 오류 처리
       if (scanf("%d", &system_state.maximum[i][j]) != 1 ||
           system_state.maximum[i][j] < system_state.allocation[i][j]) {
         printf("잘못된 값을 입력하셨습니다.\n");
@@ -90,7 +83,6 @@ int read_state(void) {
 }
 
 void calculate_need(void) {
-  // 최대 요구량에서 이미 가진 양을 빼서 추가로 필요한 양을 구한다.
   for (int i = 0; i < system_state.n_process; ++i) {
     for (int j = 0; j < system_state.n_resource; ++j) {
       system_state.need[i][j] =
@@ -99,7 +91,6 @@ void calculate_need(void) {
   }
 }
 
-// 모든 자원 종류에서 필요량을 만족해야 이 프로세스를 완료할 수 있다.
 int can_run(int process) {
   for (int i = 0; i < system_state.n_resource; ++i) {
     if (system_state.need[process][i] > system_state.available[i]) {
@@ -121,7 +112,6 @@ int search_safe_sequence(int depth) {
 
   for (int i = 0; i < system_state.n_process; ++i) {
     if (!search_state.finish[i] && can_run(i)) {
-      // 현재 경로에서 이 프로세스를 다시 고르지 않도록 표시한다.
       search_state.finish[i] = 1;
 
       for (int j = 0; j < system_state.n_resource; ++j) {
@@ -129,7 +119,7 @@ int search_safe_sequence(int depth) {
         system_state.available[j] += system_state.allocation[i][j];
       }
 
-      // 이 프로세스 다음에 이어질 수 있는 안전 순서의 개수를 더한다.
+      // 다음 깊이 탐색에서 찾은 안전 순서의 개수를 누적
       count += search_safe_sequence(depth + 1);
 
       // 다른 후보도 같은 상태에서 검사하도록 자원과 완료 표시를 되돌린다.
@@ -147,15 +137,12 @@ int search_safe_sequence(int depth) {
 int main(void) {
   int i, j;
 
-  // 사용자 입력으로 시스템 상태 초기화
   if (!read_state()) {
     return 0;
   }
 
-  // 추가 필요량 계산
   calculate_need();
 
-  // 계산한 Need 행렬 출력
   printf("\nNeed matrix:\n");
   for (i = 0; i < system_state.n_process; ++i) {
     printf("P%d:", i);
@@ -165,7 +152,6 @@ int main(void) {
     printf("\n");
   }
 
-  // 안전 순서 탐색 상태 초기화
   search_state.safe_count = 0;
   for (i = 0; i < system_state.n_process; ++i) {
     search_state.finish[i] = 0;
