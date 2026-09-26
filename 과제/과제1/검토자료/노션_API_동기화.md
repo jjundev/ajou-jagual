@@ -33,3 +33,13 @@ python3 -m unittest discover -s 과제/과제1/검토자료 -p 'test_notion_sync
 ```
 
 표 전환 직후 Notion 블록 API에서 왼쪽 셀의 C 코드 6개를 다시 읽어 `HW1.c`와 일치함을 확인했다. Notion Markdown API도 표를 포함한 문서를 잘림 없이 반환했다.
+
+## 지정 블록만 수정할 때
+
+`.agents/skills/notion-report-sync/SKILL.md`의 범위와 중단 조건을 따른다. 현재 블록 ID와 텍스트를 먼저 확인하고, 임시 JSON 파일에 `page_id`와 `edits`를 적은 뒤 다음을 실행한다.
+
+```bash
+python3 과제/과제1/검토자료/notion_targeted_edit.py /tmp/hw1-notion-edit.json
+```
+
+이 명령은 전체 보고서 재업로드가 아니라 지정 블록 수정에만 사용한다.
