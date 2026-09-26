@@ -42,16 +42,20 @@ def save_pulled_markdown(markdown: str, output: Path) -> Path | None:
     return backup
 
 
-def pull_markdown(api, page_id: str, output: Path, report: Path) -> tuple[str, Path | None]:
+def pull_markdown(api, page_id: str, output: Path, report: Path) -> tuple[str, str | None, Path | None]:
     if output.resolve() == report.resolve():
         raise ValueError("Notion output and local report must differ")
     markdown = markdown_from_response(api.request("GET", f"pages/{page_id}/markdown"))
     source = report.read_text()
+    previous = output.read_text() if output.exists() else None
     backup = save_pulled_markdown(markdown, output)
-    diff = "".join(difflib.unified_diff(source.splitlines(keepends=True),
-                                        markdown.splitlines(keepends=True),
-                                        fromfile=str(report), tofile=str(output)))
-    return diff, backup
+    local_diff = "".join(difflib.unified_diff(source.splitlines(keepends=True),
+                                              markdown.splitlines(keepends=True),
+                                              fromfile=str(report), tofile=str(output)))
+    previous_diff = None if previous is None else "".join(difflib.unified_diff(
+        previous.splitlines(keepends=True), markdown.splitlines(keepends=True),
+        fromfile=str(backup or output), tofile=str(output)))
+    return local_diff, previous_diff, backup
 
 
 class NotionAPI:
@@ -249,11 +253,18 @@ def main():
     args = parser.parse_args()
     api = NotionAPI()
     if args.command == "pull":
-        diff, backup = pull_markdown(api, args.page_id, args.output, args.report)
+        local_diff, previous_diff, backup = pull_markdown(
+            api, args.page_id, args.output, args.report)
         if backup:
             print(f"Previous download saved: {backup}")
         print(f"Downloaded Notion Markdown: {args.output}")
-        print(diff or "No difference from local report")
+        print("\n=== Previous Notion download -> current Notion download ===")
+        if previous_diff is None:
+            print("No previous download at this output path")
+        else:
+            print(previous_diff or "No change from previous download")
+        print("\n=== Local report -> current Notion download ===")
+        print(local_diff or "No difference from local report")
     else:
         document = json.loads(args.plan.read_text())
         if document.get("page_id") != args.page_id:

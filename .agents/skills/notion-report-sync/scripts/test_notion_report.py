@@ -261,12 +261,73 @@ class PullReuseTests(unittest.TestCase):
             output = Path(directory) / "notion.md"
             report.write_text("# original\n")
             output.write_text("# previous\n")
-            diff, backup = pull_markdown(PageAwareAPI({}), "second-page", output, report)
+            local_diff, previous_diff, backup = pull_markdown(
+                PageAwareAPI({}), "second-page", output, report)
             self.assertEqual(output.read_text(), "# edited\n")
             self.assertEqual(report.read_text(), "# original\n")
             self.assertEqual(backup.read_text(), "# previous\n")
-            self.assertIn("-# original", diff)
-            self.assertIn("+# edited", diff)
+            self.assertIn("-# original", local_diff)
+            self.assertIn("+# edited", local_diff)
+            self.assertIn("-# previous", previous_diff)
+            self.assertIn("+# edited", previous_diff)
+            self.assertIn(str(backup), previous_diff)
+
+    def test_pull_unchanged_does_not_create_backup(self):
+        from notion_report import pull_markdown
+
+        class SamePageAPI(FakeAPI):
+            def request(self, method, path, body=None):
+                return {"markdown": "# same\n", "truncated": False,
+                        "unknown_block_ids": []}
+
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "report.md"
+            output = Path(directory) / "notion.md"
+            report.write_text("# local\n")
+            output.write_text("# same\n")
+            local_diff, previous_diff, backup = pull_markdown(
+                SamePageAPI({}), "page-a", output, report)
+            self.assertIsNone(backup)
+            self.assertEqual(previous_diff, "")
+            self.assertIn("-# local", local_diff)
+            self.assertEqual(list(Path(directory).glob("notion-backup-*.md")), [])
+
+    def test_first_pull_has_no_previous_comparison(self):
+        from notion_report import pull_markdown
+
+        class FirstPageAPI(FakeAPI):
+            def request(self, method, path, body=None):
+                return {"markdown": "# first\n", "truncated": False,
+                        "unknown_block_ids": []}
+
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "report.md"
+            output = Path(directory) / "notion.md"
+            report.write_text("# local\n")
+            local_diff, previous_diff, backup = pull_markdown(
+                FirstPageAPI({}), "page-a", output, report)
+            self.assertIsNone(backup)
+            self.assertIsNone(previous_diff)
+            self.assertEqual(output.read_text(), "# first\n")
+            self.assertIn("+# first", local_diff)
+
+    def test_incomplete_pull_preserves_previous_download(self):
+        from notion_report import pull_markdown
+
+        class IncompletePageAPI(FakeAPI):
+            def request(self, method, path, body=None):
+                return {"markdown": "# partial\n", "truncated": True,
+                        "unknown_block_ids": []}
+
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "report.md"
+            output = Path(directory) / "notion.md"
+            report.write_text("# local\n")
+            output.write_text("# previous\n")
+            with self.assertRaisesRegex(ValueError, "incomplete"):
+                pull_markdown(IncompletePageAPI({}), "page-a", output, report)
+            self.assertEqual(output.read_text(), "# previous\n")
+            self.assertEqual(list(Path(directory).glob("notion-backup-*.md")), [])
 
     def test_pull_rejects_output_equal_to_local_report(self):
         from notion_report import pull_markdown
