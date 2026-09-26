@@ -1,4 +1,3 @@
-# test_notion_targeted_edit.py
 import copy
 import unittest
 from notion_targeted_edit import build_update
@@ -54,3 +53,90 @@ class ReplacementTests(unittest.TestCase):
         body = build_update(block, {"block_id": "c", "type": "code",
                                     "old_text": "a: ", "new_text": "a:  "})
         self.assertEqual(body["code"]["language"], "c")
+
+
+import tempfile
+from pathlib import Path
+from notion_targeted_edit import apply_edits
+
+
+class FakeAPI:
+    def __init__(self, blocks, member_ids=None, fail_patch=False):
+        self.blocks = copy.deepcopy(blocks)
+        self.member_ids = set(member_ids or blocks)
+        self.fail_patch = fail_patch
+        self.patches = []
+
+    def tree(self, page_id):
+        return [copy.deepcopy(self.blocks[key]) for key in self.member_ids]
+
+    def request(self, method, path, body=None):
+        if method == "GET" and path.endswith("/markdown"):
+            return {"markdown": "# snapshot\n", "truncated": False, "unknown_block_ids": []}
+        key = path.removeprefix("blocks/")
+        if method == "GET":
+            return copy.deepcopy(self.blocks[key])
+        self.patches.append((key, copy.deepcopy(body)))
+        if self.fail_patch:
+            raise TimeoutError("response lost")
+        kind = self.blocks[key]["type"]
+        self.blocks[key][kind].update(copy.deepcopy(body[kind]))
+        self.blocks[key]["last_edited_time"] = "after"
+        return copy.deepcopy(self.blocks[key])
+
+
+def block(key, value="old"):
+    return {"id": key, "type": "paragraph", "last_edited_time": "before",
+            "paragraph": {"rich_text": [rich(value)]}}
+
+
+class ApplyTests(unittest.TestCase):
+    def test_foreign_block(self):
+        api = FakeAPI({"a": block("a"), "foreign": block("foreign")}, {"a"})
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(ValueError, "outside"):
+                apply_edits(api, [{"block_id": "foreign", "type": "paragraph",
+                                   "old_text": "old", "new_text": "new"}], Path(directory))
+        self.assertEqual(api.patches, [])
+
+    def test_stale_batch(self):
+        api = FakeAPI({"a": block("a"), "b": block("b", "changed")})
+        edits = [{"block_id": key, "type": "paragraph", "old_text": "old", "new_text": "new"}
+                 for key in ("a", "b")]
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(ValueError, "exactly once"):
+                apply_edits(api, edits, Path(directory))
+        self.assertEqual(api.patches, [])
+
+    def test_uncertain_patch(self):
+        api = FakeAPI({"a": block("a")}, fail_patch=True)
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(RuntimeError, "uncertain"):
+                apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                                   "old_text": "old", "new_text": "new"}], Path(directory))
+            self.assertTrue(list(Path(directory).glob("before-targeted-*.json")))
+        self.assertEqual(len(api.patches), 1)
+
+    def test_concurrent_change(self):
+        class ChangingAPI(FakeAPI):
+            def request(self, method, path, body=None):
+                if method == "GET" and path == "blocks/a":
+                    self.gets = getattr(self, "gets", 0) + 1
+                    if self.gets == 2:
+                        self.blocks["a"]["last_edited_time"] = "someone-else"
+                return super().request(method, path, body)
+        api = ChangingAPI({"a": block("a")})
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(RuntimeError, "changed"):
+                apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                                   "old_text": "old", "new_text": "new"}], Path(directory))
+        self.assertEqual(api.patches, [])
+
+    def test_success_reads_back(self):
+        api = FakeAPI({"a": block("a")})
+        with tempfile.TemporaryDirectory() as directory:
+            done = apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                                      "old_text": "old", "new_text": "new"}], Path(directory))
+            self.assertEqual(done, ["a"])
+            self.assertTrue(list(Path(directory).glob("before-targeted-*.md")))
+        self.assertEqual(api.blocks["a"]["paragraph"]["rich_text"][0]["text"]["content"], "new")

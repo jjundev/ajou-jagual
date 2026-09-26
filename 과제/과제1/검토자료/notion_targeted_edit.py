@@ -1,8 +1,13 @@
-# notion_targeted_edit.py
 """Apply user-specified, narrow text replacements to the fixed HW1 Notion page."""
 from __future__ import annotations
 
 import copy
+import argparse
+import json
+from datetime import datetime
+from pathlib import Path
+
+from notion_sync import EVIDENCE, PAGE_ID, NotionAPI, markdown_from_response
 
 
 def build_update(block: dict, edit: dict) -> dict:
@@ -49,3 +54,81 @@ def build_update(block: dict, edit: dict) -> dict:
         if kind == "code":
             payload["language"] = block["code"]["language"]
     return {kind: payload}
+
+
+def _ids(tree):
+    for node in tree:
+        yield node["id"]
+        yield from _ids(node.get("_children", []))
+
+
+def apply_edits(api, edits: list[dict], evidence: Path) -> list[str]:
+    if not isinstance(edits, list) or not edits:
+        raise ValueError("edits must be a nonempty list")
+    keys = [edit.get("block_id") for edit in edits]
+    if len(keys) != len(set(keys)):
+        raise ValueError("Each block may be edited once per batch")
+    tree = api.tree(PAGE_ID)
+    members = set(_ids(tree))
+    prepared = []
+    for edit in edits:
+        key = edit["block_id"]
+        if key not in members:
+            raise ValueError(f"Block {key} is outside the HW1 page")
+        before = api.request("GET", f"blocks/{key}")
+        body = build_update(before, edit)
+        prepared.append((key, before, body))
+    markdown = markdown_from_response(api.request("GET", f"pages/{PAGE_ID}/markdown"))
+    evidence.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+    prefix = evidence / f"before-targeted-{stamp}"
+    prefix.with_suffix(".json").write_text(
+        json.dumps({"page_id": PAGE_ID, "tree": tree, "edits": edits}, ensure_ascii=False, indent=2) + "\n")
+    prefix.with_suffix(".md").write_text(markdown)
+    print(f"Pre-edit snapshots: {prefix.with_suffix('.json')}, {prefix.with_suffix('.md')}")
+    completed = []
+    for key, before, body in prepared:
+        live = api.request("GET", f"blocks/{key}")
+        if (live.get("last_edited_time") != before.get("last_edited_time")
+                or live[before["type"]] != before[before["type"]]):
+            raise RuntimeError(f"Block {key} changed before PATCH; completed={completed}")
+        try:
+            api.request("PATCH", f"blocks/{key}", body)
+        except Exception as error:
+            current = api.request("GET", f"blocks/{key}")
+            raise RuntimeError(f"PATCH uncertain for {key}; completed={completed}; "
+                               f"current type={current.get('type')}; inspect before retry") from error
+        try:
+            actual = api.request("GET", f"blocks/{key}")
+        except Exception as error:
+            raise RuntimeError(f"Readback uncertain for {key}; completed={completed}") from error
+        kind = before["type"]
+        expected = body[kind]
+        if kind == "table_row":
+            got = actual[kind]["cells"]
+            want = expected["cells"]
+        else:
+            got = actual[kind]["rich_text"]
+            want = expected["rich_text"]
+        def core(items):
+            return [[item.get("type"), item.get("text"), item.get("annotations")]
+                    for item in items]
+        same = ([core(a) for a in got] == [core(a) for a in want]) if kind == "table_row" else core(got) == core(want)
+        if not same:
+            raise RuntimeError(f"Readback mismatch for {key}; completed={completed}")
+        completed.append(key)
+    return completed
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("plan", type=Path)
+    args = parser.parse_args()
+    document = json.loads(args.plan.read_text())
+    if document.get("page_id") != PAGE_ID:
+        raise ValueError("Edit plan page_id differs from the fixed HW1 page")
+    print("Verified blocks:", apply_edits(NotionAPI(), document["edits"], EVIDENCE))
+
+
+if __name__ == "__main__":
+    main()
