@@ -1,6 +1,6 @@
 ---
 name: notion-report-sync
-description: Use when comparing a course report edited in Notion with its local Markdown or applying a specifically requested edit to that report's Notion blocks. Works across assignments with an explicit page ID and file paths; not for databases or PDF export.
+description: Use when comparing a course report edited in Notion with its local Markdown, editing specified report blocks, or adding image upload slots. Works across assignments with an explicit page ID and file paths; not for databases or PDF export.
 ---
 
 # Notion report sync
@@ -29,5 +29,13 @@ python3 .agents/skills/notion-report-sync/scripts/notion_report.py edit \
 ```
 
 The tool checks every target belongs to that page and matches the old text before any PATCH. It saves the exact pre-edit blocks and Markdown, preserves supported rich-text annotations and links, updates one block at a time, and reads back each result. If a write or readback is uncertain, report the target, completed IDs, and observed state; do not blindly retry. Unsupported rich-text structures require a separately reviewed edit. Never use a page-wide upload or layout migration for routine changes.
+
+## Add image upload slots
+
+When the user asks for an image placeholder in the Notion report, create an **empty Notion image block**, not a paragraph saying where an image belongs. Place it beside the relevant result or analysis, leaving existing input, output, and explanation intact unless the user asks to change them. Record the intended image-to-slot order before adding multiple slots.
+
+Use the Notion editor for this operation: insert an image block with `/image` at each intended position and leave its upload dialog empty. If replacing a prior text placeholder, select only that paragraph's text, clear it, choose `/image`, then dismiss the upload dialog. Do not upload the screenshot when the user intends to add it personally. Back up the current page blocks and Markdown before changing existing slots.
+
+Read the page again after editing. Confirm the expected number and order of `image` blocks at the intended positions, with empty `external.url`, and confirm the old text placeholders are gone. Notion's Markdown export represents these empty image blocks as `![]()`; that syntax alone does not prove their position or type, so verify the live blocks. Pull again to update the local Markdown. Later, the user can click **이미지 추가** on each block and choose **파일 업로드**.
 
 `과제/과제1/검토자료/notion_sync.py` contains historical HW1-only upload and table-migration commands. Use the common script above for new assignments and routine HW1 pull or targeted edits. The user handles final Notion PDF export and any separate cover merge.
