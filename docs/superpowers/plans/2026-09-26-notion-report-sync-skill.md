@@ -327,6 +327,16 @@ def _ids(tree):
         yield from _ids(node.get("_children", []))
 
 
+def _editable_state(kind: str, data: dict):
+    def core(items):
+        return [(item.get("type"), item.get("text"), item.get("annotations"))
+                for item in items]
+    if kind == "table_row":
+        return [core(cell) for cell in data["cells"]]
+    result = core(data["rich_text"])
+    return (result, data.get("language")) if kind == "code" else result
+
+
 def apply_edits(api, edits: list[dict], evidence: Path) -> list[str]:
     if not isinstance(edits, list) or not edits:
         raise ValueError("edits must be a nonempty list")
@@ -348,37 +358,49 @@ def apply_edits(api, edits: list[dict], evidence: Path) -> list[str]:
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
     prefix = evidence / f"before-targeted-{stamp}"
     prefix.with_suffix(".json").write_text(
-        json.dumps({"page_id": PAGE_ID, "tree": tree, "edits": edits}, ensure_ascii=False, indent=2) + "\n")
+        json.dumps({"page_id": PAGE_ID, "tree": tree,
+                    "blocks": {key: before for key, before, _ in prepared},
+                    "edits": edits}, ensure_ascii=False, indent=2) + "\n")
     prefix.with_suffix(".md").write_text(markdown)
     print(f"Pre-edit snapshots: {prefix.with_suffix('.json')}, {prefix.with_suffix('.md')}")
     completed = []
     for key, before, body in prepared:
-        live = api.request("GET", f"blocks/{key}")
+        try:
+            live = api.request("GET", f"blocks/{key}")
+        except Exception as error:
+            raise RuntimeError(f"Pre-PATCH GET failed for {key}; completed={completed}") from error
         if (live.get("last_edited_time") != before.get("last_edited_time")
                 or live[before["type"]] != before[before["type"]]):
             raise RuntimeError(f"Block {key} changed before PATCH; completed={completed}")
         try:
             api.request("PATCH", f"blocks/{key}", body)
         except Exception as error:
-            current = api.request("GET", f"blocks/{key}")
+            try:
+                current = api.request("GET", f"blocks/{key}")
+            except Exception as recovery_error:
+                raise RuntimeError(f"PATCH uncertain for {key}; completed={completed}; "
+                                   "recovery GET failed; inspect before retry") from recovery_error
+            observed = evidence / f"uncertain-{key}-{stamp}.json"
+            observed.write_text(json.dumps(current, ensure_ascii=False, indent=2) + "\n")
+            kind = before["type"]
+            if current.get("type") != kind:
+                state = "diverged"
+            else:
+                current_state = _editable_state(kind, current[kind])
+                if current_state == _editable_state(kind, body[kind]):
+                    state = "matches expected"
+                elif current_state == _editable_state(kind, before[kind]):
+                    state = "unchanged"
+                else:
+                    state = "diverged"
             raise RuntimeError(f"PATCH uncertain for {key}; completed={completed}; "
-                               f"current type={current.get('type')}; inspect before retry") from error
+                               f"state={state}; observed={observed}; inspect before retry") from error
         try:
             actual = api.request("GET", f"blocks/{key}")
         except Exception as error:
             raise RuntimeError(f"Readback uncertain for {key}; completed={completed}") from error
         kind = before["type"]
-        expected = body[kind]
-        if kind == "table_row":
-            got = actual[kind]["cells"]
-            want = expected["cells"]
-        else:
-            got = actual[kind]["rich_text"]
-            want = expected["rich_text"]
-        def core(items):
-            return [[item.get("type"), item.get("text"), item.get("annotations")]
-                    for item in items]
-        same = ([core(a) for a in got] == [core(a) for a in want]) if kind == "table_row" else core(got) == core(want)
+        same = _editable_state(kind, actual[kind]) == _editable_state(kind, body[kind])
         if not same:
             raise RuntimeError(f"Readback mismatch for {key}; completed={completed}")
         completed.append(key)

@@ -1,4 +1,5 @@
 import copy
+import json
 import unittest
 from notion_targeted_edit import build_update
 
@@ -140,3 +141,88 @@ class ApplyTests(unittest.TestCase):
             self.assertEqual(done, ["a"])
             self.assertTrue(list(Path(directory).glob("before-targeted-*.md")))
         self.assertEqual(api.blocks["a"]["paragraph"]["rich_text"][0]["text"]["content"], "new")
+
+class RecoveryTests(unittest.TestCase):
+    def test_backup_records_exact_individual_preflight_block(self):
+        class ChangedBetweenReads(FakeAPI):
+            def tree(self, page_id):
+                snapshot = super().tree(page_id)
+                self.blocks["a"]["paragraph"]["rich_text"][0]["text"]["content"] = "prefix old"
+                return snapshot
+
+        api = ChangedBetweenReads({"a": block("a")})
+        with tempfile.TemporaryDirectory() as directory:
+            apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                               "old_text": "old", "new_text": "new"}], Path(directory))
+            backup = json.loads(next(Path(directory).glob("before-targeted-*.json")).read_text())
+            self.assertEqual(backup["blocks"]["a"]["paragraph"]["rich_text"][0]["text"]["content"],
+                             "prefix old")
+
+    def test_recovery_get_failure_reports_partial_completion(self):
+        class LostConnection(FakeAPI):
+            def request(self, method, path, body=None):
+                if method == "PATCH" and path == "blocks/b":
+                    self.patches.append(("b", copy.deepcopy(body)))
+                    raise TimeoutError("response lost")
+                if method == "GET" and path == "blocks/b":
+                    self.b_reads = getattr(self, "b_reads", 0) + 1
+                    if self.b_reads == 3:
+                        raise ConnectionError("network unavailable")
+                return super().request(method, path, body)
+
+        api = LostConnection({"a": block("a"), "b": block("b")})
+        edits = [{"block_id": key, "type": "paragraph", "old_text": "old", "new_text": "new"}
+                 for key in ("a", "b")]
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(RuntimeError, r"PATCH uncertain for b.*completed=\['a'\].*recovery GET failed"):
+                apply_edits(api, edits, Path(directory))
+        self.assertEqual(len(api.patches), 2)
+
+    def test_prepatch_get_failure_reports_partial_completion(self):
+        class LostRead(FakeAPI):
+            def request(self, method, path, body=None):
+                if method == "GET" and path == "blocks/b" and self.patches:
+                    raise ConnectionError("network unavailable")
+                return super().request(method, path, body)
+
+        api = LostRead({"a": block("a"), "b": block("b")})
+        edits = [{"block_id": key, "type": "paragraph", "old_text": "old", "new_text": "new"}
+                 for key in ("a", "b")]
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(RuntimeError, r"Pre-PATCH GET failed for b.*completed=\['a'\]"):
+                apply_edits(api, edits, Path(directory))
+        self.assertEqual(len(api.patches), 1)
+
+    def test_timeout_after_application_reports_observed_expected_state(self):
+        class AppliedThenLost(FakeAPI):
+            def request(self, method, path, body=None):
+                if method == "PATCH":
+                    super().request(method, path, body)
+                    raise TimeoutError("response lost")
+                return super().request(method, path, body)
+
+        api = AppliedThenLost({"a": block("a")})
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(RuntimeError, "state=matches expected"):
+                apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                                   "old_text": "old", "new_text": "new"}], Path(directory))
+            observed = list(Path(directory).glob("uncertain-a-*.json"))
+            self.assertEqual(len(observed), 1)
+            self.assertEqual(json.loads(observed[0].read_text())["paragraph"]["rich_text"][0]["text"]["content"],
+                             "new")
+
+    def test_timeout_after_divergent_type_reports_state(self):
+        class DivergedThenLost(FakeAPI):
+            def request(self, method, path, body=None):
+                if method == "PATCH":
+                    self.patches.append((path, copy.deepcopy(body)))
+                    self.blocks["a"]["type"] = "heading_2"
+                    self.blocks["a"]["heading_2"] = {"rich_text": [rich("someone else's heading")]}
+                    raise TimeoutError("response lost")
+                return super().request(method, path, body)
+
+        api = DivergedThenLost({"a": block("a")})
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(RuntimeError, "state=diverged"):
+                apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                                   "old_text": "old", "new_text": "new"}], Path(directory))
