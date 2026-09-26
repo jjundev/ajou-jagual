@@ -1,7 +1,7 @@
 import copy
 import json
 import unittest
-from notion_targeted_edit import build_update
+from notion_report import build_update
 
 
 def rich(content, **annotations):
@@ -58,7 +58,7 @@ class ReplacementTests(unittest.TestCase):
 
 import tempfile
 from pathlib import Path
-from notion_targeted_edit import apply_edits
+from notion_report import apply_edits
 
 
 class FakeAPI:
@@ -96,7 +96,7 @@ class ApplyTests(unittest.TestCase):
         api = FakeAPI({"a": block("a"), "foreign": block("foreign")}, {"a"})
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(ValueError, "outside"):
-                apply_edits(api, [{"block_id": "foreign", "type": "paragraph",
+                apply_edits(api, "page-a", [{"block_id": "foreign", "type": "paragraph",
                                    "old_text": "old", "new_text": "new"}], Path(directory))
         self.assertEqual(api.patches, [])
 
@@ -106,14 +106,14 @@ class ApplyTests(unittest.TestCase):
                  for key in ("a", "b")]
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(ValueError, "exactly once"):
-                apply_edits(api, edits, Path(directory))
+                apply_edits(api, "page-a", edits, Path(directory))
         self.assertEqual(api.patches, [])
 
     def test_uncertain_patch(self):
         api = FakeAPI({"a": block("a")}, fail_patch=True)
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(RuntimeError, "uncertain"):
-                apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                apply_edits(api, "page-a", [{"block_id": "a", "type": "paragraph",
                                    "old_text": "old", "new_text": "new"}], Path(directory))
             self.assertTrue(list(Path(directory).glob("before-targeted-*.json")))
         self.assertEqual(len(api.patches), 1)
@@ -129,14 +129,14 @@ class ApplyTests(unittest.TestCase):
         api = ChangingAPI({"a": block("a")})
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(RuntimeError, "changed"):
-                apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                apply_edits(api, "page-a", [{"block_id": "a", "type": "paragraph",
                                    "old_text": "old", "new_text": "new"}], Path(directory))
         self.assertEqual(api.patches, [])
 
     def test_success_reads_back(self):
         api = FakeAPI({"a": block("a")})
         with tempfile.TemporaryDirectory() as directory:
-            done = apply_edits(api, [{"block_id": "a", "type": "paragraph",
+            done = apply_edits(api, "page-a", [{"block_id": "a", "type": "paragraph",
                                       "old_text": "old", "new_text": "new"}], Path(directory))
             self.assertEqual(done, ["a"])
             self.assertTrue(list(Path(directory).glob("before-targeted-*.md")))
@@ -152,7 +152,7 @@ class RecoveryTests(unittest.TestCase):
 
         api = ChangedBetweenReads({"a": block("a")})
         with tempfile.TemporaryDirectory() as directory:
-            apply_edits(api, [{"block_id": "a", "type": "paragraph",
+            apply_edits(api, "page-a", [{"block_id": "a", "type": "paragraph",
                                "old_text": "old", "new_text": "new"}], Path(directory))
             backup = json.loads(next(Path(directory).glob("before-targeted-*.json")).read_text())
             self.assertEqual(backup["blocks"]["a"]["paragraph"]["rich_text"][0]["text"]["content"],
@@ -175,7 +175,7 @@ class RecoveryTests(unittest.TestCase):
                  for key in ("a", "b")]
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(RuntimeError, r"PATCH uncertain for b.*completed=\['a'\].*recovery GET failed"):
-                apply_edits(api, edits, Path(directory))
+                apply_edits(api, "page-a", edits, Path(directory))
         self.assertEqual(len(api.patches), 2)
 
     def test_prepatch_get_failure_reports_partial_completion(self):
@@ -190,7 +190,7 @@ class RecoveryTests(unittest.TestCase):
                  for key in ("a", "b")]
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(RuntimeError, r"Pre-PATCH GET failed for b.*completed=\['a'\]"):
-                apply_edits(api, edits, Path(directory))
+                apply_edits(api, "page-a", edits, Path(directory))
         self.assertEqual(len(api.patches), 1)
 
     def test_timeout_after_application_reports_observed_expected_state(self):
@@ -204,7 +204,7 @@ class RecoveryTests(unittest.TestCase):
         api = AppliedThenLost({"a": block("a")})
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(RuntimeError, "state=matches expected"):
-                apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                apply_edits(api, "page-a", [{"block_id": "a", "type": "paragraph",
                                    "old_text": "old", "new_text": "new"}], Path(directory))
             observed = list(Path(directory).glob("uncertain-a-*.json"))
             self.assertEqual(len(observed), 1)
@@ -224,5 +224,55 @@ class RecoveryTests(unittest.TestCase):
         api = DivergedThenLost({"a": block("a")})
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(RuntimeError, "state=diverged"):
-                apply_edits(api, [{"block_id": "a", "type": "paragraph",
+                apply_edits(api, "page-a", [{"block_id": "a", "type": "paragraph",
                                    "old_text": "old", "new_text": "new"}], Path(directory))
+
+class ReuseTests(unittest.TestCase):
+    def test_edits_use_selected_page_instead_of_hw1_constant(self):
+        class PageAwareAPI(FakeAPI):
+            def tree(self, page_id):
+                if page_id != "another-page":
+                    raise AssertionError(f"wrong page: {page_id}")
+                return super().tree(page_id)
+
+            def request(self, method, path, body=None):
+                if path.startswith("pages/") and path != "pages/another-page/markdown":
+                    raise AssertionError(f"wrong page: {path}")
+                return super().request(method, path, body)
+
+        api = PageAwareAPI({"a": block("a")})
+        with tempfile.TemporaryDirectory() as directory:
+            done = apply_edits(api, "another-page", [{"block_id": "a", "type": "paragraph",
+                                                      "old_text": "old", "new_text": "new"}], Path(directory))
+        self.assertEqual(done, ["a"])
+
+class PullReuseTests(unittest.TestCase):
+    def test_pull_selected_page_backs_up_and_compares_without_overwriting_source(self):
+        from notion_report import pull_markdown
+
+        class PageAwareAPI(FakeAPI):
+            def request(self, method, path, body=None):
+                if path != "pages/second-page/markdown":
+                    raise AssertionError(path)
+                return {"markdown": "# edited\n", "truncated": False, "unknown_block_ids": []}
+
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "report.md"
+            output = Path(directory) / "notion.md"
+            report.write_text("# original\n")
+            output.write_text("# previous\n")
+            diff, backup = pull_markdown(PageAwareAPI({}), "second-page", output, report)
+            self.assertEqual(output.read_text(), "# edited\n")
+            self.assertEqual(report.read_text(), "# original\n")
+            self.assertEqual(backup.read_text(), "# previous\n")
+            self.assertIn("-# original", diff)
+            self.assertIn("+# edited", diff)
+
+    def test_pull_rejects_output_equal_to_local_report(self):
+        from notion_report import pull_markdown
+        with tempfile.TemporaryDirectory() as directory:
+            report = Path(directory) / "report.md"
+            report.write_text("# original\n")
+            with self.assertRaisesRegex(ValueError, "must differ"):
+                pull_markdown(FakeAPI({}), "page-a", report, report)
+            self.assertEqual(report.read_text(), "# original\n")

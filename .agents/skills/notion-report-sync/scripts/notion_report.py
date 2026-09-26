@@ -1,13 +1,105 @@
-"""Apply user-specified, narrow text replacements to the fixed HW1 Notion page."""
+"""Pull and safely edit a selected Notion report page."""
 from __future__ import annotations
 
-import copy
 import argparse
+import copy
+import difflib
+import os
+import time
+import urllib.error
+import urllib.parse
+import urllib.request
 import json
 from datetime import datetime
 from pathlib import Path
 
-from notion_sync import EVIDENCE, PAGE_ID, NotionAPI, markdown_from_response
+
+
+
+NOTION_VERSION = "2026-03-11"
+
+
+def markdown_from_response(response: dict) -> str:
+    if response.get("truncated") or response.get("unknown_block_ids"):
+        raise ValueError("Notion Markdown response is incomplete")
+    markdown = response.get("markdown")
+    if not isinstance(markdown, str):
+        raise ValueError("Notion Markdown response has no content")
+    return markdown
+
+
+def save_pulled_markdown(markdown: str, output: Path) -> Path | None:
+    output.parent.mkdir(parents=True, exist_ok=True)
+    backup = None
+    if output.exists():
+        previous = output.read_text()
+        if previous == markdown:
+            return None
+        stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+        backup = output.with_name(f"{output.stem}-backup-{stamp}{output.suffix}")
+        backup.write_bytes(output.read_bytes())
+    output.write_text(markdown)
+    return backup
+
+
+def pull_markdown(api, page_id: str, output: Path, report: Path) -> tuple[str, Path | None]:
+    if output.resolve() == report.resolve():
+        raise ValueError("Notion output and local report must differ")
+    markdown = markdown_from_response(api.request("GET", f"pages/{page_id}/markdown"))
+    source = report.read_text()
+    backup = save_pulled_markdown(markdown, output)
+    diff = "".join(difflib.unified_diff(source.splitlines(keepends=True),
+                                        markdown.splitlines(keepends=True),
+                                        fromfile=str(report), tofile=str(output)))
+    return diff, backup
+
+
+class NotionAPI:
+    def __init__(self) -> None:
+        token = os.environ.get("NOTION_TOKEN")
+        if not token:
+            raise RuntimeError("NOTION_TOKEN is not set")
+        self.headers = {"Authorization": f"Bearer {token}",
+                        "Notion-Version": NOTION_VERSION,
+                        "Content-Type": "application/json"}
+
+    def request(self, method: str, path: str, body: dict | None = None) -> dict:
+        url = "https://api.notion.com/v1/" + path
+        data = json.dumps(body, ensure_ascii=False).encode() if body is not None else None
+        request = urllib.request.Request(url, data=data, headers=self.headers, method=method)
+        for attempt in range(5):
+            try:
+                with urllib.request.urlopen(request, timeout=35) as response:
+                    return json.load(response)
+            except urllib.error.HTTPError as error:
+                detail = json.loads(error.read().decode())
+                if method == "GET" and error.code in (429, 500, 502, 503, 504, 529) and attempt < 4:
+                    delay = int(error.headers.get("Retry-After", min(2 ** attempt, 30)))
+                    time.sleep(delay)
+                    continue
+                raise RuntimeError(f"Notion {method} {path}: HTTP {error.code} "
+                                   f"{detail.get('code')}: {detail.get('message')}") from None
+        raise RuntimeError("Notion GET retry limit reached")
+
+    def children(self, block_id: str) -> list[dict]:
+        result = []
+        cursor = None
+        while True:
+            query = f"blocks/{block_id}/children?page_size=100"
+            if cursor:
+                query += "&start_cursor=" + urllib.parse.quote(cursor)
+            response = self.request("GET", query)
+            result.extend(response["results"])
+            cursor = response.get("next_cursor")
+            if not cursor:
+                return result
+
+    def tree(self, block_id: str) -> list[dict]:
+        result = self.children(block_id)
+        for block in result:
+            if block.get("has_children"):
+                block["_children"] = self.tree(block["id"])
+        return result
 
 
 def build_update(block: dict, edit: dict) -> dict:
@@ -73,28 +165,28 @@ def _editable_state(kind: str, data: dict):
     return (result, data.get("language")) if kind == "code" else result
 
 
-def apply_edits(api, edits: list[dict], evidence: Path) -> list[str]:
+def apply_edits(api, page_id: str, edits: list[dict], evidence: Path) -> list[str]:
     if not isinstance(edits, list) or not edits:
         raise ValueError("edits must be a nonempty list")
     keys = [edit.get("block_id") for edit in edits]
     if len(keys) != len(set(keys)):
         raise ValueError("Each block may be edited once per batch")
-    tree = api.tree(PAGE_ID)
+    tree = api.tree(page_id)
     members = set(_ids(tree))
     prepared = []
     for edit in edits:
         key = edit["block_id"]
         if key not in members:
-            raise ValueError(f"Block {key} is outside the HW1 page")
+            raise ValueError(f"Block {key} is outside the selected page")
         before = api.request("GET", f"blocks/{key}")
         body = build_update(before, edit)
         prepared.append((key, before, body))
-    markdown = markdown_from_response(api.request("GET", f"pages/{PAGE_ID}/markdown"))
+    markdown = markdown_from_response(api.request("GET", f"pages/{page_id}/markdown"))
     evidence.mkdir(parents=True, exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
     prefix = evidence / f"before-targeted-{stamp}"
     prefix.with_suffix(".json").write_text(
-        json.dumps({"page_id": PAGE_ID, "tree": tree,
+        json.dumps({"page_id": page_id, "tree": tree,
                     "blocks": {key: before for key, before, _ in prepared},
                     "edits": edits}, ensure_ascii=False, indent=2) + "\n")
     prefix.with_suffix(".md").write_text(markdown)
@@ -145,12 +237,28 @@ def apply_edits(api, edits: list[dict], evidence: Path) -> list[str]:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("plan", type=Path)
+    commands = parser.add_subparsers(dest="command", required=True)
+    pull = commands.add_parser("pull")
+    pull.add_argument("--page-id", required=True)
+    pull.add_argument("--report", type=Path, required=True)
+    pull.add_argument("--output", type=Path, required=True)
+    edit = commands.add_parser("edit")
+    edit.add_argument("--page-id", required=True)
+    edit.add_argument("--plan", type=Path, required=True)
+    edit.add_argument("--evidence", type=Path, required=True)
     args = parser.parse_args()
-    document = json.loads(args.plan.read_text())
-    if document.get("page_id") != PAGE_ID:
-        raise ValueError("Edit plan page_id differs from the fixed HW1 page")
-    print("Verified blocks:", apply_edits(NotionAPI(), document["edits"], EVIDENCE))
+    api = NotionAPI()
+    if args.command == "pull":
+        diff, backup = pull_markdown(api, args.page_id, args.output, args.report)
+        if backup:
+            print(f"Previous download saved: {backup}")
+        print(f"Downloaded Notion Markdown: {args.output}")
+        print(diff or "No difference from local report")
+    else:
+        document = json.loads(args.plan.read_text())
+        if document.get("page_id") != args.page_id:
+            raise ValueError("Edit plan page_id differs from --page-id")
+        print("Verified blocks:", apply_edits(api, args.page_id, document["edits"], args.evidence))
 
 
 if __name__ == "__main__":

@@ -506,3 +506,7 @@ git commit -m "feat(skill): guide HW1 Notion report synchronization"
 ## Self-Review at Execution
 
 Check every spec bullet against Tasks 1–3; verify the helper does not write a token or automatically run `push`. Inspect the final diff and branch status. The tests use a fake API and therefore prove local decisions and request shapes, not live Notion acceptance; an authorized real edit must still be verified by its GET readback and, where visual layout matters, the user's exported PDF.
+
+## Scope amendment after implementation
+
+The user clarified that the skill must serve other assignment reports. The shared pull/compare and targeted-edit code was moved to `.agents/skills/notion-report-sync/scripts/notion_report.py`; its CLI now accepts the page ID and assignment paths. The original task steps above document the first HW1-only implementation, not the current reusable interface. `과제/과제1/검토자료/notion_sync.py` remains solely for HW1's historical upload and table migration.

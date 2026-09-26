@@ -34,12 +34,26 @@ python3 -m unittest discover -s 과제/과제1/검토자료 -p 'test_notion_sync
 
 표 전환 직후 Notion 블록 API에서 왼쪽 셀의 C 코드 6개를 다시 읽어 `HW1.c`와 일치함을 확인했다. Notion Markdown API도 표를 포함한 문서를 잘림 없이 반환했다.
 
-## 지정 블록만 수정할 때
+## 공통 스킬로 내려받기·비교하기
 
-`.agents/skills/notion-report-sync/SKILL.md`의 범위와 중단 조건을 따른다. 현재 블록 ID와 텍스트를 먼저 확인하고, 임시 JSON 파일에 `page_id`와 `edits`를 적은 뒤 다음을 실행한다.
+여러 과제에서 사용하는 스킬은 `.agents/skills/notion-report-sync/SKILL.md`다. HW1 페이지의 현재 ID는 `notion_sync.py`의 `PAGE_ID`를 확인한다. 프로젝트 루트에서 실행한다.
 
 ```bash
-python3 과제/과제1/검토자료/notion_targeted_edit.py /tmp/hw1-notion-edit.json
+python3 .agents/skills/notion-report-sync/scripts/notion_report.py pull \
+  --page-id 4b5b06d263bc8255b539819393d50d19 \
+  --report 과제/과제1/보고서.md --output 과제/과제1/보고서_노션.md
 ```
 
-이 명령은 전체 보고서 재업로드가 아니라 지정 블록 수정에만 사용한다.
+기존 `notion_sync.py pull`도 HW1 전용 명령으로 남아 있다. 새 과제에서는 해당 과제의 페이지 ID와 경로를 지정한다.
+
+## 지정 블록만 수정할 때
+
+스킬의 범위와 중단 조건을 따른다. 현재 블록 ID와 텍스트를 먼저 확인하고, 임시 JSON 파일에 `page_id`와 `edits`를 적은 뒤 실행한다.
+
+```bash
+python3 .agents/skills/notion-report-sync/scripts/notion_report.py edit \
+  --page-id 4b5b06d263bc8255b539819393d50d19 \
+  --plan /tmp/hw1-notion-edit.json --evidence 과제/과제1/검토자료/notion_api
+```
+
+이 명령은 지정 블록만 수정한다. `notion_sync.py push`와 `layout-table`은 과거 HW1 초기 업로드·표 전환용이다.
