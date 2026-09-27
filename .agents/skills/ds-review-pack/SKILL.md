@@ -26,7 +26,7 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 **진행 표시**: 단계마다 한 줄만 쓴다. 예: `3/9 작성 중: 섹션 4개 + 카드 9개 (병렬)`, `B3 전사 중: 원본 11개 (병렬)`
 
 **경로 약속**
-- `SKILL` = 이 파일이 있는 폴더(`.claude/skills/ds-review-pack`)의 절대 경로
+- `SKILL` = 이 파일이 있는 폴더(`.agents/skills/ds-review-pack`)의 절대 경로
 - `REPO` = 저장소 루트
 - `BANK` = `REPO/from_the_past/기출/문제은행.json`
 - `RUN` = 복습팩은 `<scratchpad>/ds-review-pack/<range>/`, 문제은행은 `<scratchpad>/ds-bank/<YYYYMMDD-HHMMSS>/`

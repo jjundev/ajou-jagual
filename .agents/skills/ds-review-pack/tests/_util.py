@@ -13,7 +13,7 @@ SKILL = TESTS.parent
 SCRIPTS = SKILL / "scripts"
 FIXTURES = TESTS / "fixtures"
 MINI_RUN = FIXTURES / "mini-run"
-REPO = SKILL.parents[2]  # <repo>/.claude/skills/ds-review-pack
+REPO = SKILL.parents[2]  # <repo>/.agents/skills/ds-review-pack
 sys.path.insert(0, str(SCRIPTS))
 
 
