@@ -30,6 +30,12 @@ python3 .agents/skills/notion-report-sync/scripts/notion_report.py edit \
 
 The tool checks every target belongs to that page and matches the old text before any PATCH. It saves the exact pre-edit blocks and Markdown, preserves supported rich-text annotations and links, updates one block at a time, and reads back each result. If a write or readback is uncertain, report the target, completed IDs, and observed state; do not blindly retry. Unsupported rich-text structures require a separately reviewed edit. Never use a page-wide upload or layout migration for routine changes.
 
+## Code in table cells
+
+Write source code in a Notion table cell as plain `text` rich text without the `code` annotation, and put each line's leading spaces as the same number of U+00A0 (no-break space). Leave spaces inside a line as ASCII spaces. Reason, from a 2026-09-27 export test: Notion's PDF export drops leading ASCII spaces, and an inline-code cell prints in red (#EB5757) even with an explicit `color`. Text extracted from that PDF contained no U+00A0, so copied code carries no stray characters.
+
+After writing, read the cell back: it must have no `code` annotation, and replacing U+00A0 with a space must reproduce the source exactly. When a target text item already has line-leading U+00A0, `edit` also matches an `old_text` written with ASCII indentation and converts `new_text`'s line-leading spaces to U+00A0. Indentation typed with the space bar in the Notion editor is ASCII and disappears again in the PDF, so check the exported PDF after manual code edits.
+
 ## Add image upload slots
 
 When the user asks for an image placeholder in the Notion report, create an **empty Notion image block**, not a paragraph saying where an image belongs. Place it beside the relevant result or analysis, leaving existing input, output, and explanation intact unless the user asks to change them. Record the intended image-to-slot order before adding multiple slots.

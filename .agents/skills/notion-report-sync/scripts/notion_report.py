@@ -5,6 +5,7 @@ import argparse
 import copy
 import difflib
 import os
+import re
 import time
 import urllib.error
 import urllib.parse
@@ -109,6 +110,26 @@ class NotionAPI:
         return result
 
 
+_NBSP_LINE = re.compile("^ ", re.MULTILINE)
+
+
+def _nbsp_indent(text: str, at_line_start: bool = True) -> str:
+    pattern = r"(^|\n)( +)" if at_line_start else r"(\n)( +)"
+    return re.sub(pattern, lambda m: m[1] + " " * len(m[2]), text)
+
+
+def _spots(content: str, old: str) -> set[tuple[int, str]]:
+    """Non-overlapping matches of old_text, also as NBSP-indented code when the item uses it."""
+    patterns = {old, _nbsp_indent(old)} if _NBSP_LINE.search(content) else {old}
+    found = set()
+    for pattern in patterns:
+        start = content.find(pattern)
+        while start >= 0:
+            found.add((start, pattern))
+            start = content.find(pattern, start + len(pattern))
+    return found
+
+
 def build_update(block: dict, edit: dict) -> dict:
     kind = block.get("type")
     if block.get("id") != edit.get("block_id") or kind != edit.get("type"):
@@ -134,12 +155,18 @@ def build_update(block: dict, edit: dict) -> dict:
         items = payload.get("rich_text", [])
     if any(item.get("type") != "text" for item in items):
         raise ValueError("Unsupported non-text rich-text item")
-    matches = [(item, item["text"]["content"].count(old)) for item in items
-               if item.get("type") == "text" and isinstance(item.get("text", {}).get("content"), str)]
-    if sum(count for _, count in matches) != 1:
+    matches = [(item, spot) for item in items
+               if item.get("type") == "text" and isinstance(item.get("text", {}).get("content"), str)
+               for spot in _spots(item["text"]["content"], old)]
+    if len(matches) != 1:
         raise ValueError("old_text must occur exactly once in one text item")
-    item = next(item for item, count in matches if count)
-    item["text"]["content"] = item["text"]["content"].replace(old, new, 1)
+    item, (start, found) = matches[0]
+    content = item["text"]["content"]
+    if _NBSP_LINE.search(content):
+        # Notion's PDF export drops leading ASCII spaces; keep code indentation as NBSP.
+        at_line_start = start == 0 or content[start - 1] == "\n"
+        new = _nbsp_indent(new, at_line_start)
+    item["text"]["content"] = content[:start] + new + content[start + len(found):]
     if len(item["text"]["content"]) > 2000:
         raise ValueError("Updated Notion text item exceeds 2000 characters")
     # Notion GET fields such as plain_text, href, and block metadata are not writable.

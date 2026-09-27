@@ -56,6 +56,43 @@ class ReplacementTests(unittest.TestCase):
         self.assertEqual(body["code"]["language"], "c")
 
 
+NB = " "
+
+
+def code_row(content):
+    return {"id": "r", "type": "table_row",
+            "table_row": {"cells": [[rich(content)], [rich("설명")]]}}
+
+
+def code_edit(old, new):
+    return {"block_id": "r", "type": "table_row", "cell_index": 0,
+            "old_text": old, "new_text": new}
+
+
+class NbspIndentTests(unittest.TestCase):
+    def test_space_indented_plan_matches_nbsp_cell_and_keeps_nbsp(self):
+        block = code_row(f"int f(void) {{\n{NB*2}return 0;\n}}")
+        body = build_update(block, code_edit("\n  return 0;", "\n  return 1;\n  /* x */"))
+        self.assertEqual(body["table_row"]["cells"][0][0]["text"]["content"],
+                         f"int f(void) {{\n{NB*2}return 1;\n{NB*2}/* x */\n}}")
+
+    def test_cell_without_nbsp_indent_keeps_ascii_spaces(self):
+        block = code_row("a\n  b")
+        body = build_update(block, code_edit("\n  b", "\n  c"))
+        self.assertEqual(body["table_row"]["cells"][0][0]["text"]["content"], "a\n  c")
+
+    def test_mid_line_spaces_are_not_converted(self):
+        block = code_row(f"x\n{NB*2}a = 1;")
+        body = build_update(block, code_edit("a = 1;", "a  =  2;"))
+        self.assertEqual(body["table_row"]["cells"][0][0]["text"]["content"],
+                         f"x\n{NB*2}a  =  2;")
+
+    def test_raw_and_converted_matches_at_different_places_rejected(self):
+        block = code_row(f"x\n{NB*2}y\n  y")
+        with self.assertRaisesRegex(ValueError, "exactly once"):
+            build_update(block, code_edit("\n  y", "\n  z"))
+
+
 import tempfile
 from pathlib import Path
 from notion_report import apply_edits
