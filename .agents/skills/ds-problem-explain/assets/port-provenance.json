@@ -815,6 +815,34 @@
       "current_sha256": "55b8094aa2e206bfae3899bef014b97c35a89a565158c720aa939b36731b5386",
       "inserted_text": "\ndef test_existing_source_figure_presentation_preserved(tmp_path):\n    pack,fragments=make(tmp_path)\n    figure='<figure style=\"margin:16px 0\"><div class=\"figure-scroll\" style=\"max-width:100%;overflow-x:auto;background:white\"><svg viewBox=\"0 0 1000 200\" style=\"background:white;width:1000px;max-width:none;height:auto\"><text x=\"1\" y=\"20\">A B C D</text></svg></div></figure>'\n    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+figure)\n    pack=replace(pack,problems=(p,))\n    art=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')\n    assert check_artifacts(pack,art)==[]\n    assert figure in art.html.read_text()\n\n@pytest.mark.parametrize('style',['background:url(https://example.com/x)','width:expression(alert(1))','position:fixed','color:red'])\ndef test_source_style_allowance_is_narrow(tmp_path,style):\n    pack,fragments=make(tmp_path)\n    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+f'<figure style=\"{style}\">x</figure>')\n    with pytest.raises(ExplainError,match='마크업'):\n        build_explanation(replace(pack,problems=(p,)),fragments,tmp_path/'stage',tmp_path/'repo')\n\ndef test_authored_style_still_refused(tmp_path):\n    pack,fragments=make(tmp_path)\n    with pytest.raises(ExplainError,match='style'):\n        build_explanation(pack,{'p1':fragments['p1']+'<figure style=\"margin:16px 0\">x</figure>'},tmp_path/'stage',tmp_path/'repo')\n",
       "reason": "2026-10-12 existing9-pack backfill: source-only exact static figure style compatibility with preservation and rejection regression; original frozen file hashes retained."
+    },
+    {
+      "destination": "scripts/mpe_contract.py",
+      "base_sha256": "1794304f5aebb1b2b21b1ec0a4de0e7ad3510799be6b7f461a8eb816861ab829",
+      "current_sha256": "cfbf94b4f7c5b06195675c0c36cabece512f77830a416861e43150658b739ab1",
+      "inserted_text": "def code_block_errors(fragment: str) -> list[str]:\n    \"\"\"Validate authored blocks only; never restructure original problem code.\"\"\"\n    errors = []\n    for pre in parse(fragment).find_all(lambda n: n.tag == 'pre'):\n        children = [n for n in pre.children if not isinstance(n, str)]\n        if (len(children) != 1 or children[0].tag != 'code' or\n                any(isinstance(n, str) and n.strip() for n in pre.children)):\n            errors.append('독립 코드·실행결과는 pre 안에 직계 code 하나로 작성하세요')\n        elif not children[0].text().strip():\n            errors.append('빈 코드 블록 금지')\n        parent = pre.parent\n        while parent is not None:\n            if parent.tag == 'p':\n                errors.append('코드 블록은 문단 밖에 작성하세요')\n                break\n            parent = parent.parent\n    return errors\n\n_validate_fragment_structure = validate_fragment\n\ndef validate_fragment(problem, fragment):\n    return _validate_fragment_structure(problem, fragment) + [\n        f'{problem.id}: {error}' for error in code_block_errors(fragment)]\n\n",
+      "reason": "User approved 2026-10-13: enforce authored code/output blocks and preservation; original port bytes retained."
+    },
+    {
+      "destination": "SKILL.md",
+      "base_sha256": "15ec8a459546e001f8b277ae8a41d87c71ee5bb8e047279d98c44c03b5c11f3d",
+      "current_sha256": "fee14752cc06f08218261684353d699a1f3a0d4ee2a3f8fb45672e39225a6500",
+      "inserted_text": "\n## 독립 코드와 실행결과\n\n독립된 코드 조각과 실행결과는 한 줄이어도 `<pre><code>...</code></pre>`로 묶는다. 설명 문장은 블록 밖의 문단에 두고, 문장 속 `head`, `p->link` 같은 짧은 표기는 인라인 `<code>`로 유지한다. pre에는 직계 code 하나와 공백만 허용하며 빈 블록을 만들지 않는다. 코드의 문자·공백·들여쓰기·줄바꿈·연산 순서를 보존하고 `<`, `&`는 HTML escape한다. `$`는 수식으로 해석하지 않는다. 공통 템플릿의 테마 배경·테두리·여백을 사용하고 긴 줄은 블록 안에서만 스크롤한다. 일반 문장에서 코드를 자동 추측해 변환하지 않는다.\n",
+      "reason": "User approved 2026-10-13: enforce authored code/output blocks and preservation; original port bytes retained."
+    },
+    {
+      "destination": "references/authoring.md",
+      "base_sha256": "340b6ab2a34b68d013dbac46a04f92226b555ec0907a362008c8d2487e52efab",
+      "current_sha256": "26eb019547bec826f54bc37329c51721534ef89925df44b461445f0e633d03d6",
+      "inserted_text": "\n## 독립 코드와 실행결과\n\n독립된 코드 조각과 실행결과는 한 줄이어도 `<pre><code>...</code></pre>`로 묶는다. 설명 문장은 블록 밖의 문단에 두고, 문장 속 `head`, `p->link` 같은 짧은 표기는 인라인 `<code>`로 유지한다. pre에는 직계 code 하나와 공백만 허용하며 빈 블록을 만들지 않는다. 코드의 문자·공백·들여쓰기·줄바꿈·연산 순서를 보존하고 `<`, `&`는 HTML escape한다. `$`는 수식으로 해석하지 않는다. 공통 템플릿의 테마 배경·테두리·여백을 사용하고 긴 줄은 블록 안에서만 스크롤한다. 일반 문장에서 코드를 자동 추측해 변환하지 않는다.\n",
+      "reason": "User approved 2026-10-13: enforce authored code/output blocks and preservation; original port bytes retained."
+    },
+    {
+      "destination": "references/verification.md",
+      "base_sha256": "455657e26fba291c3a34ae2dd6f2c9637342fe410d8fb07ffe79ddc3a208d813",
+      "current_sha256": "7e9f34a6a8bbae7520fc8205a6e9a8b3ba4943580f65a4a392050adb372cdeac",
+      "inserted_text": "\n## 코드 블록 검토\n\n독립 코드·실행결과가 `<pre><code>`로 분리되어 있고 설명은 밖에 있는지 확인한다. 짧은 인라인 code는 유지하고 빈 블록은 없어야 한다. HTML과 MD의 문자·탭·빈 줄을 원 설명 조각과 대조한다. 1280×900/375×812, light/dark에서 블록의 배경·테두리·16px 패딩·고정폭 글꼴을 확인한다. 긴 줄은 pre 내부에서만 스크롤하고 문서 전체는 가로로 넘치지 않아야 한다. 원문 코드의 구조와 내용을 저작 제약에 맞추어 재작성하지 않는다.\n",
+      "reason": "User approved 2026-10-13: enforce authored code/output blocks and preservation; original port bytes retained."
     }
   ]
 }

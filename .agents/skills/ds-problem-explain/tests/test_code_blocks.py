@@ -44,3 +44,24 @@ def test_code_and_output_whitespace_preserved(tmp_path):
 def test_pack_without_code_has_no_empty_pre(tmp_path):
     art = render(tmp_path, no_source_code=True)
     assert not list(parse(art.html.read_text()).find_all(lambda n: n.tag == 'pre'))
+
+
+def test_authored_pre_requires_one_direct_code_child():
+    from helpers import problem
+    from mpe_contract import validate_fragment
+    for snippet in ('<pre>int n=0;</pre>', '<pre><p>설명</p><code>int n=0;</code></pre>',
+                    '<pre><code>x</code><code>y</code></pre>', '<pre><code> </code></pre>'):
+        assert validate_fragment(problem(), fragment() + snippet), snippet
+    assert validate_fragment(problem(), fragment() + '<pre>\n<code class="language-c">int n=0;</code>\n</pre>') == []
+
+
+def test_inline_code_remains_valid():
+    from helpers import problem
+    from mpe_contract import validate_fragment
+    assert validate_fragment(problem(), fragment() + '<p><code>head</code>를 확인해요.</p>') == []
+
+
+def test_pre_inside_paragraph_is_rejected():
+    from helpers import problem
+    from mpe_contract import validate_fragment
+    assert validate_fragment(problem(), fragment() + '<p><pre><code>x</code></pre></p>')
