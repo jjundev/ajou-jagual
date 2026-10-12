@@ -159,3 +159,7 @@
 - Type consistency: Pack→PageSlice→payload→Probe→stage report를 같은 함수명/자료형으로 연결했다.
 - Review Focus: 다섯 위험을 위 Task의 구체적 테스트에 배정했다.
 - Proportion: 6개 작업으로 나눴으며 자산 설정은 renderer 작업, 지침은 흐름 연결 작업에 포함했다. 구현은 별도 승인 후 시작한다.
+
+## 실행 완료 — 2026-10-13
+
+Native 실행으로 Task 1–6 완료. 실제/임시 fixture 기반 테스트를 사용했고, 문서 문구 grep 대신 기존 참조 해석 검사와 실제 CLI 납품으로 검증했다. 9팩·64문항의 PDF 18개(139쪽), 문제설명 HTML·MD 9쌍 재생성·발행. 전체 262개 테스트와 145개 subtest 통과, skip 0. 독립 리뷰의 Important 3건은 재현 테스트 RED→GREEN으로 수정했다. 상세 결과와 실행 중 결정은 `docs/verify/2026-10-13-ds-review-pdf.json`에 기록했다. main 병합·push는 아직 수행하지 않았다.

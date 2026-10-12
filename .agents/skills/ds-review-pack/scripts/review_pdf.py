@@ -65,6 +65,12 @@ def check_stage(run):
     return list(dict.fromkeys(errors))
 
 
+def failure_status(source):
+    source=Path(source)
+    return 'stale' if any((source.parent/(source.stem+suffix)).exists()
+                          for suffix in ('-문제.pdf','-답안.pdf')) else 'withheld'
+
+
 def build_pack(review,run):
     run=Path(run).resolve()
     if run.exists() and any(run.iterdir()):raise PdfError('RUN must be fresh/empty')
@@ -73,10 +79,9 @@ def build_pack(review,run):
     try:
         pack=read_pack(source)
     except (PdfError,OSError,ValueError) as exc:
-        old=[source.parent/(source.stem+suffix) for suffix in ('-문제.pdf','-답안.pdf')]
         report={'version':1,'source':str(source),'dest':str(source.parent),
                 'source_sha256':digest(source) if source.is_file() else None,
-                'status':'stale' if any(p.exists() for p in old) else 'withheld',
+                'status':failure_status(source),
                 'failure':str(exc),'checks':{'status':'fail','errors':[str(exc)]},'artifact_hashes':{}}
         dump(run/'report.json',report);dump(run/'review.json',{'status':'not_run'})
         return run/'report.json'
@@ -88,15 +93,15 @@ def build_pack(review,run):
     if not pack.cards:
         report.update(status='skipped',checks={'status':'pass','errors':[]},pdfs=[],artifact_hashes={})
         dump(run/'report.json',report);return run/'report.json'
-    # Track external local source images, as well as inline figure coverage.
-    from html2md import Builder
-    from urllib.parse import unquote,urlparse
-    builder=Builder();builder.feed(pack.source.read_text())
-    for img in builder.root.find_all(lambda n:n.tag=='img'):
-        src=img.attrs.get('src','');url=urlparse(src)
-        if not url.scheme:
-            path=(pack.source.parent/unquote(url.path)).resolve();report['input_assets'][str(path)]=digest(path)
     try:
+        # Track external local source images, as well as inline figure coverage.
+        from html2md import Builder
+        from urllib.parse import unquote,urlparse
+        builder=Builder();builder.feed(pack.source.read_text())
+        for img in builder.root.find_all(lambda n:n.tag=='img'):
+            src=img.attrs.get('src','');url=urlparse(src)
+            if not url.scheme:
+                path=(pack.source.parent/unquote(url.path)).resolve();report['input_assets'][str(path)]=digest(path)
         with render_session():
             pages=plan_pages(pack,run/'layout');report['page_slices']=[asdict(p) for p in pages]
             report['coverage']={'status':'pass','errors':check_coverage(pack,pages)}
@@ -112,10 +117,9 @@ def build_pack(review,run):
                         page.get_pixmap(matrix=fitz.Matrix(2/3,2/3)).save(png)
             report['artifact_hashes']=stage_hashes(run);report['checks']={'status':'not_run','errors':[]};dump(run/'report.json',report)
             errors=check_stage(run);report['checks']={'status':'fail' if errors else 'pass','errors':errors}
-            if errors:report['status']='withheld'
+            if errors:report['status']=failure_status(pack.source)
     except (PdfError,OSError,ValueError) as exc:
-        old=[pack.source.parent/(pack.source.stem+suffix) for suffix in ('-문제.pdf','-답안.pdf')]
-        report.update(status='stale' if any(p.exists() for p in old) else 'withheld',failure=str(exc),checks={'status':'fail','errors':[str(exc)]},artifact_hashes=stage_hashes(run))
+        report.update(status=failure_status(pack.source),failure=str(exc),checks={'status':'fail','errors':[str(exc)]},artifact_hashes=stage_hashes(run))
     dump(run/'report.json',report);dump(run/'review.json',{'status':'not_run','reviewer':'','evidence':'','artifact_hashes':report.get('artifact_hashes',{}),'report_sha256':digest(run/'report.json')})
     return run/'report.json'
 

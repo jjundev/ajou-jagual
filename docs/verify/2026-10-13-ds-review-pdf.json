@@ -392,5 +392,98 @@
     "cards": 64,
     "browser_views": 256,
     "report": "docs/verify/2026-10-13-ds-review-pack-explain.json"
-  }
+  },
+  "repeat_page_mapping": {
+    "status": "pass",
+    "packs": [
+      {
+        "range": "0907",
+        "page_mapping_identical": true
+      },
+      {
+        "range": "0914",
+        "page_mapping_identical": true
+      },
+      {
+        "range": "0917",
+        "page_mapping_identical": true
+      },
+      {
+        "range": "0921",
+        "page_mapping_identical": true
+      },
+      {
+        "range": "0928",
+        "page_mapping_identical": true
+      },
+      {
+        "range": "1001",
+        "page_mapping_identical": true
+      },
+      {
+        "range": "1005",
+        "page_mapping_identical": true
+      },
+      {
+        "range": "1008",
+        "page_mapping_identical": true
+      },
+      {
+        "range": "1012",
+        "page_mapping_identical": true
+      }
+    ]
+  },
+  "independent_review": {
+    "status": "pass_after_fixes",
+    "critical": 0,
+    "important": 3,
+    "findings": [
+      "direct publication report collision",
+      "relative solution/answer/hint images",
+      "missing-image and final-check stale status"
+    ],
+    "verification": "Seven regression tests RED to GREEN; final pack suite 190/190 and explanation suite 72/72, no skips; existing 18 delivery payloads unchanged."
+  },
+  "rulings": [
+    {
+      "decision": "Rebuild all nine explanations from preserved authored fragments; reexecute independent proofs and browser review.",
+      "cost_if_wrong": "Explanation-owned outputs may be replaced; originals backed up."
+    },
+    {
+      "decision": "Use 200 code lines as the overflow stress fixture; original 65-line fixture fits native template.",
+      "cost_if_wrong": "Longer integration test."
+    },
+    {
+      "decision": "Use canonical /private/tmp RUN with the legacy explanation CLI.",
+      "cost_if_wrong": "Longer displayed paths."
+    },
+    {
+      "decision": "Import only author key() for proof execution, avoiding historical script authoring side effects; restored four scratch fragments before build.",
+      "cost_if_wrong": "Verification import excludes authoring side effects."
+    },
+    {
+      "decision": "Use existing reference-resolution tests and real CLI delivery, rather than prose-grep assertions for workflow docs.",
+      "cost_if_wrong": "Workflow behavior relies on actual delivery verification."
+    },
+    {
+      "decision": "Accept frozen source identity across checkout relocation only with repository-relative path plus source/artifact hashes; use newest delivery report without overwriting history.",
+      "cost_if_wrong": "Relocated checkout allowed when all bound content matches."
+    }
+  ],
+  "tests": {
+    "ds_review_pack": {
+      "passed": 190,
+      "skipped": 0,
+      "subtests_passed": 145
+    },
+    "ds_problem_explain": {
+      "passed": 72,
+      "skipped": 0
+    },
+    "python": "/opt/homebrew/bin/python3",
+    "pytest_packages": "/Users/hyunjun_macbook_pro/.cache/uv/archive-v0/iwYsA3I8sBPc0zFW/lib/python3.14/site-packages",
+    "textbook_python": "/Users/hyunjun_macbook_pro/.cache/uv/archive-v0/lXGetgsy0jEjmBFQ/bin/python"
+  },
+  "limitations": []
 }

@@ -7,7 +7,7 @@ from pathlib import Path
 import shutil
 import tempfile
 import uuid
-from pdf_cards import digest
+from pdf_cards import digest, ensure_report_owner
 from pdf_types import PdfError
 
 
@@ -38,6 +38,7 @@ def publish_stage(run,repo):
     with lock.open('a') as handle:
         try:fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError as exc:raise PdfError('Pack publication lock busy') from exc
+        ensure_report_owner(source)
         if digest(source)!=report['source_sha256']:raise PdfError('Source changed since build')
         for name,sha in report.get('input_assets',{}).items():
             if digest(Path(name))!=sha:raise PdfError('Source image changed since build')

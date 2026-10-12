@@ -39,3 +39,22 @@ class CardsTests(unittest.TestCase):
  def test_past_source_is_not_labeled_chapter_problem(self):
   pack=read_pack(next((REPO/'복습노트/0914').glob('복습문제_*.html')))
   self.assertEqual(pack.cards[0].source,'2019-mid-q8');self.assertEqual(pack.cards[0].kind,'기출')
+
+ def test_images_frozen_in_solution_answer_hint(self):
+  from PIL import Image
+  with tempfile.TemporaryDirectory() as tmp:
+   folder=Path(tmp);Image.new('RGB',(80,40),'blue').save(folder/'diagram.png')
+   p=folder/'복습문제_0907_Test.html';p.write_text('<article class="card" id="p1"><h3>P1. Diagram</h3><div class="problem"><p>Q</p></div><details class="hint"><summary>H</summary><img src="diagram.png"></details><details class="solution"><summary>S</summary><img src="diagram.png"><svg viewBox="0 0 80 40"><path class="fig-accent" d="M0 0 L80 40"/></svg><p class="answer"><img src="diagram.png">A</p></details></article>')
+   pack=read_pack(p);c=pack.cards[0];pages=(PageSlice(c.id,c.id,1,c.problem,c.solution,True,True),)
+   data=to_payload(pack,'answers',pages,folder/'assets');raw=json.dumps(data,ensure_ascii=False)
+   self.assertNotIn('src=\\"diagram.png',raw);self.assertNotIn('src="diagram.png',raw)
+   self.assertIn('data:image/png;base64',raw);self.assertIn('fig-accent',raw);self.assertIn('<style>',raw)
+   p.with_name('diagram.png').unlink()
+   from pdf_render import render
+   result=render(data,'answers',folder/'render',folder/'out.pdf');self.assertEqual(result.errors,());self.assertEqual(result.overflow,())
+
+ def test_blocks_without_images_keep_original_markup(self):
+  from pdf_cards import freeze_inline_html
+  raw='<pre><code>printf(&quot;hello\\n&quot;);</code></pre>'
+  with tempfile.TemporaryDirectory() as tmp:
+   self.assertEqual(freeze_inline_html(raw,Path(tmp)/'source.html',Path(tmp)/'assets'),raw)

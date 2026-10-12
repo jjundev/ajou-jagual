@@ -46,3 +46,27 @@ class CliTests(unittest.TestCase):
    with patch('pdf_layout.probe',side_effect=Error('Chrome disconnected')):
     self.assertEqual(backfill(repo,'all',run),1)
    self.assertEqual([p['status'] for p in json.loads((run/'summary.json').read_text())['packs']],['withheld','withheld'])
+
+ def test_direct_build_rejects_report_collision(self):
+  from review_pdf import build_pack
+  import json
+  with tempfile.TemporaryDirectory() as tmp:
+   folder=Path(tmp);p=folder/'복습문제_0907_A.html';p.write_text('')
+   (folder/'복습문제_0914_B.html').write_text('')
+   r=json.loads(build_pack(p,folder/'run').read_text());self.assertEqual(r['status'],'withheld');self.assertIn('collision',r['failure'])
+ def test_missing_image_with_previous_pdf_is_reported_stale(self):
+  from review_pdf import build_pack
+  import json
+  with tempfile.TemporaryDirectory() as tmp:
+   folder=Path(tmp);p=folder/'복습문제_0907_Test.html';p.write_text('<article class="card" id="p1"><div class="problem"><img src="missing.png"></div><details class="solution"><p class="answer">A</p></details></article>')
+   p.with_name(p.stem+'-문제.pdf').write_bytes(b'old')
+   report=json.loads(build_pack(p,folder/'run').read_text());self.assertEqual(report['status'],'stale');self.assertIn('missing.png',report['failure'])
+ def test_final_check_failure_with_previous_pdf_is_stale(self):
+  from review_pdf import build_pack
+  from unittest.mock import patch
+  import json
+  with tempfile.TemporaryDirectory() as tmp:
+   folder=Path(tmp);p=folder/'복습문제_0907_Test.html';p.write_text('<article class="card" id="p1"><div class="problem">Q</div><details class="solution"><p class="answer">A</p></details></article>')
+   p.with_name(p.stem+'-문제.pdf').write_bytes(b'old')
+   with patch('review_pdf.check_stage',return_value=['final check failed']):report=json.loads(build_pack(p,folder/'run').read_text())
+   self.assertEqual(report['status'],'stale');self.assertEqual(p.with_name(p.stem+'-문제.pdf').read_bytes(),b'old')

@@ -57,3 +57,12 @@ class PublishTests(unittest.TestCase):
   with lock.open('a') as handle:
    fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
    with self.assertRaisesRegex(PdfError,'lock busy'):pdf_publish.publish_stage(self.run,self.repo)
+
+ def test_direct_publish_rejects_peer_review(self):
+  src,_=self.stage();self.approve();(src.parent/'복습문제_0907_Other.html').write_text('peer')
+  with self.assertRaisesRegex(PdfError,'collision'):pdf_publish.publish_stage(self.run,self.repo)
+  self.assertEqual(list(src.parent.glob('*.pdf')),[])
+ def test_published_report_owned_by_other_source_rejected(self):
+  src,r=self.stage();self.approve();pdf_publish.dump(src.parent/'자료_PDF/pdf-validation.json',{'source':str(src.parent/'복습문제_0907_Other.html')})
+  with self.assertRaisesRegex(PdfError,'collision'):pdf_publish.publish_stage(self.run,self.repo)
+  self.assertEqual(list(src.parent.glob('*.pdf')),[])

@@ -1,5 +1,7 @@
 """Extract all problem/solution blocks without using the explanation vendor."""
 import base64
+import json
+import mimetypes
 import hashlib
 import html
 from pathlib import Path
@@ -50,10 +52,26 @@ def blocks(node):
     return tuple(out)
 
 
+def ensure_report_owner(source):
+    """A folder's shared report must describe exactly this one review."""
+    source=Path(source).resolve()
+    peers=[p for p in source.parent.iterdir() if p.is_file() and
+           re.fullmatch(r'복습문제_\d{4}(?:-\d{4})?_.+\.html',unicodedata.normalize('NFC',p.name))]
+    if len(peers)>1:
+        raise PdfError('자료_PDF report collision: multiple reviews in same folder')
+    report=source.parent/'자료_PDF/pdf-validation.json'
+    if report.exists():
+        old=json.loads(report.read_text(encoding='utf-8'))
+        owner=unicodedata.normalize('NFC',Path(old.get('source','')).name)
+        if owner!=unicodedata.normalize('NFC',source.name):
+            raise PdfError('자료_PDF report collision: existing report belongs to another source')
+
+
 def read_pack(review: Path) -> Pack:
     review=Path(review).resolve()
     match=re.fullmatch(r'복습문제_(\d{4}(?:-\d{4})?)_(.+)\.html',unicodedata.normalize('NFC',review.name))
     if not match: raise PdfError(f'Invalid review filename: {review}')
+    ensure_report_owner(review)
     builder=Builder();builder.feed(review.read_text(encoding='utf-8'))
     cards=[];seen=set()
     for node in builder.root.find_all(lambda n:n.tag=='article' and 'card' in n.classes):
@@ -112,6 +130,29 @@ def figures_from(raw, source, assets):
     return ''.join(markup(c) for c in builder.root.children),figures
 
 
+def freeze_inline_html(raw, source, assets):
+    """Freeze images in place, including solution, answer and hint content."""
+    builder=Builder();builder.feed(raw)
+    images=list(builder.root.find_all(lambda n:n.tag=='img'))
+    svgs=list(builder.root.find_all(lambda n:n.tag=='svg'))
+    if not images and not svgs:return raw
+    for img in images:
+        src=img.attrs.get('src','')
+        if src.startswith('data:'):continue
+        url=urlparse(src)
+        if url.scheme or url.netloc:raise PdfError('Remote image unsupported: '+src)
+        path=(source.parent/unquote(url.path)).resolve()
+        if not path.is_relative_to(source.parent):raise PdfError('Image outside pack: '+src)
+        blob=path.read_bytes();name=hashlib.sha256(blob).hexdigest()+path.suffix
+        assets.mkdir(parents=True,exist_ok=True);(assets/name).write_bytes(blob)
+        mime=mimetypes.guess_type(path)[0] or 'application/octet-stream'
+        img.attrs['src']='data:'+mime+';base64,'+base64.b64encode(blob).decode('ascii')
+    for svg in svgs:
+        svg.attrs.setdefault('xmlns','http://www.w3.org/2000/svg')
+        style=Node('style');style.children=[SVG_CSS];svg.children.insert(0,style)
+    return ''.join(markup(c) for c in builder.root.children)
+
+
 def to_payload(pack: Pack, mode: str, pages: tuple[PageSlice,...], assets: Path) -> dict:
     if mode not in ('problems','answers'): raise PdfError('Invalid mode')
     by_id={c.id:c for c in pack.cards};problems=[]
@@ -122,9 +163,9 @@ def to_payload(pack: Pack, mode: str, pages: tuple[PageSlice,...], assets: Path)
         p={'id':page.physical_id,'kind':c.kind,'number':number,'title':c.title,'section':c.source,
            'book_page':None,'difficulty':0,'sol':False,'original_lang':'ko',
            'html':{'original':'','conditions':'','ask':ask},'figures':figures,
-           'hints':[{'label':'풀이 방향','html':c.hint_html}] if page.show_hint and c.hint_html else []}
+           'hints':[{'label':'풀이 방향','html':freeze_inline_html(c.hint_html,pack.source,assets)}] if page.show_hint and c.hint_html else []}
         if mode=='answers':
-            p['solution']={'steps':[{'label':'','html':b.html} for b in page.solution],
-                           'answer':c.answer_html if page.show_answer else ''}
+            p['solution']={'steps':[{'label':'','html':freeze_inline_html(b.html,pack.source,assets)} for b in page.solution],
+                           'answer':freeze_inline_html(c.answer_html,pack.source,assets) if page.show_answer else ''}
         problems.append(p)
     return {'meta':{'mode':mode,'title':f'{pack.range} {pack.slug}','chapter':'자료구조및알고리즘이해','total':len(pages)},'problems':problems}
