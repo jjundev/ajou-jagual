@@ -13,7 +13,7 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 - 그 밖(`[MMDD | MMDD-MMDD] [lite]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
 
 **산출물** (복습팩, `복습노트/<range>/`, 수업 날짜마다 폴더 하나):
-`정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, `문제설명_<range>_<slug>.html`, 같은 이름의 `.md` 세 개, `figures_<range>/`, 설명 소유 그림·자료 폴더
+`정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, `문제설명_<range>_<slug>.html`, 같은 이름의 `.md` 세 개, `figures_<range>/`, 설명 소유 그림·자료 폴더, `복습문제_<range>_<slug>-문제.pdf`·`-답안.pdf`, `자료_PDF/pdf-validation.json`
 
 **인자**: `[bank | MMDD | MMDD-MMDD | update-existing MMDD/all] [lite]`
 - `lite`: 작성자·요약·전사 에이전트를 가벼운 모델로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다. 문제설명 저작·독립 검산·실자료 검토·브라우저 검증은 생략하지 않는다.
@@ -155,7 +155,7 @@ python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$
 - 결함은 5단계와 같은 방식으로 작성자에게 되돌린다. 이것도 최대 2회 규칙에 포함된다.
 - 끝나면 서버를 종료한다.
 
-### 8. MD 변환과 문제설명
+### 8. MD 변환과 문제설명·PDF
 ```bash
 python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.html" "$REPO/복습노트/<range>/<복습문제>.html" --check
 ```
@@ -163,6 +163,8 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 - 누락이 나오면 대부분 HTML 조각의 마크업 문제다(수식이 `svg`나 `.controls` 안에 있는 경우 등). 조각을 고치고 4단계부터 다시 한다.
 
 - MD 변환·기계·내용·브라우저 검증이 끝난 최종 복습문제 HTML의 절대 경로로 `references/problem-explain.md`를 실행한다. 미해결 검사가 있으면 설명 발행을 보류한다. 날짜·최신 팩으로 대상을 추측하지 않는다.
+
+- 신규·`lite`·`update-existing` 모두 같은 최종 HTML 절대 경로로 [PDF 생성 절차](references/pdf-build.md)를 실행한다. PDF와 문제설명은 각각 검증·발행하며 한쪽 실패가 다른 쪽의 발행이나 이전 자료를 삭제하지 않는다. `lite`도 PDF 기계·전체 페이지 검토를 생략하지 않는다.
 
 ### 9. 보고
 다음 형식으로 끝낸다.
@@ -176,6 +178,7 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 - 검수 대기로 뺀 원본: … (없으면 "없음")
 - 스킬이 정한 사항: slug, 섹션 구성, 위젯, 뺀 내용과 이유, 뺀 후보 문항과 이유
 - 문제설명: 발행/보류, 전체 문항 수, HTML·MD·EXPLAIN_RUN·백업 경로, 네 검토 결과와 보류 이유
+- PDF: 문제/답안 발행·보류·stale·skipped, PDF 두 경로·페이지 수·PDF_RUN·검증·백업·이유
 - 미해결: … (없으면 "없음")
 - 커밋 제안: git add 복습노트/<range> && git commit -m "docs(notes): add ds review pack <range>"
 ```
@@ -193,3 +196,5 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 
 | 해설 스킬·실행기 누락 | bank 외 생성 시작 전에 경로와 오류를 보고하고 중단 |
 | 해설 저작·검산·검토·발행 실패 | 검증된 원 복습팩과 이전 해설 보존, “복습팩 생성됨 / 문제설명 보류”와 팩별 이유 보고; 다른 팩은 계속 |
+
+| PDF 생성·검토·발행 실패 | 원 HTML·MD·그림·문제설명과 이전 PDF를 보존하고 팩별 withheld/stale 이유를 보고; 다른 팩은 계속 |
