@@ -1,0 +1,5 @@
+{
+  "push": "s->top = s->top + 1;\ns->stack[s->top] = item;",
+  "pop": "item = s->stack[s->top];\ns->top = s->top - 1;\nreturn item;",
+  "loop": "if (str[i] == '+') {\n    op1 = pop(&s);\n    op2 = pop(&s);\n    push(&s, op1 + op2);\n} else if (str[i] == '*') {\n    op1 = pop(&s);\n    op2 = pop(&s);\n    push(&s, op1 * op2);\n} else {\n    push(&s, str[i] - '0');\n}"
+}

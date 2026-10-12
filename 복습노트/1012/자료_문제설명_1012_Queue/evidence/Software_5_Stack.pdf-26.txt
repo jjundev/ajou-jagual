@@ -1,0 +1,22 @@
+< Data Structure & Algorithms>                                  AJOU University
+
+
+
+
+후위 표기식 계산 알고리즘
+      스택 s를 생성하고 초기화한다.
+      for 항목 in 후위표기식
+        do if (항목이 피연산자이면)
+              push(s, item)
+           if (항목이 연산자 op이면)
+             then second ← pop(s)
+                  first ← pop(s)
+                   result ← first op second // op 는 +-*/중의 하나
+                  push(s, result)
+      final_result ← pop(s);
+
+
+
+
+                                  -26-                             전자공학과
+

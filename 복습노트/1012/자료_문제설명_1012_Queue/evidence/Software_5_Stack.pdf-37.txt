@@ -1,0 +1,29 @@
+infix_to_postfix(exp)
+
+
+스택 s를 생성하고 초기화
+while (exp에 처리할 문자가 남아 있으면)
+     ch ← 다음에 처리할 문자
+     switch (ch)
+       case 연산자:
+         while ( peek(s)의 우선순위 ≥ ch의 우선순위 )
+           do e ← pop(s)
+              e를 출력
+         push(s, ch);
+         break;
+      case 왼쪽 괄호:
+         push(s, ch);
+         break;
+       case 오른쪽 괄호:
+         e ← pop(s);
+         while( e ≠ 왼쪽괄호 )
+           do e를 출력
+              e ← pop(s)
+         break;
+      case 피연산자:
+         ch를 출력
+         break;
+while( not is_empty(s) )
+      do e ← pop(s)
+         e를 출력
+

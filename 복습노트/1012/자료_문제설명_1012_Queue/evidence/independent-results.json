@@ -1,0 +1,218 @@
+{
+  "p1": {
+    "value": 31,
+    "expression": "(((5*6)+(4/2))-1)",
+    "states": [
+      [
+        5
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        30
+      ],
+      [
+        30,
+        4
+      ],
+      [
+        30,
+        4,
+        2
+      ],
+      [
+        30,
+        2
+      ],
+      [
+        32
+      ],
+      [
+        32,
+        1
+      ],
+      [
+        31
+      ]
+    ],
+    "push": 9,
+    "pop": 8
+  },
+  "p2": {
+    "part1": {
+      "value": 25,
+      "expression": "((((2+4)*7)-(6*3))+1)",
+      "states": [
+        [
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          6
+        ],
+        [
+          6,
+          7
+        ],
+        [
+          42
+        ],
+        [
+          42,
+          6
+        ],
+        [
+          42,
+          6,
+          3
+        ],
+        [
+          42,
+          18
+        ],
+        [
+          24
+        ],
+        [
+          24,
+          1
+        ],
+        [
+          25
+        ]
+      ],
+      "push": 11,
+      "pop": 10
+    },
+    "part2": {
+      "value": 31,
+      "expression": "(((5*6)+(4/2))-1)",
+      "states": [
+        [
+          5
+        ],
+        [
+          5,
+          6
+        ],
+        [
+          30
+        ],
+        [
+          30,
+          4
+        ],
+        [
+          30,
+          4,
+          2
+        ],
+        [
+          30,
+          2
+        ],
+        [
+          32
+        ],
+        [
+          32,
+          1
+        ],
+        [
+          31
+        ]
+      ],
+      "push": 9,
+      "pop": 8
+    }
+  },
+  "p3": {
+    "value": 24,
+    "expression": "((7-(6/2))+(5*4))",
+    "states": [
+      [
+        7
+      ],
+      [
+        7,
+        6
+      ],
+      [
+        7,
+        6,
+        2
+      ],
+      [
+        7,
+        3
+      ],
+      [
+        4
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        4,
+        5,
+        4
+      ],
+      [
+        4,
+        20
+      ],
+      [
+        24
+      ]
+    ],
+    "push": 9,
+    "pop": 8
+  },
+  "p4": {
+    "answer": "스택",
+    "proof": "proper nesting closes the most recently opened unmatched delimiter; stack exactly implements this invariant, independent of nesting depth"
+  },
+  "p5": {
+    "answer": "스택",
+    "proof": "postfix binary operators combine the two most recently completed pending operands; replacing them with their result maintains the pending-subexpression invariant"
+  },
+  "p7": {
+    "answer": "큐",
+    "proof": "rear insertion and front removal preserve arrival order for all customers in the ordinary FIFO model stated by the problem"
+  },
+  "p8": {
+    "answer": "X",
+    "counterexample": "push A; push B; pop returns B, whereas FIFO would return A"
+  },
+  "p6": {
+    "cases": [
+      {
+        "input": "23+4*",
+        "output": "input postfix equation using 0~9,+,*:result:20",
+        "expected": 20
+      },
+      {
+        "input": "52*3+",
+        "output": "input postfix equation using 0~9,+,*:result:13",
+        "expected": 13
+      },
+      {
+        "input": "0",
+        "output": "input postfix equation using 0~9,+,*:result:0",
+        "expected": 0
+      },
+      {
+        "input": "99*9+",
+        "output": "input postfix equation using 0~9,+,*:result:90",
+        "expected": 90
+      }
+    ],
+    "scope": "Only original blanks filled. No added variables, error exit, or scanf width. Defined valid input only; <=99 chars, sufficient operands, capacity<=100, int no overflow. Compiler warns original empty-pop branch has no return."
+  }
+}
