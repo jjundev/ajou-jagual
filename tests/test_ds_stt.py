@@ -22,9 +22,10 @@ class DsSttTests(unittest.TestCase):
 
         content = skill_md.read_text(encoding="utf-8")
         self.assertTrue(content.startswith("---"), "SKILL.md must have frontmatter")
-        self.assertIn("name: ds-stt", content)
-        self.assertIn("description:", content)
-        self.assertIn("Gemini Only", content, "SKILL.md must specify Gemini Only guard")
+        import yaml
+        frontmatter = yaml.safe_load(content.split("---")[1])
+        self.assertEqual(frontmatter.get("name"), "ds-stt")
+        self.assertIn("Gemini Only", frontmatter.get("description", ""))
         self.assertIn("Model Compatibility Gate", content, "SKILL.md must contain Model Compatibility Gate")
         self.assertIn("STT/<MMDD> 자구알.md", content, "SKILL.md must document standard output path")
 

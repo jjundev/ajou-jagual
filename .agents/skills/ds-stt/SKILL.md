@@ -1,6 +1,6 @@
 ---
 name: ds-stt
-description: [Gemini Only] Use when transcribing data structures & algorithms lecture audio or video recordings (.m4a, .mp3, .wav) into a verbatim transcript under STT/<MMDD> 자구알.md with domain-specific C/data-structure terminology guidance for ajou-jagual, or when invoking /ds-stt. Strictly requires Gemini models; fails on Claude/GPT.
+description: "[Gemini Only] Use when transcribing data structures & algorithms lecture audio or video recordings (.m4a, .mp3, .wav) into a verbatim transcript under STT/<MMDD> 자구알.md with domain-specific C/data-structure terminology guidance for ajou-jagual, or when invoking /ds-stt. Strictly requires Gemini models; fails on Claude/GPT."
 ---
 
 # DS STT (자료구조및알고리즘이해 강의 음성 전사)
