@@ -181,7 +181,7 @@ def used_sources(notes_dir: Path | str, skip_range: str | None = None) -> set[st
     return used
 
 
-def select(bank: dict, range_ch: set[int], taught: set[int], used=frozenset()) -> list[dict]:
+def select(bank: dict, range_ch: set[int], taught: set[int], used=frozenset(), *, textbook=None, concept_overrides=None) -> list[dict]:
     """쓸 수 있는 문항을 우선순위 순으로. OX는 MAX_OX개까지."""
     sources = {s["id"]: s for s in bank["sources"]}
 
@@ -201,10 +201,13 @@ def select(bank: dict, range_ch: set[int], taught: set[int], used=frozenset()) -
                 continue
             ox += 1
         out.append(q)
+    if textbook is not None:
+        from textbook import textbook_candidates
+        out.extend(textbook_candidates(textbook, range_ch, taught, used, concept_overrides=concept_overrides))
     return out
 
 
-def check_manifest(bank: dict, manifest: dict) -> list[str]:
+def check_manifest(bank: dict, manifest: dict, *, textbook=None) -> list[str]:
     """manifest problems의 source가 쓸 수 있는 은행 문항인지. 변형(variant)은 같은 문항을 다시 써도 된다."""
     items = manifest.get("problems") if isinstance(manifest, dict) else None
     if not isinstance(items, list):
@@ -216,6 +219,21 @@ def check_manifest(bank: dict, manifest: dict) -> list[str]:
     for i, p in enumerate(items):
         where = f"problems[{i}].source"
         src = p.get("source") if isinstance(p, dict) else None
+        kind = p.get("source_kind", "past-exam") if isinstance(p, dict) else None
+        if kind not in {"past-exam", "textbook"} or (isinstance(src,str) and src.startswith("textbook-")) != (kind == "textbook"):
+            errors.append(f"{where}: source_kind와 ID 불일치")
+            continue
+        if kind == "textbook":
+            from textbook import eligible
+            q = textbook.questions.get(src.removeprefix("textbook-")) if textbook else None
+            if q is None or not eligible(q):
+                errors.append(f"{where}: 사용할 수 없는 교과서 문항: {src}")
+            if p.get("variant"):
+                errors.append(f"{where}: 교과서 원문은 variant를 허용하지 않음")
+            if src in originals:
+                errors.append(f"{where}: 같은 문항이 두 번: {src}")
+            originals.add(src)
+            continue
         q = problems.get(src)
         if q is None:
             errors.append(f"{where}: 은행에 없는 문항: {src!r}")
@@ -244,24 +262,31 @@ def main(argv: list[str] | None = None) -> int:
     cp = sub.add_parser("check-manifest")
     cp.add_argument("bank")
     cp.add_argument("manifest")
+    for parser in (sp, cp):
+        parser.add_argument("--textbook-dir")
+        parser.add_argument("--textbook-python", default=sys.executable)
     a = ap.parse_args(argv)
     try:
         bank = load(a.bank)
         if a.cmd == "validate":
             print(f"OK: 원본 {len(bank['sources'])}개, 문항 {len(bank['problems'])}개")
             return 0
+        catalog = None
+        if a.textbook_dir:
+            from textbook import load_textbook
+            catalog = load_textbook(Path(a.textbook_dir), python=a.textbook_python)
         if a.cmd == "select":
             used = used_sources(a.used_dir, a.this_range) if a.used_dir else set()
-            rows = select(bank, parse_chapters(a.range_ch), parse_chapters(a.taught), used)
+            rows = select(bank, parse_chapters(a.range_ch), parse_chapters(a.taught), used, textbook=catalog)
             sources = {s["id"]: s for s in bank["sources"]}
             print("id\t출제자\t유형\t챕터\t정답출처")
             for q in rows:
-                print("\t".join([q["id"], sources[q["source"]]["professor"], q["type"],
-                                 ",".join(map(str, q["chapters"])), q["answer_origin"]]))
+                print("\t".join([q["id"], ("교과서" if q.get("source_kind") == "textbook" else sources[q["source"]]["professor"]), q["type"],
+                                 ",".join(map(str, q["chapters"])), q.get("answer_origin", "미작성")]))
             print(f"후보 {len(rows)}개", file=sys.stderr)
             return 0
         manifest = json.loads(Path(a.manifest).read_text(encoding="utf-8"))
-        errors = check_manifest(bank, manifest)
+        errors = check_manifest(bank, manifest, textbook=catalog)
     except (BankError, OSError, json.JSONDecodeError) as e:
         print(e, file=sys.stderr)
         return 1
@@ -273,4 +298,6 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
+    # The textbook adapter imports this shared error class even in CLI mode.
+    sys.modules["bank"] = sys.modules[__name__]
     sys.exit(main())

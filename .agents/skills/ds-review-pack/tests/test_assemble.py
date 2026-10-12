@@ -61,7 +61,7 @@ class TestAssemble(unittest.TestCase):
         for html in (self.note_html, self.review_html):
             self.assertIn("    pre { margin: var(--s3) 0;", html)
             self.assertIn("closest('.widget, .katex-display, .table-wrap, pre, svg, input, details')", html)
-        self.assertIn("그 문제의 기출 원문, 힌트, 풀이가 여기에 나옵니다.", self.review_html)
+        self.assertIn("그 문제의 원문, 힌트, 풀이가 여기에 나옵니다.", self.review_html)
         self.assertNotIn("교과서", self.review_html)
 
     def test_missing_fragment_raises(self):

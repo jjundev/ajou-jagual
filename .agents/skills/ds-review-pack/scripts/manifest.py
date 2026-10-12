@@ -124,6 +124,9 @@ def validate(m: dict) -> list[str]:
             ("level", int), ("date", str), ("terms", list), ("answer", str))])
         if not ok:
             continue
+        kind = q.get("source_kind", "past-exam")
+        if kind not in {"past-exam", "textbook"} or q["source"].startswith("textbook-") != (kind == "textbook"):
+            errors.append(f"{where}.source_kind: 종류와 source ID 불일치")
         new_id(q["id"], where)
         _strings(q["terms"], f"{where}.terms", errors)
         if q["part"] not in part_ids:

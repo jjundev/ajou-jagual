@@ -1,0 +1,410 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "0921",
+  "slug": "ArrayStructureList",
+  "note_title": "하노이 탑 · 배열 · 구조체 — 5살도 이해하는 정리노트",
+  "note_subtitle": "기존 노트 보존",
+  "review_title": "복습문제 8선 — 0921 수업 범위",
+  "review_intro": "기존 문제 <b>4개</b>를 유지하고 교과서 문제 <b>4개</b>를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.",
+  "footer_note": "기존 노트 보존",
+  "footer_review": "출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.",
+  "sessions": [
+    {
+      "date": "0921",
+      "stt": "STT/0921 자구알.md",
+      "summary": "selection.json",
+      "slides": "S2 p15–20; S3 p1–18"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "title": "1. 하노이 탑과 순환 로직",
+      "short": "1. 하노이 탑과 순환 로직",
+      "topics": [
+        {
+          "id": "s0-recursion-rules",
+          "title": "순환의 두 조건 다시 보기",
+          "required_terms": [
+            "순환의 두 조건 다시 보기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-hanoi-logic",
+          "title": "쉬운 문제로 로직을 세우고 일반화하기",
+          "required_terms": [
+            "쉬운 문제로 로직을 세우고 일반화하기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-hanoi-trace",
+          "title": "최종 프로그램과 n=4 호출 추적",
+          "required_terms": [
+            "최종 프로그램과 n=4 호출 추적"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": true
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 배열을 자료구조로 보기",
+      "short": "2. 배열을 자료구조로 보기",
+      "topics": [
+        {
+          "id": "s1-array-why",
+          "title": "배열과 데이터 타입을 보는 새 시각",
+          "required_terms": [
+            "배열과 데이터 타입을 보는 새 시각"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-array-adt",
+          "title": "배열 ADT: 객체와 연산",
+          "required_terms": [
+            "배열 ADT: 객체와 연산"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-array-memory",
+          "title": "1차원·2차원 배열의 메모리 배치",
+          "required_terms": [
+            "1차원·2차원 배열의 메모리 배치"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "3. 배열로 다항식 표현하기",
+      "short": "3. 배열로 다항식 표현하기",
+      "topics": [
+        {
+          "id": "s2-poly-method1",
+          "title": "방법 #1: 모든 차수의 계수 저장",
+          "required_terms": [
+            "방법 #1: 모든 차수의 계수 저장"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-poly-add1",
+          "title": "방법 #1의 덧셈 코드",
+          "required_terms": [
+            "방법 #1의 덧셈 코드"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": true
+        },
+        {
+          "id": "s2-poly-method2",
+          "title": "방법 #2: 0이 아닌 항만 (계수, 차수) 쌍으로",
+          "required_terms": [
+            "방법 #2: 0이 아닌 항만 (계수, 차수) 쌍으로"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-poly-add2",
+          "title": "프로그램 3.3과 복잡도로 비교하기",
+          "required_terms": [
+            "프로그램 3.3과 복잡도로 비교하기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 희소 행렬",
+      "short": "4. 희소 행렬",
+      "topics": [
+        {
+          "id": "s3-sparse-full",
+          "title": "방법 #1: 2차원 배열에 전부 저장",
+          "required_terms": [
+            "방법 #1: 2차원 배열에 전부 저장"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s3-sparse-triple",
+          "title": "방법 #2: (행, 열, 값)으로 0이 아닌 요소만",
+          "required_terms": [
+            "방법 #2: (행, 열, 값)으로 0이 아닌 요소만"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "5. 구조체",
+      "short": "5. 구조체",
+      "topics": [
+        {
+          "id": "s4-struct",
+          "title": "구조체와 typedef",
+          "required_terms": [
+            "구조체와 typedef"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s4-struct-assign",
+          "title": "구조체의 대입과 비교",
+          "required_terms": [
+            "구조체의 대입과 비교"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s4-self-ref",
+          "title": "자체 참조 구조체",
+          "required_terms": [
+            "자체 참조 구조체"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "6. 요약 · 예고",
+      "short": "6. 요약 · 예고",
+      "topics": [
+        {
+          "id": "s5-cheatsheet",
+          "title": "한눈에 보는 0921",
+          "required_terms": [
+            "한눈에 보는 0921"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s5-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "다음 시간 예고"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s5-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "함께 보면 좋은 자료"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s5-next",
+  "forbidden_outside_preview": [],
+  "parts": [
+    {
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B. 다른 기출"
+    },
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "part": "partB",
+      "source": "2019-mid-q8",
+      "variant": false,
+      "anchor": "s0-recursion-rules",
+      "level": 2,
+      "date": "0921",
+      "terms": [
+        "최대공약수"
+      ],
+      "answer": "최대공약수"
+    },
+    {
+      "id": "p2",
+      "part": "partB",
+      "source": "2018-mid-c024-q15",
+      "variant": false,
+      "anchor": "s0-recursion-rules",
+      "level": 2,
+      "date": "0921",
+      "terms": [
+        "if"
+      ],
+      "answer": "if ( j == 0 ) return i; else return gcd( j, i%j );"
+    },
+    {
+      "id": "p3",
+      "part": "partB",
+      "source": "2018-mid-c102-q1",
+      "variant": false,
+      "anchor": "s0-recursion-rules",
+      "level": 2,
+      "date": "0921",
+      "terms": [
+        "순환"
+      ],
+      "answer": "순환"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "2017-mid-c050-q11",
+      "variant": false,
+      "anchor": "s0-recursion-rules",
+      "level": 2,
+      "date": "0921",
+      "terms": [
+        "if"
+      ],
+      "answer": "if (n == 0) return; else { dec_to_bin(n / 2); printf(\"%d\", n % 2); }"
+    },
+    {
+      "id": "p5",
+      "part": "partD",
+      "source": "textbook-ch03-q01",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-array-memory",
+      "level": 1,
+      "date": "0921",
+      "terms": [
+        "(4) 800바이트"
+      ],
+      "answer": "(4) 800바이트"
+    },
+    {
+      "id": "p6",
+      "part": "partD",
+      "source": "textbook-ch03-q04",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-array-memory",
+      "level": 3,
+      "date": "0921",
+      "terms": [
+        "1 2 4 8 16 32 64 128 256 512"
+      ],
+      "answer": "1 2 4 8 16 32 64 128 256 512"
+    },
+    {
+      "id": "p7",
+      "part": "partD",
+      "source": "textbook-ch03-q05",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s4-struct",
+      "level": 3,
+      "date": "0921",
+      "terms": [
+        "struct person { char name[100]; int age; float salary; };"
+      ],
+      "answer": "struct person { char name[100]; int age; float salary; };"
+    },
+    {
+      "id": "p8",
+      "part": "partD",
+      "source": "textbook-ch03-q06",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s4-struct",
+      "level": 3,
+      "date": "0921",
+      "terms": [
+        "typedef struct { float real; float imaginary; } complex; complex c1, c2;"
+      ],
+      "answer": "typedef struct { float real; float imaginary; } complex; complex c1, c2;"
+    }
+  ],
+  "links": []
+}

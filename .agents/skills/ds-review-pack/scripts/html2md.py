@@ -355,8 +355,13 @@ def export_svg(svg, ctx, name=None):
            f'<rect x="{vb[0]}" y="{vb[1]}" width="{w}" height="{h}" rx="10" fill="{LIGHT["surface"]}"/>'
            f"{body}</svg>\n")
     fname = _fig_name(svg, ctx, name)
-    with open(os.path.join(ctx.fig_dir_abs, fname), "w", encoding="utf-8") as f:
-        f.write(doc)
+    target = os.path.join(ctx.fig_dir_abs, fname)
+    if getattr(ctx, "preserve_figures", False) and os.path.exists(target):
+        if _read(target) != doc:
+            raise ValueError(f"existing figure collision: {target}")
+    else:
+        with open(target, "w", encoding="utf-8") as f:
+            f.write(doc)
     ctx.figs.append(fname)
     return f"{ctx.fig_dir_name}/{fname}"
 
@@ -658,20 +663,39 @@ def convert_pack(note_path, review_path):
     return outs, len(registry)
 
 
+def convert_review(review_path):
+    """Only the review MD; retain every existing note/figure byte."""
+    src = os.path.abspath(review_path)
+    name = nfc(os.path.basename(src))
+    match = NAME_RE.match(name)
+    if not match or match.group(1) != "복습문제":
+        raise ValueError("review filename required")
+    out_dir = os.path.dirname(src)
+    fig_name = "figures_" + match.group(2)
+    fig_abs = os.path.join(out_dir, fig_name)
+    os.makedirs(fig_abs, exist_ok=True)
+    link_map = [(nfc(n), nfc(n)[:-5] + ".md") for n in os.listdir(out_dir) if nfc(n).endswith(".html")]
+    ctx = Ctx(link_map, fig_abs, fig_name, prefix="review-textbook", registry=set())
+    ctx.preserve_figures = True
+    out = os.path.join(out_dir, name[:-5] + ".md")
+    convert(src, out, ctx, ["> 원문, 힌트, 풀이는 접혀 있어요. 먼저 풀어 보고 펼쳐 보세요."])
+    return [out], len(ctx.registry)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("note")
-    ap.add_argument("review")
+    ap.add_argument("review", nargs="?")
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args(argv)
-    outs, fig_count = convert_pack(args.note, args.review)
+    outs, fig_count = convert_pack(args.note, args.review) if args.review else convert_review(args.note)
     for out in outs:
         print(out)
     print(f"figures: {fig_count}")
     if not args.check:
         return 0
     problems = []
-    for html_path, md_path in zip((args.note, args.review), outs):
+    for html_path, md_path in zip((args.note, args.review) if args.review else (args.note,), outs):
         problems += [f"{os.path.basename(md_path)}: {p}" for p in check_md(html_path, md_path)]
     for p in problems:
         print(p)

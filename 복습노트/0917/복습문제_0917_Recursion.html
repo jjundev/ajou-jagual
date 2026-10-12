@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>자료구조및알고리즘이해 복습문제 0917</title>
-  <meta name="description" content="기출 복습문제 8선 — 9월 17일 수업 범위">
+  <title>복습문제 12선 — 0917 수업 범위</title>
+  <meta name="description" content="복습문제 12선 — 0917 수업 범위">
   <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
@@ -359,15 +359,12 @@
         </div>
         <p class="panel-meta">푼 문제 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
         <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
-        <nav class="toc" aria-label="목차"><a href="#partB">B 다른 기출</a><a href="#partC">C 변형</a></nav>
+        <nav class="toc" aria-label="목차"><a href="#partB">B 다른 기출</a><a href="#partC">C 변형</a><a href="#partD">D 교과서</a></nav>
       </div>
     </aside>
     <div class="content">
   <main>
-    <div class="hero">
-      <h1>기출 복습문제 8선 — 9월 17일 수업 범위</h1>
-      <p>다른 기출 <b>6개</b>와 기출 변형 <b>2개</b>로 순환 함수와 시간복잡도를 다시 풀어 봐요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.</p>
-    </div>
+    <div class="hero"><h1>복습문제 12선 — 0917 수업 범위</h1><p>기존 문제 <b>8개</b>를 유지하고 교과서 문제 <b>4개</b>를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.</p></div>
     <section id="partB"><h2>B. 다른 기출</h2>
 <article class="card" id="p1" data-source="2019-mid-q8">
   <h3>P1. 함수 foo는 무엇을 하는 함수일까요</h3>
@@ -758,8 +755,47 @@ for(i=1; i&lt;n; i++){
   </details>
 </article>
     </section>
-  </main>
-  <footer>출처: 자료구조및알고리즘(이해) 기출 — 2019 중간(출제자 미상), 2018 중간(출제자 미상, 두 판), 2017 중간(출제자 미상), 기말(이태권, 연도 미상). 풀이는 자체 작성이며 답은 Python·C 실행으로 검증했습니다.</footer>
+  <section id="partD"><h2>D. 교과서 연습문제</h2>
+<article class="card" id="p9" data-source="textbook-ch02-q06" data-source-kind="textbook"><h3>P9. 바닥 조건이 없는 재귀</h3><div class="problem"><p>다음의 순환호출 함수에서 잘못된 점은 무엇인가?</p><pre><code>int recursive(int n)
+{
+    printf(&quot;recursive(%d)\n&quot;, n);
+    return n*recursive(n-1);
+}</code></pre><div class="options"></div></div><details class="original"><summary>교과서 원문 보기</summary><p>2장 순환 · 06번 · 책 63쪽</p><p>다음의 순환호출 함수에서 잘못된 점은 무엇인가?</p><pre><code>int recursive(int n)
+{
+    printf(&quot;recursive(%d)\n&quot;, n);
+    return n*recursive(n-1);
+}</code></pre><div class="options"></div></details><details class="hint"><summary>힌트 보기</summary><p>n이 작아진다는 사실만으로 멈추는지 확인해 보세요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>n=5에서 5,4,3,2,1,0,-1,…로 계속 내려가요.</li><li>n이 작아져도 반환하는 바닥 조건이 없어요.</li><li>유한하게 끝날 조건을 먼저 검사해야 해요. 이 코드는 실행 결과를 정답처럼 제시할 수 없어요.</li><li>수업과의 연결: 0917 수업 정리노트의 “2. 순환 알고리즘의 두 조건” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><p class="answer">정답: 종료 조건이 없어 호출이 끝나지 않음</p></details></article>
+<article class="card" id="p10" data-source="textbook-ch02-q09" data-source-kind="textbook"><h3>P10. 3씩 줄어드는 호출</h3><div class="problem"><p>다음 함수를 recursive(10)로 호출하였을 때, 화면에 출력되는 내용과 함수의 반환값을 구하라.</p><pre><code>int recursive(int n)
+{
+    printf(&quot;%d\n&quot;, n);
+    if( n&lt;1) return -1;
+    else return( recursive(n-3)+1 );
+}</code></pre><div class="options"></div></div><details class="original"><summary>교과서 원문 보기</summary><p>2장 순환 · 09번 · 책 64쪽</p><p>다음 함수를 recursive(10)로 호출하였을 때, 화면에 출력되는 내용과 함수의 반환값을 구하라.</p><pre><code>int recursive(int n)
+{
+    printf(&quot;%d\n&quot;, n);
+    if( n&lt;1) return -1;
+    else return( recursive(n-3)+1 );
+}</code></pre><div class="options"></div></details><details class="hint"><summary>힌트 보기</summary><p>출력은 호출 직후, +1은 돌아올 때 실행돼요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>호출 인수와 출력은 10 → 7 → 4 → 1 → -2예요. 각각 별도 줄에 나와요.</li><li>-2는 n&lt;1이므로 -1을 반환해요.</li><li>돌아올 때 recursive(1)=0, recursive(4)=1, recursive(7)=2, recursive(10)=3이에요.</li><li>수업과의 연결: 0917 수업 정리노트의 “2. 순환 알고리즘의 두 조건” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><p class="answer">정답: 출력: 10 7 4 1 -2 / 반환값: 3</p></details></article>
+<article class="card" id="p11" data-source="textbook-ch02-q13" data-source-kind="textbook"><h3>P11. 순환으로 합 구하기</h3><div class="problem"><p>다음을 계산하는 순환적인 프로그램을 작성하시오.</p><p>1 + 2 + 3 + ... + n</p><div class="options"></div></div><details class="original"><summary>교과서 원문 보기</summary><p>2장 순환 · 13번 · 책 65쪽</p><p>다음을 계산하는 순환적인 프로그램을 작성하시오.</p><p>1 + 2 + 3 + ... + n</p><div class="options"></div></details><details class="hint"><summary>힌트 보기</summary><p>현재 n과 남은 1부터 n-1까지의 합으로 나눠 보세요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>입력은 양의 정수 n이고 결과가 int 범위에 들어오는 경우예요.</li><li>sum(1)=1을 바로 반환해요.</li><li>sum(4)=4+sum(3)=4+3+2+1=10이에요.</li><li>수업과의 연결: 0917 수업 정리노트의 “3. 순환 대 반복” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><pre><code class="language-c">int sum(int n) {
+    if (n &lt;= 1) return 1;
+    return n + sum(n - 1);
+}</code></pre><p class="answer">정답: n≤1이면 1, 아니면 n+sum(n-1)</p></details></article>
+<article class="card" id="p12" data-source="textbook-ch02-q16" data-source-kind="textbook"><h3>P12. 재귀 합을 반복문으로</h3><div class="problem"><p>다음의 순환적인 프로그램을 반복 구조를 사용한 비순환적 프로그램으로 바꾸시오.</p><pre><code>int sum(int n)
+{
+    if(n == 1 ) return 1;
+    else return (n + sum(n-1));
+}</code></pre><div class="options"></div></div><details class="original"><summary>교과서 원문 보기</summary><p>2장 순환 · 16번 · 책 65쪽</p><p>다음의 순환적인 프로그램을 반복 구조를 사용한 비순환적 프로그램으로 바꾸시오.</p><pre><code>int sum(int n)
+{
+    if(n == 1 ) return 1;
+    else return (n + sum(n-1));
+}</code></pre><div class="options"></div></details><details class="hint"><summary>힌트 보기</summary><p>재귀에서 돌아오며 더하던 수를 반복문으로 누적해 보세요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>원문 sum의 입력 조건은 n≥1이에요.</li><li>반복문은 1부터 n까지 각 수를 total에 더해요.</li><li>n=5에서 1 → 3 → 6 → 10 → 15가 되어 같은 답을 반환해요.</li><li>수업과의 연결: 0917 수업 정리노트의 “3. 순환 대 반복” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><pre><code class="language-c">int sum_iter(int n) {
+    int total = 0;
+    for (int i = 1; i &lt;= n; ++i) total += i;
+    return total;
+}</code></pre><p class="answer">정답: total=0에서 1..n을 더해 반환</p></details></article>
+</section>
+</main>
+  <footer>출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.</footer>
     </div>
     <aside class="panel panel-right" id="panel-right" aria-labelledby="panel-right-title">
       <div class="panel-resize" data-side="right" role="separator" aria-orientation="vertical" aria-controls="panel-right" aria-label="오른쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
@@ -769,7 +805,7 @@ for(i=1; i&lt;n; i++){
           <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
         </div>
         <p class="panel-sub" id="aid-for" hidden></p>
-        <p class="panel-empty">문제로 넘어가면 그 문제의 기출 원문, 힌트, 풀이가 여기에 나옵니다. 먼저 스스로 풀어 본 뒤 여세요.</p>
+        <p class="panel-empty">문제로 넘어가면 그 문제의 원문, 힌트, 풀이가 여기에 나옵니다. 먼저 스스로 풀어 본 뒤 여세요.</p>
         <div class="aids"></div>
         <button class="solved-btn" id="solved-btn" type="button" aria-pressed="false" hidden><span>푼 문제로 표시</span></button>
       </div>

@@ -12,7 +12,7 @@ import unittest
 from _util import SKILL
 
 SKILL_MD = SKILL / "SKILL.md"
-ML_WORDS = ("MML", "머신러닝", "정방철", "교과서", "머러기", "Lecture", "강의노트/")
+ML_WORDS = ("MML", "머신러닝", "정방철", "머러기", "Lecture", "강의노트/")
 
 
 class TestSkillFiles(unittest.TestCase):

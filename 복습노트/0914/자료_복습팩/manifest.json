@@ -1,0 +1,493 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "0914",
+  "slug": "Recursion",
+  "note_title": "알고리즘 성능 분석과 순환 — 5살도 이해하는 정리노트",
+  "note_subtitle": "기존 노트 보존",
+  "review_title": "복습문제 12선 — 0914 수업 범위",
+  "review_intro": "기존 문제 <b>8개</b>를 유지하고 교과서 문제 <b>4개</b>를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.",
+  "footer_note": "기존 노트 보존",
+  "footer_review": "출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.",
+  "sessions": [
+    {
+      "date": "0914",
+      "stt": "STT/0914 자구알.md",
+      "summary": "selection.json",
+      "slides": "S1 p22–35; S2 p1–6"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "title": "1. 추상 데이터 타입",
+      "short": "1. 추상 데이터 타입",
+      "topics": [
+        {
+          "id": "s0-adt-def",
+          "title": "1.1 데이터 타입과 추상 데이터 타입",
+          "required_terms": [
+            "1.1 데이터 타입과 추상 데이터 타입"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-nat-no",
+          "title": "1.2 추상 데이터 타입의 예: 자연수",
+          "required_terms": [
+            "1.2 추상 데이터 타입의 예: 자연수"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-vending",
+          "title": "1.3 추상 데이터 타입과 자판기",
+          "required_terms": [
+            "1.3 추상 데이터 타입과 자판기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 알고리즘의 성능 분석",
+      "short": "2. 알고리즘의 성능 분석",
+      "topics": [
+        {
+          "id": "s1-measure",
+          "title": "2.1 수행 시간 측정",
+          "required_terms": [
+            "2.1 수행 시간 측정"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-complexity",
+          "title": "2.2 복잡도 분석과 시간복잡도 함수",
+          "required_terms": [
+            "2.2 복잡도 분석과 시간복잡도 함수"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-n-times",
+          "title": "2.3 n을 n번 더하는 세 알고리즘",
+          "required_terms": [
+            "2.3 n을 n번 더하는 세 알고리즘"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-arraymax",
+          "title": "2.4 ArrayMax 연산 세기",
+          "required_terms": [
+            "2.4 ArrayMax 연산 세기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "3. 빅오 표기법",
+      "short": "3. 빅오 표기법",
+      "topics": [
+        {
+          "id": "s2-bigo-def",
+          "title": "3.1 빅오 표기법의 정의",
+          "required_terms": [
+            "3.1 빅오 표기법의 정의"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-bigo-kinds",
+          "title": "3.2 빅오 표기법의 종류",
+          "required_terms": [
+            "3.2 빅오 표기법의 종류"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-cases",
+          "title": "3.3 최선, 평균, 최악의 경우",
+          "required_terms": [
+            "3.3 최선, 평균, 최악의 경우"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-seq-search",
+          "title": "3.4 순차 탐색의 경우 분석",
+          "required_terms": [
+            "3.4 순차 탐색의 경우 분석"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 자료구조의 C언어 표현",
+      "short": "4. 자료구조의 C언어 표현",
+      "topics": [
+        {
+          "id": "s3-typedef",
+          "title": "4.1 typedef와 구조체",
+          "required_terms": [
+            "4.1 typedef와 구조체"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s3-naming",
+          "title": "4.2 이름 짓기 규칙",
+          "required_terms": [
+            "4.2 이름 짓기 규칙"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "5. 순환",
+      "short": "5. 순환",
+      "topics": [
+        {
+          "id": "s4-recursion-def",
+          "title": "5.1 순환이란",
+          "required_terms": [
+            "5.1 순환이란"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s4-two-conditions",
+          "title": "5.2 순환으로 풀 수 있는 문제의 두 조건",
+          "required_terms": [
+            "5.2 순환으로 풀 수 있는 문제의 두 조건"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s4-factorial-code",
+          "title": "5.3 팩토리얼 프로그래밍 #1·#2",
+          "required_terms": [
+            "5.3 팩토리얼 프로그래밍 #1·#2"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s4-factorial-trace",
+          "title": "5.4 factorial(3)의 호출과 스택",
+          "required_terms": [
+            "5.4 factorial(3)의 호출과 스택"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "6. 요약 · 예고",
+      "short": "6. 요약 · 예고",
+      "topics": [
+        {
+          "id": "s5-cheatsheet",
+          "title": "요약표",
+          "required_terms": [
+            "요약표"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s5-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "다음 시간 예고"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s5-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "함께 보면 좋은 자료"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s5-next",
+  "forbidden_outside_preview": [],
+  "parts": [
+    {
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B. 다른 기출"
+    },
+    {
+      "id": "partC",
+      "title": "C. 기출 변형",
+      "short": "C. 기출 변형"
+    },
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "part": "partB",
+      "source": "2019-mid-q8",
+      "variant": false,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "x와"
+      ],
+      "answer": "x와 y의 최대공약수를 구해주는 (함수)"
+    },
+    {
+      "id": "p2",
+      "part": "partB",
+      "source": "2019-mid-q9",
+      "variant": false,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "$T(n)"
+      ],
+      "answer": "$T(n) = 30n(n-1)/2$, 빅오 표기법 $O(n^2)$"
+    },
+    {
+      "id": "p3",
+      "part": "partB",
+      "source": "2018-mid-c024-q8",
+      "variant": false,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "$T(n)"
+      ],
+      "answer": "$T(n) = 30n(n+1)/2$, 빅오 표기법 $O(n^2)$"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "2018-mid-c024-q15",
+      "variant": false,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "if"
+      ],
+      "answer": "if ( j == 0 ) return i; else return gcd( j, i%j );"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "2018-mid-c102-q1",
+      "variant": false,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "순환(recursion)"
+      ],
+      "answer": "순환(recursion)"
+    },
+    {
+      "id": "p6",
+      "part": "partB",
+      "source": "2017-mid-c050-q11",
+      "variant": false,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "if"
+      ],
+      "answer": "if (n == 0) return; else { dec_to_bin(n / 2); printf(\"%d\", n % 2); }  (입력 10 → 1010)"
+    },
+    {
+      "id": "p7",
+      "part": "partC",
+      "source": "2018-mid-c024-q8",
+      "variant": true,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "$T(n)"
+      ],
+      "answer": "$T(n) = 10n(n+1)/2 = 5n(n+1)$, 빅오 표기법 $O(n^2)$"
+    },
+    {
+      "id": "p8",
+      "part": "partC",
+      "source": "unk-final-ltk-q1",
+      "variant": true,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "$T(n)"
+      ],
+      "answer": "$T(n) = 19n(n-1)/2$, 빅오 표기법 $O(n^2)$"
+    },
+    {
+      "id": "p9",
+      "part": "partD",
+      "source": "textbook-ch01-q12",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s2-bigo-kinds",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "O(1) → O(log n) → O(n) → O(n log n) → O(n²) → O(2ⁿ) → O(n!)"
+      ],
+      "answer": "O(1) → O(log n) → O(n) → O(n log n) → O(n²) → O(2ⁿ) → O(n!)"
+    },
+    {
+      "id": "p10",
+      "part": "partD",
+      "source": "textbook-ch01-q09",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-complexity",
+      "level": 1,
+      "date": "0914",
+      "terms": [
+        "(1) 연산의 횟수"
+      ],
+      "answer": "(1) 연산의 횟수"
+    },
+    {
+      "id": "p11",
+      "part": "partD",
+      "source": "textbook-ch02-q01",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s4-factorial-trace",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "5개"
+      ],
+      "answer": "5개"
+    },
+    {
+      "id": "p12",
+      "part": "partD",
+      "source": "textbook-ch02-q05",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s4-two-conditions",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "n이 줄지 않아 n≠1이면 종료하지 않음"
+      ],
+      "answer": "n이 줄지 않아 n≠1이면 종료하지 않음"
+    }
+  ],
+  "links": []
+}

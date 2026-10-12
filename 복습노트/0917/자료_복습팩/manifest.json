@@ -1,0 +1,428 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "0917",
+  "slug": "Recursion",
+  "note_title": "순환(재귀) — 5살도 이해하는 정리노트",
+  "note_subtitle": "기존 노트 보존",
+  "review_title": "복습문제 12선 — 0917 수업 범위",
+  "review_intro": "기존 문제 <b>8개</b>를 유지하고 교과서 문제 <b>4개</b>를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.",
+  "footer_note": "기존 노트 보존",
+  "footer_review": "출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.",
+  "sessions": [
+    {
+      "date": "0917",
+      "stt": "STT/0917 자구알.md",
+      "summary": "selection.json",
+      "slides": "S2 p3–18"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "title": "1. 순환 다시 보기",
+      "short": "1. 순환 다시 보기",
+      "topics": [
+        {
+          "id": "s0-factorial",
+          "title": "1. 팩토리얼 순환과 내부 스택",
+          "required_terms": [
+            "1. 팩토리얼 순환과 내부 스택"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-structure",
+          "title": "2. 순환 알고리즘의 두 조건",
+          "required_terms": [
+            "2. 순환 알고리즘의 두 조건"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 순환과 반복",
+      "short": "2. 순환과 반복",
+      "topics": [
+        {
+          "id": "s1-vs-iter",
+          "title": "3. 순환 대 반복",
+          "required_terms": [
+            "3. 순환 대 반복"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-fact-iter",
+          "title": "4. 팩토리얼의 반복 구현과 빅오",
+          "required_terms": [
+            "4. 팩토리얼의 반복 구현과 빅오"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "3. 거듭제곱",
+      "short": "3. 거듭제곱",
+      "topics": [
+        {
+          "id": "s2-power",
+          "title": "5. 반복 거듭제곱과 순환 거듭제곱",
+          "required_terms": [
+            "5. 반복 거듭제곱과 순환 거듭제곱"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-power-analysis",
+          "title": "6. 거듭제곱의 복잡도 분석",
+          "required_terms": [
+            "6. 거듭제곱의 복잡도 분석"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 피보나치",
+      "short": "4. 피보나치",
+      "topics": [
+        {
+          "id": "s3-fib-rec",
+          "title": "7. 피보나치의 순환 구현",
+          "required_terms": [
+            "7. 피보나치의 순환 구현"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s3-fib-waste",
+          "title": "8. 중복 계산과 다이내믹 프로그래밍",
+          "required_terms": [
+            "8. 중복 계산과 다이내믹 프로그래밍"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s3-fib-iter",
+          "title": "9. 피보나치의 반복 구현",
+          "required_terms": [
+            "9. 피보나치의 반복 구현"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "5. 하노이 탑",
+      "short": "5. 하노이 탑",
+      "topics": [
+        {
+          "id": "s4-hanoi-rule",
+          "title": "10. 하노이 탑 문제의 규칙",
+          "required_terms": [
+            "10. 하노이 탑 문제의 규칙"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s4-hanoi-3",
+          "title": "11. 원판 3개 풀이에서 규칙 찾기",
+          "required_terms": [
+            "11. 원판 3개 풀이에서 규칙 찾기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s4-hanoi-general",
+          "title": "12. 일반적인 경우와 남은 문제",
+          "required_terms": [
+            "12. 일반적인 경우와 남은 문제"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": true
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "6. 요약 · 예고",
+      "short": "6. 요약 · 예고",
+      "topics": [
+        {
+          "id": "s5-cheatsheet",
+          "title": "한눈에 보는 치트시트",
+          "required_terms": [
+            "한눈에 보는 치트시트"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s5-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "다음 시간 예고"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s5-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "함께 보면 좋은 자료"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s5-next",
+  "forbidden_outside_preview": [],
+  "parts": [
+    {
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B. 다른 기출"
+    },
+    {
+      "id": "partC",
+      "title": "C. 기출 변형",
+      "short": "C. 기출 변형"
+    },
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "part": "partB",
+      "source": "2019-mid-q8",
+      "variant": false,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "x와"
+      ],
+      "answer": "x와 y의 최대공약수를 구해주는 (foo(48, 18) = 6)"
+    },
+    {
+      "id": "p2",
+      "part": "partB",
+      "source": "2018-mid-c024-q8",
+      "variant": false,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "T(n)"
+      ],
+      "answer": "T(n) = 30n(n+1)/2 = 15n^2 + 15n, O(n^2)"
+    },
+    {
+      "id": "p3",
+      "part": "partB",
+      "source": "2018-mid-c024-q15",
+      "variant": false,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "if"
+      ],
+      "answer": "if ( j == 0 ) return i; else return gcd( j, i%j );   (48 18 → gcd:6)"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "2018-mid-c102-q1",
+      "variant": false,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "순환"
+      ],
+      "answer": "순환"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "2017-mid-c050-q11",
+      "variant": false,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "if"
+      ],
+      "answer": "if (n == 0) return; else { dec_to_bin(n / 2); printf(\"%d\", n % 2); }   (10 → 1010)"
+    },
+    {
+      "id": "p6",
+      "part": "partB",
+      "source": "unk-final-ltk-q1",
+      "variant": false,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "T(n)"
+      ],
+      "answer": "T(n) = 29n(n-1)/2, O(n^2)"
+    },
+    {
+      "id": "p7",
+      "part": "partC",
+      "source": "2018-mid-c024-q8",
+      "variant": true,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "T(n)"
+      ],
+      "answer": "T(n) = 20n(n+1)/2 = 10n^2 + 10n, O(n^2)"
+    },
+    {
+      "id": "p8",
+      "part": "partC",
+      "source": "unk-final-ltk-q1",
+      "variant": true,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "T(n)"
+      ],
+      "answer": "T(n) = 9n(n-1)/2, O(n^2)"
+    },
+    {
+      "id": "p9",
+      "part": "partD",
+      "source": "textbook-ch02-q06",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-structure",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "종료 조건이 없어 호출이 끝나지 않음"
+      ],
+      "answer": "종료 조건이 없어 호출이 끝나지 않음"
+    },
+    {
+      "id": "p10",
+      "part": "partD",
+      "source": "textbook-ch02-q09",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-structure",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "출력: 10 7 4 1 -2 / 반환값: 3"
+      ],
+      "answer": "출력: 10 7 4 1 -2 / 반환값: 3"
+    },
+    {
+      "id": "p11",
+      "part": "partD",
+      "source": "textbook-ch02-q13",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-vs-iter",
+      "level": 3,
+      "date": "0917",
+      "terms": [
+        "n≤1이면 1, 아니면 n+sum(n-1)"
+      ],
+      "answer": "n≤1이면 1, 아니면 n+sum(n-1)"
+    },
+    {
+      "id": "p12",
+      "part": "partD",
+      "source": "textbook-ch02-q16",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-vs-iter",
+      "level": 3,
+      "date": "0917",
+      "terms": [
+        "total=0에서 1..n을 더해 반환"
+      ],
+      "answer": "total=0에서 1..n을 더해 반환"
+    }
+  ],
+  "links": []
+}

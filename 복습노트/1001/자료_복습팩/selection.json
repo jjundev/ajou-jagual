@@ -1,0 +1,370 @@
+{
+  "range": "1001",
+  "mode": "retrofit",
+  "taught_evidence": {
+    "range_ch": [
+      4
+    ],
+    "taught": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "taught_pages": "S4 p2–18, 배열 리스트 삽입·삭제",
+    "preview": "연결 리스트 C 구현·삭제·순회 미학습"
+  },
+  "concept_overrides": {
+    "ch03-q08": [
+      4
+    ],
+    "ch03-q09": [
+      4
+    ],
+    "ch03-q10": [
+      4
+    ],
+    "ch03-q11": [
+      4
+    ]
+  },
+  "selected": [
+    {
+      "id": "p1",
+      "source": "textbook-ch03-q08",
+      "source_kind": "textbook",
+      "original_id": "ch03-q08",
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "복습노트/1001/정리노트_1001_List.html",
+          "locator": "#s1-insert",
+          "sha256": "3545020cb977c387feeb4118c1c38466fb0263ac57d0b7cb89c8111c1afd9a01"
+        },
+        {
+          "path": "STT/1001 자구알.md",
+          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-insert",
+          "sha256": "dd1820c8c3974d393386e3fc8aae12cbd09134d8abf2d1a2fdb577b1e717f0e6"
+        },
+        {
+          "path": "자료구조_강의록_2026/Software_4_List.pdf",
+          "locator": "PDF page 11",
+          "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62"
+        }
+      ],
+      "answer": "뒤에서 loc까지 밀고 array[loc]=value; items++",
+      "verification": {
+        "method": "c-run",
+        "reference": "answers.py:ch03-q08",
+        "result": "pass"
+      },
+      "provenance": {
+        "json_path": "교과서/03_배열, 구조체, 포인터_연습문제.json",
+        "payload_sha256": "114438fdd398869dcbb7c0f496cb301c16fa351b64c3633964f6ef8fc511b08b",
+        "source_refs": [
+          {
+            "source_id": "s03",
+            "pdf_page": 1,
+            "book_page": 98
+          },
+          {
+            "source_id": "s03",
+            "pdf_page": 2,
+            "book_page": null
+          }
+        ],
+        "sources": [
+          {
+            "id": "s03",
+            "path": "origin/03_배열, 구조체, 포인터_연습문제.pdf",
+            "sha256": "caebe288a03103bf164f7e7d078cf87cbc412a8f666e228a4033b2cd556b5833",
+            "page_count": 2
+          },
+          {
+            "id": "s03",
+            "path": "origin/03_배열, 구조체, 포인터_연습문제.pdf",
+            "sha256": "caebe288a03103bf164f7e7d078cf87cbc412a8f666e228a4033b2cd556b5833",
+            "page_count": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "p2",
+      "source": "textbook-ch03-q09",
+      "source_kind": "textbook",
+      "original_id": "ch03-q09",
+      "prerequisites": [
+        "textbook-ch03-q08"
+      ],
+      "evidence": [
+        {
+          "path": "복습노트/1001/정리노트_1001_List.html",
+          "locator": "#s1-insert",
+          "sha256": "3545020cb977c387feeb4118c1c38466fb0263ac57d0b7cb89c8111c1afd9a01"
+        },
+        {
+          "path": "STT/1001 자구알.md",
+          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-insert",
+          "sha256": "dd1820c8c3974d393386e3fc8aae12cbd09134d8abf2d1a2fdb577b1e717f0e6"
+        },
+        {
+          "path": "자료구조_강의록_2026/Software_4_List.pdf",
+          "locator": "PDF page 11",
+          "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62"
+        }
+      ],
+      "answer": "현재 원소 수 items에 대해 최악 O(items), 끝 삽입 O(1)",
+      "verification": {
+        "method": "python",
+        "reference": "answers.py:ch03-q09",
+        "result": "pass"
+      },
+      "provenance": {
+        "json_path": "교과서/03_배열, 구조체, 포인터_연습문제.json",
+        "payload_sha256": "1200717a81ef8854ee44ed1ccc6aa3d33d06a94de7cf5b9ceb49b21ed9bad631",
+        "source_refs": [
+          {
+            "source_id": "s03",
+            "pdf_page": 2,
+            "book_page": null
+          }
+        ],
+        "sources": [
+          {
+            "id": "s03",
+            "path": "origin/03_배열, 구조체, 포인터_연습문제.pdf",
+            "sha256": "caebe288a03103bf164f7e7d078cf87cbc412a8f666e228a4033b2cd556b5833",
+            "page_count": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "p3",
+      "source": "textbook-ch03-q10",
+      "source_kind": "textbook",
+      "original_id": "ch03-q10",
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "복습노트/1001/정리노트_1001_List.html",
+          "locator": "#s1-delete",
+          "sha256": "3545020cb977c387feeb4118c1c38466fb0263ac57d0b7cb89c8111c1afd9a01"
+        },
+        {
+          "path": "STT/1001 자구알.md",
+          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-delete",
+          "sha256": "dd1820c8c3974d393386e3fc8aae12cbd09134d8abf2d1a2fdb577b1e717f0e6"
+        },
+        {
+          "path": "자료구조_강의록_2026/Software_4_List.pdf",
+          "locator": "PDF page 12",
+          "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62"
+        }
+      ],
+      "answer": "삭제값 저장 → 뒤 원소를 앞으로 → items-- → 삭제값 반환",
+      "verification": {
+        "method": "c-run",
+        "reference": "answers.py:ch03-q10",
+        "result": "pass"
+      },
+      "provenance": {
+        "json_path": "교과서/03_배열, 구조체, 포인터_연습문제.json",
+        "payload_sha256": "645d717f5e6541d10fb3cb89fed71a6617a917fa51e4633dc448aa0ab19f3826",
+        "source_refs": [
+          {
+            "source_id": "s03",
+            "pdf_page": 2,
+            "book_page": null
+          }
+        ],
+        "sources": [
+          {
+            "id": "s03",
+            "path": "origin/03_배열, 구조체, 포인터_연습문제.pdf",
+            "sha256": "caebe288a03103bf164f7e7d078cf87cbc412a8f666e228a4033b2cd556b5833",
+            "page_count": 2
+          }
+        ]
+      }
+    },
+    {
+      "id": "p4",
+      "source": "textbook-ch03-q11",
+      "source_kind": "textbook",
+      "original_id": "ch03-q11",
+      "prerequisites": [
+        "textbook-ch03-q10"
+      ],
+      "evidence": [
+        {
+          "path": "복습노트/1001/정리노트_1001_List.html",
+          "locator": "#s1-delete",
+          "sha256": "3545020cb977c387feeb4118c1c38466fb0263ac57d0b7cb89c8111c1afd9a01"
+        },
+        {
+          "path": "STT/1001 자구알.md",
+          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-delete",
+          "sha256": "dd1820c8c3974d393386e3fc8aae12cbd09134d8abf2d1a2fdb577b1e717f0e6"
+        },
+        {
+          "path": "자료구조_강의록_2026/Software_4_List.pdf",
+          "locator": "PDF page 12",
+          "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62"
+        }
+      ],
+      "answer": "현재 원소 수 items에 대해 최악 O(items), 끝 삭제 O(1)",
+      "verification": {
+        "method": "python",
+        "reference": "answers.py:ch03-q11",
+        "result": "pass"
+      },
+      "provenance": {
+        "json_path": "교과서/03_배열, 구조체, 포인터_연습문제.json",
+        "payload_sha256": "8f2bb39f040e7754488b66d6be408bd3defd707a4102cbaa98ce6482e855ab6f",
+        "source_refs": [
+          {
+            "source_id": "s03",
+            "pdf_page": 2,
+            "book_page": null
+          }
+        ],
+        "sources": [
+          {
+            "id": "s03",
+            "path": "origin/03_배열, 구조체, 포인터_연습문제.pdf",
+            "sha256": "caebe288a03103bf164f7e7d078cf87cbc412a8f666e228a4033b2cd556b5833",
+            "page_count": 2
+          }
+        ]
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "source": "textbook-ch06-q01",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q02",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q03",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q04",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q05",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q06",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q07",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q08",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q09",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q10",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q11",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q12",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q13",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q14",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q15",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q16",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q17",
+      "reason": "blocking/외부 본문/원문 오류"
+    },
+    {
+      "source": "textbook-ch06-q18",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q19",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q20",
+      "reason": "blocking/외부 본문/원문 오류"
+    },
+    {
+      "source": "textbook-ch06-q21",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q22",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q23",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch06-q24",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch07-q01",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch07-q02",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch07-q03",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch07-q04",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch07-q05",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch07-q06",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    },
+    {
+      "source": "textbook-ch07-q07",
+      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+    }
+  ]
+}

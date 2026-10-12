@@ -1,0 +1,346 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "0928",
+  "slug": "ArrayStructureList",
+  "note_title": "포인터와 동적 메모리 할당 — 5살도 이해하는 정리노트",
+  "note_subtitle": "기존 노트 보존",
+  "review_title": "복습문제 4선 — 0928 수업 범위",
+  "review_intro": "기존 문제 <b>0개</b>를 유지하고 교과서 문제 <b>4개</b>를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.",
+  "footer_note": "기존 노트 보존",
+  "footer_review": "출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.",
+  "sessions": [
+    {
+      "date": "0928",
+      "stt": "STT/0928 자구알.md",
+      "summary": "selection.json",
+      "slides": "S3 p19–31; 이전 배열·구조체 복습"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "title": "1. 포인터란 무엇인가",
+      "short": "1. 포인터란 무엇인가",
+      "topics": [
+        {
+          "id": "s0-pointer-concept",
+          "title": "1. 포인터: 주소를 담는 변수",
+          "required_terms": [
+            "1. 포인터: 주소를 담는 변수"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-pointer-ops",
+          "title": "2. & 연산자와 * 연산자",
+          "required_terms": [
+            "2. & 연산자와 * 연산자"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-pointer-risk",
+          "title": "3. 포인터는 왜 위험한가",
+          "required_terms": [
+            "3. 포인터는 왜 위험한가"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-pointer-types",
+          "title": "4. 다양한 포인터와 형 변환",
+          "required_terms": [
+            "4. 다양한 포인터와 형 변환"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 함수·배열·구조체와 포인터",
+      "short": "2. 함수·배열·구조체와 포인터",
+      "topics": [
+        {
+          "id": "s1-swap",
+          "title": "1. swap: 주소를 넘겨 바깥 변수 바꾸기",
+          "required_terms": [
+            "1. swap: 주소를 넘겨 바깥 변수 바꾸기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-call-by-value",
+          "title": "2. call by value와 전달 방식 고르기",
+          "required_terms": [
+            "2. call by value와 전달 방식 고르기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-array-pointer",
+          "title": "3. 배열과 포인터",
+          "required_terms": [
+            "3. 배열과 포인터"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-struct-pointer",
+          "title": "4. 구조체의 포인터와 ->",
+          "required_terms": [
+            "4. 구조체의 포인터와 ->"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "3. 포인터의 포인터, 포인터 연산, 주의할 점",
+      "short": "3. 포인터의 포인터, 포인터 연산, 주의할 점",
+      "topics": [
+        {
+          "id": "s2-double-pointer",
+          "title": "1. 포인터의 포인터",
+          "required_terms": [
+            "1. 포인터의 포인터"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-pointer-arith",
+          "title": "2. 포인터 연산",
+          "required_terms": [
+            "2. 포인터 연산"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-null-init",
+          "title": "3. NULL과 초기화 규칙",
+          "required_terms": [
+            "3. NULL과 초기화 규칙"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 동적 메모리 할당",
+      "short": "4. 동적 메모리 할당",
+      "topics": [
+        {
+          "id": "s3-static-vs-dynamic",
+          "title": "1. 정적 할당과 동적 할당",
+          "required_terms": [
+            "1. 정적 할당과 동적 할당"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s3-malloc-free",
+          "title": "2. malloc과 free",
+          "required_terms": [
+            "2. malloc과 free"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s3-sizeof-align",
+          "title": "3. sizeof와 메모리 정렬",
+          "required_terms": [
+            "3. sizeof와 메모리 정렬"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": true
+        },
+        {
+          "id": "s3-malloc-example",
+          "title": "4. 동적 메모리 할당 예제",
+          "required_terms": [
+            "4. 동적 메모리 할당 예제"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "5. 요약 · 예고",
+      "short": "5. 요약 · 예고",
+      "topics": [
+        {
+          "id": "s4-cheatsheet",
+          "title": "한눈에 보는 0928",
+          "required_terms": [
+            "한눈에 보는 0928"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s4-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "다음 시간 예고"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s4-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "함께 보면 좋은 자료"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s4-next",
+  "forbidden_outside_preview": [],
+  "parts": [
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "part": "partD",
+      "source": "textbook-ch03-q03",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s3-sizeof-align",
+      "level": 1,
+      "date": "0928",
+      "terms": [
+        "(2) double array2[10] — 검산 환경 기준"
+      ],
+      "answer": "(2) double array2[10] — 검산 환경 기준"
+    },
+    {
+      "id": "p2",
+      "part": "partD",
+      "source": "textbook-ch03-q07",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-call-by-value",
+      "level": 3,
+      "date": "0928",
+      "terms": [
+        "실수부끼리, 허수부끼리 더한 Complex를 반환"
+      ],
+      "answer": "실수부끼리, 허수부끼리 더한 Complex를 반환"
+    },
+    {
+      "id": "p3",
+      "part": "partD",
+      "source": "textbook-ch03-q12",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s3-malloc-example",
+      "level": 3,
+      "date": "0928",
+      "terms": [
+        "malloc → 값 100·just testing 저장 → free"
+      ],
+      "answer": "malloc → 값 100·just testing 저장 → free"
+    },
+    {
+      "id": "p4",
+      "part": "partD",
+      "source": "textbook-ch01-q17",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-array-pointer",
+      "level": 2,
+      "date": "0928",
+      "terms": [
+        "(1) 최선·최악 O(1), (2) 최선·최악 O(n), (3) 최선·최악 O(n)"
+      ],
+      "answer": "(1) 최선·최악 O(1), (2) 최선·최악 O(n), (3) 최선·최악 O(n)"
+    }
+  ],
+  "links": []
+}

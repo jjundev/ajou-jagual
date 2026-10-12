@@ -1,0 +1,487 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "1012",
+  "slug": "Queue",
+  "note_title": "스택 구현·응용과 큐의 시작 — 5살도 이해하는 정리노트",
+  "note_subtitle": "기존 노트 보존",
+  "review_title": "복습문제 12선 — 1012 수업 범위",
+  "review_intro": "기존 문제 <b>8개</b>를 유지하고 교과서 문제 <b>4개</b>를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.",
+  "footer_note": "기존 노트 보존",
+  "footer_review": "출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.",
+  "sessions": [
+    {
+      "date": "1012",
+      "stt": "STT/1012 자구알.md",
+      "summary": "selection.json",
+      "slides": "S5 p9–40; S6 p2–6"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "title": "1. 스택을 C로 구현하기",
+      "short": "1. 스택을 C로 구현하기",
+      "topics": [
+        {
+          "id": "s0-array",
+          "title": "배열·top을 함께 묶고 초기화하기",
+          "required_terms": [
+            "배열·top을 함께 묶고 초기화하기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-pushpop",
+          "title": "push·pop·peek의 C 코드",
+          "required_terms": [
+            "push·pop·peek의 C 코드"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-choice",
+          "title": "입력 크기에 맞춰 구현 고르기",
+          "required_terms": [
+            "입력 크기에 맞춰 구현 고르기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-node",
+          "title": "노드와 top의 의미",
+          "required_terms": [
+            "노드와 top의 의미"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-linkedpush",
+          "title": "새 노드를 먼저 연결한 뒤 top 바꾸기",
+          "required_terms": [
+            "새 노드를 먼저 연결한 뒤 top 바꾸기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-linkedpop",
+          "title": "값을 보관하고 노드를 반납하기",
+          "required_terms": [
+            "값을 보관하고 노드를 반납하기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 스택으로 문제 풀기",
+      "short": "2. 스택으로 문제 풀기",
+      "topics": [
+        {
+          "id": "s1-brackets",
+          "title": "괄호의 개수·순서·포함 관계",
+          "required_terms": [
+            "괄호의 개수·순서·포함 관계"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-matching",
+          "title": "괄호 검사 알고리즘과 실패 지점",
+          "required_terms": [
+            "괄호 검사 알고리즘과 실패 지점"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-notation",
+          "title": "중위·후위·전위 표기",
+          "required_terms": [
+            "중위·후위·전위 표기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-eval",
+          "title": "후위식에서 피연산자 순서 지키기",
+          "required_terms": [
+            "후위식에서 피연산자 순서 지키기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-evalcode",
+          "title": "문자를 숫자로 바꾸는 C 코드",
+          "required_terms": [
+            "문자를 숫자로 바꾸는 C 코드"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-convert",
+          "title": "우선순위와 괄호로 중위식을 바꾸기",
+          "required_terms": [
+            "우선순위와 괄호로 중위식을 바꾸기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-convertalgo",
+          "title": "남은 연산자까지 출력하기",
+          "required_terms": [
+            "남은 연산자까지 출력하기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-maze",
+          "title": "미로의 후보 위치를 기억하기",
+          "required_terms": [
+            "미로의 후보 위치를 기억하기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "3. 큐가 필요한 이유와 구조",
+      "short": "3. 큐가 필요한 이유와 구조",
+      "topics": [
+        {
+          "id": "s2-fifo",
+          "title": "먼저 들어온 것을 먼저 꺼내기",
+          "required_terms": [
+            "먼저 들어온 것을 먼저 꺼내기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-buffer",
+          "title": "생산자와 소비자 사이에서 기다리기",
+          "required_terms": [
+            "생산자와 소비자 사이에서 기다리기"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-linear",
+          "title": "선형 배열에서 빈자리를 못 쓰는 문제",
+          "required_terms": [
+            "선형 배열에서 빈자리를 못 쓰는 문제"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-structure",
+          "title": "front와 rear가 가리키는 자리",
+          "required_terms": [
+            "front와 rear가 가리키는 자리"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 요약 · 예고",
+      "short": "4. 요약 · 예고",
+      "topics": [
+        {
+          "id": "s3-cheatsheet",
+          "title": "핵심 비교표",
+          "required_terms": [
+            "핵심 비교표"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "다음 시간 예고"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "함께 보면 좋은 자료"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s3-next",
+  "forbidden_outside_preview": [],
+  "parts": [
+    {
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B. 다른 기출"
+    },
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "part": "partB",
+      "source": "2019-mid-q6",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "push"
+      ],
+      "answer": "push 9번, pop 8번"
+    },
+    {
+      "id": "p2",
+      "part": "partB",
+      "source": "2018-mid-c024-q9",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "(1)"
+      ],
+      "answer": "(1) 2 4 + 7 * 6 3 * - 1 +; (2) 31"
+    },
+    {
+      "id": "p3",
+      "part": "partB",
+      "source": "2017-mid-c050-q6",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "토큰별"
+      ],
+      "answer": "토큰별 스택: 7→[7], 6→[7,6], 2→[7,6,2], /→[7,3], −→[4], 5→[4,5], 4→[4,5,4], *→[4,20], +→[24]"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "2018-mid-c024-q1",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "스택"
+      ],
+      "answer": "스택"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "2017-mid-c050-q1",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "스택"
+      ],
+      "answer": "스택"
+    },
+    {
+      "id": "p6",
+      "part": "partB",
+      "source": "2017-mid-c050-q10",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "push:"
+      ],
+      "answer": "push: top 증가 후 저장; pop: 현재 top 값 저장 후 top 감소; main: 숫자 push, 연산자면 두 값 pop 후 연산 결과 push"
+    },
+    {
+      "id": "p7",
+      "part": "partB",
+      "source": "2017-mid-c050-q2",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "큐"
+      ],
+      "answer": "큐"
+    },
+    {
+      "id": "p8",
+      "part": "partB",
+      "source": "2019-mid-q4",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "X"
+      ],
+      "answer": "X"
+    },
+    {
+      "id": "p9",
+      "part": "partD",
+      "source": "textbook-ch05-q03",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s2-fifo",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "40, 50"
+      ],
+      "answer": "40, 50"
+    },
+    {
+      "id": "p10",
+      "part": "partD",
+      "source": "textbook-ch04-q07",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-eval",
+      "level": 1,
+      "date": "1012",
+      "terms": [
+        "(1) B + E"
+      ],
+      "answer": "(1) B + E"
+    },
+    {
+      "id": "p11",
+      "part": "partD",
+      "source": "textbook-ch04-q11",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-matching",
+      "level": 3,
+      "date": "1012",
+      "terms": [
+        "((())(())): 1 2 3 3 2 4 5 5 4 1 / (((((): 1 2 3 4 5 5"
+      ],
+      "answer": "((())(())): 1 2 3 3 2 4 5 5 4 1 / (((((): 1 2 3 4 5 5"
+    },
+    {
+      "id": "p12",
+      "part": "partD",
+      "source": "textbook-ch04-q14",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 3,
+      "date": "1012",
+      "terms": [
+        "return s->top + 1;"
+      ],
+      "answer": "return s->top + 1;"
+    }
+  ],
+  "links": []
+}

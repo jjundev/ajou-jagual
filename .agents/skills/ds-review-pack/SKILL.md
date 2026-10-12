@@ -1,20 +1,21 @@
 ---
 name: ds-review-pack
-description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(정리노트·복습문제)이나 기출 문제은행을 만들 때 사용한다. /ds-review-pack [bank | MMDD | MMDD-MMDD] [lite]
+description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(정리노트·복습문제)이나 기출 문제은행을 만들 때 사용한다. /ds-review-pack [bank | MMDD | MMDD-MMDD | update-existing MMDD/all] [lite]
 ---
 
 # 자구알 복습팩
 
-수업 녹음 전사(STT)와 강의록(`자료구조_강의록_2026/`), 기출 문제은행으로 한 기간의 복습팩을 만든다. 문제은행은 `bank` 모드로 먼저 한 번 만들어 둔다. 중간에 사용자에게 묻지 않고(`bank` 모드의 hwp 외부 변환 허락만 B2 전에 한 번 묻는다) 끝에 한 번 보고한다. 커밋은 제안만 한다.
+수업 녹음 전사(STT)와 강의록(`자료구조_강의록_2026/`), 기출 문제은행과 검증된 교과서 연습문제로 한 기간의 복습팩을 만든다. 문제은행은 `bank` 모드로 먼저 한 번 만들어 둔다. 중간에 사용자에게 묻지 않고(`bank` 모드의 hwp 외부 변환 허락만 B2 전에 한 번 묻는다) 끝에 한 번 보고한다. 커밋은 제안만 한다.
 
 **모드**
 - `bank`: 기출 원본을 전사해 문제은행을 만들거나 다시 만든다. 절차는 "문제은행 모드" B1~B4.
+- `update-existing [MMDD|all]`: 기존 리뷰만 갱신한다. `references/textbook-update.md`를 따른다. 기존 카드와 노트는 보존하고 교과서 원문 4~8개를 추가한다.
 - 그 밖(`[MMDD | MMDD-MMDD] [lite]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
 
 **산출물** (복습팩, `복습노트/<range>/`, 수업 날짜마다 폴더 하나):
 `정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, 같은 이름의 `.md` 두 개, `figures_<range>/`
 
-**인자**: `[bank | MMDD | MMDD-MMDD] [lite]`
+**인자**: `[bank | MMDD | MMDD-MMDD | update-existing MMDD/all] [lite]`
 - `lite`: 작성자·요약·전사 에이전트를 가벼운 모델로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다.
 
 **에이전트 모델** (작성자·요약·전사 공통, 모델은 여기서만 정한다):
@@ -28,6 +29,7 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 **경로 약속**
 - `SKILL` = 이 파일이 있는 폴더(`.agents/skills/ds-review-pack`)의 절대 경로
 - `REPO` = 저장소 루트
+- `TEXTBOOK` = NFC/NFD 실제 경로로 찾은 `REPO/교과서/`; `TEXTBOOK_PYTHON` = PyMuPDF·jsonschema가 설치된 Python 실행 파일(기본 sys.executable).
 - `BANK` = `REPO/from_the_past/기출/문제은행.json`
 - `RUN` = 복습팩은 `<scratchpad>/ds-review-pack/<range>/`, 문제은행은 `<scratchpad>/ds-bank/<YYYYMMDD-HHMMSS>/`
 - 셸 상태는 Bash 호출 사이에 이어지지 않는다. 아래 명령의 `$SKILL`, `$RUN`, `$REPO`, `$BANK`는 실행할 때마다 실제 절대 경로로 바꿔 쓰거나, 같은 명령 앞에 `SKILL=… RUN=… REPO=… BANK=…`를 붙여 설정한다. `cd`는 쓰지 않고 파일도 절대 경로로 넘긴다.
@@ -71,6 +73,7 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 ### 0. 준비
 1. `REPO`에 `STT/`, `자료구조_강의록_2026/`이 모두 있는지 확인한다. 없으면 "자구알 저장소에서만 동작합니다"라고 알리고 멈춘다.
 2. `BANK`가 없으면 "먼저 `/ds-review-pack bank`로 문제은행을 만들어 주세요"라고 알리고 멈춘다. 있으면 `python3 "$SKILL/scripts/bank.py" validate "$BANK"`가 `OK`여야 한다. 아니면 오류를 보여 주고 멈춘다.
+교과서도 `scripts/textbook.py`의 `load_textbook(Path(TEXTBOOK), python=TEXTBOOK_PYTHON)`로 검증한다. 다른 bank.py를 현재 프로세스에 import하지 않는다. 폴더·의존성 누락, 원본/자산/payload 검증 실패는 오류로 중단하며 기출 전용으로 대체하지 않는다. 정답 null은 아직 정답을 작성하지 않았다는 뜻이며 review.status=verified와 혼동하지 않는다.
 3. STT 목록은 NFC로 읽는다. macOS에는 NFD 파일명이 섞여 있다.
    ```bash
    python3 -c "import os,unicodedata as u,re;n=[u.normalize('NFC',f) for f in os.listdir('$REPO/STT')];print(sorted(m.group(1) for f in n if f.endswith(' 자구알.md') and (m:=re.match(r'(\d{4})',f))))"
@@ -103,11 +106,13 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 - 문제 선별은 `references/problem-selection.md`를 따른다.
   - 정답은 `RUN/answers.py`로 다시 계산한다.
   - 카드 작성자용 문항 원문은 `RUN/problems.md`에 모은다(형식은 `references/problem-selection.md`).
+- 신규 팩은 총 8~12문항, 적합한 교과서가 있으면 최소 2개 포함한다. 기존 추가 모드는 별도 4~8개 정책이다. 교과서 후보 장 대응은 검색용이며 보기·소문항 전체가 배운 범위여야 한다.
+- `scripts/textbook_blocks.py`로 교과서 원문 content/options를 순서대로 렌더링한다. 원문은 숫자·코드·그림·오타를 보존하고 observations/printed_answer를 답으로 쓰지 않는다. 직접 풀이를 Python/C 실행 또는 강의 근거로 검산한다.
 - manifest는 `references/manifest-guide.md`대로 `RUN/manifest.json`에 쓴다.
 - 검증: 둘 다 `OK`여야 한다.
   ```bash
   python3 "$SKILL/scripts/manifest.py" "$RUN/manifest.json"
-  python3 "$SKILL/scripts/bank.py" check-manifest "$BANK" "$RUN/manifest.json"
+  python3 "$SKILL/scripts/bank.py" check-manifest "$BANK" "$RUN/manifest.json" --textbook-dir "$TEXTBOOK" --textbook-python "$TEXTBOOK_PYTHON"
   ```
 
 ### 3. 작성
@@ -169,6 +174,7 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 - 미해결: … (없으면 "없음")
 - 커밋 제안: git add 복습노트/<range> && git commit -m "docs(notes): add ds review pack <range>"
 ```
+교과서 추가 개수·출처·검산 방법·제외 이유도 보고한다. `자료_복습팩/`에 manifest.json, selection.json, answers.py, validation.json을 저장한다.
 실행 폴더 경로(`RUN`)도 적는다. 수정이 필요하면 조각을 고쳐 4단계부터 다시 돌리면 된다.
 
 ## 오류 처리

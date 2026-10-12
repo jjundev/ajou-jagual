@@ -290,6 +290,9 @@ def check_review(doc: Doc, m: dict) -> list[Problem]:
         if card is None:
             out.append(Problem("missing-card", q["id"], "카드 없음"))
             continue
+        kind = q.get("source_kind", "past-exam")
+        if card.attrs.get("data-source-kind", "past-exam") != kind:
+            out.append(Problem("card-source-kind", q["id"], "출처 종류 불일치"))
         if card.attrs.get("data-source") != q["source"]:
             out.append(Problem("card-source", q["id"], f"data-source={card.attrs.get('data-source')!r}"))
         missing = CARD_PARTS - card.child_classes
