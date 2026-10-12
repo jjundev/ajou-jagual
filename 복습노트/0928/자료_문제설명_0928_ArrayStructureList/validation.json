@@ -10,77 +10,77 @@
       "sha256": "ce1ae742d818b1145a1364bfcb2c0284ae29c5dcd4ac43f3e17ec4c3a5cd4f1e"
     },
     {
-      "path": "/Users/hyunjun_macbook_pro/.codex/worktrees/ds-code-blocks/자구알/복습노트/0928/정리노트_0928_ArrayStructureList.html",
-      "sha256": "5cfd7632a44db9ff8968629d1ad30f7710e4a2a19782bf569bb0d7ee82ef7f98"
+      "path": "/Users/hyunjun_macbook_pro/.codex/worktrees/ds-code-blocks/자구알/docs/verify/rerun-ds-code-blocks.py",
+      "sha256": "e8e659faee41b5248c83d599e27b54768a67b857e82d29836d66801926322b7b"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Codex 2026-10-13 regeneration review",
-    "evidence": "evidence/code-block-review.md and code-block-equivalence.json: source condition preservation plus current rendered block checks; previous page evidence retained."
+    "reviewer": "Codex 2026-10-13 replay fix review",
+    "evidence": "evidence/code-block-equivalence.json and code-block-review.md: original conditions and source files unchanged; identical current HTML rendering."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Codex 2026-10-13 regeneration review",
-    "evidence": "evidence/code-block-browser/results.json and screenshots: every question at both viewports/light-dark; zero errors/overflow/external requests."
+    "reviewer": "Codex 2026-10-13 replay fix review",
+    "evidence": "evidence/code-block-browser/results.json: all 256 combinations; reviewed HTML SHA256 unchanged by replay-only evidence fix."
   },
   "content": {
     "status": "pass",
-    "reviewer": "Codex 2026-10-13 regeneration review",
-    "evidence": "evidence/code-block-equivalence.json: non-style HTML and Markdown byte equality; code and output whitespace preserved.",
+    "reviewer": "Codex 2026-10-13 replay fix review",
+    "evidence": "evidence/code-block-equivalence.json: exact non-style HTML, MD, code whitespace equality; replay script does not modify content.",
     "items": {
       "p1:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/code-block-equivalence.json: p1, identical source/explanation/MD content; inline code unchanged."
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/code-block-equivalence.json: unchanged current p1 content."
       },
       "p2:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/code-block-equivalence.json: p2, identical source/explanation/MD content; inline code unchanged."
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/code-block-equivalence.json: unchanged current p2 content."
       },
       "p3:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/code-block-equivalence.json: p3, identical source/explanation/MD content; inline code unchanged."
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/code-block-equivalence.json: unchanged current p3 content."
       },
       "p4:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/code-block-equivalence.json: p4, identical source/explanation/MD content; inline code unchanged."
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/code-block-equivalence.json: unchanged current p4 content."
       }
     }
   },
   "independent": {
     "status": "pass",
-    "reviewer": "Codex 2026-10-13 regeneration review",
-    "evidence": "evidence/verify-code-blocks.py, verification_key.py, independent-results.json, independent-code-blocks-run.txt: fresh rerun against current fragments.",
+    "reviewer": "Codex 2026-10-13 replay fix review",
+    "evidence": "evidence/independent-replay-run.txt and independent-results.json: fresh fixed replay execution of all64 published current question fragments.",
     "items": {
       "p1:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/independent-results.json: p1; fresh verify-code-blocks.py execution",
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/independent-replay-run.txt and independent-results.json: p1 reexecuted from published inputs",
         "method": "exact",
         "conclusion": "C sizeof arrays 40,80,40,40: option2 largest in stated environment."
       },
       "p2:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/independent-results.json: p2; fresh verify-code-blocks.py execution",
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/independent-replay-run.txt and independent-results.json: p2 reexecuted from published inputs",
         "method": "exact",
         "conclusion": "Componentwise sum (1,2)+(3,4)=(4,6); compiled function returns structure by value and leaves inputs unchanged."
       },
       "p3:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/independent-results.json: p3; fresh verify-code-blocks.py execution",
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/independent-replay-run.txt and independent-results.json: p3 reexecuted from published inputs",
         "method": "exact",
         "conclusion": "Compiled sanitizer program prints100 just testing; malloc sizeof object, NULL guard,12-character string plus NUL fits21, one free."
       },
       "p4:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/independent-results.json: p4; fresh verify-code-blocks.py execution",
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/independent-replay-run.txt and independent-results.json: p4 reexecuted from published inputs",
         "method": "proof",
         "conclusion": "Random-address calculation is constant; an unseen arbitrary value can change minimum/sum, proving all elements necessary."
       }
@@ -109,12 +109,15 @@
     "자료_문제설명_0928_ArrayStructureList/evidence/code-block-history/문제설명_0928_ArrayStructureList.html": "db95fbf91c4184dd80ad442de4ccc4af9331b32f42c1a225da8e993754240dc0",
     "자료_문제설명_0928_ArrayStructureList/evidence/code-block-review.md": "2527616ecca19641de6122c7436399de3dda3f960b00faa50d1bdeaaadbcb030",
     "자료_문제설명_0928_ArrayStructureList/evidence/independent-code-blocks-run.txt": "5f92882f10eab86ad6a69ebe12f2fd61a1387786abe6489d8240e2305c62db0e",
+    "자료_문제설명_0928_ArrayStructureList/evidence/independent-replay-run.txt": "5f92882f10eab86ad6a69ebe12f2fd61a1387786abe6489d8240e2305c62db0e",
     "자료_문제설명_0928_ArrayStructureList/evidence/independent-results.json": "1493e8b0ad7acb23e76f458f581f4a9f35527cf90c3649b32944cf1929ec815d",
+    "자료_문제설명_0928_ArrayStructureList/evidence/replay-instructions.md": "395d4930900ae47192ad4f2c2f13140ad806af0d2b8dc6968f6e84fcef7e9765",
+    "자료_문제설명_0928_ArrayStructureList/evidence/rerun-ds-code-blocks.py": "e8e659faee41b5248c83d599e27b54768a67b857e82d29836d66801926322b7b",
     "자료_문제설명_0928_ArrayStructureList/evidence/source-locators.json": "b5b002954f70af126e896326fff5787087ad893d411e6eb6032eadd32b41a9e4",
     "자료_문제설명_0928_ArrayStructureList/evidence/source-reading.txt": "5cfd7632a44db9ff8968629d1ad30f7710e4a2a19782bf569bb0d7ee82ef7f98",
     "자료_문제설명_0928_ArrayStructureList/evidence/source-review.md": "cfa652dd737273dcd0a5dfbbcd536bff97fcf2bd9e578e186c27ed12b24f4fb5",
     "자료_문제설명_0928_ArrayStructureList/evidence/verification_key.py": "edb23698f5ad6981ef2e95a7d1d229b824a454754afbb4f4bd24f637832c9cbe",
-    "자료_문제설명_0928_ArrayStructureList/evidence/verify-code-blocks.py": "fa970ce236ec2a07be8d1e8f10efc939efaa4f111ce50237a63dcfc1176a7db3",
+    "자료_문제설명_0928_ArrayStructureList/evidence/verify-code-blocks.py": "b7e5937a8d8f364cb181e94de9babb7a43f6c8d44c11951496223289a172315a",
     "자료_문제설명_0928_ArrayStructureList/evidence/verify.py": "5b85f8e4f94ffbd7f4431ec0375bdae6a73f6bd8089d808bc000e8a8f59b4ced",
     "자료_문제설명_0928_ArrayStructureList/fragments/p1.html": "e5244940882711e72e161554159f3bde09b304bfd2ee200eacc9e84068022419",
     "자료_문제설명_0928_ArrayStructureList/fragments/p2.html": "8756a00196d8cf658d692cce50a0f0d53c37a4f53f941c068e0085da055943bd",
@@ -206,6 +209,6 @@
     "자료_문제설명_0928_ArrayStructureList/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     "자료_문제설명_0928_ArrayStructureList/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     "자료_문제설명_0928_ArrayStructureList/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "자료_문제설명_0928_ArrayStructureList/manifest.json": "2f2d44849624a51bd6f5dd11edf3089fb6646aa552536d3745e526c800965915"
+    "자료_문제설명_0928_ArrayStructureList/manifest.json": "b3f13f54a20bda4df13cf9266a825b54e55b6fa6d37e9cbd6c6c0d997b9f0c69"
   }
 }

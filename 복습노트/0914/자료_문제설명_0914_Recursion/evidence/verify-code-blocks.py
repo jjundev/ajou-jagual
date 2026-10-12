@@ -2,6 +2,9 @@
 import math,json,subprocess,tempfile,re,html
 from pathlib import Path
 B=Path(__file__).parent
+inputs = sorted(B.glob('*/review-*/source.json'))
+if not inputs:
+ raise SystemExit('zero question inputs: use docs/verify/rerun-ds-code-blocks.py')
 results={}
 def record(key,evidence,method='exact'):results[key]={'method':method,'conclusion':evidence,'evidence':evidence}
 def compile_run(source,input=''):
@@ -145,7 +148,7 @@ if(s.top!=0)return 1;printf("%d",pop(&s));return 0;}
 assert compile_run(stack_c,'23+4*')=='20' and compile_run(stack_c,'52*3+')=='13'
 record('2017-mid-c050-q10','Full C11+ASan+UBSan complete program:23+4*→20,52*3+→13. Stack snippets exact. Only valid bounded, non-overflow inputs accepted; added failure exits and bounded scanf distinguished from original.')
 # Compile actual newly authored full programs/declarations (not existing-reference answers).
-for src in sorted(B.glob('*/review-*/source.json')):
+for src in inputs:
  v=json.loads(src.read_text());folder=src.parent;local={}
  for q in v['problems']:
   from verification_key import key

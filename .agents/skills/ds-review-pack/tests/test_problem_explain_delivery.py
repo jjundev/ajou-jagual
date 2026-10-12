@@ -126,3 +126,34 @@ def test_history_chain_requires_every_saved_predecessor(delivery):
  i['replacements'][rel]={'before_sha256':middle,'after_sha256':digest(r/rel),'backup_sha256':middle,'backup_file':'middle'}
  assert check_preserved(r,rel,old,{'packs':[i]})==[]
  (r/'middle').unlink();assert check_preserved(r,rel,old,{'packs':[i]})
+
+
+def test_replay_uses_published_inputs_without_original_run(tmp_path):
+ import subprocess,sys
+ runner=REPO/'docs/verify/rerun-ds-code-blocks.py'
+ assert runner.is_file()
+ result=subprocess.run([sys.executable,str(runner),'--repo',str(REPO),'--kind','independent','--output',str(tmp_path/'replay')],text=True,capture_output=True)
+ assert result.returncode==0,result.stdout+result.stderr
+ summary=json.loads((tmp_path/'replay/summary.json').read_text())
+ assert summary['question_count']==64
+ assert summary['pack_count']==9
+ assert summary['input_location']=='published sources and fragments'
+
+
+def test_saved_verification_rejects_zero_question_inputs(tmp_path):
+ import subprocess,sys,shutil
+ source=REPO/'복습노트/0907/자료_문제설명_0907_Intro_DS_Algorithms/evidence/verify-code-blocks.py'
+ copied=tmp_path/'verify-code-blocks.py';shutil.copy2(source,copied)
+ result=subprocess.run([sys.executable,str(copied)],text=True,capture_output=True)
+ assert result.returncode!=0
+ assert 'zero question inputs' in result.stdout+result.stderr
+
+
+def test_replay_rejects_empty_published_question_set(tmp_path):
+ import subprocess,sys
+ report=tmp_path/'repo/docs/verify/2026-10-13-ds-code-blocks.json'
+ report.parent.mkdir(parents=True);report.write_text(json.dumps({'packs':[]}))
+ result=subprocess.run([sys.executable,str(REPO/'docs/verify/rerun-ds-code-blocks.py'),'--repo',str(tmp_path/'repo'),'--kind','independent','--output',str(tmp_path/'output')],text=True,capture_output=True)
+ assert result.returncode!=0
+ assert 'zero question inputs' in result.stdout+result.stderr
+ assert not (tmp_path/'output/summary.json').exists()

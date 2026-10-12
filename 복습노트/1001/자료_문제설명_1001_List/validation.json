@@ -10,77 +10,77 @@
       "sha256": "ce1ae742d818b1145a1364bfcb2c0284ae29c5dcd4ac43f3e17ec4c3a5cd4f1e"
     },
     {
-      "path": "/Users/hyunjun_macbook_pro/.codex/worktrees/ds-code-blocks/자구알/복습노트/1001/정리노트_1001_List.html",
-      "sha256": "3545020cb977c387feeb4118c1c38466fb0263ac57d0b7cb89c8111c1afd9a01"
+      "path": "/Users/hyunjun_macbook_pro/.codex/worktrees/ds-code-blocks/자구알/docs/verify/rerun-ds-code-blocks.py",
+      "sha256": "e8e659faee41b5248c83d599e27b54768a67b857e82d29836d66801926322b7b"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Codex 2026-10-13 regeneration review",
-    "evidence": "evidence/code-block-review.md and code-block-equivalence.json: source condition preservation plus current rendered block checks; previous page evidence retained."
+    "reviewer": "Codex 2026-10-13 replay fix review",
+    "evidence": "evidence/code-block-equivalence.json and code-block-review.md: original conditions and source files unchanged; identical current HTML rendering."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Codex 2026-10-13 regeneration review",
-    "evidence": "evidence/code-block-browser/results.json and screenshots: every question at both viewports/light-dark; zero errors/overflow/external requests."
+    "reviewer": "Codex 2026-10-13 replay fix review",
+    "evidence": "evidence/code-block-browser/results.json: all 256 combinations; reviewed HTML SHA256 unchanged by replay-only evidence fix."
   },
   "content": {
     "status": "pass",
-    "reviewer": "Codex 2026-10-13 regeneration review",
-    "evidence": "evidence/code-block-equivalence.json: non-style HTML and Markdown byte equality; code and output whitespace preserved.",
+    "reviewer": "Codex 2026-10-13 replay fix review",
+    "evidence": "evidence/code-block-equivalence.json: exact non-style HTML, MD, code whitespace equality; replay script does not modify content.",
     "items": {
       "p1:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/code-block-equivalence.json: p1, identical source/explanation/MD content; inline code unchanged."
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/code-block-equivalence.json: unchanged current p1 content."
       },
       "p2:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/code-block-equivalence.json: p2, identical source/explanation/MD content; inline code unchanged."
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/code-block-equivalence.json: unchanged current p2 content."
       },
       "p3:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/code-block-equivalence.json: p3, identical source/explanation/MD content; inline code unchanged."
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/code-block-equivalence.json: unchanged current p3 content."
       },
       "p4:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/code-block-equivalence.json: p4, identical source/explanation/MD content; inline code unchanged."
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/code-block-equivalence.json: unchanged current p4 content."
       }
     }
   },
   "independent": {
     "status": "pass",
-    "reviewer": "Codex 2026-10-13 regeneration review",
-    "evidence": "evidence/verify-code-blocks.py, verification_key.py, independent-results.json, independent-code-blocks-run.txt: fresh rerun against current fragments.",
+    "reviewer": "Codex 2026-10-13 replay fix review",
+    "evidence": "evidence/independent-replay-run.txt and independent-results.json: fresh fixed replay execution of all64 published current question fragments.",
     "items": {
       "p1:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/independent-results.json: p1; fresh verify-code-blocks.py execution",
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/independent-replay-run.txt and independent-results.json: p1 reexecuted from published inputs",
         "method": "proof",
         "conclusion": "Every insertion position at lengths1..10 matches abstract list insertion; backward copy preserves unmoved values."
       },
       "p2:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/independent-results.json: p2; fresh verify-code-blocks.py execution",
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/independent-replay-run.txt and independent-results.json: p2 reexecuted from published inputs",
         "method": "proof",
         "conclusion": "Independent move counter equals items-loc for all positions; worst items, best0 moves plus constant work."
       },
       "p3:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/independent-results.json: p3; fresh verify-code-blocks.py execution",
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/independent-replay-run.txt and independent-results.json: p3 reexecuted from published inputs",
         "method": "proof",
         "conclusion": "Every deletion position at lengths1..10 matches abstract deletion and returned removed value; prefix-copy invariant."
       },
       "p4:main": {
         "status": "pass",
-        "reviewer": "Codex 2026-10-13 regeneration review",
-        "evidence": "evidence/independent-results.json: p4; fresh verify-code-blocks.py execution",
+        "reviewer": "Codex 2026-10-13 replay fix review",
+        "evidence": "evidence/independent-replay-run.txt and independent-results.json: p4 reexecuted from published inputs",
         "method": "proof",
         "conclusion": "Move counter items-loc-1, worst items-1, last0; constant overhead."
       }
@@ -114,12 +114,15 @@
     "자료_문제설명_1001_List/evidence/code-block-review.md": "9c55d3c960258359df67747f27817a44a34b9d5c613c9fc90ae120c0f125eb86",
     "자료_문제설명_1001_List/evidence/entity-fix-review.md": "0bcb86f9d125dce123ec9337dec60a695dbe21fd87a14adce30d719d2711b1f3",
     "자료_문제설명_1001_List/evidence/independent-code-blocks-run.txt": "5f92882f10eab86ad6a69ebe12f2fd61a1387786abe6489d8240e2305c62db0e",
+    "자료_문제설명_1001_List/evidence/independent-replay-run.txt": "5f92882f10eab86ad6a69ebe12f2fd61a1387786abe6489d8240e2305c62db0e",
     "자료_문제설명_1001_List/evidence/independent-results.json": "9bde025b4a48c3a6c97de41b4ff86b5717cb5e0e7547850102cf48bb808c64d3",
+    "자료_문제설명_1001_List/evidence/replay-instructions.md": "395d4930900ae47192ad4f2c2f13140ad806af0d2b8dc6968f6e84fcef7e9765",
+    "자료_문제설명_1001_List/evidence/rerun-ds-code-blocks.py": "e8e659faee41b5248c83d599e27b54768a67b857e82d29836d66801926322b7b",
     "자료_문제설명_1001_List/evidence/source-locators.json": "9d6f896789bc7280a5ef3582dad54fe781dc5afae85d16fc8e0c530f7cc350dc",
     "자료_문제설명_1001_List/evidence/source-reading.txt": "3545020cb977c387feeb4118c1c38466fb0263ac57d0b7cb89c8111c1afd9a01",
     "자료_문제설명_1001_List/evidence/source-review.md": "cfa652dd737273dcd0a5dfbbcd536bff97fcf2bd9e578e186c27ed12b24f4fb5",
     "자료_문제설명_1001_List/evidence/verification_key.py": "edb23698f5ad6981ef2e95a7d1d229b824a454754afbb4f4bd24f637832c9cbe",
-    "자료_문제설명_1001_List/evidence/verify-code-blocks.py": "fa970ce236ec2a07be8d1e8f10efc939efaa4f111ce50237a63dcfc1176a7db3",
+    "자료_문제설명_1001_List/evidence/verify-code-blocks.py": "b7e5937a8d8f364cb181e94de9babb7a43f6c8d44c11951496223289a172315a",
     "자료_문제설명_1001_List/evidence/verify.py": "5b85f8e4f94ffbd7f4431ec0375bdae6a73f6bd8089d808bc000e8a8f59b4ced",
     "자료_문제설명_1001_List/fragments/p1.html": "aa493b192723f93810375c650f2bc2b663c4ee69744a05a91be47a4254265071",
     "자료_문제설명_1001_List/fragments/p2.html": "33b6a36b68c432974fb91a6926ddd12a4fd25b712db1f9fd2b7a5d67cc423f25",
@@ -211,6 +214,6 @@
     "자료_문제설명_1001_List/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     "자료_문제설명_1001_List/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     "자료_문제설명_1001_List/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "자료_문제설명_1001_List/manifest.json": "c8083873a7e3b887e1e076f3e65f3fc34341aac35cce716bef3c8ff1a93f59a5"
+    "자료_문제설명_1001_List/manifest.json": "6269fba0537e48ec28b8a0762b050dd3656bf7afca338c5f58df488f71ee412e"
   }
 }
