@@ -69,7 +69,18 @@ def build_pack(review,run):
     run=Path(run).resolve()
     if run.exists() and any(run.iterdir()):raise PdfError('RUN must be fresh/empty')
     run.mkdir(parents=True,exist_ok=True);stage=run/'stage';stage.mkdir()
-    pack=read_pack(Path(review));report={'version':1,'source':str(pack.source),'source_sha256':pack.source_sha256,
+    source=Path(review).resolve()
+    try:
+        pack=read_pack(source)
+    except (PdfError,OSError,ValueError) as exc:
+        old=[source.parent/(source.stem+suffix) for suffix in ('-문제.pdf','-답안.pdf')]
+        report={'version':1,'source':str(source),'dest':str(source.parent),
+                'source_sha256':digest(source) if source.is_file() else None,
+                'status':'stale' if any(p.exists() for p in old) else 'withheld',
+                'failure':str(exc),'checks':{'status':'fail','errors':[str(exc)]},'artifact_hashes':{}}
+        dump(run/'report.json',report);dump(run/'review.json',{'status':'not_run'})
+        return run/'report.json'
+    report={'version':1,'source':str(pack.source),'source_sha256':pack.source_sha256,
        'dest':str(pack.source.parent),'range':pack.range,'slug':pack.slug,'logical_ids':[c.id for c in pack.cards],
        'template_hashes':{p.name:digest(p) for p in (ASSETS/'ec2').iterdir() if p.is_file()},
        'vendor_hashes':{str(p.relative_to(ASSETS)):digest(p) for p in (ASSETS/'vendor').rglob('*') if p.is_file()},

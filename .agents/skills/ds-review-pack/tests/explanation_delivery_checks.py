@@ -16,7 +16,11 @@ def check_pack(root,item):
   src=safe(root,item['source']);digest=sha(src);cards=extract_cards(src.read_text());ids=[c['id'] for c in cards]
   manifest=safe(root,item['manifest']);m=json.loads(manifest.read_text());v=json.loads(safe(root,item['validation']).read_text());dest=src.parent
   if not ids or ids!=item['problem_ids'] or ids!=[p['id'] for p in m['problems']]:errors.append('current problem IDs differ')
-  if digest!=item['source_sha256'] or digest!=m['source_sha256'] or Path(m['source']).resolve()!=src:errors.append('current source differs')
+  source_identity = Path(m['source']).resolve()==src
+  if not source_identity and m.get('repo'):
+   try: source_identity=Path(m['source']).relative_to(Path(m['repo'])).as_posix()==item['source']
+   except ValueError: pass
+  if digest!=item['source_sha256'] or digest!=m['source_sha256'] or not source_identity:errors.append('current source differs')
   if v.get('input_hash')!=m.get('input_hash'):errors.append('review input differs')
   expected={f"{p['id']}:{s}" for p in m['problems'] for s in p['subparts']}
   def approved(e):return isinstance(e,dict) and e.get('status')=='pass' and all(isinstance(e.get(k),str) and e[k].strip() for k in ('reviewer','evidence'))
@@ -60,3 +64,8 @@ def check_preserved(root,relative,digest,report):
    if (after is None and not path.exists()) or (path.is_file() and sha(path)==after):return []
  except (OSError,ValueError,KeyError,TypeError):pass
  return ['preserved digest mismatch: '+relative]
+
+
+def latest_delivery_report(root):
+ reports=sorted((Path(root)/'docs/verify').glob('*-ds-review-pack-explain.json'))
+ return reports[-1] if reports else Path(root)/'docs/verify/2026-10-12-ds-review-pack-explain.json'

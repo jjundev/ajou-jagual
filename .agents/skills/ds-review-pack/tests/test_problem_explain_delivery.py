@@ -2,7 +2,7 @@ import hashlib,json
 from pathlib import Path
 import pytest
 from _util import REPO
-from explanation_delivery_checks import check_pack,check_preserved
+from explanation_delivery_checks import check_pack,check_preserved,latest_delivery_report
 
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 @pytest.fixture
@@ -51,7 +51,7 @@ def test_historical_record_survives_valid_replacement(delivery):
  assert check_preserved(r,i['source'],i['source_sha256'],None)==[]
 
 def test_real_delivery():
- report=REPO/'docs/verify/2026-10-12-ds-review-pack-explain.json';assert report.exists()
+ report=latest_delivery_report(REPO);assert report.exists()
  packs=json.loads(report.read_text())['packs'];assert sorted(p['date'] for p in packs)==['0907','0914','0917','0921','0928','1001','1005','1008','1012']
  assert sum(len(p['problem_ids']) for p in packs)==64
  for item in packs:assert check_pack(REPO,item)==[],item['date']
@@ -73,3 +73,18 @@ def test_summary_retry_render_code_characters_once():
   rendered=unescape(re.sub('<[^>]+>','',retry+summary))
   assert '&lt;' not in rendered and '&gt;' not in rendered,(date,pid,rendered)
   assert token in rendered,(date,pid)
+
+def test_frozen_manifest_source_is_portable_with_repo_relative_identity(delivery):
+ r,i,m,v=delivery
+ m['repo']='/old/course-checkout';m['source']=str(Path(m['repo'])/i['source'])
+ (r/i['manifest']).write_text(json.dumps(m))
+ v['artifact_hashes'][i['manifest'].split('복습노트/1012/')[1]]=digest(r/i['manifest'])
+ (r/i['validation']).write_text(json.dumps(v))
+ assert check_pack(r,i)==[]
+
+def test_latest_delivery_report_preferred(tmp_path):
+ from explanation_delivery_checks import latest_delivery_report
+ folder=tmp_path/'docs/verify';folder.mkdir(parents=True)
+ old=folder/'2026-10-12-ds-review-pack-explain.json';new=folder/'2026-10-13-ds-review-pack-explain.json'
+ old.write_text('{}');new.write_text('{}')
+ assert latest_delivery_report(tmp_path)==new

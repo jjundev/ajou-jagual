@@ -36,7 +36,7 @@ def blocks(node):
             start=int(child.attrs.get('start','1'))
             for i,li in enumerate(c for c in child.children if isinstance(c,Node) and c.tag=='li'):
                 if 'steps' in child.classes:
-                    out.extend(blocks(li))
+                    out.append(Block('prose', ''.join(markup(c) for c in li.children), li.text()))
                 else:
                     attrs=f' start="{start+i}"' if child.tag=='ol' else ''
                     out.append(Block('prose',f'<{child.tag}{attrs}>'+markup(li)+f'</{child.tag}>',li.text()))
@@ -66,7 +66,7 @@ def read_pack(review: Path) -> Pack:
             raise PdfError(f'{pid}: missing problem/solution/answer')
         title=next(node.find_all(lambda n:n.tag=='h3'),None)
         source=node.attrs.get('data-source','')
-        kind='연습문제' if node.attrs.get('data-source-kind')=='textbook' else ('기출' if '기출' in source else '장말문제')
+        kind='연습문제' if node.attrs.get('data-source-kind')=='textbook' else ('기출' if re.match(r'(?:\d{4}|unk)-(?:mid|final)-',source) or '기출' in source else '장말문제')
         title=re.sub(r'^P\d+\.\s*','',title.text() if title else pid)
         cards.append(Card(pid,source,kind,title,blocks(problem),blocks(solution),markup(answer),
                           ''.join(markup(c) for c in hint.children if not isinstance(c,Node) or c.tag!='summary') if hint else ''))

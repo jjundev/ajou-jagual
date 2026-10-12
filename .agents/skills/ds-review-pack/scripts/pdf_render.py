@@ -32,12 +32,18 @@ def render_session():
     global _active
     if _active is not None:
         yield _active;return
-    from playwright.sync_api import sync_playwright
-    with sync_playwright() as pw:
-        browser=pw.chromium.launch(channel='chrome')
-        _active=browser
-        try: yield browser
-        finally: _active=None;browser.close()
+    try:
+        from playwright.sync_api import sync_playwright, Error as PlaywrightError
+    except ImportError as exc:
+        raise PdfError('Playwright is required; select an installed Python runtime') from exc
+    try:
+        with sync_playwright() as pw:
+            browser=pw.chromium.launch(channel='chrome')
+            _active=browser
+            try: yield browser
+            finally: _active=None;browser.close()
+    except PlaywrightError as exc:
+        raise PdfError('Chrome rendering failed: '+str(exc)) from exc
 
 
 def resource_path(url):

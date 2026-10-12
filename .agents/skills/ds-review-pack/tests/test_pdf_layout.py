@@ -26,3 +26,9 @@ class LayoutTests(unittest.TestCase):
   pack=self.pack('x=1;\n')
   pages=(PageSlice('p1','p1',1,pack.cards[0].problem,(),True,True),)
   self.assertTrue(check_coverage(pack,pages))
+
+ def test_no_progress_guard(self):
+  from unittest.mock import patch
+  from pdf_types import Probe
+  with tempfile.TemporaryDirectory() as tmp, patch('pdf_layout.probe',return_value=Probe(('p1',),('p1',),(),{},{})):
+   with self.assertRaisesRegex(PdfError,'p1'):plan_pages(self.pack('x=1;\n'),Path(tmp))

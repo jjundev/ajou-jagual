@@ -29,3 +29,13 @@ class CardsTests(unittest.TestCase):
  def test_all_counts(self):
   sources=sorted((REPO/'복습노트').glob('*/복습문제_*.html'))
   self.assertEqual([len(read_pack(p).cards) for p in sources],[4,12,12,8,4,4,4,4,12])
+
+ def test_solution_steps_retain_inline_markup(self):
+  source=next((REPO/'복습노트/0914').glob('복습문제_*.html'));pack=read_pack(source)
+  b=Builder();b.feed(source.read_text());article=next(b.root.find_all(lambda n:n.attrs.get('id')=='p1'));sol=next(article.find_all(lambda n:'solution' in n.classes));steps=next(sol.find_all(lambda n:n.tag=='ol' and 'steps' in n.classes))
+  count=len([n for n in steps.children if isinstance(n,Node) and n.tag=='li'])
+  self.assertEqual(len(pack.cards[0].solution),count)
+
+ def test_past_source_is_not_labeled_chapter_problem(self):
+  pack=read_pack(next((REPO/'복습노트/0914').glob('복습문제_*.html')))
+  self.assertEqual(pack.cards[0].source,'2019-mid-q8');self.assertEqual(pack.cards[0].kind,'기출')
