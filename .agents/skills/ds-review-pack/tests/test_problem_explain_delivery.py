@@ -54,7 +54,20 @@ def test_real_delivery():
  report=REPO/'docs/verify/2026-10-12-ds-review-pack-explain.json';assert report.exists()
  packs=json.loads(report.read_text())['packs'];assert sorted(p['date'] for p in packs)==['0907','0914','0917','0921','0928','1001','1005','1008','1012']
  assert sum(len(p['problem_ids']) for p in packs)==64
- for item in packs:assert check_pack(REPO,item)==[],item['date']
+ latest=json.loads((REPO/'docs/verify/2026-10-13-ds-code-blocks.json').read_text())
+ assert digest(report)==latest['historical_report_sha256']
+ by_date={p['date']:p for p in latest['packs']}
+ for item in packs:
+  current=by_date[item['date']]
+  assert item['source']==current['source'] and item['source_sha256']==current['source_sha256']
+  assert item['problem_ids']==current['problem_ids']
+  assert check_pack(REPO,current)==[],item['date']
+  # Predecessor artifact metadata is retained and connected to the current output.
+  backup=REPO/current['replacements'][item['manifest']]['backup_file']
+  old=json.loads(backup.read_text())
+  for name,old_digest in old['files'].items():
+   relative=(Path(item['source']).parent/name).as_posix()
+   assert check_preserved(REPO,relative,old_digest,latest)==[],relative
 
 
 def test_forged_backup_digest_does_not_replace_backup_bytes(delivery):
@@ -73,3 +86,43 @@ def test_summary_retry_render_code_characters_once():
   rendered=unescape(re.sub('<[^>]+>','',retry+summary))
   assert '&lt;' not in rendered and '&gt;' not in rendered,(date,pid,rendered)
   assert token in rendered,(date,pid)
+
+
+def test_all_code_block_deliveries_current():
+ report_path = REPO / 'docs/verify/2026-10-13-ds-code-blocks.json'
+ assert report_path.exists()
+ report = json.loads(report_path.read_text())
+ assert {p['html'] for p in report['packs']} == {p.relative_to(REPO).as_posix() for p in (REPO/'복습노트').glob('*/문제설명_*.html')}
+ for item in report['packs']:
+  assert check_pack(REPO, item) == [], item['date']
+  for rel, old in item['before_files'].items():
+   assert check_preserved(REPO, rel, old, report) == [], rel
+ for rel, old in report['protected_files'].items():
+  assert digest(REPO/rel) == old, rel
+
+
+def test_source_relocation_requires_matching_relative_path_and_digest(delivery):
+ r,i,m,v=delivery
+ m['source']='/previous/checkout/'+i['source']
+ path=r/i['manifest'];path.write_text(json.dumps(m));v['artifact_hashes'][path.relative_to((r/i['source']).parent).as_posix()]=digest(path);(r/i['validation']).write_text(json.dumps(v))
+ assert check_pack(r,i)==[]
+ m['source']='/previous/checkout/another.html';path.write_text(json.dumps(m))
+ assert check_pack(r,i)
+
+
+def test_durable_backup_requires_real_bytes(delivery):
+ r,i,m,v=delivery;rel=i['html'];old=hashlib.sha256(b'old').hexdigest()
+ saved=r/'saved/0-previous.html';saved.parent.mkdir();saved.write_bytes(b'old')
+ i['replacements'][rel]={'before_sha256':old,'after_sha256':digest(r/rel),'backup_sha256':old,'backup_file':saved.relative_to(r).as_posix()}
+ assert check_preserved(r,rel,old,{'packs':[i]})==[]
+ saved.write_bytes(b'forged');assert check_preserved(r,rel,old,{'packs':[i]})
+
+
+def test_history_chain_requires_every_saved_predecessor(delivery):
+ r,i,m,v=delivery;rel=i['html'];old=hashlib.sha256(b'old').hexdigest();middle=hashlib.sha256(b'middle').hexdigest()
+ for name,data in [('old',b'old'),('middle',b'middle')]:
+  (r/name).write_bytes(data)
+ i['replacement_history']={rel:[{'before_sha256':old,'after_sha256':middle,'backup_sha256':old,'backup_file':'old'}]}
+ i['replacements'][rel]={'before_sha256':middle,'after_sha256':digest(r/rel),'backup_sha256':middle,'backup_file':'middle'}
+ assert check_preserved(r,rel,old,{'packs':[i]})==[]
+ (r/'middle').unlink();assert check_preserved(r,rel,old,{'packs':[i]})

@@ -33,7 +33,7 @@ class DeliveryTests(unittest.TestCase):
  def test_preserved_note_figures_and_explanations(self):
   for d,s,m,v in self.selections():
    for file,digest in v['preserved']['files'].items():
-    report_path=ROOT/'docs/verify/2026-10-12-ds-review-pack-explain.json'
+    report_path=ROOT/'docs/verify/2026-10-13-ds-code-blocks.json'
     report=json.loads(report_path.read_text()) if report_path.exists() else None
     self.assertEqual(check_preserved(ROOT,file,digest,report),[],file)
  def test_selected_ids_have_current_provenance(self):
