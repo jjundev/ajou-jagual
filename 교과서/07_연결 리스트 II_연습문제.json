@@ -1,0 +1,393 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "s07",
+      "path": "origin/07_연결 리스트 II_연습문제.pdf",
+      "sha256": "b0819a964e2b8e86840dd6a23b940d31df98ea0b58dc1c30d7198c71ea91ef2d",
+      "page_count": 2
+    }
+  ],
+  "chapters": [
+    {
+      "id": "ch07",
+      "number": 7,
+      "title": "연결 리스트 II",
+      "source_ids": [
+        "s07"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "ch07-q01",
+      "chapter_id": "ch07",
+      "number": "01",
+      "kind": "choice",
+      "content": [
+        {
+          "type": "text",
+          "text": "다음은 연결 리스트를 이용하여 스택을 표현한 것이다. 이에 대한 설명으로 옳지 않은 것은? (단, push는 스택에 자료를 삽입하는 연산이고, pop은 스택에서 자료를 삭제하는 연산이다) (국가시험 기출문제)"
+        },
+        {
+          "type": "figure",
+          "asset_id": "ch07-q01-stack"
+        },
+        {
+          "type": "text",
+          "text": "(ㄱ) push 연산 수행 전 스택\n(ㄴ) push 연산 수행 후 스택"
+        }
+      ],
+      "options": [
+        {
+          "label": "①",
+          "content": [
+            {
+              "type": "text",
+              "text": "스택에 가장 최근에 입력된 자료는 top이 지시한다."
+            }
+          ]
+        },
+        {
+          "label": "②",
+          "content": [
+            {
+              "type": "text",
+              "text": "스택에 입력된 자료 중 d가 가장 오래된 자료이다."
+            }
+          ]
+        },
+        {
+          "label": "③",
+          "content": [
+            {
+              "type": "text",
+              "text": "(ㄴ)에서 자료 c를 가져오려면 pop 연산이 2회 필요하다."
+            }
+          ]
+        },
+        {
+          "label": "④",
+          "content": [
+            {
+              "type": "text",
+              "text": "(ㄱ)에서 자료의 입력된 순서는 d, c, b이다."
+            }
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "source_id": "s07",
+          "pdf_page": 1,
+          "book_page": 250
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "632f6dc1a5285d4a2e97f72520806e24884ca3456d4494668a7839ae476bf594",
+        "notes": [
+          {
+            "locator": "ch07-q01",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch07-q02",
+      "chapter_id": "ch07",
+      "number": "02",
+      "kind": "choice",
+      "content": [
+        {
+          "type": "text",
+          "text": "삽입과 삭제작업이 자주 발생할 때 실행시간이 가장 많이 소요되는 자료구조는?"
+        }
+      ],
+      "options": [
+        {
+          "label": "1",
+          "content": [
+            {
+              "type": "text",
+              "text": "배열로 구현된 리스트"
+            }
+          ]
+        },
+        {
+          "label": "2",
+          "content": [
+            {
+              "type": "text",
+              "text": "단순 연결 리스트"
+            }
+          ]
+        },
+        {
+          "label": "3",
+          "content": [
+            {
+              "type": "text",
+              "text": "원형 연결 리스트"
+            }
+          ]
+        },
+        {
+          "label": "4",
+          "content": [
+            {
+              "type": "text",
+              "text": "이중 연결 리스트"
+            }
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "source_id": "s07",
+          "pdf_page": 1,
+          "book_page": 250
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "a670f8f7760b79ca9b659c0958bbc63ec395d842c616bf66607611b0a31ba7df",
+        "notes": [
+          {
+            "locator": "ch07-q02",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch07-q03",
+      "chapter_id": "ch07",
+      "number": "03",
+      "kind": "code-write",
+      "content": [
+        {
+          "type": "text",
+          "text": "원형 연결 리스트에서 특정한 값을 탐색하는 함수 search()를 작성하고 테스트하라. search()는 다음과 같은 원형을 가진다."
+        },
+        {
+          "type": "code",
+          "language": "c",
+          "text": "// 원형 연결 리스트 L에서 data를 가지고 있는 노드를 찾아서 반환한다.\nListNode *search(CListType *L, element data);"
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s07",
+          "pdf_page": 1,
+          "book_page": 250
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "a2e2754ba642c718ea181b2821ebb8cb6aa29ec24377b7169515588fc7306375",
+        "notes": [
+          {
+            "locator": "ch07-q03",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch07-q04",
+      "chapter_id": "ch07",
+      "number": "04",
+      "kind": "code-write",
+      "content": [
+        {
+          "type": "text",
+          "text": "원형 연결 리스트에 저장된 데이터의 개수를 반환하는 함수 get_size()를 작성하고 테스트하라. get_size()는 다음과 같은 원형을 가진다."
+        },
+        {
+          "type": "code",
+          "language": "c",
+          "text": "// 원형 연결 리스트 L에 저장된 데이터의 개수를 반환한다.\nint get_size(CListType *L);"
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s07",
+          "pdf_page": 1,
+          "book_page": 250
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "1b786b835758bc807426f839df2aaa5087fdb41f0a7ebf0fd4cef1ea4a8185b0",
+        "notes": [
+          {
+            "locator": "ch07-q04",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch07-q05",
+      "chapter_id": "ch07",
+      "number": "05",
+      "kind": "short",
+      "content": [
+        {
+          "type": "text",
+          "text": "이중 연결 리스트의 장점과 단점은 무엇인가?"
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s07",
+          "pdf_page": 1,
+          "book_page": 250
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "85120c2e2360ea30860b40efef661da3d5c6690d4d526745b354d5d8480efd4d",
+        "notes": [
+          {
+            "locator": "ch07-q05",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch07-q06",
+      "chapter_id": "ch07",
+      "number": "06",
+      "kind": "code-write",
+      "content": [
+        {
+          "type": "text",
+          "text": "이중 연결 리스트를 역순으로 순회하면서 저장된 데이터 값을 출력하는 프로그램을 작성해보자."
+        },
+        {
+          "type": "text",
+          "text": "실행결과"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "text": "데이터의 개수를 입력하시오 : 3\n\n노드 #1의 데이터를 입력하시오: 2\n노드 #2의 데이터를 입력하시오: 6\n노드 #3의 데이터를 입력하시오: 9\n\n데이터를 역순으로 출력: 9 6 2"
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s07",
+          "pdf_page": 2,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "1e2cbc31f10de9053d3bd94b031e4b8bc8a389de8858ea4b1922fed77b23fa81",
+        "notes": [
+          {
+            "locator": "ch07-q06",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch07-q07",
+      "chapter_id": "ch07",
+      "number": "07",
+      "kind": "code-write",
+      "content": [
+        {
+          "type": "text",
+          "text": "이중 연결 리스트에서 특정한 값을 탐색하는 함수 search()를 작성하고 테스트하라. search()는 다음과 같은 원형을 가진다."
+        },
+        {
+          "type": "code",
+          "language": "c",
+          "text": "// 이중 연결 리스트 L에서 data를 가지고 있는 노드를 찾아서 반환한다.\nDListNode *search(DListNode *L, element data);"
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s07",
+          "pdf_page": 2,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "8dc6e87c9c5252eead123c7ae6227138f32708d4281426487d893dd87480d5c7",
+        "notes": [
+          {
+            "locator": "ch07-q07",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    }
+  ],
+  "assets": [
+    {
+      "id": "ch07-q01-stack",
+      "path": "assets/ch07-q01-stack.svg",
+      "sha256": "fd48a4e4b9b85bf4206c50077440ffe11671ff29d2f8158ca1b99d9bf7632259",
+      "model_id": "ch07-q01-stack",
+      "alt": "원문의 연결 리스트와 포인터",
+      "source_refs": [
+        {
+          "source_id": "s07",
+          "pdf_page": 1,
+          "book_page": 250
+        }
+      ],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "3275492edefa8187373533e75f0234b00312f44a28cfd95600f3cca6660b0357",
+        "notes": [
+          {
+            "locator": "ch07-q01-stack",
+            "text": "원본의 값·빈칸·노드·연결·방향·좌우·포인터·표 셀을 모델과 대조했다. 직접 제작한 SVG 전체 렌더링을 확인했다. 원본 이미지·필기·정답 힌트는 삽입하지 않았다."
+          }
+        ]
+      }
+    }
+  ]
+}

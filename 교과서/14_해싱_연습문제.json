@@ -1,0 +1,602 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "s14",
+      "path": "origin/14_해싱_연습문제.pdf",
+      "sha256": "84e7b37b40a9733bed64fab57d328ae84b27ca37768f8fd68c64e8f7640d447c",
+      "page_count": 2
+    }
+  ],
+  "chapters": [
+    {
+      "id": "ch14",
+      "number": 14,
+      "title": "해싱",
+      "source_ids": [
+        "s14"
+      ]
+    }
+  ],
+  "questions": [
+    {
+      "id": "ch14-q01",
+      "chapter_id": "ch14",
+      "number": "01",
+      "kind": "choice",
+      "content": [
+        {
+          "type": "text",
+          "text": "해싱에서 충돌은 언제 발생하는가?"
+        }
+      ],
+      "options": [
+        {
+          "label": "1",
+          "content": [
+            {
+              "type": "text",
+              "text": "키가 같은 경우"
+            }
+          ]
+        },
+        {
+          "label": "2",
+          "content": [
+            {
+              "type": "text",
+              "text": "해시 함수의 값이 같은 경우"
+            }
+          ]
+        },
+        {
+          "label": "3",
+          "content": [
+            {
+              "type": "text",
+              "text": "같은 해시 함수를 사용하는 경우"
+            }
+          ]
+        },
+        {
+          "label": "4",
+          "content": [
+            {
+              "type": "text",
+              "text": "키의 길이가 같은 경우"
+            }
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 1,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "fb513aa3fae4904655a122f58c15e67615bd3e7e897bd9938853a17553f76cec",
+        "notes": [
+          {
+            "locator": "ch14-q01",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch14-q02",
+      "chapter_id": "ch14",
+      "number": "02",
+      "kind": "choice",
+      "content": [
+        {
+          "type": "text",
+          "text": "크기가 13인 해쉬 테이블에서 입력 자료 27과 130은 어떤 인덱스로 매핑되는가? 해싱 함수는 h(key)=key%13라고 하자."
+        }
+      ],
+      "options": [
+        {
+          "label": "A",
+          "content": [
+            {
+              "type": "text",
+              "text": "1, 10"
+            }
+          ]
+        },
+        {
+          "label": "B",
+          "content": [
+            {
+              "type": "text",
+              "text": "13, 0"
+            }
+          ]
+        },
+        {
+          "label": "C",
+          "content": [
+            {
+              "type": "text",
+              "text": "1, 0"
+            }
+          ]
+        },
+        {
+          "label": "D",
+          "content": [
+            {
+              "type": "text",
+              "text": "2, 3"
+            }
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 1,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "1c03de28dce978957d90c159d9c6c83dc4dc4b216b2724dc08acbdf05722f3e9",
+        "notes": [
+          {
+            "locator": "ch14-q02",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch14-q03",
+      "chapter_id": "ch14",
+      "number": "03",
+      "kind": "mixed",
+      "content": [
+        {
+          "type": "text",
+          "text": "크기가 11인 해싱테이블을 가정하자. 해시함수로는 다음을 사용한다."
+        },
+        {
+          "type": "text",
+          "text": "h(k) = k mod 11"
+        },
+        {
+          "type": "text",
+          "text": "입력 자료가 다음과 같은 순서로 입력된다고 하면 아래의 각 경우에 대하여 해시테이블의 내용을 그려라."
+        },
+        {
+          "type": "text",
+          "text": "12, 44, 13, 88, 23, 94, 11, 39, 20, 16, 5"
+        },
+        {
+          "type": "subquestions",
+          "items": [
+            {
+              "id": "ch14-q03-s01",
+              "label": "1",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "충돌을 선형조사법을 사용하여 처리한다."
+                }
+              ]
+            },
+            {
+              "id": "ch14-q03-s02",
+              "label": "2",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "충돌을 이차조사법을 사용하여 처리한다."
+                }
+              ]
+            },
+            {
+              "id": "ch14-q03-s03",
+              "label": "3",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "충돌을 다음과 같은 이중해시법을 사용하여 처리한다.\nh′(k) = 7 − (k mod 7)"
+                }
+              ]
+            },
+            {
+              "id": "ch14-q03-s04",
+              "label": "4",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "충돌을 체인법을 사용하여 처리한다."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 1,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "4cf963fcdc3bb7b2292d5c086ee9c8842f5757d09ad1377c55679407e77370fc",
+        "notes": [
+          {
+            "locator": "ch14-q03",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch14-q04",
+      "chapter_id": "ch14",
+      "number": "04",
+      "kind": "code-write",
+      "content": [
+        {
+          "type": "text",
+          "text": "“cat”, “dog”, “lion”과 같은 동물 이름을 해쉬 테이블에 저장하고자 한다. 어떤 해싱 함수를 사용하는 것이 좋을까? 동물의 이름을 사용자로부터 받아서 해쉬 테이블에 저장하는 프로그램을 직접 구현하여 보자."
+        },
+        {
+          "type": "text",
+          "text": "실행결과"
+        },
+        {
+          "type": "code",
+          "language": "text",
+          "text": "삽입(i), 탐색(s), 삭제(d): i\n동물의 이름: cat\n인덱스 54번에 저장되었음\n\n삽입(i), 탐색(s), 삭제(d): s\n동물의 이름: cat\ncat은 해쉬 테이블 54 인덱스에 있음!\n..."
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 1,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "72496077a89bbb887e9c7ff2f02486b0489bf0e7a6662101d25900962f39ba92",
+        "notes": [
+          {
+            "locator": "ch14-q04",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch14-q05",
+      "chapter_id": "ch14",
+      "number": "05",
+      "kind": "choice",
+      "content": [
+        {
+          "type": "text",
+          "text": "체이닝에서 새로운 키를 삽입하는 시간은 무엇에 비례하는가?"
+        }
+      ],
+      "options": [
+        {
+          "label": "1",
+          "content": [
+            {
+              "type": "text",
+              "text": "적재율"
+            }
+          ]
+        },
+        {
+          "label": "2",
+          "content": [
+            {
+              "type": "text",
+              "text": "테이블에 있는 전체 항목의 개수"
+            }
+          ]
+        },
+        {
+          "label": "3",
+          "content": [
+            {
+              "type": "text",
+              "text": "버킷의 연결 리스트의 항목의 개수"
+            }
+          ]
+        },
+        {
+          "label": "4",
+          "content": [
+            {
+              "type": "text",
+              "text": "테이블의 크기"
+            }
+          ]
+        }
+      ],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 2,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "bb3d93c836f7c74545301d48d2bfe6793ae7119f8a3c2b13c23aeb28490de207",
+        "notes": [
+          {
+            "locator": "ch14-q05",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch14-q06",
+      "chapter_id": "ch14",
+      "number": "06",
+      "kind": "short",
+      "content": [
+        {
+          "type": "text",
+          "text": "만약 1000개의 조그마한 영상을 해싱을 사용하여 사전 구조에 저장하고 싶다고 가정해보자. 각각의 영상은 20픽셀×20픽셀이다. 각 픽셀은 256색중의 하나이다. 즉 하나의 픽셀은 하나의 바이트로 표시된다. 여기에 사용될 수 있는 가능한 해시 함수를 생각해보라."
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 2,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "e22eb7b1d0f9d92f9d486d6f3b91b0db907c65523d75d1ea66cd142e7771d92b",
+        "notes": [
+          {
+            "locator": "ch14-q06",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch14-q07",
+      "chapter_id": "ch14",
+      "number": "07",
+      "kind": "mixed",
+      "content": [
+        {
+          "type": "text",
+          "text": "본문에서도 설명되었듯이 이차 조사법(quadratic probing)이란 다음의 식에 의하여 인덱스를 조사하는 것이다."
+        },
+        {
+          "type": "text",
+          "text": "(k+i²)%M for i≥0"
+        },
+        {
+          "type": "text",
+          "text": "여기서 M은 테이블의 크기이고 k는 해시주소이다."
+        },
+        {
+          "type": "subquestions",
+          "items": [
+            {
+              "id": "ch14-q07-s01",
+              "label": "1",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "만일 해시 테이블의 크기가 17이고 해시 주소 k가 3이라면 다음에 조사되는 인덱스들을 처음부터 6개만 나열해라."
+                }
+              ]
+            },
+            {
+              "id": "ch14-q07-s02",
+              "label": "2",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "다음에 조사할 인덱스를 다음의 순환식을 이용하여 보다 효율적으로 계산할 수 있음을 보여라.\nkᵢ₊₁ = (kᵢ+2i+1) mod M"
+                }
+              ]
+            },
+            {
+              "id": "ch14-q07-s03",
+              "label": "3",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "(2)의 결과를 이용하여 본문에 있는 소스처럼 다음과 같은 문장을 도출하여 보라."
+                },
+                {
+                  "type": "code",
+                  "language": "c",
+                  "text": "i = (i+inc +1) % TABLE_SIZE;\ninc = inc +2;"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 2,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "6d5adc6da698062b1dd42b5a63f3d84304f302adf3f3c703e309906e16b0f24f",
+        "notes": [
+          {
+            "locator": "ch14-q07",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch14-q08",
+      "chapter_id": "ch14",
+      "number": "08",
+      "kind": "code-write",
+      "content": [
+        {
+          "type": "text",
+          "text": "선형 조사법에서 키를 삭제하는 함수 hash_lp_delete(element item, element ht[]) 를 구현해보라. 본문에서도 언급되었듯이 단순히 해시 테이블의 그 버킷을 단순히 비어있다고 표시하는 것은(본문에서는 슬롯의 키의 첫 번째 문자를 0으로 만드는 것) 다음번의 탐색을 불가능하게 할 수 있다. 따라서 삭제가 허용되는 경우에도 올바른 탐색을 할 수 있도록 hash_lp_search 알고리즘을 수정하라. 하나의 힌트는 해시테이블의 빈 항목들을 한 번도 사용되지 않은 항목(empty)과 사용되었지만 현재는 비어있는 항목(deleted)으로 구별하여야 한다."
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 2,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [
+        {
+          "kind": "external-context",
+          "description": "수정 대상 hash_lp_search 소스는 연습문제 PDF 밖의 본문에 있다.",
+          "source_refs": [
+            {
+              "source_id": "s14",
+              "pdf_page": 2,
+              "book_page": null
+            }
+          ],
+          "blocking": false
+        }
+      ],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "79f48385c487b50a0ef8a0e24a31d48064be921bc80b47f7024e3fd3b4897e0f",
+        "notes": [
+          {
+            "locator": "ch14-q08",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch14-q09",
+      "chapter_id": "ch14",
+      "number": "09",
+      "kind": "code-write",
+      "content": [
+        {
+          "type": "text",
+          "text": "체인법을 사용하는 해싱소스에도 삭제함수가 없다. 실제로는 키를 삭제할 수도 있어야 한다. hash_chain_delete(element item, ListNodePtr ht[])함수를 구현해보라. 삭제시키고자 하는 키를 발견하면 포인터를 조정하여 레코드를 연결 리스트에서 제거한 다음, free 함수를 호출하여 동적 메모리를 반환해야 할 것이다."
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 2,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "01767028e728a9d1161327f14de1026d2246f42b47e318d7641b625fa142bdc3",
+        "notes": [
+          {
+            "locator": "ch14-q09",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    },
+    {
+      "id": "ch14-q10",
+      "chapter_id": "ch14",
+      "number": "10",
+      "kind": "code-write",
+      "content": [
+        {
+          "type": "text",
+          "text": "선형 조사법과 이중 조사법을 비교하는 실험을 해보자. 먼저 500개의 사용자 이름이 들어 있는 리스트를 만든다. 그리고 크기가 1000인 해시 테이블을 선형 조사법과 이중 조사법으로 구현하여 500개의 이름이 해시 테이블에 추가될 때 충돌이 얼마나 일어나는 지를 기록하라. 동일한 실험을 테이블 크기가 950, 900, 850, 800, 750, 700, 650, 600일 때 수행해본다."
+        }
+      ],
+      "options": [],
+      "source_refs": [
+        {
+          "source_id": "s14",
+          "pdf_page": 2,
+          "book_page": null
+        }
+      ],
+      "answer": null,
+      "printed_answer": null,
+      "observations": [],
+      "issues": [],
+      "review": {
+        "status": "verified",
+        "payload_sha256": "d3c6b62100304474702c50992b342811b7d8b0c667291986ba6f4b13cef05a6a",
+        "notes": [
+          {
+            "locator": "ch14-q10",
+            "text": "인쇄 문장·보기·코드·소문항을 연결된 원본 페이지와 대조했다. 원문 오류와 외부 본문 참조, 필기를 원문에서 분리해 보존했다."
+          }
+        ]
+      }
+    }
+  ],
+  "assets": []
+}
