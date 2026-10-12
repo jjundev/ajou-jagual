@@ -1,0 +1,626 @@
+{
+  "date": "2026-10-12",
+  "reviewed_commit": "54d981e6ed2c79362d5e60824c60265021104917",
+  "status": "differences_found",
+  "scope": {
+    "chapters": 14,
+    "pdf_pages": 44,
+    "questions": 213,
+    "assets": 46
+  },
+  "method": [
+    "Original PDFs newly rasterized; all 44 pages visually inspected against current chapter JSON.",
+    "Fresh Korean/English OCR on all pages used to locate discrepancies; OCR mismatches visually resolved.",
+    "All 46 current SVGs freshly rasterized and checked against original figures, including node values, edge direction, weights, pointers, table cells and blanks.",
+    "Independently observed page question ranges compared to JSON references; current source bytes and payload/model/SVG dependencies validated."
+  ],
+  "results": {
+    "missing_questions": 0,
+    "missing_options_or_subquestions_found": 0,
+    "missing_figures_found": 0,
+    "wrong_numeric_values_code_or_figure_structure_found": 0,
+    "minor_transcription_differences": 4
+  },
+  "findings": [
+    {
+      "id": "R1",
+      "question_id": "ch02-q11",
+      "location": "content[0].text",
+      "pdf_page": 2,
+      "book_page": 64,
+      "original": "갯수",
+      "current": "개수",
+      "category": "text_spelling_changed",
+      "severity": "minor"
+    },
+    {
+      "id": "R2",
+      "question_id": "ch09-q10",
+      "subquestion": "3",
+      "location": "content[2].items[2].content[0].text",
+      "pdf_page": 2,
+      "book_page": null,
+      "original": "최댓값",
+      "current": "최대값",
+      "category": "text_spelling_changed",
+      "severity": "minor"
+    },
+    {
+      "id": "R3",
+      "question_id": "ch12-q03",
+      "location": "content[0].text",
+      "pdf_page": 1,
+      "book_page": 490,
+      "original": "“선택 정렬”를",
+      "current": "“선택 정렬”을",
+      "category": "particle_changed",
+      "severity": "minor"
+    },
+    {
+      "id": "R4",
+      "question_id": "ch10-q06",
+      "asset_id": "ch10-q06-graph",
+      "location": "asset-models.json models[ch10-q06-graph].data.nodes[].label and assets/ch10-q06-graph.svg",
+      "pdf_page": 1,
+      "book_page": 392,
+      "original": [
+        "V₀",
+        "V₁",
+        "V₂",
+        "V₃",
+        "V₄"
+      ],
+      "current": [
+        "v0",
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ],
+      "category": "figure_vertex_label_case_and_subscript_changed",
+      "severity": "minor",
+      "structure": "all 5 vertices and 6 edges match"
+    }
+  ],
+  "chapters": [
+    {
+      "chapter": 1,
+      "title": "자료구조와 알고리즘",
+      "json": "01_자료구조와 알고리즘_연습문제.json",
+      "json_sha256": "eb0cfab39d14a01465b929c4c8aa9a6c84016204d389fc8ed736b648db4a5485",
+      "source": "origin/01_자료구조와 알고리즘_연습문제.pdf",
+      "source_sha256": "d1f78d5cb573eb820fca6587b0f8219bce91c7b31c063bf4c2c132e1c572d696",
+      "pdf_pages": 2,
+      "question_count": 17,
+      "asset_count": 1,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 2,
+      "title": "순환",
+      "json": "02_순환_연습문제.json",
+      "json_sha256": "ebac958827539218ac394c6d4cad1c661ae846c69e3bf568fe6e374051c72fbc",
+      "source": "origin/02_순환_연습문제.pdf",
+      "source_sha256": "25167006c3fde12ae9b65da97a9e4cdea43503b3d0c21a43d92514e5ca99bc99",
+      "pdf_pages": 5,
+      "question_count": 21,
+      "asset_count": 2,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        [
+          18,
+          19,
+          20,
+          21
+        ],
+        [
+          21
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "differences_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 3,
+      "title": "배열, 구조체, 포인터",
+      "json": "03_배열, 구조체, 포인터_연습문제.json",
+      "json_sha256": "12cc2e31014d190daa2cdd355bc7a2c2947f02fc098e6d6b4f582e1826816108",
+      "source": "origin/03_배열, 구조체, 포인터_연습문제.pdf",
+      "source_sha256": "caebe288a03103bf164f7e7d078cf87cbc412a8f666e228a4033b2cd556b5833",
+      "pdf_pages": 2,
+      "question_count": 12,
+      "asset_count": 0,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 4,
+      "title": "스택",
+      "json": "04_스택_연습문제.json",
+      "json_sha256": "a306976a1415627490c34e51ef92e80f0dc5aaf7bff7baea79e71122312717d4",
+      "source": "origin/04_스택_연습문제.pdf",
+      "source_sha256": "f8f13f78bd19aa317bec82cc1a08186174794cc2eb9814ca834f58ec676548d4",
+      "pdf_pages": 3,
+      "question_count": 16,
+      "asset_count": 1,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        [
+          13,
+          14,
+          15,
+          16
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 5,
+      "title": "큐",
+      "json": "05_큐_연습문제.json",
+      "json_sha256": "9c736952a6db6f56e69ddca54c8bcd1e6b77b974fb15a1ebeb918ca06d1b2bf2",
+      "source": "origin/05_큐_연습문제.pdf",
+      "source_sha256": "d8b1c2126f374f944d951e395e13174d1f6cde570bcf09e3380ac99518696649",
+      "pdf_pages": 3,
+      "question_count": 12,
+      "asset_count": 3,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        [
+          12
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 6,
+      "title": "연결 리스트 I",
+      "json": "06_연결 리스트 I_연습문제.json",
+      "json_sha256": "1afc3bb36d168c6c8d9e213ef18a24ec59c5aee1ba8e6860e26d4cf1222f833f",
+      "source": "origin/06_연결 리스트 I_연습문제.pdf",
+      "source_sha256": "41b2e3a32f786d28a632a70ac67d5bd1f6944de04a3ee36e618b0a31e0f33d14",
+      "pdf_pages": 5,
+      "question_count": 24,
+      "asset_count": 6,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        [
+          8,
+          9,
+          10,
+          11
+        ],
+        [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        [
+          24
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 7,
+      "title": "연결 리스트 II",
+      "json": "07_연결 리스트 II_연습문제.json",
+      "json_sha256": "15cc042665f032265a03abc6d56771a86e6a706642d0a0a5728c523ea168c98d",
+      "source": "origin/07_연결 리스트 II_연습문제.pdf",
+      "source_sha256": "b0819a964e2b8e86840dd6a23b940d31df98ea0b58dc1c30d7198c71ea91ef2d",
+      "pdf_pages": 2,
+      "question_count": 7,
+      "asset_count": 1,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 8,
+      "title": "트리",
+      "json": "08_트리_연습문제.json",
+      "json_sha256": "ec6fcdcc25a12533816c1cd99219026860e55fd8f6b623654b1dbb8fa34990cf",
+      "source": "origin/08_트리_연습문제.pdf",
+      "source_sha256": "951979ea3c17e2d63af83e7500ec3e8f6e3f7f8a039694c63efa593bd3b288fb",
+      "pdf_pages": 5,
+      "question_count": 22,
+      "asset_count": 9,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3
+        ],
+        [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          9,
+          10,
+          11
+        ],
+        [
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        [
+          17,
+          18,
+          19,
+          20,
+          21,
+          22
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 9,
+      "title": "우선순위 큐",
+      "json": "09_우선순위 큐_연습문제.json",
+      "json_sha256": "700b10a8a7da3f8a848f0016d1bed2167cdea68ebfccaa13c63a1b70c63b4f8f",
+      "source": "origin/09_우선순위 큐_연습문제.pdf",
+      "source_sha256": "4eaa7209c2874c6231010311bfa03e8046bb97e85fdf2307e58edbc6818c063c",
+      "pdf_pages": 3,
+      "question_count": 17,
+      "asset_count": 3,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          9,
+          10,
+          11,
+          12
+        ],
+        [
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "differences_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 10,
+      "title": "그래프 I",
+      "json": "10_그래프 I_연습문제.json",
+      "json_sha256": "7829bc23a66c258a4e9b350940bdc70c4167f8f950537d6fc8c2228629e47fd9",
+      "source": "origin/10_그래프 I_연습문제.pdf",
+      "source_sha256": "26792225682327af734a4e1befb7c50c50eda7120fcc32f0da6137971b203171",
+      "pdf_pages": 3,
+      "question_count": 15,
+      "asset_count": 5,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        [
+          13,
+          14,
+          15
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "differences_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 11,
+      "title": "그래프 II",
+      "json": "11_그래프 II_연습문제.json",
+      "json_sha256": "6bff6e06366719d23bca816c9054330d987b312469cba12355f752e8e8f657cc",
+      "source": "origin/11_그래프 II_연습문제.pdf",
+      "source_sha256": "61767ed623fd04cef4e298920d82e12b8e30bcea12a2da354e3732abc8ef7e10",
+      "pdf_pages": 2,
+      "question_count": 10,
+      "asset_count": 5,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 12,
+      "title": "정렬",
+      "json": "12_정렬_연습문제.json",
+      "json_sha256": "3d08472940a22ac078df0f3e9806556a84316bc1cdbf55d4ec16f1871f390595",
+      "source": "origin/12_정렬_연습문제.pdf",
+      "source_sha256": "d4bc3d85c2dd91034d3760301fd6b51197fb5702039852e8acaf2cb0bcbaa7bc",
+      "pdf_pages": 5,
+      "question_count": 21,
+      "asset_count": 9,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        [
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        [
+          20,
+          21
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "differences_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 13,
+      "title": "탐색",
+      "json": "13_탐색_연습문제.json",
+      "json_sha256": "4a1041ed31ede1b5b6ff52d4f2ada2b18a9312518acc6c3e787fd20ea3ce7ed2",
+      "source": "origin/13_탐색_연습문제.pdf",
+      "source_sha256": "c2bd6883a1e3b26bfee93619df6a9a87e620e806e4b7653f20aa03ac15705dc5",
+      "pdf_pages": 2,
+      "question_count": 9,
+      "asset_count": 1,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        [
+          7,
+          8,
+          9
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    },
+    {
+      "chapter": 14,
+      "title": "해싱",
+      "json": "14_해싱_연습문제.json",
+      "json_sha256": "d56f90582eac7928d2777b0054393d0405310fb28818061717ab35f11e30e0de",
+      "source": "origin/14_해싱_연습문제.pdf",
+      "source_sha256": "84e7b37b40a9733bed64fab57d328ae84b27ca37768f8fd68c64e8f7640d447c",
+      "pdf_pages": 2,
+      "question_count": 10,
+      "asset_count": 0,
+      "visually_observed_page_questions": [
+        [
+          1,
+          2,
+          3,
+          4
+        ],
+        [
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ]
+      ],
+      "question_coverage": "matched",
+      "content_review": "no_difference_found",
+      "figure_structure_review": "no_difference_found"
+    }
+  ],
+  "limitations": [
+    "Visual audit result, not a proof that every glyph is identical. Line wrapping, whitespace, font and decorative 3D shading are outside content equality.",
+    "Spelling corrections and uppercase-to-lowercase changes are reported because the package claims printed-source transcription.",
+    "Printed-source defects were preserved; this audit does not repair or solve exercises. Existing payload verification can pass despite a visually discovered transcription discrepancy."
+  ],
+  "data_modified": false
+}
