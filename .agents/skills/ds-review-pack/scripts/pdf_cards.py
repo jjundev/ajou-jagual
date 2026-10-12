@@ -45,7 +45,7 @@ def blocks(node):
         else:
             kind={'pre':'code','table':'table','svg':'figure','img':'figure'}.get(child.tag,'prose')
             # Expose wrappers containing code as independent blocks, in original order.
-            if child.tag=='div' and any(isinstance(c,Node) and c.tag=='pre' for c in child.children):
+            if child.tag=='div' and any(isinstance(c,Node) and c.tag in ('pre','table') for c in child.children):
                 out.extend(blocks(child))
             else:
                 out.append(Block(kind,markup(child),child.text()))
@@ -158,11 +158,16 @@ def to_payload(pack: Pack, mode: str, pages: tuple[PageSlice,...], assets: Path)
     by_id={c.id:c for c in pack.cards};problems=[]
     for page in pages:
         c=by_id[page.logical_id]
-        ask,figures=figures_from(''.join(b.html for b in page.problem),pack.source,assets)
+        # Explicit source identity: only these tables are learner worksheets.
+        worksheet = pack.range == '1012' and c.id in ('p2','p3')
+        code = ''.join(b.html for b in page.problem if b.kind == 'code')
+        workspace = ''.join(b.html for b in page.problem if b.kind == 'table') if worksheet and mode == 'problems' else ''
+        body = ''.join(b.html for b in page.problem if b.kind != 'code' and not (workspace and b.kind == 'table'))
+        ask,figures=figures_from(body,pack.source,assets)
         number=c.id[1:]+(f' (계속 {page.continuation})' if page.continuation>1 else '')
         p={'id':page.physical_id,'kind':c.kind,'number':number,'title':c.title,'section':c.source,
            'book_page':None,'difficulty':0,'sol':False,'original_lang':'ko',
-           'html':{'original':'','conditions':'','ask':ask},'figures':figures,
+           'html':{'original':'','conditions':'','ask':ask,'code':code},'workspace_html':workspace,'figures':figures,
            'hints':[{'label':'풀이 방향','html':freeze_inline_html(c.hint_html,pack.source,assets)}] if page.show_hint and c.hint_html else []}
         if mode=='answers':
             p['solution']={'steps':[{'label':'','html':freeze_inline_html(b.html,pack.source,assets)} for b in page.solution],

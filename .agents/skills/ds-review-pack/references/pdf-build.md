@@ -28,3 +28,9 @@ python3 "$SKILL/scripts/review_pdf.py" backfill --repo "$REPO" --target all --ru
 backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 run에서 위 전체 화면 검토→publish를 수행한다. 날짜 한 팩은 --target MMDD, 저장된 통합 팩은 --target MMDD-MMDD를 쓴다. 같은 폴더 리뷰 둘은 공유 보고서 충돌이므로 자동 선택하지 않는다.
 
 0문항은 skipped, 손상/잘림/누락/수식·자원 오류는 withheld다. 이전 PDF가 있는 재생성 실패는 stale이다. withheld/stale이면 CLI 종료 코드 1이며 다른 팩은 계속한다. PDF와 문제설명은 각각 발행/보류·이유를 보고하고, 한쪽 실패로 검증된 원 복습팩·문제설명·이전 PDF를 삭제하지 않는다. lite도 PDF 검증·실화면 검토를 생략하지 않는다.
+
+## 자구알 배치 확장
+
+전자회로2 원본 4개 파일은 해시 그대로 보존한다. `pdf_ds_layout.py`가 맞춤/넘침 측정 전에 빈 조건 블록을 제거하고 문제 코드의 좌측 `코드` 섹션을 만든다. 문장 안의 인라인 코드는 유지한다. 문제의 `<pre>` 블록은 내용·들여쓰기·줄바꿈을 보존한다.
+
+작성용 표는 명시적으로 지정한 1012 P2·P3에 적용한다. 문제지에서는 원래 표를 중앙 작업 공간으로 옮기며, 답안지에서는 좌측에 유지한다. 답안의 풀이 표는 중앙에 그대로 둔다. 참고용 표는 옮기지 않는다. 확장 코드의 해시도 build/check/publish에서 검증한다.

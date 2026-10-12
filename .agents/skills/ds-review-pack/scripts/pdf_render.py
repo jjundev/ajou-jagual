@@ -23,7 +23,9 @@ try:
 finally:
     if _previous is None: sys.modules.pop('paths',None)
     else: sys.modules['paths']=_previous
-load_template=_reference.load_template
+def load_template(mode, layout='a4'):
+    from pdf_ds_layout import extend
+    return extend(_reference.load_template(mode, layout), mode)
 inject=_reference.inject
 _active=None
 
@@ -63,7 +65,7 @@ GEOMETRY_JS=r'''() => {
  for(const p of document.querySelectorAll('.page')){
   const zoom=parseFloat(getComputedStyle(p).zoom)||1, pr=p.getBoundingClientRect();
   const rect=n=>{const r=n.getBoundingClientRect();return {x:(r.left-pr.left)/zoom,y:(r.top-pr.top)/zoom,w:r.width/zoom,h:r.height/zoom}};
-  geometry[p.id]={page:{w:pr.width/zoom,h:pr.height/zoom},regions:[]};
+  geometry[p.id]={page:{w:pr.width/zoom,h:pr.height/zoom},regions:[],labels:[...p.querySelectorAll('.panel .block-label')].map(n=>n.textContent)};
   for(const n of p.querySelectorAll('.panel,.work,.hint-body,pre,table,.fig-band,img.fig,.sol-answer')){
    const r=rect(n);geometry[p.id].regions.push({tag:n.tagName,cls:n.className,...r});
    const cap=window.workbookVideoLayout?900:pr.height/zoom;

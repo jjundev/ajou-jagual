@@ -13,6 +13,7 @@ from pdf_types import Block,PageSlice,PdfError
 from pdf_layout import plan_pages,check_coverage
 from pdf_render import render,render_session,ASSETS
 from pdf_publish import dump,stage_hashes,publish_stage
+from pdf_ds_layout import extension_hash,check_extension
 
 
 def discover_reviews(repo,target):
@@ -41,6 +42,9 @@ def check_stage(run):
     if r['status']=='skipped':return []
     if r.get('failure'):return [r['failure']]
     if not Path(r['source']).is_file() or digest(r['source'])!=r['source_sha256']:errors.append('Source changed')
+    if 'layout_extension_sha256' in r:
+        try:check_extension(r)
+        except PdfError as exc:errors.append(str(exc))
     pack=read_pack(Path(r['source']));pages=_pages(r['page_slices']);errors.extend(check_coverage(pack,pages))
     for name,sha in r['template_hashes'].items():
         if digest(ASSETS/'ec2'/name)!=sha:errors.append('Template changed: '+name)
@@ -89,6 +93,7 @@ def build_pack(review,run):
        'dest':str(pack.source.parent),'range':pack.range,'slug':pack.slug,'logical_ids':[c.id for c in pack.cards],
        'template_hashes':{p.name:digest(p) for p in (ASSETS/'ec2').iterdir() if p.is_file()},
        'vendor_hashes':{str(p.relative_to(ASSETS)):digest(p) for p in (ASSETS/'vendor').rglob('*') if p.is_file()},
+       'layout_extension_sha256':extension_hash(),
        'browser':{'status':'not_run'},'status':'staged','probes':{},'input_assets':{}}
     if not pack.cards:
         report.update(status='skipped',checks={'status':'pass','errors':[]},pdfs=[],artifact_hashes={})

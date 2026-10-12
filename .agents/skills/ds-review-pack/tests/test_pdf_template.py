@@ -17,7 +17,7 @@ class TemplateTests(unittest.TestCase):
    spec=importlib.util.spec_from_file_location('ec2_frozen',pdf_render.TEMPLATES/'render.py');ref=importlib.util.module_from_spec(spec);spec.loader.exec_module(ref)
   for mode in ('problems','answers'):
    for layout in ('a4','video-16x9'):
-    self.assertEqual(pdf_render.inject(pdf_render.load_template(mode,layout),self.data()),ref.inject(ref.load_template(mode,layout),self.data()))
+    self.assertEqual(pdf_render.inject(pdf_render._reference.load_template(mode,layout),self.data()),ref.inject(ref.load_template(mode,layout),self.data()))
  @staticmethod
  def data():
   return {'meta':{'title':'Test','chapter':'DS','mode':'answers'},'problems':[{'id':'p1','kind':'장말문제','number':'1','title':'검증','section':'test','difficulty':0,'html':{'conditions':'','original':'','ask':'<p>포인터 $x=1$</p>'},'figures':[],'hints':[],'solution':{'steps':[{'html':'<pre><code>p-&gt;link = NULL;</code></pre>','label':''}],'answer':'1'}}]}
