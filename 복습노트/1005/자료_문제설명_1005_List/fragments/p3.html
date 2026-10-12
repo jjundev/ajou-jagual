@@ -1,0 +1,8 @@
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>A→B→C→D→NULL에서 for 종료 후 p가 가리키는 노드를 구해요. 빈 리스트는 그림의 조건이 아니에요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>조건은 p!=NULL이 아니라 p->link!=NULL이에요. 현재 노드의 다음 주소가 없을 때 현재 노드에서 멈춰요. 빈 본문 뒤 세미콜론도 반복문 본문이에요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>p=A, A.link=B≠NULL을 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>A에서 조건 참→B, B에서 참→C, C에서 참→D, D에서는 link=NULL이라 거짓이에요. 따라서 답은 D 노드예요. p를 NULL까지 이동시키지 않아요.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>각 검사 시점의 p는 A,B,C,D로 네 번이고 이동은 세 번이에요. 한 노드인 경우 첫 조건이 거짓으로 그 노드에서 멈추는 규칙도 같아요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>head=NULL일 때 이 코드의 p->link는 UB예요. 주어진 비어 있지 않은 그림에서만 계산해요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>p=A, A.link=B≠NULL을 적어요.</li><li>다음 링크 검사 → 마지막 D에서 정지</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>p=A, A.link=B≠NULL을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>다음 링크 검사 → 마지막 D에서 정지</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

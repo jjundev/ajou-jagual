@@ -1,0 +1,8 @@
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>바로 앞 insert의 이동 횟수로 시간 복잡도를 구해요. 용량 n과 현재 길이 items를 구분해요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>for 인덱스는 items−1에서 loc까지 양끝 포함이라 반복 횟수는 items−loc예요. 원소 이동마다 상수 비용이고 마지막 저장·길이 증가도 상수예요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>이동 횟수=items−loc를 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>T=상수×(items−loc)+상수예요. 첫 위치 loc=0의 최악은 O(items), 끝 loc=items의 최선은 O(1)이에요. 현재 길이를 n이라 부르는 관례에서는 최악 O(n)이지만 이 원문의 n은 배열 용량이에요.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>items=3일 때 loc=0,1,2,3의 이동 횟수는 3,2,1,0이에요. 독립 C 이동 추적과 비교해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>용량이 크더라도 사용하지 않는 빈 칸을 모두 이동하지 않아요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>이동 횟수=items−loc를 적어요.</li><li>최악 O(items), 끝 O(1)</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>이동 횟수=items−loc를 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최악 O(items), 끝 O(1)</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

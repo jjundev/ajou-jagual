@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>자료구조및알고리즘이해 정리노트 1005</title>
+  <meta name="description" content="이정원 교수님 자료구조및알고리즘이해 · 1005 수업 (Software_4 List)">
+  <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']})"></script>
+  <style>
+    /* ---------- 토큰 ---------- */
+    :root {
+      color-scheme: light;
+      --bg: #ffffff; --surface: #f7f8fa; --ink: #111111; --ink-2: #6b7280; --line: #d9dee7;
+      --accent: #1677ff; --accent-ink: #1b64da; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #b54708; --prof: #6941c6; --supp: #067647; --danger: #d92d20;
+      --font: 'Pretendard', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --fs-title: clamp(28px, 6vw, 36px); --fs-h3: clamp(26px, 5.4vw, 32px); --fs-layer: 19px; --fs-lead: 22px; --fs-body: 17px; --fs-sub: 15px; --fs-small: 14px; --fs-label: 13px; --fs-fig: 12px;
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+      --radius: 8px; --measure: 680px; --tap: 48px; --btn-min: 160px;
+      --dur: 220ms; --dur-exit: 150ms; --ease-out: cubic-bezier(.2, .8, .2, 1);
+      /* 예전 조각이 참조할 수 있는 이름 */
+      --surface-2: var(--surface); --accent-soft: var(--surface); --warn-soft: var(--surface);
+      --prof-soft: var(--surface); --supp-soft: var(--surface); --eli5: var(--accent-ink); --eli5-soft: var(--surface);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+        --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+        --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+      --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+    }
+
+    /* ---------- 기본 ---------- */
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+      background: var(--bg); color: var(--ink); font-family: var(--font); font-size: var(--fs-body); line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+    a { color: var(--accent-ink); text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    [hidden] { display: none !important; }
+
+    /* ---------- 상단 바 ---------- */
+    .topbar { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s2) var(--s4); display: flex; align-items: center; gap: var(--s3); min-height: 56px; }
+    .brand { flex: 1 1 auto; min-width: 0; font-size: var(--fs-body); font-weight: 700; white-space: nowrap; }
+    .text-btn { flex: none; min-height: 44px; min-width: 44px; padding: 0 var(--s3); border: 0; border-radius: var(--radius);
+      background: transparent; color: var(--ink); font: 600 var(--fs-small)/1 var(--font); cursor: pointer; }
+    .bar { height: 2px; background: var(--line); overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+
+    /* ---------- 본문 ---------- */
+    main { flex: 1 0 auto; width: 100%; max-width: var(--measure); margin: 0 auto; padding: var(--s6) var(--s5) var(--s7); }
+    .hero h1 { font-size: var(--fs-title); line-height: 1.3; margin: 0 0 var(--s3); letter-spacing: -0.02em; }
+    .hero p { color: var(--ink-2); margin: 0; }
+    section { margin-top: var(--s7); }
+    section > h2 { font-size: 22px; line-height: 1.4; margin: 0 0 var(--s4); }
+    .topic { padding: var(--s6) 0; border-top: 1px solid var(--line); }
+    .topic h3 { margin: 0 0 var(--s2); font-size: var(--fs-h3); font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; }
+    .tags { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); }
+    .tag { font-size: var(--fs-label); line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); white-space: nowrap; }
+
+    /* 레이어: 배경 없이 라벨과 구분선으로 나눈다 */
+    .layer { margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); }
+    .layer.eli5 { margin-top: 0; padding-top: 0; border-top: 0; }
+    .layer > :first-child { margin-top: 0; }
+    .layer > :last-child { margin-bottom: 0; }
+    .layer-title { display: block; font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; color: var(--ink); margin-bottom: var(--s3); }
+    .layer.eli5 .layer-title { color: var(--accent-ink); }
+    .layer.eli5 .lead { font-size: var(--fs-lead); font-weight: 700; line-height: 1.5; letter-spacing: -0.01em; margin: 0 0 var(--s4); }
+    /* 정확히 말하면: 본문 크기 그대로, 굵은 첫머리만 진하게 */
+    .layer.formal b { font-weight: 700; color: var(--ink); }
+    /* 교수님 말씀 · 주의: 보조 정보는 한 단계 작게 */
+    .layer.prof, .layer.warn { font-size: var(--fs-sub); line-height: 1.7; }
+    .layer.prof blockquote { font-size: var(--fs-sub); }
+    .layer.prof .layer-title { color: var(--prof); }
+    .layer.warn { background: var(--surface); border-top: 0; border-radius: var(--radius); padding: var(--s4); }
+    .layer.warn .layer-title { color: var(--warn); font-size: var(--fs-body); }
+    .layer.supp .badge.supp { margin-bottom: var(--s2); }
+    .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
+    .badge.supp { color: var(--supp); }
+    blockquote { margin: var(--s3) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
+    pre { margin: var(--s3) 0; padding: var(--s3) var(--s4); overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      font: var(--fs-small)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; white-space: pre; word-break: normal; overflow-wrap: normal; tab-size: 4; }
+    code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: .92em; }
+    pre code { font-size: inherit; }
+    ol.steps { padding-left: 1.4em; }
+    ol.steps li { margin: var(--s2) 0; }
+
+    /* 그림 · 수식 · 표 */
+    .figure { margin: var(--s4) 0; text-align: center; }
+    .figure svg { width: 100%; height: auto; max-width: 560px; color: var(--ink); }
+    .figure figcaption { font-size: var(--fs-small); color: var(--ink-2); margin-top: var(--s1); }
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: var(--s1) 0; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
+    th, td { border-bottom: 1px solid var(--line); padding: var(--s2); text-align: left; vertical-align: top; }
+    th { color: var(--ink-2); font-weight: 600; }
+    td:first-child, th:first-child { min-width: 6em; }
+
+    /* 위젯 */
+    .widget { background: var(--surface); border-radius: var(--radius); padding: var(--s4); margin: var(--s5) 0; }
+    .widget h4 { margin: 0 0 var(--s1); font-size: var(--fs-layer); line-height: 1.4; }
+    .widget-help { font-size: var(--fs-small); color: var(--ink-2); margin: 0 0 var(--s3); }
+    .controls { display: grid; gap: var(--s2); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: var(--s2); font-size: var(--fs-small); }
+    .controls label { display: flex; align-items: center; gap: var(--s2); min-height: 44px; }
+    .controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+    .widget svg { width: 100%; height: auto; background: var(--bg); border-radius: var(--radius); }
+    .readout { font-size: var(--fs-small); margin-top: var(--s2); }
+    .legend { font-size: var(--fs-label); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: var(--s3); }
+    .sw { display: inline-block; width: 14px; height: 4px; vertical-align: middle; margin-right: var(--s1); border-radius: 2px; }
+    .sw.truth { background: var(--ink-2); } .sw.fit { background: var(--accent); } .sw.train { background: var(--accent); height: 10px; width: 10px; border-radius: 50%; }
+    .sw.test { background: var(--warn); height: 10px; width: 10px; border-radius: 50%; } .sw.like { background: var(--accent); } .sw.prior { background: var(--prof); } .sw.post { background: var(--supp); }
+    .axis { stroke: var(--line); stroke-width: 1.5; }
+    .tick { fill: var(--ink-2); font-size: 11px; }
+    .plot-truth { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .plot-fit { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+    .pt-train { fill: var(--accent); }
+    .pt-test { fill: var(--warn); }
+    .plot-like { fill: none; stroke: var(--accent); stroke-width: 2; }
+    .plot-prior { fill: none; stroke: var(--prof); stroke-width: 2; stroke-dasharray: 6 4; }
+    .plot-post { fill: none; stroke: var(--supp); stroke-width: 3; }
+    .mark-ml { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .mark-map { stroke: var(--supp); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .fig-ink { stroke: currentColor; fill: none; stroke-width: 2; }
+    .fig-accent { stroke: var(--accent); fill: none; stroke-width: 2.5; }
+    .fig-danger { stroke: var(--danger); fill: none; stroke-width: 2.5; }
+    .fig-dot { fill: var(--accent); }
+    .fig-text { fill: currentColor; font-size: 13px; font-family: inherit; }
+    .fig-muted { fill: var(--ink-2); font-size: var(--fs-fig); font-family: inherit; }
+
+    footer { width: 100%; max-width: var(--measure); margin: 0 auto; padding: 0 var(--s5) var(--s6); color: var(--ink-2); font-size: var(--fs-small); }
+
+    /* ---------- 하단 이동 바 ---------- */
+    .pager { position: sticky; bottom: 0; z-index: 10; background: var(--bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+    .pager-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s3) var(--s4); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--s3); }
+    .pager-count { font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; min-width: 4em; }
+    .btn { min-height: var(--tap); min-width: var(--btn-min); padding: 0 var(--s6); border-radius: var(--radius); border: 0; font: 700 var(--fs-body)/1 var(--font); cursor: pointer; white-space: nowrap;
+      transition: background-color 150ms ease-out, opacity 150ms ease-out; }
+    .btn-ghost { justify-self: start; background: var(--surface); color: var(--ink); }
+    .btn-primary { justify-self: end; background: var(--btn-bg); color: var(--on-btn); }
+    .btn:disabled { opacity: .4; cursor: default; }
+    @media (hover: hover) {
+      .text-btn:hover, .btn-ghost:not(:disabled):hover { background: var(--line); }
+      .btn-primary:not(:disabled):hover { box-shadow: inset 0 0 0 100px rgba(0, 0, 0, .14); }
+    }
+
+    /* ---------- 목차 시트 ---------- */
+    .sheet { width: min(100%, var(--measure)); max-width: 100%; max-height: 80dvh; margin: auto auto 0; padding: 0; border: 0;
+      border-radius: 16px 16px 0 0; background: var(--bg); color: var(--ink); }
+    .sheet::backdrop { background: rgba(0, 0, 0, .4); }
+    .sheet-inner { padding: var(--s4) var(--s5) calc(var(--s5) + env(safe-area-inset-bottom)); }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    .sheet-head h2 { margin: 0; font-size: var(--fs-lead); }
+    .toc { display: flex; flex-direction: column; }
+    .toc > a, .toc-group > a { display: block; padding: var(--s3) 0 var(--s1); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); text-decoration: none; }
+    .toc-list { list-style: none; margin: 0 0 var(--s2); padding: 0; }
+    .toc-list a { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); padding: var(--s2) var(--s3); margin: 0 calc(-1 * var(--s3));
+      border-radius: var(--radius); color: var(--ink); text-decoration: none; line-height: 1.4; }
+    .toc-list a[aria-current="true"] { background: var(--surface); font-weight: 700; color: var(--accent-ink); }
+    .toc-list .toc-title { flex: 1 1 0; min-width: 0; }
+    @media (hover: hover) { .toc-list a:hover { background: var(--surface); } }
+
+    /* ---------- 한 화면에 하나씩 (JS가 켤 때만) ---------- */
+    html:not(.js) .pager, html:not(.js) #toc-open { display: none; }
+    html:not(.js) .sheet { display: block; position: static; width: 100%; max-height: none; margin: 0 auto; border-radius: 0; border-bottom: 1px solid var(--line); }
+    html:not(.js) .sheet-close { display: none; }
+    .js main > .hero:not(.is-current), .js main > section:not(.is-on), .js .screen:not(.is-current) { display: none; }
+    .js main > section { margin-top: 0; }
+    .js main > section > h2 { font-size: var(--fs-small); font-weight: 600; color: var(--accent-ink); margin: 0 0 var(--s2); }
+    .js .topic { padding: 0; border-top: 0; }
+    .js .hero { padding-top: 12vh; }
+    .js footer { display: none; }
+    .js body.at-end footer { display: block; }
+    .screen.enter-next { animation: enter-next var(--dur) var(--ease-out); }
+    .screen.enter-prev { animation: enter-prev var(--dur) var(--ease-out); }
+    @keyframes enter-next { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    @keyframes enter-prev { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .screen.enter-next, .screen.enter-prev { animation: none; }
+      .bar > span, .btn { transition: none; }
+    }
+    @media (max-width: 480px) {
+      main { padding: var(--s5) var(--s4) var(--s6); }
+      footer { padding: 0 var(--s4) var(--s5); }
+      .btn { min-width: 120px; padding: 0 var(--s5); }
+    }
+    @media print {
+      .topbar, .pager, .sheet { display: none !important; }
+      .js main > .hero, .js main > section, .js .screen, .js footer { display: block !important; }
+    }
+
+    /* ---------- 좌우 패널 (drawer) ---------- */
+    :root { --panel-l: clamp(240px, 18vw, 320px); --panel-r-min: 320px; --panel-r-max: 720px; --scrollbar: 16px; --drawer-l: 304px; --drawer-r: 360px; --fs-panel: 16px; --scrim: rgba(0, 0, 0, .4); }
+    body { height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+    .topbar-inner { max-width: none; padding: var(--s2) var(--s3); gap: var(--s2); }
+    .panel-toggle { display: inline-flex; align-items: center; gap: var(--s1); padding: 0 var(--s2); }
+    .panel-toggle svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .panel-toggle .strip { fill: transparent; stroke: none; transition: fill 150ms ease-out; }
+    .panel-toggle[aria-expanded="true"] { color: var(--accent-ink); }
+    .panel-toggle[aria-expanded="true"] .strip { fill: currentColor; }
+    .theme-toggle { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+    .theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .theme-toggle .i-sun { display: none; }
+    :root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+    :root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .i-sun { display: block; }
+      :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+    }
+
+    .layout { display: grid; grid-template-columns: auto minmax(320px, 1fr) auto; min-height: 0; }
+    .content { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding-top: var(--s4); }
+    .panel { position: relative; display: flex; flex-direction: column; min-height: 0; overflow: hidden; background: var(--bg); color: var(--ink); font-size: var(--fs-panel); line-height: 1.6; }
+    .panel-left { grid-column: 1; border-right: 1px solid var(--line); }
+    .content { grid-column: 2; }
+    .panel-right { grid-column: 3; border-left: 1px solid var(--line); }
+    .panel-inner { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s4) var(--s4) var(--s6); }
+    .panel-resize { display: none; }
+    .panel-head { display: flex; align-items: center; gap: var(--s2); min-height: 44px; margin-bottom: var(--s2); }
+    .panel-head h2 { flex: 1 1 0; min-width: 0; margin: 0; font-size: var(--fs-lead); line-height: 1.4; }
+    .panel-sub { margin: 0 0 var(--s4); font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
+    .panel-empty { margin: 0; color: var(--ink-2); }
+    .panel-label { display: block; margin: var(--s5) 0 var(--s2); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+
+    /* 진행 상태 */
+    .panel-meta { margin: 0 0 var(--s2); font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+    .panel-meta b { color: var(--ink); }
+    .progress { height: 4px; margin-bottom: var(--s3); border-radius: 2px; background: var(--line); overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+    .panel .toc-list a { margin: 0 calc(-1 * var(--s2)); padding: var(--s2); font-size: var(--fs-panel); }
+    .toc-mark { flex: none; display: block; width: 20px; height: 20px; color: var(--ink-2); }
+    .toc-mark svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .toc-mark.is-done { color: var(--accent-ink); }
+
+    /* 복습문제: 원문 · 힌트 · 풀이 */
+    .aid details:last-of-type { border-bottom: 1px solid var(--line); }
+    .aid details.original > summary { font-size: var(--fs-panel); }
+    .solved-btn { display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%; min-height: var(--tap); margin-top: var(--s5); padding: 0 var(--s4);
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 700 var(--fs-panel)/1.2 var(--font); cursor: pointer; }
+    .solved-btn svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .solved-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); }
+
+    /* 정리노트: 페이지 요약 */
+    .sum-lead { margin: 0; font-size: var(--fs-body); font-weight: 700; line-height: 1.6; }
+    .eq-list { list-style: none; margin: 0; padding: 0; }
+    .eq-list li { padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+    .eq-list li:first-child { padding-top: 0; }
+    .eq-name { display: block; font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+    .eq-list .katex-display { margin: var(--s1) 0 0; text-align: left; }
+    .eq-list .katex-display > .katex { text-align: left; }
+    .terms { margin: 0; }
+    .terms dt { font-size: var(--fs-panel); font-weight: 700; margin-top: var(--s4); }
+    .terms dt:first-child { margin-top: 0; }
+    .terms dd { margin: var(--s1) 0 0; font-size: var(--fs-sub); line-height: 1.6; color: var(--ink-2); }
+    .flow { margin: 0; padding-left: 1.4em; font-size: var(--fs-sub); }
+    .flow li { margin: var(--s2) 0; }
+
+    @media (hover: hover) { .solved-btn:hover { background: var(--surface); } }
+
+    /* 넓은 화면: 본문 옆에 붙는 패널 */
+    @media (min-width: 1024px) {
+      .layout { --l: var(--panel-l-user, var(--panel-l)); }
+      .layout[data-left="closed"] { --l: 0px; }
+      .panel-left { width: var(--l); }
+      /* 기본값: 왼쪽 패널과 본문 폭을 뺀 나머지를 오른쪽 패널이 차지 → 본문 옆 빈 여백이 생기지 않는다 */
+      .panel-right { width: var(--panel-r-user, clamp(var(--panel-r-min), calc(100vw - var(--l) - var(--measure) - var(--scrollbar)), var(--panel-r-max))); }
+      .panel-resize { display: block; position: absolute; top: 0; bottom: 0; z-index: 2; width: 12px; padding: 0; border: 0; background: transparent; cursor: col-resize; touch-action: none; }
+      .panel-left .panel-resize { right: 0; }
+      .panel-right .panel-resize { left: 0; }
+      .panel-resize::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: 0; transition: opacity 150ms ease-out; }
+      .panel-left .panel-resize::after { right: 0; }
+      .panel-right .panel-resize::after { left: 0; }
+      .panel-resize:focus-visible { outline: none; }
+      .panel-resize:focus-visible::after, .is-resizing .panel-resize:active::after { opacity: 1; }
+      @media (hover: hover) { .panel-resize:hover::after { opacity: 1; } }
+      body.is-resizing { cursor: col-resize; user-select: none; }
+      .layout[data-left="closed"] .panel-left, .layout[data-right="closed"] .panel-right { display: none; }
+      .panel.is-shown { animation: panel-fade var(--dur) var(--ease-out); }
+      .scrim, .panel-close { display: none; }
+    }
+    @keyframes panel-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* 좁은 화면: 가장자리에서 밀려 나오는 drawer */
+    @media (max-width: 1023.98px) {
+      .panel { position: fixed; top: 0; bottom: 0; z-index: 40; visibility: hidden;
+        transition: transform var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .panel-left { left: 0; width: min(var(--drawer-l), 88vw); transform: translateX(-100%); }
+      .panel-right { right: 0; width: min(var(--drawer-r), 88vw); transform: translateX(100%); }
+      .panel.is-open { visibility: visible; transform: none; transition: transform var(--dur) var(--ease-out); }
+      .panel-inner { padding-top: calc(var(--s3) + env(safe-area-inset-top)); padding-bottom: calc(var(--s6) + env(safe-area-inset-bottom)); }
+      .scrim { position: fixed; inset: 0; z-index: 35; background: var(--scrim); opacity: 0; visibility: hidden;
+        transition: opacity var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .scrim.is-on { opacity: 1; visibility: visible; transition: opacity var(--dur) var(--ease-out); }
+      html:not(.js) .panel-left { display: none; }
+    }
+    @media (max-width: 480px) { .panel-toggle { padding: 0 var(--s1); } }
+    html:not(.js) .panel-toggle, html:not(.js) .panel-right, html:not(.js) .scrim { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .panel.is-open, .scrim, .scrim.is-on, .progress > span, .panel-toggle .strip { transition: none; }
+      .panel.is-shown { animation: none; }
+      .panel-resize::after { transition: none; }
+    }
+    @media print {
+      body { display: block; height: auto; overflow: visible; }
+      .layout { display: block; }
+      .content { overflow: visible; }
+      .panel, .scrim { display: none !important; }
+    }
+  </style>
+</head>
+<body data-screens="article.topic" data-panels="note" data-range="1005">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
+      <strong class="brand">정리노트</strong>
+      <button class="text-btn theme-toggle" id="theme-toggle" type="button" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="text-btn panel-toggle" id="toggle-right" type="button" aria-controls="panel-right" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="15" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span>요약</span></button>
+    </div>
+    <div class="bar" aria-hidden="true"><span id="pager-bar"></span></div>
+  </header>
+  <div class="layout" data-left="open" data-right="closed">
+    <aside class="panel panel-left" id="panel-left" aria-labelledby="panel-left-title">
+      <div class="panel-resize" data-side="left" role="separator" aria-orientation="vertical" aria-controls="panel-left" aria-label="왼쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-left-title">목차</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-meta">읽은 토픽 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+        <nav class="toc" aria-label="목차"><a href="#s0">1 삽입·삭제</a><a href="#s1">2 기본 연산</a><a href="#s2">3 원형 리스트</a><a href="#s3">4 이중 리스트</a><a href="#s4">5 응용</a><a href="#s5">6 요약·예고</a></nav>
+      </div>
+    </aside>
+    <div class="content">
+  <main>
+    <div class="hero">
+      <h1>연결 리스트 — 5살도 이해하는 정리노트</h1>
+      <p>이정원 교수님 자료구조및알고리즘이해 · 1005 수업 (Software_4 List)</p>
+    </div>
+    <section id="s0"><h2>1. 단순 연결 리스트의 삽입과 삭제</h2>
+<article class="topic" id="s0-insert-order"><h3>1. 삽입의 연결 순서와 대각선 규칙</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p18</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">새 친구는 뒷사람 손을 먼저 잡고, 앞사람은 그다음에 새 친구 손을 잡아요.</p>
+    <figure class="figure"><svg id="fig-insert-order-compare" viewBox="0 0 520 170" role="img" aria-label="위 줄은 올바른 순서로, 20이 먼저 30을 가리키고(1) 그다음 10이 20을 가리켜(2) 10, 20, 30, 40이 이어진 그림. 아래 줄은 거꾸로 한 경우로, 10이 20을 가리키지만 20 다음은 물음표이고 30과 40은 점선 테두리로 남아 아무도 가리키지 않는 그림"><text x="4" y="42" class="fig-text" font-size="13">맞는 순서</text><rect x="80" y="20" width="56" height="34" class="fig-ink" fill="none"/><text x="99" y="43" class="fig-text" font-size="14">10</text><path d="M136 37 L193 37 M186 31 L193 37 L186 43" class="fig-accent" fill="none"/><text x="161" y="72" class="fig-muted" font-size="12">2</text><rect x="200" y="20" width="56" height="34" class="fig-accent" fill="none"/><text x="219" y="43" class="fig-text" font-size="14">20</text><path d="M256 37 L313 37 M306 31 L313 37 L306 43" class="fig-accent" fill="none"/><text x="281" y="72" class="fig-muted" font-size="12">1</text><rect x="320" y="20" width="56" height="34" class="fig-ink" fill="none"/><text x="339" y="43" class="fig-text" font-size="14">30</text><path d="M376 37 L433 37 M426 31 L433 37 L426 43" class="fig-ink" fill="none"/><rect x="440" y="20" width="56" height="34" class="fig-ink" fill="none"/><text x="459" y="43" class="fig-text" font-size="14">40</text><text x="4" y="122" class="fig-text" font-size="13">거꾸로</text><rect x="80" y="100" width="56" height="34" class="fig-ink" fill="none"/><text x="99" y="123" class="fig-text" font-size="14">10</text><path d="M136 117 L193 117 M186 111 L193 117 L186 123" class="fig-accent" fill="none"/><rect x="200" y="100" width="56" height="34" class="fig-accent" fill="none"/><text x="219" y="123" class="fig-text" font-size="14">20</text><text x="283" y="123" class="fig-muted" font-size="14">?</text><rect x="320" y="100" width="56" height="34" class="fig-danger" fill="none" stroke-dasharray="5 4"/><text x="339" y="123" class="fig-muted" font-size="14">30</text><path d="M376 117 L433 117 M426 111 L433 117 L426 123" class="fig-danger" fill="none" stroke-dasharray="5 4"/><rect x="440" y="100" width="56" height="34" class="fig-danger" fill="none" stroke-dasharray="5 4"/><text x="459" y="123" class="fig-muted" font-size="14">40</text><text x="330" y="160" class="fig-muted" font-size="13">아무도 가리키지 않아요</text></svg><figcaption>위처럼 하면 줄이 끝까지 이어지지만, 아래처럼 앞사람이 먼저 손을 바꾸면 뒷줄 친구들을 다시 찾을 수 없어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>단순 연결 리스트(singly linked list)에는 배열 같은 인덱스가 없어요. 그래서 10과 30 사이에 새 노드 20을 넣을 때는 앞쪽 노드 before(10)와 뒤쪽 노드 after(30)를 기준으로 생각해요. 슬라이드의 의사코드(pseudo code)는 다음과 같아요. 화살표 <code>←</code>는 주소를 옮겨 담는다는 뜻이에요.</p>
+<pre><code class="language-c">insert_node(L, before, new)
+if L = NULL
+    then L←new
+    else new.link←before.link
+        before.link←new</code></pre>
+    <p><strong>after를 매개변수로 받지 않는 이유</strong>: before의 링크가 이미 after를 가리키고 있어요. 그래서 선행 노드(before) 하나만 받으면 after에도 갈 수 있어요. 반대로 단순 연결 리스트에서 after는 before를 가리킬 수 없어요. 그래서 after를 받아도 쓸 데가 없어요.</p>
+    <p><code>L = NULL</code>이면 리스트가 비어 있어요. 이때는 새 노드가 첫 노드가 되므로 <code>L←new</code>만 하면 돼요.</p>
+    <p><strong>올바른 순서</strong></p>
+    <ol class="steps">
+      <li>처음: <code>10 → 30 → …</code>, before.link가 after(30)를 가리켜요.</li>
+      <li><code>new.link←before.link</code>: before.link와 new.link가 둘 다 after(30)를 가리켜요.</li>
+      <li><code>before.link←new</code>: <code>10 → 20 → 30 → …</code></li>
+    </ol>
+    <p><strong>순서를 거꾸로 하면</strong></p>
+    <ol class="steps">
+      <li><code>before.link←new</code>를 먼저 실행: <code>10 → 20</code>, after(30)를 가리키는 포인터가 하나도 남지 않아요.</li>
+      <li>after(30)와 그 뒤 노드는 모두 가비지(garbage)가 돼요. 메모리에는 남아 있지만 헤드에서 출발해 닿을 길이 없어요.</li>
+      <li>이제 new.link에 넣어야 할 after의 주소를 알 방법이 없어요.</li>
+    </ol>
+    <p><strong>대각선 규칙</strong>: 그림 없이 코드만 볼 때 쓰는 확인법이에요. 앞 줄의 오른쪽(읽는 쪽)에 나온 이름이 다음 줄의 왼쪽(바뀌는 쪽)에 나타나야 해요. 그러면 값을 먼저 옮겨 담은 뒤에 덮어쓰게 되고, 업데이트가 대각선 방향으로 일어나요. 반대로 앞 줄 왼쪽에서 먼저 바뀐 이름을 다음 줄 오른쪽에서 읽고 있다면 잘못 짠 코드예요.</p>
+    <figure class="figure"><svg id="fig-insert-diagonal" viewBox="0 0 520 110" role="img" aria-label="첫 줄 오른쪽의 before.link에서 둘째 줄 왼쪽의 before.link로 내려오는 대각선 화살표 그림. 두 before.link는 테두리 상자로 표시되어 있다"><text x="10" y="41" class="fig-muted" font-size="13">1.</text><text x="40" y="41" class="fig-text" font-size="14" font-family="monospace">new.link</text><text x="152" y="41" class="fig-text" font-size="14">←</text><rect x="184" y="22" width="104" height="26" class="fig-accent" fill="none"/><text x="190" y="41" class="fig-text" font-size="14" font-family="monospace">before.link</text><text x="10" y="93" class="fig-muted" font-size="13">2.</text><rect x="34" y="74" width="104" height="26" class="fig-accent" fill="none"/><text x="40" y="93" class="fig-text" font-size="14" font-family="monospace">before.link</text><text x="152" y="93" class="fig-text" font-size="14">←</text><text x="190" y="93" class="fig-text" font-size="14" font-family="monospace">new</text><path d="M200 49 L131 73 M139 76 L131 73 L136 67" class="fig-accent" fill="none"/><text x="320" y="66" class="fig-muted" font-size="13">앞 줄 오른쪽 → 다음 줄 왼쪽</text></svg><figcaption>먼저 읽은 이름을 나중에 바꿔요. 업데이트가 대각선으로 내려가요.</figcaption></figure>
+    <p>1001 수업에서 본 그림과 기본 순서는 <a href="../1001/정리노트_1001_List.html#s2-insert">1001 정리노트: 단순 연결 리스트의 삽입 순서</a>에 있어요. 이 규칙은 C 코드로 옮긴 <a href="#s0-insert-node">4. insert_node와 이중 포인터</a>에서도 그대로 보여요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>학생 1번, 2번, 3번이 서 있고 1번과 2번 사이에 새 학생을 넣는다고 해 봐요. 1번만 데려오면 돼요. 1번이 이미 2번을 가리키고 있기 때문이에요.</p>
+    <p>자기를 가리키던 손이 끊어진 노드는 사람 눈에는 그림에 보여도 메모리에서는 쓰레기 값으로 떠돌아다닌다고 설명했어요.</p>
+    <blockquote>“순서가 굉장히 중요해요. … 얘를 먼저 하고 얘를 하라는 얘기입니다.” (1005 Part 01)</blockquote>
+    <blockquote>“항상 새로 들어오는 애의 링크를 먼저 연결을 해 주고 나서 업데이트해라” (1005 Part 01)</blockquote>
+    <p>1번, 2번 순서를 그림에 꼭 표시하라고 했어요. 그림이 사라지고 코드만 남으면 헷갈리기 쉬워서 대각선 규칙을 팁으로 줬어요.</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">새 노드의 링크를 먼저 after에 잇고, 그다음에 선행 노드의 링크를 새 노드로 바꿔요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>선행 노드(before)</dt><dd>새 노드가 들어갈 자리 바로 앞 노드예요. 이것만 있으면 after에도 갈 수 있어요.</dd><dt>가비지(garbage)</dt><dd>가리키는 포인터를 모두 잃어 다시 닿을 수 없는 노드예요.</dd><dt>대각선 규칙</dt><dd>앞 줄 오른쪽에 나온 이름이 다음 줄 왼쪽에 나타나야 해요.</dd></dl>
+  </div>
+</article>
+
+<article class="topic" id="s0-remove-pseudo"><h3>2. 삭제의 의사코드</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p19</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">줄에서 한 친구를 빼려면 앞사람이 그 친구 대신 다음 친구 손을 잡으면 돼요.</p>
+    <figure class="figure"><svg id="fig-remove-skip" viewBox="0 0 480 110" role="img" aria-label="10에서 30으로 20을 건너뛰는 곡선 화살표가 있고, 가운데 20은 점선 테두리로 남아 있는 그림"><rect x="60" y="50" width="56" height="34" class="fig-ink" fill="none"/><text x="79" y="73" class="fig-text" font-size="14">10</text><rect x="210" y="50" width="56" height="34" class="fig-danger" fill="none" stroke-dasharray="5 4"/><text x="229" y="73" class="fig-muted" font-size="14">20</text><path d="M266 67 L353 67 M346 61 L353 67 L346 73" class="fig-danger" fill="none" stroke-dasharray="5 4"/><rect x="360" y="50" width="56" height="34" class="fig-ink" fill="none"/><text x="379" y="73" class="fig-text" font-size="14">30</text><path d="M100 50 Q238 0 376 50 M367 52 L376 50 L370 43" class="fig-accent" fill="none"/><text x="212" y="104" class="fig-muted" font-size="13">빠진 친구</text></svg><figcaption>아무도 손을 잡아 주지 않는 친구는 줄에서 빠진 거예요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>10 → 20 → 30에서 removed(20)를 지우는 상황이에요. 선행 노드 before(10)와 삭제될 노드 removed를 받아요.</p>
+<pre><code class="language-c">remove_node(L, before, removed)
+if L ≠ NULL
+    then
+        before.link←removed.link
+        destroy(removed)</code></pre>
+    <ol class="steps">
+      <li>처음: <code>10 → 20 → 30</code>, <code>L ≠ NULL</code>이니 지울 노드가 있어요.</li>
+      <li><code>before.link←removed.link</code>: <code>10 → 30</code>, removed(20)를 가리키는 포인터가 없어져요.</li>
+      <li><code>destroy(removed)</code>: 20의 메모리를 반납해요. removed 안의 링크(포인터) 값도 함께 사라져요.</li>
+    </ol>
+    <p>링크를 하나씩 끊는 작업은 없어요. removed를 가리키던 before가 removed 다음 노드를 가리키도록 바꾸면 끝이에요. 둘째 줄까지 와도 removed를 지우는 작업은 하나도 없고, 지우는 일은 <code>destroy(removed)</code>가 따로 해요.</p>
+    <p>삽입은 대입 두 줄의 순서를 맞춰야 했지만, 삭제는 링크 대입이 한 줄이라 더 간단해요. 삽입 순서는 <a href="#s0-insert-order">1. 삽입의 연결 순서와 대각선 규칙</a>에 있어요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>삽입 때 얻은 힌트를 그대로 쓰면 된다고 했어요. 자기를 가리키는 포인터를 잃은 노드는 메모리를 비우든 말든 낙동강 오리알이 돼요.</p>
+    <p>removed를 가리키던 노드가 갑자기 “변심”해서 다른 노드를 가리키면 그걸로 삭제가 끝난다고 비유했어요.</p>
+    <blockquote>“삽입보다 삭제 연산이 훨씬 더 간단하죠?” (1005 Part 01)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">선행 노드의 링크가 removed 다음 노드를 가리키게 바꾼 뒤 removed의 메모리를 반납해요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>removed</dt><dd>삭제될 노드예요.</dd><dt>destroy(removed)</dt><dd>removed의 메모리를 반납해요. 안의 링크 값도 함께 사라져요.</dd></dl>
+  </div>
+</article>
+
+<article class="topic" id="s0-node-impl"><h3>3. 자체 참조 구조체와 malloc</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p20–21</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">한 칸에는 숫자와 다음 칸을 가리키는 손가락이 늘 같이 들어 있어요.</p>
+    <figure class="figure"><svg id="fig-node-box" viewBox="0 0 380 100" role="img" aria-label="시작 표지에서 화살표가 첫 상자로 가고, 숫자 10과 색칠된 점이 든 첫 상자에서 숫자 20과 끝 표시가 든 둘째 상자로 화살표가 이어지는 그림"><text x="4" y="55" class="fig-text" font-size="13">시작</text><path d="M38 50 L73 50 M66 44 L73 50 L66 56" class="fig-ink" fill="none"/><rect x="80" y="30" width="100" height="40" class="fig-ink" fill="none"/><path d="M130 30 L130 70" class="fig-ink" fill="none"/><text x="96" y="55" class="fig-text" font-size="14">10</text><circle cx="155" cy="50" r="5" class="fig-dot"/><path d="M160 50 L233 50 M226 44 L233 50 L226 56" class="fig-accent" fill="none"/><rect x="240" y="30" width="100" height="40" class="fig-ink" fill="none"/><path d="M290 30 L290 70" class="fig-ink" fill="none"/><text x="256" y="55" class="fig-text" font-size="14">20</text><text x="304" y="55" class="fig-muted" font-size="13">끝</text></svg><figcaption>맨 앞 칸을 가리키는 표지가 있어야 줄 전체를 찾을 수 있어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>노드는 데이터 필드(data field)와 링크 필드(link field)로 이뤄져요. 데이터 필드는 구조체로 정의하고, 링크 필드는 포인터를 써요. 노드는 동적 메모리 할당 함수 <code>malloc</code>으로 필요할 때마다 만들어요.</p>
+<pre><code class="language-c">typedef int element;
+typedef struct ListNode {
+    element data;
+    struct ListNode *link;
+} ListNode;
+ListNode *p1;
+p1 = (ListNode *)malloc(sizeof(ListNode));</code></pre>
+    <p><strong>포인터 복습</strong>: <code>int *p</code>는 p가 int라는 뜻이 아니에요. p가 가리킬 대상이 int라는 뜻이에요. 포인터 자체는 주소라서 사실 정수예요. 앞에 붙는 타입은 앞으로 가리킬 대상의 타입을 알려 줘요.</p>
+    <p><strong>자체 참조 구조체(self-referential structure)</strong>: 링크 필드 <code>struct ListNode *link;</code>는 자기 자신의 구조체 타입을 가리켜요. “내가 앞으로 가리킬 것도 ListNode”라는 뜻이에요. data와 link처럼 늘 같이 다녀야 하는 것은 단순해도 구조체로 묶는 것이 좋은 습관이에요.</p>
+    <p><strong>malloc 형식</strong>: 캐스팅 타입 <code>(ListNode *)</code>과 <code>sizeof</code> 안의 타입 <code>ListNode</code>가 같아야 해요. 그 크기만큼 메모리를 받아 ListNode 모양으로 쓰고, 그 주소를 p1이 가리키게 해요.</p>
+<pre><code class="language-c">p1-&gt;data = 10;
+p1-&gt;link = NULL;
+ListNode *p2;
+p2 = (ListNode *)malloc(sizeof(ListNode));
+p2-&gt;data = 20;
+p2-&gt;link = NULL;
+p1-&gt;link = p2;</code></pre>
+    <ol class="steps">
+      <li><code>p1 = (ListNode *)malloc(sizeof(ListNode));</code>: p1 → [ ? | ? ]</li>
+      <li><code>p1-&gt;data = 10;</code>, <code>p1-&gt;link = NULL;</code>: p1 → [10 | NULL]</li>
+      <li>p2 할당, <code>p2-&gt;data = 20;</code>, <code>p2-&gt;link = NULL;</code>: p2 → [20 | NULL]</li>
+      <li><code>p1-&gt;link = p2;</code>: p1 → [10 | •] → [20 | NULL], p2도 여전히 20 노드를 가리켜요.</li>
+    </ol>
+    <p>구조체 멤버를 포인터로 꺼내므로 <code>.</code> 대신 <code>-&gt;</code>를 써요. <code>p1-&gt;link = p2;</code>는 “p2가 가리키는 곳을 p1의 링크가 가리키게 해라”로 읽어요. “p1의 링크에 p2를 대입해라”로 읽으면 포인터가 헷갈려요.</p>
+    <figure class="figure"><svg id="fig-node-p1p2" viewBox="0 0 420 125" role="img" aria-label="p1이 10이 든 노드를 가리키고, 그 노드의 색칠된 점에서 나온 링크가 20과 NULL이 든 노드를 가리키며, p2도 같은 20 노드를 아래에서 가리키는 그림"><text x="10" y="40" class="fig-text" font-size="14" font-family="monospace">p1</text><path d="M34 35 L73 35 M66 29 L73 35 L66 41" class="fig-ink" fill="none"/><rect x="80" y="18" width="110" height="34" class="fig-ink" fill="none"/><path d="M135 18 L135 52" class="fig-ink" fill="none"/><text x="98" y="41" class="fig-text" font-size="14">10</text><circle cx="162" cy="35" r="4" class="fig-dot"/><path d="M166 35 L233 35 M226 29 L233 35 L226 41" class="fig-accent" fill="none"/><rect x="240" y="18" width="110" height="34" class="fig-ink" fill="none"/><path d="M295 18 L295 52" class="fig-ink" fill="none"/><text x="258" y="41" class="fig-text" font-size="14">20</text><text x="300" y="40" class="fig-muted" font-size="12" font-family="monospace">NULL</text><text x="258" y="112" class="fig-text" font-size="14" font-family="monospace">p2</text><path d="M267 95 L267 59 M262 66 L267 59 L272 66" class="fig-ink" fill="none"/></svg><figcaption>한 노드를 포인터 여러 개가 가리켜도 돼요.</figcaption></figure>
+    <p>한 노드를 포인터 수백 개가 가리켜도 상관없어요. 의미가 있는 것은 맨 앞부터 이어진 연결이에요. 그래서 연결 리스트의 맨 처음 노드를 가리키는 헤드 포인터(head pointer)가 중요해요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>포인터는 국그릇이고, 앞의 타입은 앞으로 가리킬 그릇이 int 밥그릇인지 float 밥그릇인지 알려 준다고 비유했어요.</p>
+    <p>구조체는 철가방과 같다고 했어요. 단무지와 짜장면처럼 단순해도 늘 같이 다녀야 하면 한데 묶어요. 노드에서는 항목과 포인터가 늘 같이 다녀요.</p>
+    <blockquote>“요 형식은 여러분들이 그냥 외우는 게 좋아요.” (1005 Part 02, malloc 형식)</blockquote>
+    <blockquote>“헤드 포인터가 그래서 중요해요.” (1005 Part 02)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">노드는 링크가 자기 타입을 가리키는 구조체이고, malloc으로 하나씩 만들어 링크로 이어요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>자체 참조 구조체(self-referential structure)</dt><dd>링크 필드가 자기 자신의 구조체 타입을 가리키는 구조체예요.</dd><dt>malloc</dt><dd>필요한 크기만큼 메모리를 받아 오는 동적 메모리 할당 함수예요.</dd><dt>헤드 포인터(head pointer)</dt><dd>연결 리스트의 맨 처음 노드를 가리키는 포인터예요.</dd></dl>
+  </div>
+</article>
+
+<article class="topic" id="s0-insert-node"><h3>4. insert_node와 이중 포인터</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p22–25</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">줄 맨 앞에 끼어들 때는 시작 표지까지 새 친구 쪽으로 돌려야 해요.</p>
+    <figure class="figure"><svg id="fig-insert-front" viewBox="0 0 360 110" role="img" aria-label="시작 표지가 새 친구 5를 가리키고 5가 10, 10이 20을 가리키며, 시작에서 10으로 가던 예전 연결은 점선으로 남은 그림"><text x="4" y="72" class="fig-text" font-size="13">시작</text><path d="M38 67 L73 67 M66 61 L73 67 L66 73" class="fig-accent" fill="none"/><text x="50" y="96" class="fig-muted" font-size="12">2</text><rect x="80" y="50" width="56" height="34" class="fig-accent" fill="none"/><text x="103" y="73" class="fig-text" font-size="14">5</text><path d="M136 67 L173 67 M166 61 L173 67 L166 73" class="fig-accent" fill="none"/><text x="150" y="96" class="fig-muted" font-size="12">1</text><rect x="180" y="50" width="56" height="34" class="fig-ink" fill="none"/><text x="199" y="73" class="fig-text" font-size="14">10</text><path d="M236 67 L273 67 M266 61 L273 67 L266 73" class="fig-ink" fill="none"/><rect x="280" y="50" width="56" height="34" class="fig-ink" fill="none"/><text x="299" y="73" class="fig-text" font-size="14">20</text><path d="M24 54 Q110 0 200 48" class="fig-danger" fill="none" stroke-dasharray="5 4"/></svg><figcaption>새 친구가 먼저 맨 앞 친구 손을 잡고, 그다음에 시작 표지를 돌려요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>함수 프로토타입(prototype)은 함수 이름, 리턴 타입, 매개변수 목록이에요. 이것만 봐도 함수가 하는 일을 가늠할 수 있어요.</p>
+<pre><code class="language-c">void insert_node(ListNode **phead, ListNode *p, ListNode *new_node)</code></pre>
+    <ul>
+      <li>리턴 타입이 <code>void</code>예요. 삽입만 하고 끝나요.</li>
+      <li><code>phead</code>: 헤드 포인터 head에 대한 포인터예요.</li>
+      <li><code>p</code>: 삽입될 위치의 선행 노드를 가리키는 포인터예요. 이 노드 다음에 삽입돼요.</li>
+      <li><code>new_node</code>: 새 노드를 가리키는 포인터예요.</li>
+    </ul>
+    <p>의사코드의 (L, before, new)에 포인터가 하나씩 더 붙었어요. before와 new는 노드를 가리켜야 하니 포인터예요. new_node는 malloc으로 받은 주소이니 당연히 포인터예요. 헤드는 이중 포인터(double pointer), 곧 포인터의 포인터가 됐어요.</p>
+    <p><strong>왜 이중 포인터인가</strong>: 헤드 포인터는 함수 안에서 바뀔 수 있어요. 바뀐 값을 호출한 쪽과 공유하려면 헤드 포인터가 가리키는 주소가 아니라 헤드 포인터 자신의 주소를 넘겨야 해요.</p>
+    <figure class="figure"><svg id="fig-insert-dptr" viewBox="0 0 420 80" role="img" aria-label="phead 상자가 head 상자를 가리키고, head 상자가 10과 색칠된 점이 든 첫 노드를 가리키는 그림"><rect x="10" y="22" width="70" height="34" class="fig-ink" fill="none"/><text x="22" y="44" class="fig-text" font-size="14" font-family="monospace">phead</text><path d="M80 39 L113 39 M106 33 L113 39 L106 45" class="fig-accent" fill="none"/><rect x="120" y="22" width="70" height="34" class="fig-accent" fill="none"/><text x="137" y="44" class="fig-text" font-size="14" font-family="monospace">head</text><path d="M190 39 L233 39 M226 33 L233 39 L226 45" class="fig-ink" fill="none"/><rect x="240" y="22" width="110" height="34" class="fig-ink" fill="none"/><path d="M295 22 L295 56" class="fig-ink" fill="none"/><text x="258" y="44" class="fig-text" font-size="14">10</text><circle cx="322" cy="39" r="4" class="fig-dot"/><path d="M326 39 L373 39 M366 33 L373 39 L366 45" class="fig-ink" fill="none"/><text x="380" y="44" class="fig-muted" font-size="14">…</text></svg><figcaption><code>*phead</code>는 head 변수 그 자체라서, 함수 안에서 바꾸면 바깥의 head도 바뀌어요.</figcaption></figure>
+    <p><strong>삽입의 3가지 경우</strong></p>
+    <ol>
+      <li><code>head</code>가 NULL: 공백 리스트예요. 새 노드가 첫 노드가 되므로 head 값만 바꾸면 돼요.</li>
+      <li><code>p</code>가 NULL: 선행 노드가 없다는 뜻이에요. 리스트가 비었다는 뜻이 아니라 맨 앞에 넣으라는 뜻이고, 뒤에는 노드가 많을 수 있어요.</li>
+      <li>일반적인 경우: 리스트 중간, p 다음에 넣어요.</li>
+    </ol>
+<pre><code class="language-c">// phead: 리스트의 헤드 포인터의 포인터
+// p : 선행 노드
+// new_node : 삽입될 노드
+void insert_node(ListNode **phead, ListNode *p, ListNode *new_node)
+{
+    if( *phead == NULL ){
+        // 공백 리스트인 경우
+        new_node-&gt;link = NULL;
+        *phead = new_node;
+    }
+    else if( p == NULL ){ // p가 NULL이면 첫 번째 노드로 삽입
+        new_node-&gt;link = *phead;
+        *phead = new_node;
+    }
+    else {
+        // p 다음에 삽입
+        new_node-&gt;link = p-&gt;link;
+        p-&gt;link = new_node;
+    }
+}</code></pre>
+    <p><strong>경우 2 추적</strong> (head → 10 → 20, 새 노드 5)</p>
+    <ol class="steps">
+      <li><code>new_node-&gt;link = *phead;</code>: 5 → 10, head도 10을 가리켜요.</li>
+      <li><code>*phead = new_node;</code>: head → 5 → 10 → 20</li>
+    </ol>
+    <p><strong>경우 3 추적</strong> (p가 10, 10 → 30, 새 노드 20)</p>
+    <ol class="steps">
+      <li><code>new_node-&gt;link = p-&gt;link;</code>: 20 → 30, 10도 30을 가리켜요.</li>
+      <li><code>p-&gt;link = new_node;</code>: 10 → 20 → 30</li>
+    </ol>
+    <p>경우 2와 3 모두 앞 줄 오른쪽의 <code>*phead</code>, <code>p-&gt;link</code>가 다음 줄 왼쪽에 나와요. 업데이트가 대각선 방향으로 일어나는 거예요(<a href="#s0-insert-order">1. 삽입의 연결 순서와 대각선 규칙</a>). 경우 3은 의사코드와 같아요.</p>
+    <p>선행 노드 p가 주어지면 대입이 정해진 횟수뿐이라 시간복잡도는 $O(1)$이에요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>추상 데이터 타입에서 연산 이름만 보라고 했을 때도 사실 매개변수를 같이 봤다고 짚었어요. 프로토타입을 보면 이 함수는 리턴할 게 없으니 “그냥 삽입하고 끝나나 봐요”라고 읽었어요.</p>
+    <p>이중 포인터 이야기는 Part 02에서 “뒤에서 그림으로 다시 설명하겠다”고 미뤘고, Part 03의 경우 2 그림에서 설명했어요.</p>
+    <blockquote>“1번, 2번 이렇게 해야 되죠. … 순서가 중요하니까.” (1005 Part 03)</blockquote>
+    <blockquote>“이것 때문에 헤드 포인터가 이중 포인터로 관리가 돼야 되는 겁니다.” (1005 Part 03)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">헤드 포인터가 바뀔 수 있어서 그 주소를 이중 포인터로 받고, 세 경우 모두 새 노드의 링크부터 이어요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">선행 노드가 주어진 삽입</span>$O(1)$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>이중 포인터(double pointer)</dt><dd>포인터의 포인터예요. 헤드 포인터 자신의 주소를 받아 바꿀 수 있어요.</dd><dt>함수 프로토타입(prototype)</dt><dd>함수 이름, 리턴 타입, 매개변수 목록이에요.</dd></dl>
+  </div>
+</article>
+
+<article class="topic" id="s0-remove-node"><h3>5. remove_node의 두 가지 경우</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p26–28</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">맨 앞 친구를 뺄 때는 시작 표지가 둘째 친구를 가리키게 돌리면 돼요.</p>
+    <figure class="figure"><svg id="fig-remove-front" viewBox="0 0 360 110" role="img" aria-label="맨 앞 삭제: 시작 표지에서 맨 앞 10을 건너뛰어 둘째 20으로 가는 곡선 화살표가 있고, 20은 30을 가리키며, 빠진 10은 점선 테두리로 남은 그림"><text x="4" y="72" class="fig-text" font-size="13">시작</text><rect x="80" y="50" width="56" height="34" class="fig-danger" fill="none" stroke-dasharray="5 4"/><text x="99" y="73" class="fig-muted" font-size="14">10</text><path d="M136 67 L173 67 M166 61 L173 67 L166 73" class="fig-danger" fill="none" stroke-dasharray="5 4"/><rect x="180" y="50" width="56" height="34" class="fig-ink" fill="none"/><text x="199" y="73" class="fig-text" font-size="14">20</text><path d="M236 67 L273 67 M266 61 L273 67 L266 73" class="fig-ink" fill="none"/><rect x="280" y="50" width="56" height="34" class="fig-ink" fill="none"/><text x="299" y="73" class="fig-text" font-size="14">30</text><path d="M30 55 Q130 0 200 48 M191 48 L200 48 L196 39" class="fig-accent" fill="none"/></svg><figcaption>시작 표지가 맨 앞 친구를 건너뛰어 둘째 친구를 가리키면, 맨 앞 친구는 줄에서 빠져요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>프로토타입은 삽입과 같은 모양이에요. 새 노드 대신 삭제될 노드 removed가 와요.</p>
+<pre><code class="language-c">// phead : 헤드 포인터에 대한 포인터
+// p: 삭제될 노드의 선행 노드
+// removed: 삭제될 노드
+void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
+{
+    if( p == NULL )
+        *phead = (*phead)-&gt;link;
+    else
+        p-&gt;link = removed-&gt;link;
+    free(removed);
+}</code></pre>
+    <p>삽입은 3가지 경우였지만 삭제는 2가지 경우예요.</p>
+    <ul>
+      <li><code>p</code>가 NULL: 선행 노드가 없으니 맨 앞 노드를 삭제해요. 헤드 포인터가 바뀌어요.</li>
+      <li><code>p</code>가 NULL이 아님: 중간 노드를 삭제해요. removed 앞의 노드 p의 링크가 removed 다음 노드를 가리키게 바꿔요.</li>
+    </ul>
+    <p><strong>맨 앞 삭제 추적</strong> (head → 10 → 20 → 30, removed는 10)</p>
+    <ol class="steps">
+      <li><code>(*phead)</code>: head가 가리키는 첫 노드 10이에요. <code>(*phead)-&gt;link</code>는 20의 주소예요.</li>
+      <li><code>*phead = (*phead)-&gt;link;</code>: head → 20 → 30, head가 한 칸 점프해요. 헤드가 손을 놓은 10은 리스트에서 빠져요.</li>
+      <li><code>free(removed);</code>: 10의 메모리를 반납해요.</li>
+    </ol>
+    <p><strong>중간 삭제 추적</strong> (p는 10, removed는 20)</p>
+    <ol class="steps">
+      <li><code>p-&gt;link = removed-&gt;link;</code>: 10 → 30, 20은 리스트에서 빠져요.</li>
+      <li><code>free(removed);</code>: 20의 메모리를 반납해요.</li>
+    </ol>
+    <p><code>p-&gt;link = removed-&gt;link;</code>는 “removed의 링크가 가리키는 곳을 p의 링크가 가리키게 해라”로 읽어요. 의사코드 <a href="#s0-remove-pseudo">2. 삭제의 의사코드</a>의 <code>before.link←removed.link</code>, <code>destroy(removed)</code>를 C로 옮긴 것과 같아요.</p>
+    <p><strong>이중 포인터 팁</strong>: 함수에서 바꾼 값을 main과 공유하려면 주소를 넘겨요. <code>ListNode **phead</code>는 “헤드 포인터가 가리키는 주소가 아니라 헤드 포인터 자신의 주소가 필요하다”는 뜻이에요. 바꾸고 싶은 대상보다 포인팅을 하나 더 해 준다고 기억하면 돼요.</p>
+    <p>선행 노드 p가 주어지면 삭제도 대입과 반납이 한 번씩이라 $O(1)$이에요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p><code>*phead = (*phead)-&gt;link;</code>를 “한 칸 점프하라”는 뜻으로 설명했어요. 헤드가 손을 끊어 버렸으니 첫 노드는 사라진다고 했어요.</p>
+    <p>더블 포인팅 부분이 헷갈릴 수 있다면서, 포인팅을 하나씩 더 해 준다는 것을 팁으로 가져가라고 했어요.</p>
+    <blockquote>“삭제 연산 코드는 되게 간단하죠.” (1005 Part 03)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">p가 NULL이면 헤드를 한 칸 옮기고, 아니면 선행 노드의 링크를 removed 다음으로 바꾼 뒤 free해요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">선행 노드가 주어진 삭제</span>$O(1)$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>선행 노드(p)</dt><dd>삭제될 노드 바로 앞 노드예요. NULL이면 맨 앞 노드를 지워요.</dd><dt>free</dt><dd>malloc으로 받은 메모리를 반납해요.</dd></dl>
+  </div>
+</article>
+    </section>
+    <section id="s1"><h2>2. 연결 리스트의 기본 연산</h2>
+<article class="topic" id="s1-display"><h3>1. 방문 연산 display: 반복과 순환</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p29</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">줄 선 상자를 맨 앞부터 하나씩 들여다보며 적힌 수를 읽어 줘요.</p>
+    <figure class="figure"><svg id="fig-s1-display-walk" viewBox="0 0 410 130" role="img" aria-label="10, 20, 30이 적힌 테두리 상자 세 개가 오른쪽 방향 선으로 이어져 있고, 첫 상자 아래에 색칠된 점이 있으며 그 아래 선이 오른쪽으로 향하는 그림"><rect class="fig-ink" x="20" y="20" width="80" height="40" rx="6" fill="none"/><rect class="fig-ink" x="160" y="20" width="80" height="40" rx="6" fill="none"/><rect class="fig-ink" x="300" y="20" width="80" height="40" rx="6" fill="none"/><text class="fig-text" x="60" y="45" text-anchor="middle">10</text><text class="fig-text" x="200" y="45" text-anchor="middle">20</text><text class="fig-text" x="340" y="45" text-anchor="middle">30</text><path class="fig-ink" d="M104 40 H152 M145 34 L152 40 L145 46 M244 40 H292 M285 34 L292 40 L285 46" fill="none"/><circle class="fig-dot" cx="60" cy="82" r="7"/><path class="fig-accent" d="M60 104 H330 M322 98 L330 104 L322 110" fill="none"/><text class="fig-muted" x="200" y="124" text-anchor="middle">한 칸씩 옆으로</text></svg><figcaption>색칠된 점이 한 칸씩 옮겨 가다가 상자가 끝나면 멈춰요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p>방문 연산(display)은 리스트의 노드를 처음부터 순차적으로 방문하며 데이터를 출력하는 연산이에요. 반복(iteration)과 순환(recursion) 두 방법을 모두 쓸 수 있어요. 반복은 <code>for</code>나 <code>while</code>을 쓰고, 순환은 재귀 함수(recursive function)를 만들어요.</p>
+<pre><code class="language-c">void display(ListNode *head)
+{
+    ListNode *p=head;
+    while( p != NULL ){
+        printf("%d-&gt;", p-&gt;data);
+        p = p-&gt;link;
+    }
+    printf("\n");
+}</code></pre>
+<p><code>ListNode *p=head;</code>는 헤드가 가리키는 노드를 p도 가리키게 하는 임시(temporary) 포인터예요. 헤드 포인터 자체는 움직이지 않으므로 헤드를 바꾸는 <a href="#s0-insert-node">insert_node와 이중 포인터</a>와 달리 단일 포인터로 넘겨도 돼요.</p>
+<p><code>p = p-&gt;link;</code>는 p의 링크가 가리키는 곳을 p가 가리키게 하는 문장이에요. 이 한 줄이 노드를 하나씩 건너뛰게 해요. 리스트 10→20→30에서 추적하면 다음과 같아요.</p>
+<ol class="steps"><li><code>p = head</code> → p는 10 노드</li><li>10 출력 → 화면 <code>10-&gt;</code>, p는 20 노드</li><li>20 출력 → 화면 <code>10-&gt;20-&gt;</code>, p는 30 노드</li><li>30 출력 → 화면 <code>10-&gt;20-&gt;30-&gt;</code>, p는 NULL</li><li><code>p != NULL</code>이 거짓 → 반복 종료, 줄바꿈 출력</li></ol>
+<p>순환 버전은 데이터를 찍은 뒤 p가 아니라 <code>p-&gt;link</code>로 자기 자신을 다시 불러요.</p>
+<pre><code class="language-c">void display_recur(ListNode *head)
+{
+    ListNode *p=head;
+    if( p != NULL ){
+        printf("%d-&gt;", p-&gt;data);
+        display_recur(p-&gt;link);
+    }
+}</code></pre>
+<p>재귀 함수의 두 조건을 만족해요.</p>
+<ul><li>바닥 조건(종결 조건): p가 NULL이면 아무것도 하지 않고 돌아와요.</li><li>수렴: <code>display_recur(p-&gt;link);</code>는 남은 노드가 3개 → 2개 → 1개 → 0개로 줄어드는 방향으로 불려요.</li></ul>
+<ol class="steps"><li><code>display_recur(10 노드)</code> → <code>10-&gt;</code> 출력</li><li><code>display_recur(20 노드)</code> → <code>20-&gt;</code> 출력</li><li><code>display_recur(30 노드)</code> → <code>30-&gt;</code> 출력</li><li><code>display_recur(NULL)</code> → 바닥 조건, 그대로 돌아옴</li></ol>
+<p>두 버전 모두 노드 $n$개를 한 번씩 방문하므로 시간복잡도는 $O(n)$이에요.</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 리스트의 연산은 얼마든지 만들어 낼 수 있다고 했어요. 지금까지 is_empty, is_full, insert, delete를 봤고, display는 리스트에 무엇이 있는지 쭉 보며 출력하는 연산이라고 소개했어요. p를 "템퍼러리 헤드"라고 불렀어요. (1005 Part 03)</p>
+<blockquote>노드를 하나씩 건너뛰는 문장이다, 이렇게 기억을 하시면 됩니다. (1005 Part 03)</blockquote>
+<blockquote>링크드 리스트는 recursive 펑션을 많이 이용해서 코딩을 합니다. (1005 Part 04)</blockquote></div>
+  <div class="sum" hidden><p class="sum-lead">임시 포인터 p를 한 칸씩 옮기며 NULL을 만날 때까지 출력해요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">display 시간복잡도</span>$$O(n)$$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>방문 연산(display)</dt><dd>노드를 처음부터 순차적으로 방문해 출력하는 연산</dd><dt>바닥 조건(종결 조건)</dt><dd>p가 NULL이면 재귀를 멈추는 조건</dd></dl></div>
+</article>
+
+<article class="topic" id="s1-search"><h3>2. 탐색 연산 search</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p30</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">찾는 수가 적힌 상자가 나올 때까지 앞에서부터 하나씩 확인해요.</p>
+    <figure class="figure"><svg id="fig-s1-search-find" viewBox="0 0 410 120" role="img" aria-label="10, 20, 30이 적힌 상자 세 개가 오른쪽 방향 선으로 이어져 있고, 20이 적힌 상자만 강조색 테두리이며 그 아래에 색칠된 점이 있는 그림"><text class="fig-muted" x="20" y="16">찾는 수 20</text><rect class="fig-ink" x="20" y="28" width="80" height="40" rx="6" fill="none"/><rect class="fig-accent" x="160" y="28" width="80" height="40" rx="6" fill="none" stroke-width="3"/><rect class="fig-ink" x="300" y="28" width="80" height="40" rx="6" fill="none"/><text class="fig-text" x="60" y="53" text-anchor="middle">10</text><text class="fig-text" x="200" y="53" text-anchor="middle">20</text><text class="fig-text" x="340" y="53" text-anchor="middle">30</text><path class="fig-ink" d="M104 48 H152 M145 42 L152 48 L145 54 M244 48 H292 M285 42 L292 48 L285 54" fill="none"/><circle class="fig-dot" cx="200" cy="90" r="7"/><text class="fig-muted" x="200" y="114" text-anchor="middle">여기서 멈춰요</text></svg><figcaption>끝까지 봐도 없으면 없다고 알려 줘요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p>탐색 연산(search)은 특정한 데이터 값(타깃값) <code>x</code>를 갖는 노드를 찾는 연산이에요.</p>
+<pre><code class="language-c">ListNode *search(ListNode *head, int x)
+{
+    ListNode *p;
+    p = head;
+    while( p != NULL ){
+        if( p-&gt;data == x ) return p;   // 탐색 성공
+        p = p-&gt;link;
+    }
+    return p;   // 탐색 실패일 경우 NULL 반환
+}</code></pre>
+<ul><li>리턴 타입이 <code>ListNode *</code>인 이유: 찾은 노드 자체를 돌려주기 때문이에요.</li><li>p는 임시 포인터예요. 헤드가 가리키는 노드부터 시작해요.</li><li><code>if( p-&gt;data == x ) return p;</code>: 값이 맞으면 그 노드를 바로 리턴해요. 아니면 <code>p = p-&gt;link;</code>로 다음 노드로 가요.</li><li>while문이 끝까지 돌았다면 맞는 노드가 없었다는 뜻이에요. 이때 p는 이미 NULL이라 <code>return p</code>는 NULL을 돌려줘요.</li></ul>
+<p>리스트 10→20→30에서 추적하면 다음과 같아요.</p>
+<ol class="steps"><li><code>search(head, 20)</code>: p는 10 노드 → 10 ≠ 20 → p는 20 노드</li><li>20 == 20 → 20 노드 리턴(탐색 성공)</li><li><code>search(head, 40)</code>: 10, 20, 30 모두 불일치 → p는 NULL</li><li>while 종료 → NULL 리턴(탐색 실패)</li></ol>
+<p>찾는 값이 마지막 노드에 있거나 없으면 $n$개를 모두 비교하므로 최악의 시간복잡도는 $O(n)$이에요.</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 x를 "10을 찾고 싶어, 30이 이 리스트에 있는지 찾고 싶어"의 타깃값이라고 설명했어요. 노드가 리턴되면 찾은 것이고, NULL이 리턴되면 그 값이 리스트에 없다는 뜻이에요. (1005 Part 04)</p>
+<blockquote>이 리스트에는 너가 찾는 값은 없어, 이렇게 되는 거겠죠. (1005 Part 04)</blockquote></div>
+  <div class="sum" hidden><p class="sum-lead">값이 맞는 노드를 만나면 그 노드를, 끝까지 없으면 NULL을 돌려줘요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">search 최악 시간복잡도</span>$$O(n)$$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>탐색 연산(search)</dt><dd>특정한 데이터 값을 갖는 노드를 찾는 연산</dd><dt>NULL 리턴</dt><dd>찾는 값이 리스트에 없다는 뜻</dd></dl></div>
+</article>
+
+<article class="topic" id="s1-concat"><h3>3. 합병 연산 concat</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p31</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">첫째 기차의 맨 끝 칸을 찾아 둘째 기차의 맨 앞 칸에 걸어 줘요.</p>
+    <figure class="figure"><svg id="fig-s1-concat-train" viewBox="0 0 410 140" role="img" aria-label="위 줄에 10, 20 테두리 상자, 아래 줄에 30, 40 테두리 상자가 각각 오른쪽 방향 선으로 이어져 있고, 20 상자에서 30 상자로 강조색 선이 내려가는 그림"><text class="fig-muted" x="12" y="45">첫째</text><rect class="fig-ink" x="70" y="20" width="80" height="40" rx="6" fill="none"/><rect class="fig-ink" x="210" y="20" width="80" height="40" rx="6" fill="none"/><text class="fig-text" x="110" y="45" text-anchor="middle">10</text><text class="fig-text" x="250" y="45" text-anchor="middle">20</text><path class="fig-ink" d="M154 40 H202 M195 34 L202 40 L195 46" fill="none"/><text class="fig-muted" x="12" y="115">둘째</text><rect class="fig-ink" x="70" y="90" width="80" height="40" rx="6" fill="none"/><rect class="fig-ink" x="210" y="90" width="80" height="40" rx="6" fill="none"/><text class="fig-text" x="110" y="115" text-anchor="middle">30</text><text class="fig-text" x="250" y="115" text-anchor="middle">40</text><path class="fig-ink" d="M154 110 H202 M195 104 L202 110 L195 116" fill="none"/><path class="fig-accent" d="M294 40 H340 V75 H110 V82 M104 76 L110 84 L116 76" fill="none" stroke-width="2.5"/></svg><figcaption>끝 칸 하나만 이어 주면 두 기차가 한 줄이 돼요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p>합병 연산(concat, concatenation)은 두 리스트를 하나로 합하는(merge) 연산이에요. head1 리스트의 끝 노드, 즉 링크가 NULL인 노드를 찾아서 그 링크가 head2가 가리키는 노드를 가리키게 하면 합병이 끝나요.</p>
+<pre><code class="language-c">ListNode *concat(ListNode *head1, ListNode *head2)
+{
+    ListNode *p;
+    if( head1 == NULL ) return head2;
+    else if( head2 == NULL ) return head1;
+    else {
+        p = head1;
+        while( p-&gt;link != NULL )
+            p = p-&gt;link;
+        p-&gt;link = head2;
+        return head1;
+    }
+}</code></pre>
+<ul><li>head1이 비었으면 끝까지 갈 필요 없이 head2가 합친 리스트의 첫 포인터예요.</li><li>head2가 비었으면 합칠 것이 없으므로 head1을 그대로 돌려줘요.</li><li>둘 다 비어 있지 않으면 p를 head1부터 출발시켜요. <code>while( p-&gt;link != NULL )</code>은 p의 링크가 NULL이 되는 순간, 곧 p가 끝 노드일 때 멈춰요.</li><li><code>p-&gt;link = head2;</code>로 끝 노드를 head2 리스트에 이어요.</li><li>합친 리스트 전체를 가리키려면 head1을 돌려줘야 해요. 그래서 리턴 타입이 <code>ListNode *</code>예요.</li></ul>
+<p>head1 = 10→20, head2 = 30→40으로 추적하면 다음과 같아요.</p>
+<ol class="steps"><li>두 리스트 모두 비어 있지 않음 → p는 10 노드</li><li><code>p-&gt;link</code>가 20 노드(NULL 아님) → p는 20 노드</li><li><code>p-&gt;link</code>가 NULL → while 종료</li><li><code>p-&gt;link = head2;</code> → 10→20→30→40</li><li>head1 리턴</li></ol>
+<p>head1 리스트의 길이를 $n$이라 하면 끝 노드를 찾는 데 $O(n)$이 걸려요. head2의 길이와는 상관없어요. 꼬리를 찾아가는 이 비용이 <a href="#s2-circular">헤드 포인터를 꼬리에 두는 트릭</a>의 동기가 돼요.</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 합병을 "머지(merge)한다"는 뜻이라고 했어요. 머지 연산도 많이 사용한다고 했어요. 하나하나의 알고리즘보다 큰 그림을 보라고 당부했어요. 가장 많이 쓰는 연산은 insert와 delete이고, 방문·탐색·합병도 같은 방식으로 하나씩 함수로 만들어 보는 중이라고 했어요. (1005 Part 04)</p>
+<blockquote>리스트에서 사용할 수 있는 여러 오퍼레이션을 함수로 디자인하고 있는 중 (1005 Part 04)</blockquote></div>
+  <div class="sum" hidden><p class="sum-lead">head1의 끝 노드를 찾아 그 링크를 head2에 이어 주면 합병돼요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">concat 시간복잡도(head1 길이 n)</span>$$O(n)$$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>합병 연산(concat)</dt><dd>두 리스트를 하나로 합하는 연산</dd><dt>끝 노드</dt><dd>링크가 NULL인 노드</dd></dl></div>
+</article>
+
+<article class="topic" id="s1-reverse"><h3>4. 역순 연산 reverse</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p32</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">상자는 제자리에 두고, 잇는 줄의 방향만 하나씩 반대로 돌려요.</p>
+    <figure class="figure"><svg id="fig-s1-reverse-flip" viewBox="0 0 410 140" role="img" aria-label="위 줄은 10, 20, 30 테두리 상자가 오른쪽 방향 선으로 이어져 있고, 아래 줄은 같은 상자들이 왼쪽 방향 강조색 선으로 이어져 있는 그림"><text class="fig-muted" x="12" y="45">처음</text><rect class="fig-ink" x="70" y="20" width="80" height="40" rx="6" fill="none"/><rect class="fig-ink" x="190" y="20" width="80" height="40" rx="6" fill="none"/><rect class="fig-ink" x="310" y="20" width="80" height="40" rx="6" fill="none"/><text class="fig-text" x="110" y="45" text-anchor="middle">10</text><text class="fig-text" x="230" y="45" text-anchor="middle">20</text><text class="fig-text" x="350" y="45" text-anchor="middle">30</text><path class="fig-ink" d="M154 40 H182 M175 34 L182 40 L175 46 M274 40 H302 M295 34 L302 40 L295 46" fill="none"/><text class="fig-muted" x="12" y="115">나중</text><rect class="fig-ink" x="70" y="90" width="80" height="40" rx="6" fill="none"/><rect class="fig-ink" x="190" y="90" width="80" height="40" rx="6" fill="none"/><rect class="fig-ink" x="310" y="90" width="80" height="40" rx="6" fill="none"/><text class="fig-text" x="110" y="115" text-anchor="middle">10</text><text class="fig-text" x="230" y="115" text-anchor="middle">20</text><text class="fig-text" x="350" y="115" text-anchor="middle">30</text><path class="fig-accent" d="M186 110 H158 M165 104 L158 110 L165 116 M306 110 H278 M285 104 L278 110 L285 116" fill="none" stroke-width="2.5"/></svg><figcaption>이제 30부터 읽으면 거꾸로 된 줄이에요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p>역순 연산(reverse)은 리스트의 노드들을 역순으로 만드는 연산이에요. 노드를 옮기지 않고 각 노드의 링크 방향만 바꿔요. 임시 포인터 하나로는 부족해서 순회 포인터 p, q, r 세 개를 써요.</p>
+<pre><code class="language-c">ListNode *reverse(ListNode *head)
+{
+    // 순회 포인터로 p, q, r을 사용
+    ListNode *p, *q, *r;
+    p = head;          // p는 역순으로 만들 리스트
+    q = NULL;          // q는 역순으로 만들 노드
+    while (p != NULL){
+        r = q;   // r은 역순으로 된 리스트. r은 q, q는 p를 차례로 따라간다.
+        q = p;
+        p = p-&gt;link;
+        q-&gt;link =r;    // q의 링크 방향을 바꾼다.
+    }
+    return q;    // q는 역순으로 된 리스트의 헤드 포인터
+}</code></pre>
+<ul><li>p: 아직 뒤집지 않은 나머지 리스트의 첫 노드예요.</li><li>q: 이번에 링크 방향을 바꿀 노드예요.</li><li>r: 이미 역순으로 된 리스트예요.</li><li>한 번 돌 때마다 r은 q를, q는 p를 차례로 따라가고, p는 다음 노드로 가요.</li><li><code>q-&gt;link =r;</code>로 q의 링크 방향을 바꿔요.</li><li>반복이 끝나면 q가 역순으로 된 리스트의 헤드 포인터예요. 그래서 <code>return q;</code>로 돌려줘요.</li></ul></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 링크 포인터들을 복잡하게 바꾸는 연산이라 임시 포인터 하나만으로는 안 되고, q와 r을 더 두고 유지해야 한다고 했어요. 코드 추적은 직접 해 보라고 넘겼어요. (1005 Part 04)</p>
+<blockquote>실제로 노드를 그려서 한번 쫓아가 보면 좋을 텐데요 (1005 Part 04)</blockquote>
+<blockquote>그렇게 많이 쓰는 연산이라고 보긴 어렵습니다. (1005 Part 04)</blockquote></div>
+  <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span><p>수업에서 "따라가 보세요"로 넘긴 추적을 리스트 10→20→30으로 해 보면 다음과 같아요. 각 줄은 반복 한 번이 끝난 뒤의 상태예요.</p>
+<ol class="steps"><li>시작: p는 10 노드, q는 NULL, 원래 리스트 10→20→30</li><li>1회차: <code>r = q</code> → r은 NULL, <code>q = p</code> → q는 10 노드, <code>p = p-&gt;link</code> → p는 20 노드, <code>q-&gt;link =r;</code> → 10의 링크는 NULL. 역순 부분 10, 남은 부분 20→30</li><li>2회차: r은 10 노드, q는 20 노드, p는 30 노드, 20의 링크는 10. 역순 부분 20→10, 남은 부분 30</li><li>3회차: r은 20 노드, q는 30 노드, p는 NULL, 30의 링크는 20. 역순 부분 30→20→10</li><li><code>p != NULL</code>이 거짓 → 반복 종료, <code>return q;</code> → 30 노드를 돌려줌. 결과 30→20→10</li></ol>
+<ul><li><code>p = p-&gt;link;</code>가 <code>q-&gt;link =r;</code>보다 먼저 와요. 링크를 먼저 바꾸면 나머지 리스트로 가는 길을 잃기 때문이에요. 삽입에서 본 <a href="#s0-insert-order">연결 순서</a>와 같은 이유예요.</li><li>빈 리스트면 반복을 한 번도 돌지 않고 q의 초깃값 NULL을 돌려줘요.</li></ul>
+<p>노드마다 반복을 한 번씩 돌므로 시간복잡도는 $O(n)$이에요.</p></div>
+  <div class="sum" hidden><p class="sum-lead">p, q, r을 한 칸씩 밀며 각 노드의 링크를 앞 노드 쪽으로 돌려 역순 리스트를 만들어요.</p><p class="panel-label">용어</p><dl class="terms"><dt>역순 연산(reverse)</dt><dd>리스트의 노드들을 역순으로 만드는 연산</dd><dt>순회 포인터 p, q, r</dt><dd>나머지 리스트, 방향을 바꿀 노드, 역순이 된 리스트</dd></dl></div>
+</article>
+    </section>
+    <section id="s2"><h2>3. 원형 연결 리스트</h2>
+<article class="topic" id="s2-circular"><h3>1. 헤드 포인터를 꼬리에 두는 트릭</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p33</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">둥글게 손잡은 줄에서 깃발을 맨 끝 친구에게 꽂아 두면, 그 친구 바로 옆이 맨 앞 친구라서 앞과 끝을 한 번에 찾아요.</p>
+    <figure class="figure"><svg id="fig-circular-ring" viewBox="0 0 520 110" role="img" aria-label="가, 나, 다, 라 네 테두리 상자가 화살표로 이어지고 마지막 라에서 처음 가로 되돌아가는 선이 있으며, 색칠된 점의 깃발이 마지막 라를 가리키는 그림"><text x="8" y="61" class="fig-text" font-size="13">둥근 줄</text><rect x="90" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="115" y="61" class="fig-text" font-size="14" text-anchor="middle">가</text><rect x="180" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="205" y="61" class="fig-text" font-size="14" text-anchor="middle">나</text><rect x="270" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="295" y="61" class="fig-text" font-size="14" text-anchor="middle">다</text><rect x="360" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="385" y="61" class="fig-text" font-size="14" text-anchor="middle">라</text><path d="M140 56 L177 56 M170 50 L177 56 L170 62 M230 56 L267 56 M260 50 L267 56 L260 62 M320 56 L357 56 M350 50 L357 56 L350 62 M410 56 L430 56 L430 86 L115 86 L115 75 M109 81 L115 75 L121 81" class="fig-accent" fill="none"/><circle cx="385" cy="24" r="5" class="fig-dot"/><path d="M385 29 L385 37 M380 32 L385 37 L390 32" class="fig-ink" fill="none"/><text x="395" y="28" class="fig-muted" font-size="12">깃발</text></svg><figcaption>끝 친구의 손이 맨 앞 친구를 잡고 있어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p>연결 리스트는 크게 단순(single), 원형(circular), 이중(double) 세 가지예요. <strong>원형 연결 리스트</strong>(circular linked list)는 <strong>마지막 노드</strong>의 링크가 <code>NULL</code>이 아니라 첫 번째 노드를 가리키는 리스트예요(S4 p33).</p><p>그래서 한 노드에서 다른 모든 노드로 갈 수 있어요. 단순 연결 리스트는 끝(<code>NULL</code>)에 닿으면 더 갈 수 없어서 B에서 A로 돌아갈 방법이 없어요. 원형 연결 리스트는 추가 데이터 없이도 끝까지 간 다음 처음으로 돌아와 A에 닿아요.</p><p><strong>트릭</strong>: 원형 연결 리스트는 보통 헤드 포인터가 첫 노드가 아니라 마지막 노드(꼬리)를 가리키게 구성해요(S4 p33). 꼭 그래야 하는 규칙은 아니고, 이렇게 구성하면 처음이나 마지막에 넣기가 쉬워져서 흔히 쓰는 방식이에요. 마지막 노드의 링크는 항상 첫 노드를 가리키므로 두 끝을 바로 찾을 수 있어요.</p><ul><li>꼬리: <code>head</code>가 곧 마지막 노드예요. 한 번에 가요.</li><li>머리: <code>head-&gt;link</code>가 첫 노드예요. 두 번 만에 가요.</li></ul><p>단순 연결 리스트에서 꼬리를 찾으려면 <code>p = p-&gt;link</code>를 노드 수만큼 되풀이해야 해요. 노드가 백만 개면 대입이 백만 번 일어나서 $O(n)$이에요(<a href="#s1-concat">합병 연산 concat</a>이 이렇게 꼬리를 찾아갔어요). 헤드 포인터를 꼬리에 두면 머리와 꼬리를 모두 상수 시간 $O(1)$에 찾아요. 그래서 리스트의 처음이나 마지막에 노드를 넣는 연산이 단순 연결 리스트보다 쉬워요.</p><div class="table-wrap"><table><thead><tr><th scope="col">찾는 곳</th><th scope="col">단순 연결 리스트(헤드 = 머리)</th><th scope="col">원형 연결 리스트(헤드 = 꼬리)</th></tr></thead><tbody><tr><th scope="row">첫 노드</th><td><code>head</code>, $O(1)$</td><td><code>head-&gt;link</code>, $O(1)$</td></tr><tr><th scope="row">마지막 노드</th><td>끝까지 따라가기, $O(n)$</td><td><code>head</code>, $O(1)$</td></tr></tbody></table></div><p>원형 연결 리스트의 삭제는 수업에서 다음 시간으로 미뤘고 슬라이드에도 없어요.</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>극장 매표소 앞 줄을 예로 들었어요. 새로 온 사람은 줄 맨 뒤에 서니까 꼬리를 찾을 일이 많다는 거예요.</p><p>포인터 이름이 head라고 해서 꼭 머리에 둘 필요는 없다고 했어요. 이렇게 구조를 살짝 바꿔 효율을 얻는 것을 "트리키한 자료구조"라고 불렀고, 이런 트릭에서 약간의 희열을 느낀다고 했어요.</p><blockquote>“이런 게 바로 소프트웨어의 묘미예요.” (1005 Part 05)</blockquote></div>
+  <div class="sum" hidden><p class="sum-lead">헤드 포인터가 마지막 노드를 가리키면 머리와 꼬리를 모두 바로 찾아요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">단순 리스트의 꼬리 찾기</span>$O(n)$</li><li><span class="eq-name">원형 리스트의 머리·꼬리 찾기</span>$O(1)$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>원형 연결 리스트(circular linked list)</dt><dd>마지막 노드의 링크가 첫 번째 노드를 가리키는 리스트예요.</dd><dt>head-&gt;link</dt><dd>헤드가 꼬리를 가리킬 때 첫 노드의 주소예요.</dd></dl></div>
+</article>
+
+<article class="topic" id="s2-insert-first"><h3>2. insert_first: 맨 앞에 넣기</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p33–34</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">새 친구가 맨 앞 친구 손을 먼저 잡고, 끝 친구가 새 친구 손으로 바꿔 잡으면 새 친구가 맨 앞이 돼요.</p>
+    <figure class="figure"><svg id="fig-circular-first" viewBox="0 0 520 200" role="img" aria-label="처음에는 가, 나, 다가 둥글게 이어지고 깃발이 마지막 다를 가리키며 새 상자가 따로 있고, 넣은 뒤에는 새, 가, 나, 다 순서로 둥글게 이어지며 깃발은 여전히 다를 가리키는 그림. 상자는 테두리만 있고 깃발 끝의 점만 색칠되어 있다"><text x="8" y="61" class="fig-text" font-size="13">처음</text><rect x="90" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="115" y="61" class="fig-text" font-size="14" text-anchor="middle">가</text><rect x="180" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="205" y="61" class="fig-text" font-size="14" text-anchor="middle">나</text><rect x="270" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="295" y="61" class="fig-text" font-size="14" text-anchor="middle">다</text><path d="M140 56 L177 56 M170 50 L177 56 L170 62 M230 56 L267 56 M260 50 L267 56 L260 62 M320 56 L340 56 L340 86 L115 86 L115 75 M109 81 L115 75 L121 81" class="fig-accent" fill="none"/><circle cx="295" cy="24" r="5" class="fig-dot"/><path d="M295 29 L295 37 M290 32 L295 37 L300 32" class="fig-ink" fill="none"/><text x="305" y="28" class="fig-muted" font-size="12">깃발</text><rect x="420" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="445" y="61" class="fig-text" font-size="14" text-anchor="middle">새</text><text x="445" y="90" class="fig-muted" font-size="12" text-anchor="middle">새로 온 친구</text><text x="8" y="161" class="fig-text" font-size="13">넣은 뒤</text><rect x="90" y="140" width="50" height="32" class="fig-ink" fill="none"/><text x="115" y="161" class="fig-text" font-size="14" text-anchor="middle">새</text><rect x="180" y="140" width="50" height="32" class="fig-ink" fill="none"/><text x="205" y="161" class="fig-text" font-size="14" text-anchor="middle">가</text><rect x="270" y="140" width="50" height="32" class="fig-ink" fill="none"/><text x="295" y="161" class="fig-text" font-size="14" text-anchor="middle">나</text><rect x="360" y="140" width="50" height="32" class="fig-ink" fill="none"/><text x="385" y="161" class="fig-text" font-size="14" text-anchor="middle">다</text><path d="M140 156 L177 156 M170 150 L177 156 L170 162 M230 156 L267 156 M260 150 L267 156 L260 162 M320 156 L357 156 M350 150 L357 156 L350 162 M410 156 L430 156 L430 186 L115 186 L115 175 M109 181 L115 175 L121 181" class="fig-accent" fill="none"/><circle cx="385" cy="124" r="5" class="fig-dot"/><path d="M385 129 L385 137 M380 132 L385 137 L390 132" class="fig-ink" fill="none"/><text x="395" y="128" class="fig-muted" font-size="12">깃발</text></svg><figcaption>깃발은 그대로 끝 친구에게 꽂혀 있어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p><code>insert_first</code>는 원형 연결 리스트의 맨 앞에 <code>node</code>를 넣어요. 헤드 포인터는 마지막 노드를 가리켜요. 리스트가 비었을 때 헤드 포인터 자체를 바꿔야 하므로 헤드 포인터의 포인터 <code>ListNode **phead</code>를 받아요(S4 p34).</p><pre><code class="language-c">// phead: 리스트의 헤드 포인터의 포인터
+// p : 선행 노드
+// node : 삽입될 노드
+void insert_first(ListNode **phead,
+    ListNode *node)
+{
+    if( *phead == NULL ){
+        *phead = node;
+        node-&gt;link = node;
+    }
+    else {
+        node-&gt;link = (*phead)-&gt;link;
+        (*phead)-&gt;link = node;
+    }
+}</code></pre><p><strong>공백 리스트</strong>(<code>*phead == NULL</code>): 새 노드가 처음이자 마지막 노드예요. <code>*phead = node;</code>로 헤드가 새 노드를 가리키고, <code>node-&gt;link = node;</code>로 새 노드가 자기 자신을 가리켜요.</p><p><strong>비어 있지 않은 리스트</strong>: 리스트 A, B, C, D에 E를 넣어요. 헤드는 D를 가리켜요.</p><ol class="steps"><li>처음: <code>head → D</code>, <code>A → B → C → D → A</code></li><li>(1) <code>node-&gt;link = (*phead)-&gt;link;</code> → <code>E → A</code> (헤드가 가리키는 노드 D의 링크가 가리키던 곳, 즉 첫 노드 A)</li><li>(2) <code>(*phead)-&gt;link = node;</code> → <code>D → E</code></li><li>결과: <code>E → A → B → C → D → E</code>, <code>head → D</code> (그대로)</li></ol><p>새 노드의 링크를 먼저 연결해요. 순서를 바꾸면 D의 링크가 먼저 E로 덮여 A의 주소를 잃어요. 앞 줄 오른쪽의 <code>(*phead)-&gt;link</code>가 다음 줄 왼쪽에 나오는 대각선 모양도 <a href="#s0-insert-order">삽입의 연결 순서와 대각선 규칙</a>과 같아요.</p><p>헤드 포인터는 움직이지 않아요. 마지막 노드의 링크는 항상 맨 앞 노드를 가리켜야 하므로 그 링크만 E로 바꿔요. 반복문이 없으므로 시간복잡도는 $O(1)$이에요.</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>두 번째 녹화를 "33페이지서부터" 다시 시작하며 원형 리스트를 복습했어요. 단순 리스트는 끝에 닿으면 더 갈 수 없지만, 원형 리스트는 끝에서 처음으로 돌아갈 수 있다고 했어요. (1005 Part 05)</p><p>새 노드의 링크를 먼저 잇고, 여기서도 대각선 방향이 같다고 짚었어요. 헤드는 여전히 마지막 노드를 가리키고, 마지막 노드의 링크만 바꿔 준다고 강조했어요. (1005 Part 06)</p></div>
+  <div class="sum" hidden><p class="sum-lead">새 노드가 첫 노드를 먼저 가리키고, 꼬리의 링크를 새 노드로 바꿔요. 헤드는 그대로예요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">insert_first</span>$O(1)$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>(*phead)-&gt;link</dt><dd>마지막 노드의 링크, 곧 맨 앞 노드를 가리키는 링크예요.</dd><dt>node-&gt;link = node;</dt><dd>공백 리스트에 넣을 때 새 노드가 자기 자신을 가리키게 해요.</dd></dl></div>
+</article>
+
+<article class="topic" id="s2-insert-last"><h3>3. insert_last: 한 줄 더해 맨 뒤에 넣기</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p35</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">맨 앞에 넣을 때와 똑같이 손을 잡은 뒤, 깃발만 새 친구에게 옮겨 꽂으면 새 친구가 맨 끝이 돼요.</p>
+    <figure class="figure"><svg id="fig-circular-last" viewBox="0 0 520 200" role="img" aria-label="처음에는 가, 나, 다가 둥글게 이어지고 깃발이 마지막 다를 가리키며 새 상자가 따로 있고, 넣은 뒤에는 가, 나, 다, 새 순서로 둥글게 이어지며 깃발이 새 상자로 옮겨 간 그림. 상자는 테두리만 있고 깃발 끝의 점만 색칠되어 있다"><text x="8" y="61" class="fig-text" font-size="13">처음</text><rect x="90" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="115" y="61" class="fig-text" font-size="14" text-anchor="middle">가</text><rect x="180" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="205" y="61" class="fig-text" font-size="14" text-anchor="middle">나</text><rect x="270" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="295" y="61" class="fig-text" font-size="14" text-anchor="middle">다</text><path d="M140 56 L177 56 M170 50 L177 56 L170 62 M230 56 L267 56 M260 50 L267 56 L260 62 M320 56 L340 56 L340 86 L115 86 L115 75 M109 81 L115 75 L121 81" class="fig-accent" fill="none"/><circle cx="295" cy="24" r="5" class="fig-dot"/><path d="M295 29 L295 37 M290 32 L295 37 L300 32" class="fig-ink" fill="none"/><text x="305" y="28" class="fig-muted" font-size="12">깃발</text><rect x="420" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="445" y="61" class="fig-text" font-size="14" text-anchor="middle">새</text><text x="445" y="90" class="fig-muted" font-size="12" text-anchor="middle">새로 온 친구</text><text x="8" y="161" class="fig-text" font-size="13">넣은 뒤</text><rect x="90" y="140" width="50" height="32" class="fig-ink" fill="none"/><text x="115" y="161" class="fig-text" font-size="14" text-anchor="middle">가</text><rect x="180" y="140" width="50" height="32" class="fig-ink" fill="none"/><text x="205" y="161" class="fig-text" font-size="14" text-anchor="middle">나</text><rect x="270" y="140" width="50" height="32" class="fig-ink" fill="none"/><text x="295" y="161" class="fig-text" font-size="14" text-anchor="middle">다</text><rect x="360" y="140" width="50" height="32" class="fig-ink" fill="none"/><text x="385" y="161" class="fig-text" font-size="14" text-anchor="middle">새</text><path d="M140 156 L177 156 M170 150 L177 156 L170 162 M230 156 L267 156 M260 150 L267 156 L260 162 M320 156 L357 156 M350 150 L357 156 L350 162 M410 156 L430 156 L430 186 L115 186 L115 175 M109 181 L115 175 L121 181" class="fig-accent" fill="none"/><circle cx="385" cy="124" r="5" class="fig-dot"/><path d="M385 129 L385 137 M380 132 L385 137 L390 132" class="fig-ink" fill="none"/><text x="395" y="128" class="fig-muted" font-size="12">깃발</text></svg><figcaption>깃발 하나만 옮겼는데 줄 순서가 달라졌어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p><code>insert_last</code>는 원형 연결 리스트의 끝에 <code>node</code>를 넣어요. <a href="#s2-insert-first">insert_first: 맨 앞에 넣기</a>와 코드가 거의 같고, <code>else</code> 안에 <code>*phead = node;</code> 한 줄만 더해요(S4 p35).</p><pre><code class="language-c">// phead: 리스트의 헤드 포인터의 포인터
+// p : 선행 노드
+// node : 삽입될 노드
+void insert_last(ListNode **phead, ListNode *node)
+{
+    if( *phead == NULL ){
+        *phead = node;
+        node-&gt;link = node;
+    }
+    else {
+        node-&gt;link = (*phead)-&gt;link;
+        (*phead)-&gt;link = node;
+        *phead = node;
+    }
+}</code></pre><p><strong>공백 리스트</strong>: 노드가 하나뿐이라 처음이자 마지막이에요. 그래서 <code>insert_first</code>와 똑같이 처리해요.</p><p><strong>비어 있지 않은 리스트</strong>: 리스트 A, B, C, D에 E를 넣어요. 헤드는 D를 가리켜요.</p><ol class="steps"><li>처음: <code>head → D</code>, <code>A → B → C → D → A</code></li><li>(1) <code>node-&gt;link = (*phead)-&gt;link;</code> → <code>E → A</code></li><li>(2) <code>(*phead)-&gt;link = node;</code> → <code>D → E</code> (여기까지 <code>insert_first</code>와 같아요: <code>E → A → B → C → D → E</code>)</li><li>(3) <code>*phead = node;</code> → <code>head → E</code></li><li>결과: <code>A → B → C → D → E → A</code>, <code>head → E</code></li></ol><p>헤드가 E로 옮겨 가면 E가 마지막 노드가 되고, E의 링크가 가리키는 A가 그대로 첫 노드로 남아요. 같은 고리라도 헤드가 어디를 가리키느냐에 따라 맨 앞과 맨 뒤가 정해져요.</p><p>헤드가 꼬리를 가리키므로 꼬리를 찾아갈 필요가 없어요. 시간복잡도는 $O(1)$이에요. 단순 연결 리스트에서 끝에 넣으려면 꼬리를 찾는 데 $O(n)$이 들었어요.</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>앞의 두 문장은 맨 앞 삽입과 같고, 헤드를 새 노드로 옮기는 한 줄만 더하면 된다고 했어요. 헤드를 옮기는 것은 새 노드에게 마지막이라고 알려 주는 일이에요.</p><blockquote>“네가 꼴찌야, 네가 라스트야” (1005 Part 06)</blockquote></div>
+  <div class="sum" hidden><p class="sum-lead">맨 앞에 넣는 두 줄 뒤에 헤드를 새 노드로 옮기면 맨 뒤 삽입이 돼요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">insert_last</span>$O(1)$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>*phead = node;</dt><dd>헤드가 새 노드를 가리켜 새 노드를 마지막 노드로 만들어요.</dd></dl></div>
+</article>
+    </section>
+    <section id="s3"><h2>4. 이중 연결 리스트</h2>
+<article class="topic" id="s3-dlist"><h3>1. 양방향 링크와 헤드 노드</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p36–37</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">줄 선 친구들이 양팔로 앞 친구와 뒤 친구를 모두 가리켜요.</p>
+    <p>맨 앞에는 아무것도 들지 않은 대장 자리가 있어서 줄의 처음과 끝을 함께 잡아 줘요.</p>
+    <figure class="figure"><svg id="fig-s3-two-arms" viewBox="0 0 520 150" role="img" aria-label="테두리 상자 네 개가 나란히 있고 맨 앞 상자는 대장, 나머지는 가, 나, 다라고 적혀 있다. 이웃한 상자끼리 오른쪽으로 가는 선과 왼쪽으로 가는 선이 하나씩 있고, 맨 뒤 다 상자와 맨 앞 대장 상자도 아래쪽 곡선 두 개로 서로 이어져 있다."><rect class="fig-ink" x="20" y="30" width="80" height="44" rx="6" stroke-dasharray="5 4"/><rect class="fig-ink" x="150" y="30" width="80" height="44" rx="6"/><rect class="fig-ink" x="280" y="30" width="80" height="44" rx="6"/><rect class="fig-ink" x="410" y="30" width="80" height="44" rx="6"/><text class="fig-text" x="60" y="57" text-anchor="middle">대장</text><text class="fig-text" x="190" y="57" text-anchor="middle">가</text><text class="fig-text" x="320" y="57" text-anchor="middle">나</text><text class="fig-text" x="450" y="57" text-anchor="middle">다</text><path class="fig-accent" d="M104,44 H146 M139,39 L146,44 L139,49 M234,44 H276 M269,39 L276,44 L269,49 M364,44 H406 M399,39 L406,44 L399,49"/><path class="fig-ink" d="M146,62 H104 M111,57 L104,62 L111,67 M276,62 H234 M241,57 L234,62 L241,67 M406,62 H364 M371,57 L364,62 L371,67"/><path class="fig-accent" d="M450,78 Q450,128 255,128 Q60,128 60,82 M55,89 L60,80 L65,89"/><path class="fig-ink" d="M75,78 Q80,112 255,112 Q430,112 436,82 M431,89 L436,80 L441,89"/></svg><figcaption>앞으로도 뒤로도 따라갈 수 있어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>단순 연결 리스트(singly linked list)의 문제점은 선행 노드를 찾기 힘들다는 거예요. 그런데 삽입이나 삭제에는 언제나 선행 노드 <code>p</code>가 필요했어요.</p>
+    <p>이중 연결 리스트(doubly linked list)는 한 노드가 선행 노드와 후속 노드를 가리키는 링크 두 개를 가지는 리스트예요. 왼쪽 링크 <code>llink</code>는 선행 노드를, 오른쪽 링크 <code>rlink</code>는 후속 노드를 가리켜요.</p>
+    <ul>
+      <li>장점: 링크가 양방향이라서 양방향으로 검색할 수 있어요. 선행 노드를 바로 가리킬 수 있어요.</li>
+      <li>단점: 노드마다 데이터 필드 하나와 링크 필드 두 개가 필요해요. 공간을 많이 차지하고 코드가 복잡해져요.</li>
+    </ul>
+    <p>실제로 쓰는 형태는 헤드 노드 + 이중 연결 리스트 + 원형 연결 리스트예요. 헤드 노드의 <code>rlink</code>는 첫 노드를, <code>llink</code>는 마지막 노드를 가리켜요. 마지막 노드의 <code>rlink</code>는 다시 헤드 노드를 가리켜요.</p>
+    <p>헤드 노드(head node)는 데이터를 가지지 않고, 삽입·삭제 코드를 간단하게 할 목적으로 만든 노드예요. 헤드 포인터(head pointer)와 구별해야 해요. 헤드 포인터는 첫 노드(원형 리스트에서는 마지막 노드)를 가리키는 포인터 변수일 뿐이에요. 단순 연결 리스트와 원형 연결 리스트는 헤드 포인터만 있으면 됐어요(<a href="#s2-circular">헤드 포인터를 꼬리에 두는 트릭</a>).</p>
+    <p>공백 상태에서는 헤드 노드만 있어요. 이때 헤드 노드의 <code>llink</code>와 <code>rlink</code>는 둘 다 자기 자신을 가리켜요.</p>
+    <figure class="figure"><svg id="fig-s3-empty-head" viewBox="0 0 420 150" role="img" aria-label="세 칸짜리 테두리 상자 하나가 헤드 노드다. 칸은 왼쪽부터 llink, data, rlink이고 data 칸은 비어 있다. llink 칸의 색칠된 점에서 위로 돌아 같은 상자로 들어오는 곡선과, rlink 칸의 색칠된 점에서 아래로 돌아 같은 상자로 들어오는 곡선이 있다."><rect class="fig-ink" x="135" y="55" width="50" height="36"/><rect class="fig-ink" x="185" y="55" width="50" height="36"/><rect class="fig-ink" x="235" y="55" width="50" height="36"/><text class="fig-muted" x="160" y="110" text-anchor="middle">llink</text><text class="fig-muted" x="210" y="110" text-anchor="middle">data</text><text class="fig-muted" x="260" y="110" text-anchor="middle">rlink</text><text class="fig-muted" x="210" y="22" text-anchor="middle">헤드 노드 (공백 상태)</text><circle class="fig-dot" cx="160" cy="73" r="4"/><circle class="fig-dot" cx="260" cy="73" r="4"/><path class="fig-accent" d="M160,73 C150,25 320,25 300,62 L289,70 M291,60 L289,70 L299,71"/><path class="fig-accent" d="M260,73 C275,140 95,140 120,86 L131,78 M120,77 L131,78 L127,88"/></svg><figcaption>공백 상태의 헤드 노드: 두 링크가 모두 자기 자신을 가리켜요.</figcaption></figure>
+    <p>이중 연결 리스트의 노드는 <code>llink</code>, <code>data</code>, <code>rlink</code> 세 필드로 되어 있어요(S4 p37).</p>
+<pre><code class="language-c">typedef int element;
+typedef struct DlistNode {
+    element data;
+    struct DlistNode *llink;
+    struct DlistNode *rlink;
+} DlistNode;</code></pre>
+    <ul>
+      <li><code>struct DlistNode *llink;</code>와 <code>struct DlistNode *rlink;</code>는 자기와 같은 구조체를 가리키는 자체 참조 구조체(self-referential structure)의 링크예요.</li>
+      <li>그림은 llink | data | rlink 순서지만 구조체 안 필드 순서는 개념일 뿐이라 바꿔 써도 돼요.</li>
+      <li><code>element</code>는 지금 <code>int</code>지만 나중에 <code>char</code> 같은 다른 타입으로 정의해도 돼요.</li>
+    </ul>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>이중 연결 리스트는 팔이 양쪽에 있는 모양이라고 했어요. 양팔로 앞 노드와 뒤 노드를 가리켜요.</p>
+    <blockquote>"팔이 양쪽에 있다고 생각을 하시면 돼요." (1005 Part 06)</blockquote>
+    <blockquote>"사실 더블 링크드 리스트 굉장히 많이 씁니다." (1005 Part 06)</blockquote>
+    <p>양팔을 가져야 하니까 헤드 포인터만으로는 부족하고, 헤드 노드를 두어 맨 앞과 맨 뒤를 함께 잡는다고 설명했어요. (1005 Part 06)</p>
+    <blockquote>"이거는 컨셉인 거고요. 여러분들이 이거 순서 바꾸셔도 상관없어요." (1005 Part 07)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">노드마다 llink와 rlink 두 링크로 앞뒤를 모두 가리키고, 데이터 없는 헤드 노드가 리스트의 처음과 끝을 잡아요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>이중 연결 리스트(doubly linked list)</dt><dd>선행·후속 노드를 가리키는 링크 두 개를 가진 리스트</dd>
+      <dt>헤드 노드(head node)</dt><dd>데이터 없이 삽입·삭제 코드를 간단하게 하려고 둔 노드</dd>
+      <dt>헤드 포인터(head pointer)</dt><dd>리스트를 가리키는 포인터 변수일 뿐, 노드가 아님</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s3-dinsert"><h3>2. dinsert_node: 3번과 4번의 순서</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p38</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">새 친구가 먼저 양팔로 앞 친구와 뒤 친구를 잡아요.</p>
+    <p>그다음 뒤 친구가 새 친구를 가리키고, 앞 친구는 맨 마지막에 팔을 바꿔요.</p>
+    <figure class="figure"><svg id="fig-s3-insert-order" viewBox="0 0 520 220" role="img" aria-label="위쪽 왼쪽에 앞 친구, 위쪽 오른쪽에 뒤 친구, 아래 가운데에 새 친구 테두리 상자가 있다. 1번 선은 새 친구에서 앞 친구로, 2번 선은 새 친구에서 뒤 친구로 간다. 3번 선은 뒤 친구에서 새 친구로, 4번 선은 앞 친구에서 새 친구로 가며 3번과 4번 선은 강조색이다. 4번을 3번보다 먼저 하면 3번이 뒤 친구 대신 새 친구의 팔을 고치게 된다."><rect class="fig-ink" x="40" y="30" width="110" height="44" rx="6"/><rect class="fig-ink" x="370" y="30" width="110" height="44" rx="6"/><rect class="fig-accent" x="205" y="150" width="110" height="44" rx="6"/><text class="fig-text" x="95" y="57" text-anchor="middle">앞 친구</text><text class="fig-text" x="425" y="57" text-anchor="middle">뒤 친구</text><text class="fig-text" x="260" y="177" text-anchor="middle">새 친구</text><path class="fig-ink" d="M225,146 L130,80 M134,89 L130,80 L140,81"/><path class="fig-ink" d="M295,146 L390,80 M380,81 L390,80 L386,89"/><path class="fig-accent" d="M440,78 Q440,170 320,172 M329,166 L320,172 L329,178"/><path class="fig-accent" d="M80,78 Q80,170 200,172 M191,166 L200,172 L191,178"/><text class="fig-text" x="168" y="108">1</text><text class="fig-text" x="342" y="108">2</text><text class="fig-text" x="448" y="140">3</text><text class="fig-text" x="62" y="140">4</text></svg><figcaption>앞 친구가 먼저 팔을 바꾸면 뒤 친구 대신 새 친구의 팔을 잘못 고치게 돼요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><code>dinsert_node</code>는 노드 <code>new_node</code>를 노드 <code>before</code>의 오른쪽에 삽입해요(S4 p38).</p>
+<pre><code class="language-c">// 노드 new_node를 노드 before의 오른쪽에 삽입한다.
+void dinsert_node(DlistNode *before, DlistNode *new_node)
+{
+    new_node-&gt;llink = before;
+    new_node-&gt;rlink = before-&gt;rlink;
+    before-&gt;rlink-&gt;llink = new_node;
+    before-&gt;rlink = new_node;
+}</code></pre>
+    <p>원칙은 단순 연결 리스트와 같아요. 새로 들어오는 노드의 링크를 먼저 연결하고, 그다음 기존 노드를 고쳐요(<a href="#s0-insert-order">삽입의 연결 순서와 대각선 규칙</a>).</p>
+    <p>before가 10, 그 다음 노드(after)가 30, new_node가 20일 때 한 줄씩 따라가요.</p>
+    <ol class="steps">
+      <li>(1) <code>new_node-&gt;llink = before;</code> → 20의 llink가 10을 가리켜요.</li>
+      <li>(2) <code>new_node-&gt;rlink = before-&gt;rlink;</code> → <code>before-&gt;rlink</code>가 아직 30이므로 20의 rlink가 30을 가리켜요. 이제 new_node는 가리킬 곳을 다 가리켜요.</li>
+      <li>(3) <code>before-&gt;rlink-&gt;llink = new_node;</code> → after(30)는 따로 가리키는 포인터가 없어서 before의 rlink를 거쳐 찾아가요. 30의 llink가 20을 가리켜요.</li>
+      <li>(4) <code>before-&gt;rlink = new_node;</code> → 10의 rlink가 20을 가리켜요. 결과는 10 ⇄ 20 ⇄ 30이에요.</li>
+    </ol>
+    <p>1과 2는 순서를 바꿔도 돼요. 둘 다 new_node의 칸만 고치고 <code>before-&gt;rlink</code>는 읽기만 하기 때문이에요.</p>
+    <p>3과 4는 반드시 이 순서를 지켜야 해요. 3은 <code>before-&gt;rlink</code>를 통해 after에 가는데, 4가 바로 그 <code>before-&gt;rlink</code>를 바꾸기 때문이에요.</p>
+    <ol class="steps">
+      <li>4를 먼저 실행 → 10의 rlink가 20을 가리켜요. 이제 <code>before-&gt;rlink</code>는 after가 아니라 new_node예요.</li>
+      <li>그 상태에서 <code>before-&gt;rlink-&gt;llink</code>는 new_node의 llink예요. 이 칸은 1에서 before(10)를 가리키게 해 두었어요.</li>
+      <li>3을 실행 → new_node의 llink가 new_node 자기 자신을 가리켜요. after(30)의 llink는 그대로 before(10)를 가리켜요.</li>
+    </ol>
+    <p>이렇게 되면 30에서 왼쪽으로 가면 20을 건너뛰고 10으로 가고, 20에서 왼쪽으로 가면 자기 자신으로 돌아와요. 전혀 다른 곳을 고친 거예요.</p>
+    <p>선행 노드 before가 주어지므로 링크 대입 네 번으로 끝나요. 시간복잡도는 $O(1)$이에요.</p>
+    <div class="widget" id="widget-dinsert"><h4>직접 해 보기: dinsert_node 한 문장씩</h4>
+      <p class="widget-help">"다음"을 누를 때마다 문장이 하나씩 실행되어 before, new_node, after의 llink·rlink 화살표가 바뀌고, "3·4 순서 바꾸기"를 켜면 4를 먼저 실행한 잘못된 결과가 보여요.</p>
+      <div class="controls" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <label><input type="checkbox" id="dinsert-swap"> 3·4 순서 바꾸기</label>
+        <button class="btn btn-ghost" id="dinsert-prev" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">이전</button>
+        <button class="btn btn-primary" id="dinsert-next" type="button" style="justify-self:auto;min-width:0;padding:0 16px">다음</button>
+      </div>
+      <svg id="dinsert-plot" viewBox="0 0 640 360" role="img" aria-label="슬라이드 순서 1, 2, 3, 4, 0/4단계, 방금 실행: 아직 실행 전. before의 rlink는 after, new_node의 llink는 정해지지 않음, new_node의 rlink는 정해지지 않음, after의 llink가 가리키는 노드는 before. 방금 바뀐 링크는 강조색 선, 잘못 이어진 링크는 경고색 선, 링크가 출발하는 칸은 색칠된 점으로 표시."><text class="fig-muted" x="12" y="18">실행 순서</text><text class="fig-text" x="26" y="41" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre;opacity:0.55">(1) new_node-&gt;llink = before;</text><text class="fig-text" x="26" y="63" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre;opacity:0.55">(2) new_node-&gt;rlink = before-&gt;rlink;</text><text class="fig-text" x="26" y="85" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre;opacity:0.55">(3) before-&gt;rlink-&gt;llink = new_node;</text><text class="fig-text" x="26" y="107" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre;opacity:0.55">(4) before-&gt;rlink = new_node;</text><path class="fig-ink" d="M60,178 H22 M30,173 L22,178 L30,183" stroke-dasharray="4 4"/><path class="fig-ink" d="M580,178 H618 M610,173 L618,178 L610,183" stroke-dasharray="4 4"/><rect class="fig-ink" x="60" y="160" width="50" height="36"/><rect class="fig-ink" x="110" y="160" width="50" height="36"/><rect class="fig-ink" x="160" y="160" width="50" height="36"/><text class="fig-text" x="135" y="183" text-anchor="middle">10</text><text class="fig-muted" x="135" y="152" text-anchor="middle">before</text><rect class="fig-ink" x="430" y="160" width="50" height="36"/><rect class="fig-ink" x="480" y="160" width="50" height="36"/><rect class="fig-ink" x="530" y="160" width="50" height="36"/><text class="fig-text" x="505" y="183" text-anchor="middle">30</text><text class="fig-muted" x="505" y="152" text-anchor="middle">after (before 다음 노드)</text><rect class="fig-ink" x="245" y="280" width="50" height="36"/><rect class="fig-ink" x="295" y="280" width="50" height="36"/><rect class="fig-ink" x="345" y="280" width="50" height="36"/><text class="fig-text" x="320" y="303" text-anchor="middle">20</text><text class="fig-muted" x="270" y="303" text-anchor="middle">?</text><text class="fig-muted" x="370" y="303" text-anchor="middle">?</text><text class="fig-muted" x="320" y="338" text-anchor="middle">new_node</text><path class="fig-ink" d="M185,170 Q320,105 430,166 M418.8,165.5 L430,166 L423.7,156.8"/><circle class="fig-dot" cx="185" cy="170" r="4"/><path class="fig-ink" d="M455,188 Q320,250 212,190 M223.2,190.5 L212,190 L218.3,199.2"/><circle class="fig-dot" cx="455" cy="188" r="4"/></svg>
+      <p class="readout">지금 상태: <b id="dinsert-out">0/4 · 방금 실행: 아직 실행 전 · after-&gt;llink가 가리키는 노드: before</b></p>
+      <p class="legend"><span><span class="sw fit"></span>강조색 선: 방금 바뀐 링크, 방금 실행한 문장</span><span><span class="sw train"></span>색칠된 점: 링크가 출발하는 칸</span><span>경고색 선: 잘못 이어진 링크</span><span>점선: 바깥 이웃으로 가는 링크(그대로)</span></p>
+      <div class="widget-static" hidden>
+        <figure class="figure"><svg id="widget-dinsert-static-1" viewBox="0 0 640 360" role="img" aria-label="슬라이드 순서 1, 2, 3, 4, 2/4단계, 방금 실행: (2) new_node-&gt;rlink = before-&gt;rlink;. before의 rlink는 after, new_node의 llink는 before, new_node의 rlink는 after, after의 llink가 가리키는 노드는 before. 방금 바뀐 링크는 강조색 선, 잘못 이어진 링크는 경고색 선, 링크가 출발하는 칸은 색칠된 점으로 표시."><text class="fig-muted" x="12" y="18">실행 순서</text><text class="fig-text" x="26" y="41" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(1) new_node-&gt;llink = before;</text><rect class="fig-accent" x="8" y="48" width="330" height="20" rx="3"/><circle class="fig-dot" cx="16" cy="58" r="4"/><text class="fig-text" x="26" y="63" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(2) new_node-&gt;rlink = before-&gt;rlink;</text><text class="fig-text" x="26" y="85" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre;opacity:0.55">(3) before-&gt;rlink-&gt;llink = new_node;</text><text class="fig-text" x="26" y="107" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre;opacity:0.55">(4) before-&gt;rlink = new_node;</text><path class="fig-ink" d="M60,178 H22 M30,173 L22,178 L30,183" stroke-dasharray="4 4"/><path class="fig-ink" d="M580,178 H618 M610,173 L618,178 L610,183" stroke-dasharray="4 4"/><rect class="fig-ink" x="60" y="160" width="50" height="36"/><rect class="fig-ink" x="110" y="160" width="50" height="36"/><rect class="fig-ink" x="160" y="160" width="50" height="36"/><text class="fig-text" x="135" y="183" text-anchor="middle">10</text><text class="fig-muted" x="135" y="152" text-anchor="middle">before</text><rect class="fig-ink" x="430" y="160" width="50" height="36"/><rect class="fig-ink" x="480" y="160" width="50" height="36"/><rect class="fig-ink" x="530" y="160" width="50" height="36"/><text class="fig-text" x="505" y="183" text-anchor="middle">30</text><text class="fig-muted" x="505" y="152" text-anchor="middle">after (before 다음 노드)</text><rect class="fig-ink" x="245" y="280" width="50" height="36"/><rect class="fig-ink" x="295" y="280" width="50" height="36"/><rect class="fig-ink" x="345" y="280" width="50" height="36"/><text class="fig-text" x="320" y="303" text-anchor="middle">20</text><text class="fig-muted" x="320" y="338" text-anchor="middle">new_node</text><path class="fig-ink" d="M185,170 Q320,105 430,166 M418.8,165.5 L430,166 L423.7,156.8"/><circle class="fig-dot" cx="185" cy="170" r="4"/><path class="fig-ink" d="M455,188 Q320,250 212,190 M223.2,190.5 L212,190 L218.3,199.2"/><circle class="fig-dot" cx="455" cy="188" r="4"/><path class="fig-ink" d="M270,290 Q250,225 150,198 M161,195.8 L150,198 L158.4,205.4"/><circle class="fig-dot" cx="270" cy="290" r="4"/><path class="fig-accent" d="M370,290 Q390,225 490,198 M481.6,205.4 L490,198 L479,195.8"/><circle class="fig-dot" cx="370" cy="290" r="4"/></svg></figure>
+        <figure class="figure"><svg id="widget-dinsert-static-2" viewBox="0 0 640 360" role="img" aria-label="슬라이드 순서 1, 2, 3, 4, 4/4단계, 방금 실행: (4) before-&gt;rlink = new_node;. before의 rlink는 new_node, new_node의 llink는 before, new_node의 rlink는 after, after의 llink가 가리키는 노드는 new_node. 방금 바뀐 링크는 강조색 선, 잘못 이어진 링크는 경고색 선, 링크가 출발하는 칸은 색칠된 점으로 표시."><text class="fig-muted" x="12" y="18">실행 순서</text><text class="fig-text" x="26" y="41" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(1) new_node-&gt;llink = before;</text><text class="fig-text" x="26" y="63" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(2) new_node-&gt;rlink = before-&gt;rlink;</text><text class="fig-text" x="26" y="85" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(3) before-&gt;rlink-&gt;llink = new_node;</text><rect class="fig-accent" x="8" y="92" width="330" height="20" rx="3"/><circle class="fig-dot" cx="16" cy="102" r="4"/><text class="fig-text" x="26" y="107" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(4) before-&gt;rlink = new_node;</text><path class="fig-ink" d="M60,178 H22 M30,173 L22,178 L30,183" stroke-dasharray="4 4"/><path class="fig-ink" d="M580,178 H618 M610,173 L618,178 L610,183" stroke-dasharray="4 4"/><rect class="fig-ink" x="60" y="160" width="50" height="36"/><rect class="fig-ink" x="110" y="160" width="50" height="36"/><rect class="fig-ink" x="160" y="160" width="50" height="36"/><text class="fig-text" x="135" y="183" text-anchor="middle">10</text><text class="fig-muted" x="135" y="152" text-anchor="middle">before</text><rect class="fig-ink" x="430" y="160" width="50" height="36"/><rect class="fig-ink" x="480" y="160" width="50" height="36"/><rect class="fig-ink" x="530" y="160" width="50" height="36"/><text class="fig-text" x="505" y="183" text-anchor="middle">30</text><text class="fig-muted" x="505" y="152" text-anchor="middle">after (before 다음 노드)</text><rect class="fig-ink" x="245" y="280" width="50" height="36"/><rect class="fig-ink" x="295" y="280" width="50" height="36"/><rect class="fig-ink" x="345" y="280" width="50" height="36"/><text class="fig-text" x="320" y="303" text-anchor="middle">20</text><text class="fig-muted" x="320" y="338" text-anchor="middle">new_node</text><path class="fig-accent" d="M185,188 Q190,290 243,296 M232.5,299.8 L243,296 L233.6,289.9"/><circle class="fig-dot" cx="185" cy="188" r="4"/><path class="fig-ink" d="M455,188 Q450,290 397,296 M406.4,289.9 L397,296 L407.5,299.8"/><circle class="fig-dot" cx="455" cy="188" r="4"/><path class="fig-ink" d="M270,290 Q250,225 150,198 M161,195.8 L150,198 L158.4,205.4"/><circle class="fig-dot" cx="270" cy="290" r="4"/><path class="fig-ink" d="M370,290 Q390,225 490,198 M481.6,205.4 L490,198 L479,195.8"/><circle class="fig-dot" cx="370" cy="290" r="4"/></svg></figure>
+        <figure class="figure"><svg id="widget-dinsert-static-3" viewBox="0 0 640 360" role="img" aria-label="3·4를 바꾼 순서 1, 2, 4, 3, 3/4단계, 방금 실행: (4) before-&gt;rlink = new_node;. before의 rlink는 new_node, new_node의 llink는 before, new_node의 rlink는 after, after의 llink가 가리키는 노드는 before. 방금 바뀐 링크는 강조색 선, 잘못 이어진 링크는 경고색 선, 링크가 출발하는 칸은 색칠된 점으로 표시."><text class="fig-muted" x="12" y="18">실행 순서</text><text class="fig-text" x="26" y="41" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(1) new_node-&gt;llink = before;</text><text class="fig-text" x="26" y="63" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(2) new_node-&gt;rlink = before-&gt;rlink;</text><rect class="fig-accent" x="8" y="70" width="330" height="20" rx="3"/><circle class="fig-dot" cx="16" cy="80" r="4"/><text class="fig-text" x="26" y="85" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(4) before-&gt;rlink = new_node;</text><text class="fig-text" x="26" y="107" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre;opacity:0.55">(3) before-&gt;rlink-&gt;llink = new_node;</text><path class="fig-ink" d="M60,178 H22 M30,173 L22,178 L30,183" stroke-dasharray="4 4"/><path class="fig-ink" d="M580,178 H618 M610,173 L618,178 L610,183" stroke-dasharray="4 4"/><rect class="fig-ink" x="60" y="160" width="50" height="36"/><rect class="fig-ink" x="110" y="160" width="50" height="36"/><rect class="fig-ink" x="160" y="160" width="50" height="36"/><text class="fig-text" x="135" y="183" text-anchor="middle">10</text><text class="fig-muted" x="135" y="152" text-anchor="middle">before</text><rect class="fig-ink" x="430" y="160" width="50" height="36"/><rect class="fig-ink" x="480" y="160" width="50" height="36"/><rect class="fig-ink" x="530" y="160" width="50" height="36"/><text class="fig-text" x="505" y="183" text-anchor="middle">30</text><text class="fig-muted" x="505" y="152" text-anchor="middle">after (before 다음 노드)</text><rect class="fig-ink" x="245" y="280" width="50" height="36"/><rect class="fig-ink" x="295" y="280" width="50" height="36"/><rect class="fig-ink" x="345" y="280" width="50" height="36"/><text class="fig-text" x="320" y="303" text-anchor="middle">20</text><text class="fig-muted" x="320" y="338" text-anchor="middle">new_node</text><path class="fig-accent" d="M185,188 Q190,290 243,296 M232.5,299.8 L243,296 L233.6,289.9"/><circle class="fig-dot" cx="185" cy="188" r="4"/><path class="fig-ink" d="M455,188 Q320,250 212,190 M223.2,190.5 L212,190 L218.3,199.2"/><circle class="fig-dot" cx="455" cy="188" r="4"/><path class="fig-ink" d="M270,290 Q250,225 150,198 M161,195.8 L150,198 L158.4,205.4"/><circle class="fig-dot" cx="270" cy="290" r="4"/><path class="fig-ink" d="M370,290 Q390,225 490,198 M481.6,205.4 L490,198 L479,195.8"/><circle class="fig-dot" cx="370" cy="290" r="4"/></svg></figure>
+        <figure class="figure"><svg id="widget-dinsert-static-4" viewBox="0 0 640 360" role="img" aria-label="3·4를 바꾼 순서 1, 2, 4, 3, 4/4단계, 방금 실행: (3) before-&gt;rlink-&gt;llink = new_node;. before의 rlink는 new_node, new_node의 llink는 new_node, new_node의 rlink는 after, after의 llink가 가리키는 노드는 before. 방금 바뀐 링크는 강조색 선, 잘못 이어진 링크는 경고색 선, 링크가 출발하는 칸은 색칠된 점으로 표시."><text class="fig-muted" x="12" y="18">실행 순서</text><text class="fig-text" x="26" y="41" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(1) new_node-&gt;llink = before;</text><text class="fig-text" x="26" y="63" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(2) new_node-&gt;rlink = before-&gt;rlink;</text><text class="fig-text" x="26" y="85" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(4) before-&gt;rlink = new_node;</text><rect class="fig-accent" x="8" y="92" width="330" height="20" rx="3"/><circle class="fig-dot" cx="16" cy="102" r="4"/><text class="fig-text" x="26" y="107" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre">(3) before-&gt;rlink-&gt;llink = new_node;</text><path class="fig-ink" d="M60,178 H22 M30,173 L22,178 L30,183" stroke-dasharray="4 4"/><path class="fig-ink" d="M580,178 H618 M610,173 L618,178 L610,183" stroke-dasharray="4 4"/><rect class="fig-ink" x="60" y="160" width="50" height="36"/><rect class="fig-ink" x="110" y="160" width="50" height="36"/><rect class="fig-ink" x="160" y="160" width="50" height="36"/><text class="fig-text" x="135" y="183" text-anchor="middle">10</text><text class="fig-muted" x="135" y="152" text-anchor="middle">before</text><rect class="fig-ink" x="430" y="160" width="50" height="36"/><rect class="fig-ink" x="480" y="160" width="50" height="36"/><rect class="fig-ink" x="530" y="160" width="50" height="36"/><text class="fig-text" x="505" y="183" text-anchor="middle">30</text><text class="fig-muted" x="505" y="152" text-anchor="middle">after (before 다음 노드)</text><rect class="fig-ink" x="245" y="280" width="50" height="36"/><rect class="fig-ink" x="295" y="280" width="50" height="36"/><rect class="fig-ink" x="345" y="280" width="50" height="36"/><text class="fig-text" x="320" y="303" text-anchor="middle">20</text><text class="fig-muted" x="320" y="338" text-anchor="middle">new_node</text><path class="fig-ink" d="M185,188 Q190,290 243,296 M232.5,299.8 L243,296 L233.6,289.9"/><circle class="fig-dot" cx="185" cy="188" r="4"/><path class="fig-danger" d="M455,188 Q320,250 212,190 M223.2,190.5 L212,190 L218.3,199.2"/><circle class="fig-dot" cx="455" cy="188" r="4"/><path class="fig-danger" d="M270,306 C278,356 200,352 243,310 M239.3,320.6 L243,310 L232.4,313.4"/><circle class="fig-dot" cx="270" cy="306" r="4"/><path class="fig-ink" d="M370,290 Q390,225 490,198 M481.6,205.4 L490,198 L479,195.8"/><circle class="fig-dot" cx="370" cy="290" r="4"/></svg></figure>
+        <div class="table-wrap"><table>
+          <tr><th>설정</th><th>결과</th></tr>
+          <tr><td>슬라이드 순서, (1)(2)까지 실행</td><td>before-&gt;rlink → after, new_node-&gt;llink → before, new_node-&gt;rlink → after, <b>after-&gt;llink → before</b></td></tr>
+          <tr><td>슬라이드 순서 1, 2, 3, 4 끝까지</td><td>before-&gt;rlink → new_node, new_node-&gt;llink → before, new_node-&gt;rlink → after, <b>after-&gt;llink → new_node</b></td></tr>
+          <tr><td>3·4 바꿈, (1)(2)(4)까지 실행</td><td>before-&gt;rlink → new_node, new_node-&gt;llink → before, new_node-&gt;rlink → after, <b>after-&gt;llink → before</b></td></tr>
+          <tr><td>3·4 바꿈, 1, 2, 4, 3 끝까지</td><td>before-&gt;rlink → new_node, new_node-&gt;llink → new_node, new_node-&gt;rlink → after, <b>after-&gt;llink → before</b></td></tr>
+        </table></div>
+      </div>
+    </div>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>단순 연결 리스트에서도, 원형 연결 리스트에서도 새로 들어오는 노드의 링크부터 연결했다는 점을 다시 짚었어요.</p>
+    <blockquote>"항상 새로 들어오는 아이에 링크를 연결해 줘야 돼요." (1005 Part 07)</blockquote>
+    <blockquote>"반드시 3번하고 4번하고는 순서를 지켜야 됩니다. 1, 2번은 누가 먼저 하든 상관없어요." (1005 Part 07)</blockquote>
+    <p>4번을 먼저 하면 <code>before-&gt;rlink-&gt;llink</code>가 가리키는 대상이 바뀌어서, 3번이 전혀 다른 칸을 고치게 된다고 했어요. (1005 Part 07)</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">new_node의 두 링크를 먼저 잇고, 3번을 4번보다 먼저 실행해야 after의 llink를 제대로 고쳐요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">dinsert_node 시간복잡도</span>$$O(1)$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>before</dt><dd>new_node를 그 오른쪽에 넣을 선행 노드</dd>
+      <dt>after</dt><dd>before 다음 노드, 따로 가리키는 포인터 없이 <code>before-&gt;rlink</code>로 찾아감</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s3-dremove"><h3>3. dremove_node</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p39</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">줄에서 한 친구가 빠질 때는 양옆 친구가 서로를 가리키면 돼요.</p>
+    <figure class="figure"><svg id="fig-s3-remove-hands" viewBox="0 0 520 170" role="img" aria-label="테두리 상자 세 개가 나란히 있고 가운데 상자는 점선 테두리다. 왼쪽 상자에서 위로 돌아 오른쪽 상자로 가는 강조색 곡선과, 오른쪽 상자에서 아래로 돌아 왼쪽 상자로 가는 강조색 곡선이 가운데 상자를 건너뛴다."><rect class="fig-ink" x="40" y="62" width="110" height="44" rx="6"/><rect class="fig-ink" x="205" y="62" width="110" height="44" rx="6" stroke-dasharray="6 5"/><rect class="fig-ink" x="370" y="62" width="110" height="44" rx="6"/><text class="fig-text" x="95" y="89" text-anchor="middle">왼쪽 친구</text><text class="fig-muted" x="260" y="89" text-anchor="middle">빠지는 친구</text><text class="fig-text" x="425" y="89" text-anchor="middle">오른쪽 친구</text><path class="fig-accent" d="M110,58 Q260,-10 410,56 M400,58 L410,56 L404,47"/><path class="fig-accent" d="M410,110 Q260,178 110,112 M116,121 L110,112 L120,110"/></svg><figcaption>점선 상자 친구를 건너뛰어 양옆 친구가 바로 이어져요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><code>dremove_node</code>는 노드 <code>removed</code>를 리스트에서 떼어 내고 메모리를 반납해요(S4 p39).</p>
+<pre><code class="language-c">// 노드 removed를 삭제한다.
+void dremove_node(DlistNode *phead_node,
+                  DlistNode *removed)
+{
+    if( removed == phead_node ) return;
+    removed-&gt;llink-&gt;rlink = removed-&gt;rlink;
+    removed-&gt;rlink-&gt;llink = removed-&gt;llink;
+    free(removed);
+}</code></pre>
+    <ul>
+      <li><code>if( removed == phead_node ) return;</code> → removed가 헤드 노드라면 지울 데이터 노드가 없다는 뜻이라 아무것도 하지 않고 끝내요. 헤드 노드는 지우지 않아요.</li>
+      <li>파라미터로는 <code>phead_node</code>와 <code>removed</code>만 들어와요. 앞 노드를 가리키는 포인터가 따로 없어서 <code>removed-&gt;llink</code>로 앞 노드를, <code>removed-&gt;rlink</code>로 뒤 노드를 찾아가요.</li>
+    </ul>
+    <p>헤드 노드 H ⇄ 10 ⇄ 20 ⇄ 30(원형)에서 20을 지울 때 따라가요.</p>
+    <ol class="steps">
+      <li>(1) <code>removed-&gt;llink-&gt;rlink = removed-&gt;rlink;</code> → 앞 노드 10의 rlink가 30을 가리켜요.</li>
+      <li>(2) <code>removed-&gt;rlink-&gt;llink = removed-&gt;llink;</code> → 뒤 노드 30의 llink가 10을 가리켜요.</li>
+      <li><code>free(removed);</code> → 20의 메모리를 반납해요. 결과는 H ⇄ 10 ⇄ 30이에요.</li>
+    </ol>
+    <p>단순 연결 리스트의 <a href="#s0-remove-node">remove_node의 두 가지 경우</a>는 선행 노드 <code>p</code>를 따로 받아야 했어요. 이중 연결 리스트는 removed의 llink가 선행 노드를 알려 주므로 선행 노드를 찾을 필요가 없어요. 시간복잡도는 $O(1)$이에요.</p>
+    <p class="note">수업 중 "NULL을 return"이라고 말했지만, <code>dremove_node</code>는 void 함수라 값 없이 <code>return;</code>으로 끝나요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>삭제는 언제나 삽입보다 쉬웠다고 했어요. 지울 노드를 사이에 둔 두 링크를 서로 가리키게 바꾸면 끝이에요. (1005 Part 07)</p>
+    <p>(1)과 (2)를 "removed의 llink의 rlink가 removed의 rlink가 가리키는 곳을 가리키게"처럼 말로 풀어 설명해 보였어요.</p>
+    <blockquote>"이렇게 링크가 많을 때 말로 여러분들이 설명할 수 있어야 돼요." (1005 Part 07)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">removed의 양옆 노드가 서로를 가리키게 두 링크를 고친 뒤 free하고, 헤드 노드는 지우지 않아요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">dremove_node 시간복잡도</span>$$O(1)$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>removed</dt><dd>삭제될 노드, llink로 앞 노드를 rlink로 뒤 노드를 찾음</dd>
+      <dt>phead_node</dt><dd>헤드 노드를 가리키는 포인터, removed와 같으면 바로 return</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s4"><h2>5. 연결 리스트의 응용</h2>
+<article class="topic" id="s4-poly"><h3>1. 다항식 덧셈</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p40–43</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">두 줄의 카드를 큰 수부터 하나씩 짚어 가며 한 줄로 합쳐요.</p>
+    <figure class="figure"><svg id="fig-poly-cards" viewBox="0 0 520 190" role="img" aria-label="첫째 줄 12, 8, 0과 둘째 줄 12, 10, 6을 큰 수부터 합쳐 12, 10, 8, 6, 0 한 줄을 만드는 그림. 카드는 모두 테두리 상자이고, 두 줄의 12가 합쳐진 아래 줄 첫 칸만 강조색 테두리예요."><text x="8" y="37" class="fig-text" font-size="13">첫째 줄</text><rect x="110" y="16" width="44" height="32" class="fig-ink" fill="none"/><text x="132" y="37" class="fig-text" font-size="14" text-anchor="middle">12</text><rect x="250" y="16" width="44" height="32" class="fig-ink" fill="none"/><text x="272" y="37" class="fig-text" font-size="14" text-anchor="middle">8</text><rect x="390" y="16" width="44" height="32" class="fig-ink" fill="none"/><text x="412" y="37" class="fig-text" font-size="14" text-anchor="middle">0</text><path d="M154 32 L247 32 M240 26 L247 32 L240 38 M294 32 L387 32 M380 26 L387 32 L380 38" class="fig-ink" fill="none"/><text x="8" y="97" class="fig-text" font-size="13">둘째 줄</text><rect x="110" y="76" width="44" height="32" class="fig-ink" fill="none"/><text x="132" y="97" class="fig-text" font-size="14" text-anchor="middle">12</text><rect x="180" y="76" width="44" height="32" class="fig-ink" fill="none"/><text x="202" y="97" class="fig-text" font-size="14" text-anchor="middle">10</text><rect x="320" y="76" width="44" height="32" class="fig-ink" fill="none"/><text x="342" y="97" class="fig-text" font-size="14" text-anchor="middle">6</text><path d="M154 92 L177 92 M170 86 L177 92 L170 98 M224 92 L317 92 M310 86 L317 92 L310 98" class="fig-ink" fill="none"/><text x="8" y="157" class="fig-text" font-size="13">합친 줄</text><rect x="110" y="136" width="44" height="32" class="fig-accent" fill="none"/><text x="132" y="157" class="fig-text" font-size="14" text-anchor="middle">12</text><rect x="180" y="136" width="44" height="32" class="fig-ink" fill="none"/><text x="202" y="157" class="fig-text" font-size="14" text-anchor="middle">10</text><rect x="250" y="136" width="44" height="32" class="fig-ink" fill="none"/><text x="272" y="157" class="fig-text" font-size="14" text-anchor="middle">8</text><rect x="320" y="136" width="44" height="32" class="fig-ink" fill="none"/><text x="342" y="157" class="fig-text" font-size="14" text-anchor="middle">6</text><rect x="390" y="136" width="44" height="32" class="fig-ink" fill="none"/><text x="412" y="157" class="fig-text" font-size="14" text-anchor="middle">0</text><path d="M154 152 L177 152 M170 146 L177 152 L170 158 M224 152 L247 152 M240 146 L247 152 L240 158 M294 152 L317 152 M310 146 L317 152 L310 158 M364 152 L387 152 M380 146 L387 152 L380 158" class="fig-ink" fill="none"/></svg><figcaption>같은 수가 만나면 하나로 합치고, 다르면 큰 쪽을 먼저 아래 줄로 옮겨요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>다항식(polynomial)을 배열로 나타내면 계수가 0인 항도 자리를 차지해요. $A = 3x^{12} + 2x^{8} + 1$이면 11차, 10차, 9차, 7차 … 항의 계수가 모두 0이에요. 배열로 다항식을 다룰 때는 희소행렬처럼 0이 자리를 많이 차지하는 경우를 어떻게 할지 고민했어요. 연결 리스트는 0이 아닌 항만 노드로 만들면 되므로 이 고민이 없어요.</p>
+    <p>하나의 다항식을 하나의 단순 연결 리스트로 나타내요. 노드에는 데이터 필드 두 개, 계수 <code>coef</code>(coefficient)와 지수 <code>expon</code>(exponent)를 두고 링크는 하나만 둬요. <code>A</code>와 <code>B</code>는 두 다항식 리스트의 헤드 포인터예요. 마지막 항 $1$은 계수 1, 지수 0인 노드예요.</p>
+<pre><code class="language-c">typedef struct ListNode {
+    int coef;
+    int expon;
+    struct ListNode *link;
+} ListNode;
+ListNode *A, *B;</code></pre>
+    <p>두 다항식 $A = 3x^{12} + 2x^{8} + 1$, $B = 8x^{12} - 3x^{10} + 10x^{6}$을 더하면 결과는 이래요.</p>
+    $$A + B = 11x^{12} - 3x^{10} + 2x^{8} + 10x^{6} + 1$$
+    <p>두 리스트를 최고차항부터 따라가요. <code>p</code>는 A의 항, <code>q</code>는 B의 항을 가리키고, 결과는 새 다항식 리스트 C의 끝에 붙여요. 매 단계 두 지수를 비교해 세 경우로 나눠요.</p>
+    <ol>
+      <li><code>p.expon == q.expon</code>: 두 계수를 더해 0이 아니면 새 항을 만들어 C에 추가해요. 그리고 p와 q 모두 다음 항으로 가요.</li>
+      <li><code>p.expon &lt; q.expon</code>: q가 가리키는 항을 새 항으로 복사해 C에 추가해요. 그리고 q만 다음 항으로 가요.</li>
+      <li><code>p.expon &gt; q.expon</code>: p가 가리키는 항을 새 항으로 복사해 C에 추가해요. 그리고 p만 다음 항으로 가요.</li>
+    </ol>
+    <p>S4 p42–43 그림의 추적이에요. <code>r</code>은 C의 마지막 노드를 가리켜요.</p>
+    <ol class="steps">
+      <li>p = $3x^{12}$, q = $8x^{12}$: $12 = 12$, 경우 ①. $3 + 8 = 11$ → C: $11x^{12}$, p와 q 이동</li>
+      <li>p = $2x^{8}$, q = $-3x^{10}$: $8 \lt 10$, 경우 ② → C: $11x^{12} - 3x^{10}$, q 이동</li>
+      <li>p = $2x^{8}$, q = $10x^{6}$: $8 \gt 6$, 경우 ③ → C: $11x^{12} - 3x^{10} + 2x^{8}$, p 이동</li>
+      <li>p = $1$, q = $10x^{6}$: $0 \lt 6$, 경우 ② → C: $11x^{12} - 3x^{10} + 2x^{8} + 10x^{6}$, q 이동 → q = NULL</li>
+      <li>q = NULL: A에 남은 항 $1$을 C로 가져옴 → C: $11x^{12} - 3x^{10} + 2x^{8} + 10x^{6} + 1$</li>
+    </ol>
+    <p>p나 q 중 하나가 NULL이 되면 아직 남아 있는 항들을 <strong>전부</strong> C로 가져와요. 남은 항은 여러 개일 수 있어요. 하나씩 복사해도 되고, 앞에서 배운 <a href="#s1-concat">3. 합병 연산 concat</a>으로 남은 꼬리를 C 뒤에 통째로 이어 붙여도 돼요.</p>
+    <p>A의 항 수를 $m$, B의 항 수를 $n$이라 하면 비교할 때마다 p나 q가 적어도 한 칸 나아가고, 남은 항도 한 번씩만 옮겨요. 그래서 덧셈은 $O(m+n)$이에요. 시간복잡도는 수업에서 따로 말하지 않았어요.</p>
+    <div class="widget" id="widget-poly"><h4>직접 해 보기: 다항식 A + B 한 단계씩</h4>
+      <p class="widget-help">"다음"을 누르면 p와 q를 비교해 C에 항을 하나 붙이고, p·q 화살표는 이동을 마친 뒤의 항으로 옮겨 가요. 방금 비교한 항은 강조색 테두리로 남아요.</p>
+      <div class="controls" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <button class="btn btn-ghost" id="poly-reset" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">처음으로</button>
+        <button class="btn btn-ghost" id="poly-prev" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">이전</button>
+        <button class="btn btn-primary" id="poly-next" type="button" style="justify-self:auto;min-width:0;padding:0 16px">다음</button>
+      </div>
+      <svg id="poly-plot" viewBox="0 0 740 290" role="img" aria-label="다항식 덧셈 0/5단계. A, B, C 세 연결 리스트의 노드는 coef, expon, link 세 칸 테두리 상자. 이동을 마친 뒤 p는 A의 3x¹², q는 B의 8x¹²을 가리킴. 강조한 항 없음. C = (비어 있음)."><text x="20" y="78" class="fig-text" font-size="13">A</text><path d="M34 73 L67 73 M60 67 L67 73 L60 79" class="fig-ink" fill="none"/><rect x="70" y="56" width="84" height="34" class="fig-ink" fill="none"/><path d="M98 56 L98 90 M126 56 L126 90" class="fig-ink" fill="none"/><text x="84" y="78" class="fig-text" font-size="13" text-anchor="middle">3</text><text x="112" y="78" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 73 L192 73 M185 67 L192 73 L185 79" class="fig-ink" fill="none"/><rect x="195" y="56" width="84" height="34" class="fig-ink" fill="none"/><path d="M223 56 L223 90 M251 56 L251 90" class="fig-ink" fill="none"/><text x="209" y="78" class="fig-text" font-size="13" text-anchor="middle">2</text><text x="237" y="78" class="fig-text" font-size="13" text-anchor="middle">8</text><path d="M265 73 L317 73 M310 67 L317 73 L310 79" class="fig-ink" fill="none"/><rect x="320" y="56" width="84" height="34" class="fig-ink" fill="none"/><path d="M348 56 L348 90 M376 56 L376 90" class="fig-ink" fill="none"/><text x="334" y="78" class="fig-text" font-size="13" text-anchor="middle">1</text><text x="362" y="78" class="fig-text" font-size="13" text-anchor="middle">0</text><path d="M390 73 L442 73 M435 67 L442 73 L435 79" class="fig-ink" fill="none"/><text x="447" y="78" class="fig-muted" font-size="13">NULL</text><text x="112" y="36" class="fig-text" font-size="13" text-anchor="middle">p</text><path d="M112 41 L112 53 M106 46 L112 53 L118 46" class="fig-accent" fill="none"/><text x="20" y="168" class="fig-text" font-size="13">B</text><path d="M34 163 L67 163 M60 157 L67 163 L60 169" class="fig-ink" fill="none"/><rect x="70" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M98 146 L98 180 M126 146 L126 180" class="fig-ink" fill="none"/><text x="84" y="168" class="fig-text" font-size="13" text-anchor="middle">8</text><text x="112" y="168" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 163 L192 163 M185 157 L192 163 L185 169" class="fig-ink" fill="none"/><rect x="195" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M223 146 L223 180 M251 146 L251 180" class="fig-ink" fill="none"/><text x="209" y="168" class="fig-text" font-size="13" text-anchor="middle">-3</text><text x="237" y="168" class="fig-text" font-size="13" text-anchor="middle">10</text><path d="M265 163 L317 163 M310 157 L317 163 L310 169" class="fig-ink" fill="none"/><rect x="320" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M348 146 L348 180 M376 146 L376 180" class="fig-ink" fill="none"/><text x="334" y="168" class="fig-text" font-size="13" text-anchor="middle">10</text><text x="362" y="168" class="fig-text" font-size="13" text-anchor="middle">6</text><path d="M390 163 L442 163 M435 157 L442 163 L435 169" class="fig-ink" fill="none"/><text x="447" y="168" class="fig-muted" font-size="13">NULL</text><text x="112" y="126" class="fig-text" font-size="13" text-anchor="middle">q</text><path d="M112 131 L112 143 M106 136 L112 143 L118 136" class="fig-accent" fill="none"/><text x="20" y="258" class="fig-text" font-size="13">C</text><path d="M34 253 L67 253 M60 247 L67 253 L60 259" class="fig-ink" fill="none"/><text x="72" y="258" class="fig-muted" font-size="13">NULL</text><text x="708" y="36" class="fig-muted" font-size="13" text-anchor="end">coef | expon | link</text></svg>
+      <p class="readout"><b id="poly-step">0/5단계</b> <span id="poly-out">시작: p는 A의 첫 항 3x¹², q는 B의 첫 항 8x¹²을 가리켜요. C는 아직 비어 있어요.</span></p>
+      <p class="readout">지금까지의 C: <b id="poly-c">(비어 있음)</b></p>
+      <p class="legend"><span><span class="sw fit"></span>강조색 테두리: 이번 단계에서 비교하거나 가져온 항, C에 새로 붙은 항</span><span>강조색 화살표: 이동을 마친 뒤의 포인터 p, q와 C의 끝 r</span><span>노드 세 칸: coef, expon, link</span></p>
+      <div class="widget-static" hidden>
+        <figure class="figure"><svg id="widget-poly-static-1" viewBox="0 0 740 290" role="img" aria-label="다항식 덧셈 1/5단계. A, B, C 세 연결 리스트의 노드는 coef, expon, link 세 칸 테두리 상자. 이동을 마친 뒤 p는 A의 2x⁸, q는 B의 -3x¹⁰을 가리킴. 이번 단계에서 비교하거나 가져온 항(A의 3x¹², B의 8x¹², C에 새로 붙은 11x¹²)은 강조색 테두리. C = 11x¹²."><text x="20" y="78" class="fig-text" font-size="13">A</text><path d="M34 73 L67 73 M60 67 L67 73 L60 79" class="fig-ink" fill="none"/><rect x="70" y="56" width="84" height="34" class="fig-accent" fill="none"/><path d="M98 56 L98 90 M126 56 L126 90" class="fig-ink" fill="none"/><text x="84" y="78" class="fig-text" font-size="13" text-anchor="middle">3</text><text x="112" y="78" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 73 L192 73 M185 67 L192 73 L185 79" class="fig-ink" fill="none"/><rect x="195" y="56" width="84" height="34" class="fig-ink" fill="none"/><path d="M223 56 L223 90 M251 56 L251 90" class="fig-ink" fill="none"/><text x="209" y="78" class="fig-text" font-size="13" text-anchor="middle">2</text><text x="237" y="78" class="fig-text" font-size="13" text-anchor="middle">8</text><path d="M265 73 L317 73 M310 67 L317 73 L310 79" class="fig-ink" fill="none"/><rect x="320" y="56" width="84" height="34" class="fig-ink" fill="none"/><path d="M348 56 L348 90 M376 56 L376 90" class="fig-ink" fill="none"/><text x="334" y="78" class="fig-text" font-size="13" text-anchor="middle">1</text><text x="362" y="78" class="fig-text" font-size="13" text-anchor="middle">0</text><path d="M390 73 L442 73 M435 67 L442 73 L435 79" class="fig-ink" fill="none"/><text x="447" y="78" class="fig-muted" font-size="13">NULL</text><text x="237" y="36" class="fig-text" font-size="13" text-anchor="middle">p</text><path d="M237 41 L237 53 M231 46 L237 53 L243 46" class="fig-accent" fill="none"/><text x="20" y="168" class="fig-text" font-size="13">B</text><path d="M34 163 L67 163 M60 157 L67 163 L60 169" class="fig-ink" fill="none"/><rect x="70" y="146" width="84" height="34" class="fig-accent" fill="none"/><path d="M98 146 L98 180 M126 146 L126 180" class="fig-ink" fill="none"/><text x="84" y="168" class="fig-text" font-size="13" text-anchor="middle">8</text><text x="112" y="168" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 163 L192 163 M185 157 L192 163 L185 169" class="fig-ink" fill="none"/><rect x="195" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M223 146 L223 180 M251 146 L251 180" class="fig-ink" fill="none"/><text x="209" y="168" class="fig-text" font-size="13" text-anchor="middle">-3</text><text x="237" y="168" class="fig-text" font-size="13" text-anchor="middle">10</text><path d="M265 163 L317 163 M310 157 L317 163 L310 169" class="fig-ink" fill="none"/><rect x="320" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M348 146 L348 180 M376 146 L376 180" class="fig-ink" fill="none"/><text x="334" y="168" class="fig-text" font-size="13" text-anchor="middle">10</text><text x="362" y="168" class="fig-text" font-size="13" text-anchor="middle">6</text><path d="M390 163 L442 163 M435 157 L442 163 L435 169" class="fig-ink" fill="none"/><text x="447" y="168" class="fig-muted" font-size="13">NULL</text><text x="237" y="126" class="fig-text" font-size="13" text-anchor="middle">q</text><path d="M237 131 L237 143 M231 136 L237 143 L243 136" class="fig-accent" fill="none"/><text x="20" y="258" class="fig-text" font-size="13">C</text><path d="M34 253 L67 253 M60 247 L67 253 L60 259" class="fig-ink" fill="none"/><rect x="70" y="236" width="84" height="34" class="fig-accent" fill="none"/><path d="M98 236 L98 270 M126 236 L126 270" class="fig-ink" fill="none"/><text x="84" y="258" class="fig-text" font-size="13" text-anchor="middle">11</text><text x="112" y="258" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 253 L192 253 M185 247 L192 253 L185 259" class="fig-ink" fill="none"/><text x="197" y="258" class="fig-muted" font-size="13">NULL</text><text x="112" y="216" class="fig-text" font-size="13" text-anchor="middle">r</text><path d="M112 221 L112 233 M106 226 L112 233 L118 226" class="fig-accent" fill="none"/><text x="708" y="36" class="fig-muted" font-size="13" text-anchor="end">coef | expon | link</text></svg><figcaption>1/5단계: 비교: p.expon = 12, q.expon = 12로 같아요(경우 ①). 계수 3 + 8 = 11은 0이 아니라서 11x¹²을 C에 붙였어요. p와 q 모두 다음 항으로 옮겼어요.</figcaption></figure>
+        <figure class="figure"><svg id="widget-poly-static-2" viewBox="0 0 740 290" role="img" aria-label="다항식 덧셈 3/5단계. A, B, C 세 연결 리스트의 노드는 coef, expon, link 세 칸 테두리 상자. 이동을 마친 뒤 p는 A의 1, q는 B의 10x⁶을 가리킴. 이번 단계에서 비교하거나 가져온 항(A의 2x⁸, B의 10x⁶, C에 새로 붙은 2x⁸)은 강조색 테두리. C = 11x¹² - 3x¹⁰ + 2x⁸."><text x="20" y="78" class="fig-text" font-size="13">A</text><path d="M34 73 L67 73 M60 67 L67 73 L60 79" class="fig-ink" fill="none"/><rect x="70" y="56" width="84" height="34" class="fig-ink" fill="none"/><path d="M98 56 L98 90 M126 56 L126 90" class="fig-ink" fill="none"/><text x="84" y="78" class="fig-text" font-size="13" text-anchor="middle">3</text><text x="112" y="78" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 73 L192 73 M185 67 L192 73 L185 79" class="fig-ink" fill="none"/><rect x="195" y="56" width="84" height="34" class="fig-accent" fill="none"/><path d="M223 56 L223 90 M251 56 L251 90" class="fig-ink" fill="none"/><text x="209" y="78" class="fig-text" font-size="13" text-anchor="middle">2</text><text x="237" y="78" class="fig-text" font-size="13" text-anchor="middle">8</text><path d="M265 73 L317 73 M310 67 L317 73 L310 79" class="fig-ink" fill="none"/><rect x="320" y="56" width="84" height="34" class="fig-ink" fill="none"/><path d="M348 56 L348 90 M376 56 L376 90" class="fig-ink" fill="none"/><text x="334" y="78" class="fig-text" font-size="13" text-anchor="middle">1</text><text x="362" y="78" class="fig-text" font-size="13" text-anchor="middle">0</text><path d="M390 73 L442 73 M435 67 L442 73 L435 79" class="fig-ink" fill="none"/><text x="447" y="78" class="fig-muted" font-size="13">NULL</text><text x="362" y="36" class="fig-text" font-size="13" text-anchor="middle">p</text><path d="M362 41 L362 53 M356 46 L362 53 L368 46" class="fig-accent" fill="none"/><text x="20" y="168" class="fig-text" font-size="13">B</text><path d="M34 163 L67 163 M60 157 L67 163 L60 169" class="fig-ink" fill="none"/><rect x="70" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M98 146 L98 180 M126 146 L126 180" class="fig-ink" fill="none"/><text x="84" y="168" class="fig-text" font-size="13" text-anchor="middle">8</text><text x="112" y="168" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 163 L192 163 M185 157 L192 163 L185 169" class="fig-ink" fill="none"/><rect x="195" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M223 146 L223 180 M251 146 L251 180" class="fig-ink" fill="none"/><text x="209" y="168" class="fig-text" font-size="13" text-anchor="middle">-3</text><text x="237" y="168" class="fig-text" font-size="13" text-anchor="middle">10</text><path d="M265 163 L317 163 M310 157 L317 163 L310 169" class="fig-ink" fill="none"/><rect x="320" y="146" width="84" height="34" class="fig-accent" fill="none"/><path d="M348 146 L348 180 M376 146 L376 180" class="fig-ink" fill="none"/><text x="334" y="168" class="fig-text" font-size="13" text-anchor="middle">10</text><text x="362" y="168" class="fig-text" font-size="13" text-anchor="middle">6</text><path d="M390 163 L442 163 M435 157 L442 163 L435 169" class="fig-ink" fill="none"/><text x="447" y="168" class="fig-muted" font-size="13">NULL</text><text x="362" y="126" class="fig-text" font-size="13" text-anchor="middle">q</text><path d="M362 131 L362 143 M356 136 L362 143 L368 136" class="fig-accent" fill="none"/><text x="20" y="258" class="fig-text" font-size="13">C</text><path d="M34 253 L67 253 M60 247 L67 253 L60 259" class="fig-ink" fill="none"/><rect x="70" y="236" width="84" height="34" class="fig-ink" fill="none"/><path d="M98 236 L98 270 M126 236 L126 270" class="fig-ink" fill="none"/><text x="84" y="258" class="fig-text" font-size="13" text-anchor="middle">11</text><text x="112" y="258" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 253 L192 253 M185 247 L192 253 L185 259" class="fig-ink" fill="none"/><rect x="195" y="236" width="84" height="34" class="fig-ink" fill="none"/><path d="M223 236 L223 270 M251 236 L251 270" class="fig-ink" fill="none"/><text x="209" y="258" class="fig-text" font-size="13" text-anchor="middle">-3</text><text x="237" y="258" class="fig-text" font-size="13" text-anchor="middle">10</text><path d="M265 253 L317 253 M310 247 L317 253 L310 259" class="fig-ink" fill="none"/><rect x="320" y="236" width="84" height="34" class="fig-accent" fill="none"/><path d="M348 236 L348 270 M376 236 L376 270" class="fig-ink" fill="none"/><text x="334" y="258" class="fig-text" font-size="13" text-anchor="middle">2</text><text x="362" y="258" class="fig-text" font-size="13" text-anchor="middle">8</text><path d="M390 253 L442 253 M435 247 L442 253 L435 259" class="fig-ink" fill="none"/><text x="447" y="258" class="fig-muted" font-size="13">NULL</text><text x="362" y="216" class="fig-text" font-size="13" text-anchor="middle">r</text><path d="M362 221 L362 233 M356 226 L362 233 L368 226" class="fig-accent" fill="none"/><text x="708" y="36" class="fig-muted" font-size="13" text-anchor="end">coef | expon | link</text></svg><figcaption>3/5단계: 비교: p.expon = 8 &gt; q.expon = 6(경우 ③). p의 항 2x⁸을 복사해 C에 붙이고 p만 다음 항으로 옮겼어요.</figcaption></figure>
+        <figure class="figure"><svg id="widget-poly-static-3" viewBox="0 0 740 290" role="img" aria-label="다항식 덧셈 5/5단계. A, B, C 세 연결 리스트의 노드는 coef, expon, link 세 칸 테두리 상자. 이동을 마친 뒤 p는 A의 NULL, q는 B의 NULL을 가리킴. 이번 단계에서 비교하거나 가져온 항(A의 1, C에 새로 붙은 1)은 강조색 테두리. C = 11x¹² - 3x¹⁰ + 2x⁸ + 10x⁶ + 1."><text x="20" y="78" class="fig-text" font-size="13">A</text><path d="M34 73 L67 73 M60 67 L67 73 L60 79" class="fig-ink" fill="none"/><rect x="70" y="56" width="84" height="34" class="fig-ink" fill="none"/><path d="M98 56 L98 90 M126 56 L126 90" class="fig-ink" fill="none"/><text x="84" y="78" class="fig-text" font-size="13" text-anchor="middle">3</text><text x="112" y="78" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 73 L192 73 M185 67 L192 73 L185 79" class="fig-ink" fill="none"/><rect x="195" y="56" width="84" height="34" class="fig-ink" fill="none"/><path d="M223 56 L223 90 M251 56 L251 90" class="fig-ink" fill="none"/><text x="209" y="78" class="fig-text" font-size="13" text-anchor="middle">2</text><text x="237" y="78" class="fig-text" font-size="13" text-anchor="middle">8</text><path d="M265 73 L317 73 M310 67 L317 73 L310 79" class="fig-ink" fill="none"/><rect x="320" y="56" width="84" height="34" class="fig-accent" fill="none"/><path d="M348 56 L348 90 M376 56 L376 90" class="fig-ink" fill="none"/><text x="334" y="78" class="fig-text" font-size="13" text-anchor="middle">1</text><text x="362" y="78" class="fig-text" font-size="13" text-anchor="middle">0</text><path d="M390 73 L442 73 M435 67 L442 73 L435 79" class="fig-ink" fill="none"/><text x="447" y="78" class="fig-muted" font-size="13">NULL</text><text x="463" y="36" class="fig-text" font-size="13" text-anchor="middle">p</text><path d="M463 41 L463 53 M457 46 L463 53 L469 46" class="fig-accent" fill="none"/><text x="20" y="168" class="fig-text" font-size="13">B</text><path d="M34 163 L67 163 M60 157 L67 163 L60 169" class="fig-ink" fill="none"/><rect x="70" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M98 146 L98 180 M126 146 L126 180" class="fig-ink" fill="none"/><text x="84" y="168" class="fig-text" font-size="13" text-anchor="middle">8</text><text x="112" y="168" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 163 L192 163 M185 157 L192 163 L185 169" class="fig-ink" fill="none"/><rect x="195" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M223 146 L223 180 M251 146 L251 180" class="fig-ink" fill="none"/><text x="209" y="168" class="fig-text" font-size="13" text-anchor="middle">-3</text><text x="237" y="168" class="fig-text" font-size="13" text-anchor="middle">10</text><path d="M265 163 L317 163 M310 157 L317 163 L310 169" class="fig-ink" fill="none"/><rect x="320" y="146" width="84" height="34" class="fig-ink" fill="none"/><path d="M348 146 L348 180 M376 146 L376 180" class="fig-ink" fill="none"/><text x="334" y="168" class="fig-text" font-size="13" text-anchor="middle">10</text><text x="362" y="168" class="fig-text" font-size="13" text-anchor="middle">6</text><path d="M390 163 L442 163 M435 157 L442 163 L435 169" class="fig-ink" fill="none"/><text x="447" y="168" class="fig-muted" font-size="13">NULL</text><text x="463" y="126" class="fig-text" font-size="13" text-anchor="middle">q</text><path d="M463 131 L463 143 M457 136 L463 143 L469 136" class="fig-accent" fill="none"/><text x="20" y="258" class="fig-text" font-size="13">C</text><path d="M34 253 L67 253 M60 247 L67 253 L60 259" class="fig-ink" fill="none"/><rect x="70" y="236" width="84" height="34" class="fig-ink" fill="none"/><path d="M98 236 L98 270 M126 236 L126 270" class="fig-ink" fill="none"/><text x="84" y="258" class="fig-text" font-size="13" text-anchor="middle">11</text><text x="112" y="258" class="fig-text" font-size="13" text-anchor="middle">12</text><path d="M140 253 L192 253 M185 247 L192 253 L185 259" class="fig-ink" fill="none"/><rect x="195" y="236" width="84" height="34" class="fig-ink" fill="none"/><path d="M223 236 L223 270 M251 236 L251 270" class="fig-ink" fill="none"/><text x="209" y="258" class="fig-text" font-size="13" text-anchor="middle">-3</text><text x="237" y="258" class="fig-text" font-size="13" text-anchor="middle">10</text><path d="M265 253 L317 253 M310 247 L317 253 L310 259" class="fig-ink" fill="none"/><rect x="320" y="236" width="84" height="34" class="fig-ink" fill="none"/><path d="M348 236 L348 270 M376 236 L376 270" class="fig-ink" fill="none"/><text x="334" y="258" class="fig-text" font-size="13" text-anchor="middle">2</text><text x="362" y="258" class="fig-text" font-size="13" text-anchor="middle">8</text><path d="M390 253 L442 253 M435 247 L442 253 L435 259" class="fig-ink" fill="none"/><rect x="445" y="236" width="84" height="34" class="fig-ink" fill="none"/><path d="M473 236 L473 270 M501 236 L501 270" class="fig-ink" fill="none"/><text x="459" y="258" class="fig-text" font-size="13" text-anchor="middle">10</text><text x="487" y="258" class="fig-text" font-size="13" text-anchor="middle">6</text><path d="M515 253 L567 253 M560 247 L567 253 L560 259" class="fig-ink" fill="none"/><rect x="570" y="236" width="84" height="34" class="fig-accent" fill="none"/><path d="M598 236 L598 270 M626 236 L626 270" class="fig-ink" fill="none"/><text x="584" y="258" class="fig-text" font-size="13" text-anchor="middle">1</text><text x="612" y="258" class="fig-text" font-size="13" text-anchor="middle">0</text><path d="M640 253 L692 253 M685 247 L692 253 L685 259" class="fig-ink" fill="none"/><text x="697" y="258" class="fig-muted" font-size="13">NULL</text><text x="612" y="216" class="fig-text" font-size="13" text-anchor="middle">r</text><path d="M612 221 L612 233 M606 226 L612 233 L618 226" class="fig-accent" fill="none"/><text x="708" y="36" class="fig-muted" font-size="13" text-anchor="end">coef | expon | link</text></svg><figcaption>5/5단계: q가 NULL이라 더 비교하지 않아요. A에 남은 항 1을 C로 가져오고 p를 다음으로 옮겼어요. 남은 꼬리를 concat으로 통째로 붙여도 돼요. 이제 p와 q 모두 NULL이라 덧셈이 끝났어요.</figcaption></figure>
+        <div class="table-wrap"><table><tr><th>단계</th><th>이번 비교</th><th>이동 후 p, q</th><th>지금까지의 C</th></tr>
+          <tr><td>0</td><td>시작</td><td>p = $3x^{12}$, q = $8x^{12}$</td><td>(비어 있음)</td></tr>
+          <tr><td>1</td><td>$12 = 12$, 경우 ①, $3 + 8 = 11$</td><td>p = $2x^{8}$, q = $-3x^{10}$</td><td>$11x^{12}$</td></tr>
+          <tr><td>2</td><td>$8 \lt 10$, 경우 ②</td><td>p = $2x^{8}$, q = $10x^{6}$</td><td>$11x^{12} - 3x^{10}$</td></tr>
+          <tr><td>3</td><td>$8 \gt 6$, 경우 ③</td><td>p = $1$, q = $10x^{6}$</td><td>$11x^{12} - 3x^{10} + 2x^{8}$</td></tr>
+          <tr><td>4</td><td>$0 \lt 6$, 경우 ②</td><td>p = $1$, q = NULL</td><td>$11x^{12} - 3x^{10} + 2x^{8} + 10x^{6}$</td></tr>
+          <tr><td>5</td><td>q가 NULL, A에 남은 항 $1$을 가져옴</td><td>p = NULL, q = NULL</td><td>$11x^{12} - 3x^{10} + 2x^{8} + 10x^{6} + 1$</td></tr>
+        </table></div>
+      </div>
+    </div>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>배열로 다항식을 다룰 때 0인 계수 때문에 고민했던 일을 떠올리게 하셨어요. 리스트를 쓰기로 마음먹으면 그 고민이 사라진다고 하셨어요.</p>
+    <blockquote>"리스트 같은 경우엔 … 이런 고민을 안 할 수 있게 해 줍니다." (1005 Part 07)</blockquote>
+    <p>노드의 데이터 필드 수는 정해져 있지 않다고 하셨어요.</p>
+    <blockquote>"데이터를 세 개를 두고 링크를 하나만 둬도 상관없습니다." (1005 Part 07)</blockquote>
+    <p>손으로 더할 때와 같은 순서라고 하셨어요. 먼저 최고차항을 짚고, 12와 12가 같으니 3과 8을 더해 11을 만든다는 식이에요. (1005 Part 07–08)</p>
+    <p>q가 NULL을 만난 뒤에는 남은 꼬리를 앞에서 배운 합병으로 붙이면 된다고 하셨어요. 뒤에 여러 개가 딸려 올 수 있기 때문이에요.</p>
+    <blockquote>"우리 앞에서 배웠던 머지 기억나세요? 싱글 링크드 리스트 머지하는 연산." (1005 Part 08)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">두 다항식 리스트를 최고차항부터 비교하며 지수가 같으면 계수를 더하고, 다르면 큰 쪽 항을 C에 붙여요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">덧셈 결과</span>$$A + B = 11x^{12} - 3x^{10} + 2x^{8} + 10x^{6} + 1$$</li><li><span class="eq-name">시간복잡도</span>$$O(m+n)$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>coef(coefficient)</dt><dd>노드에 저장한 항의 계수예요.</dd><dt>expon(exponent)</dt><dd>노드에 저장한 항의 지수예요. p와 q는 이 값을 비교해요.</dd></dl>
+  </div>
+</article>
+
+<article class="topic" id="s4-listtype"><h3>2. ListType: head와 length</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p44–46</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">줄의 맨 앞사람과 사람 수를 쪽지 한 장에 같이 적어 둬요.</p>
+    <figure class="figure"><svg id="fig-listtype-note" viewBox="0 0 520 150" role="img" aria-label="맨 앞과 4명이 적힌 테두리 쪽지에서 선 화살표가 가, 나, 다, 라 네 사람이 화살표로 이어진 줄의 첫 사람을 가리키는 그림"><rect x="12" y="20" width="96" height="70" class="fig-accent" fill="none"/><text x="28" y="48" class="fig-text" font-size="13">맨 앞</text><text x="28" y="75" class="fig-text" font-size="13">4명</text><path d="M80 44 L160 44 L160 98 L177 98 M170 92 L177 98 L170 104" class="fig-accent" fill="none"/><rect x="182" y="82" width="48" height="32" class="fig-ink" fill="none"/><text x="206" y="103" class="fig-text" font-size="14" text-anchor="middle">가</text><rect x="262" y="82" width="48" height="32" class="fig-ink" fill="none"/><text x="286" y="103" class="fig-text" font-size="14" text-anchor="middle">나</text><rect x="342" y="82" width="48" height="32" class="fig-ink" fill="none"/><text x="366" y="103" class="fig-text" font-size="14" text-anchor="middle">다</text><rect x="422" y="82" width="48" height="32" class="fig-ink" fill="none"/><text x="446" y="103" class="fig-text" font-size="14" text-anchor="middle">라</text><path d="M230 98 L259 98 M252 92 L259 98 L252 104 M310 98 L339 98 M332 92 L339 98 L332 104 M390 98 L419 98 M412 92 L419 98 L412 104" class="fig-ink" fill="none"/><text x="12" y="132" class="fig-muted" font-size="13">쪽지</text></svg><figcaption>몇 명인지 물으면 줄을 따라 세지 않고 쪽지만 보면 돼요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>리스트 ADT는 순서 있는 항목들의 모임이고, 연산 중 <code>add</code>와 <code>delete</code>는 <strong>항목의 위치(position)</strong>를 파라미터로 받아요. 반면 지금까지 만든 연결 리스트의 <code>insert_node</code>와 <code>remove_node</code>는 <strong>노드 포인터(선행 노드)</strong>를 파라미터로 받아요. S4 p44는 리스트 ADT의 연산을 연결 리스트로 구현하되, 위치 기반 연산을 새로 짜지 말고 이미 있는 노드 포인터 기반 함수를 이용하자는 그림이에요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th scope="col">층</th><th scope="col">연산</th><th scope="col">파라미터</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">사용자</th><td>리스트 ADT의 연산을 부름</td><td>—</td></tr>
+        <tr><th scope="row">리스트 ADT</th><td><code>add</code>, <code>delete</code></td><td>항목의 위치</td></tr>
+        <tr><th scope="row">연결 리스트</th><td><code>insert_node</code>, <code>remove_node</code></td><td>노드 포인터</td></tr>
+      </tbody>
+    </table></div>
+    <p>S4 p44는 상황에 따라 연산을 적절하게 선택하여야 한다는 말로 끝나요.</p>
+    <p>리스트를 나타내는 구조체 <code>ListType</code>에는 첫 번째 노드를 가리키는 헤드 포인터 <code>head</code>와, 연결 리스트 안에 있는 노드의 개수 <code>length</code>를 함께 둬요. <code>length</code>는 앞의 연결 리스트에는 없던 필드예요. 효율적이라고 판단되면 필드는 얼마든지 추가할 수 있어요. <code>ListType list1;</code>로 리스트 ADT를 하나 생성해요.</p>
+<pre><code class="language-c">typedef struct {
+    ListNode *head;    // 헤드 포인터
+    int length;        // 노드의 개수
+} ListType;
+ListType list1;</code></pre>
+    <p><code>is_empty</code>는 헤드 포인터가 NULL이면 뒤에 노드가 없다는 뜻이므로 1(참)을, 아니면 0(거짓)을 돌려줘요. <code>get_length</code>는 구조체에 저장해 둔 <code>length</code>를 그대로 돌려줘요. 노드를 따라가며 셀 필요가 없어서 $O(1)$이에요. 헤드 포인터만 두지 않고 <code>head</code>와 <code>length</code>를 구조체로 묶은 이유가 이것이에요.</p>
+<pre><code class="language-c">int is_empty(ListType *list)
+{
+    if( list-&gt;head == NULL ) return 1;
+    else return 0;
+}
+// 리스트의 항목의 개수를 반환한다.
+int get_length(ListType *list)
+{
+    return list-&gt;length;
+}</code></pre>
+    <p><code>length</code>는 삽입과 삭제 때 함께 고쳐야 해요. <a href="#s4-add-delete">3. add와 delete: 기존 함수 재사용</a>에서 <code>list-&gt;length++</code>와 <code>list-&gt;length--</code>로 맞춰요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>리스트 단원이 거의 끝나 가는 시점에서 S4 p44를 특히 강조하셨어요.</p>
+    <blockquote>"이제 여기 이 페이지가 굉장히 중요한 얘기를 하고 있습니다." (1005 Part 08)</blockquote>
+    <p>위치를 받는 add와 delete를 처음부터 완전히 새로 만드는 것은 "맨땅에 헤딩"이라고 하셨어요. 이미 잘 만들어 둔 insert_node와 remove_node를 어떻게 합성해서 쓸지 고민하라는 뜻이에요.</p>
+    <blockquote>"완전히 애드하고 딜리트라고 하는 그런 함수를 만든다면 이건 맨땅에 헤딩하는 거예요." (1005 Part 08)</blockquote>
+    <p>length 필드를 추가한 것에 대해서는 리스트의 모양에 정해진 규칙이 없다고 하셨어요.</p>
+    <blockquote>"리스트는 반드시 데이터 필드가 하나여야 된다든지 이런 규칙은 전혀 없어요." (1005 Part 08)</blockquote>
+    <p>get_length를 보고 나면 "이러려고 헤드 포인터만 주지 않고 구조체로 헤드 포인터와 렝스를 줬구나" 하고 생각하면 된다고 하셨어요. (1005 Part 08)</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">ListType은 헤드 포인터와 노드 개수 length를 함께 들고 있어서 길이를 바로 돌려줄 수 있어요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">get_length</span>$$O(1)$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>head</dt><dd>첫 번째 노드를 가리키는 헤드 포인터예요.</dd><dt>length</dt><dd>연결 리스트 안에 있는 노드의 개수예요.</dd><dt>위치(position)</dt><dd>리스트 ADT의 add와 delete가 받는 파라미터예요.</dd></dl>
+  </div>
+</article>
+
+<article class="topic" id="s4-add-delete"><h3>3. add와 delete: 기존 함수 재사용</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p47–48</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">몇 번째 자리에 끼워 달라는 부탁을 받으면, 그 바로 앞사람을 먼저 찾고 예전에 배운 끼워 넣기를 그대로 써요.</p>
+    <figure class="figure"><svg id="fig-add-before" viewBox="0 0 520 170" role="img" aria-label="가, 나, 다, 라가 이어진 줄에서 셋째인 다를 찾아, 다와 라 사이에 강조색 테두리의 새 친구를 강조색 선으로 끼워 넣는 그림. 다 아래에 앞사람 표시가 있어요."><rect x="20" y="40" width="56" height="34" class="fig-ink" fill="none"/><text x="48" y="62" class="fig-text" font-size="14" text-anchor="middle">가</text><text x="48" y="96" class="fig-muted" font-size="13" text-anchor="middle">첫째</text><rect x="120" y="40" width="56" height="34" class="fig-ink" fill="none"/><text x="148" y="62" class="fig-text" font-size="14" text-anchor="middle">나</text><text x="148" y="96" class="fig-muted" font-size="13" text-anchor="middle">둘째</text><rect x="220" y="40" width="56" height="34" class="fig-ink" fill="none"/><text x="248" y="62" class="fig-text" font-size="14" text-anchor="middle">다</text><text x="248" y="96" class="fig-muted" font-size="13" text-anchor="middle">셋째</text><text x="248" y="116" class="fig-text" font-size="13" text-anchor="middle">앞사람</text><rect x="420" y="40" width="56" height="34" class="fig-ink" fill="none"/><text x="448" y="62" class="fig-text" font-size="14" text-anchor="middle">라</text><path d="M76 57 L117 57 M110 51 L117 57 L110 63 M176 57 L217 57 M210 51 L217 57 L210 63" class="fig-ink" fill="none"/><rect x="320" y="118" width="56" height="34" class="fig-accent" fill="none"/><text x="348" y="140" class="fig-text" font-size="14" text-anchor="middle">새</text><path d="M276 57 L300 57 L300 135 L317 135 M310 129 L317 135 L310 141 M376 135 L448 135 L448 77 M442 84 L448 77 L454 84" class="fig-accent" fill="none"/><text x="348" y="108" class="fig-muted" font-size="13" text-anchor="middle">넷째 자리</text></svg><figcaption>넷째 자리에 넣으려면 셋째 사람을 찾아서 그 뒤에 새 친구를 끼우면 돼요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><code>add</code>는 위치(position)를 받아 새 데이터를 임의의 위치에 삽입해요. 이미 있는 <a href="#s0-insert-node">4. insert_node와 이중 포인터</a>는 선행 노드 포인터가 있어야 삽입할 수 있어요. 그래서 항목의 위치를 노드 포인터로 바꿔 주는 함수 <code>get_node_at</code> 하나만 새로 만들고, 삽입 자체는 <code>insert_node</code>를 재사용(reusability)해요.</p>
+    <p><code>get_node_at(list, pos)</code>는 <code>head</code>에서 출발해 <code>tmp_node = tmp_node-&gt;link;</code>를 pos번 반복한 노드를 돌려줘요. 즉 0부터 세어 pos번 노드예요. pos가 음수면 NULL을 돌려줘요.</p>
+<pre><code class="language-c">// 리스트 안에서 pos 위치의 노드를 반환한다.
+ListNode *get_node_at(ListType *list, int pos)
+{
+    int i;
+    ListNode *tmp_node = list-&gt;head;
+    if( pos &lt; 0 ) return NULL;
+    for (i=0; i&lt;pos; i++)
+        tmp_node = tmp_node-&gt;link;
+    return tmp_node;
+}
+// 주어진 위치에 데이터를 삽입한다.
+void add(ListType *list, int position, element data)
+{
+    ListNode *p;
+    if ((position &gt;= 0) &amp;&amp; (position &lt;= list-&gt;length)){
+        ListNode *node = (ListNode *)malloc(sizeof(ListNode));
+        if( node == NULL ) error("메모리할당에러");
+        node-&gt;data = data;
+        p = get_node_at(list, position-1);
+        insert_node(&amp;(list-&gt;head), p, node);
+        list-&gt;length++;
+    }
+}</code></pre>
+    <p><code>add</code>의 흐름은 이래요. 위치가 $0 \le$ position $\le$ length 범위인지 검사하고, <code>malloc</code>으로 노드를 만들어 데이터를 넣어요. <code>get_node_at(list, position-1)</code>로 삽입될 자리의 <strong>앞 노드(선행 노드)</strong>를 구해 <code>insert_node</code>에 넘기고, 노드가 하나 늘었으니 <code>length</code>를 1 늘려요.</p>
+    <p>예를 들어 리스트가 20 → 30 → 40 → 50(length 4)일 때 넷째 자리, 곧 position 3에 10을 넣으면 이렇게 돼요.</p>
+    <ol class="steps">
+      <li>범위 검사: $0 \le 3 \le 4$ 통과</li>
+      <li><code>malloc</code>으로 node 생성, <code>node-&gt;data = 10</code></li>
+      <li><code>get_node_at(list, 2)</code>: tmp_node = 20 → (i=0) 30 → (i=1) 40, 40을 돌려줌</li>
+      <li><code>insert_node(&amp;(list-&gt;head), p, node)</code>: 20 → 30 → 40 → 10 → 50</li>
+      <li><code>list-&gt;length++</code>: length 4 → 5</li>
+    </ol>
+    <p>(수업에서 교수님의 "네 번째/세 번째" 세기에는 0부터 세는 방식과 1부터 세는 방식이 섞여 있어요. 코드는 position을 0부터 세요.)</p>
+    <p>코드로 따라가 보면 position이 0일 때 <code>get_node_at(list, -1)</code>이 NULL을 돌려줘요. 그러면 insert_node의 <code>p == NULL</code> 경우가 되어 맨 앞에 삽입돼요.</p>
+    <p><code>delete</code>도 같은 방식이에요. 수업에서는 "마찬가지"라고만 설명했어요. <code>get_node_at(list, pos-1)</code>로 선행 노드를 구해 이미 있는 <a href="#s0-remove-node">5. remove_node의 두 가지 경우</a>에 넘기고 <code>length</code>를 1 줄여요. 삭제는 빈 리스트가 아니고 $0 \le$ pos $\lt$ length일 때만 해요.</p>
+<pre><code class="language-c">// 주어진 위치의 데이터를 삭제한다.
+void delete(ListType *list, int pos)
+{
+    if (!is_empty(list) &amp;&amp; (pos &gt;= 0) &amp;&amp; (pos &lt; list-&gt;length)){
+        ListNode *p = get_node_at(list, pos-1);
+        remove_node(&amp;(list-&gt;head),p,(p!=NULL)?p-&gt;link:NULL);
+        list-&gt;length--;
+    }
+}</code></pre>
+    <p>위치를 노드로 바꾸는 <code>get_node_at</code>이 노드를 하나씩 따라가므로 add와 delete는 $O(n)$이에요. 시간복잡도는 수업에서 따로 말하지 않았어요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>add 안에서 insert_node를 그대로 부르는 줄을 가리키며 강조하셨어요. get_node_at이 찾아 준 p가 곧 선행 노드라는 점이에요.</p>
+    <blockquote>"자 이거 되게 중요합니다, 여기 보세요. 인서트 노드 하고서 … p 노드를 썼습니다." (1005 Part 09)</blockquote>
+    <p>알고 있는 함수가 있으면 그것을 조금 변형해서 쓰라고 하셨어요. 말도 안 되는 것을 변형할 수는 없지만, 선행 노드만 알아내면 insert_node로 삽입할 수 있다는 식으로 가진 코드를 늘 재사용(reuse)하라는 뜻이에요.</p>
+    <blockquote>"이런 게 소프트웨어를 개발하는 굉장히 중요한 프린서플 중에 하나예요." (1005 Part 09)</blockquote>
+    <blockquote>"리유저빌리티를 극대화시키면서 함수를 모듈화해 가지고 컴포지션해서 만들고 있습니다." (1005 Part 09)</blockquote>
+    <p>재사용성(reusability)을 극대화하고 함수를 모듈화해 합성(composition)하는 방식이 프로그래밍의 최신 트렌드라고 하셨어요. (1005 Part 09)</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">add와 delete는 get_node_at으로 선행 노드를 구한 뒤 이미 있는 insert_node와 remove_node를 재사용해요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">add, delete</span>$$O(n)$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>get_node_at</dt><dd>항목의 위치를 노드 포인터로 바꿔 주는 함수예요.</dd><dt>재사용(reusability)</dt><dd>이미 만든 함수를 합성해 새 함수를 만드는 원리예요.</dd></dl>
+  </div>
+</article>
+    </section>
+    <section id="s5"><h2>6. 요약 · 예고</h2>
+<article class="topic" id="s5-cheatsheet"><h3>연산별 비교표</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p18–48</span></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th scope="col">연산</th><th scope="col">리스트 종류</th><th scope="col">하는 일</th><th scope="col">시간복잡도</th></tr></thead>
+    <tbody>
+      <tr><th scope="row"><a href="#s0-insert-node">insert_node</a></th><td>단순 연결 리스트</td><td>선행 노드 p 뒤에 new_node를 넣어요. p가 NULL이면 맨 앞에 넣고 헤드 포인터를 바꿔요.</td><td>$O(1)$ (선행 노드가 주어질 때)</td></tr>
+      <tr><th scope="row"><a href="#s0-remove-node">remove_node</a></th><td>단순 연결 리스트</td><td>선행 노드 p 다음의 removed를 빼고 free해요. p가 NULL이면 맨 앞 노드를 빼요.</td><td>$O(1)$ (선행 노드가 주어질 때)</td></tr>
+      <tr><th scope="row"><a href="#s1-display">display</a></th><td>단순 연결 리스트</td><td>헤드부터 끝까지 노드를 차례로 방문해 출력해요. 반복과 순환 두 가지로 짤 수 있어요.</td><td>$O(n)$</td></tr>
+      <tr><th scope="row"><a href="#s1-search">search</a></th><td>단순 연결 리스트</td><td>data가 x인 노드를 찾아 그 포인터를 돌려줘요. 없으면 NULL을 돌려줘요.</td><td>최악 $O(n)$</td></tr>
+      <tr><th scope="row"><a href="#s1-concat">concat</a></th><td>단순 연결 리스트</td><td>head1 리스트의 마지막 노드를 찾아 그 링크에 head2를 이어 붙여요.</td><td>$O(n)$ (head1 길이 $n$)</td></tr>
+      <tr><th scope="row"><a href="#s1-reverse">reverse</a></th><td>단순 연결 리스트</td><td>포인터 p, q, r로 링크 방향을 하나씩 뒤집어 역순 리스트를 만들어요.</td><td>$O(n)$</td></tr>
+      <tr><th scope="row"><a href="#s2-insert-first">insert_first</a></th><td>원형 연결 리스트</td><td>헤드 포인터가 마지막 노드를 가리키므로 head-&gt;link 자리, 즉 맨 앞에 넣어요.</td><td>$O(1)$</td></tr>
+      <tr><th scope="row"><a href="#s2-insert-last">insert_last</a></th><td>원형 연결 리스트</td><td>insert_first와 같이 넣은 뒤 헤드 포인터를 새 노드로 옮겨 맨 뒤 노드로 만들어요.</td><td>$O(1)$</td></tr>
+      <tr><th scope="row"><a href="#s3-dinsert">dinsert_node</a></th><td>이중 연결 리스트</td><td>before의 오른쪽에 new_node를 넣고 llink와 rlink 네 개를 고쳐요.</td><td>$O(1)$</td></tr>
+      <tr><th scope="row"><a href="#s3-dremove">dremove_node</a></th><td>이중 연결 리스트</td><td>removed의 양옆 노드를 서로 잇고 removed를 free해요. 헤드 노드는 지우지 않아요.</td><td>$O(1)$ (선행 노드를 찾을 필요 없음)</td></tr>
+      <tr><th scope="row"><a href="#s4-listtype">get_length</a></th><td>ListType (연결 리스트로 만든 리스트 ADT)</td><td>구조체에 둔 length를 그대로 돌려줘요.</td><td>$O(1)$</td></tr>
+      <tr><th scope="row"><a href="#s4-add-delete">add / delete</a></th><td>ListType (연결 리스트로 만든 리스트 ADT)</td><td>get_node_at으로 위치를 선행 노드로 바꾼 뒤 insert_node, remove_node를 재사용해요.</td><td>$O(n)$ (get_node_at이 $O(pos)$)</td></tr>
+    </tbody>
+  </table></div>
+  <p>순서 규칙: 삽입할 때는 새 노드의 링크를 먼저 연결하고(<code>new.link←before.link</code>) 그다음 앞 노드의 링크를 바꿔요. <a href="#s3-dinsert">dinsert_node</a>에서는 1·2는 순서를 바꿔도 되지만 3(<code>before-&gt;rlink-&gt;llink = new_node;</code>)과 4(<code>before-&gt;rlink = new_node;</code>)는 반드시 이 순서여야 해요.</p>
+  <p>실습·과제: 교수님이 연결 리스트로 하는 실습과 과제를 올려 두었어요. 동영상을 보며 코드를 변형하고 채워 보도록 실습 시간을 충분히 가지라고 했어요.</p>
+</article>
+<article class="topic" id="s5-next"><h3>다음 시간 예고</h3><div class="tags"><span class="tag date">1005 수업</span></div>
+  <ul>
+    <li>S5 p1: CHAP 5 스택</li>
+    <li>S5 p2: 스택이란?</li>
+    <li>S5 p3: 스택의 특징 (후입선출, LIFO)</li>
+  </ul>
+  <p>원형 연결 리스트의 삭제는 "다음 시간에 계속"이라고 미뤘지만 끝내 다루지 않았어요(슬라이드에도 없어요).</p>
+</article>
+<article class="topic" id="s5-links"><h3>함께 보면 좋은 자료</h3><div class="tags"><span class="tag date">1005 수업</span><span class="tag slide">S4 p18–48</span></div>
+  <ul>
+    <li><a href="복습문제_1005_List.html">복습문제</a>: 문제은행에 리스트 단원 문항이 없어서 이번 범위의 기출 카드는 0개예요.</li>
+    <li><a href="../../자료구조_강의록_2026/Software_4_List.pdf">Software_4 List 강의록</a></li>
+    <li><a href="../1001/정리노트_1001_List.html#s3-links">1001 정리노트와 자료 링크</a></li>
+  </ul>
+</article>
+    </section>
+  </main>
+  <footer>출처: 이정원 교수님 강의록(Software_4) · 수업 녹음 전사(1005).</footer>
+    </div>
+    <aside class="panel panel-right" id="panel-right" aria-labelledby="panel-right-title">
+      <div class="panel-resize" data-side="right" role="separator" aria-orientation="vertical" aria-controls="panel-right" aria-label="오른쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-right-title">페이지 요약</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-sub" id="sum-for">전체 흐름</p>
+        <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
+        <div class="sums"></div>
+      </div>
+    </aside>
+  </div>
+  <div class="scrim" id="panel-scrim" aria-hidden="true"></div>
+  <nav class="pager" aria-label="화면 이동">
+    <div class="pager-inner">
+      <button class="btn btn-ghost" id="pager-prev" type="button">이전</button>
+      <span class="pager-count" id="pager-count"></span>
+      <button class="btn btn-primary" id="pager-next" type="button">시작하기</button>
+    </div>
+  </nav>
+  <p class="sr-only" id="pager-status" aria-live="polite"></p>
+  <script id="widget-dinsert-ui">(function () {
+function dinsertModel() {
+    var CODE = {
+        1: 'new_node->llink = before;',
+        2: 'new_node->rlink = before->rlink;',
+        3: 'before->rlink->llink = new_node;',
+        4: 'before->rlink = new_node;'
+    };
+    var ORDER = { ok: [1, 2, 3, 4], swap: [1, 2, 4, 3] };
+    var NAME = { B: 'before', N: 'new_node', A: 'after' };
+    var N = 4;
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function exec(st, k) {
+        var s = { B: { l: st.B.l, r: st.B.r }, N: { l: st.N.l, r: st.N.r }, A: { l: st.A.l, r: st.A.r } };
+        var ch = null;
+        if (k === 1) { s.N.l = 'B'; ch = 'N.l'; }
+        if (k === 2) { s.N.r = s.B.r; ch = 'N.r'; }
+        if (k === 3) { var t = s.B.r; s[t].l = 'N'; ch = t + '.l'; }
+        if (k === 4) { s.B.r = 'N'; ch = 'B.r'; }
+        return { s: s, ch: ch };
+    }
+    function state(mode, step) {
+        var s = { B: { l: 'X', r: 'A' }, N: { l: null, r: null }, A: { l: 'B', r: 'X' } };
+        var ch = null, k = null;
+        for (var i = 0; i < step; i++) {
+            k = ORDER[mode][i];
+            var r = exec(s, k);
+            s = r.s; ch = r.ch;
+        }
+        return { s: s, ch: ch, k: k };
+    }
+    function f(v) { return Math.round(v * 10) / 10; }
+    function head(px, py, x2, y2) {
+        var dx = x2 - px, dy = y2 - py, L = Math.sqrt(dx * dx + dy * dy), ux = dx / L, uy = dy / L;
+        var hx = x2 - ux * 10, hy = y2 - uy * 10, nx = -uy * 5, ny = ux * 5;
+        return ' M' + f(hx + nx) + ',' + f(hy + ny) + ' L' + f(x2) + ',' + f(y2) + ' L' + f(hx - nx) + ',' + f(hy - ny);
+    }
+    /* 링크 모양: [출발점, 제어점들..., 끝점] */
+    var GEO = {
+        'B.r>A': [[185, 170], [320, 105], [430, 166]],
+        'B.r>N': [[185, 188], [190, 290], [243, 296]],
+        'A.l>B': [[455, 188], [320, 250], [212, 190]],
+        'A.l>N': [[455, 188], [450, 290], [397, 296]],
+        'N.l>B': [[270, 290], [250, 225], [150, 198]],
+        'N.l>N': [[270, 306], [278, 356], [200, 352], [243, 310]],
+        'N.r>A': [[370, 290], [390, 225], [490, 198]]
+    };
+    function link(key, cls) {
+        var p = GEO[key];
+        var d = 'M' + p[0][0] + ',' + p[0][1] + (p.length === 3 ? ' Q' : ' C');
+        for (var i = 1; i < p.length; i++) d += (i > 1 ? ' ' : '') + p[i][0] + ',' + p[i][1];
+        var a = p[p.length - 2], e = p[p.length - 1];
+        return '<path class="' + cls + '" d="' + d + head(a[0], a[1], e[0], e[1]) + '"/>' +
+            '<circle class="fig-dot" cx="' + p[0][0] + '" cy="' + p[0][1] + '" r="4"/>';
+    }
+    function node(x, y, data, label, ly, lval, rval) {
+        var o = '';
+        for (var i = 0; i < 3; i++) o += '<rect class="fig-ink" x="' + (x + i * 50) + '" y="' + y + '" width="50" height="36"/>';
+        o += '<text class="fig-text" x="' + (x + 75) + '" y="' + (y + 23) + '" text-anchor="middle">' + data + '</text>';
+        if (lval) o += '<text class="fig-muted" x="' + (x + 25) + '" y="' + (y + 23) + '" text-anchor="middle">' + lval + '</text>';
+        if (rval) o += '<text class="fig-muted" x="' + (x + 125) + '" y="' + (y + 23) + '" text-anchor="middle">' + rval + '</text>';
+        o += '<text class="fig-muted" x="' + (x + 75) + '" y="' + ly + '" text-anchor="middle">' + label + '</text>';
+        return o;
+    }
+    function render(mode, step) {
+        var st = state(mode, step), s = st.s, o = [];
+        var wrongEnd = mode === 'swap' && step === N;
+        /* 코드 */
+        o[o.length] = '<text class="fig-muted" x="12" y="18">실행 순서</text>';
+        var ord = ORDER[mode];
+        for (var i = 0; i < 4; i++) {
+            var y = 26 + i * 22;
+            if (step === i + 1) {
+                o[o.length] = '<rect class="fig-accent" x="8" y="' + y + '" width="330" height="20" rx="3"/>';
+                o[o.length] = '<circle class="fig-dot" cx="16" cy="' + (y + 10) + '" r="4"/>';
+            }
+            o[o.length] = '<text class="fig-text" x="26" y="' + (y + 15) + '" xml:space="preserve" style="font-size:12px;font-family:ui-monospace,Menlo,monospace;white-space:pre' + (step > i ? '' : ';opacity:0.55') + '">(' + ord[i] + ') ' + esc(CODE[ord[i]]) + '</text>';
+        }
+        /* 바깥 이웃(그대로) */
+        o[o.length] = '<path class="fig-ink" d="M60,178 H22 M30,173 L22,178 L30,183" stroke-dasharray="4 4"/>';
+        o[o.length] = '<path class="fig-ink" d="M580,178 H618 M610,173 L618,178 L610,183" stroke-dasharray="4 4"/>';
+        o[o.length] = node(60, 160, '10', 'before', 152, '', '');
+        o[o.length] = node(430, 160, '30', 'after (before 다음 노드)', 152, '', '');
+        o[o.length] = node(245, 280, '20', 'new_node', 338, s.N.l ? '' : '?', s.N.r ? '' : '?');
+        /* 바뀔 수 있는 링크 4개 */
+        var keys = [['B.r', s.B.r], ['A.l', s.A.l], ['N.l', s.N.l], ['N.r', s.N.r]];
+        for (var j = 0; j < keys.length; j++) {
+            var from = keys[j][0], to = keys[j][1];
+            if (!to || to === 'X') continue;
+            var cls = 'fig-ink';
+            if (from === 'N.l' && to === 'N') cls = 'fig-danger';
+            else if (from === 'A.l' && wrongEnd) cls = 'fig-danger';
+            else if (st.ch === from) cls = 'fig-accent';
+            o[o.length] = link(from + '>' + to, cls);
+        }
+        var how = mode === 'ok' ? '슬라이드 순서 1, 2, 3, 4' : '3·4를 바꾼 순서 1, 2, 4, 3';
+        var cur = step === 0 ? '아직 실행 전' : '(' + st.k + ') ' + CODE[st.k];
+        var alink = NAME[s.A.l];
+        var desc = function (v) { return v ? NAME[v] : '정해지지 않음'; };
+        var aria = how + ', ' + step + '/' + N + '단계, 방금 실행: ' + cur +
+            '. before의 rlink는 ' + desc(s.B.r) + ', new_node의 llink는 ' + desc(s.N.l) +
+            ', new_node의 rlink는 ' + desc(s.N.r) + ', after의 llink가 가리키는 노드는 ' + alink +
+            '. 방금 바뀐 링크는 강조색 선, 잘못 이어진 링크는 경고색 선, 링크가 출발하는 칸은 색칠된 점으로 표시.';
+        var readout = step + '/' + N + ' · 방금 실행: ' + cur + ' · after->llink가 가리키는 노드: ' + alink
+        if (st.k === 3) readout += ' · (3)이 고친 칸: ' + NAME[st.ch.charAt(0)] + '->llink';
+        return { svg: o.join(''), aria: aria, readout: readout, state: st };
+    }
+    return { render: render, N: N };
+}
+    var M = dinsertModel();
+    var mode = 'ok', step = 0;
+    var plot = document.getElementById('dinsert-plot');
+    var out = document.getElementById('dinsert-out');
+    var box = document.getElementById('dinsert-swap');
+    var prev = document.getElementById('dinsert-prev');
+    var next = document.getElementById('dinsert-next');
+    if (!plot || !out || !box || !prev || !next) return;
+    function draw() {
+        var r = M.render(mode, step);
+        plot.innerHTML = r.svg;
+        plot.setAttribute('aria-label', r.aria);
+        out.textContent = r.readout;
+        prev.disabled = step === 0;
+        next.disabled = step === M.N;
+    }
+    box.addEventListener('change', function () { mode = box.checked ? 'swap' : 'ok'; draw(); });
+    prev.addEventListener('click', function () { if (step > 0) { step--; draw(); } });
+    next.addEventListener('click', function () { if (step < M.N) { step++; draw(); } });
+    draw();
+})();</script>
+  <script id="widget-poly-ui">(function () {
+// 다항식 덧셈 추적 위젯의 수학과 그리기. 브라우저(IIFE 안)와 node(정적 그림 생성)에서 같은 코드를 쓴다.
+// 문자열에 달러 기호를 쓰지 않는다. 배열에 넣을 때는 arr[arr.length] = x 를 쓴다.
+var POLY = (function () {
+    var A = [[3, 12], [2, 8], [1, 0]];
+    var B = [[8, 12], [-3, 10], [10, 6]];
+    var SUP = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴',
+                '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+
+    function sup(n) {
+        var s = String(n), out = '';
+        for (var i = 0; i < s.length; i++) out += SUP[s.charAt(i)];
+        return out;
+    }
+    // 부호 없는 항 글자(계수의 절댓값 사용)
+    function bare(c, e) {
+        var a = Math.abs(c);
+        if (e === 0) return String(a);
+        var cs = a === 1 ? '' : String(a);
+        return cs + 'x' + (e === 1 ? '' : sup(e));
+    }
+    function term(c, e) { return (c < 0 ? '-' : '') + bare(c, e); }
+    function poly(list) {
+        if (list.length === 0) return '(비어 있음)';
+        var s = term(list[0][0], list[0][1]);
+        for (var i = 1; i < list.length; i++) {
+            s += (list[i][0] < 0 ? ' - ' : ' + ') + bare(list[i][0], list[i][1]);
+        }
+        return s;
+    }
+
+    // 상태 목록 만들기. 각 상태: p, q = 이번 단계의 이동을 마친 뒤 가리키는 위치(배열 길이면 NULL),
+    // cmpP/cmpQ = 이번 단계에서 비교하거나 가져온 항의 위치(-1이면 없음),
+    // C = 이번 단계까지 만든 결과, newC = 새로 붙은 C 항 번호
+    function build() {
+        var st = [];
+        var C = [];
+        var p = 0, q = 0;
+        st[st.length] = { p: p, q: q, cmpP: -1, cmpQ: -1, C: C.slice(), newC: -1, kind: 'start',
+            msg: '시작: p는 A의 첫 항 ' + term(A[0][0], A[0][1]) + ', q는 B의 첫 항 ' + term(B[0][0], B[0][1]) + '을 가리켜요. C는 아직 비어 있어요.' };
+        while (p < A.length && q < B.length) {
+            var pe = A[p][1], qe = B[q][1], msg, kind, nc = -1, np = p, nq = q;
+            if (pe === qe) {
+                var sum = A[p][0] + B[q][0];
+                kind = 'eq';
+                msg = '비교: p.expon = ' + pe + ', q.expon = ' + qe + '로 같아요(경우 ①). 계수 ' + A[p][0] + ' + ' + B[q][0] + ' = ' + sum;
+                if (sum !== 0) {
+                    C = C.concat([[sum, pe]]);
+                    nc = C.length - 1;
+                    msg += '은 0이 아니라서 ' + term(sum, pe) + '을 C에 붙였어요.';
+                } else {
+                    msg += '이라 C에 붙이지 않았어요.';
+                }
+                msg += ' p와 q 모두 다음 항으로 옮겼어요.';
+                np = p + 1; nq = q + 1;
+            } else if (pe < qe) {
+                kind = 'lt';
+                C = C.concat([[B[q][0], qe]]);
+                nc = C.length - 1;
+                msg = '비교: p.expon = ' + pe + ' < q.expon = ' + qe + '(경우 ②). q의 항 ' + term(B[q][0], qe) + '을 복사해 C에 붙이고 q만 다음 항으로 옮겼어요.';
+                nq = q + 1;
+            } else {
+                kind = 'gt';
+                C = C.concat([[A[p][0], pe]]);
+                nc = C.length - 1;
+                msg = '비교: p.expon = ' + pe + ' > q.expon = ' + qe + '(경우 ③). p의 항 ' + term(A[p][0], pe) + '을 복사해 C에 붙이고 p만 다음 항으로 옮겼어요.';
+                np = p + 1;
+            }
+            if (np === A.length) msg += ' 이제 p는 NULL이에요.';
+            if (nq === B.length) msg += ' 이제 q는 NULL이에요.';
+            st[st.length] = { p: np, q: nq, cmpP: p, cmpQ: q, C: C.slice(), newC: nc, kind: kind, msg: msg };
+            p = np; q = nq;
+        }
+        while (p < A.length) {
+            C = C.concat([[A[p][0], A[p][1]]]);
+            var m1 = 'q가 NULL이라 더 비교하지 않아요. A에 남은 항 ' + term(A[p][0], A[p][1]) + '을 C로 가져오고 p를 다음으로 옮겼어요. 남은 꼬리를 concat으로 통째로 붙여도 돼요.';
+            if (p + 1 === A.length) m1 += ' 이제 p와 q 모두 NULL이라 덧셈이 끝났어요.';
+            st[st.length] = { p: p + 1, q: q, cmpP: p, cmpQ: -1, C: C.slice(), newC: C.length - 1, kind: 'rest', msg: m1 };
+            p = p + 1;
+        }
+        while (q < B.length) {
+            C = C.concat([[B[q][0], B[q][1]]]);
+            var m2 = 'p가 NULL이라 더 비교하지 않아요. B에 남은 항 ' + term(B[q][0], B[q][1]) + '을 C로 가져오고 q를 다음으로 옮겼어요. 남은 꼬리를 concat으로 통째로 붙여도 돼요.';
+            if (q + 1 === B.length) m2 += ' 이제 p와 q 모두 NULL이라 덧셈이 끝났어요.';
+            st[st.length] = { p: p, q: q + 1, cmpP: -1, cmpQ: q, C: C.slice(), newC: C.length - 1, kind: 'rest', msg: m2 };
+            q = q + 1;
+        }
+        return st;
+    }
+    var STATES = build();
+
+    // 그림 좌표
+    var X0 = 70, GAP = 125, NW = 84, NH = 34;
+    var ROW = { A: 56, B: 146, C: 236 };
+
+    function arrow(x1, y1, x2, y2, cls) {
+        // 수평 또는 수직 화살표, 머리는 path로 직접
+        var h;
+        if (y1 === y2) h = 'M' + (x2 - 7) + ' ' + (y2 - 6) + ' L' + x2 + ' ' + y2 + ' L' + (x2 - 7) + ' ' + (y2 + 6);
+        else h = 'M' + (x2 - 6) + ' ' + (y2 - 7) + ' L' + x2 + ' ' + y2 + ' L' + (x2 + 6) + ' ' + (y2 - 7);
+        return '<path d="M' + x1 + ' ' + y1 + ' L' + x2 + ' ' + y2 + ' ' + h + '" class="' + cls + '" fill="none"/>';
+    }
+    function txt(x, y, s, cls, anchor) {
+        return '<text x="' + x + '" y="' + y + '" class="' + (cls || 'fig-text') + '" font-size="13"' +
+            (anchor ? ' text-anchor="' + anchor + '"' : '') + '>' + s + '</text>';
+    }
+    function row(name, list, hiIdx, ptrName, ptrIdx) {
+        var y = ROW[name], out = '';
+        out += txt(20, y + 22, name, 'fig-text');
+        out += arrow(34, y + 17, X0 - 3, y + 17, 'fig-ink');
+        for (var i = 0; i < list.length; i++) {
+            var x = X0 + i * GAP;
+            var cls = hiIdx === i ? 'fig-accent' : 'fig-ink';
+            out += '<rect x="' + x + '" y="' + y + '" width="' + NW + '" height="' + NH + '" class="' + cls + '" fill="none"/>';
+            out += '<path d="M' + (x + 28) + ' ' + y + ' L' + (x + 28) + ' ' + (y + NH) + ' M' + (x + 56) + ' ' + y + ' L' + (x + 56) + ' ' + (y + NH) + '" class="fig-ink" fill="none"/>';
+            out += txt(x + 14, y + 22, String(list[i][0]), 'fig-text', 'middle');
+            out += txt(x + 42, y + 22, String(list[i][1]), 'fig-text', 'middle');
+            out += arrow(x + 70, y + 17, x + GAP - 3, y + 17, 'fig-ink');
+        }
+        var xn = X0 + list.length * GAP;
+        out += txt(xn + 2, y + 22, 'NULL', 'fig-muted');
+        if (ptrName !== null) {
+            var cx = ptrIdx < list.length ? X0 + ptrIdx * GAP + 42 : xn + 18;
+            out += txt(cx, y - 20, ptrName, 'fig-text', 'middle');
+            out += arrow(cx, y - 15, cx, y - 3, 'fig-accent');
+        }
+        return out;
+    }
+    function svg(k) {
+        var s = STATES[k];
+        var out = '';
+        out += row('A', A, s.cmpP, 'p', s.p);
+        out += row('B', B, s.cmpQ, 'q', s.q);
+        out += row('C', s.C, s.newC, s.C.length > 0 ? 'r' : null, s.C.length - 1);
+        out += txt(708, ROW.A - 20, 'coef | expon | link', 'fig-muted', 'end');
+        return out;
+    }
+    function where(list, i) { return i < list.length ? term(list[i][0], list[i][1]) : 'NULL'; }
+    function aria(k) {
+        var s = STATES[k];
+        return '다항식 덧셈 ' + k + '/' + (STATES.length - 1) + '단계. A, B, C 세 연결 리스트의 노드는 coef, expon, link 세 칸 테두리 상자. ' +
+            '이동을 마친 뒤 p는 A의 ' + where(A, s.p) + ', q는 B의 ' + where(B, s.q) + '을 가리킴. ' +
+            hiText(s) + 'C = ' + poly(s.C) + '.';
+    }
+    function hiText(s) {
+        var parts = [];
+        if (s.cmpP >= 0) parts = parts.concat(['A의 ' + where(A, s.cmpP)]);
+        if (s.cmpQ >= 0) parts = parts.concat(['B의 ' + where(B, s.cmpQ)]);
+        if (s.newC >= 0) parts = parts.concat(['C에 새로 붙은 ' + where(s.C, s.newC)]);
+        if (parts.length === 0) return '강조한 항 없음. ';
+        return '이번 단계에서 비교하거나 가져온 항(' + parts.join(', ') + ')은 강조색 테두리. ';
+    }
+    function stepLabel(k) { return k + '/' + (STATES.length - 1) + '단계'; }
+    return { A: A, B: B, STATES: STATES, svg: svg, aria: aria, poly: poly, term: term, stepLabel: stepLabel, where: where };
+})();
+if (typeof module !== 'undefined' && module.exports) module.exports = POLY;
+
+    var cur = 0;
+    var svgEl = document.getElementById('poly-plot');
+    var stepEl = document.getElementById('poly-step');
+    var outEl = document.getElementById('poly-out');
+    var cEl = document.getElementById('poly-c');
+    var prevBtn = document.getElementById('poly-prev');
+    var nextBtn = document.getElementById('poly-next');
+    var resetBtn = document.getElementById('poly-reset');
+    if (!svgEl || !stepEl || !outEl || !cEl) return;
+    function render() {
+        svgEl.innerHTML = POLY.svg(cur);
+        svgEl.setAttribute('aria-label', POLY.aria(cur));
+        stepEl.textContent = POLY.stepLabel(cur);
+        outEl.textContent = POLY.STATES[cur].msg;
+        cEl.textContent = POLY.poly(POLY.STATES[cur].C);
+        if (prevBtn) prevBtn.disabled = cur === 0;
+        if (nextBtn) nextBtn.disabled = cur === POLY.STATES.length - 1;
+    }
+    if (prevBtn) prevBtn.addEventListener('click', function () { if (cur > 0) { cur -= 1; render(); } });
+    if (nextBtn) nextBtn.addEventListener('click', function () { if (cur < POLY.STATES.length - 1) { cur += 1; render(); } });
+    if (resetBtn) resetBtn.addEventListener('click', function () { cur = 0; render(); });
+    render();
+})();</script>
+  <script id="theme-ui">
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const sysDark = matchMedia('(prefers-color-scheme: dark)');
+      const KEY = 'od-theme';
+      const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : sysDark.matches;
+      function label() {
+        const next = isDark() ? '라이트 모드로 전환' : '다크 모드로 전환';
+        btn.setAttribute('aria-label', next);
+        btn.title = next;
+      }
+      btn.addEventListener('click', () => {
+        const t = isDark() ? 'light' : 'dark';
+        // 시스템 설정과 같아지면 저장을 지워 다시 시스템을 따른다
+        if ((t === 'dark') === sysDark.matches) { delete root.dataset.theme; try { localStorage.removeItem(KEY); } catch (e) {} }
+        else { root.dataset.theme = t; try { localStorage.setItem(KEY, t); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+        label();
+      });
+      sysDark.addEventListener('change', label);
+      window.addEventListener('storage', (e) => {
+        if (e.key !== KEY) return;
+        if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue; else delete root.dataset.theme;
+        label();
+      });
+      label();
+    })();
+  </script>
+  <script id="panels-ui">
+    (function () {
+      const body = document.body;
+      const layout = document.querySelector('.layout');
+      const kind = body.dataset.panels;
+      const panels = { left: document.getElementById('panel-left'), right: document.getElementById('panel-right') };
+      const toggles = { left: document.getElementById('toggle-left'), right: document.getElementById('toggle-right') };
+      const scrim = document.getElementById('panel-scrim');
+      const blockers = [document.querySelector('.topbar'), document.querySelector('.content'), document.querySelector('.pager')];
+      const wideMq = matchMedia('(min-width: 1024px)');
+      const roomyMq = matchMedia('(min-width: 1280px)');
+      const store = {
+        get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+      };
+      const PREF = 'od-panels:' + kind;
+      // 팩마다 문제·토픽 id가 p1, s1-…로 겹치므로 진행 기록은 기간별로 나눈다
+      const RANGE = body.dataset.range || '';
+      const ICON_TODO = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>';
+      const ICON_DONE = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 10"/></svg>';
+      let overlay = null;
+
+      // ---------- 열고 닫기 ----------
+      function docked() {
+        const pref = store.get(PREF, {});
+        return { left: pref.left ?? true, right: pref.right ?? roomyMq.matches };
+      }
+      function sync() {
+        const wide = wideMq.matches;
+        const d = docked();
+        ['left', 'right'].forEach((side) => {
+          const open = wide ? d[side] : overlay === side;
+          const p = panels[side];
+          layout.dataset[side] = open ? 'open' : 'closed';
+          p.classList.toggle('is-open', !wide && open);
+          p.inert = !open;
+          if (!wide && open) { p.setAttribute('role', 'dialog'); p.setAttribute('aria-modal', 'true'); }
+          else { p.removeAttribute('role'); p.removeAttribute('aria-modal'); }
+          toggles[side].setAttribute('aria-expanded', String(open));
+        });
+        const drawer = !wide && overlay !== null;
+        scrim.classList.toggle('is-on', drawer);
+        body.classList.toggle('drawer-open', drawer);
+        blockers.forEach((el) => { el.inert = drawer; });
+      }
+      function openDrawer(side) {
+        overlay = side;
+        sync();
+        requestAnimationFrame(() => panels[side].querySelector('[data-panel-close]').focus());
+      }
+      function closeDrawer(refocus) {
+        if (overlay === null) return;
+        const side = overlay;
+        overlay = null;
+        sync();
+        if (refocus) toggles[side].focus();
+      }
+      function toggle(side) {
+        if (wideMq.matches) {
+          const d = docked();
+          d[side] = !d[side];
+          store.set(PREF, d);
+          sync();
+          if (d[side]) { const p = panels[side]; p.classList.remove('is-shown'); void p.offsetWidth; p.classList.add('is-shown'); }
+        } else if (overlay === side) closeDrawer(true);
+        else openDrawer(side);
+      }
+
+      toggles.left.addEventListener('click', () => toggle('left'));
+      toggles.right.addEventListener('click', () => toggle('right'));
+      scrim.addEventListener('click', () => closeDrawer(true));
+      document.querySelectorAll('[data-panel-close]').forEach((b) => b.addEventListener('click', () => closeDrawer(true)));
+      panels.left.addEventListener('click', (e) => { if (e.target.closest('.toc a')) closeDrawer(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay !== null) { e.preventDefault(); closeDrawer(true); } });
+
+      // ---------- 패널 너비: 기본은 화면 폭에 맞춰 자동, 경계를 끌면 직접 조절 ----------
+      const WIDTH = { left: { min: 220, max: 480, prop: '--panel-l-user' }, right: { min: 280, max: 720, prop: '--panel-r-user' } };
+      function applyWidths() {
+        const w = store.get(PREF + ':w', {});
+        ['left', 'right'].forEach((side) => {
+          if (w[side]) layout.style.setProperty(WIDTH[side].prop, w[side] + 'px');
+          else layout.style.removeProperty(WIDTH[side].prop);
+        });
+      }
+      function maxFor(side) {
+        const other = side === 'left' ? panels.right : panels.left;
+        const otherW = layout.dataset[side === 'left' ? 'right' : 'left'] === 'open' ? other.getBoundingClientRect().width : 0;
+        return Math.max(WIDTH[side].min, Math.min(WIDTH[side].max, window.innerWidth - otherW - 400));
+      }
+      function setWidth(side, px, save) {
+        const v = Math.round(Math.min(Math.max(px, WIDTH[side].min), maxFor(side)));
+        layout.style.setProperty(WIDTH[side].prop, v + 'px');
+        panels[side].querySelector('.panel-resize').setAttribute('aria-valuenow', String(v));
+        if (save) { const w = store.get(PREF + ':w', {}); w[side] = v; store.set(PREF + ':w', w); }
+      }
+      function resetWidth(side) {
+        const w = store.get(PREF + ':w', {});
+        delete w[side];
+        store.set(PREF + ':w', w);
+        layout.style.removeProperty(WIDTH[side].prop);
+      }
+      document.querySelectorAll('.panel-resize').forEach((handle) => {
+        const side = handle.dataset.side;
+        const dir = side === 'left' ? 1 : -1;
+        handle.setAttribute('aria-valuemin', String(WIDTH[side].min));
+        handle.setAttribute('aria-valuemax', String(WIDTH[side].max));
+        handle.addEventListener('pointerdown', (e) => {
+          if (!wideMq.matches || e.button !== 0) return;
+          e.preventDefault();
+          const startX = e.clientX;
+          const startW = panels[side].getBoundingClientRect().width;
+          handle.setPointerCapture(e.pointerId);
+          body.classList.add('is-resizing');
+          const move = (ev) => setWidth(side, startW + dir * (ev.clientX - startX), false);
+          const up = () => {
+            handle.removeEventListener('pointermove', move);
+            handle.removeEventListener('pointerup', up);
+            handle.removeEventListener('pointercancel', up);
+            body.classList.remove('is-resizing');
+            setWidth(side, panels[side].getBoundingClientRect().width, true);
+          };
+          handle.addEventListener('pointermove', move);
+          handle.addEventListener('pointerup', up);
+          handle.addEventListener('pointercancel', up);
+        });
+        handle.addEventListener('dblclick', () => resetWidth(side));
+        handle.addEventListener('keydown', (e) => {
+          const step = e.shiftKey ? 64 : 16;
+          const cur = panels[side].getBoundingClientRect().width;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            e.stopPropagation();
+            setWidth(side, cur + (e.key === 'ArrowRight' ? step : -step) * dir, true);
+          } else if (e.key === 'Home') { e.preventDefault(); resetWidth(side); }
+        });
+      });
+      applyWidths();
+      const onMq = () => { overlay = null; sync(); };
+      wideMq.addEventListener('change', onMq);
+      roomyMq.addEventListener('change', onMq);
+
+      // ---------- 목차의 진행 표시 ----------
+      const progressN = document.getElementById('progress-n');
+      const progressBar = document.getElementById('progress-bar');
+      const progressTotal = document.getElementById('progress-total');
+      function markToc(done, total, doneLabel) {
+        panels.left.querySelectorAll('.toc-list a').forEach((a) => {
+          const id = decodeURIComponent(a.getAttribute('href').slice(1));
+          let mark = a.querySelector('.toc-mark');
+          if (!mark) {
+            mark = document.createElement('span');
+            mark.className = 'toc-mark';
+            mark.setAttribute('aria-hidden', 'true');
+            const state = document.createElement('span');
+            state.className = 'sr-only toc-state';
+            a.append(mark, state);
+          }
+          const isDone = done.has(id);
+          mark.classList.toggle('is-done', isDone);
+          mark.innerHTML = isDone ? ICON_DONE : ICON_TODO;
+          a.querySelector('.toc-state').textContent = isDone ? ' (' + doneLabel + ')' : '';
+        });
+        progressN.textContent = String(done.size);
+        progressTotal.textContent = String(total);
+        progressBar.style.transform = 'scaleX(' + (total ? done.size / total : 0) + ')';
+      }
+      function revealCurrent() {
+        const link = panels.left.querySelector('.toc-list a[aria-current="true"]');
+        if (link && layout.dataset.left === 'open') link.scrollIntoView({ block: 'nearest' });
+      }
+
+      // ---------- 복습문제: 오른쪽 = 원문 · 힌트 · 풀이 ----------
+      function setupReview() {
+        const KEY = 'od-review-solved:' + RANGE;
+        const cards = Array.from(document.querySelectorAll('main article.card'));
+        const aids = panels.right.querySelector('.aids');
+        const sub = document.getElementById('aid-for');
+        const empty = panels.right.querySelector('.panel-empty');
+        const btn = document.getElementById('solved-btn');
+        const groups = {};
+        const solved = new Set(store.get(KEY, []).filter((id) => cards.some((c) => c.id === id)));
+        cards.forEach((card) => {
+          const g = document.createElement('div');
+          g.className = 'aid';
+          g.hidden = true;
+          card.querySelectorAll(':scope > details').forEach((d) => g.appendChild(d));
+          aids.appendChild(g);
+          groups[card.id] = g;
+        });
+        let curId = null;
+        function paintBtn() {
+          const on = solved.has(curId);
+          btn.setAttribute('aria-pressed', String(on));
+          btn.innerHTML = (on ? ICON_DONE : ICON_TODO) + '<span>' + (on ? '푼 문제 · 표시 해제' : '푼 문제로 표시') + '</span>';
+        }
+        btn.addEventListener('click', () => {
+          if (!curId) return;
+          if (solved.has(curId)) solved.delete(curId); else solved.add(curId);
+          store.set(KEY, Array.from(solved));
+          paintBtn();
+          markToc(solved, cards.length, '푼 문제');
+        });
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          curId = s.matches('article.card') ? s.id : null;
+          Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
+          empty.hidden = Boolean(curId);
+          btn.hidden = !curId;
+          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';
+          sub.hidden = !curId;
+          if (curId) paintBtn();
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(solved, cards.length, '푼 문제');
+          revealCurrent();
+        });
+      }
+
+      // ---------- 정리노트: 오른쪽 = 페이지(토픽)별 요약 ----------
+      function setupNote() {
+        const KEY = 'od-note-read:' + RANGE;
+        const topics = Array.from(document.querySelectorAll('main article.topic'));
+        const read = new Set(store.get(KEY, []).filter((id) => topics.some((t) => t.id === id)));
+        // 조각의 <div class="sum" hidden> 을 오른쪽 패널로 옮긴다. 없으면 안내 문구만 보인다.
+        const box = panels.right.querySelector('.sums');
+        const sums = {};
+        topics.forEach((t) => {
+          const el = t.querySelector(':scope > .sum');
+          if (!el) return;
+          el.hidden = true;
+          box.appendChild(el);
+          sums[t.id] = el;
+        });
+        const sub = document.getElementById('sum-for');
+        const empty = document.getElementById('sum-empty');
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          const key = s.matches('article.topic') ? s.id : 'intro';
+          Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
+          empty.hidden = Boolean(sums[key]);
+          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
+          if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(read, topics.length, '읽음');
+          revealCurrent();
+        });
+      }
+
+      if (kind === 'review') setupReview();
+      if (kind === 'note') setupNote();
+      sync();
+    })();
+  </script>
+  <script id="pager-ui">
+    (function () {
+      const root = document.documentElement;
+      const main = document.querySelector('main');
+      const hero = main.querySelector('.hero');
+      const screens = [hero].concat(Array.from(main.querySelectorAll(document.body.dataset.screens)));
+      if (screens.length < 2) { root.classList.remove('js'); return; }
+      screens.forEach((s) => s.classList.add('screen'));
+
+      const last = screens.length - 1;
+      const prevBtn = document.getElementById('pager-prev');
+      const nextBtn = document.getElementById('pager-next');
+      const count = document.getElementById('pager-count');
+      const bar = document.getElementById('pager-bar');
+      const status = document.getElementById('pager-status');
+      const toc = document.querySelector('#panel-left .toc');
+      const scroller = document.querySelector('.content');
+      const titleOf = (s) => ((s.querySelector('h3') || s.querySelector('h1') || {}).textContent || '').trim();
+      let cur = -1;
+
+      // 목차: 섹션 링크 아래에 화면(토픽·카드) 목록을 붙인다
+      const tocLinks = [];
+      Array.from(toc.querySelectorAll(':scope > a')).forEach((a) => {
+        const sec = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+        const group = document.createElement('div');
+        group.className = 'toc-group';
+        a.replaceWith(group);
+        group.appendChild(a);
+        if (!sec) return;
+        const list = document.createElement('ol');
+        list.className = 'toc-list';
+        screens.forEach((s, i) => {
+          if (!sec.contains(s)) return;
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#' + s.id;
+          link.innerHTML = '<span class="toc-title"></span>';
+          link.firstChild.textContent = titleOf(s);
+          li.appendChild(link);
+          list.appendChild(li);
+          tocLinks[i] = link;
+        });
+        group.appendChild(list);
+      });
+
+      function indexFor(hash) {
+        const id = decodeURIComponent((hash || '').replace(/^#/, ''));
+        const el = id && document.getElementById(id);
+        if (!el || !main.contains(el)) return { i: 0 };
+        const i = screens.findIndex((s) => s.contains(el) || el.contains(s));
+        return { i: Math.max(i, 0), target: i >= 0 && screens[i].contains(el) && screens[i] !== el ? el : null };
+      }
+
+      function render(i, target) {
+        const dir = cur < 0 ? '' : i > cur ? 'enter-next' : 'enter-prev';
+        if (i !== cur) {
+          if (cur >= 0) screens[cur].classList.remove('is-current', 'enter-next', 'enter-prev');
+          main.querySelectorAll(':scope > section.is-on').forEach((sec) => sec.classList.remove('is-on'));
+          const s = screens[i];
+          const sec = s.closest('section');
+          if (sec) sec.classList.add('is-on');
+          s.classList.add('is-current');
+          if (dir) { s.classList.remove('enter-next', 'enter-prev'); void s.offsetWidth; s.classList.add(dir); }
+          cur = i;
+          document.body.classList.toggle('at-end', i === last);
+          prevBtn.disabled = i === 0;
+          nextBtn.textContent = i === 0 ? '시작하기' : i === last ? '처음으로' : '다음';
+          count.textContent = i === 0 ? '' : i + ' / ' + last;
+          bar.style.transform = 'scaleX(' + (i / last) + ')';
+          status.textContent = i === 0 ? titleOf(s) : i + ' / ' + last + ', ' + titleOf(s);
+          tocLinks.forEach((link, k) => link && link.setAttribute('aria-current', String(k === i)));
+          document.dispatchEvent(new CustomEvent('od:screen', { detail: { index: i, screen: s } }));
+        }
+        if (target) target.scrollIntoView({ block: 'start' });
+        else scroller.scrollTo(0, 0);
+      }
+
+      function go(i) {
+        i = Math.min(Math.max(i, 0), last);
+        if (i === cur) return;
+        const url = i === 0 ? location.pathname + location.search : '#' + screens[i].id;
+        history.pushState(null, '', url);
+        render(i);
+      }
+
+      prevBtn.addEventListener('click', () => go(cur - 1));
+      nextBtn.addEventListener('click', () => go(cur === last ? 0 : cur + 1));
+      const fromUrl = () => { const r = indexFor(location.hash); render(r.i, r.target); };
+      window.addEventListener('hashchange', fromUrl);
+      window.addEventListener('popstate', fromUrl);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || document.body.classList.contains('drawer-open')) return;
+        if (e.target.closest('input, select, textarea, [contenteditable="true"]')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+      });
+
+      // 좌우로 밀어서 넘기기 (가로로 스크롤되는 영역은 제외)
+      let sx = 0, sy = 0, skip = true;
+      main.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY;
+        skip = e.touches.length > 1 || Boolean(e.target.closest('.widget, .katex-display, .table-wrap, pre, svg, input, details'));
+      }, { passive: true });
+      main.addEventListener('touchend', (e) => {
+        if (skip) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        if (Math.abs(dx) > 64 && Math.abs(dx) > 2 * Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      fromUrl();
+    })();
+  </script>
+</body>
+</html>

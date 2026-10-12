@@ -3,6 +3,7 @@ import hashlib,json,os,unittest
 from pathlib import Path
 from _util import REPO
 from update_review import extract_cards
+from explanation_delivery_checks import check_preserved
 ROOT=Path(os.environ.get('DS_REVIEW_DELIVERY_ROOT',REPO));DATES=('0907','0914','0917','0921','0928','1001','1005','1008','1012')
 class DeliveryTests(unittest.TestCase):
  def selections(self):
@@ -32,7 +33,9 @@ class DeliveryTests(unittest.TestCase):
  def test_preserved_note_figures_and_explanations(self):
   for d,s,m,v in self.selections():
    for file,digest in v['preserved']['files'].items():
-    target=ROOT/file;self.assertTrue(target.exists());self.assertEqual(hashlib.sha256(target.read_bytes()).hexdigest(),digest,file)
+    report_path=ROOT/'docs/verify/2026-10-12-ds-review-pack-explain.json'
+    report=json.loads(report_path.read_text()) if report_path.exists() else None
+    self.assertEqual(check_preserved(ROOT,file,digest,report),[],file)
  def test_selected_ids_have_current_provenance(self):
   questions={q['id']:q for p in (REPO/'교과서').glob('*.json') for q in json.loads(p.read_text()).get('questions',[])}
   for d,s,m,v in self.selections():

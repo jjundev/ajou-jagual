@@ -99,3 +99,24 @@ def test_source_and_explanation_svg_ids_do_not_collide(tmp_path):
     assert check_artifacts(pack,result)==[]
     ids=[n.attrs['id'] for n in parse(result.html.read_text()).find_all(lambda n:'id' in n.attrs)]
     assert len(ids)==len(set(ids))
+
+def test_existing_source_figure_presentation_preserved(tmp_path):
+    pack,fragments=make(tmp_path)
+    figure='<figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg viewBox="0 0 1000 200" style="background:white;width:1000px;max-width:none;height:auto"><text x="1" y="20">A B C D</text></svg></div></figure>'
+    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+figure)
+    pack=replace(pack,problems=(p,))
+    art=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')
+    assert check_artifacts(pack,art)==[]
+    assert figure in art.html.read_text()
+
+@pytest.mark.parametrize('style',['background:url(https://example.com/x)','width:expression(alert(1))','position:fixed','color:red'])
+def test_source_style_allowance_is_narrow(tmp_path,style):
+    pack,fragments=make(tmp_path)
+    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+f'<figure style="{style}">x</figure>')
+    with pytest.raises(ExplainError,match='마크업'):
+        build_explanation(replace(pack,problems=(p,)),fragments,tmp_path/'stage',tmp_path/'repo')
+
+def test_authored_style_still_refused(tmp_path):
+    pack,fragments=make(tmp_path)
+    with pytest.raises(ExplainError,match='style'):
+        build_explanation(pack,{'p1':fragments['p1']+'<figure style="margin:16px 0">x</figure>'},tmp_path/'stage',tmp_path/'repo')

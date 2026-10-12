@@ -1,0 +1,8 @@
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>recursive(10)의 화면 출력 순서와 반환값을 각각 구해요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>printf는 호출 앞에 있으므로 내려갈 때 출력해요. +1은 호출이 끝난 뒤 더하므로 복귀할 때 계산해요. n&lt;1이면 −1이라는 base case예요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>출력의 첫 줄 10을 적고 다음 인자 7을 계산해요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>출력은 줄마다 10,7,4,1,−2예요. −2도 조건 검사 전에 출력해요. 바닥 반환 −1에서 1의 호출은 0, 4의 호출은 1, 7의 호출은 2, 10의 호출은 3을 반환해요. 따라서 최종 반환값은 3이에요.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>10−3×4=−2라 재귀 간선이 4개예요. 바닥 반환 −1+4=3으로 별도 검산해요. 출력된 숫자 5개와 반환 덧셈 4회를 구별해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>n=1은 n&lt;1을 만족하지 않으므로 한 번 더 호출해요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>출력의 첫 줄 10을 적고 다음 인자 7을 계산해요.</li><li>출력 10,7,4,1,−2 / 반환 3</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>출력의 첫 줄 10을 적고 다음 인자 7을 계산해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>출력 10,7,4,1,−2 / 반환 3</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

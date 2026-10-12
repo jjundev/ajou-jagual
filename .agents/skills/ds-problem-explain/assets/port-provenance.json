@@ -801,6 +801,20 @@
       "current_sha256": "7e5025df381befe2524fb7c712f75fa3367f65c45b58491c025703e7c42bc3a8",
       "inserted_text": "    pre { max-width: 100%; overflow-x: auto; tab-size: 4; }\n",
       "reason": "User approved 2026-10-12: keep original code text and confine mobile overflow to pre blocks."
+    },
+    {
+      "destination": "scripts/mpe_render.py",
+      "base_sha256": "675832e50b0105612f84651b8928d532cfde83fb2340b802b40cd6efd0b82b72",
+      "current_sha256": "7ac4971e78acd8876c6c2a5a63918687c13ba7329c09758045696e810e1d9ff2",
+      "inserted_text": "    # Existing textbook figures carry static presentation; authored styles stay forbidden.\n    if scope == 'source':\n        for node in nodes:\n            value = node.attrs.get('style', '')\n            allowed = (node.tag == 'figure' and value == 'margin:16px 0') or (\n                node.tag == 'div' and 'figure-scroll' in node.classes and\n                value == 'max-width:100%;overflow-x:auto;background:white') or (\n                node.tag == 'svg' and re.fullmatch(\n                    r'background:white;width:[1-9][0-9]{0,3}px;max-width:none;height:auto', value))\n            if allowed:\n                errors.remove('허용하지 않는 속성: style')\n",
+      "reason": "2026-10-12 existing9-pack backfill: source-only exact static figure style compatibility with preservation and rejection regression; original frozen file hashes retained."
+    },
+    {
+      "destination": "tests/test_render.py",
+      "base_sha256": "b3bcf616bd4ae74a97a68f5f734b7854d73fad39e57f3c007457508e80c24682",
+      "current_sha256": "55b8094aa2e206bfae3899bef014b97c35a89a565158c720aa939b36731b5386",
+      "inserted_text": "\ndef test_existing_source_figure_presentation_preserved(tmp_path):\n    pack,fragments=make(tmp_path)\n    figure='<figure style=\"margin:16px 0\"><div class=\"figure-scroll\" style=\"max-width:100%;overflow-x:auto;background:white\"><svg viewBox=\"0 0 1000 200\" style=\"background:white;width:1000px;max-width:none;height:auto\"><text x=\"1\" y=\"20\">A B C D</text></svg></div></figure>'\n    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+figure)\n    pack=replace(pack,problems=(p,))\n    art=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')\n    assert check_artifacts(pack,art)==[]\n    assert figure in art.html.read_text()\n\n@pytest.mark.parametrize('style',['background:url(https://example.com/x)','width:expression(alert(1))','position:fixed','color:red'])\ndef test_source_style_allowance_is_narrow(tmp_path,style):\n    pack,fragments=make(tmp_path)\n    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+f'<figure style=\"{style}\">x</figure>')\n    with pytest.raises(ExplainError,match='마크업'):\n        build_explanation(replace(pack,problems=(p,)),fragments,tmp_path/'stage',tmp_path/'repo')\n\ndef test_authored_style_still_refused(tmp_path):\n    pack,fragments=make(tmp_path)\n    with pytest.raises(ExplainError,match='style'):\n        build_explanation(pack,{'p1':fragments['p1']+'<figure style=\"margin:16px 0\">x</figure>'},tmp_path/'stage',tmp_path/'repo')\n",
+      "reason": "2026-10-12 existing9-pack backfill: source-only exact static figure style compatibility with preservation and rejection regression; original frozen file hashes retained."
     }
   ]
 }

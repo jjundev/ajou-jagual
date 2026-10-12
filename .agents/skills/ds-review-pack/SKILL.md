@@ -1,6 +1,6 @@
 ---
 name: ds-review-pack
-description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(정리노트·복습문제)이나 기출 문제은행을 만들 때 사용한다. /ds-review-pack [bank | MMDD | MMDD-MMDD | update-existing MMDD/all] [lite]
+description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(정리노트·복습문제·문제설명)이나 기출 문제은행을 만들 때 사용한다. /ds-review-pack [bank | MMDD | MMDD-MMDD | update-existing MMDD/all] [lite]
 ---
 
 # 자구알 복습팩
@@ -9,20 +9,22 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 
 **모드**
 - `bank`: 기출 원본을 전사해 문제은행을 만들거나 다시 만든다. 절차는 "문제은행 모드" B1~B4.
-- `update-existing [MMDD|all]`: 기존 리뷰만 갱신한다. `references/textbook-update.md`를 따른다. 기존 카드와 노트는 보존하고 교과서 원문 4~8개를 추가한다.
+- `update-existing [MMDD|all]`: 기존 리뷰를 갱신하고 전체 문항의 문제설명도 다시 만든다. `references/textbook-update.md`를 따른다. 기존 카드와 노트는 보존하고 교과서 원문 4~8개를 추가한다.
 - 그 밖(`[MMDD | MMDD-MMDD] [lite]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
 
 **산출물** (복습팩, `복습노트/<range>/`, 수업 날짜마다 폴더 하나):
-`정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, 같은 이름의 `.md` 두 개, `figures_<range>/`
+`정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, `문제설명_<range>_<slug>.html`, 같은 이름의 `.md` 세 개, `figures_<range>/`, 설명 소유 그림·자료 폴더
 
 **인자**: `[bank | MMDD | MMDD-MMDD | update-existing MMDD/all] [lite]`
-- `lite`: 작성자·요약·전사 에이전트를 가벼운 모델로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다.
+- `lite`: 작성자·요약·전사 에이전트를 가벼운 모델로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다. 문제설명 저작·독립 검산·실자료 검토·브라우저 검증은 생략하지 않는다.
 
 **에이전트 모델** (작성자·요약·전사 공통, 모델은 여기서만 정한다):
 | 실행 환경 | 기본 | `lite` |
 |---|---|---|
 | Claude | opus | sonnet |
 | GPT 등 Claude 아님 | sol | luna |
+
+**해설 연결**: bank 이외의 모드는 생성 시작 전에 형제 `ds-problem-explain/SKILL.md`와 실행기 존재를 확인한다. 정확한 최종 복습문제 HTML 경로로 [공통 문제설명 절차](references/problem-explain.md)를 실행한다.
 
 **진행 표시**: 단계마다 한 줄만 쓴다. 예: `3/9 작성 중: 섹션 4개 + 카드 9개 (병렬)`, `B3 전사 중: 원본 11개 (병렬)`
 
@@ -153,24 +155,27 @@ python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$
 - 결함은 5단계와 같은 방식으로 작성자에게 되돌린다. 이것도 최대 2회 규칙에 포함된다.
 - 끝나면 서버를 종료한다.
 
-### 8. MD 변환
+### 8. MD 변환과 문제설명
 ```bash
 python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.html" "$REPO/복습노트/<range>/<복습문제>.html" --check
 ```
 - `OK`가 나와야 한다.
 - 누락이 나오면 대부분 HTML 조각의 마크업 문제다(수식이 `svg`나 `.controls` 안에 있는 경우 등). 조각을 고치고 4단계부터 다시 한다.
 
+- MD 변환·기계·내용·브라우저 검증이 끝난 최종 복습문제 HTML의 절대 경로로 `references/problem-explain.md`를 실행한다. 미해결 검사가 있으면 설명 발행을 보류한다. 날짜·최신 팩으로 대상을 추측하지 않는다.
+
 ### 9. 보고
 다음 형식으로 끝낸다.
 ```
-## 복습팩 <range> 완료
-- 파일: 복습노트/<range>/… (html 2, md 2, figures_<range>/ N개)
+## 복습팩 <range> 완료 (설명 보류 시: 복습팩 생성됨 / 문제설명 보류)
+- 파일: 복습노트/<range>/… (html 3, md 3, figures_<range>/ N개; 설명 소유 그림·자료 포함)
 - 범위: 배운 쪽 S2 p1–20 … / 예고만: …
 - 문제: P1 2016-final-ljw-q3 (2016 기말 3번, 이정원, trace) … / 변형 K개 (정답은 RUN/answers.py로 검증)
 - 은행과 다른 답: … (없으면 "없음")
 - 은행과 다른 문제 글: … (없으면 "없음")
 - 검수 대기로 뺀 원본: … (없으면 "없음")
 - 스킬이 정한 사항: slug, 섹션 구성, 위젯, 뺀 내용과 이유, 뺀 후보 문항과 이유
+- 문제설명: 발행/보류, 전체 문항 수, HTML·MD·EXPLAIN_RUN·백업 경로, 네 검토 결과와 보류 이유
 - 미해결: … (없으면 "없음")
 - 커밋 제안: git add 복습노트/<range> && git commit -m "docs(notes): add ds review pack <range>"
 ```
@@ -185,3 +190,6 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 | hwp 변환 실패·외부 변환 허락 없음(`bank`) | 그 원본을 빼고 진행, 보고서 "빠진 원본"에 적음 |
 | 원본 판독 불가(`bank`) | `[?]`로 표시하고 보고서에 적음 |
 | 포트 사용 중 | 다른 빈 포트 사용 |
+
+| 해설 스킬·실행기 누락 | bank 외 생성 시작 전에 경로와 오류를 보고하고 중단 |
+| 해설 저작·검산·검토·발행 실패 | 검증된 원 복습팩과 이전 해설 보존, “복습팩 생성됨 / 문제설명 보류”와 팩별 이유 보고; 다른 팩은 계속 |

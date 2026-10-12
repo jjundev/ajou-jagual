@@ -1,0 +1,53 @@
+{
+  "p1": {
+    "key": "foo",
+    "method": "proof",
+    "conclusion": "10000 positive pairs: Euclidean return equals independently enumerated greatest common divisor; y=0 excluded.",
+    "evidence": "10000 positive pairs: Euclidean return equals independently enumerated greatest common divisor; y=0 excluded."
+  },
+  "p2": {
+    "key": "gcd",
+    "method": "proof",
+    "conclusion": "Same common-divisor invariant; second argument strictly decreases to zero. 10000 pairs matched.",
+    "evidence": "Same common-divisor invariant; second argument strictly decreases to zero. 10000 pairs matched."
+  },
+  "p3": {
+    "key": "recursion",
+    "method": "qualitative",
+    "conclusion": "Definition check: self call creates another activation; loop-only implementation has no self-call.",
+    "evidence": "Definition check: self call creates another activation; loop-only implementation has no self-call."
+  },
+  "p4": {
+    "key": "binary",
+    "method": "exact",
+    "conclusion": "Compiled C: 10→1010,1→1,0→empty. Reconstruction 8+2=10; positive input assumption explicit.",
+    "evidence": "Compiled C: 10→1010,1→1,0→empty. Reconstruction 8+2=10; positive input assumption explicit."
+  },
+  "p5": {
+    "key": "ch03-q01",
+    "method": "exact",
+    "conclusion": "C sizeof: int4, a[10][20]800; independent 10*20*4=800.",
+    "evidence": "C sizeof: int4, a[10][20]800; independent 10*20*4=800."
+  },
+  "p6": {
+    "key": "ch03-q04",
+    "method": "exact",
+    "conclusion": "2**i for i=0..9 yields 1,2,4,8,16,32,64,128,256,512; recurrence induction and compiled printed program.",
+    "evidence": "2**i for i=0..9 yields 1,2,4,8,16,32,64,128,256,512; recurrence induction and compiled printed program.",
+    "compiled_output": "1 2 4 8 16 32 64 128 256 512"
+  },
+  "p7": {
+    "key": "ch03-q05",
+    "method": "qualitative",
+    "conclusion": "Member types char[],int,float satisfy specification; name capacity chosen, not prescribed. Compiler accesses verified.",
+    "evidence": "Member types char[],int,float satisfy specification; name capacity chosen, not prescribed. Compiler accesses verified.",
+    "compiled": "C11 sanitizer PASS"
+  },
+  "p8": {
+    "key": "ch03-q06",
+    "method": "qualitative",
+    "conclusion": "typedef declares type alias, separate c1,c2 declarations create two objects; float real/imaginary member accesses compile.",
+    "evidence": "typedef declares type alias, separate c1,c2 declarations create two objects; float real/imaginary member accesses compile.",
+    "compiled": "C11 sanitizer PASS"
+  }
+}

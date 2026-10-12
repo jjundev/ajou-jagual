@@ -51,6 +51,17 @@ def resources(markup, problem, pack, repo, stage, fig_name, destination, scope):
     root = parse(markup)
     nodes = list(root.find_all(lambda n: True))
     errors = markup_errors(root, allow_summary=True)
+    # Existing textbook figures carry static presentation; authored styles stay forbidden.
+    if scope == 'source':
+        for node in nodes:
+            value = node.attrs.get('style', '')
+            allowed = (node.tag == 'figure' and value == 'margin:16px 0') or (
+                node.tag == 'div' and 'figure-scroll' in node.classes and
+                value == 'max-width:100%;overflow-x:auto;background:white') or (
+                node.tag == 'svg' and re.fullmatch(
+                    r'background:white;width:[1-9][0-9]{0,3}px;max-width:none;height:auto', value))
+            if allowed:
+                errors.remove('허용하지 않는 속성: style')
     if errors:
         raise ExplainError(f'{problem.id}: 원문/설명 마크업 오류: ' + ' / '.join(errors))
     # Scope SVG identifiers per occurrence (original English and reading may repeat media).

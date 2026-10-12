@@ -1,0 +1,1 @@
+User authorized entity display correction. Exact source.json and previous source reference digests rechecked unchanged. Only retry/summary literal characters are unescaped then escaped once. Main understand/recall/start/solve/verify/pitfall sections and answers remain byte-identical; independent computations rerun. Current browser review binds the new frozen stage.

@@ -1,218 +1,75 @@
 {
   "p1": {
-    "value": 31,
-    "expression": "(((5*6)+(4/2))-1)",
-    "states": [
-      [
-        5
-      ],
-      [
-        5,
-        6
-      ],
-      [
-        30
-      ],
-      [
-        30,
-        4
-      ],
-      [
-        30,
-        4,
-        2
-      ],
-      [
-        30,
-        2
-      ],
-      [
-        32
-      ],
-      [
-        32,
-        1
-      ],
-      [
-        31
-      ]
-    ],
-    "push": 9,
-    "pop": 8
+    "key": "2019-mid-q6",
+    "method": "exact",
+    "conclusion": "Independent postfix interpreter: ([31], 9, 8, [[5], [5, 6], [30], [30, 4], [30, 4, 2], [30, 2], [32], [32, 1], [31]]); result left on stack.",
+    "evidence": "Independent postfix interpreter: ([31], 9, 8, [[5], [5, 6], [30], [30, 4], [30, 4, 2], [30, 2], [32], [32, 1], [31]]); result left on stack."
   },
   "p2": {
-    "part1": {
-      "value": 25,
-      "expression": "((((2+4)*7)-(6*3))+1)",
-      "states": [
-        [
-          2
-        ],
-        [
-          2,
-          4
-        ],
-        [
-          6
-        ],
-        [
-          6,
-          7
-        ],
-        [
-          42
-        ],
-        [
-          42,
-          6
-        ],
-        [
-          42,
-          6,
-          3
-        ],
-        [
-          42,
-          18
-        ],
-        [
-          24
-        ],
-        [
-          24,
-          1
-        ],
-        [
-          25
-        ]
-      ],
-      "push": 11,
-      "pop": 10
-    },
-    "part2": {
-      "value": 31,
-      "expression": "(((5*6)+(4/2))-1)",
-      "states": [
-        [
-          5
-        ],
-        [
-          5,
-          6
-        ],
-        [
-          30
-        ],
-        [
-          30,
-          4
-        ],
-        [
-          30,
-          4,
-          2
-        ],
-        [
-          30,
-          2
-        ],
-        [
-          32
-        ],
-        [
-          32,
-          1
-        ],
-        [
-          31
-        ]
-      ],
-      "push": 9,
-      "pop": 8
-    }
+    "key": "2018-mid-c024-q9",
+    "method": "exact",
+    "conclusion": "Independent shunting yard result2 4 + 7 * 6 3 * - 1 + value25; separately supplied table tokens value31. Both answered.",
+    "evidence": "Independent shunting yard result2 4 + 7 * 6 3 * - 1 + value25; separately supplied table tokens value31. Both answered."
   },
   "p3": {
-    "value": 24,
-    "expression": "((7-(6/2))+(5*4))",
-    "states": [
-      [
-        7
-      ],
-      [
-        7,
-        6
-      ],
-      [
-        7,
-        6,
-        2
-      ],
-      [
-        7,
-        3
-      ],
-      [
-        4
-      ],
-      [
-        4,
-        5
-      ],
-      [
-        4,
-        5,
-        4
-      ],
-      [
-        4,
-        20
-      ],
-      [
-        24
-      ]
-    ],
-    "push": 9,
-    "pop": 8
+    "key": "2017-mid-c050-q6",
+    "method": "exact",
+    "conclusion": "Independent postfix state interpreter: ([24], 9, 8, [[7], [7, 6], [7, 6, 2], [7, 3], [4], [4, 5], [4, 5, 4], [4, 20], [24]]); result24.",
+    "evidence": "Independent postfix state interpreter: ([24], 9, 8, [[7], [7, 6], [7, 6, 2], [7, 3], [4], [4, 5], [4, 5, 4], [4, 20], [24]]); result24."
   },
   "p4": {
-    "answer": "스택",
-    "proof": "proper nesting closes the most recently opened unmatched delimiter; stack exactly implements this invariant, independent of nesting depth"
+    "key": "2018-mid-c024-q1",
+    "method": "qualitative",
+    "conclusion": "([]) passes LIFO type matching; ([)] fails at first closing ) despite equal counts.",
+    "evidence": "([]) passes LIFO type matching; ([)] fails at first closing ) despite equal counts."
   },
   "p5": {
-    "answer": "스택",
-    "proof": "postfix binary operators combine the two most recently completed pending operands; replacing them with their result maintains the pending-subexpression invariant"
-  },
-  "p7": {
-    "answer": "큐",
-    "proof": "rear insertion and front removal preserve arrival order for all customers in the ordinary FIFO model stated by the problem"
-  },
-  "p8": {
-    "answer": "X",
-    "counterexample": "push A; push B; pop returns B, whereas FIFO would return A"
+    "key": "2017-mid-c050-q1",
+    "method": "qualitative",
+    "conclusion": "Postfix23+4* value20 with most recent partial results; queue cannot preserve nested-expression invariant.",
+    "evidence": "Postfix23+4* value20 with most recent partial results; queue cannot preserve nested-expression invariant."
   },
   "p6": {
-    "cases": [
-      {
-        "input": "23+4*",
-        "output": "input postfix equation using 0~9,+,*:result:20",
-        "expected": 20
-      },
-      {
-        "input": "52*3+",
-        "output": "input postfix equation using 0~9,+,*:result:13",
-        "expected": 13
-      },
-      {
-        "input": "0",
-        "output": "input postfix equation using 0~9,+,*:result:0",
-        "expected": 0
-      },
-      {
-        "input": "99*9+",
-        "output": "input postfix equation using 0~9,+,*:result:90",
-        "expected": 90
-      }
-    ],
-    "scope": "Only original blanks filled. No added variables, error exit, or scanf width. Defined valid input only; <=99 chars, sufficient operands, capacity<=100, int no overflow. Compiler warns original empty-pop branch has no return."
+    "key": "2017-mid-c050-q10",
+    "method": "exact",
+    "conclusion": "Full C11+ASan+UBSan complete program:23+4*→20,52*3+→13. Stack snippets exact. Only valid bounded, non-overflow inputs accepted; added failure exits and bounded scanf distinguished from original.",
+    "evidence": "Full C11+ASan+UBSan complete program:23+4*→20,52*3+→13. Stack snippets exact. Only valid bounded, non-overflow inputs accepted; added failure exits and bounded scanf distinguished from original."
+  },
+  "p7": {
+    "key": "2017-mid-c050-q2",
+    "method": "qualitative",
+    "conclusion": "Customers A,B,C service A,B,C per FIFO; no priority policy assumed.",
+    "evidence": "Customers A,B,C service A,B,C per FIFO; no priority policy assumed."
+  },
+  "p8": {
+    "key": "2019-mid-q4",
+    "method": "qualitative",
+    "conclusion": "Counterexample push A then B returns B (LIFO), disproving FIFO premise; bracket-use clause itself true.",
+    "evidence": "Counterexample push A then B returns B (LIFO), disproving FIFO premise; bracket-use clause itself true."
+  },
+  "p9": {
+    "key": "ch05-q03",
+    "method": "exact",
+    "conclusion": "deque deletion returns10,20,30 and leaves40,50.",
+    "evidence": "deque deletion returns10,20,30 and leaves40,50."
+  },
+  "p10": {
+    "key": "ch04-q07",
+    "method": "exact",
+    "conclusion": "Symbolic operand stack [A,B,E] first + combines B,E; A remains, so option1.",
+    "evidence": "Symbolic operand stack [A,B,E] first + combines B,E; A remains, so option1."
+  },
+  "p11": {
+    "key": "ch04-q11",
+    "method": "exact",
+    "conclusion": "Independent bracket numbering trace yields printed sequences; second example deliberately leaves unmatched1..4, not approved as balanced.",
+    "evidence": "Independent bracket numbering trace yields printed sequences; second example deliberately leaves unmatched1..4, not approved as balanced.",
+    "compiled_output": "수식: 괄호 수: 1 2 3 3 2 4 5 5 4 1"
+  },
+  "p12": {
+    "key": "ch04-q14",
+    "method": "exact",
+    "conclusion": "For top=-1,0,3,M-1 size=0,1,4,M; no mutation, O(1).",
+    "evidence": "For top=-1,0,3,M-1 size=0,1,4,M; no mutation, O(1)."
   }
 }

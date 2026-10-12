@@ -1,0 +1,8 @@
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>원문 넷째 루프는 i++인데 k&lt;30을 검사해요. 현재 리뷰는 k++로 보는 가정을 별도로 명시했어요. 두 경우를 나눠요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>종료 조건을 검사하는 k가 변하는지 먼저 확인해요. 원문의 결함과 수정 가정의 시간 복잡도를 같은 답으로 취급할 수 없어요. 원 코드 실행은 정상적인 T(n) 계산 대상이 아니에요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>원문: i=1,j=0,k=0에서 넷째 루프 진입이라고 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>원문 그대로라면 k=0이 계속되어 k&lt;30이 항상 참이에요. i만 증가해 배열 밖 접근이나 정수 범위 초과에 이르므로 정상 종료와 유한한 T(n)을 보장하지 않아요. n≤1은 대입 0번이지만 n≥2의 정상 빅오 답은 정할 수 없어요. <strong>리뷰가 명시한 k++ 가정에서만</strong> j가 0..i−1로 증가하고 k가 30번 돌아 T(n)=30n(n−1)/2, O(n²)이에요. 셋째 루프의 j 증감은 그대로 두어요.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>수정 가정 n=4의 i별 횟수는 0,30,60,90으로 180번이에요. 원문은 k가 변하지 않는다는 정적 제어흐름 분석으로 결함을 확인하며 실제 위험 코드는 실행하지 않아요. 이 180을 원문 실행 결과라고 쓰지 않아요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>문제은행의 의도된 답을 원문의 정상 실행값으로 승인하지 않아요. 이 해설은 결함과 조건부 답을 설명하는 것이며 원 코드의 정상 실행 검증은 보류 상태예요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>원문: i=1,j=0,k=0에서 넷째 루프 진입이라고 적어요.</li><li>원문 정상 복잡도 없음; k++ 가정만 O(n²)</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>원문: i=1,j=0,k=0에서 넷째 루프 진입이라고 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>원문 정상 복잡도 없음; k++ 가정만 O(n²)</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

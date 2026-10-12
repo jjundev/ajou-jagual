@@ -1,0 +1,10 @@
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>스택 내용을 꺼내지 않고 저장된 개수를 반환하는 size를 구현해요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>top이 마지막 유효 인덱스이므로 원소 수는 top+1이에요. −1은 빈 상태를 나타내는 규칙이며 정상 top 범위는 −1..M−1이에요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">return s-&gt;top + 1;</code></pre></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">int size(const StackType *s) {
+    return s-&gt;top + 1;
+}</code></pre></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>top=−1→0,0→1,3→4,M−1→M이에요. 값을 직접 꺼내 세지 않아 top과 배열이 그대로 보존돼요. 한 번의 덧셈과 반환이라 O(1)이에요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>pop 반복으로 세면 스택 내용이 사라지고 시간도 O(size)가 돼요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>return s-&gt;top + 1;</li><li>size=top+1, 원본 보존 O(1)</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>return s-&gt;top + 1;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>size=top+1, 원본 보존 O(1)</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

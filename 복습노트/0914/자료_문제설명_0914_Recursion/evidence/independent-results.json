@@ -1,0 +1,74 @@
+{
+  "p1": {
+    "key": "foo",
+    "method": "proof",
+    "conclusion": "10000 positive pairs: Euclidean return equals independently enumerated greatest common divisor; y=0 excluded.",
+    "evidence": "10000 positive pairs: Euclidean return equals independently enumerated greatest common divisor; y=0 excluded."
+  },
+  "p2": {
+    "key": "broken-loop",
+    "method": "qualitative",
+    "conclusion": "Literal k stays zero after entry for n>=2: no finite normal T(n), possible out-of-bounds/overflow. Hazardous original not executed. Explicit k++ assumption only: enumerate n=0..20 →30n(n-1)/2. Original key uses intended-code assumption, not literal behavior.",
+    "evidence": "Literal k stays zero after entry for n>=2: no finite normal T(n), possible out-of-bounds/overflow. Hazardous original not executed. Explicit k++ assumption only: enumerate n=0..20 →30n(n-1)/2. Original key uses intended-code assumption, not literal behavior."
+  },
+  "p3": {
+    "key": "tri30",
+    "method": "proof",
+    "conclusion": "Independent nested-loop enumeration n=0..20 equals 30n(n+1)/2; pair-sum proof supplies general formula.",
+    "evidence": "Independent nested-loop enumeration n=0..20 equals 30n(n+1)/2; pair-sum proof supplies general formula."
+  },
+  "p4": {
+    "key": "gcd",
+    "method": "proof",
+    "conclusion": "Same common-divisor invariant; second argument strictly decreases to zero. 10000 pairs matched.",
+    "evidence": "Same common-divisor invariant; second argument strictly decreases to zero. 10000 pairs matched."
+  },
+  "p5": {
+    "key": "recursion",
+    "method": "qualitative",
+    "conclusion": "Definition check: self call creates another activation; loop-only implementation has no self-call.",
+    "evidence": "Definition check: self call creates another activation; loop-only implementation has no self-call."
+  },
+  "p6": {
+    "key": "binary",
+    "method": "exact",
+    "conclusion": "Compiled C: 10→1010,1→1,0→empty. Reconstruction 8+2=10; positive input assumption explicit.",
+    "evidence": "Compiled C: 10→1010,1→1,0→empty. Reconstruction 8+2=10; positive input assumption explicit."
+  },
+  "p7": {
+    "key": "tri10",
+    "method": "proof",
+    "conclusion": "Independent nested-loop enumeration n=0..20 equals 10n(n+1)/2; pair-sum proof supplies general formula.",
+    "evidence": "Independent nested-loop enumeration n=0..20 equals 10n(n+1)/2; pair-sum proof supplies general formula."
+  },
+  "p8": {
+    "key": "four20",
+    "method": "proof",
+    "conclusion": "Actual j-mutating control flow n=1..20 equals 19n(n-1)/2. k starts 1, p unchanged, j terminates.",
+    "evidence": "Actual j-mutating control flow n=1..20 equals 19n(n-1)/2. k starts 1, p unchanged, j terminates."
+  },
+  "p9": {
+    "key": "ch01-q12",
+    "method": "proof",
+    "conclusion": "Asymptotic ratios log(n)/n→0, log(n)<n eventually; exponential dominates fixed polynomial; factorial/2^n diverges. n=16 spot check not treated as proof.",
+    "evidence": "Asymptotic ratios log(n)/n→0, log(n)<n eventually; exponential dominates fixed polynomial; factorial/2^n diverges. n=16 spot check not treated as proof."
+  },
+  "p10": {
+    "key": "ch01-q09",
+    "method": "qualitative",
+    "conclusion": "Lecture page28 defines T(n) operation count; T(0,1,2)=10,17,24, not seconds or bytes.",
+    "evidence": "Lecture page28 defines T(n) operation count; T(0,1,2)=10,17,24, not seconds or bytes."
+  },
+  "p11": {
+    "key": "ch02-q01",
+    "method": "exact",
+    "conclusion": "Lecture base n<=1: deepest live factorial calls 5,4,3,2,1 (five), then returns 1,2,6,24,120.",
+    "evidence": "Lecture base n<=1: deepest live factorial calls 5,4,3,2,1 (five), then returns 1,2,6,24,120."
+  },
+  "p12": {
+    "key": "ch02-q05",
+    "method": "qualitative",
+    "conclusion": "For every n!=1, child has same n and no progress. Defect analysis only; no normal return approved.",
+    "evidence": "For every n!=1, child has same n and no progress. Defect analysis only; no normal return approved."
+  }
+}
