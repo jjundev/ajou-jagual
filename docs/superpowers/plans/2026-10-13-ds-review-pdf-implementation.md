@@ -8,7 +8,7 @@
 
 **Tech Stack:** Python 3.10+, 표준 unittest, Playwright sync API/Google Chrome, PyMuPDF, KaTeX 0.16.11, Pretendard 1.3.9.
 
-**Spec:** `docs/superpowers/specs/2026-10-13-ds-review-pdf-design.md` (먼저 읽는다).
+**Spec:** `docs/superpowers/specs/2026-10-13-ds-review-pdf-implementation-design.md` (먼저 읽는다).
 
 ## Global Constraints
 

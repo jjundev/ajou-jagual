@@ -51,10 +51,24 @@ def test_historical_record_survives_valid_replacement(delivery):
  assert check_preserved(r,i['source'],i['source_sha256'],None)==[]
 
 def test_real_delivery():
- report=latest_delivery_report(REPO);assert report.exists()
+ # This immutable predecessor is the one bound by main's code-block replacement chain.
+ report=REPO/'docs/verify/2026-10-12-ds-review-pack-explain.json';assert report.exists()
  packs=json.loads(report.read_text())['packs'];assert sorted(p['date'] for p in packs)==['0907','0914','0917','0921','0928','1001','1005','1008','1012']
  assert sum(len(p['problem_ids']) for p in packs)==64
- for item in packs:assert check_pack(REPO,item)==[],item['date']
+ latest=json.loads((REPO/'docs/verify/2026-10-13-ds-code-blocks.json').read_text())
+ assert digest(report)==latest['historical_report_sha256']
+ by_date={p['date']:p for p in latest['packs']}
+ for item in packs:
+  current=by_date[item['date']]
+  assert item['source']==current['source'] and item['source_sha256']==current['source_sha256']
+  assert item['problem_ids']==current['problem_ids']
+  assert check_pack(REPO,current)==[],item['date']
+  # Predecessor artifact metadata is retained and connected to the current output.
+  backup=REPO/current['replacements'][item['manifest']]['backup_file']
+  old=json.loads(backup.read_text())
+  for name,old_digest in old['files'].items():
+   relative=(Path(item['source']).parent/name).as_posix()
+   assert check_preserved(REPO,relative,old_digest,latest)==[],relative
 
 
 def test_forged_backup_digest_does_not_replace_backup_bytes(delivery):
@@ -88,3 +102,79 @@ def test_latest_delivery_report_preferred(tmp_path):
  old=folder/'2026-10-12-ds-review-pack-explain.json';new=folder/'2026-10-13-ds-review-pack-explain.json'
  old.write_text('{}');new.write_text('{}')
  assert latest_delivery_report(tmp_path)==new
+
+
+def test_all_code_block_deliveries_current():
+ report_path = REPO / 'docs/verify/2026-10-13-ds-code-blocks.json'
+ assert report_path.exists()
+ report = json.loads(report_path.read_text())
+ assert {p['html'] for p in report['packs']} == {p.relative_to(REPO).as_posix() for p in (REPO/'복습노트').glob('*/문제설명_*.html')}
+ for item in report['packs']:
+  assert check_pack(REPO, item) == [], item['date']
+  for rel, old in item['before_files'].items():
+   assert check_preserved(REPO, rel, old, report) == [], rel
+ for rel, old in report['protected_files'].items():
+  data=(REPO/rel).read_bytes()
+  if rel=='.gitattributes':
+   # The PDF font license adds only this narrow rule; every predecessor byte remains.
+   extension=b'# Preserve the official font license byte-for-byte.\n.agents/skills/ds-review-pack/assets/pdf/vendor/jetbrains-mono/OFL.txt -whitespace\n'
+   if data.endswith(extension):data=data[:-len(extension)]
+  assert hashlib.sha256(data).hexdigest()==old, rel
+
+
+def test_source_relocation_requires_matching_relative_path_and_digest(delivery):
+ r,i,m,v=delivery
+ m['source']='/previous/checkout/'+i['source']
+ path=r/i['manifest'];path.write_text(json.dumps(m));v['artifact_hashes'][path.relative_to((r/i['source']).parent).as_posix()]=digest(path);(r/i['validation']).write_text(json.dumps(v))
+ assert check_pack(r,i)==[]
+ m['source']='/previous/checkout/another.html';path.write_text(json.dumps(m))
+ assert check_pack(r,i)
+
+
+def test_durable_backup_requires_real_bytes(delivery):
+ r,i,m,v=delivery;rel=i['html'];old=hashlib.sha256(b'old').hexdigest()
+ saved=r/'saved/0-previous.html';saved.parent.mkdir();saved.write_bytes(b'old')
+ i['replacements'][rel]={'before_sha256':old,'after_sha256':digest(r/rel),'backup_sha256':old,'backup_file':saved.relative_to(r).as_posix()}
+ assert check_preserved(r,rel,old,{'packs':[i]})==[]
+ saved.write_bytes(b'forged');assert check_preserved(r,rel,old,{'packs':[i]})
+
+
+def test_history_chain_requires_every_saved_predecessor(delivery):
+ r,i,m,v=delivery;rel=i['html'];old=hashlib.sha256(b'old').hexdigest();middle=hashlib.sha256(b'middle').hexdigest()
+ for name,data in [('old',b'old'),('middle',b'middle')]:
+  (r/name).write_bytes(data)
+ i['replacement_history']={rel:[{'before_sha256':old,'after_sha256':middle,'backup_sha256':old,'backup_file':'old'}]}
+ i['replacements'][rel]={'before_sha256':middle,'after_sha256':digest(r/rel),'backup_sha256':middle,'backup_file':'middle'}
+ assert check_preserved(r,rel,old,{'packs':[i]})==[]
+ (r/'middle').unlink();assert check_preserved(r,rel,old,{'packs':[i]})
+
+
+def test_replay_uses_published_inputs_without_original_run(tmp_path):
+ import subprocess,sys
+ runner=REPO/'docs/verify/rerun-ds-code-blocks.py'
+ assert runner.is_file()
+ result=subprocess.run([sys.executable,str(runner),'--repo',str(REPO),'--kind','independent','--output',str(tmp_path/'replay')],text=True,capture_output=True)
+ assert result.returncode==0,result.stdout+result.stderr
+ summary=json.loads((tmp_path/'replay/summary.json').read_text())
+ assert summary['question_count']==64
+ assert summary['pack_count']==9
+ assert summary['input_location']=='published sources and fragments'
+
+
+def test_saved_verification_rejects_zero_question_inputs(tmp_path):
+ import subprocess,sys,shutil
+ source=REPO/'복습노트/0907/자료_문제설명_0907_Intro_DS_Algorithms/evidence/verify-code-blocks.py'
+ copied=tmp_path/'verify-code-blocks.py';shutil.copy2(source,copied)
+ result=subprocess.run([sys.executable,str(copied)],text=True,capture_output=True)
+ assert result.returncode!=0
+ assert 'zero question inputs' in result.stdout+result.stderr
+
+
+def test_replay_rejects_empty_published_question_set(tmp_path):
+ import subprocess,sys
+ report=tmp_path/'repo/docs/verify/2026-10-13-ds-code-blocks.json'
+ report.parent.mkdir(parents=True);report.write_text(json.dumps({'packs':[]}))
+ result=subprocess.run([sys.executable,str(REPO/'docs/verify/rerun-ds-code-blocks.py'),'--repo',str(tmp_path/'repo'),'--kind','independent','--output',str(tmp_path/'output')],text=True,capture_output=True)
+ assert result.returncode!=0
+ assert 'zero question inputs' in result.stdout+result.stderr
+ assert not (tmp_path/'output/summary.json').exists()

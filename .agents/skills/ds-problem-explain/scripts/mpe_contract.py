@@ -70,6 +70,30 @@ def validate_fragment(problem, fragment):
     errors.extend(math_delimiter_errors(prose_text(root)))
     return [f'{problem.id}: {e}' for e in errors]
 
+def code_block_errors(fragment: str) -> list[str]:
+    """Validate authored blocks only; never restructure original problem code."""
+    errors = []
+    for pre in parse(fragment).find_all(lambda n: n.tag == 'pre'):
+        children = [n for n in pre.children if not isinstance(n, str)]
+        if (len(children) != 1 or children[0].tag != 'code' or
+                any(isinstance(n, str) and n.strip() for n in pre.children)):
+            errors.append('독립 코드·실행결과는 pre 안에 직계 code 하나로 작성하세요')
+        elif not children[0].text().strip():
+            errors.append('빈 코드 블록 금지')
+        parent = pre.parent
+        while parent is not None:
+            if parent.tag == 'p':
+                errors.append('코드 블록은 문단 밖에 작성하세요')
+                break
+            parent = parent.parent
+    return errors
+
+_validate_fragment_structure = validate_fragment
+
+def validate_fragment(problem, fragment):
+    return _validate_fragment_structure(problem, fragment) + [
+        f'{problem.id}: {error}' for error in code_block_errors(fragment)]
+
 def initial_reviews(pack, fragments):
     keys = [f'{p.id}:{s}' for p in pack.problems for s in p.subparts]
     pending = {'status': 'not_run', 'reviewer': '', 'evidence': ''}

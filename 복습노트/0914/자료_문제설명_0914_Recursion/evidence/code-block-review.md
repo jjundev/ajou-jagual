@@ -1,0 +1,6 @@
+# Code block regeneration review (0914)
+Reviewer: Codex, 2026-10-13.
+Scope: CSS-only regeneration of 12 existing questions.
+Source/content: original rendered question, explanation, summary and JavaScript are byte-identical outside the style element; Markdown is byte-identical. All 20 pre text values including whitespace match. Existing fragments reviewed for standalone code outside pre (none found); inline identifiers remain inline. Original study/source file hashes remain unchanged. Prior source-page evidence is retained; this is a preservation review, not a new claim to have reread every source PDF.
+Independent: verify-code-blocks.py rerun against the current, unchanged fragments, with a side-effect-free source-key mapping. All 12 IDs have conclusions in independent-results.json; compiler/sanitizer and state/formula checks completed. Prior proof boundaries (literal defective loops, positive input, bounded defined C inputs) remain unchanged.
+Browser: all questions tested at 1280x900 and 375x812 in light/dark; navigation, TOC, summary and theme interaction passed. Code block padding 16px, border 1px, font 14px; document overflow, console/resource/KaTeX errors and external requests zero. Results and screenshots: code-block-browser/. Representative screenshots were inspected.

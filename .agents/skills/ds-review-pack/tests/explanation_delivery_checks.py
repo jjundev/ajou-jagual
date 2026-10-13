@@ -1,5 +1,5 @@
 """Read-only delivery checks; historical records remain immutable."""
-import hashlib,json
+import hashlib,json,unicodedata
 from pathlib import Path
 from update_review import extract_cards
 
@@ -16,11 +16,10 @@ def check_pack(root,item):
   src=safe(root,item['source']);digest=sha(src);cards=extract_cards(src.read_text());ids=[c['id'] for c in cards]
   manifest=safe(root,item['manifest']);m=json.loads(manifest.read_text());v=json.loads(safe(root,item['validation']).read_text());dest=src.parent
   if not ids or ids!=item['problem_ids'] or ids!=[p['id'] for p in m['problems']]:errors.append('current problem IDs differ')
-  source_identity = Path(m['source']).resolve()==src
-  if not source_identity and m.get('repo'):
-   try: source_identity=Path(m['source']).relative_to(Path(m['repo'])).as_posix()==item['source']
-   except ValueError: pass
-  if digest!=item['source_sha256'] or digest!=m['source_sha256'] or not source_identity:errors.append('current source differs')
+  relative_parts=Path(item['source']).parts
+  recorded_parts=Path(m['source']).parts
+  same_location=tuple(map(lambda s:unicodedata.normalize('NFC',s),recorded_parts[-len(relative_parts):]))==tuple(map(lambda s:unicodedata.normalize('NFC',s),relative_parts))
+  if digest!=item['source_sha256'] or digest!=m['source_sha256'] or not same_location:errors.append('current source differs')
   if v.get('input_hash')!=m.get('input_hash'):errors.append('review input differs')
   expected={f"{p['id']}:{s}" for p in m['problems'] for s in p['subparts']}
   def approved(e):return isinstance(e,dict) and e.get('status')=='pass' and all(isinstance(e.get(k),str) and e[k].strip() for k in ('reviewer','evidence'))
@@ -55,13 +54,24 @@ def check_preserved(root,relative,digest,report):
    try:owned=rel.relative_to(parent)
    except ValueError:continue
    if owned.as_posix() not in (stem+'.html',stem+'.md') and (len(owned.parts)<2 or owned.parts[0] not in ('figures_'+stem,'자료_'+stem)):continue
-   replacement=item.get('replacements',{}).get(relative,{})
-   if replacement.get('before_sha256')!=digest or replacement.get('backup_sha256')!=digest or check_pack(root,item):continue
-   backup=Path(item.get('backup') or '')
-   if not backup.is_absolute() or not backup.is_dir():continue
-   if not any(saved.is_file() and sha(saved)==digest for saved in backup.rglob('*-'+path.name)):continue
-   after=replacement.get('after_sha256')
-   if (after is None and not path.exists()) or (path.is_file() and sha(path)==after):return []
+   if check_pack(root,item):continue
+   chain=list(item.get('replacement_history',{}).get(relative,[]))
+   current=item.get('replacements',{}).get(relative)
+   if current:chain.append(current)
+   wanted=digest
+   for replacement in chain:
+    if replacement.get('before_sha256')!=wanted:continue
+    if replacement.get('backup_sha256')!=wanted:break
+    saved=replacement.get('backup_file')
+    if saved:
+     backup=safe(root,saved)
+     if not backup.is_file() or sha(backup)!=wanted:break
+    else:
+     backup=Path(item.get('backup') or '')
+     if not backup.is_absolute() or not backup.is_dir():break
+     if not any(saved.is_file() and sha(saved)==wanted for saved in backup.rglob('*-'+path.name)):break
+    wanted=replacement.get('after_sha256')
+   if wanted!=digest and ((wanted is None and not path.exists()) or (path.is_file() and sha(path)==wanted)):return []
  except (OSError,ValueError,KeyError,TypeError):pass
  return ['preserved digest mismatch: '+relative]
 
