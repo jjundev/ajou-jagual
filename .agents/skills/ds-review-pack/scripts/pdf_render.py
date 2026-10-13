@@ -82,7 +82,17 @@ GEOMETRY_JS=r'''() => {
    const st=getComputedStyle(n);
    geometry[p.id].code.push({region:n.closest('.panel')?'panel':'work',rect:rect(n),font_family:st.fontFamily,
     font_size_css_px:parseFloat(st.fontSize),effective_pdf_pt:parseFloat(st.fontSize)*.75,
-    line_height_css_px:parseFloat(st.lineHeight),text:n.textContent});
+    line_height_css_px:parseFloat(st.lineHeight),text:n.textContent,hanging_indent_ch:2,
+    displayed_lines:[...n.querySelectorAll('.ds-code-line')].flatMap(line=>{
+      const range=document.createRange();range.selectNodeContents(line);
+      return [...range.getClientRects()].filter(r=>r.height>0).map(r=>({x:(r.left-pr.left)/zoom,y:(r.top-pr.top)/zoom,w:r.width/zoom,h:r.height/zoom}));
+    })});
+  }
+  for(const c of geometry[p.id].code){
+   for(const r of c.displayed_lines){
+    if(r.x<c.rect.x-1 || r.x+r.w>c.rect.x+c.rect.w+1 || r.y+r.h>c.rect.y+c.rect.h+1)overflow.add(p.id);
+   }
+   if(window.workbookVideoLayout && Math.abs(c.effective_pdf_pt-12)>.05)overflow.add(p.id);
   }
   const panel=p.querySelector('.panel'),work=p.querySelector('.work');
   const scale=n=>{const t=getComputedStyle(n).transform;return t==='none'?1:new DOMMatrix(t).a};

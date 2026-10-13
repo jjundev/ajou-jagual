@@ -8,6 +8,21 @@ REPLACEMENT = """if (p.html.conditions && p.html.conditions.replace(/<[^>]*>/g, 
 
 
 def extend(template, mode, layout="a4"):
+    template=template.replace('function renderMath(root) {', """function dsDecorateCode(root) {
+  for (const pre of root.querySelectorAll('pre')) {
+    const code=pre.querySelector('code') || pre;
+    if (code.dataset.dsWrapped) continue;
+    const text=code.textContent;
+    code.replaceChildren();
+    for (const line of text.match(/[^\\n]*\\n|[^\\n]+$/g) || []) {
+      const span=document.createElement('span'); span.className='ds-code-line';
+      span.textContent=line; code.append(span);
+    }
+    code.dataset.dsWrapped='true';
+    if (code.textContent!==text) throw new Error('Code decoration changed source');
+  }
+}
+function renderMath(root) { dsDecorateCode(root);""")
     if template.count(PANEL) != 1:
         raise PdfError('Frozen EC2 panel extension anchor changed')
     template = template.replace(PANEL, REPLACEMENT)

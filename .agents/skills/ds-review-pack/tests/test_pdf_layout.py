@@ -18,9 +18,9 @@ class LayoutTests(unittest.TestCase):
    self.assertEqual(''.join(b.text for p in pages for b in p.solution if b.kind=='code'),text)
    self.assertEqual(check_coverage(pack,pages),[])
    self.assertEqual(sum(p.show_answer for p in pages),1);self.assertTrue(pages[-1].show_answer)
- def test_wide_line_withheld(self):
+ def test_wide_line_wraps(self):
   with tempfile.TemporaryDirectory() as tmp:
-   with self.assertRaisesRegex(PdfError,'p1'):plan_pages(self.pack('W'*1000),Path(tmp))
+   pack=self.pack('W'*1000);pages=plan_pages(pack,Path(tmp));self.assertEqual(check_coverage(pack,pages),[])
  def test_coverage_detects_missing_code(self):
   from pdf_types import PageSlice
   pack=self.pack('x=1;\n')

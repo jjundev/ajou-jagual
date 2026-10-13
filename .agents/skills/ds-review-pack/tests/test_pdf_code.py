@@ -51,3 +51,42 @@ def test_missing_or_changed_font_rejected(tmp_path):
     (tmp_path/'font/JetBrainsMono-Regular.ttf').write_bytes(b'changed')
     with patch.object(pdf_code,'FONT_DIR',tmp_path/'font'):
         with pytest.raises(PdfError):pdf_code.check_font_assets()
+
+def test_long_line_wrap_preserves_text_and_indent(tmp_path):
+    text='\t  '+('value += array[index];  '*20)+'// 한글 주석\n\n  done();\n'
+    p=pdf_render.probe(data('answers',text=text),'answers','video-16x9',tmp_path)
+    assert not p.errors and not p.overflow
+    for c in p.geometry['p1']['code']:
+        assert c['text']==text
+        assert c['hanging_indent_ch']==2
+        assert c['displayed_lines']
+        assert len(c['displayed_lines'])>3
+        assert all(r['x']+r['w']<=c['rect']['x']+c['rect']['w']+1 for r in c['displayed_lines'])
+
+def test_long_code_paginates_at_fixed_size(tmp_path):
+    import html
+    from pdf_types import Block,Card,Pack
+    from pdf_layout import plan_pages,check_coverage
+    from pdf_cards import to_payload
+    text=''.join(f'  value += {i}; // 주석\n' for i in range(65))
+    block=Block('code','<pre><code>'+html.escape(text)+'</code></pre>',text)
+    c=Card('p1','fixture','장말문제','Long code',(block,),(block,),'<p>42</p>','')
+    pack=Pack(Path('/tmp/복습문제_0907_Fixture.html'),'fixture','0907','Fixture',(c,))
+    with pdf_render.render_session():
+        pages=plan_pages(pack,tmp_path/'layout')
+        assert len(pages)>1 and check_coverage(pack,pages)==[]
+        for name in ('problem','solution'):
+            assert ''.join(b.text for p in pages for b in getattr(p,name))==text
+        for mode in ('problems','answers'):
+            payload=to_payload(pack,mode,pages,tmp_path/'assets')
+            p=pdf_render.render(payload,mode,tmp_path/mode,tmp_path/(mode+'.pdf'))
+            assert not p.errors and not p.overflow
+            for g in p.geometry.values():
+                assert all(abs(c['effective_pdf_pt']-12)<=.05 for c in g['code'])
+
+def test_code_free_pages_keep_existing_layout(tmp_path):
+    from test_pdf_ds_layout import test_browser_table_placement_and_condition_visibility
+    test_browser_table_placement_and_condition_visibility()
+    d=data('problems');d['problems'][0]['html']['code']=''
+    p=pdf_render.probe(d,'problems','video-16x9',tmp_path)
+    assert not p.geometry['p1']['code'] and '코드' not in p.geometry['p1']['labels']

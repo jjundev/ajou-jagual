@@ -31,6 +31,8 @@ def code_css(layout):
  font-size: {size:.8f}pt !important; font-weight: 400 !important;
  font-style: normal; font-variant-ligatures: none; font-feature-settings: 'liga' 0, 'calt' 0;
  line-height: 1.45 !important; color: #000; background: #fff;
- white-space: pre; tab-size: 4;
+ white-space: normal; tab-size: 4;
 }}
+.ds-code-line {{ display: block; box-sizing: border-box; width: 100%; min-height: 1.45em;
+ white-space: pre-wrap; overflow-wrap: anywhere; padding-left: 2ch; text-indent: -2ch; }}
 .panel pre, .work pre {{ padding: 2mm; border-radius: 1mm; }}'''
