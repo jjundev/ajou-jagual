@@ -134,5 +134,26 @@ class TestBackupScript(unittest.TestCase):
         self.assertEqual(self.backups(), [])
 
 
+class TestScrollbar(unittest.TestCase):
+    """생명과학 bio-interactive 66939ad 와 같은 테마 스크롤바."""
+
+    def check(self, name):
+        t = (SKILL / "assets" / name).read_text(encoding="utf-8")
+        self.assertEqual(len(re.findall(r"--scroll: #[0-9a-f]{6}; --scroll-hover: #[0-9a-f]{6};", t)), 3)
+        self.assertEqual(t.count("--scroll: #c9d0db; --scroll-hover: #9aa3b2;"), 1)
+        self.assertEqual(t.count("--scroll: #3f414b; --scroll-hover: #5b5e6a;"), 2)
+        self.assertIn("::-webkit-scrollbar-thumb:hover { background: var(--scroll-hover); }", t)
+        self.assertIn("pre::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--surface); }", t)
+        self.assertIn("scrollbar-color: var(--scroll) transparent;", t)
+        self.assertIn("--scrollbar: 16px;", t)
+        self.assertNotIn("katex-display, table)", t)
+
+    def test_note_template_scrollbar(self):
+        self.check("note-template.html")
+
+    def test_review_template_scrollbar(self):
+        self.check("review-template.html")
+
+
 if __name__ == "__main__":
     unittest.main()
