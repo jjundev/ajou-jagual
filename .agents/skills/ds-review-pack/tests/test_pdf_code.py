@@ -126,3 +126,44 @@ def test_legacy_report_compatibility():
         import pdf_publish
         assert pdf_publish.publish_stage(fixture.run,fixture.repo).is_dir()
     finally:fixture.doCleanups()
+
+def test_pretendard_mutation_blocks_build_check_and_publish(tmp_path):
+    import shutil,pdf_code,review_pdf,pdf_publish
+    from _util import REPO
+    from pdf_cards import digest
+    source=next((REPO/'복습노트/0907').glob('복습문제_*.html'))
+    repo=tmp_path/'repo';repo.mkdir();src=repo/source.name;shutil.copyfile(source,src)
+    run=tmp_path/'run';review_pdf.build_pack(src,run)
+    report=json.loads((run/'report.json').read_text());assert report['checks']['status']=='pass'
+    pdf_publish.dump(run/'review.json',{'status':'pass','reviewer':'fixture','evidence':'controlled fixture','artifact_hashes':report['artifact_hashes'],'report_sha256':digest(run/'report.json')})
+    for n in report['pdfs']:(repo/n).write_bytes(b'old')
+    assets=tmp_path/'assets';shutil.copytree(pdf_render.ASSETS,assets)
+    font=assets/'vendor/pretendard/woff2/Pretendard-Regular.woff2'
+    font.write_bytes(font.read_bytes()+b'changed')
+    with patch.object(pdf_render,'ASSETS',assets),patch.object(pdf_render,'VENDOR',assets/'vendor'),patch.object(review_pdf,'ASSETS',assets):
+        with pytest.raises(PdfError,match='vendor'):pdf_render._run(data('answers'),'answers','video-16x9',tmp_path/'bad-build')
+        errors=review_pdf.check_stage(run)
+        assert any('vendor' in e.lower() for e in errors)
+        with pytest.raises(PdfError,match='vendor'):pdf_publish.publish_stage(run,repo)
+    assert not (run/'backups').exists()
+    assert all((repo/n).read_bytes()==b'old' for n in report['pdfs'])
+
+def test_korean_code_face_has_only_bundled_url():
+    from pdf_code import code_css
+    css=code_css('video-16x9')
+    assert "font-family: 'DS Pretendard'" in css
+    assert 'Pretendard-Regular.woff2' in css
+    assert 'local(' not in css
+    assert "'DS JetBrains Mono', 'DS Pretendard'" in css
+
+def test_final_pdf_gate_rejects_bold_korean_face(tmp_path):
+    import shutil,pdf_code
+    vendor=tmp_path/'vendor';shutil.copytree(pdf_render.VENDOR,vendor)
+    shutil.copyfile(vendor/'pretendard/woff2/Pretendard-Bold.woff2',vendor/'pretendard/woff2/Pretendard-Regular.woff2')
+    pdf=tmp_path/'bold.pdf'
+    # Deliberately bypass asset provenance to isolate the final glyph check.
+    with patch.object(pdf_render,'VENDOR',vendor),patch.object(pdf_code,'check_vendor_assets',return_value=None,create=True):
+        p=pdf_render._run(data('answers'),'answers','video-16x9',tmp_path/'bold',pdf)
+    assert not p.errors
+    assert any('Pretendard-Bold'==s['font'] and '스택' in s['text'] for s in spans(pdf))
+    assert any('Korean font' in e for e in pdf_code.check_pdf_code(pdf,p.geometry))

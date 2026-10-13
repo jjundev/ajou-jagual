@@ -42,3 +42,5 @@ backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 run
 줄 간격 1.45, 합자 비활성화, tab-size 4, 긴 줄 2ch 내어쓰기를 적용한다. 원문 개행·공백·탭은 변경하지 않으며 긴 코드는 문제/해설 공통 PageSlice로 이어진다. inline code에는 이 계약을 적용하지 않는다. 원래 EC2 템플릿 파일은 수정하지 않는다.
 
 새 보고서에는 code_font와 code_style_version을 기록한다. 코드 영역 geometry와 최종 PDF의 실제 glyph font/size/text를 대조한다. 글꼴 누락·교체·잘못된 크기·내용 누락·경계 밖 줄은 빌드 실패다. 검토 후 자산이 바뀌면 게시 lock 안에서 거부하고 기존 PDF와 보고서를 보존한다. 구형 보고서에 새 필드가 없으면 기존 검증 경로를 유지한다. 실패 시 자산과 소스를 복구하고 새 RUN에서 다시 빌드·시각검토한다. 오래된 review.json을 재사용하지 않는다.
+
+한글 블록 코드에는 시스템 local()을 우선하는 일반 Pretendard face 대신 `DS Pretendard` 별칭을 사용한다. 별칭은 고정된 Regular woff2 URL만 사용하며, loaded FontFace를 확인한다. 기존 vendor/provenance를 빌드 전에 검사하고 새 보고서의 vendor_hashes를 검사·게시 시 다시 확인한다. 최종 PDF도 `JetBrainsMono-Regular`와 `Pretendard-Regular`를 정확히 요구하여 동명 Bold/다른 face를 거부한다.

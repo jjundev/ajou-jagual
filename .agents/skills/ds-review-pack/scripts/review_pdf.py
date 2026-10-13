@@ -14,7 +14,7 @@ from pdf_layout import plan_pages,check_coverage
 from pdf_render import render,render_session,ASSETS
 from pdf_publish import dump,stage_hashes,publish_stage
 from pdf_ds_layout import extension_hash,check_extension
-from pdf_code import font_manifest,check_font_assets,check_pdf_code
+from pdf_code import font_manifest,check_font_assets,check_pdf_code,check_vendor_assets
 
 
 def discover_reviews(repo,target):
@@ -47,7 +47,9 @@ def check_stage(run):
         try:check_extension(r)
         except PdfError as exc:errors.append(str(exc))
     if r.get('code_style_version'):
-        try:check_font_assets(r['code_font'])
+        try:
+            check_font_assets(r['code_font'])
+            check_vendor_assets(ASSETS,r['vendor_hashes'])
         except PdfError as exc:errors.append(str(exc))
     pack=read_pack(Path(r['source']));pages=_pages(r['page_slices']);errors.extend(check_coverage(pack,pages))
     for name,sha in r['template_hashes'].items():

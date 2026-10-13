@@ -6,6 +6,7 @@ from pdf_types import PdfError
 
 FONT_DIR=Path(__file__).resolve().parent.parent/'assets/pdf/vendor/jetbrains-mono'
 FONT_URL='https://ds-pdf.local/JetBrainsMono-Regular.ttf'
+KOREAN_FONT_URL='https://ds-pdf.local/Pretendard-Regular.woff2'
 
 def font_manifest():
     try:return json.loads((FONT_DIR/'manifest.json').read_text())
@@ -21,13 +22,26 @@ def check_font_assets(expected=None):
         if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=sha:
             raise PdfError('Code font missing/changed: '+name)
 
+def check_vendor_assets(root, expected=None):
+    """Enforce frozen vendor provenance before rendering; bind stage vendor bytes."""
+    root=Path(root)
+    try:pinned=json.loads((root/'provenance.json').read_text())['files']
+    except (OSError,ValueError,KeyError) as exc:raise PdfError('Frozen vendor provenance missing/invalid') from exc
+    for files in (pinned, expected or {}):
+        for name,sha in files.items():
+            p=root/name
+            if not p.is_file() or hashlib.sha256(p.read_bytes()).hexdigest()!=sha:
+                raise PdfError('PDF vendor missing/changed: '+name)
+
+
 def code_css(layout):
     # Frozen conversion is applied before this extension, so override inherited scales.
     scale=(900/(210*72/25.4))/(1920/1440)
     size=12 if layout=='video-16x9' else 12/scale
-    return f'''@font-face {{ font-family: 'DS JetBrains Mono'; src: url('{FONT_URL}') format('truetype'); font-weight: 400; font-style: normal; }}
+    return f'''@font-face {{ font-family: 'DS Pretendard'; src: url('{KOREAN_FONT_URL}') format('woff2'); font-weight: 400; font-style: normal; }}
+@font-face {{ font-family: 'DS JetBrains Mono'; src: url('{FONT_URL}') format('truetype'); font-weight: 400; font-style: normal; }}
 .panel pre, .work pre, .panel pre code, .work pre code {{
- font-family: 'DS JetBrains Mono', Pretendard, monospace !important;
+ font-family: 'DS JetBrains Mono', 'DS Pretendard', monospace !important;
  font-size: {size:.8f}pt !important; font-weight: 400 !important;
  font-style: normal; font-variant-ligatures: none; font-feature-settings: 'liga' 0, 'calt' 0;
  line-height: 1.45 !important; color: #000; background: #fff;
@@ -58,9 +72,9 @@ def check_pdf_code(pdf: Path, geometry: dict) -> list[str]:
                     if not visible:continue
                     prefix=f'{pid} code {index+1}: '
                     if abs(span['size']-12)>.05:errors.append(prefix+'actual size '+str(span['size']))
-                    if any(ord(c)<128 and not c.isspace() for c in chars) and 'JetBrainsMono' not in span['font']:
+                    if any(ord(c)<128 and not c.isspace() for c in chars) and re.sub(r'^[A-Z]{6}\+', '', span['font'])!='JetBrainsMono-Regular':
                         errors.append(prefix+'actual English font '+span['font'])
-                    if any('\uac00'<=c<='\ud7a3' for c in chars) and 'Pretendard' not in span['font']:
+                    if any('\uac00'<=c<='\ud7a3' for c in chars) and re.sub(r'^[A-Z]{6}\+', '', span['font'])!='Pretendard-Regular':
                         errors.append(prefix+'actual Korean font '+span['font'])
                 wanted=compact(code['text']);actual=compact(''.join(text))
                 if wanted!=actual:errors.append(f'{pid} code {index+1}: code text missing/changed')

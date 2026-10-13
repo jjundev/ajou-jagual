@@ -5,6 +5,7 @@ import copy
 import importlib.util
 import json
 import mimetypes
+import re
 from pathlib import Path
 import sys
 import types
@@ -57,8 +58,9 @@ def resource_path(url):
     if parsed.netloc=='cdn.jsdelivr.net' and path.startswith(prefix):
         rel=path[len(prefix):]
         return VENDOR/'pretendard'/('pretendard.css' if rel=='pretendard.min.css' else rel)
-    from pdf_code import FONT_URL, FONT_DIR
+    from pdf_code import FONT_URL, FONT_DIR, KOREAN_FONT_URL
     if url==FONT_URL:return FONT_DIR/'JetBrainsMono-Regular.ttf'
+    if url==KOREAN_FONT_URL:return VENDOR/'pretendard/woff2/Pretendard-Regular.woff2'
     return None
 
 GEOMETRY_JS=r'''() => {
@@ -108,8 +110,9 @@ GEOMETRY_JS=r'''() => {
 
 
 def _run(data,mode,layout,run,pdf=None):
-    from pdf_code import check_font_assets
+    from pdf_code import check_font_assets,check_vendor_assets
     check_font_assets()
+    check_vendor_assets(ASSETS)
     run=Path(run);run.mkdir(parents=True,exist_ok=True)
     html_path=run/f'{mode}-{layout}.html';html_path.write_text(inject(load_template(mode,layout),data),encoding='utf-8')
     errors=[]
@@ -141,6 +144,9 @@ def _run(data,mode,layout,run,pdf=None):
             if info['geometry'] and any(g['code'] for g in info['geometry'].values()):
                 if not page.evaluate("[...document.fonts].some(f=>f.family.includes('DS JetBrains Mono')&&f.status==='loaded')"):
                     errors.append('DS JetBrains Mono not loaded')
+                if any(re.search(r'[가-힣]',c['text']) for g in info['geometry'].values() for c in g['code']):
+                    if not page.evaluate("[...document.fonts].some(f=>f.family.includes('DS Pretendard')&&f.status==='loaded')"):
+                        errors.append('Bundled DS Pretendard not loaded')
             if pdf is not None:
                 Path(pdf).parent.mkdir(parents=True,exist_ok=True)
                 page.pdf(path=str(pdf),prefer_css_page_size=True,print_background=True)
