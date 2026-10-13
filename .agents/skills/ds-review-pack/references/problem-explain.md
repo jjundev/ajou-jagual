@@ -12,4 +12,4 @@ bank는 이 절차를 실행하지 않는다. 신규·update-existing·lite는 �
 6. 현재 stage에 대해 source_visual/content/independent/browser를 실제 수행해 review.json에 기록한다. references의 절대 경로·현재 SHA-256, 모든 소문항, artifact_hashes를 대조한다. 테스트의 approved()나 합성 브라우저 결과를 실제 승인에 사용하지 않는다. lite도 생략하지 않는다. 1280×900·375×812의 light/dark에서 전체 문항·목차·pager·요약·수식·코드·그림·링크를 확인한다. 콘솔·KaTeX 오류·누락 자원·외부 요청·문서 overflow는 0이어야 한다. 끝나면 서버를 종료한다.
 7. 네 실제 검토가 pass이면 `python3 ABS_CLI publish --run EXPLAIN_RUN`을 실행하고 최종 경로·현재 source hash·전체 문항 ID·원본 보존을 다시 확인한다. 원본이 바뀌면 extract부터, 조각이나 stage가 바뀌면 build와 전체 검토부터 다시 한다.
 
-결과는 published 또는 withheld와 이유, HTML/MD, EXPLAIN_RUN, 백업 경로로 보고한다. 실패 시 검증된 원 복습팩과 이전 해설을 보존하며 “복습팩 생성됨 / 문제설명 보류”로 보고한다. 독립된 다른 팩은 계속 처리한다. 설명 소유 파일만 백업·교체하며 과거 제작자료의 validation.json은 변경하지 않는다. 정리노트·복습문제에 링크를 삽입하지 않는다. 커밋·푸시는 별도 요청이 있을 때만 수행한다.
+결과는 published 또는 withheld와 이유, HTML(날짜 폴더 루트)/MD(`.pack/`), EXPLAIN_RUN, 백업 경로로 보고한다. 실패 시 검증된 원 복습팩과 이전 해설을 보존하며 “복습팩 생성됨 / 문제설명 보류”로 보고한다. 독립된 다른 팩은 계속 처리한다. 설명 소유 파일만 백업·교체하며 과거 제작자료의 validation.json은 변경하지 않는다. 정리노트·복습문제에 링크를 삽입하지 않는다. 커밋·푸시는 별도 요청이 있을 때만 수행한다.

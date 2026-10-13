@@ -48,13 +48,13 @@ class UpdateTests(unittest.TestCase):
   self.assertTrue(hasattr(html2md,'convert_review'))
   with tempfile.TemporaryDirectory() as d:
    root=Path(d);review=root/'복습문제_0101_Test.html';review.write_text(BEFORE)
-   note=root/'정리노트_0101_Test.md';note.write_bytes(b'keep-note')
-   figures=root/'figures_0101';figures.mkdir();(figures/'old.svg').write_bytes(b'keep-figure')
+   (root/'.pack').mkdir();note=root/'.pack/정리노트_0101_Test.md';note.write_bytes(b'keep-note')
+   figures=root/'.pack/figures_0101';figures.mkdir();(figures/'old.svg').write_bytes(b'keep-figure')
    html2md.convert_review(review)
    self.assertEqual(note.read_bytes(),b'keep-note');self.assertEqual((figures/'old.svg').read_bytes(),b'keep-figure')
  def test_review_only_figure_collision_fails(self):
   with tempfile.TemporaryDirectory() as d:
    root=Path(d);review=root/'복습문제_0101_Test.html';review.write_text(BEFORE.replace('<h3>old</h3>','<h3>old</h3><svg id="shared" viewBox="0 0 10 10"><path d="M0 0L1 1"/></svg>'))
-   html2md.convert_review(review);existing=root/'figures_0101/shared.svg';existing.write_bytes(b'preserve this')
+   html2md.convert_review(review);existing=root/'.pack/figures_0101/shared.svg';existing.write_bytes(b'preserve this')
    with self.assertRaises(ValueError):html2md.convert_review(review)
    self.assertEqual(existing.read_bytes(),b'preserve this')

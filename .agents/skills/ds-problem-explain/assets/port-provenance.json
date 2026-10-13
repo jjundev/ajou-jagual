@@ -843,6 +843,154 @@
       "current_sha256": "7e9f34a6a8bbae7520fc8205a6e9a8b3ba4943580f65a4a392050adb372cdeac",
       "inserted_text": "\n## 코드 블록 검토\n\n독립 코드·실행결과가 `<pre><code>`로 분리되어 있고 설명은 밖에 있는지 확인한다. 짧은 인라인 code는 유지하고 빈 블록은 없어야 한다. HTML과 MD의 문자·탭·빈 줄을 원 설명 조각과 대조한다. 1280×900/375×812, light/dark에서 블록의 배경·테두리·16px 패딩·고정폭 글꼴을 확인한다. 긴 줄은 pre 내부에서만 스크롤하고 문서 전체는 가로로 넘치지 않아야 한다. 원문 코드의 구조와 내용을 저작 제약에 맞추어 재작성하지 않는다.\n",
       "reason": "User approved 2026-10-13: enforce authored code/output blocks and preservation; original port bytes retained."
+    },
+    {
+      "destination": "SKILL.md",
+      "base_sha256": "fee14752cc06f08218261684353d699a1f3a0d4ee2a3f8fb45672e39225a6500",
+      "current_sha256": "0fad7c9a5f4be41df7d9d4890018859237e46a599e96b6ad5e2eceab42ceb439",
+      "replacements": [
+        {
+          "old": "입력과 같은 날짜 폴더에 `문제설명_<range>_<slug>.html/.md`, `figures_문제설명_<range>_<slug>/`, `자료_문제설명_<range>_<slug>/`를 저장한다. 자료 폴더에는 생성 기록·검토·설명 조각·검산·로컬 자원이 들어간다. 정리노트 링크를 자동 삽입하지 않는다. 읽음 상태 범위는 `ds-problem-explain-review-<range>-<slug>`다.\n",
+          "new": "입력과 같은 날짜 폴더 루트에는 `문제설명_<range>_<slug>.html`만 두고, `.md`·`figures_문제설명_<range>_<slug>/`·`자료_문제설명_<range>_<slug>/`는 그 폴더의 숨김 폴더 `.pack/` 안에 저장한다(예: `복습노트/1012/.pack/문제설명_1012_Queue.md`). 숨김 폴더라 검색 도구가 건너뛸 수 있으니 이 경로를 직접 연다. 자료 폴더에는 생성 기록·검토·설명 조각·검산·로컬 자원이 들어간다. 정리노트 링크를 자동 삽입하지 않는다. 읽음 상태 범위는 `ds-problem-explain-review-<range>-<slug>`다.\n"
+        }
+      ],
+      "reason": "User approved 2026-10-13: 복습노트 date-folder layout keeps HTML/PDF at the root and moves md, figures and data folders into .pack/; original port bytes retained."
+    },
+    {
+      "destination": "scripts/mpe_cli.py",
+      "base_sha256": "89dfc6b02fc5b87bf9a26556b08daefacea94afb8c69d46d17f34b283b45f060",
+      "current_sha256": "66d33ff5c017c4c7ce757fe188b7bf0a74477fef23f3412db3fdb0e886622fd8",
+      "replacements": [
+        {
+          "old": "                               'html': artifacts.html.name, 'md': artifacts.md.name,\n",
+          "new": "                               'html': artifacts.html.name, 'md': artifacts.md.relative_to(stage).as_posix(),\n"
+        }
+      ],
+      "reason": "User approved 2026-10-13: 복습노트 date-folder layout keeps HTML/PDF at the root and moves md, figures and data folders into .pack/; original port bytes retained."
+    },
+    {
+      "destination": "scripts/mpe_publish.py",
+      "base_sha256": "f699801c05737f0b916c2cc906541bd348f1f712f0bd81db5814872e609f2a17",
+      "current_sha256": "50eb2719590baa1aac77d1bd3beb5b674f70c4b28ae6fd9a7cc53e0953ac641c",
+      "replacements": [
+        {
+          "old": "from mpe_render import artifact_hashes, check_artifacts, dump, names\n",
+          "new": "from mpe_render import PACK_DIR, artifact_hashes, check_artifacts, dump, names\n"
+        },
+        {
+          "old": "            owned = (len(relative.parts) == 1 and relative.name in (stem + '.html', stem + '.md')) or (len(relative.parts) > 1 and relative.parts[0] in allowed_roots)\n",
+          "new": "            parts = relative.parts\n            owned = (parts == (stem + '.html',) or parts == (PACK_DIR, stem + '.md')\n                     or (len(parts) > 2 and parts[0] == PACK_DIR and parts[1] in allowed_roots))\n"
+        },
+        {
+          "old": "        report = stage_root / data_name / 'validation.json'\n",
+          "new": "        report = stage_root / PACK_DIR / data_name / 'validation.json'\n"
+        }
+      ],
+      "reason": "User approved 2026-10-13: 복습노트 date-folder layout keeps HTML/PDF at the root and moves md, figures and data folders into .pack/; original port bytes retained."
+    },
+    {
+      "destination": "scripts/mpe_render.py",
+      "base_sha256": "7ac4971e78acd8876c6c2a5a63918687c13ba7329c09758045696e810e1d9ff2",
+      "current_sha256": "ca6ad4fdcc48d236d6a3def2080e06a3444958e234a8a7cd3752f35516ef0f18",
+      "replacements": [
+        {
+          "old": "",
+          "new": "# 날짜 폴더 루트에는 HTML·PDF만 둔다. md·그림·자료 폴더는 이 안에 들어간다(ds-review-pack pack_layout.PACK_DIR 과 같아야 함).\nPACK_DIR = '.pack'\n"
+        },
+        {
+          "old": "",
+          "new": "    # md lives in PACK_DIR: own resources lose the prefix, everything else outside it goes up one level.\n    for node in list(main.find_all(lambda n: n.tag == 'a')):\n        url = urlsplit(node.attrs.get('href', ''))\n        if url.path and not (url.scheme or url.netloc or url.path.startswith('/')) and unquote(url.path) != html_path.name:\n            node.attrs['href'] = '../' + node.attrs['href']\n"
+        },
+        {
+          "old": "        src = quote(node.attrs['src'], safe='/')\n",
+          "new": "        src = quote(md_resource(node.attrs['src']), safe='/')\n"
+        },
+        {
+          "old": "",
+          "new": "\ndef md_resource(src):\n    \"\"\"HTML 기준 자원 경로(.pack/...) → .pack/ 안 md 기준 경로.\"\"\"\n    return src[len(PACK_DIR) + 1:] if src.startswith(PACK_DIR + '/') else src\n"
+        },
+        {
+          "old": "    html_path, md_path = stage / f'{stem}.html', stage / f'{stem}.md'\n    data_dir = stage / data_name\n    data_dir.mkdir()\n    (stage / fig_name).mkdir()\n",
+          "new": "    pack_dir = stage / PACK_DIR\n    html_path, md_path = stage / f'{stem}.html', pack_dir / f'{stem}.md'\n    data_dir = pack_dir / data_name\n    data_dir.mkdir(parents=True)\n    (pack_dir / fig_name).mkdir()\n    fig_rel = f'{PACK_DIR}/{fig_name}'  # HTML(루트) 기준\n"
+        },
+        {
+          "old": "        reading = resources(reading, p, pack, repo, stage, fig_name, pack.path.parent, 'source')\n        explanation = resources(fragments[p.id], p, pack, repo, stage, fig_name, pack.path.parent, 'explain')\n",
+          "new": "        reading = resources(reading, p, pack, repo, stage, fig_rel, pack.path.parent, 'source')\n        explanation = resources(fragments[p.id], p, pack, repo, stage, fig_rel, pack.path.parent, 'explain')\n"
+        },
+        {
+          "old": "              'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': data_name + '/vendor'}\n",
+          "new": "              'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': f'{PACK_DIR}/{data_name}/vendor'}\n"
+        },
+        {
+          "old": "    ctx = Ctx([(html_path.name, md_path.name)], str(stage / fig_name), fig_name, prefix='explain')\n",
+          "new": "    ctx = Ctx([(html_path.name, md_path.name)], str(pack_dir / fig_name), fig_name, prefix='explain')\n"
+        },
+        {
+          "old": "        wanted_images = Counter(unquote(n.attrs.get('src', '')) for n in main.find_all(lambda n: n.tag == 'img'))\n",
+          "new": "        wanted_images = Counter(md_resource(unquote(n.attrs.get('src', ''))) for n in main.find_all(lambda n: n.tag == 'img'))\n"
+        }
+      ],
+      "reason": "User approved 2026-10-13: 복습노트 date-folder layout keeps HTML/PDF at the root and moves md, figures and data folders into .pack/; original port bytes retained."
+    },
+    {
+      "destination": "tests/test_publish.py",
+      "base_sha256": "84c1c085b1b6e66a94eb01de6e03dbaf04bbcc282a7330d4c3cf7714b9db80d6",
+      "current_sha256": "d07509bf322bf2c1ed8be56ba3b0440fc65271c9eb13578576c0041fb5e964ab",
+      "replacements": [
+        {
+          "old": "",
+          "new": "def test_success_keeps_only_html_at_pack_root(tmp_path):\n    pack, fragments, artifacts = setup(tmp_path)\n    dest = pack.path.parent\n    before = {p.name for p in dest.iterdir()}\n    publish_explanation(pack, artifacts, fragments, approved(pack, fragments, artifacts), dest, tmp_path / 'backup')\n    assert {p.name for p in dest.iterdir()} - before == {artifacts.html.name, '.pack'}\n    assert (dest / '.pack' / artifacts.md.name).read_bytes() == artifacts.md.read_bytes()\n    stem = artifacts.html.stem\n    data = dest / '.pack' / stem.replace('문제설명_', '자료_문제설명_', 1)\n    assert (data / 'manifest.json').is_file() and (data / 'validation.json').is_file()\n    assert f'.pack/{data.name}/vendor/katex/katex.min.js' in artifacts.html.read_text(encoding='utf-8')\n\n"
+        },
+        {
+          "old": "",
+          "new": "    stage = artifacts.html.parent\n"
+        },
+        {
+          "old": "        (pack.path.parent / file.name).write_bytes(b'old-' + file.suffix.encode())\n",
+          "new": "        old = pack.path.parent / file.relative_to(stage)\n        old.parent.mkdir(exist_ok=True)\n        old.write_bytes(b'old-' + file.suffix.encode())\n"
+        },
+        {
+          "old": "        assert (pack.path.parent / file.name).read_bytes() == b'old-' + file.suffix.encode()\n",
+          "new": "        assert (pack.path.parent / file.relative_to(stage)).read_bytes() == b'old-' + file.suffix.encode()\n"
+        }
+      ],
+      "reason": "User approved 2026-10-13: 복습노트 date-folder layout keeps HTML/PDF at the root and moves md, figures and data folders into .pack/; original port bytes retained."
+    },
+    {
+      "destination": "tests/test_render.py",
+      "base_sha256": "55b8094aa2e206bfae3899bef014b97c35a89a565158c720aa939b36731b5386",
+      "current_sha256": "f57d4bcb8413766d79422027c14892a916fb477221970f843d7c023fc07fc907",
+      "replacements": [
+        {
+          "old": "",
+          "new": "from urllib.parse import quote\n"
+        },
+        {
+          "old": "",
+          "new": "    assert re.search(r'<img src=\"\\.pack/figures_[^\"]+\\.png\"',result.html.read_text())\n    assert result.md.parent.name=='.pack'\n    assert re.search(r'\\]\\(\\.\\./'+re.escape(quote(pack.path.name,safe=''))+'#p1\\)',result.md.read_text())\n"
+        }
+      ],
+      "reason": "User approved 2026-10-13: 복습노트 date-folder layout keeps HTML/PDF at the root and moves md, figures and data folders into .pack/; original port bytes retained."
+    },
+    {
+      "destination": "tests/test_skill_files.py",
+      "base_sha256": "7484c831e0b2151e1d895bbd87eb74ad6c9c11ecdaf3bbfbd22c4e1801520729",
+      "current_sha256": "c13d3ef40ee0c79fd899764b76240afd0560317d1160b38531c1205d708b7440",
+      "replacements": [
+        {
+          "old": "",
+          "new": "def undo_overrides(current,chain):\n    \"\"\"Peel approved local edits newest-first; each step must restore its recorded base bytes exactly.\"\"\"\n    for override in reversed(chain):\n        assert hashlib.sha256(current).hexdigest()==override['current_sha256']\n        if 'inserted_text' in override:\n            inserted=override['inserted_text'].encode('utf-8')\n            assert current.count(inserted)==1\n            current=current.replace(inserted,b'',1)\n        for change in reversed(override.get('replacements',[])):\n            new,old=change['new'].encode('utf-8'),change['old'].encode('utf-8')\n            assert current.count(new)==1\n            current=current.replace(new,old,1)\n        assert hashlib.sha256(current).hexdigest()==override['base_sha256']\n    return current\n\n"
+        },
+        {
+          "old": "    overrides={entry['destination']:entry for entry in data.get('local_overrides',[])}\n",
+          "new": "    overrides={}\n    for entry in data.get('local_overrides',[]):\n        overrides.setdefault(entry['destination'],[]).append(entry)\n"
+        },
+        {
+          "old": "        override=overrides.get(entry['destination'])\n        if override:\n            assert sha256(path)==override['current_sha256']\n            inserted=override['inserted_text'].encode('utf-8')\n            current=path.read_bytes()\n            assert current.count(inserted)==1\n            restored=current.replace(inserted,b'',1)\n            assert hashlib.sha256(restored).hexdigest()==override['base_sha256']==entry['destination_sha256']\n",
+          "new": "        chain=overrides.get(entry['destination'])\n        if chain:\n            assert sha256(path)==chain[-1]['current_sha256']\n            assert hashlib.sha256(undo_overrides(path.read_bytes(),chain)).hexdigest()==entry['destination_sha256']\n"
+        }
+      ],
+      "reason": "User approved 2026-10-13: 복습노트 date-folder layout keeps HTML/PDF at the root and moves md, figures and data folders into .pack/; original port bytes retained."
     }
   ]
 }

@@ -3,12 +3,13 @@ r"""정리노트/복습문제 HTML → GitHub 마크다운 변환기 (표준 라
 
 - 본문, 수식($...$ / $$...$$), 목록, 표, 인용을 변환한다.
 - <details>(원문/힌트/풀이)는 접히는 HTML <details>로 남긴다.
-- 인라인 SVG 그림은 figures_<range>/ 에 스타일을 인라인한 독립 SVG로 내보낸다.
+- .md 와 그림은 HTML 옆 .pack/ 에 둔다. .pack/ 밖을 가리키는 상대 링크에는 ../ 를 붙인다.
+- 인라인 SVG 그림은 .pack/figures_<range>/ 에 스타일을 인라인한 독립 SVG로 내보낸다.
 - 위젯은 .widget-static(정적 SVG·표)으로 대체한다. 없으면 "HTML 버전에서 조작" 안내만 남긴다.
 - 표 안 수식의 \| 는 \Vert, | 는 \vert 로 바꾼다(GFM 표 구분자 충돌 방지).
 - <pre> 코드는 펜스 코드 블록으로 옮기고, 수식 누락 검사에서 뺀다.
 CLI:
-  html2md.py NOTE.html REVIEW.html            # 같은 폴더에 .md 두 개 + figures_<range>/
+  html2md.py NOTE.html REVIEW.html            # 같은 폴더의 .pack/ 에 .md 두 개 + figures_<range>/
   html2md.py NOTE.html REVIEW.html --check    # 변환 후 누락 검사(수식·앵커·그림·링크)
 """
 from __future__ import annotations
@@ -22,6 +23,8 @@ import unicodedata
 from collections import Counter
 from html.parser import HTMLParser
 from urllib.parse import unquote
+
+from pack_layout import PACK_DIR
 
 VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
 NAME_RE = re.compile(r"^(정리노트|복습문제)_(\d{4}(?:-\d{4})?)_([A-Za-z0-9_]+)\.html$")
@@ -157,25 +160,28 @@ def escape_text(s):
 class Ctx:
     """변환 상태. registry는 팩 전체에서 공유하는 그림 파일명 집합(파일 간 덮어쓰기 방지)."""
 
-    def __init__(self, link_map, fig_dir_abs, fig_dir_name, prefix="", registry=None):
+    def __init__(self, link_map, fig_dir_abs, fig_dir_name, prefix="", registry=None, up=""):
         self.link_map, self.fig_dir_abs, self.fig_dir_name, self.figs = link_map, fig_dir_abs, fig_dir_name, []
         self.prefix = prefix
+        self.up = up  # md 가 HTML 보다 한 단계 아래(.pack/)일 때 "../"
         self.registry = registry if registry is not None else set()
         self.auto = 0
 
 
 def fix_href(href, ctx):
-    """팩 HTML(NFC·NFD, %-인코딩, ./ 접두 모두)을 가리키는 링크를 .md로 바꾼다."""
+    """팩 HTML(NFC·NFD, %-인코딩, ./ 접두 모두)을 가리키는 링크를 .md로 바꾼다.
+    그 밖의 상대 링크는 md 위치(ctx.up)에 맞춰 다시 건다."""
     path, sep, frag = href.partition("#")
     if not path:
         return href
     head, _, base = path.rpartition("/")
-    if head not in ("", "."):
-        return href
-    base = nfc(unquote(base))
-    for old, new in ctx.link_map:
-        if base == nfc(old):
-            return (f"{head}/" if head else "") + new + sep + frag
+    if head in ("", "."):
+        base = nfc(unquote(base))
+        for old, new in ctx.link_map:
+            if base == nfc(old):
+                return (f"{head}/" if head else "") + new + sep + frag
+    if ctx.up and not re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", path) and not path.startswith("/"):
+        return ctx.up + href
     return href
 
 
@@ -631,14 +637,15 @@ def check_md(html_path, md_path):
 
 
 def convert_pack(note_path, review_path):
-    """두 HTML을 같은 폴더에 .md로 변환한다. (md 경로 두 개, 그림 파일 수)를 돌려준다."""
-    out_dir = os.path.dirname(os.path.abspath(note_path))
+    """두 HTML을 같은 폴더의 .pack/ 에 .md로 변환한다. (md 경로 두 개, 그림 파일 수)를 돌려준다."""
+    html_dir = os.path.dirname(os.path.abspath(note_path))
+    out_dir = os.path.join(html_dir, PACK_DIR)
     srcs = [os.path.abspath(note_path), os.path.abspath(review_path)]
     names = [nfc(os.path.basename(p)) for p in srcs]
     matches = [NAME_RE.match(n) for n in names]
     if not all(matches) or matches[0].group(1) != "정리노트" or matches[1].group(1) != "복습문제":
         raise ValueError(f"파일명 규칙 위반: {names}")
-    if os.path.dirname(os.path.abspath(review_path)) != out_dir:
+    if os.path.dirname(os.path.abspath(review_path)) != html_dir:
         raise ValueError("두 HTML은 같은 폴더에 있어야 함")
     fig_name = f"figures_{matches[0].group(2)}"
     fig_abs = os.path.join(out_dir, fig_name)
@@ -656,7 +663,7 @@ def convert_pack(note_path, review_path):
     ]
     outs, registry = [], set()
     for src, name, intro, prefix in zip(srcs, names, intros, ("note", "review")):
-        ctx = Ctx(link_map, fig_abs, fig_name, prefix=prefix, registry=registry)
+        ctx = Ctx(link_map, fig_abs, fig_name, prefix=prefix, registry=registry, up="../")
         out = os.path.join(out_dir, name[:-5] + ".md")
         convert(src, out, ctx, intro)
         outs.append(out)
@@ -670,12 +677,13 @@ def convert_review(review_path):
     match = NAME_RE.match(name)
     if not match or match.group(1) != "복습문제":
         raise ValueError("review filename required")
-    out_dir = os.path.dirname(src)
+    html_dir = os.path.dirname(src)
+    out_dir = os.path.join(html_dir, PACK_DIR)
     fig_name = "figures_" + match.group(2)
     fig_abs = os.path.join(out_dir, fig_name)
     os.makedirs(fig_abs, exist_ok=True)
-    link_map = [(nfc(n), nfc(n)[:-5] + ".md") for n in os.listdir(out_dir) if nfc(n).endswith(".html")]
-    ctx = Ctx(link_map, fig_abs, fig_name, prefix="review-textbook", registry=set())
+    link_map = [(nfc(n), nfc(n)[:-5] + ".md") for n in os.listdir(html_dir) if nfc(n).endswith(".html")]
+    ctx = Ctx(link_map, fig_abs, fig_name, prefix="review-textbook", registry=set(), up="../")
     ctx.preserve_figures = True
     out = os.path.join(out_dir, name[:-5] + ".md")
     convert(src, out, ctx, ["> 원문, 힌트, 풀이는 접혀 있어요. 먼저 풀어 보고 펼쳐 보세요."])

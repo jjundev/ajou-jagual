@@ -17,7 +17,7 @@ python3 "$SKILL/scripts/review_pdf.py" check --run "$PDF_RUN"
 python3 "$SKILL/scripts/review_pdf.py" publish --run "$PDF_RUN" --repo "$REPO"
 ```
 
-발행 직전에 입력과 승인한 자산·PDF 해시를 재확인하고 팩 잠금 아래 문제/답안 PDF와 `자료_PDF/pdf-validation.json`만 백업·교체한다. 일반 저장 오류는 rollback한다. 여러 파일 교체의 OS 원자성·강제 종료 복구를 보장하지 않는다. 백업은 PDF_RUN/backups 아래 유지한다. 기존 prefix 기반 backup.py는 PDF도 포함한다.
+발행 직전에 입력과 승인한 자산·PDF 해시를 재확인하고 팩 잠금 아래 루트의 문제/답안 PDF와 `.pack/자료_PDF/pdf-validation.json`만 백업·교체한다. 일반 저장 오류는 rollback한다. 여러 파일 교체의 OS 원자성·강제 종료 복구를 보장하지 않는다. 백업은 PDF_RUN/backups 아래 유지한다. 기존 prefix 기반 backup.py는 PDF도 포함한다.
 
 기존 팩의 PDF만 추가할 때는 `update-existing`를 호출하지 않는다.
 

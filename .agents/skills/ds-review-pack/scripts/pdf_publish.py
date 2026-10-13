@@ -9,6 +9,7 @@ import tempfile
 import uuid
 from pdf_cards import digest, ensure_report_owner
 from pdf_types import PdfError
+from pack_layout import pdf_report_path
 from pdf_ds_layout import check_extension
 
 
@@ -54,7 +55,7 @@ def publish_stage(run,repo):
         final_report=dict(report,status='published',browser=review)
         dump(run/'publish-report.json',final_report)
         files=[(run/'stage'/name,dest/name) for name in report['pdfs']]
-        files.append((run/'publish-report.json',dest/'자료_PDF/pdf-validation.json'))
+        files.append((run/'publish-report.json',pdf_report_path(dest)))
         old=[];completed=[];temps=[]
         try:
             for index,(src,target) in enumerate(files):

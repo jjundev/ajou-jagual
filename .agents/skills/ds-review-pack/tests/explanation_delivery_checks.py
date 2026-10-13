@@ -2,12 +2,17 @@
 import hashlib,json,unicodedata
 from pathlib import Path
 from update_review import extract_cards
+from pack_layout import PACK_DIR,current_path,current_digest
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
-def safe(root,name):
+def safe(root,name,locate=True):
  p=(root/name).resolve()
  if not p.is_relative_to(root.resolve()):raise ValueError('path outside repository')
- return p
+ return current_path(p) if locate else p
+def same(orig,d):
+ # orig is the recorded (pre-.pack) location; the pack-layout migration may have moved or relinked it.
+ path=current_path(orig)
+ return path.is_file() and sha(path)==current_digest(orig,d)
 
 def check_pack(root,item):
  errors=[]
@@ -30,24 +35,22 @@ def check_pack(root,item):
     items=entry.get('items',{})
     if set(items)!=expected or any(not approved(e) for e in items.values()):errors.append('unapproved items '+kind)
     if kind=='independent' and any(e.get('method') not in ('exact','symbolic','numerical','proof','qualitative') or not e.get('conclusion') for e in items.values()):errors.append('independent conclusions missing')
-  files={**m['files'],manifest.relative_to(dest).as_posix():sha(manifest)}
+  files={**m['files'],safe(root,item['manifest'],False).relative_to(dest).as_posix():sha(manifest)}
   if files!=v.get('artifact_hashes'):errors.append('artifact hash set differs')
   for name,d in files.items():
-   path=safe(dest,name)
-   if not path.is_file() or sha(path)!=d:errors.append('changed artifact '+name)
+   if not same(safe(dest,name,False),d):errors.append('changed artifact '+name)
   for key in ('html','md'):
    path=safe(root,item[key])
-   if path.parent!=dest or path.name not in m['files']:errors.append('missing '+key)
+   if path.parent not in (dest,dest/PACK_DIR) or path.name not in m['files']:errors.append('missing '+key)
   for name,d in item.get('protected_files',{}).items():
-   path=safe(root,name)
-   if not path.is_file() or sha(path)!=d:errors.append('protected file changed '+name)
+   if not same(safe(root,name,False),d):errors.append('protected file changed '+name)
  except (OSError,ValueError,KeyError,TypeError) as e:errors.append(str(e))
  return errors
 
 def check_preserved(root,relative,digest,report):
  try:
-  path=safe(root,relative)
-  if path.is_file() and sha(path)==digest:return []
+  orig=safe(root,relative,False);path=current_path(orig)
+  if same(orig,digest):return []
   for item in (report or {}).get('packs',[]):
    parent=Path(item['source']).parent;stem=f"문제설명_{item['date']}_{item['slug']}"
    rel=Path(relative)
@@ -71,7 +74,7 @@ def check_preserved(root,relative,digest,report):
      if not backup.is_absolute() or not backup.is_dir():break
      if not any(saved.is_file() and sha(saved)==wanted for saved in backup.rglob('*-'+path.name)):break
     wanted=replacement.get('after_sha256')
-   if wanted!=digest and ((wanted is None and not path.exists()) or (path.is_file() and sha(path)==wanted)):return []
+   if wanted!=digest and ((wanted is None and not path.exists()) or (wanted is not None and same(orig,wanted))):return []
  except (OSError,ValueError,KeyError,TypeError):pass
  return ['preserved digest mismatch: '+relative]
 

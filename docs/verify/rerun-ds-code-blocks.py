@@ -16,6 +16,10 @@ import sys
 import threading
 from types import SimpleNamespace
 
+# Records name pre-.pack locations; the pack-layout migration resolves them to today's files.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]/'.agents/skills/ds-review-pack/scripts'))
+from pack_layout import current_path, current_digest
+
 
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -25,7 +29,7 @@ def within(root, name):
     path = (root / name).resolve()
     if not path.is_relative_to(root):
         raise ValueError('input outside repository: ' + name)
-    return path
+    return current_path(path)
 
 
 def load_inputs(root):
@@ -46,7 +50,7 @@ def load_inputs(root):
         if sha(source) != record['source_sha256'] or sha(source) != manifest['source_sha256']:
             raise ValueError('source hash differs')
         for name, digest in manifest['files'].items():
-            if sha(within(source.parent, name)) != digest:
+            if sha(within(source.parent, name)) != current_digest((source.parent / name).resolve(), digest):
                 raise ValueError('artifact hash differs: ' + name)
         pack = load_source(source, root)
         ids = [p.id for p in pack.problems]

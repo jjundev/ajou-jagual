@@ -75,10 +75,25 @@ def test_success_preserves_original_and_saves_review(tmp_path):
     report = next(p for p in published if p.name == 'validation.json')
     assert json.loads(report.read_text(encoding='utf-8'))['browser']['status'] == 'pass'
 
+def test_success_keeps_only_html_at_pack_root(tmp_path):
+    pack, fragments, artifacts = setup(tmp_path)
+    dest = pack.path.parent
+    before = {p.name for p in dest.iterdir()}
+    publish_explanation(pack, artifacts, fragments, approved(pack, fragments, artifacts), dest, tmp_path / 'backup')
+    assert {p.name for p in dest.iterdir()} - before == {artifacts.html.name, '.pack'}
+    assert (dest / '.pack' / artifacts.md.name).read_bytes() == artifacts.md.read_bytes()
+    stem = artifacts.html.stem
+    data = dest / '.pack' / stem.replace('문제설명_', '자료_문제설명_', 1)
+    assert (data / 'manifest.json').is_file() and (data / 'validation.json').is_file()
+    assert f'.pack/{data.name}/vendor/katex/katex.min.js' in artifacts.html.read_text(encoding='utf-8')
+
 def test_replace_failure_rolls_back_pair(tmp_path, monkeypatch):
     pack, fragments, artifacts = setup(tmp_path)
+    stage = artifacts.html.parent
     for file in (artifacts.html, artifacts.md):
-        (pack.path.parent / file.name).write_bytes(b'old-' + file.suffix.encode())
+        old = pack.path.parent / file.relative_to(stage)
+        old.parent.mkdir(exist_ok=True)
+        old.write_bytes(b'old-' + file.suffix.encode())
     replace_copy = review_pdf_publish._replace_copy
     calls = 0
     def fail_once(source, destination):
@@ -91,7 +106,7 @@ def test_replace_failure_rolls_back_pair(tmp_path, monkeypatch):
     with pytest.raises(ExplainError, match='injected'):
         publish_explanation(pack, artifacts, fragments, approved(pack, fragments, artifacts), pack.path.parent, tmp_path / 'backup')
     for file in (artifacts.html, artifacts.md):
-        assert (pack.path.parent / file.name).read_bytes() == b'old-' + file.suffix.encode()
+        assert (pack.path.parent / file.relative_to(stage)).read_bytes() == b'old-' + file.suffix.encode()
     assert not list(pack.path.parent.rglob('validation.json'))
 
 def test_overlapping_publication_lock_is_refused(tmp_path):

@@ -13,7 +13,8 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 - 그 밖(`[MMDD | MMDD-MMDD] [lite]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
 
 **산출물** (복습팩, `복습노트/<range>/`, 수업 날짜마다 폴더 하나):
-`정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, `문제설명_<range>_<slug>.html`, 같은 이름의 `.md` 세 개, `figures_<range>/`, 설명 소유 그림·자료 폴더, `복습문제_<range>_<slug>-문제.pdf`·`-답안.pdf`, `자료_PDF/pdf-validation.json`
+- 루트: `정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, `문제설명_<range>_<slug>.html`, `복습문제_<range>_<slug>-문제.pdf`·`-답안.pdf`. 루트에는 HTML·PDF와 `.pack/`만 둔다.
+- `.pack/`(숨김 폴더): 같은 이름의 `.md` 세 개, `figures_<range>/`, 설명 소유 그림·자료 폴더(`figures_문제설명_*`, `자료_문제설명_*`), `자료_복습팩/`, `자료_PDF/pdf-validation.json`. 검색 도구가 숨김 폴더를 건너뛸 수 있으니 `복습노트/<range>/.pack/<이름>` 경로를 직접 연다.
 
 **인자**: `[bank | MMDD | MMDD-MMDD | update-existing MMDD/all] [lite]`
 - `lite`: 작성자·요약·전사 에이전트를 가벼운 모델로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다. 문제설명 저작·독립 검산·실자료 검토·브라우저 검증은 생략하지 않는다.
@@ -125,7 +126,7 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 - 위젯은 팩 전체에 0~2개다. 병렬 작성자끼리는 서로를 모르므로 **메인 에이전트가 띄우기 전에** 위젯을 둘 토픽(0~2개)을 정하고, 그 토픽의 섹션 작성자 브리프에만 `<위젯>` 자리에 "토픽 `<토픽 id>`에 위젯 1개: <무엇을 누르거나 움직이면 무엇이 보이는지>"를 적는다. 나머지 작성자의 `<위젯>` 자리에는 "위젯 없음"이라고 적는다. 정한 토픽과 이유는 보고서 "스킬이 정한 사항"에 적는다.
 
 ### 4. 조립
-- **처음 조립할 때만**: `복습노트/<range>/`(또는 예전 형식인 `복습노트/` 바로 아래)에 이번 `range`의 산출물(`정리노트_<range>_*`, `복습문제_<range>_*`의 `.html`·`.md`, `figures_<range>/`)이 하나라도 있으면 먼저 백업한다. 다시 조립할 때(5~8단계에서 돌아온 경우)는 백업하지 않는다. 이미 스킬이 만든 초안이 백업에 섞이기 때문이다.
+- **처음 조립할 때만**: `복습노트/<range>/`(또는 예전 형식인 `복습노트/` 바로 아래)에 이번 `range`의 산출물(루트의 `정리노트_<range>_*`·`복습문제_<range>_*`, `.pack/`의 같은 이름 `.md`와 `figures_<range>/`)이 하나라도 있으면 먼저 백업한다. 다시 조립할 때(5~8단계에서 돌아온 경우)는 백업하지 않는다. 이미 스킬이 만든 초안이 백업에 섞이기 때문이다.
   - 백업은 매번 새 폴더 `RUN/previous-<시각>-<임의>/`에 만든다. 종료 코드가 1이면 조립하지 말고 원인을 고친다. 백업 경로는 보고서에 적는다.
 ```bash
 python3 "$SKILL/scripts/backup.py" --range <range> --repo "$REPO" --run "$RUN"
@@ -159,18 +160,23 @@ python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$
 ```bash
 python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.html" "$REPO/복습노트/<range>/<복습문제>.html" --check
 ```
-- `OK`가 나와야 한다.
+- `OK`가 나와야 한다. `.md`와 `figures_<range>/`는 `복습노트/<range>/.pack/`에 생긴다.
 - 누락이 나오면 대부분 HTML 조각의 마크업 문제다(수식이 `svg`나 `.controls` 안에 있는 경우 등). 조각을 고치고 4단계부터 다시 한다.
 
 - MD 변환·기계·내용·브라우저 검증이 끝난 최종 복습문제 HTML의 절대 경로로 `references/problem-explain.md`를 실행한다. 미해결 검사가 있으면 설명 발행을 보류한다. 날짜·최신 팩으로 대상을 추측하지 않는다.
 
 - 신규·`lite`·`update-existing` 모두 같은 최종 HTML 절대 경로로 [PDF 생성 절차](references/pdf-build.md)를 실행한다. PDF와 문제설명은 각각 검증·발행하며 한쪽 실패가 다른 쪽의 발행이나 이전 자료를 삭제하지 않는다. `lite`도 PDF 기계·전체 페이지 검토를 생략하지 않는다.
 
+- 마지막으로 폴더 배치를 검사한다. `OK`가 아니면 루트에 남은 항목을 `.pack/`으로 옮기고 다시 검사한다. 옛 배치(루트에 md·그림·자료 폴더)인 팩은 `migrate`로 옮긴다(인자 없이는 계획만 출력, `--apply`로 실행).
+```bash
+python3 "$SKILL/scripts/pack_layout.py" check --repo "$REPO"
+```
+
 ### 9. 보고
 다음 형식으로 끝낸다.
 ```
 ## 복습팩 <range> 완료 (설명 보류 시: 복습팩 생성됨 / 문제설명 보류)
-- 파일: 복습노트/<range>/… (html 3, md 3, figures_<range>/ N개; 설명 소유 그림·자료 포함)
+- 파일: 복습노트/<range>/… (루트 html 3·pdf 2, .pack/ 에 md 3, figures_<range>/ N개; 설명 소유 그림·자료 포함)
 - 범위: 배운 쪽 S2 p1–20 … / 예고만: …
 - 문제: P1 2016-final-ljw-q3 (2016 기말 3번, 이정원, trace) … / 변형 K개 (정답은 RUN/answers.py로 검증)
 - 은행과 다른 답: … (없으면 "없음")
@@ -182,7 +188,7 @@ python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.h
 - 미해결: … (없으면 "없음")
 - 커밋 제안: git add 복습노트/<range> && git commit -m "docs(notes): add ds review pack <range>"
 ```
-교과서 추가 개수·출처·검산 방법·제외 이유도 보고한다. `자료_복습팩/`에 manifest.json, selection.json, answers.py, validation.json을 저장한다.
+교과서 추가 개수·출처·검산 방법·제외 이유도 보고한다. `복습노트/<range>/.pack/자료_복습팩/`에 manifest.json, selection.json, answers.py, validation.json을 저장한다.
 실행 폴더 경로(`RUN`)도 적는다. 수정이 필요하면 조각을 고쳐 4단계부터 다시 돌리면 된다.
 
 ## 오류 처리

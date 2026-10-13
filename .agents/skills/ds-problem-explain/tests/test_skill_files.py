@@ -10,22 +10,35 @@ def test_install_has_no_ml_runtime_dependency(tmp_path):
     assert result.returncode==0,result.stderr
     assert 'extract' in result.stdout and 'publish' in result.stdout
 
+def undo_overrides(current,chain):
+    """Peel approved local edits newest-first; each step must restore its recorded base bytes exactly."""
+    for override in reversed(chain):
+        assert hashlib.sha256(current).hexdigest()==override['current_sha256']
+        if 'inserted_text' in override:
+            inserted=override['inserted_text'].encode('utf-8')
+            assert current.count(inserted)==1
+            current=current.replace(inserted,b'',1)
+        for change in reversed(override.get('replacements',[])):
+            new,old=change['new'].encode('utf-8'),change['old'].encode('utf-8')
+            assert current.count(new)==1
+            current=current.replace(new,old,1)
+        assert hashlib.sha256(current).hexdigest()==override['base_sha256']
+    return current
+
 def test_claude_link_and_provenance():
     repo=S.parents[2];link=repo/'.claude/skills/ds-problem-explain'
     assert link.is_symlink() and link.resolve()==S.resolve()
     data=json.loads((S/'assets/port-provenance.json').read_text())
     assert data['source_commit']=='1e2d5f81813a5481c78341545a13ab300f2d82c5'
-    overrides={entry['destination']:entry for entry in data.get('local_overrides',[])}
+    overrides={}
+    for entry in data.get('local_overrides',[]):
+        overrides.setdefault(entry['destination'],[]).append(entry)
     for entry in data['files']:
         path=S/entry['destination']
-        override=overrides.get(entry['destination'])
-        if override:
-            assert sha256(path)==override['current_sha256']
-            inserted=override['inserted_text'].encode('utf-8')
-            current=path.read_bytes()
-            assert current.count(inserted)==1
-            restored=current.replace(inserted,b'',1)
-            assert hashlib.sha256(restored).hexdigest()==override['base_sha256']==entry['destination_sha256']
+        chain=overrides.get(entry['destination'])
+        if chain:
+            assert sha256(path)==chain[-1]['current_sha256']
+            assert hashlib.sha256(undo_overrides(path.read_bytes(),chain)).hexdigest()==entry['destination_sha256']
         else:
             assert sha256(path)==entry['destination_sha256']
         if entry['destination'].startswith('assets/') and entry['source_path']:

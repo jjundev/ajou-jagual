@@ -1,7 +1,8 @@
 """이번 range의 기존 팩을 RUN/previous-<시각>-<임의>/에 백업한다.
 
 python3 backup.py --range 0921 --repo REPO --run RUN
-대상: 복습노트/<range>/(와 예전 형식인 복습노트/ 바로 아래)의 정리노트_<range>_*, 복습문제_<range>_*, figures_<range>/.
+대상: 복습노트/<range>/(와 예전 형식인 복습노트/ 바로 아래)의 정리노트_<range>_*, 복습문제_<range>_*,
+그리고 복습노트/<range>/.pack/ 의 같은 이름 .md 와 figures_<range>/ (백업에서도 .pack/ 아래에 둔다).
 파일명은 NFC로 비교하므로 NFD 이름도 잡힌다. range 형식이 틀리거나 복사된 파일 수가 다르면 종료 코드 1.
 """
 
@@ -13,6 +14,8 @@ import sys
 import tempfile
 import time
 import unicodedata as u
+
+from pack_layout import PACK_DIR
 
 
 def listdir_nfc(d):  # NFD 폴더명도 찾는다
@@ -38,14 +41,19 @@ def main():
         n = u.normalize("NFC", n)
         return n.startswith((f"정리노트_{r}_", f"복습문제_{r}_")) or n == f"figures_{r}"
 
-    srcs = [listdir_nfc(notes).get(r), notes]  # 날짜 폴더, 예전 형식(바로 아래)
-    hits = sorted({n: p for d in srcs if d and os.path.isdir(d) for n, p in listdir_nfc(d).items() if want(n)}.items())
+    pack = listdir_nfc(notes).get(r)
+    srcs = [(pack, ""), (notes, "")]  # 날짜 폴더, 예전 형식(바로 아래)
+    if pack:
+        srcs.append((listdir_nfc(pack).get(PACK_DIR), PACK_DIR + "/"))
+    hits = sorted({pre + n: p for d, pre in srcs if d and os.path.isdir(d)
+                   for n, p in listdir_nfc(d).items() if want(n)}.items())
     if not hits:
         print("백업할 기존 팩 없음")
         return
     dst = tempfile.mkdtemp(prefix=time.strftime("previous-%Y%m%d-%H%M%S-"), dir=run)  # 항상 새 폴더
     for n, src in hits:
         b = os.path.join(dst, n)
+        os.makedirs(os.path.dirname(b), exist_ok=True)
         shutil.copytree(src, b) if os.path.isdir(src) else shutil.copy2(src, b)
     want_n, got_n = sum(count(p) for _, p in hits), count(dst)
     if got_n != want_n:

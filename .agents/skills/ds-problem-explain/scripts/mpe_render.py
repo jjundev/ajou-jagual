@@ -14,6 +14,8 @@ from mpe_source import sha256, inside, existing_path
 from mpe_types import ExplainError, Artifacts
 
 ASSETS = Path(__file__).resolve().parents[1] / 'assets'
+# 날짜 폴더 루트에는 HTML·PDF만 둔다. md·그림·자료 폴더는 이 안에 들어간다(ds-review-pack pack_layout.PACK_DIR 과 같아야 함).
+PACK_DIR = '.pack'
 
 def names(pack):
     stem = f'과제{pack.range}_문제설명_{pack.slug}' if pack.profile == 'homework' else f'문제설명_{pack.range}_{pack.slug}'
@@ -35,9 +37,14 @@ def convert_markdown(html_path, md_path, ctx):
     for node in list(main.find_all(lambda n: n.tag == 'figure')):
         if list(node.find_all(lambda n: n.tag == 'img')) and not list(node.find_all(lambda n: n.tag == 'svg')):
             node.tag = 'div'  # html2md's figure branch handles SVG only.
+    # md lives in PACK_DIR: own resources lose the prefix, everything else outside it goes up one level.
+    for node in list(main.find_all(lambda n: n.tag == 'a')):
+        url = urlsplit(node.attrs.get('href', ''))
+        if url.path and not (url.scheme or url.netloc or url.path.startswith('/')) and unquote(url.path) != html_path.name:
+            node.attrs['href'] = '../' + node.attrs['href']
     for node in list(main.find_all(lambda n: n.tag == 'img')):
         alt = node.attrs.get('alt', '그림').replace('[', '(').replace(']', ')')
-        src = quote(node.attrs['src'], safe='/')
+        src = quote(md_resource(node.attrs['src']), safe='/')
         node.tag, node.attrs, node.children = 'p', {}, [f'![{alt}]({src})']
     footer = next(document.find_all(lambda n: n.tag == 'footer'), None)
     temporary = html_path.with_name('.' + html_path.stem + '-md-input.html')
@@ -46,6 +53,10 @@ def convert_markdown(html_path, md_path, ctx):
         convert(str(temporary), str(md_path), ctx, ['문제의 첫 줄부터 검산까지 설명해요.'])
     finally:
         temporary.unlink(missing_ok=True)
+
+def md_resource(src):
+    """HTML 기준 자원 경로(.pack/...) → .pack/ 안 md 기준 경로."""
+    return src[len(PACK_DIR) + 1:] if src.startswith(PACK_DIR + '/') else src
 
 def resources(markup, problem, pack, repo, stage, fig_name, destination, scope):
     root = parse(markup)
@@ -122,10 +133,12 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
         raise ExplainError(' / '.join(errors))
     stage.mkdir(parents=True, exist_ok=True)
     stem, fig_name, data_name = names(pack)
-    html_path, md_path = stage / f'{stem}.html', stage / f'{stem}.md'
-    data_dir = stage / data_name
-    data_dir.mkdir()
-    (stage / fig_name).mkdir()
+    pack_dir = stage / PACK_DIR
+    html_path, md_path = stage / f'{stem}.html', pack_dir / f'{stem}.md'
+    data_dir = pack_dir / data_name
+    data_dir.mkdir(parents=True)
+    (pack_dir / fig_name).mkdir()
+    fig_rel = f'{PACK_DIR}/{fig_name}'  # HTML(루트) 기준
     shutil.copytree(ASSETS / 'vendor', data_dir / 'vendor')
     shutil.copy2(ASSETS / 'template-provenance.json', data_dir / 'template-provenance.json')
     articles = []
@@ -138,8 +151,8 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
         if p.original_html:
             reading += '<div class="layer formal" data-original-problem="' + p.id + '"><h4>기출 원문</h4>' + p.original_html + '</div>'
         # Validate each block separately: a summary remains a direct fragment child.
-        reading = resources(reading, p, pack, repo, stage, fig_name, pack.path.parent, 'source')
-        explanation = resources(fragments[p.id], p, pack, repo, stage, fig_name, pack.path.parent, 'explain')
+        reading = resources(reading, p, pack, repo, stage, fig_rel, pack.path.parent, 'source')
+        explanation = resources(fragments[p.id], p, pack, repo, stage, fig_rel, pack.path.parent, 'explain')
         original_link = quote(pack.path.name, safe='') + '#' + p.id
         articles.append(f'<article class="topic" id="{p.id}"><h3>{html.escape(p.title)}</h3>'
                         + f'<p class="panel-meta">{html.escape(p.source)} · <a href="{original_link}">원 문제 보기</a></p>'
@@ -153,14 +166,14 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
               'SUBTITLE': '주어진 조건을 읽고, 첫 줄을 쓰고, 이유를 따라가며 답을 확인해요.',
               'SECTIONS': '<section id="problems"><h2>문항별 설명</h2>' + ''.join(articles) + '</section>',
               'FOOTER': '원 문제·정리노트·PDF는 보존해요.', 'SCRIPTS': '',
-              'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': data_name + '/vendor'}
+              'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': f'{PACK_DIR}/{data_name}/vendor'}
     text = (ASSETS / 'note-template.html').read_text(encoding='utf-8')
     for key, value in values.items():
         text = text.replace('{{' + key + '}}', value)
     if re.search(r'\{\{[A-Z_]+\}\}', text):
         raise ExplainError('미치환 템플릿 슬롯')
     html_path.write_text(text, encoding='utf-8')
-    ctx = Ctx([(html_path.name, md_path.name)], str(stage / fig_name), fig_name, prefix='explain')
+    ctx = Ctx([(html_path.name, md_path.name)], str(pack_dir / fig_name), fig_name, prefix='explain')
     convert_markdown(html_path, md_path, ctx)
     manifest_path = data_dir / 'manifest.json'
     files = tuple(sorted(p for p in stage.rglob('*') if p.is_file()))
@@ -190,7 +203,7 @@ def check_artifacts(pack, artifacts):
                 errors.append('생성 파일 변경/누락: ' + name)
         document = parse(artifacts.html.read_text(encoding='utf-8'))
         main = next(document.find_all(lambda n: n.tag == 'main'))
-        wanted_images = Counter(unquote(n.attrs.get('src', '')) for n in main.find_all(lambda n: n.tag == 'img'))
+        wanted_images = Counter(md_resource(unquote(n.attrs.get('src', ''))) for n in main.find_all(lambda n: n.tag == 'img'))
         markdown = artifacts.md.read_text(encoding='utf-8')
         md_images = Counter(unquote(path) for path in re.findall(r'!\[[^\]]*\]\(([^)]+)\)', markdown))
         for image, count in wanted_images.items():

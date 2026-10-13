@@ -9,7 +9,7 @@ class DeliveryTests(unittest.TestCase):
  def selections(self):
   out=[]
   for d in DATES:
-   p=ROOT/'복습노트'/d/'자료_복습팩';self.assertTrue((p/'selection.json').exists(),f'missing selection {d}')
+   p=ROOT/'복습노트'/d/'.pack'/'자료_복습팩';self.assertTrue((p/'selection.json').exists(),f'missing selection {d}')
    out.append((d,json.loads((p/'selection.json').read_text()),json.loads((p/'manifest.json').read_text()),json.loads((p/'validation.json').read_text())))
   return out
  def test_counts_and_chronological_originals_not_reused(self):

@@ -2,13 +2,14 @@ import unittest,json,hashlib,os
 from pathlib import Path
 from _util import REPO
 from pdf_cards import digest,read_pack
+from pack_layout import current_path,current_digest
 class DeliveryTests(unittest.TestCase):
  def test_existing_pack_pdf_coverage(self):
   import fitz
   sources=sorted((REPO/'복습노트').glob('*/복습문제_*.html'))
   self.assertEqual([len(read_pack(p).cards) for p in sources],[4,12,12,8,4,4,4,4,12])
   for source in sources:
-   rpath=source.parent/'자료_PDF/pdf-validation.json';self.assertTrue(rpath.exists(),str(rpath))
+   rpath=source.parent/'.pack/자료_PDF/pdf-validation.json';self.assertTrue(rpath.exists(),str(rpath))
    r=json.loads(rpath.read_text());self.assertEqual(r['status'],'published');self.assertEqual(r['source_sha256'],digest(source))
    self.assertEqual(r['logical_ids'],[c.id for c in read_pack(source).cards]);self.assertEqual(r['checks']['status'],'pass');self.assertEqual(r['browser']['status'],'pass')
    for name in r['pdfs']:
@@ -19,4 +20,4 @@ class DeliveryTests(unittest.TestCase):
  def test_original_reviews_notes_and_figures_unchanged(self):
   path=REPO/'docs/verify/2026-10-13-ds-review-pdf.json';self.assertTrue(path.exists())
   report=json.loads(path.read_text())
-  for name,sha in report['protected_files'].items():self.assertEqual(digest(REPO/name),sha,name)
+  for name,sha in report['protected_files'].items():self.assertEqual(digest(current_path(REPO/name)),current_digest(REPO/name,sha),name)

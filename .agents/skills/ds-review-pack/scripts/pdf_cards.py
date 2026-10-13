@@ -10,6 +10,7 @@ import unicodedata
 from urllib.parse import unquote, urlparse
 from html2md import Builder, Node, serialize, VOID, SVG_CSS
 from pdf_types import Block, Card, Pack, PageSlice, PdfError
+from pack_layout import pdf_report_path
 
 
 def digest(path):
@@ -59,7 +60,7 @@ def ensure_report_owner(source):
            re.fullmatch(r'복습문제_\d{4}(?:-\d{4})?_.+\.html',unicodedata.normalize('NFC',p.name))]
     if len(peers)>1:
         raise PdfError('자료_PDF report collision: multiple reviews in same folder')
-    report=source.parent/'자료_PDF/pdf-validation.json'
+    report=pdf_report_path(source.parent)
     if report.exists():
         old=json.loads(report.read_text(encoding='utf-8'))
         owner=unicodedata.normalize('NFC',Path(old.get('source','')).name)

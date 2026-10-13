@@ -105,12 +105,14 @@ class TestBackupScript(unittest.TestCase):
             self.assertTrue((d / "figures_0921" / "a.svg").exists())
 
     def test_backs_up_dated_folder_layout(self):
-        # 새 형식: 복습노트/<range>/ 안의 산출물. 폴더명이 NFD여도, 다른 range 폴더는 건드리지 않는다.
+        # 새 형식: 복습노트/<range>/ 루트의 HTML·PDF 와 .pack/ 안의 md·그림. 다른 range 폴더는 건드리지 않는다.
         pack = self.notes / "0921"
-        (pack / "figures_0921").mkdir(parents=True)
-        (pack / "figures_0921" / "a.svg").write_text("<svg/>", encoding="utf-8")
+        (pack / ".pack" / "figures_0921").mkdir(parents=True)
+        (pack / ".pack" / "figures_0921" / "a.svg").write_text("<svg/>", encoding="utf-8")
         (pack / "정리노트_0921_A.html").write_text("n", encoding="utf-8")
-        (pack / unicodedata.normalize("NFD", "복습문제_0921_A.md")).write_text("r", encoding="utf-8")
+        (pack / ".pack" / unicodedata.normalize("NFD", "복습문제_0921_A.md")).write_text("r", encoding="utf-8")
+        (pack / ".pack" / "자료_PDF").mkdir()
+        (pack / ".pack" / "자료_PDF" / "pdf-validation.json").write_text("{}", encoding="utf-8")
         (self.notes / "0923").mkdir()
         (self.notes / "0923" / "정리노트_0923_B.html").write_text("other", encoding="utf-8")
         r = self.backup("0921")
@@ -118,7 +120,9 @@ class TestBackupScript(unittest.TestCase):
         self.assertIn("백업 3항목(파일 3개)", r.stdout)
         (d,) = self.backups()
         names = sorted(unicodedata.normalize("NFC", n) for n in os.listdir(d))
-        self.assertEqual(names, ["figures_0921", "복습문제_0921_A.md", "정리노트_0921_A.html"])
+        self.assertEqual(names, [".pack", "정리노트_0921_A.html"])
+        names = sorted(unicodedata.normalize("NFC", n) for n in os.listdir(d / ".pack"))
+        self.assertEqual(names, ["figures_0921", "복습문제_0921_A.md"])
 
     def test_bad_range_fails_loudly(self):
         (self.notes / "정리노트_0921_A.html").write_text("n", encoding="utf-8")

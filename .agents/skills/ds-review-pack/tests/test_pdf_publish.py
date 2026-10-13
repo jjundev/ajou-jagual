@@ -46,7 +46,7 @@ class PublishTests(unittest.TestCase):
   for name in r['pdfs']:self.assertEqual((src.parent/name).read_bytes(),b'old')
  def test_approved_publish_and_hash_mutation(self):
   src,r=self.stage();self.approve();pdf_publish.publish_stage(self.run,self.repo)
-  self.assertTrue((src.parent/'자료_PDF/pdf-validation.json').exists())
+  self.assertTrue((src.parent/'.pack/자료_PDF/pdf-validation.json').exists())
   (self.run/'stage'/r['pdfs'][0]).write_bytes(b'changed')
   with self.assertRaises(PdfError):pdf_publish.publish_stage(self.run,self.repo)
 
@@ -63,6 +63,6 @@ class PublishTests(unittest.TestCase):
   with self.assertRaisesRegex(PdfError,'collision'):pdf_publish.publish_stage(self.run,self.repo)
   self.assertEqual(list(src.parent.glob('*.pdf')),[])
  def test_published_report_owned_by_other_source_rejected(self):
-  src,r=self.stage();self.approve();pdf_publish.dump(src.parent/'자료_PDF/pdf-validation.json',{'source':str(src.parent/'복습문제_0907_Other.html')})
+  src,r=self.stage();self.approve();pdf_publish.dump(src.parent/'.pack/자료_PDF/pdf-validation.json',{'source':str(src.parent/'복습문제_0907_Other.html')})
   with self.assertRaisesRegex(PdfError,'collision'):pdf_publish.publish_stage(self.run,self.repo)
   self.assertEqual(list(src.parent.glob('*.pdf')),[])

@@ -50,4 +50,4 @@ manifest는 이번 팩의 계약이다. 작성자, 검사기, 조립기가 모�
 - 이전 복습팩과 이어지는 개념이면 `../<이전 range>/정리노트_<이전 range>_<slug>.html#<토픽>` 링크를 건다(팩마다 `복습노트/<range>/` 폴더라 한 단계 위로 올라간다). 토픽은 기본 `s<N>-links`, 특정 토픽에 거는 편이 분명하면 그 토픽 id.
 
 ## 영속 제작자료
-`자료_복습팩/selection.json`: range, mode(new|retrofit), taught_evidence, concept_overrides, selected, excluded. selected는 id/source/source_kind/original_id/prerequisites, evidence(path/locator/sha256), answer, verification(method/reference/result)를 갖는다. methods는 python/c-run/lecture-reference; result는 pass|blocked. validation.json은 checks, counts(existing/added/total), preserved(원문 카드·노트·문제설명 해시), unresolved를 저장한다. 실패·미실행을 pass로 기록하지 않는다. answers.py는 저장소를 변경하지 않는 재현 검산이다.
+`.pack/자료_복습팩/selection.json`(팩 폴더 기준): range, mode(new|retrofit), taught_evidence, concept_overrides, selected, excluded. selected는 id/source/source_kind/original_id/prerequisites, evidence(path/locator/sha256), answer, verification(method/reference/result)를 갖는다. methods는 python/c-run/lecture-reference; result는 pass|blocked. validation.json은 checks, counts(existing/added/total), preserved(원문 카드·노트·문제설명 해시), unresolved를 저장한다. 실패·미실행을 pass로 기록하지 않는다. answers.py는 저장소를 변경하지 않는 재현 검산이다.

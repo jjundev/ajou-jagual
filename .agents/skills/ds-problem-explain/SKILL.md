@@ -48,7 +48,7 @@ description: 자구알의 기존 복습문제 HTML로 문제 단서, 떠올릴 �
 
 ## 산출 위치
 
-입력과 같은 날짜 폴더에 `문제설명_<range>_<slug>.html/.md`, `figures_문제설명_<range>_<slug>/`, `자료_문제설명_<range>_<slug>/`를 저장한다. 자료 폴더에는 생성 기록·검토·설명 조각·검산·로컬 자원이 들어간다. 정리노트 링크를 자동 삽입하지 않는다. 읽음 상태 범위는 `ds-problem-explain-review-<range>-<slug>`다.
+입력과 같은 날짜 폴더 루트에는 `문제설명_<range>_<slug>.html`만 두고, `.md`·`figures_문제설명_<range>_<slug>/`·`자료_문제설명_<range>_<slug>/`는 그 폴더의 숨김 폴더 `.pack/` 안에 저장한다(예: `복습노트/1012/.pack/문제설명_1012_Queue.md`). 숨김 폴더라 검색 도구가 건너뛸 수 있으니 이 경로를 직접 연다. 자료 폴더에는 생성 기록·검토·설명 조각·검산·로컬 자원이 들어간다. 정리노트 링크를 자동 삽입하지 않는다. 읽음 상태 범위는 `ds-problem-explain-review-<range>-<slug>`다.
 
 원본 고정 커밋과 바이트 해시는 [이식 기록](assets/port-provenance.json)에 있다. 실행 중 머신러닝기초 checkout이나 ds-review-pack을 참조하지 않는다.
 

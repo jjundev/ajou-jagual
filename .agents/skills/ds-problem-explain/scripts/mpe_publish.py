@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 from mpe_contract import validate_fragment, validate_reviews, payload_hash
-from mpe_render import artifact_hashes, check_artifacts, dump, names
+from mpe_render import PACK_DIR, artifact_hashes, check_artifacts, dump, names
 from mpe_source import sha256, inside
 from mpe_shared import publish_files, ReviewPdfError
 from mpe_types import ExplainError
@@ -40,7 +40,9 @@ def publish_explanation(pack, artifacts, fragments, reviews, destination, backup
             src = Path(src).absolute()
             inside(src, stage_root)
             relative = src.relative_to(stage_root)
-            owned = (len(relative.parts) == 1 and relative.name in (stem + '.html', stem + '.md')) or (len(relative.parts) > 1 and relative.parts[0] in allowed_roots)
+            parts = relative.parts
+            owned = (parts == (stem + '.html',) or parts == (PACK_DIR, stem + '.md')
+                     or (len(parts) > 2 and parts[0] == PACK_DIR and parts[1] in allowed_roots))
             if not owned or relative.name == 'validation.json':
                 raise ExplainError('소유하지 않은 산출 경로: ' + str(relative))
             dst = inside(destination / relative, repo)
@@ -48,7 +50,7 @@ def publish_explanation(pack, artifacts, fragments, reviews, destination, backup
                 raise ExplainError('원본 덮어쓰기 금지')
             mapping[dst] = src
         # Report is deliberately outside the reviewed hash set (avoids self-hashing).
-        report = stage_root / data_name / 'validation.json'
+        report = stage_root / PACK_DIR / data_name / 'validation.json'
         dump(report, reviews)
         mapping[inside(destination / report.relative_to(stage_root), repo)] = report
         publish_files(mapping, Path(backup_dir))

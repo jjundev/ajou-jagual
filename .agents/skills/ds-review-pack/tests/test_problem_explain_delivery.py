@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 from _util import REPO
 from explanation_delivery_checks import check_pack,check_preserved,latest_delivery_report
+from pack_layout import current_path,current_digest
 
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 @pytest.fixture
@@ -64,7 +65,7 @@ def test_real_delivery():
   assert item['problem_ids']==current['problem_ids']
   assert check_pack(REPO,current)==[],item['date']
   # Predecessor artifact metadata is retained and connected to the current output.
-  backup=REPO/current['replacements'][item['manifest']]['backup_file']
+  backup=current_path(REPO/current['replacements'][item['manifest']]['backup_file'])
   old=json.loads(backup.read_text())
   for name,old_digest in old['files'].items():
    relative=(Path(item['source']).parent/name).as_posix()
@@ -81,7 +82,7 @@ def test_summary_retry_render_code_characters_once():
  import re
  targets=[('0914','Recursion','p9','1<log n'),('1001','List','p1','i >= loc'),('1012','Queue','p6','s->stack'),('1012','Queue','p12','s->top')]
  for date,slug,pid,token in targets:
-  file=REPO/'복습노트'/date/f'자료_문제설명_{date}_{slug}'/'fragments'/f'{pid}.html'
+  file=REPO/'복습노트'/date/'.pack'/f'자료_문제설명_{date}_{slug}'/'fragments'/f'{pid}.html'
   fragment=file.read_text();retry=fragment.split('data-explanation="retry"')[1].split('<div class="sum"')[0]
   summary=fragment.split('<div class="sum"')[1]
   rendered=unescape(re.sub('<[^>]+>','',retry+summary))
@@ -114,7 +115,7 @@ def test_all_code_block_deliveries_current():
   for rel, old in item['before_files'].items():
    assert check_preserved(REPO, rel, old, report) == [], rel
  for rel, old in report['protected_files'].items():
-  data=(REPO/rel).read_bytes()
+  data=current_path(REPO/rel).read_bytes();old=current_digest(REPO/rel,old)
   if rel=='.gitattributes':
    # The PDF font license adds only this narrow rule; every predecessor byte remains.
    extension=b'# Preserve the official font license byte-for-byte.\n.agents/skills/ds-review-pack/assets/pdf/vendor/jetbrains-mono/OFL.txt -whitespace\n'
@@ -163,7 +164,7 @@ def test_replay_uses_published_inputs_without_original_run(tmp_path):
 
 def test_saved_verification_rejects_zero_question_inputs(tmp_path):
  import subprocess,sys,shutil
- source=REPO/'복습노트/0907/자료_문제설명_0907_Intro_DS_Algorithms/evidence/verify-code-blocks.py'
+ source=REPO/'복습노트/0907/.pack/자료_문제설명_0907_Intro_DS_Algorithms/evidence/verify-code-blocks.py'
  copied=tmp_path/'verify-code-blocks.py';shutil.copy2(source,copied)
  result=subprocess.run([sys.executable,str(copied)],text=True,capture_output=True)
  assert result.returncode!=0

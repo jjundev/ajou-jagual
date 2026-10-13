@@ -37,6 +37,8 @@ class TestHtml2Md(unittest.TestCase):
 
     def test_outputs_and_check_pass(self):
         self.assertEqual(Path(self.note_md).name, "정리노트_0101-0102_Mini_Test.md")
+        self.assertEqual(Path(self.note_md).parent, self.tmp / ".pack")
+        self.assertEqual(Path(self.review_md).parent, self.tmp / ".pack")
         self.assertEqual(html2md.check_md(self.note, self.note_md), [])
         self.assertEqual(html2md.check_md(self.review, self.review_md), [])
 
@@ -47,13 +49,13 @@ class TestHtml2Md(unittest.TestCase):
 
     def test_widget_static_becomes_figure_and_table(self):
         self.assertEqual(self.figs, 1)
-        self.assertTrue((self.tmp / "figures_0101-0102" / "widget-mean-static.svg").exists())
+        self.assertTrue((self.tmp / ".pack" / "figures_0101-0102" / "widget-mean-static.svg").exists())
         self.assertIn('<a id="widget-mean"></a>', self.md)
         self.assertIn("![평균 1.5 막대](figures_0101-0102/widget-mean-static.svg)", self.md)
         self.assertIn("| 1, 2 | $\\frac{3}{2}$ |", self.md)
 
     def test_reconversion_removes_orphan_svgs_only(self):
-        fig = self.tmp / "figures_0101-0102"
+        fig = self.tmp / ".pack" / "figures_0101-0102"
         (fig / "old-orphan.svg").write_text("<svg/>", encoding="utf-8")
         (fig / "keep.txt").write_text("x", encoding="utf-8")
         (self.tmp / "outside.svg").write_text("<svg/>", encoding="utf-8")
@@ -112,7 +114,7 @@ class TestHtml2Md(unittest.TestCase):
         note, review = small_pack(d, f'<section id="s"><h2>A</h2>{fig}{dup}</section>',
                                   f'<section id="q"><h2>Q</h2>{fig}{dup}</section>')
         (note_md, review_md), figs = html2md.convert_pack(note, review)
-        files = sorted(x.name for x in (d / "figures_0101").iterdir())
+        files = sorted(x.name for x in (d / ".pack" / "figures_0101").iterdir())
         self.assertEqual(figs, 4)
         self.assertEqual(files, ["note-fig-1.svg", "review-fig-1.svg", "same-2.svg", "same.svg"])
         self.assertEqual(html2md.check_md(note, note_md), [])
@@ -177,6 +179,21 @@ class TestHtml2Md(unittest.TestCase):
         self.assertEqual(len(problems), 2)
         self.assertTrue(problems[0].startswith("링크 미변환(.html): ./복습문제"))
         self.assertTrue(problems[1].startswith("링크 파일 없음: ../"))
+
+    def test_links_outside_pack_go_up_one_level(self):
+        d = self.tmp / "up"
+        d.mkdir()
+        (d.parent / "0100").mkdir()
+        (d.parent / "0100" / "정리노트_0100_Y.html").write_text("<p id='a'>a</p>", encoding="utf-8")
+        body = ('<section id="s"><h2>A</h2><p><a href="../0100/정리노트_0100_Y.html#a">prev</a> '
+                '<a href="복습문제_0101_X.html#q">q</a> <a href="https://example.com/x">ext</a></p></section>')
+        note, review = small_pack(d, body, '<section id="q"><h2>Q</h2><p>q</p></section>')
+        (note_md, _), _ = html2md.convert_pack(note, review)
+        md = Path(note_md).read_text(encoding="utf-8")
+        self.assertIn("(../../0100/정리노트_0100_Y.html#a)", md)
+        self.assertIn("(복습문제_0101_X.md#q)", md)
+        self.assertIn("(https://example.com/x)", md)
+        self.assertEqual(html2md.check_md(note, note_md), [])
 
     def test_nfd_named_pair_converts(self):
         d = self.tmp / "nfd"
