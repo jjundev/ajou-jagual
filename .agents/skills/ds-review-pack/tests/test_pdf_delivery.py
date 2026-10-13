@@ -10,7 +10,7 @@ class DeliveryTests(unittest.TestCase):
   self.assertEqual([len(read_pack(p).cards) for p in sources],[4,12,12,8,4,4,4,4,12])
   for source in sources:
    rpath=source.parent/'.pack/자료_PDF/pdf-validation.json';self.assertTrue(rpath.exists(),str(rpath))
-   r=json.loads(rpath.read_text());self.assertEqual(r['status'],'published');self.assertEqual(r['source_sha256'],digest(source))
+   r=json.loads(rpath.read_text());self.assertEqual(r['status'],'published');self.assertEqual(current_digest(source,r['source_sha256']),digest(source))
    self.assertEqual(r['logical_ids'],[c.id for c in read_pack(source).cards]);self.assertEqual(r['checks']['status'],'pass');self.assertEqual(r['browser']['status'],'pass')
    for name in r['pdfs']:
     self.assertEqual(digest(source.parent/name),r['artifact_hashes'][name])

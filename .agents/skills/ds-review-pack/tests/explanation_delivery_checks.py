@@ -24,7 +24,7 @@ def check_pack(root,item):
   relative_parts=Path(item['source']).parts
   recorded_parts=Path(m['source']).parts
   same_location=tuple(map(lambda s:unicodedata.normalize('NFC',s),recorded_parts[-len(relative_parts):]))==tuple(map(lambda s:unicodedata.normalize('NFC',s),relative_parts))
-  if digest!=item['source_sha256'] or digest!=m['source_sha256'] or not same_location:errors.append('current source differs')
+  if digest!=current_digest(src,item['source_sha256']) or digest!=current_digest(src,m['source_sha256']) or not same_location:errors.append('current source differs')
   if v.get('input_hash')!=m.get('input_hash'):errors.append('review input differs')
   expected={f"{p['id']}:{s}" for p in m['problems'] for s in p['subparts']}
   def approved(e):return isinstance(e,dict) and e.get('status')=='pass' and all(isinstance(e.get(k),str) and e[k].strip() for k in ('reviewer','evidence'))

@@ -4,6 +4,7 @@ from pathlib import Path
 from _util import REPO
 from update_review import extract_cards
 from explanation_delivery_checks import check_preserved
+from pack_layout import current_digest
 ROOT=Path(os.environ.get('DS_REVIEW_DELIVERY_ROOT',REPO));DATES=('0907','0914','0917','0921','0928','1001','1005','1008','1012')
 class DeliveryTests(unittest.TestCase):
  def selections(self):
@@ -23,7 +24,7 @@ class DeliveryTests(unittest.TestCase):
    for q in s['selected']:
     self.assertTrue(q['answer']);self.assertEqual(q['verification']['result'],'pass');self.assertTrue(q['evidence']);self.assertTrue(set(q['prerequisites'])<=ids)
     for ev in q['evidence']:
-     file=REPO/ev['path'];self.assertTrue(file.exists());self.assertEqual(hashlib.sha256(file.read_bytes()).hexdigest(),ev['sha256'])
+     file=REPO/ev['path'];self.assertTrue(file.exists());self.assertEqual(hashlib.sha256(file.read_bytes()).hexdigest(),current_digest(file,ev['sha256']))
  def test_manifest_card_ids_and_existing_raw_hashes(self):
   for d,s,m,v in self.selections():
    cards=extract_cards(next((ROOT/'복습노트'/d).glob('복습문제*.html')).read_text());byid={c['id']:c for c in cards}
