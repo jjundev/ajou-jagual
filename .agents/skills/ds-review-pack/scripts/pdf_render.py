@@ -25,7 +25,7 @@ finally:
     else: sys.modules['paths']=_previous
 def load_template(mode, layout='a4'):
     from pdf_ds_layout import extend
-    return extend(_reference.load_template(mode, layout), mode)
+    return extend(_reference.load_template(mode, layout), mode, layout)
 inject=_reference.inject
 _active=None
 
@@ -57,6 +57,8 @@ def resource_path(url):
     if parsed.netloc=='cdn.jsdelivr.net' and path.startswith(prefix):
         rel=path[len(prefix):]
         return VENDOR/'pretendard'/('pretendard.css' if rel=='pretendard.min.css' else rel)
+    from pdf_code import FONT_URL, FONT_DIR
+    if url==FONT_URL:return FONT_DIR/'JetBrainsMono-Regular.ttf'
     return None
 
 GEOMETRY_JS=r'''() => {
@@ -65,7 +67,7 @@ GEOMETRY_JS=r'''() => {
  for(const p of document.querySelectorAll('.page')){
   const zoom=parseFloat(getComputedStyle(p).zoom)||1, pr=p.getBoundingClientRect();
   const rect=n=>{const r=n.getBoundingClientRect();return {x:(r.left-pr.left)/zoom,y:(r.top-pr.top)/zoom,w:r.width/zoom,h:r.height/zoom}};
-  geometry[p.id]={page:{w:pr.width/zoom,h:pr.height/zoom},regions:[],labels:[...p.querySelectorAll('.panel .block-label')].map(n=>n.textContent)};
+  geometry[p.id]={page:{w:pr.width/zoom,h:pr.height/zoom},regions:[],code:[],labels:[...p.querySelectorAll('.panel .block-label')].map(n=>n.textContent)};
   for(const n of p.querySelectorAll('.panel,.work,.hint-body,pre,table,.fig-band,img.fig,.sol-answer')){
    const r=rect(n);geometry[p.id].regions.push({tag:n.tagName,cls:n.className,...r});
    const cap=window.workbookVideoLayout?900:pr.height/zoom;
@@ -75,6 +77,12 @@ GEOMETRY_JS=r'''() => {
     const cr=rect(container);
     if(r.x<cr.x-1||r.x+r.w>cr.x+cr.w+1||r.y+r.h>cr.y+cr.h+1)overflow.add(p.id);
    }
+  }
+  for(const n of p.querySelectorAll('.panel pre,.work pre')){
+   const st=getComputedStyle(n);
+   geometry[p.id].code.push({region:n.closest('.panel')?'panel':'work',rect:rect(n),font_family:st.fontFamily,
+    font_size_css_px:parseFloat(st.fontSize),effective_pdf_pt:parseFloat(st.fontSize)*.75,
+    line_height_css_px:parseFloat(st.lineHeight),text:n.textContent});
   }
   const panel=p.querySelector('.panel'),work=p.querySelector('.work');
   const scale=n=>{const t=getComputedStyle(n).transform;return t==='none'?1:new DOMMatrix(t).a};
@@ -90,6 +98,8 @@ GEOMETRY_JS=r'''() => {
 
 
 def _run(data,mode,layout,run,pdf=None):
+    from pdf_code import check_font_assets
+    check_font_assets()
     run=Path(run);run.mkdir(parents=True,exist_ok=True)
     html_path=run/f'{mode}-{layout}.html';html_path.write_text(inject(load_template(mode,layout),data),encoding='utf-8')
     errors=[]
@@ -118,6 +128,9 @@ def _run(data,mode,layout,run,pdf=None):
             # FontFaceSet.check alone accepts absent family fallback; demand loaded faces.
             if not page.evaluate("[...document.fonts].some(f=>f.family.includes('Pretendard')&&f.status==='loaded')"):
                 errors.append('Pretendard not loaded')
+            if info['geometry'] and any(g['code'] for g in info['geometry'].values()):
+                if not page.evaluate("[...document.fonts].some(f=>f.family.includes('DS JetBrains Mono')&&f.status==='loaded')"):
+                    errors.append('DS JetBrains Mono not loaded')
             if pdf is not None:
                 Path(pdf).parent.mkdir(parents=True,exist_ok=True)
                 page.pdf(path=str(pdf),prefer_css_page_size=True,print_background=True)

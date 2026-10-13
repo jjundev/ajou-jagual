@@ -7,7 +7,7 @@ REPLACEMENT = """if (p.html.conditions && p.html.conditions.replace(/<[^>]*>/g, 
   if (p.html.code) panel.append(block('코드', p.html.code, 'code-box'));"""
 
 
-def extend(template, mode):
+def extend(template, mode, layout="a4"):
     if template.count(PANEL) != 1:
         raise PdfError('Frozen EC2 panel extension anchor changed')
     template = template.replace(PANEL, REPLACEMENT)
@@ -18,6 +18,8 @@ def extend(template, mode):
         template = template.replace(anchor, """const work = el('div', 'work');
   if (p.workspace_html) work.append(el('div', 'prose ds-worksheet', p.workspace_html));
   center.append(work);""")
+    from pdf_code import code_css
+    template=template.replace('</head>', '<style>'+code_css(layout)+'</style></head>')
     return template.replace('</head>', '<style>.ds-worksheet { padding: 5mm; background: var(--paper); } .ds-worksheet table, .panel table { width: 100%; border-collapse: collapse; } .ds-worksheet th, .ds-worksheet td, .panel th, .panel td { border: 1px solid #888; padding: 2mm; height: 6mm; } .code-box pre { white-space: pre; background: var(--paper); padding: 2mm; border-radius: 1mm; margin: 0; } .code-box pre + pre { margin-top: 2mm; }</style></head>')
 
 
