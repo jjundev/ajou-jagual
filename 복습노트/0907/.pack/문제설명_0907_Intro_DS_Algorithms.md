@@ -20,7 +20,7 @@
 
 ### P1. 두 정수 바꾸기
 
-textbook-ch01-q01 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p1)
+textbook-ch01-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p1)
 
 #### 주어진 조건
 
@@ -84,7 +84,7 @@ temp ← a
 
 ### P2. 두 정수 중 큰 수
 
-textbook-ch01-q02 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p2)
+textbook-ch01-q02 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p2)
 
 #### 주어진 조건
 
@@ -148,7 +148,7 @@ read a, b
 
 ### P3. 1부터 n까지 더하기
 
-textbook-ch01-q03 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p3)
+textbook-ch01-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p3)
 
 #### 주어진 조건
 
@@ -213,7 +213,7 @@ sum ← 0
 
 ### P4. 큐에서 꺼내는 순서
 
-textbook-ch05-q01 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p4)
+textbook-ch05-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p4)
 
 #### 주어진 조건
 

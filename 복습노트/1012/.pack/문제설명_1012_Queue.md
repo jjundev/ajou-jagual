@@ -28,7 +28,7 @@
 
 ### P1. 후위식 계산 횟수
 
-2019-mid-q6 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p1)
+2019-mid-q6 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p1)
 
 #### 주어진 조건
 
@@ -102,7 +102,7 @@ push 9,pop 8,결과 31 남음
 
 ### P2. 중위식 변환과 후위식 계산
 
-2018-mid-c024-q9 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p2)
+2018-mid-c024-q9 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p2)
 
 #### 주어진 조건
 
@@ -212,7 +212,7 @@ push 9,pop 8,결과 31 남음
 
 ### P3. 후위식 스택 상태
 
-2017-mid-c050-q6 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p3)
+2017-mid-c050-q6 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p3)
 
 #### 주어진 조건
 
@@ -314,7 +314,7 @@ postfix 수식: 7 6 2 / – 5 4 \* +
 
 ### P4. 괄호 검사의 도구
 
-2018-mid-c024-q1 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p4)
+2018-mid-c024-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p4)
 
 #### 주어진 조건
 
@@ -376,7 +376,7 @@ postfix 수식: 7 6 2 / – 5 4 \* +
 
 ### P5. 후위식 계산의 도구
 
-2017-mid-c050-q1 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p5)
+2017-mid-c050-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p5)
 
 #### 주어진 조건
 
@@ -438,7 +438,7 @@ postfix 수식: 7 6 2 / – 5 4 \* +
 
 ### P6. 스택 C 코드 완성
 
-2017-mid-c050-q10 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p6)
+2017-mid-c050-q10 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p6)
 
 #### 주어진 조건
 
@@ -575,7 +575,7 @@ if (str[i] == '+' || str[i] == '*') {
 
 ### P7. 은행 대기열의 도구
 
-2017-mid-c050-q2 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p7)
+2017-mid-c050-q2 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p7)
 
 #### 주어진 조건
 
@@ -637,7 +637,7 @@ A 도착→[A],B 도착→[A,B],C 도착→[A,B,C]이면 서비스 순서는 A,B
 
 ### P8. 스택과 큐의 순서
 
-2019-mid-q4 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p8)
+2019-mid-q4 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p8)
 
 #### 주어진 조건
 
@@ -699,7 +699,7 @@ A 다음 B를 push하고 pop하면 B가 나와요. FIFO라면 A여야 하므로 
 
 ### P9. 큐에서 세 번 꺼내기
 
-textbook-ch05-q03 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p9)
+textbook-ch05-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p9)
 
 #### 주어진 조건
 
@@ -761,7 +761,7 @@ rear에서 제거하지 않아요.
 
 ### P10. 후위식에서 첫 연산
 
-textbook-ch04-q07 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p10)
+textbook-ch04-q07 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p10)
 
 #### 주어진 조건
 
@@ -863,7 +863,7 @@ A=10,B=2,E=3,D=1 예에서 첫 결과5,다음5,최종5예요. 첫 연산에 A가
 
 ### P11. 괄호의 번호를 짝 맞추기
 
-textbook-ch04-q11 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p11)
+textbook-ch04-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p11)
 
 #### 주어진 조건
 
@@ -956,7 +956,7 @@ int next_id=0, top=-1;
 
 ### P12. 스택 size 구현
 
-textbook-ch04-q14 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p12)
+textbook-ch04-q14 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p12)
 
 #### 주어진 조건
 

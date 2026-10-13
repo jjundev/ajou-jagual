@@ -24,7 +24,7 @@
 
 ### P1. 함수 foo가 하는 일
 
-2019-mid-q8 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p1)
+2019-mid-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p1)
 
 #### 주어진 조건
 
@@ -100,7 +100,7 @@ foo(48,18)에서 나머지 12를 첫 줄에 적어요.
 
 ### P2. 순환 함수 gcd 구현하기
 
-2018-mid-c024-q15 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p2)
+2018-mid-c024-q15 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p2)
 
 #### 주어진 조건
 
@@ -184,7 +184,7 @@ j=0 종료, 아니면 gcd(j,i%j)
 
 ### P3. 자기 자신을 다시 부르는 기법
 
-2018-mid-c102-q1 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p3)
+2018-mid-c102-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p3)
 
 #### 주어진 조건
 
@@ -246,7 +246,7 @@ j=0 종료, 아니면 gcd(j,i%j)
 
 ### P4. 순환 함수 dec_to_bin 구현하기
 
-2017-mid-c050-q11 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p4)
+2017-mid-c050-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p4)
 
 #### 주어진 조건
 
@@ -337,7 +337,7 @@ n/2 먼저 호출, 돌아와 n%2 출력
 
 ### P5. 2차원 배열의 바이트 수
 
-textbook-ch03-q01 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p5)
+textbook-ch03-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p5)
 
 #### 주어진 조건
 
@@ -431,7 +431,7 @@ int a[10][20]에서 배열이 차지하는 메모리 공간의 크기는 얼마�
 
 ### P6. 배열에 2의 거듭제곱 저장
 
-textbook-ch03-q04 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p6)
+textbook-ch03-q04 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p6)
 
 #### 주어진 조건
 
@@ -501,7 +501,7 @@ two[0]=1, 이전 원소×2
 
 ### P7. 사람 정보를 구조체로
 
-textbook-ch03-q05 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p7)
+textbook-ch03-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p7)
 
 #### 주어진 조건
 
@@ -567,7 +567,7 @@ char name[], int age, float salary
 
 ### P8. typedef로 complex 만들기
 
-textbook-ch03-q06 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p8)
+textbook-ch03-q06 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p8)
 
 #### 주어진 조건
 

@@ -1410,7 +1410,7 @@ n을 고르고 다음 단계를 누르면 호출 상자가 하나씩 쌓이고, 
 *0914 수업*
 
 - [0914 복습문제](복습문제_0914_Recursion.md)
-- [강의록 Software_2_Recursion.pdf](../../자료구조_강의록_2026/Software_2_Recursion.pdf)
+- [강의록 Software_2_Recursion.pdf](../../../자료구조_강의록_2026/Software_2_Recursion.pdf)
 
 ---
 

@@ -20,7 +20,7 @@
 
 ### P1. 배열 크기를 sizeof로 비교
 
-textbook-ch03-q03 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p1)
+textbook-ch03-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p1)
 
 #### 주어진 조건
 
@@ -116,7 +116,7 @@ array1=10×4=40바이트라고 적어요.
 
 ### P2. 복소수 구조체 더하기
 
-textbook-ch03-q07 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p2)
+textbook-ch03-q07 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p2)
 
 #### 주어진 조건
 
@@ -192,7 +192,7 @@ Complex result;
 
 ### P3. 구조체를 동적으로 만들고 반납
 
-textbook-ch03-q12 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p3)
+textbook-ch03-q12 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p3)
 
 #### 주어진 조건
 
@@ -266,7 +266,7 @@ malloc(sizeof \*p) → NULL 검사 → 저장 → free
 
 ### P4. 배열 접근·전체 방문의 복잡도
 
-textbook-ch01-q17 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p4)
+textbook-ch01-q17 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p4)
 
 #### 주어진 조건
 

@@ -20,7 +20,7 @@
 
 ### P1. push 후 top의 변화
 
-textbook-ch04-q01 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p1)
+textbook-ch04-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p1)
 
 #### 주어진 조건
 
@@ -114,7 +114,7 @@ push 성공 → top+1
 
 ### P2. top과 원소 수
 
-textbook-ch04-q04 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p2)
+textbook-ch04-q04 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p2)
 
 #### 주어진 조건
 
@@ -208,7 +208,7 @@ size=top+1=4
 
 ### P3. 스택의 공백과 포화
 
-textbook-ch04-q05 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p3)
+textbook-ch04-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p3)
 
 #### 주어진 조건
 
@@ -302,7 +302,7 @@ empty −1, full M−1
 
 ### P4. 배열 스택의 단계별 상태
 
-textbook-ch04-q08 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p4)
+textbook-ch04-q08 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p4)
 
 #### 주어진 조건
 

@@ -1410,8 +1410,8 @@ typedef struct ListNode {
 *0921 수업*
 
 - [기출 복습문제 4선 — 0921 수업 범위](복습문제_0921_ArrayStructureList.md)
-- [강의록 Software_2 Recursion (PDF)](../../자료구조_강의록_2026/Software_2_Recursion.pdf)
-- [강의록 Software_3 ArrayStructureList (PDF)](../../자료구조_강의록_2026/Software_3_ArrayStructureList.pdf)
+- [강의록 Software_2 Recursion (PDF)](../../../자료구조_강의록_2026/Software_2_Recursion.pdf)
+- [강의록 Software_3 ArrayStructureList (PDF)](../../../자료구조_강의록_2026/Software_3_ArrayStructureList.pdf)
 
 ---
 

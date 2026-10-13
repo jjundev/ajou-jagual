@@ -28,7 +28,7 @@
 
 ### P1. 함수 foo는 무엇을 할까요
 
-2019-mid-q8 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p1)
+2019-mid-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p1)
 
 #### 주어진 조건
 
@@ -104,7 +104,7 @@ foo(48,18)에서 나머지 12를 첫 줄에 적어요.
 
 ### P2. 네 겹 루프의 시간 복잡도
 
-2019-mid-q9 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p2)
+2019-mid-q9 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p2)
 
 #### 주어진 조건
 
@@ -192,7 +192,7 @@ for(i=0; i<n; i++){
 
 ### P3. j가 i에서 시작하는 세 겹 루프
 
-2018-mid-c024-q8 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p3)
+2018-mid-c024-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p3)
 
 #### 주어진 조건
 
@@ -276,7 +276,7 @@ i=0일 때 j는 n번, i=1일 때 n−1번이라고 적어요.
 
 ### P4. 최대공약수를 순환 함수로
 
-2018-mid-c024-q15 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p4)
+2018-mid-c024-q15 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p4)
 
 #### 주어진 조건
 
@@ -365,7 +365,7 @@ j=0 종료, 아니면 gcd(j,i%j)
 
 ### P5. 자기 자신을 다시 부르는 기법
 
-2018-mid-c102-q1 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p5)
+2018-mid-c102-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p5)
 
 #### 주어진 조건
 
@@ -427,7 +427,7 @@ j=0 종료, 아니면 gcd(j,i%j)
 
 ### P6. 십진수를 이진수로 찍는 순환 함수
 
-2017-mid-c050-q11 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p6)
+2017-mid-c050-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p6)
 
 #### 주어진 조건
 
@@ -517,7 +517,7 @@ n/2 먼저 호출, 돌아와 n%2 출력
 
 ### P7. 안쪽 루프가 10번 도는 세 겹 루프
 
-2018-mid-c024-q8 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p7)
+2018-mid-c024-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p7)
 
 #### 주어진 조건
 
@@ -603,7 +603,7 @@ i=0일 때 j는 n번, i=1일 때 n−1번이라고 적어요.
 
 ### P8. 1부터 시작하는 네 겹 루프
 
-unk-final-ltk-q1 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p8)
+unk-final-ltk-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p8)
 
 #### 주어진 조건
 
@@ -695,7 +695,7 @@ j 증감 추적, (k끝−1)×삼각수
 
 ### P9. 성장률이 작은 순서
 
-textbook-ch01-q12 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p9)
+textbook-ch01-q12 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p9)
 
 #### 주어진 조건
 
@@ -761,7 +761,7 @@ n=16에서 1,4,16,64,256,65536,20922789888000 순서예요. 이 예는 직관 �
 
 ### P10. 시간 복잡도 함수의 뜻
 
-textbook-ch01-q09 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p10)
+textbook-ch01-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p10)
 
 #### 주어진 조건
 
@@ -855,7 +855,7 @@ n=3일 때 T(3)=31회라고 적어요.
 
 ### P11. 동시에 남아 있는 호출
 
-textbook-ch02-q01 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p11)
+textbook-ch02-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p11)
 
 #### 주어진 조건
 
@@ -917,7 +917,7 @@ n=0을 바닥으로 삼는 다른 구현의 깊이 6을 현재 강의 코드에 
 
 ### P12. 줄어들지 않는 순환 호출
 
-textbook-ch02-q05 · [원 문제 보기](%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p12)
+textbook-ch02-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p12)
 
 #### 주어진 조건
 

@@ -599,7 +599,7 @@ main()
 - 이것은 수학에서 나온 규칙이 아니라 C 언어를 만든 사람이 정한 약속이에요.
 - 슬라이드 문장 그대로: 컴파일러가 배열의 이름을 배열의 첫 번째 주소로 대치해요.
 
-배열이 메모리에 연속으로 놓이는 모습은 [0921 정리노트: 배열의 메모리 배치](../0921/정리노트_0921_ArrayStructureList.html#s1-array-memory)에서 먼저 봤어요.
+배열이 메모리에 연속으로 놓이는 모습은 [0921 정리노트: 배열의 메모리 배치](../../0921/정리노트_0921_ArrayStructureList.html#s1-array-memory)에서 먼저 봤어요.
 
 **교수님 말씀**
 
@@ -679,7 +679,7 @@ main()
 
 구조체를 정의하면서 변수를 함께 선언할 때는 슬라이드 코드처럼 태그명을 생략할 수 있어요. 하지만 다른 곳에서 같은 구조의 변수를 또 선언하려면 구조를 다시 써야 해서 잘 쓰지 않아요. 길어도 `typedef struct`로 이름 붙인 타입을 만들어 쓰는 편이 좋아요.
 
-구조체 정의와 `typedef`는 [0921 정리노트: 구조체](../0921/정리노트_0921_ArrayStructureList.html#s4-struct)에서 먼저 다뤘어요.
+구조체 정의와 `typedef`는 [0921 정리노트: 구조체](../../0921/정리노트_0921_ArrayStructureList.html#s4-struct)에서 먼저 다뤘어요.
 
 **교수님 말씀**
 
@@ -1358,7 +1358,7 @@ void main()
 *0928 수업 · S3 p19–31*
 
 - [기출 복습문제 0928](복습문제_0928_ArrayStructureList.md) — 문제은행에 포인터·동적 메모리 할당 기출이 없어서 이번에는 문항이 0개예요.
-- [강의록 Software_3 ArrayStructureList (S3 p19–31)](../../자료구조_강의록_2026/Software_3_ArrayStructureList.pdf)
+- [강의록 Software_3 ArrayStructureList (S3 p19–31)](../../../자료구조_강의록_2026/Software_3_ArrayStructureList.pdf)
 
 ---
 
