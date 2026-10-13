@@ -47,7 +47,7 @@ def load_inputs(root):
         manifest_path = within(root, record['manifest'])
         manifest = json.loads(manifest_path.read_text())
         source = within(root, record['source'])
-        if sha(source) != record['source_sha256'] or sha(source) != manifest['source_sha256']:
+        if sha(source) != current_digest(source, record['source_sha256']) or sha(source) != current_digest(source, manifest['source_sha256']):
             raise ValueError('source hash differs')
         for name, digest in manifest['files'].items():
             if sha(within(source.parent, name)) != current_digest((source.parent / name).resolve(), digest):
