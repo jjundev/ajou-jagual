@@ -991,6 +991,25 @@
         }
       ],
       "reason": "User approved 2026-10-13: 복습노트 date-folder layout keeps HTML/PDF at the root and moves md, figures and data folders into .pack/; original port bytes retained."
+    },
+    {
+      "destination": "assets/note-template.html",
+      "base_sha256": "ce1ae742d818b1145a1364bfcb2c0284ae29c5dcd4ac43f3e17ec4c3a5cd4f1e",
+      "current_sha256": "c6606711439c70f8709f03ad09d6bfd76273363aace1c7d30f871b1a66655762",
+      "inserted_text": "    :root { --scroll: #c9d0db; --scroll-hover: #9aa3b2; }\n    @media (prefers-color-scheme: dark) { :root:not([data-theme=\"light\"]) { --scroll: #3f414b; --scroll-hover: #5b5e6a; } }\n    :root[data-theme=\"dark\"] { --scroll: #3f414b; --scroll-hover: #5b5e6a; }\n    .content::-webkit-scrollbar, .panel-inner::-webkit-scrollbar { width: 8px; }\n    :is(pre, .table-wrap, .katex-display, table)::-webkit-scrollbar { height: 8px; }\n    :is(.content, .panel-inner, pre, .table-wrap, .katex-display, table)::-webkit-scrollbar-track { background: transparent; }\n    :is(.content, .panel-inner, .table-wrap, .katex-display, table)::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--bg); }\n    pre::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--surface); }\n    :is(.content, .panel-inner, pre, .table-wrap, .katex-display, table)::-webkit-scrollbar-thumb:hover { background: var(--scroll-hover); }\n    @supports (scrollbar-color: auto) { :is(.content, .panel-inner, pre, .table-wrap, .katex-display, table) { scrollbar-width: thin; scrollbar-color: var(--scroll) transparent; } }\n",
+      "reason": "User approved 2026-10-13: themed scrollbar matching bio-interactive 66939ad; preserve original template bytes."
+    },
+    {
+      "destination": "tests/test_render.py",
+      "base_sha256": "f57d4bcb8413766d79422027c14892a916fb477221970f843d7c023fc07fc907",
+      "current_sha256": "bd746ce2420608f6dfb271f65426baa960e10246c6e46aa71a985ef53c00fbad",
+      "replacements": [
+        {
+          "old": "    for override in provenance.get('local_overrides',[]):\n        if override['destination']=='assets/note-template.html':\n            assert sha256(template)==override['current_sha256']\n            inserted=override['inserted_text'].encode('utf-8')\n            assert original.count(inserted)==1\n            original=original.replace(inserted,b'',1)\n",
+          "new": "    chain=[o for o in provenance.get('local_overrides',[]) if o['destination']=='assets/note-template.html']\n    for override in reversed(chain):\n        assert hashlib.sha256(original).hexdigest()==override['current_sha256']\n        inserted=override['inserted_text'].encode('utf-8')\n        assert original.count(inserted)==1\n        original=original.replace(inserted,b'',1)\n"
+        }
+      ],
+      "reason": "2026-10-13 themed scrollbar: peel stacked template overrides newest-first."
     }
   ]
 }

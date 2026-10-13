@@ -97,18 +97,25 @@ def current_path(path) -> Path:
 
 
 def current_digest(path, digest: str) -> str:
-    """이전 전 경로의 해시를, 이전 때 링크만 고친 파일이면 고친 뒤 해시로 바꿔 준다(migration-*.json)."""
+    """이전 전 경로의 해시를, 이전 때 링크만 고친 파일이면 고친 뒤 해시로 바꿔 준다(migration-*.json).
+
+    기록 파일 순서와 무관하게, 더 바뀌지 않을 때까지(최대 기록 수만큼) 체인을 따라간다."""
     path = Path(path)
     root = _pack_root(path)
     if root is None or path == root:
         return digest
     rel = nfc(path.relative_to(root).as_posix())
-    for record in sorted((root / PACK_DIR).glob("migration-*.json")):
-        rewritten = json.loads(record.read_text(encoding="utf-8")).get("rewritten", {})
-        for key in (rel, f"{PACK_DIR}/{rel}"):
-            entry = rewritten.get(key)
-            if entry and entry.get("before") == digest:
-                digest = entry["after"]
+    records = [json.loads(r.read_text(encoding="utf-8")).get("rewritten", {})
+               for r in sorted((root / PACK_DIR).glob("migration-*.json"))]
+    for _ in records:
+        start = digest
+        for rewritten in records:
+            for key in (rel, f"{PACK_DIR}/{rel}"):
+                entry = rewritten.get(key)
+                if entry and entry.get("before") == digest:
+                    digest = entry["after"]
+        if digest == start:
+            break
     return digest
 
 

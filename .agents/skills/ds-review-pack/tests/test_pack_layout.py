@@ -98,6 +98,23 @@ class PackLayoutTests(unittest.TestCase):
         again = pl.migrate_pack(self.pack, apply=True)
         self.assertEqual(again["move"], [])
 
+    def record(self, name, before, after):
+        data = self.notes / "0103" / ".pack"
+        data.mkdir(parents=True, exist_ok=True)
+        body = {"date": "2026-10-13", "moved": [], "rewritten": {"a.html": {"before": before, "after": after}}}
+        (data / name).write_text(json.dumps(body), encoding="utf-8")
+
+    def test_current_digest_chains_records_in_any_order(self):
+        # -scrollbar 기록이 파일명 정렬로 먼저 오지만 h0→h1 다음에 적용돼야 한다.
+        self.record("migration-2026-10-13.json", "h0", "h1")
+        self.record("migration-2026-10-13-scrollbar.json", "h1", "h2")
+        self.assertEqual(pl.current_digest(self.notes / "0103" / "a.html", "h0"), "h2")
+
+    def test_current_digest_stops_on_cycle(self):
+        self.record("migration-2026-10-13.json", "h0", "h1")
+        self.record("migration-2026-10-13-scrollbar.json", "h1", "h0")
+        self.assertIn(pl.current_digest(self.notes / "0103" / "a.html", "h0"), {"h0", "h1"})
+
     def test_conflict_aborts_whole_pack(self):
         (self.pack / ".pack" / "figures_0102").mkdir(parents=True)
         before = sorted(p.name for p in self.pack.iterdir())
