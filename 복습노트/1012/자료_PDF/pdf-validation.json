@@ -29,6 +29,9 @@
     "vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
     "vendor/pretendard/LICENSE": "85fce85e25260b03777bf10373d3bd9363b9da96d9e0ca86a280dd37ed7667a0",
     "vendor/pretendard/pretendard.css": "74dbf94c1ab3cb1d166346878e03572d8004ac88d21ac84332a32b28a088f2bd",
+    "vendor/jetbrains-mono/JetBrainsMono-Regular.ttf": "a0bf60ef0f83c5ed4d7a75d45838548b1f6873372dfac88f71804491898d138f",
+    "vendor/jetbrains-mono/OFL.txt": "30f0c136e3c88e422d0791acd97238870f9054a9729bc34cf2ff0d4ed8cac4ad",
+    "vendor/jetbrains-mono/manifest.json": "951699a6ddc57c7a9c94a8f585d684f6ff0b4c81fa945d6e23e8a4cd1ecd6f3a",
     "vendor/katex/LICENSE": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3",
     "vendor/katex/katex.min.css": "717bc9ae7853b61f0f76455dddf0ecd4f527a783f42de2ac24684899c1c46258",
     "vendor/katex/katex.min.js": "e6bfe5deebd4c7ccd272055bab63bd3ab2c73b907b6e6a22d352740a81381fd4",
@@ -112,55 +115,311 @@
     "vendor/pretendard/woff2/Pretendard-Light.woff2": "b7426635cce2ea2b95c9c802e43fba1c620e0dafaf25f737c069b8b4e09fa841",
     "vendor/pretendard/woff2/Pretendard-ExtraLight.woff2": "df43dc9165dff4542114674bcd8b79b7daae6dec004004586d5d076fec6fe2aa"
   },
+  "layout_extension_sha256": "4e627ee27e8ee4b1398f53e72aeb6f7d116cede880dce73c14f4c18c2b3b75cb",
+  "code_style_version": 1,
+  "code_font": {
+    "family": "DS JetBrains Mono",
+    "version": "2.304",
+    "source": "https://github.com/JetBrains/JetBrainsMono/releases/tag/v2.304",
+    "license": "OFL-1.1",
+    "files": {
+      "JetBrainsMono-Regular.ttf": "a0bf60ef0f83c5ed4d7a75d45838548b1f6873372dfac88f71804491898d138f",
+      "OFL.txt": "30f0c136e3c88e422d0791acd97238870f9054a9729bc34cf2ff0d4ed8cac4ad"
+    },
+    "korean_fallback": {
+      "family": "DS Pretendard",
+      "actual_font": "Pretendard-Regular",
+      "version": "1.3.9",
+      "file": "vendor/pretendard/woff2/Pretendard-Regular.woff2",
+      "sha256": "fad853f7f47c6c8b103171e7193fa095708cdcd70850a71d93aa5379e8a61d63",
+      "source": "https://github.com/orioncactus/pretendard/releases/tag/v1.3.9",
+      "license": "OFL-1.1"
+    }
+  },
   "browser": {
     "status": "pass",
-    "reviewer": "Codex root",
-    "evidence": "All PDF pages viewed in 8 contact sheets; code/conditions/tables/continuations/footer inspected. Final DOM verified against generated HTML.",
-    "contact_sheets": {
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1012-answers-01.png": "714a0a128b3bf608e62093208e32bf511d5c35865e760a93176724b24a920359",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1012-answers-02.png": "e99f5d13c25e3cfa6daedd645c9e99daac7068e8d8f3d31633e94f03a158bb77",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1012-answers-03.png": "49a5fe064ac7a29096b6efb5c0147132837f100ac524b9f4d7af0d57bd155e2f",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1012-answers-04.png": "e3d923902eddf30bc0812f6b078a600c9e05a84cbf438fffc684ee463da97b47",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1012-problems-01.png": "3408bf6cef6e1edba384484e70126073286f8082cc21bb2b22a46b68d5038831",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1012-problems-02.png": "78cfbe4a393614d78ddd2c77480e83def56f8cec175f26969917a9655f2d1fed",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1012-problems-03.png": "7d55d11808e9ebb186f20a167077e0efb78fc917deb71af6da34a01dd2f8ac16",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1012-problems-04.png": "1030ea2e503af62a63da0d65e07434f1cd16f3b2e39ffdaaa518a62dec9e288c"
+    "reviewer": "Codex root direct visual inspection with exact final render equality",
+    "evidence": {
+      "whole_pages": 29,
+      "code_regions": 15,
+      "contact_sheets": [
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-pages-01.jpg",
+          "sha256": "9158e5693bf9b411869365b1162c2e2add34a654147e469e6abc9d5814ac3384",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/001.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/002.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/003.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/004.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-pages-02.jpg",
+          "sha256": "30fd1001605a9d0584b005b1de359c43107eabe4a09babc33b014dfa373bb1f3",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/005.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/006.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/007.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/008.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-pages-03.jpg",
+          "sha256": "22416ce5d2d8ed57b0fe83e35f20fe6a5d01257e6e46a4035e923826dc250f21",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/009.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/010.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/011.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/012.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-pages-04.jpg",
+          "sha256": "14bda863046c8d28d0582a61e8fbf5151e5772eb643b28a35a2c452c4b5ca653",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/013.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/problems/014.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/001.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/002.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-pages-05.jpg",
+          "sha256": "40ca25decd65139ef1520fc11882326b7eef6ad2103a046e62bece79fb1b3036",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/003.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/004.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/005.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/006.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-pages-06.jpg",
+          "sha256": "7db57c6182f1b7c768d027de611c5915a93bf0bf7bf59b83c3e24340be3e4585",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/007.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/008.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/009.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/010.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-pages-07.jpg",
+          "sha256": "4c4d285f716b0a938dddb1f02941daa894d45bcce63bfc7fc52881ccf80d426f",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/011.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/012.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/013.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/014.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-pages-08.jpg",
+          "sha256": "5b69edcdb44c5a5f324fb60f130217d3e07534173f7bd8a50bd72be394b96ee2",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1012_Queue/stage/pages/answers/015.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-code-01.jpg",
+          "sha256": "6fb7a01846fe3b3d50624861ae4ce8b6e3d661c2b1f508d960d58ac1f67a30be",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p6-0-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p6-0-tile1.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p6-c2-0-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p6-c2-1-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p6-c3-0-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p11-0-tile0.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-code-02.jpg",
+          "sha256": "4b13ff98595606ea9aef08a36e318c106a770646dc6d23777456fcb87840d63c",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p11-1-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-0-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-0-tile1.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-1-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-1-tile1.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-c2-0-tile0.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-code-03.jpg",
+          "sha256": "00b5cba27cce547ad502b62933b2a151880c975b0f5f33a1d0d00e8d4b023d82",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-c2-1-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-c3-0-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p11-0-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p11-1-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p11-2-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p12-0-tile0.png"
+          ]
+        }
+      ],
+      "code_images": [
+        {
+          "mode": "problems",
+          "page": 6,
+          "id": "p6",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p6-0.png",
+          "sha256": "ee4fdf897649ac894a2fc018c0fef9d8612ff7233b707da1e9e5b09e25c5564f"
+        },
+        {
+          "mode": "problems",
+          "page": 7,
+          "id": "p6-c2",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p6-c2-0.png",
+          "sha256": "bc933e0773b2e497cce180f003baadbf207fd8a18b2ea52b0e1e977357c021e5"
+        },
+        {
+          "mode": "problems",
+          "page": 7,
+          "id": "p6-c2",
+          "code": 2,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p6-c2-1.png",
+          "sha256": "d702448647a59c4aee8072fa601d2201cb3c8a1148c9235b3605c3ceb1b0bc40"
+        },
+        {
+          "mode": "problems",
+          "page": 8,
+          "id": "p6-c3",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p6-c3-0.png",
+          "sha256": "66ce5368a89a6da3c2c97d2be3b8ca16e7508c16f562e0ad832bf64f2ffd291c"
+        },
+        {
+          "mode": "problems",
+          "page": 13,
+          "id": "p11",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p11-0.png",
+          "sha256": "619c9577fe80fe5ae305efb7ea04b4c5b38387e3c2d67ff099a215e7af07029a"
+        },
+        {
+          "mode": "problems",
+          "page": 13,
+          "id": "p11",
+          "code": 2,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-problems-p11-1.png",
+          "sha256": "6abecbee2b1668c94ee04d5aa23442468bf27121fdbfc32a22328f238d5ed93c"
+        },
+        {
+          "mode": "answers",
+          "page": 6,
+          "id": "p6",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-0.png",
+          "sha256": "ee4fdf897649ac894a2fc018c0fef9d8612ff7233b707da1e9e5b09e25c5564f"
+        },
+        {
+          "mode": "answers",
+          "page": 6,
+          "id": "p6",
+          "code": 2,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-1.png",
+          "sha256": "9b31181857c71cf790014117138bd1b9e13c2dbe746ffbf8e512c6591d752c27"
+        },
+        {
+          "mode": "answers",
+          "page": 7,
+          "id": "p6-c2",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-c2-0.png",
+          "sha256": "bc933e0773b2e497cce180f003baadbf207fd8a18b2ea52b0e1e977357c021e5"
+        },
+        {
+          "mode": "answers",
+          "page": 7,
+          "id": "p6-c2",
+          "code": 2,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-c2-1.png",
+          "sha256": "d702448647a59c4aee8072fa601d2201cb3c8a1148c9235b3605c3ceb1b0bc40"
+        },
+        {
+          "mode": "answers",
+          "page": 8,
+          "id": "p6-c3",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p6-c3-0.png",
+          "sha256": "66ce5368a89a6da3c2c97d2be3b8ca16e7508c16f562e0ad832bf64f2ffd291c"
+        },
+        {
+          "mode": "answers",
+          "page": 13,
+          "id": "p11",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p11-0.png",
+          "sha256": "619c9577fe80fe5ae305efb7ea04b4c5b38387e3c2d67ff099a215e7af07029a"
+        },
+        {
+          "mode": "answers",
+          "page": 13,
+          "id": "p11",
+          "code": 2,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p11-1.png",
+          "sha256": "6abecbee2b1668c94ee04d5aa23442468bf27121fdbfc32a22328f238d5ed93c"
+        },
+        {
+          "mode": "answers",
+          "page": 13,
+          "id": "p11",
+          "code": 3,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p11-2.png",
+          "sha256": "b88339db0bea671ec240df52293acae7c3c1a7208737bdc42f733687fabe10c6"
+        },
+        {
+          "mode": "answers",
+          "page": 14,
+          "id": "p12",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1012_Queue-answers-p12-0.png",
+          "sha256": "7ac8ebd79917aae2e6eedee2a9b78f4b89510e8a7ebb8899d98144a3fef0c165"
+        }
+      ],
+      "direct_inspection": "/private/tmp/ds-pdf-code-readability-20261013/visual/reviewed.json",
+      "byte_identity_proof": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/comparison.json",
+      "notes": "Every final full-page PNG and enlarged code PNG is SHA256-identical to the directly inspected renders. All62 contact sheets also byte-identical. No changed/unreviewed render."
     },
     "artifact_hashes": {
-      "answers.json": "2e54b2ff356db93d4baf76d2ba2de390cb92618a8abe2c40f525a7941a42d490",
+      "answers.json": "68c01fb4800535ef4bd5f686a8f61aaf2a2ca09944410c26692c583d1f6601c5",
       "assets/0b13f0bfc150934229529859b665abf71adf57e1560effd1a12237354da60ea7.svg": "0b13f0bfc150934229529859b665abf71adf57e1560effd1a12237354da60ea7",
-      "pages/answers/001.png": "ddda3d2bc4e43548fd00840104f35b766e14f7a67e9ab4c7d4a3d1096860e843",
-      "pages/answers/002.png": "298c69e87724e1d9e4cfe5b82183601932d0beee93061918133f0f9505b22960",
-      "pages/answers/003.png": "a135d5aa3f00ac9240e179b979b61c278584a5341e3348e4208980487ebf7b2b",
-      "pages/answers/004.png": "633583a25e185ac4becd2239795e57b353ed6fdd3ee9c061b8dcaa995719be49",
-      "pages/answers/005.png": "4a303e1b72e446f08da0dfd6af96f2d90cad1d81cd486e3ecf81622e6f81c8c3",
-      "pages/answers/006.png": "6387cc14f80e6ea27a2a8a72b11998590c7196e83f9a6eff06005269f98d24b6",
-      "pages/answers/007.png": "c817d6e110ddecb9876deedc5899efd1e0ee54b0b2c15bd5b2f894df96b478f3",
-      "pages/answers/008.png": "e697f3656777611faffb95c8ef27b465e55ad76a8ede69e9b0846899cff5b27b",
-      "pages/answers/009.png": "d7dbf5fd0b23768846602451709c7c5422ea1b75794d257617fd789c6bc97654",
-      "pages/answers/010.png": "a0c8b5d084f42fa184eab449a83f27719ac256a4606cca2a28032ac4b0af3790",
-      "pages/answers/011.png": "9bc425294748bced6bf76600b80584625ea50e77ef95ac99438709e8afd7f9d6",
-      "pages/answers/012.png": "d4015e6bee5facd744a1300ae7e3924aba0bf3da3a76e2779a790d2a80bc9ea0",
-      "pages/answers/013.png": "576a54ee49d5109ebad7b6d2efbe1afc2ce7ae34179a984d19559b68e069ed91",
-      "pages/answers/014.png": "144bc2e516eb13406c334db3fffae143b3baecfd54837fe63b78cbc60d9c20df",
-      "pages/problems/001.png": "a1a727c6b38de3a41cd9e369c27d8c35112dcc3ecfb0fbe722d2367cb868be77",
-      "pages/problems/002.png": "b20570b0a7fdbf2d8104c37562683782158b2cfb1236257ef22444d76e7fe862",
-      "pages/problems/003.png": "456193534fda6f555eaaea493aed1521e70e28129073e5acfcacb8d3315905db",
-      "pages/problems/004.png": "e77d89efa81376cb1c4d9d3506c0d3932a6499371a76600795e45633223529c9",
-      "pages/problems/005.png": "c5607e398602d87b8d7a5a7fac8a2f1b0a1bf67c64565b2fe93ba6a3fac8cb07",
-      "pages/problems/006.png": "81622ccc63a88ab77b739aaf9006241ba4adb49f901eb2f5f83b079052197550",
-      "pages/problems/007.png": "d1d2998c80127b1c0d9cdeaf822723a70237a61c2e6118c2d833c6dfdb2739a8",
-      "pages/problems/008.png": "a6cab8b00ec9a09cccb7b1a45ddba210ff79a99f50a3b33932f0f5f19c327fd8",
-      "pages/problems/009.png": "6ef8a02c87af3a51c284bed5527c0cbe7b26be15b92cc9db63ebc1c23bf39225",
-      "pages/problems/010.png": "b1b74033d8c97dfada9f38962ddb4c86fe1bc871dd213de97e5d55a09b411bd0",
-      "pages/problems/011.png": "793e625febd7fd6dbceae0b9b1a519a8930638cccc1b74df63d4c62366fa0f3b",
-      "pages/problems/012.png": "80c4fa4e8e7994e00d049ab64b4b3d89fdd889b5fa31436503771212ae6945e6",
-      "pages/problems/013.png": "0b7bef7fc118905cfc66825dd38f8d7685711def715c1f930a44b73124b7a0e0",
-      "problems.json": "845d80b8007e274a4f2e2adef52b1272b6eede05547e13266e1d56f4856154ca",
-      "복습문제_1012_Queue-답안.pdf": "e5e691f5c64f4e0034bdfc92d3a18c7239adee8aad78144b5748eaa8c5ae6f99",
-      "복습문제_1012_Queue-문제.pdf": "18d033667d4f6f76c13effe7bbb3af415029724ed700e931e5bd1ed929292ca2"
+      "pages/answers/001.png": "6ea93a4a5bd23f1b90cd47c75732875bd48077898d8ec1a80d02bad5dba41cbf",
+      "pages/answers/002.png": "72cb540504ba275ca4909197277332746a2387ee25eec9a2a2b8e4c93bbaa284",
+      "pages/answers/003.png": "6315a80ee97bbd60f5589985d117263f75229a758d8e19995392931604911c24",
+      "pages/answers/004.png": "ff27b22ee548c469d3e6b3510c98fa760cc275384ae9ea5409c1ab5b77c70811",
+      "pages/answers/005.png": "71e3951b2d164fab8eeb821a30ada59190c3f95d09498c84ff9ef287a3ff84e5",
+      "pages/answers/006.png": "c4937e46ac3ad30a66cfcce1ea12ea0e809c2b14f73a31133c8da2403073f5ee",
+      "pages/answers/007.png": "1e88f8aa1ba7a3eef77a2b8c10f5bdaf9022aa1816cf436f4e1c002308dce812",
+      "pages/answers/008.png": "5e66e03b1139b9cbe1aa6be923b0efb9ea447c0a4ba55ee493159e81a3262cfa",
+      "pages/answers/009.png": "ab99b26f979fa78d222316697f16f2ef2e1426f580605b4dcd47e5643ca916fc",
+      "pages/answers/010.png": "bdf86c1392c9c3b00f642719dc217671f5fcbe01fd70eec2c025a6f632cfbd60",
+      "pages/answers/011.png": "8b2a222b2796892c2e6d6b253632fbe9d7d278d95d3739b52f04c3217a885b6c",
+      "pages/answers/012.png": "e7a717f9208c25e3ab17436bfe7b0d98157ceb676994838bf6e62745a46371c1",
+      "pages/answers/013.png": "9612ea30829497ba5e7854a2e3ee78b155e4deaac5f4b7299c892e82ad2e3e2e",
+      "pages/answers/014.png": "2deeec703393f5e157ab3aa1899f8db96acbccb0905074da0070e11d7ba0e347",
+      "pages/answers/015.png": "267150cddd821ab01f45e06ffc05547a8edfe6d3af6a916eac6809b18c1a39d3",
+      "pages/problems/001.png": "a3f95cf10e3fb01703b4ab4ca09026aaf466c63a672107ba324da3a8f0c40e35",
+      "pages/problems/002.png": "711d851298de375998417d466791cc5d660937191ece84ec485bbd46e11db844",
+      "pages/problems/003.png": "5bf11906b0bbecf3e8f83b1673662e9ce1c18ed7c5fab51a1cb150c3586aa42f",
+      "pages/problems/004.png": "9917b7ee2d1d8a162eb2b15d0a29bba24baee9a50fbba739b97c4756c7592daa",
+      "pages/problems/005.png": "1bf0c8278846021f5a008936fac4e410be620988ee2d704be1ca3f1da37c6c28",
+      "pages/problems/006.png": "95793afddd838bdfee84e7ede6d5e204d82b59c64d211b8794f45922921dae19",
+      "pages/problems/007.png": "df94ff14406fdc376e6043b58ad550c0352e386e3cfd9fc28366f194ab681ee1",
+      "pages/problems/008.png": "f65fa144bf7be78b966daa0eece7d237b6ecdabc53e382cc4a754e6d402ab9a7",
+      "pages/problems/009.png": "32c9e3d8c3f2ae1dca494953522e4f5120d78ec48513b323b24adfce0f04ffe7",
+      "pages/problems/010.png": "e177e33192cd69f64678ec0d327de45ff0d2a2d1f8c96d95f42bd2ac1c776cc6",
+      "pages/problems/011.png": "de838fc026c6159599d797a9acded453b759991d71cba489c99396945bc6148e",
+      "pages/problems/012.png": "a2e16d9ad16c26b07871b9c42769abbf9685b517f6dd0dc8ccca06ada8cad31f",
+      "pages/problems/013.png": "53e09b56fd7ec13b08f412ba504b5cd31dbfaba4d4eafb164e49df76ba685d7a",
+      "pages/problems/014.png": "96ef838c55e7f746998bf2fce2bb112bd7f3dd4ea6e3463208166f706609fdcf",
+      "problems.json": "829dde661206d731759cedf0f1239a4a2c0270822bd84b747f268be37800d33f",
+      "복습문제_1012_Queue-답안.pdf": "1a244ba6bc9eb3617786d89e1bc9891fcf84b3826d8cf4a8774d6c92cf89f7b2",
+      "복습문제_1012_Queue-문제.pdf": "a84289abe2fabf6f32a976064a58db057dd49279e43b25721c1af843f8e4d307"
     },
-    "report_sha256": "e9d8826c8e5fcf71663293a539116f29df768bfc3d853f04ea5db4b00142cf9c"
+    "report_sha256": "54a2ac1ceee52aa05f8048082fb9c1965ec048d4b46d9ad8b9ff6b194b77c648"
   },
   "status": "published",
   "probes": {
@@ -173,6 +432,7 @@
         "p5",
         "p6",
         "p6-c2",
+        "p6-c3",
         "p7",
         "p8",
         "p9",
@@ -206,6 +466,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -241,6 +502,7 @@
               "h": 392.85087719298247
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -276,6 +538,7 @@
               "h": 392.85087719298247
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -303,6 +566,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -330,6 +594,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -354,15 +619,7 @@
               "x": 63.09210526315789,
               "y": 200.87719298245614,
               "w": 571.7105263157895,
-              "h": 505.35087719298247
-            },
-            {
-              "tag": "PRE",
-              "cls": "",
-              "x": 63.09210526315789,
-              "y": 713.7719298245614,
-              "w": 571.7105263157895,
-              "h": 124.03508771929825
+              "h": 641.5350877192982
             },
             {
               "tag": "DIV",
@@ -371,6 +628,367 @@
               "y": 81.11842105263158,
               "w": 1059.232456140351,
               "h": 794.671052631579
+            }
+          ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 200.87719298245614,
+                "w": 571.7105263157895,
+                "h": 641.5350877192982
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "#include <stdio.h>\n#include <string.h>\n#include <stdlib.h>\n#define MAX_STACK_SIZE 100\n\ntypedef int element;\ntypedef struct {\n\telement stack[MAX_STACK_SIZE];\n\tint top;\n} StackType;\n\nvoid init(StackType *s){       // 스택초기화함수\n\ts->top = -1;\n}\n\nint is_empty(StackType *s){   // 공백상태검출함수\n\treturn (s->top == -1);\n}\n\nint is_full(StackType *s){    // 포화상태검출함수\n\treturn (s->top == (MAX_STACK_SIZE - 1));\n}\n\nvoid push(StackType *s, element item){\n\tif (is_full(s)) {\n\t\tfprintf(stderr, \"스택 포화 에러\\n\");\n\t} else {\n",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 208.42105263157893,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 243.44298245614036,
+                  "y": 208.42105263157893,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 231.62280701754386,
+                  "w": 182.41228070175438,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 253.04824561403507,
+                  "y": 231.62280701754386,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 254.82456140350877,
+                  "w": 182.41228070175438,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 253.04824561403507,
+                  "y": 254.82456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 278.0263157894737,
+                  "w": 249.60526315789474,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 320.24122807017545,
+                  "y": 278.0263157894737,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 301.2280701754386,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 324.4298245614035,
+                  "w": 192.01754385964912,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 262.6535087719298,
+                  "y": 324.4298245614035,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 347.6315789473684,
+                  "w": 153.61842105263156,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 224.25438596491227,
+                  "y": 347.6315789473684,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 370.8333333333333,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 370.8333333333333,
+                  "w": 288.0043859649123,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 377.82894736842104,
+                  "y": 370.8333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 394.03508771929825,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 394.03508771929825,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 166.64473684210526,
+                  "y": 394.03508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 417.2368421052631,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 185.85526315789474,
+                  "y": 417.2368421052631,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 440.43859649122805,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 463.640350877193,
+                  "w": 423.2017543859649,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 493.8377192982456,
+                  "y": 463.640350877193,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 486.84210526315786,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 486.84210526315786,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 205.0438596491228,
+                  "y": 486.84210526315786,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 510.0438596491228,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 80.24122807017544,
+                  "y": 510.0438596491228,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 533.2456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 556.4473684210526,
+                  "w": 427.4342105263158,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 498.0701754385965,
+                  "y": 556.4473684210526,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 579.6491228070175,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 579.6491228070175,
+                  "w": 211.20614035087718,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 301.030701754386,
+                  "y": 579.6491228070175,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 602.8508771929825,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 80.24122807017544,
+                  "y": 602.8508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 626.0526315789474,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 649.2543859649122,
+                  "w": 427.4342105263158,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 498.0701754385965,
+                  "y": 649.2543859649122,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 672.4561403508771,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 672.4561403508771,
+                  "w": 384.0131578947368,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 473.8377192982456,
+                  "y": 672.4561403508771,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 695.6578947368421,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 80.24122807017544,
+                  "y": 695.6578947368421,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 718.859649122807,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 742.061403508772,
+                  "w": 364.80263157894734,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 435.43859649122805,
+                  "y": 742.061403508772,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 765.2631578947368,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 765.2631578947368,
+                  "w": 163.2017543859649,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 253.02631578947367,
+                  "y": 765.2631578947368,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 788.4649122807017,
+                  "w": 57.609649122807014,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 128.24561403508773,
+                  "y": 788.4649122807017,
+                  "w": 313.3771929824561,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 441.62280701754383,
+                  "y": 788.4649122807017,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 811.6666666666666,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 811.6666666666666,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 166.64473684210526,
+                  "y": 811.6666666666666,
+                  "w": 0,
+                  "h": 21.052631578947366
+                }
+              ]
             }
           ],
           "labels": [
@@ -389,6 +1007,428 @@
               "cls": "panel",
               "x": 47.98245614035088,
               "y": 81.11842105263158,
+              "w": 729.6052631578947,
+              "h": 794.671052631579
+            },
+            {
+              "tag": "PRE",
+              "cls": "",
+              "x": 63.09210526315789,
+              "y": 219.91228070175438,
+              "w": 699.3859649122807,
+              "h": 363.1140350877193
+            },
+            {
+              "tag": "PRE",
+              "cls": "",
+              "x": 63.09210526315789,
+              "y": 590.5701754385965,
+              "w": 699.3859649122807,
+              "h": 270.3070175438596
+            },
+            {
+              "tag": "DIV",
+              "cls": "work",
+              "x": 796.469298245614,
+              "y": 81.11842105263158,
+              "w": 1075.548245614035,
+              "h": 794.671052631579
+            }
+          ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 219.91228070175438,
+                "w": 699.3859649122807,
+                "h": 363.1140350877193
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "\n\t}\n}\nelement pop(StackType *s) {\n\telement item;\n\n\tif (is_empty(s)) {\n\t\tfprintf(stderr, \"스택 공백 에러\\n\");\n\t}\n\telse {\n\n\n\n\t}\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 227.45614035087718,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 250.6578947368421,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 250.6578947368421,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 99.4298245614035,
+                  "y": 250.6578947368421,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 273.859649122807,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 80.24122807017544,
+                  "y": 273.859649122807,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 297.06140350877195,
+                  "w": 259.2105263157895,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 329.8464912280702,
+                  "y": 297.06140350877195,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 320.2631578947368,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 320.2631578947368,
+                  "w": 124.80263157894737,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 214.62719298245614,
+                  "y": 320.2631578947368,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 343.46491228070175,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 366.66666666666663,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 366.66666666666663,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 262.63157894736844,
+                  "y": 366.66666666666663,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 389.86842105263156,
+                  "w": 57.609649122807014,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 128.24561403508773,
+                  "y": 389.86842105263156,
+                  "w": 313.3771929824561,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 441.62280701754383,
+                  "y": 389.86842105263156,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 413.0701754385965,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 413.0701754385965,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 99.4298245614035,
+                  "y": 413.0701754385965,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 436.27192982456137,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 436.27192982456137,
+                  "w": 57.609649122807014,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 147.43421052631578,
+                  "y": 436.27192982456137,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 459.4736842105263,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 482.67543859649123,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 505.8771929824561,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 529.078947368421,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 529.078947368421,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 99.4298245614035,
+                  "y": 529.078947368421,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 552.280701754386,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
+            },
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 590.5701754385965,
+                "w": 699.3859649122807,
+                "h": 270.3070175438596
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "int main(){\n\tchar str[100];\n\tint i, len, op1, op2;\n\n\tStackType s;\n\n\tinit(&s);\n\tprintf(\"input postfix equation using 0~9,+,*:\");\n\tscanf(\"%s\", str);\n\tlen = strlen(str);\n\n",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 598.1140350877192,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 598.1140350877192,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 621.3157894736842,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 621.3157894736842,
+                  "w": 134.4078947368421,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 224.23245614035088,
+                  "y": 621.3157894736842,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 644.5175438596491,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 644.5175438596491,
+                  "w": 201.60087719298244,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 291.42543859649123,
+                  "y": 644.5175438596491,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 667.719298245614,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 690.921052631579,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 690.921052631579,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 205.0438596491228,
+                  "y": 690.921052631579,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 714.1228070175439,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 737.3245614035087,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 737.3245614035087,
+                  "w": 86.40350877192982,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.2280701754386,
+                  "y": 737.3245614035087,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 760.5263157894736,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 760.5263157894736,
+                  "w": 460.8114035087719,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 550.6359649122807,
+                  "y": 760.5263157894736,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 783.7280701754386,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 783.7280701754386,
+                  "w": 163.2017543859649,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 253.02631578947367,
+                  "y": 783.7280701754386,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 806.9298245614035,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 806.9298245614035,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 262.63157894736844,
+                  "y": 806.9298245614035,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 830.1315789473684,
+                  "w": 0,
+                  "h": 21.052631578947366
+                }
+              ]
+            }
+          ],
+          "labels": [
+            "구할 것",
+            "코드"
+          ]
+        },
+        "p6-c3": {
+          "page": {
+            "w": 1920,
+            "h": 1079.780701754386
+          },
+          "regions": [
+            {
+              "tag": "DIV",
+              "cls": "panel",
+              "x": 47.98245614035088,
+              "y": 81.11842105263158,
               "w": 601.9298245614035,
               "h": 794.671052631579
             },
@@ -396,17 +1436,9 @@
               "tag": "PRE",
               "cls": "",
               "x": 63.09210526315789,
-              "y": 238.94736842105263,
+              "y": 114.49561403508771,
               "w": 571.7105263157895,
-              "h": 178.50877192982455
-            },
-            {
-              "tag": "PRE",
-              "cls": "",
-              "x": 63.09210526315789,
-              "y": 425,
-              "w": 571.7105263157895,
-              "h": 341.9298245614035
+              "h": 177.5
             },
             {
               "tag": "DIV",
@@ -417,8 +1449,116 @@
               "h": 794.671052631579
             }
           ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 114.49561403508771,
+                "w": 571.7105263157895,
+                "h": 177.5
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "\n\tfor (i = 0; i < len; i++){\n\n\t} // end of for\n\tprintf(\"result:%d\", pop(&s));\n\treturn 0;\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 122.03947368421052,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 145.24122807017542,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 145.24122807017542,
+                  "w": 249.60526315789474,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 339.4298245614035,
+                  "y": 145.24122807017542,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 168.44298245614036,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 191.64473684210526,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 191.64473684210526,
+                  "w": 144.01315789473685,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 233.83771929824562,
+                  "y": 191.64473684210526,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 214.84649122807016,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 214.84649122807016,
+                  "w": 278.42105263157896,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 368.2456140350877,
+                  "y": 214.84649122807016,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 238.04824561403507,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 238.04824561403507,
+                  "w": 86.40350877192982,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.2280701754386,
+                  "y": 238.04824561403507,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 261.25,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
+            }
+          ],
           "labels": [
-            "구할 것",
             "코드"
           ]
         },
@@ -445,6 +1585,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -472,6 +1613,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -499,6 +1641,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -542,6 +1685,7 @@
               "h": 640.8333333333333
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -566,15 +1710,15 @@
               "x": 63.09210526315789,
               "y": 253.28947368421052,
               "w": 571.7105263157895,
-              "h": 60.39473684210526
+              "h": 61.49122807017544
             },
             {
               "tag": "PRE",
               "cls": "",
               "x": 63.09210526315789,
-              "y": 321.2280701754386,
+              "y": 322.32456140350877,
               "w": 571.7105263157895,
-              "h": 60.39473684210526
+              "h": 61.49122807017544
             },
             {
               "tag": "DIV",
@@ -583,6 +1727,78 @@
               "y": 81.11842105263158,
               "w": 1059.232456140351,
               "h": 794.671052631579
+            }
+          ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 253.28947368421052,
+                "w": 571.7105263157895,
+                "h": 61.49122807017544
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "수식: ((())(()))\n괄호 수: 1 2 3 3 2 4 5 5 4 1",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 260.8333333333333,
+                  "w": 142.87280701754386,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 213.50877192982455,
+                  "y": 260.8333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 284.03508771929825,
+                  "w": 252.69736842105263,
+                  "h": 21.052631578947366
+                }
+              ]
+            },
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 322.32456140350877,
+                "w": 571.7105263157895,
+                "h": 61.49122807017544
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "수식: ((((()\n괄호 수: 1 2 3 4 5 5",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 329.86842105263156,
+                  "w": 104.47368421052632,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 175.109649122807,
+                  "y": 329.86842105263156,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 353.0701754385965,
+                  "w": 175.89912280701753,
+                  "h": 21.052631578947366
+                }
+              ]
             }
           ],
           "labels": [
@@ -613,6 +1829,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -657,6 +1874,12 @@
         },
         "p6-c2": {
           "panel": 0.8,
+          "solution": 1,
+          "math": [],
+          "hints": []
+        },
+        "p6-c3": {
+          "panel": 1,
           "solution": 1,
           "math": [],
           "hints": []
@@ -708,6 +1931,7 @@
         "p5",
         "p6",
         "p6-c2",
+        "p6-c3",
         "p7",
         "p8",
         "p9",
@@ -750,6 +1974,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -801,6 +2026,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -852,6 +2078,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -887,6 +2114,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -922,6 +2150,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -946,15 +2175,7 @@
               "x": 63.09210526315789,
               "y": 200.87719298245614,
               "w": 571.7105263157895,
-              "h": 505.35087719298247
-            },
-            {
-              "tag": "PRE",
-              "cls": "",
-              "x": 63.09210526315789,
-              "y": 713.7719298245614,
-              "w": 571.7105263157895,
-              "h": 124.03508771929825
+              "h": 641.5350877192982
             },
             {
               "tag": "DIV",
@@ -968,9 +2189,693 @@
               "tag": "PRE",
               "cls": "",
               "x": 698.9912280701755,
-              "y": 296.05263157894734,
+              "y": 251.9736842105263,
               "w": 1021.4912280701755,
-              "h": 399.4736842105263
+              "h": 525.5263157894736
+            }
+          ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 200.87719298245614,
+                "w": 571.7105263157895,
+                "h": 641.5350877192982
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "#include <stdio.h>\n#include <string.h>\n#include <stdlib.h>\n#define MAX_STACK_SIZE 100\n\ntypedef int element;\ntypedef struct {\n\telement stack[MAX_STACK_SIZE];\n\tint top;\n} StackType;\n\nvoid init(StackType *s){       // 스택초기화함수\n\ts->top = -1;\n}\n\nint is_empty(StackType *s){   // 공백상태검출함수\n\treturn (s->top == -1);\n}\n\nint is_full(StackType *s){    // 포화상태검출함수\n\treturn (s->top == (MAX_STACK_SIZE - 1));\n}\n\nvoid push(StackType *s, element item){\n\tif (is_full(s)) {\n\t\tfprintf(stderr, \"스택 포화 에러\\n\");\n\t} else {\n",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 208.42105263157893,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 243.44298245614036,
+                  "y": 208.42105263157893,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 231.62280701754386,
+                  "w": 182.41228070175438,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 253.04824561403507,
+                  "y": 231.62280701754386,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 254.82456140350877,
+                  "w": 182.41228070175438,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 253.04824561403507,
+                  "y": 254.82456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 278.0263157894737,
+                  "w": 249.60526315789474,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 320.24122807017545,
+                  "y": 278.0263157894737,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 301.2280701754386,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 324.4298245614035,
+                  "w": 192.01754385964912,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 262.6535087719298,
+                  "y": 324.4298245614035,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 347.6315789473684,
+                  "w": 153.61842105263156,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 224.25438596491227,
+                  "y": 347.6315789473684,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 370.8333333333333,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 370.8333333333333,
+                  "w": 288.0043859649123,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 377.82894736842104,
+                  "y": 370.8333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 394.03508771929825,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 394.03508771929825,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 166.64473684210526,
+                  "y": 394.03508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 417.2368421052631,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 185.85526315789474,
+                  "y": 417.2368421052631,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 440.43859649122805,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 463.640350877193,
+                  "w": 423.2017543859649,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 493.8377192982456,
+                  "y": 463.640350877193,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 486.84210526315786,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 486.84210526315786,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 205.0438596491228,
+                  "y": 486.84210526315786,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 510.0438596491228,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 80.24122807017544,
+                  "y": 510.0438596491228,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 533.2456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 556.4473684210526,
+                  "w": 427.4342105263158,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 498.0701754385965,
+                  "y": 556.4473684210526,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 579.6491228070175,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 579.6491228070175,
+                  "w": 211.20614035087718,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 301.030701754386,
+                  "y": 579.6491228070175,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 602.8508771929825,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 80.24122807017544,
+                  "y": 602.8508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 626.0526315789474,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 649.2543859649122,
+                  "w": 427.4342105263158,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 498.0701754385965,
+                  "y": 649.2543859649122,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 672.4561403508771,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 672.4561403508771,
+                  "w": 384.0131578947368,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 473.8377192982456,
+                  "y": 672.4561403508771,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 695.6578947368421,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 80.24122807017544,
+                  "y": 695.6578947368421,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 718.859649122807,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 742.061403508772,
+                  "w": 364.80263157894734,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 435.43859649122805,
+                  "y": 742.061403508772,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 765.2631578947368,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 765.2631578947368,
+                  "w": 163.2017543859649,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 253.02631578947367,
+                  "y": 765.2631578947368,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 788.4649122807017,
+                  "w": 57.609649122807014,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 128.24561403508773,
+                  "y": 788.4649122807017,
+                  "w": 313.3771929824561,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 441.62280701754383,
+                  "y": 788.4649122807017,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 811.6666666666666,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 811.6666666666666,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 166.64473684210526,
+                  "y": 811.6666666666666,
+                  "w": 0,
+                  "h": 21.052631578947366
+                }
+              ]
+            },
+            {
+              "region": "work",
+              "rect": {
+                "x": 698.9912280701755,
+                "y": 251.9736842105263,
+                "w": 1021.4912280701755,
+                "h": 525.5263157894736
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "/* push의 else 블록 */\ns->top = s->top + 1;\ns->stack[s->top] = item;\n/* pop의 else 블록 */\nitem = s->stack[s->top];\ns->top = s->top - 1;\nreturn item;\n/* main의 선언부에 추가 */\nint op;\n/* for문 안 */\nif (str[i] == '+') {\n    op1 = pop(&s);\n    op2 = pop(&s);\n    push(&s, op1 + op2);\n} else if (str[i] == '*') {\n    op1 = pop(&s);\n    op2 = pop(&s);\n    push(&s, op1 * op2);\n} else {\n    op = str[i] - '0';\n    push(&s, op);\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 706.5350877192982,
+                  "y": 259.5175438596491,
+                  "w": 195.08771929824562,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 901.6228070175438,
+                  "y": 259.5175438596491,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 282.719298245614,
+                  "w": 192.01754385964912,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 898.5526315789473,
+                  "y": 282.719298245614,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 305.92105263157896,
+                  "w": 230.41666666666666,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 936.9517543859649,
+                  "y": 305.92105263157896,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 329.12280701754383,
+                  "w": 185.50438596491227,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 892.0394736842105,
+                  "y": 329.12280701754383,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 352.32456140350877,
+                  "w": 230.41666666666666,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 936.9517543859649,
+                  "y": 352.32456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 375.5263157894737,
+                  "w": 192.01754385964912,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 898.5526315789473,
+                  "y": 375.5263157894737,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 398.7280701754386,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 821.7543859649122,
+                  "y": 398.7280701754386,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 421.9298245614035,
+                  "w": 212.01754385964912,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 918.5526315789473,
+                  "y": 421.9298245614035,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 445.1315789473684,
+                  "w": 67.21491228070175,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 773.75,
+                  "y": 445.1315789473684,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 468.3333333333333,
+                  "w": 123.66228070175438,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 830.1973684210526,
+                  "y": 468.3333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 491.53508771929825,
+                  "w": 192.01754385964912,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 898.5526315789473,
+                  "y": 491.53508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 514.7368421052631,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 514.7368421052631,
+                  "w": 134.4078947368421,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 879.3640350877192,
+                  "y": 514.7368421052631,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 537.938596491228,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 537.938596491228,
+                  "w": 134.4078947368421,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 879.3640350877192,
+                  "y": 537.938596491228,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 561.140350877193,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 561.140350877193,
+                  "w": 192.01754385964912,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 936.9736842105262,
+                  "y": 561.140350877193,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 584.3421052631579,
+                  "w": 259.2105263157895,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 965.7456140350877,
+                  "y": 584.3421052631579,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 607.5438596491227,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 607.5438596491227,
+                  "w": 134.4078947368421,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 879.3640350877192,
+                  "y": 607.5438596491227,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 630.7456140350877,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 630.7456140350877,
+                  "w": 134.4078947368421,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 879.3640350877192,
+                  "y": 630.7456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 653.9473684210526,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 653.9473684210526,
+                  "w": 192.01754385964912,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 936.9736842105262,
+                  "y": 653.9473684210526,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 677.1491228070175,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 783.3552631578947,
+                  "y": 677.1491228070175,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 700.3508771929825,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 700.3508771929825,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 917.7631578947368,
+                  "y": 700.3508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 723.5526315789474,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 723.5526315789474,
+                  "w": 124.80263157894737,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 869.7587719298245,
+                  "y": 723.5526315789474,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 746.7543859649122,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
             }
           ],
           "labels": [
@@ -989,6 +2894,428 @@
               "cls": "panel",
               "x": 47.98245614035088,
               "y": 81.11842105263158,
+              "w": 729.6052631578947,
+              "h": 794.671052631579
+            },
+            {
+              "tag": "PRE",
+              "cls": "",
+              "x": 63.09210526315789,
+              "y": 219.91228070175438,
+              "w": 699.3859649122807,
+              "h": 363.1140350877193
+            },
+            {
+              "tag": "PRE",
+              "cls": "",
+              "x": 63.09210526315789,
+              "y": 590.5701754385965,
+              "w": 699.3859649122807,
+              "h": 270.3070175438596
+            },
+            {
+              "tag": "DIV",
+              "cls": "work",
+              "x": 796.469298245614,
+              "y": 81.11842105263158,
+              "w": 1075.548245614035,
+              "h": 794.671052631579
+            }
+          ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 219.91228070175438,
+                "w": 699.3859649122807,
+                "h": 363.1140350877193
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "\n\t}\n}\nelement pop(StackType *s) {\n\telement item;\n\n\tif (is_empty(s)) {\n\t\tfprintf(stderr, \"스택 공백 에러\\n\");\n\t}\n\telse {\n\n\n\n\t}\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 227.45614035087718,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 250.6578947368421,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 250.6578947368421,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 99.4298245614035,
+                  "y": 250.6578947368421,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 273.859649122807,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 80.24122807017544,
+                  "y": 273.859649122807,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 297.06140350877195,
+                  "w": 259.2105263157895,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 329.8464912280702,
+                  "y": 297.06140350877195,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 320.2631578947368,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 320.2631578947368,
+                  "w": 124.80263157894737,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 214.62719298245614,
+                  "y": 320.2631578947368,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 343.46491228070175,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 366.66666666666663,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 366.66666666666663,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 262.63157894736844,
+                  "y": 366.66666666666663,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 389.86842105263156,
+                  "w": 57.609649122807014,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 128.24561403508773,
+                  "y": 389.86842105263156,
+                  "w": 313.3771929824561,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 441.62280701754383,
+                  "y": 389.86842105263156,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 413.0701754385965,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 413.0701754385965,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 99.4298245614035,
+                  "y": 413.0701754385965,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 436.27192982456137,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 436.27192982456137,
+                  "w": 57.609649122807014,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 147.43421052631578,
+                  "y": 436.27192982456137,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 459.4736842105263,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 482.67543859649123,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 505.8771929824561,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 529.078947368421,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 529.078947368421,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 99.4298245614035,
+                  "y": 529.078947368421,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 552.280701754386,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
+            },
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 590.5701754385965,
+                "w": 699.3859649122807,
+                "h": 270.3070175438596
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "int main(){\n\tchar str[100];\n\tint i, len, op1, op2;\n\n\tStackType s;\n\n\tinit(&s);\n\tprintf(\"input postfix equation using 0~9,+,*:\");\n\tscanf(\"%s\", str);\n\tlen = strlen(str);\n\n",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 598.1140350877192,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 598.1140350877192,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 621.3157894736842,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 621.3157894736842,
+                  "w": 134.4078947368421,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 224.23245614035088,
+                  "y": 621.3157894736842,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 644.5175438596491,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 644.5175438596491,
+                  "w": 201.60087719298244,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 291.42543859649123,
+                  "y": 644.5175438596491,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 667.719298245614,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 690.921052631579,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 690.921052631579,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 205.0438596491228,
+                  "y": 690.921052631579,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 714.1228070175439,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 737.3245614035087,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 737.3245614035087,
+                  "w": 86.40350877192982,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.2280701754386,
+                  "y": 737.3245614035087,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 760.5263157894736,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 760.5263157894736,
+                  "w": 460.8114035087719,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 550.6359649122807,
+                  "y": 760.5263157894736,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 783.7280701754386,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 783.7280701754386,
+                  "w": 163.2017543859649,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 253.02631578947367,
+                  "y": 783.7280701754386,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 806.9298245614035,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 806.9298245614035,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 262.63157894736844,
+                  "y": 806.9298245614035,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 830.1315789473684,
+                  "w": 0,
+                  "h": 21.052631578947366
+                }
+              ]
+            }
+          ],
+          "labels": [
+            "구할 것",
+            "코드"
+          ]
+        },
+        "p6-c3": {
+          "page": {
+            "w": 1920,
+            "h": 1079.780701754386
+          },
+          "regions": [
+            {
+              "tag": "DIV",
+              "cls": "panel",
+              "x": 47.98245614035088,
+              "y": 81.11842105263158,
               "w": 601.9298245614035,
               "h": 794.671052631579
             },
@@ -996,17 +3323,9 @@
               "tag": "PRE",
               "cls": "",
               "x": 63.09210526315789,
-              "y": 238.94736842105263,
+              "y": 114.49561403508771,
               "w": 571.7105263157895,
-              "h": 178.50877192982455
-            },
-            {
-              "tag": "PRE",
-              "cls": "",
-              "x": 63.09210526315789,
-              "y": 425,
-              "w": 571.7105263157895,
-              "h": 341.9298245614035
+              "h": 177.5
             },
             {
               "tag": "DIV",
@@ -1025,8 +3344,116 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 114.49561403508771,
+                "w": 571.7105263157895,
+                "h": 177.5
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "\n\tfor (i = 0; i < len; i++){\n\n\t} // end of for\n\tprintf(\"result:%d\", pop(&s));\n\treturn 0;\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 122.03947368421052,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 145.24122807017542,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 145.24122807017542,
+                  "w": 249.60526315789474,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 339.4298245614035,
+                  "y": 145.24122807017542,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 168.44298245614036,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 191.64473684210526,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 191.64473684210526,
+                  "w": 144.01315789473685,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 233.83771929824562,
+                  "y": 191.64473684210526,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 214.84649122807016,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 214.84649122807016,
+                  "w": 278.42105263157896,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 368.2456140350877,
+                  "y": 214.84649122807016,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 238.04824561403507,
+                  "w": 19.18859649122807,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 89.82456140350877,
+                  "y": 238.04824561403507,
+                  "w": 86.40350877192982,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.2280701754386,
+                  "y": 238.04824561403507,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 261.25,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
+            }
+          ],
           "labels": [
-            "구할 것",
             "코드"
           ]
         },
@@ -1061,6 +3488,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -1096,6 +3524,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -1131,6 +3560,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -1182,6 +3612,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -1206,15 +3637,15 @@
               "x": 63.09210526315789,
               "y": 253.28947368421052,
               "w": 571.7105263157895,
-              "h": 60.39473684210526
+              "h": 61.49122807017544
             },
             {
               "tag": "PRE",
               "cls": "",
               "x": 63.09210526315789,
-              "y": 321.2280701754386,
+              "y": 322.32456140350877,
               "w": 571.7105263157895,
-              "h": 60.39473684210526
+              "h": 61.49122807017544
             },
             {
               "tag": "DIV",
@@ -1228,17 +3659,412 @@
               "tag": "PRE",
               "cls": "",
               "x": 698.9912280701755,
-              "y": 285.4605263157895,
+              "y": 281.79824561403507,
               "w": 1021.4912280701755,
-              "h": 387.5
+              "h": 455.92105263157896
             },
             {
               "tag": "SECTION",
               "cls": "block sol-answer",
               "x": 672.5657894736842,
-              "y": 817.2149122807017,
+              "y": 819.6271929824561,
               "w": 1047.9166666666667,
-              "h": 58.57456140350877
+              "h": 56.16228070175438
+            }
+          ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 253.28947368421052,
+                "w": 571.7105263157895,
+                "h": 61.49122807017544
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "수식: ((())(()))\n괄호 수: 1 2 3 3 2 4 5 5 4 1",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 260.8333333333333,
+                  "w": 142.87280701754386,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 213.50877192982455,
+                  "y": 260.8333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 284.03508771929825,
+                  "w": 252.69736842105263,
+                  "h": 21.052631578947366
+                }
+              ]
+            },
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 322.32456140350877,
+                "w": 571.7105263157895,
+                "h": 61.49122807017544
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "수식: ((((()\n괄호 수: 1 2 3 4 5 5",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 329.86842105263156,
+                  "w": 104.47368421052632,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 175.109649122807,
+                  "y": 329.86842105263156,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 353.0701754385965,
+                  "w": 175.89912280701753,
+                  "h": 21.052631578947366
+                }
+              ]
+            },
+            {
+              "region": "work",
+              "rect": {
+                "x": 698.9912280701755,
+                "y": 281.79824561403507,
+                "w": 1021.4912280701755,
+                "h": 455.92105263157896
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "#include <stdio.h>\n\nvoid print_numbers(const char *expression) {\n    int stack[1024], top = -1, next = 0, first = 1;\n    for (int i = 0; expression[i] != '\\0'; ++i) {\n        int value;\n        if (expression[i] == '(') {\n            if (top == 1023) return;\n            value = ++next;\n            stack[++top] = value;\n        } else if (expression[i] == ')') {\n            if (top == -1) return;\n            value = stack[top--];\n        } else continue;\n        printf(\"%s%d\", first ? \"\" : \" \", value);\n        first = 0;\n    }\n    printf(\"\\n\");\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 706.5350877192982,
+                  "y": 289.34210526315786,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 879.3421052631579,
+                  "y": 289.34210526315786,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 312.5438596491228,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 335.7456140350877,
+                  "w": 422.41228070175436,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1128.9473684210525,
+                  "y": 335.7456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 358.9473684210526,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 358.9473684210526,
+                  "w": 451.2061403508772,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1196.1622807017543,
+                  "y": 358.9473684210526,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 382.14912280701753,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 382.14912280701753,
+                  "w": 432.0175438596491,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1176.9736842105262,
+                  "y": 382.14912280701753,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 405.35087719298247,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 783.3552631578947,
+                  "y": 405.35087719298247,
+                  "w": 96.00877192982456,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 879.3640350877192,
+                  "y": 405.35087719298247,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 428.55263157894734,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 783.3552631578947,
+                  "y": 428.55263157894734,
+                  "w": 259.2105263157895,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1042.5657894736842,
+                  "y": 428.55263157894734,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 451.7543859649123,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 821.7543859649122,
+                  "y": 451.7543859649123,
+                  "w": 230.41666666666666,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1052.171052631579,
+                  "y": 451.7543859649123,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 474.9561403508772,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 821.7543859649122,
+                  "y": 474.9561403508772,
+                  "w": 144.01315789473685,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 965.7675438596491,
+                  "y": 474.9561403508772,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 498.1578947368421,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 821.7543859649122,
+                  "y": 498.1578947368421,
+                  "w": 201.60087719298244,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1023.3552631578947,
+                  "y": 498.1578947368421,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 521.359649122807,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 783.3552631578947,
+                  "y": 521.359649122807,
+                  "w": 326.4035087719298,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1109.7587719298244,
+                  "y": 521.359649122807,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 544.561403508772,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 821.7543859649122,
+                  "y": 544.561403508772,
+                  "w": 211.20614035087718,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1032.9605263157894,
+                  "y": 544.561403508772,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 567.7631578947369,
+                  "w": 115.21929824561403,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 821.7543859649122,
+                  "y": 567.7631578947369,
+                  "w": 201.60087719298244,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1023.3552631578947,
+                  "y": 567.7631578947369,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 590.9649122807017,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 783.3552631578947,
+                  "y": 590.9649122807017,
+                  "w": 153.61842105263156,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 936.9736842105262,
+                  "y": 590.9649122807017,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 614.1666666666666,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 783.3552631578947,
+                  "y": 614.1666666666666,
+                  "w": 384.0131578947368,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1167.3684210526314,
+                  "y": 614.1666666666666,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 637.3684210526316,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 783.3552631578947,
+                  "y": 637.3684210526316,
+                  "w": 96.00877192982456,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 879.3640350877192,
+                  "y": 637.3684210526316,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 660.5701754385965,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 660.5701754385965,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 754.561403508772,
+                  "y": 660.5701754385965,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 683.7719298245614,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 683.7719298245614,
+                  "w": 124.80263157894737,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 869.7587719298245,
+                  "y": 683.7719298245614,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 706.9736842105262,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
             }
           ],
           "labels": [
@@ -1272,9 +4098,9 @@
               "tag": "PRE",
               "cls": "",
               "x": 698.9912280701755,
-              "y": 296.00877192982455,
+              "y": 296.8859649122807,
               "w": 1021.4912280701755,
-              "h": 90.6140350877193
+              "h": 107.89473684210526
             },
             {
               "tag": "SECTION",
@@ -1283,6 +4109,73 @@
               "y": 814.8464912280701,
               "w": 1047.9166666666667,
               "h": 60.94298245614035
+            }
+          ],
+          "code": [
+            {
+              "region": "work",
+              "rect": {
+                "x": 698.9912280701755,
+                "y": 296.8859649122807,
+                "w": 1021.4912280701755,
+                "h": 107.89473684210526
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "typedef struct { int data[100]; int top; } StackType;\nint size(const StackType *s) {\n    return s->top + 1;\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 706.5350877192982,
+                  "y": 304.4298245614035,
+                  "w": 508.8157894736842,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1215.3508771929824,
+                  "y": 304.4298245614035,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 327.63157894736844,
+                  "w": 288.0043859649123,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 994.5394736842105,
+                  "y": 327.63157894736844,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 350.8333333333333,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 350.8333333333333,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 917.7631578947368,
+                  "y": 350.8333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 374.03508771929825,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
             }
           ],
           "labels": [
@@ -1295,6 +4188,7 @@
             "h": 1079.780701754386
           },
           "regions": [],
+          "code": [],
           "labels": []
         }
       },
@@ -1341,6 +4235,12 @@
           "math": [],
           "hints": []
         },
+        "p6-c3": {
+          "panel": 1,
+          "solution": 1,
+          "math": [],
+          "hints": []
+        },
         "p7": {
           "panel": 1,
           "solution": 1,
@@ -1367,7 +4267,7 @@
         },
         "p11": {
           "panel": 1,
-          "solution": 0.9,
+          "solution": 0.8,
           "math": [],
           "hints": []
         },
@@ -1606,11 +4506,6 @@
           "kind": "code",
           "html": "<pre><code>#include &lt;stdio.h&gt;\n#include &lt;string.h&gt;\n#include &lt;stdlib.h&gt;\n#define MAX_STACK_SIZE 100\n\ntypedef int element;\ntypedef struct {\n\telement stack[MAX_STACK_SIZE];\n\tint top;\n} StackType;\n\nvoid init(StackType *s){       // 스택초기화함수\n\ts-&gt;top = -1;\n}\n\nint is_empty(StackType *s){   // 공백상태검출함수\n\treturn (s-&gt;top == -1);\n}\n\nint is_full(StackType *s){    // 포화상태검출함수\n\treturn (s-&gt;top == (MAX_STACK_SIZE - 1));\n}\n\nvoid push(StackType *s, element item){\n\tif (is_full(s)) {\n\t\tfprintf(stderr, &quot;스택 포화 에러\\n&quot;);\n\t} else {\n</code></pre>",
           "text": "#include <stdio.h>\n#include <string.h>\n#include <stdlib.h>\n#define MAX_STACK_SIZE 100\n\ntypedef int element;\ntypedef struct {\n\telement stack[MAX_STACK_SIZE];\n\tint top;\n} StackType;\n\nvoid init(StackType *s){       // 스택초기화함수\n\ts->top = -1;\n}\n\nint is_empty(StackType *s){   // 공백상태검출함수\n\treturn (s->top == -1);\n}\n\nint is_full(StackType *s){    // 포화상태검출함수\n\treturn (s->top == (MAX_STACK_SIZE - 1));\n}\n\nvoid push(StackType *s, element item){\n\tif (is_full(s)) {\n\t\tfprintf(stderr, \"스택 포화 에러\\n\");\n\t} else {\n"
-        },
-        {
-          "kind": "code",
-          "html": "<pre><code>\n\t}\n}\nelement pop(StackType *s) {\n\telement item;\n\n</code></pre>",
-          "text": "\n\t}\n}\nelement pop(StackType *s) {\n\telement item;\n\n"
         }
       ],
       "solution": [
@@ -1660,8 +4555,8 @@
       "problem": [
         {
           "kind": "code",
-          "html": "<pre><code>\tif (is_empty(s)) {\n\t\tfprintf(stderr, &quot;스택 공백 에러\\n&quot;);\n\t}\n\telse {\n\n\n\n\t}\n}</code></pre>",
-          "text": "\tif (is_empty(s)) {\n\t\tfprintf(stderr, \"스택 공백 에러\\n\");\n\t}\n\telse {\n\n\n\n\t}\n}"
+          "html": "<pre><code>\n\t}\n}\nelement pop(StackType *s) {\n\telement item;\n\n\tif (is_empty(s)) {\n\t\tfprintf(stderr, &quot;스택 공백 에러\\n&quot;);\n\t}\n\telse {\n\n\n\n\t}\n}</code></pre>",
+          "text": "\n\t}\n}\nelement pop(StackType *s) {\n\telement item;\n\n\tif (is_empty(s)) {\n\t\tfprintf(stderr, \"스택 공백 에러\\n\");\n\t}\n\telse {\n\n\n\n\t}\n}"
         },
         {
           "kind": "prose",
@@ -1670,8 +4565,23 @@
         },
         {
           "kind": "code",
-          "html": "<pre><code>int main(){\n\tchar str[100];\n\tint i, len, op1, op2;\n\n\tStackType s;\n\n\tinit(&amp;s);\n\tprintf(&quot;input postfix equation using 0~9,+,*:&quot;);\n\tscanf(&quot;%s&quot;, str);\n\tlen = strlen(str);\n\n\n\tfor (i = 0; i &lt; len; i++){\n\n\t} // end of for\n\tprintf(&quot;result:%d&quot;, pop(&amp;s));\n\treturn 0;\n}</code></pre>",
-          "text": "int main(){\n\tchar str[100];\n\tint i, len, op1, op2;\n\n\tStackType s;\n\n\tinit(&s);\n\tprintf(\"input postfix equation using 0~9,+,*:\");\n\tscanf(\"%s\", str);\n\tlen = strlen(str);\n\n\n\tfor (i = 0; i < len; i++){\n\n\t} // end of for\n\tprintf(\"result:%d\", pop(&s));\n\treturn 0;\n}"
+          "html": "<pre><code>int main(){\n\tchar str[100];\n\tint i, len, op1, op2;\n\n\tStackType s;\n\n\tinit(&amp;s);\n\tprintf(&quot;input postfix equation using 0~9,+,*:&quot;);\n\tscanf(&quot;%s&quot;, str);\n\tlen = strlen(str);\n\n</code></pre>",
+          "text": "int main(){\n\tchar str[100];\n\tint i, len, op1, op2;\n\n\tStackType s;\n\n\tinit(&s);\n\tprintf(\"input postfix equation using 0~9,+,*:\");\n\tscanf(\"%s\", str);\n\tlen = strlen(str);\n\n"
+        }
+      ],
+      "solution": [],
+      "show_answer": false,
+      "show_hint": false
+    },
+    {
+      "logical_id": "p6",
+      "physical_id": "p6-c3",
+      "continuation": 3,
+      "problem": [
+        {
+          "kind": "code",
+          "html": "<pre><code>\n\tfor (i = 0; i &lt; len; i++){\n\n\t} // end of for\n\tprintf(&quot;result:%d&quot;, pop(&amp;s));\n\treturn 0;\n}</code></pre>",
+          "text": "\n\tfor (i = 0; i < len; i++){\n\n\t} // end of for\n\tprintf(\"result:%d\", pop(&s));\n\treturn 0;\n}"
         }
       ],
       "solution": [],
@@ -1944,42 +4854,43 @@
     "복습문제_1012_Queue-답안.pdf"
   ],
   "artifact_hashes": {
-    "answers.json": "2e54b2ff356db93d4baf76d2ba2de390cb92618a8abe2c40f525a7941a42d490",
+    "answers.json": "68c01fb4800535ef4bd5f686a8f61aaf2a2ca09944410c26692c583d1f6601c5",
     "assets/0b13f0bfc150934229529859b665abf71adf57e1560effd1a12237354da60ea7.svg": "0b13f0bfc150934229529859b665abf71adf57e1560effd1a12237354da60ea7",
-    "pages/answers/001.png": "ddda3d2bc4e43548fd00840104f35b766e14f7a67e9ab4c7d4a3d1096860e843",
-    "pages/answers/002.png": "298c69e87724e1d9e4cfe5b82183601932d0beee93061918133f0f9505b22960",
-    "pages/answers/003.png": "a135d5aa3f00ac9240e179b979b61c278584a5341e3348e4208980487ebf7b2b",
-    "pages/answers/004.png": "633583a25e185ac4becd2239795e57b353ed6fdd3ee9c061b8dcaa995719be49",
-    "pages/answers/005.png": "4a303e1b72e446f08da0dfd6af96f2d90cad1d81cd486e3ecf81622e6f81c8c3",
-    "pages/answers/006.png": "6387cc14f80e6ea27a2a8a72b11998590c7196e83f9a6eff06005269f98d24b6",
-    "pages/answers/007.png": "c817d6e110ddecb9876deedc5899efd1e0ee54b0b2c15bd5b2f894df96b478f3",
-    "pages/answers/008.png": "e697f3656777611faffb95c8ef27b465e55ad76a8ede69e9b0846899cff5b27b",
-    "pages/answers/009.png": "d7dbf5fd0b23768846602451709c7c5422ea1b75794d257617fd789c6bc97654",
-    "pages/answers/010.png": "a0c8b5d084f42fa184eab449a83f27719ac256a4606cca2a28032ac4b0af3790",
-    "pages/answers/011.png": "9bc425294748bced6bf76600b80584625ea50e77ef95ac99438709e8afd7f9d6",
-    "pages/answers/012.png": "d4015e6bee5facd744a1300ae7e3924aba0bf3da3a76e2779a790d2a80bc9ea0",
-    "pages/answers/013.png": "576a54ee49d5109ebad7b6d2efbe1afc2ce7ae34179a984d19559b68e069ed91",
-    "pages/answers/014.png": "144bc2e516eb13406c334db3fffae143b3baecfd54837fe63b78cbc60d9c20df",
-    "pages/problems/001.png": "a1a727c6b38de3a41cd9e369c27d8c35112dcc3ecfb0fbe722d2367cb868be77",
-    "pages/problems/002.png": "b20570b0a7fdbf2d8104c37562683782158b2cfb1236257ef22444d76e7fe862",
-    "pages/problems/003.png": "456193534fda6f555eaaea493aed1521e70e28129073e5acfcacb8d3315905db",
-    "pages/problems/004.png": "e77d89efa81376cb1c4d9d3506c0d3932a6499371a76600795e45633223529c9",
-    "pages/problems/005.png": "c5607e398602d87b8d7a5a7fac8a2f1b0a1bf67c64565b2fe93ba6a3fac8cb07",
-    "pages/problems/006.png": "81622ccc63a88ab77b739aaf9006241ba4adb49f901eb2f5f83b079052197550",
-    "pages/problems/007.png": "d1d2998c80127b1c0d9cdeaf822723a70237a61c2e6118c2d833c6dfdb2739a8",
-    "pages/problems/008.png": "a6cab8b00ec9a09cccb7b1a45ddba210ff79a99f50a3b33932f0f5f19c327fd8",
-    "pages/problems/009.png": "6ef8a02c87af3a51c284bed5527c0cbe7b26be15b92cc9db63ebc1c23bf39225",
-    "pages/problems/010.png": "b1b74033d8c97dfada9f38962ddb4c86fe1bc871dd213de97e5d55a09b411bd0",
-    "pages/problems/011.png": "793e625febd7fd6dbceae0b9b1a519a8930638cccc1b74df63d4c62366fa0f3b",
-    "pages/problems/012.png": "80c4fa4e8e7994e00d049ab64b4b3d89fdd889b5fa31436503771212ae6945e6",
-    "pages/problems/013.png": "0b7bef7fc118905cfc66825dd38f8d7685711def715c1f930a44b73124b7a0e0",
-    "problems.json": "845d80b8007e274a4f2e2adef52b1272b6eede05547e13266e1d56f4856154ca",
-    "복습문제_1012_Queue-답안.pdf": "e5e691f5c64f4e0034bdfc92d3a18c7239adee8aad78144b5748eaa8c5ae6f99",
-    "복습문제_1012_Queue-문제.pdf": "18d033667d4f6f76c13effe7bbb3af415029724ed700e931e5bd1ed929292ca2"
+    "pages/answers/001.png": "6ea93a4a5bd23f1b90cd47c75732875bd48077898d8ec1a80d02bad5dba41cbf",
+    "pages/answers/002.png": "72cb540504ba275ca4909197277332746a2387ee25eec9a2a2b8e4c93bbaa284",
+    "pages/answers/003.png": "6315a80ee97bbd60f5589985d117263f75229a758d8e19995392931604911c24",
+    "pages/answers/004.png": "ff27b22ee548c469d3e6b3510c98fa760cc275384ae9ea5409c1ab5b77c70811",
+    "pages/answers/005.png": "71e3951b2d164fab8eeb821a30ada59190c3f95d09498c84ff9ef287a3ff84e5",
+    "pages/answers/006.png": "c4937e46ac3ad30a66cfcce1ea12ea0e809c2b14f73a31133c8da2403073f5ee",
+    "pages/answers/007.png": "1e88f8aa1ba7a3eef77a2b8c10f5bdaf9022aa1816cf436f4e1c002308dce812",
+    "pages/answers/008.png": "5e66e03b1139b9cbe1aa6be923b0efb9ea447c0a4ba55ee493159e81a3262cfa",
+    "pages/answers/009.png": "ab99b26f979fa78d222316697f16f2ef2e1426f580605b4dcd47e5643ca916fc",
+    "pages/answers/010.png": "bdf86c1392c9c3b00f642719dc217671f5fcbe01fd70eec2c025a6f632cfbd60",
+    "pages/answers/011.png": "8b2a222b2796892c2e6d6b253632fbe9d7d278d95d3739b52f04c3217a885b6c",
+    "pages/answers/012.png": "e7a717f9208c25e3ab17436bfe7b0d98157ceb676994838bf6e62745a46371c1",
+    "pages/answers/013.png": "9612ea30829497ba5e7854a2e3ee78b155e4deaac5f4b7299c892e82ad2e3e2e",
+    "pages/answers/014.png": "2deeec703393f5e157ab3aa1899f8db96acbccb0905074da0070e11d7ba0e347",
+    "pages/answers/015.png": "267150cddd821ab01f45e06ffc05547a8edfe6d3af6a916eac6809b18c1a39d3",
+    "pages/problems/001.png": "a3f95cf10e3fb01703b4ab4ca09026aaf466c63a672107ba324da3a8f0c40e35",
+    "pages/problems/002.png": "711d851298de375998417d466791cc5d660937191ece84ec485bbd46e11db844",
+    "pages/problems/003.png": "5bf11906b0bbecf3e8f83b1673662e9ce1c18ed7c5fab51a1cb150c3586aa42f",
+    "pages/problems/004.png": "9917b7ee2d1d8a162eb2b15d0a29bba24baee9a50fbba739b97c4756c7592daa",
+    "pages/problems/005.png": "1bf0c8278846021f5a008936fac4e410be620988ee2d704be1ca3f1da37c6c28",
+    "pages/problems/006.png": "95793afddd838bdfee84e7ede6d5e204d82b59c64d211b8794f45922921dae19",
+    "pages/problems/007.png": "df94ff14406fdc376e6043b58ad550c0352e386e3cfd9fc28366f194ab681ee1",
+    "pages/problems/008.png": "f65fa144bf7be78b966daa0eece7d237b6ecdabc53e382cc4a754e6d402ab9a7",
+    "pages/problems/009.png": "32c9e3d8c3f2ae1dca494953522e4f5120d78ec48513b323b24adfce0f04ffe7",
+    "pages/problems/010.png": "e177e33192cd69f64678ec0d327de45ff0d2a2d1f8c96d95f42bd2ac1c776cc6",
+    "pages/problems/011.png": "de838fc026c6159599d797a9acded453b759991d71cba489c99396945bc6148e",
+    "pages/problems/012.png": "a2e16d9ad16c26b07871b9c42769abbf9685b517f6dd0dc8ccca06ada8cad31f",
+    "pages/problems/013.png": "53e09b56fd7ec13b08f412ba504b5cd31dbfaba4d4eafb164e49df76ba685d7a",
+    "pages/problems/014.png": "96ef838c55e7f746998bf2fce2bb112bd7f3dd4ea6e3463208166f706609fdcf",
+    "problems.json": "829dde661206d731759cedf0f1239a4a2c0270822bd84b747f268be37800d33f",
+    "복습문제_1012_Queue-답안.pdf": "1a244ba6bc9eb3617786d89e1bc9891fcf84b3826d8cf4a8774d6c92cf89f7b2",
+    "복습문제_1012_Queue-문제.pdf": "a84289abe2fabf6f32a976064a58db057dd49279e43b25721c1af843f8e4d307"
   },
   "checks": {
     "status": "pass",
     "errors": []
-  },
-  "layout_extension_sha256": "58733a59ea062e9c719c3f12316d58aa1540af87b8026ef23c056357fcd7715f"
+  }
 }

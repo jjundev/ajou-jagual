@@ -21,6 +21,9 @@
     "vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
     "vendor/pretendard/LICENSE": "85fce85e25260b03777bf10373d3bd9363b9da96d9e0ca86a280dd37ed7667a0",
     "vendor/pretendard/pretendard.css": "74dbf94c1ab3cb1d166346878e03572d8004ac88d21ac84332a32b28a088f2bd",
+    "vendor/jetbrains-mono/JetBrainsMono-Regular.ttf": "a0bf60ef0f83c5ed4d7a75d45838548b1f6873372dfac88f71804491898d138f",
+    "vendor/jetbrains-mono/OFL.txt": "30f0c136e3c88e422d0791acd97238870f9054a9729bc34cf2ff0d4ed8cac4ad",
+    "vendor/jetbrains-mono/manifest.json": "951699a6ddc57c7a9c94a8f585d684f6ff0b4c81fa945d6e23e8a4cd1ecd6f3a",
     "vendor/katex/LICENSE": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3",
     "vendor/katex/katex.min.css": "717bc9ae7853b61f0f76455dddf0ecd4f527a783f42de2ac24684899c1c46258",
     "vendor/katex/katex.min.js": "e6bfe5deebd4c7ccd272055bab63bd3ab2c73b907b6e6a22d352740a81381fd4",
@@ -104,31 +107,126 @@
     "vendor/pretendard/woff2/Pretendard-Light.woff2": "b7426635cce2ea2b95c9c802e43fba1c620e0dafaf25f737c069b8b4e09fa841",
     "vendor/pretendard/woff2/Pretendard-ExtraLight.woff2": "df43dc9165dff4542114674bcd8b79b7daae6dec004004586d5d076fec6fe2aa"
   },
+  "layout_extension_sha256": "4e627ee27e8ee4b1398f53e72aeb6f7d116cede880dce73c14f4c18c2b3b75cb",
+  "code_style_version": 1,
+  "code_font": {
+    "family": "DS JetBrains Mono",
+    "version": "2.304",
+    "source": "https://github.com/JetBrains/JetBrainsMono/releases/tag/v2.304",
+    "license": "OFL-1.1",
+    "files": {
+      "JetBrainsMono-Regular.ttf": "a0bf60ef0f83c5ed4d7a75d45838548b1f6873372dfac88f71804491898d138f",
+      "OFL.txt": "30f0c136e3c88e422d0791acd97238870f9054a9729bc34cf2ff0d4ed8cac4ad"
+    },
+    "korean_fallback": {
+      "family": "DS Pretendard",
+      "actual_font": "Pretendard-Regular",
+      "version": "1.3.9",
+      "file": "vendor/pretendard/woff2/Pretendard-Regular.woff2",
+      "sha256": "fad853f7f47c6c8b103171e7193fa095708cdcd70850a71d93aa5379e8a61d63",
+      "source": "https://github.com/orioncactus/pretendard/releases/tag/v1.3.9",
+      "license": "OFL-1.1"
+    }
+  },
   "browser": {
     "status": "pass",
-    "reviewer": "Codex root",
-    "evidence": "All PDF pages viewed in 3 contact sheets; code/conditions/tables/continuations/footer inspected. Final DOM verified against generated HTML.",
-    "contact_sheets": {
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/0928-answers-01.png": "d09833c9b73a593fb46a1ce7891808011a477c4fd8680aa9781fe94011000257",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/0928-answers-02.png": "9f61c116040174f7dad2156a744eb40d366946f34e4af4a8602193dcb19acc0c",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/0928-problems-01.png": "73cbf263b30298bf7a3927e53adc84c8a1059b6d31d441c1da579e2094e76fd6"
+    "reviewer": "Codex root direct visual inspection with exact final render equality",
+    "evidence": {
+      "whole_pages": 9,
+      "code_regions": 4,
+      "contact_sheets": [
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-pages-01.jpg",
+          "sha256": "abf6f69a2ae2b873006b47263df7c1f12dc036420e51c1b1d2498cb5e6cdbd1f",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0928_ArrayStructureList/stage/pages/problems/001.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0928_ArrayStructureList/stage/pages/problems/002.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0928_ArrayStructureList/stage/pages/problems/003.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0928_ArrayStructureList/stage/pages/problems/004.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-pages-02.jpg",
+          "sha256": "e63d8f6054525a55076aa5c62e637207d54990d2dbb23bdf859dc76c0cfc95ad",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0928_ArrayStructureList/stage/pages/answers/001.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0928_ArrayStructureList/stage/pages/answers/002.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0928_ArrayStructureList/stage/pages/answers/003.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0928_ArrayStructureList/stage/pages/answers/004.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-pages-03.jpg",
+          "sha256": "0886a5cf3071c268bc8c7c8ae0c8eff7194f5be072f30ebecc7d8ef128bd4bb0",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0928_ArrayStructureList/stage/pages/answers/005.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-code-01.jpg",
+          "sha256": "0ddd7ab98de667588015fd85a24741c6b7d89b27e06b4201e6bf0938897065b4",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-problems-p2-0-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-answers-p2-0-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-answers-p2-1-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-answers-p3-0-tile0.png"
+          ]
+        }
+      ],
+      "code_images": [
+        {
+          "mode": "problems",
+          "page": 2,
+          "id": "p2",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-problems-p2-0.png",
+          "sha256": "4db74c692a6e8e0563a7eda1bbc661befbca35f2294f9b8ef6d34a4b11323b89"
+        },
+        {
+          "mode": "answers",
+          "page": 2,
+          "id": "p2",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-answers-p2-0.png",
+          "sha256": "4db74c692a6e8e0563a7eda1bbc661befbca35f2294f9b8ef6d34a4b11323b89"
+        },
+        {
+          "mode": "answers",
+          "page": 2,
+          "id": "p2",
+          "code": 2,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-answers-p2-1.png",
+          "sha256": "db033f71fbc55ef9545358802a8c1efe9a49bb75f082c5add583cc3e5fa6f231"
+        },
+        {
+          "mode": "answers",
+          "page": 3,
+          "id": "p3",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0928_ArrayStructureList-answers-p3-0.png",
+          "sha256": "84010a78b308ba795992c7ec829fae769278181186821247950bb87788b4deb0"
+        }
+      ],
+      "direct_inspection": "/private/tmp/ds-pdf-code-readability-20261013/visual/reviewed.json",
+      "byte_identity_proof": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/comparison.json",
+      "notes": "Every final full-page PNG and enlarged code PNG is SHA256-identical to the directly inspected renders. All62 contact sheets also byte-identical. No changed/unreviewed render."
     },
     "artifact_hashes": {
       "answers.json": "1d0ab12b6e419903ecd1b4c9398c7f580d81503395be9fef633026f8eeee4753",
       "pages/answers/001.png": "7b06920618cde155746197c8eaef295aa0630d9f8bd3ecd92b78463b06ed1946",
-      "pages/answers/002.png": "37361968d9515f7f6683aafda336b7bad8e0c04a34bd2afa427c369b5f2e3513",
-      "pages/answers/003.png": "ee22c74f7a07c004e4fa61f9d07b40d7bf0b54d3ce6104ec229cb0c373296fcc",
+      "pages/answers/002.png": "16a18d97b1c8d3122b6afbb5d864b342d8cd0be4ec3e580cac96b635fe100ed5",
+      "pages/answers/003.png": "bec500ece2824dfde03c569a2b76930afdb4ba5db0e626f5ce0a63b477e49d67",
       "pages/answers/004.png": "5aa46134bcccd98774f52f3d5f319ddfea8a7f2bca8fb4653bddd21afae8bbd2",
       "pages/answers/005.png": "6f57b85002fc65ec6437d3244c1b49e7d63c8d5f3b7725b2857e3660e65de93f",
       "pages/problems/001.png": "e53dd9c0eaa7ca72655f44c180620ba48a3fc43e6230e63fbde203a4fc147e44",
-      "pages/problems/002.png": "0149e52841b38da947cc4c9362df4aa7b52db3e0c784a578d263897f27061254",
+      "pages/problems/002.png": "31cadb411056c37f3b0cbc60e616957bcbd838645a10f95832f8bcbd91656485",
       "pages/problems/003.png": "2c51c4618a4b1a15f525b08d27fe60f9d74eb3f1c87b836b7975f4f0c518718d",
       "pages/problems/004.png": "00ec6cdca0344a58089704def2eecb71e22e81e092141308106d4df11753f162",
       "problems.json": "0bc7d0f16936cc95f40362c52ee5e989fcfc3eab2d1f93908bd9bbc67377a0c1",
-      "복습문제_0928_ArrayStructureList-답안.pdf": "336fefbf07b2e992f84ff1c8b0615b2a04cbf35b4321438535de35bbad01391f",
-      "복습문제_0928_ArrayStructureList-문제.pdf": "7110a34a71374db2b3411d5e97b57b04c884f37b34798bd7c458d65c378109d9"
+      "복습문제_0928_ArrayStructureList-답안.pdf": "645b20402f8f8ced90743ebedc5de20b112c07d6120a907755bf98eb27e3a694",
+      "복습문제_0928_ArrayStructureList-문제.pdf": "d12347df43f2692064ee966cca375b9212f3e5cd2d5dd5b9c3a791ef23960e9b"
     },
-    "report_sha256": "650c8fc6d07afc031c00b504387b35061add19d6fc64871be6f636ee150a9c2d"
+    "report_sha256": "96f32d62813d5fb389be3ca26742e86a6f4d23c1229e515c1915e9043a03a172"
   },
   "status": "published",
   "probes": {
@@ -165,6 +263,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -189,7 +288,7 @@
               "x": 63.09210526315789,
               "y": 253.28947368421052,
               "w": 571.7105263157895,
-              "h": 83.04824561403508
+              "h": 84.69298245614034
             },
             {
               "tag": "DIV",
@@ -198,6 +297,61 @@
               "y": 81.11842105263158,
               "w": 1059.232456140351,
               "h": 794.671052631579
+            }
+          ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 253.28947368421052,
+                "w": 571.7105263157895,
+                "h": 84.69298245614034
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "Complex complex_add(Complex a, Complex b) {\n    ...\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 260.8333333333333,
+                  "w": 412.8070175438596,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 483.4429824561403,
+                  "y": 260.8333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 284.03508771929825,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 109.05701754385964,
+                  "y": 284.03508771929825,
+                  "w": 28.81578947368421,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 137.87280701754386,
+                  "y": 284.03508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 307.2368421052631,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
             }
           ],
           "labels": [
@@ -228,6 +382,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -255,6 +410,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -329,6 +485,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -353,7 +510,7 @@
               "x": 63.09210526315789,
               "y": 253.28947368421052,
               "w": 571.7105263157895,
-              "h": 83.04824561403508
+              "h": 84.69298245614034
             },
             {
               "tag": "DIV",
@@ -367,9 +524,9 @@
               "tag": "PRE",
               "cls": "",
               "x": 698.9912280701755,
-              "y": 296.00877192982455,
+              "y": 296.8859649122807,
               "w": 1021.4912280701755,
-              "h": 158.57456140350877
+              "h": 177.5
             },
             {
               "tag": "SECTION",
@@ -378,6 +535,180 @@
               "y": 814.8464912280701,
               "w": 1047.9166666666667,
               "h": 60.94298245614035
+            }
+          ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 253.28947368421052,
+                "w": 571.7105263157895,
+                "h": 84.69298245614034
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "Complex complex_add(Complex a, Complex b) {\n    ...\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 260.8333333333333,
+                  "w": 412.8070175438596,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 483.4429824561403,
+                  "y": 260.8333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 284.03508771929825,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 109.05701754385964,
+                  "y": 284.03508771929825,
+                  "w": 28.81578947368421,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 137.87280701754386,
+                  "y": 284.03508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 307.2368421052631,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
+            },
+            {
+              "region": "work",
+              "rect": {
+                "x": 698.9912280701755,
+                "y": 296.8859649122807,
+                "w": 1021.4912280701755,
+                "h": 177.5
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "typedef struct { float real, imag; } Complex;\nComplex complex_add(Complex a, Complex b) {\n    Complex result;\n    result.real = a.real + b.real;\n    result.imag = a.imag + b.imag;\n    return result;\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 706.5350877192982,
+                  "y": 304.4298245614035,
+                  "w": 432.0175438596491,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1138.5526315789473,
+                  "y": 304.4298245614035,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 327.63157894736844,
+                  "w": 412.8070175438596,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1119.342105263158,
+                  "y": 327.63157894736844,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 350.8333333333333,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 350.8333333333333,
+                  "w": 144.01315789473685,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 888.969298245614,
+                  "y": 350.8333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 374.03508771929825,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 374.03508771929825,
+                  "w": 288.0043859649123,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1032.9605263157894,
+                  "y": 374.03508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 397.2368421052631,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 397.2368421052631,
+                  "w": 288.0043859649123,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1032.9605263157894,
+                  "y": 397.2368421052631,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 420.43859649122805,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 420.43859649122805,
+                  "w": 134.4078947368421,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 879.3640350877192,
+                  "y": 420.43859649122805,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 443.640350877193,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
             }
           ],
           "labels": [
@@ -411,9 +742,9 @@
               "tag": "PRE",
               "cls": "",
               "x": 698.9912280701755,
-              "y": 296.00877192982455,
+              "y": 296.8859649122807,
               "w": 1021.4912280701755,
-              "h": 339.80263157894734
+              "h": 363.1140350877193
             },
             {
               "tag": "SECTION",
@@ -422,6 +753,241 @@
               "y": 814.8464912280701,
               "w": 1047.9166666666667,
               "h": 60.94298245614035
+            }
+          ],
+          "code": [
+            {
+              "region": "work",
+              "rect": {
+                "x": 698.9912280701755,
+                "y": 296.8859649122807,
+                "w": 1021.4912280701755,
+                "h": 363.1140350877193
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\ntypedef struct { int value; char text[21]; } Record;\nint main(void) {\n    Record *p = malloc(sizeof *p);\n    if (p == NULL) return 1;\n    p->value = 100;\n    strcpy(p->text, \"just testing\");\n    printf(\"%d %s\\n\", p->value, p->text);\n    free(p);\n    p = NULL;\n    return 0;\n}",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 706.5350877192982,
+                  "y": 304.4298245614035,
+                  "w": 172.80701754385964,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 879.3421052631579,
+                  "y": 304.4298245614035,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 327.63157894736844,
+                  "w": 182.41228070175438,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 888.9473684210526,
+                  "y": 327.63157894736844,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 350.8333333333333,
+                  "w": 182.41228070175438,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 888.9473684210526,
+                  "y": 350.8333333333333,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 374.03508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 397.2368421052631,
+                  "w": 499.2105263157895,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1205.7456140350878,
+                  "y": 397.2368421052631,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 420.43859649122805,
+                  "w": 153.61842105263156,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 860.1535087719298,
+                  "y": 420.43859649122805,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 443.640350877193,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 443.640350877193,
+                  "w": 288.0043859649123,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1032.9605263157894,
+                  "y": 443.640350877193,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 466.84210526315786,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 466.84210526315786,
+                  "w": 230.41666666666666,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 975.3728070175438,
+                  "y": 466.84210526315786,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 490.0438596491228,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 490.0438596491228,
+                  "w": 144.01315789473685,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 888.969298245614,
+                  "y": 490.0438596491228,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 513.2456140350877,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 513.2456140350877,
+                  "w": 307.21491228070175,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1052.171052631579,
+                  "y": 513.2456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 536.4473684210526,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 536.4473684210526,
+                  "w": 355.219298245614,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 1100.1754385964912,
+                  "y": 536.4473684210526,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 559.6491228070175,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 559.6491228070175,
+                  "w": 76.8201754385965,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 821.7763157894736,
+                  "y": 559.6491228070175,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 582.8508771929825,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 582.8508771929825,
+                  "w": 86.40350877192982,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 831.359649122807,
+                  "y": 582.8508771929825,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 606.0526315789474,
+                  "w": 38.421052631578945,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 744.9561403508771,
+                  "y": 606.0526315789474,
+                  "w": 86.40350877192982,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 831.359649122807,
+                  "y": 606.0526315789474,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 706.5350877192982,
+                  "y": 629.2543859649122,
+                  "w": 9.605263157894736,
+                  "h": 21.052631578947366
+                }
+              ]
             }
           ],
           "labels": [
@@ -459,6 +1025,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -469,6 +1036,7 @@
             "h": 1079.780701754386
           },
           "regions": [],
+          "code": [],
           "labels": []
         }
       },
@@ -703,21 +1271,20 @@
   "artifact_hashes": {
     "answers.json": "1d0ab12b6e419903ecd1b4c9398c7f580d81503395be9fef633026f8eeee4753",
     "pages/answers/001.png": "7b06920618cde155746197c8eaef295aa0630d9f8bd3ecd92b78463b06ed1946",
-    "pages/answers/002.png": "37361968d9515f7f6683aafda336b7bad8e0c04a34bd2afa427c369b5f2e3513",
-    "pages/answers/003.png": "ee22c74f7a07c004e4fa61f9d07b40d7bf0b54d3ce6104ec229cb0c373296fcc",
+    "pages/answers/002.png": "16a18d97b1c8d3122b6afbb5d864b342d8cd0be4ec3e580cac96b635fe100ed5",
+    "pages/answers/003.png": "bec500ece2824dfde03c569a2b76930afdb4ba5db0e626f5ce0a63b477e49d67",
     "pages/answers/004.png": "5aa46134bcccd98774f52f3d5f319ddfea8a7f2bca8fb4653bddd21afae8bbd2",
     "pages/answers/005.png": "6f57b85002fc65ec6437d3244c1b49e7d63c8d5f3b7725b2857e3660e65de93f",
     "pages/problems/001.png": "e53dd9c0eaa7ca72655f44c180620ba48a3fc43e6230e63fbde203a4fc147e44",
-    "pages/problems/002.png": "0149e52841b38da947cc4c9362df4aa7b52db3e0c784a578d263897f27061254",
+    "pages/problems/002.png": "31cadb411056c37f3b0cbc60e616957bcbd838645a10f95832f8bcbd91656485",
     "pages/problems/003.png": "2c51c4618a4b1a15f525b08d27fe60f9d74eb3f1c87b836b7975f4f0c518718d",
     "pages/problems/004.png": "00ec6cdca0344a58089704def2eecb71e22e81e092141308106d4df11753f162",
     "problems.json": "0bc7d0f16936cc95f40362c52ee5e989fcfc3eab2d1f93908bd9bbc67377a0c1",
-    "복습문제_0928_ArrayStructureList-답안.pdf": "336fefbf07b2e992f84ff1c8b0615b2a04cbf35b4321438535de35bbad01391f",
-    "복습문제_0928_ArrayStructureList-문제.pdf": "7110a34a71374db2b3411d5e97b57b04c884f37b34798bd7c458d65c378109d9"
+    "복습문제_0928_ArrayStructureList-답안.pdf": "645b20402f8f8ced90743ebedc5de20b112c07d6120a907755bf98eb27e3a694",
+    "복습문제_0928_ArrayStructureList-문제.pdf": "d12347df43f2692064ee966cca375b9212f3e5cd2d5dd5b9c3a791ef23960e9b"
   },
   "checks": {
     "status": "pass",
     "errors": []
-  },
-  "layout_extension_sha256": "58733a59ea062e9c719c3f12316d58aa1540af87b8026ef23c056357fcd7715f"
+  }
 }

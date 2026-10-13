@@ -21,6 +21,9 @@
     "vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
     "vendor/pretendard/LICENSE": "85fce85e25260b03777bf10373d3bd9363b9da96d9e0ca86a280dd37ed7667a0",
     "vendor/pretendard/pretendard.css": "74dbf94c1ab3cb1d166346878e03572d8004ac88d21ac84332a32b28a088f2bd",
+    "vendor/jetbrains-mono/JetBrainsMono-Regular.ttf": "a0bf60ef0f83c5ed4d7a75d45838548b1f6873372dfac88f71804491898d138f",
+    "vendor/jetbrains-mono/OFL.txt": "30f0c136e3c88e422d0791acd97238870f9054a9729bc34cf2ff0d4ed8cac4ad",
+    "vendor/jetbrains-mono/manifest.json": "951699a6ddc57c7a9c94a8f585d684f6ff0b4c81fa945d6e23e8a4cd1ecd6f3a",
     "vendor/katex/LICENSE": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3",
     "vendor/katex/katex.min.css": "717bc9ae7853b61f0f76455dddf0ecd4f527a783f42de2ac24684899c1c46258",
     "vendor/katex/katex.min.js": "e6bfe5deebd4c7ccd272055bab63bd3ab2c73b907b6e6a22d352740a81381fd4",
@@ -104,14 +107,66 @@
     "vendor/pretendard/woff2/Pretendard-Light.woff2": "b7426635cce2ea2b95c9c802e43fba1c620e0dafaf25f737c069b8b4e09fa841",
     "vendor/pretendard/woff2/Pretendard-ExtraLight.woff2": "df43dc9165dff4542114674bcd8b79b7daae6dec004004586d5d076fec6fe2aa"
   },
+  "layout_extension_sha256": "4e627ee27e8ee4b1398f53e72aeb6f7d116cede880dce73c14f4c18c2b3b75cb",
+  "code_style_version": 1,
+  "code_font": {
+    "family": "DS JetBrains Mono",
+    "version": "2.304",
+    "source": "https://github.com/JetBrains/JetBrainsMono/releases/tag/v2.304",
+    "license": "OFL-1.1",
+    "files": {
+      "JetBrainsMono-Regular.ttf": "a0bf60ef0f83c5ed4d7a75d45838548b1f6873372dfac88f71804491898d138f",
+      "OFL.txt": "30f0c136e3c88e422d0791acd97238870f9054a9729bc34cf2ff0d4ed8cac4ad"
+    },
+    "korean_fallback": {
+      "family": "DS Pretendard",
+      "actual_font": "Pretendard-Regular",
+      "version": "1.3.9",
+      "file": "vendor/pretendard/woff2/Pretendard-Regular.woff2",
+      "sha256": "fad853f7f47c6c8b103171e7193fa095708cdcd70850a71d93aa5379e8a61d63",
+      "source": "https://github.com/orioncactus/pretendard/releases/tag/v1.3.9",
+      "license": "OFL-1.1"
+    }
+  },
   "browser": {
     "status": "pass",
-    "reviewer": "Codex root",
-    "evidence": "All PDF pages viewed in 3 contact sheets; code/conditions/tables/continuations/footer inspected. Final DOM verified against generated HTML.",
-    "contact_sheets": {
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/0907-answers-01.png": "53773b5761d34125e8b0372479405eb81501a293b72a8835328ab5b348608957",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/0907-answers-02.png": "2931abfee37d46cddfe7af7af45d4351a2ea6987023c5bd5a9be4e2b82ec0b6b",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/0907-problems-01.png": "e5b3a485ec335f356e5e2df8b649389346abc3db7ad8f415bde64444ce305b2f"
+    "reviewer": "Codex root direct visual inspection with exact final render equality",
+    "evidence": {
+      "whole_pages": 9,
+      "code_regions": 0,
+      "contact_sheets": [
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0907_Intro_DS_Algorithms-pages-01.jpg",
+          "sha256": "c001cb13f8365a9a22b4398525ad590f74b289bdae08c01efef16a31cfc4f6d5",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0907_Intro_DS_Algorithms/stage/pages/problems/001.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0907_Intro_DS_Algorithms/stage/pages/problems/002.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0907_Intro_DS_Algorithms/stage/pages/problems/003.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0907_Intro_DS_Algorithms/stage/pages/problems/004.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0907_Intro_DS_Algorithms-pages-02.jpg",
+          "sha256": "664224e119d24a07180871d6898c72def22085991ef7795ce44137ed9c67dbb0",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0907_Intro_DS_Algorithms/stage/pages/answers/001.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0907_Intro_DS_Algorithms/stage/pages/answers/002.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0907_Intro_DS_Algorithms/stage/pages/answers/003.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0907_Intro_DS_Algorithms/stage/pages/answers/004.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_0907_Intro_DS_Algorithms-pages-03.jpg",
+          "sha256": "80f3f727c6dc42e8a71089287e844b929c12bf54b690d9523f0ec98bff1d52de",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_0907_Intro_DS_Algorithms/stage/pages/answers/005.png"
+          ]
+        }
+      ],
+      "code_images": [],
+      "direct_inspection": "/private/tmp/ds-pdf-code-readability-20261013/visual/reviewed.json",
+      "byte_identity_proof": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/comparison.json",
+      "notes": "Every final full-page PNG and enlarged code PNG is SHA256-identical to the directly inspected renders. All62 contact sheets also byte-identical. No changed/unreviewed render."
     },
     "artifact_hashes": {
       "answers.json": "3fb050ad23f635833a40470b789950d2c7f6c6ee8eaa3b406ed88044637c377a",
@@ -125,10 +180,10 @@
       "pages/problems/003.png": "84dfde768c955660feccbe5bca3a7aeaa95eb142928cdd7cbe1c9b05431f1fd7",
       "pages/problems/004.png": "425c1fffe7c99320baeef9d384b01e05a4dedafd72226155baa2d3ff661bad96",
       "problems.json": "c3b4cad466cce2376ca4a369bf7a0aab937109fe06123b6f8775519e50d75f5b",
-      "복습문제_0907_Intro_DS_Algorithms-답안.pdf": "3e08e3921ea9af9048dcd149195cda54c9fbd944dcc25fefe521fc18a823d74f",
-      "복습문제_0907_Intro_DS_Algorithms-문제.pdf": "94be6bb7944523fdd8826d3afe972a087062a9783280a703a246107e172a0da5"
+      "복습문제_0907_Intro_DS_Algorithms-답안.pdf": "7cd401b84139e9bfa87fed1dc72fb5df06d959636e9aace97e924a3aa1d5bd2d",
+      "복습문제_0907_Intro_DS_Algorithms-문제.pdf": "0c92218ba2d40747a06527d27ca4b2b9d8934970a3e1fc54c5622ff64c96315d"
     },
-    "report_sha256": "f61ea0d0e7bd6770006b76cea428156f511cfb0573db1c8e78822a3e30355b32"
+    "report_sha256": "1361ee161bd19e20bbbd86a0506c002b7b0248ccf5f4a8a489c83f46dd8b91ca"
   },
   "status": "published",
   "probes": {
@@ -165,6 +220,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -192,6 +248,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -219,6 +276,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -246,6 +304,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -320,6 +379,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -355,6 +415,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -390,6 +451,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -425,6 +487,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -435,6 +498,7 @@
             "h": 1079.780701754386
           },
           "regions": [],
+          "code": [],
           "labels": []
         }
       },
@@ -653,12 +717,11 @@
     "pages/problems/003.png": "84dfde768c955660feccbe5bca3a7aeaa95eb142928cdd7cbe1c9b05431f1fd7",
     "pages/problems/004.png": "425c1fffe7c99320baeef9d384b01e05a4dedafd72226155baa2d3ff661bad96",
     "problems.json": "c3b4cad466cce2376ca4a369bf7a0aab937109fe06123b6f8775519e50d75f5b",
-    "복습문제_0907_Intro_DS_Algorithms-답안.pdf": "3e08e3921ea9af9048dcd149195cda54c9fbd944dcc25fefe521fc18a823d74f",
-    "복습문제_0907_Intro_DS_Algorithms-문제.pdf": "94be6bb7944523fdd8826d3afe972a087062a9783280a703a246107e172a0da5"
+    "복습문제_0907_Intro_DS_Algorithms-답안.pdf": "7cd401b84139e9bfa87fed1dc72fb5df06d959636e9aace97e924a3aa1d5bd2d",
+    "복습문제_0907_Intro_DS_Algorithms-문제.pdf": "0c92218ba2d40747a06527d27ca4b2b9d8934970a3e1fc54c5622ff64c96315d"
   },
   "checks": {
     "status": "pass",
     "errors": []
-  },
-  "layout_extension_sha256": "58733a59ea062e9c719c3f12316d58aa1540af87b8026ef23c056357fcd7715f"
+  }
 }

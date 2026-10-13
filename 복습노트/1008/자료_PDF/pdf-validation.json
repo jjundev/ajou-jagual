@@ -21,6 +21,9 @@
     "vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
     "vendor/pretendard/LICENSE": "85fce85e25260b03777bf10373d3bd9363b9da96d9e0ca86a280dd37ed7667a0",
     "vendor/pretendard/pretendard.css": "74dbf94c1ab3cb1d166346878e03572d8004ac88d21ac84332a32b28a088f2bd",
+    "vendor/jetbrains-mono/JetBrainsMono-Regular.ttf": "a0bf60ef0f83c5ed4d7a75d45838548b1f6873372dfac88f71804491898d138f",
+    "vendor/jetbrains-mono/OFL.txt": "30f0c136e3c88e422d0791acd97238870f9054a9729bc34cf2ff0d4ed8cac4ad",
+    "vendor/jetbrains-mono/manifest.json": "951699a6ddc57c7a9c94a8f585d684f6ff0b4c81fa945d6e23e8a4cd1ecd6f3a",
     "vendor/katex/LICENSE": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3",
     "vendor/katex/katex.min.css": "717bc9ae7853b61f0f76455dddf0ecd4f527a783f42de2ac24684899c1c46258",
     "vendor/katex/katex.min.js": "e6bfe5deebd4c7ccd272055bab63bd3ab2c73b907b6e6a22d352740a81381fd4",
@@ -104,31 +107,108 @@
     "vendor/pretendard/woff2/Pretendard-Light.woff2": "b7426635cce2ea2b95c9c802e43fba1c620e0dafaf25f737c069b8b4e09fa841",
     "vendor/pretendard/woff2/Pretendard-ExtraLight.woff2": "df43dc9165dff4542114674bcd8b79b7daae6dec004004586d5d076fec6fe2aa"
   },
+  "layout_extension_sha256": "4e627ee27e8ee4b1398f53e72aeb6f7d116cede880dce73c14f4c18c2b3b75cb",
+  "code_style_version": 1,
+  "code_font": {
+    "family": "DS JetBrains Mono",
+    "version": "2.304",
+    "source": "https://github.com/JetBrains/JetBrainsMono/releases/tag/v2.304",
+    "license": "OFL-1.1",
+    "files": {
+      "JetBrainsMono-Regular.ttf": "a0bf60ef0f83c5ed4d7a75d45838548b1f6873372dfac88f71804491898d138f",
+      "OFL.txt": "30f0c136e3c88e422d0791acd97238870f9054a9729bc34cf2ff0d4ed8cac4ad"
+    },
+    "korean_fallback": {
+      "family": "DS Pretendard",
+      "actual_font": "Pretendard-Regular",
+      "version": "1.3.9",
+      "file": "vendor/pretendard/woff2/Pretendard-Regular.woff2",
+      "sha256": "fad853f7f47c6c8b103171e7193fa095708cdcd70850a71d93aa5379e8a61d63",
+      "source": "https://github.com/orioncactus/pretendard/releases/tag/v1.3.9",
+      "license": "OFL-1.1"
+    }
+  },
   "browser": {
     "status": "pass",
-    "reviewer": "Codex root",
-    "evidence": "All PDF pages viewed in 3 contact sheets; code/conditions/tables/continuations/footer inspected. Final DOM verified against generated HTML.",
-    "contact_sheets": {
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1008-answers-01.png": "00afd44538683388f722d810cf1e4dff5346c9d9328e4e6606b3d9feec4cc1d7",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1008-answers-02.png": "2b5ef1bd900dac5b37868d2d0165ee0b1e1a7350fdbeeb5de9349650a7daed3f",
-      "/private/tmp/ds-review-pdf-layout-20261013/v1/sheets/1008-problems-01.png": "5aac2676e7d39e75a16f29bc720e73bd948890fd24c4f7fab034a48a127fb088"
+    "reviewer": "Codex root direct visual inspection with exact final render equality",
+    "evidence": {
+      "whole_pages": 9,
+      "code_regions": 2,
+      "contact_sheets": [
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1008_Stack-pages-01.jpg",
+          "sha256": "f4898b413a6337110d7f2a2cb5e55ed5d79b3abc2027ff959aab82f6b319e4a2",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1008_Stack/stage/pages/problems/001.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1008_Stack/stage/pages/problems/002.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1008_Stack/stage/pages/problems/003.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1008_Stack/stage/pages/problems/004.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1008_Stack-pages-02.jpg",
+          "sha256": "c2d1c723ade7a0f31c590abd1820d6ffd5aad56e5753f38c59d6bed379907655",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1008_Stack/stage/pages/answers/001.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1008_Stack/stage/pages/answers/002.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1008_Stack/stage/pages/answers/003.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1008_Stack/stage/pages/answers/004.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1008_Stack-pages-03.jpg",
+          "sha256": "8c66c24fb312a4780ba4087ff603de95825c30f944e3351be7e5f1eb72c11b3b",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/all-v2/복습문제_1008_Stack/stage/pages/answers/005.png"
+          ]
+        },
+        {
+          "path": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1008_Stack-code-01.jpg",
+          "sha256": "f96e4c3b9dc70839b8d51577776928c7e4541f8918de9bce5d631d49ab4e05ab",
+          "items": [
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1008_Stack-problems-p4-0-tile0.png",
+            "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1008_Stack-answers-p4-0-tile0.png"
+          ]
+        }
+      ],
+      "code_images": [
+        {
+          "mode": "problems",
+          "page": 4,
+          "id": "p4",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1008_Stack-problems-p4-0.png",
+          "sha256": "4d8c5e2635c7b214d96dacf6f2b28a457d2cc09c198cfd529a30113570f9ef32"
+        },
+        {
+          "mode": "answers",
+          "page": 4,
+          "id": "p4",
+          "code": 1,
+          "image": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/복습문제_1008_Stack-answers-p4-0.png",
+          "sha256": "4d8c5e2635c7b214d96dacf6f2b28a457d2cc09c198cfd529a30113570f9ef32"
+        }
+      ],
+      "direct_inspection": "/private/tmp/ds-pdf-code-readability-20261013/visual/reviewed.json",
+      "byte_identity_proof": "/private/tmp/ds-pdf-code-readability-20261013/visual-v2/comparison.json",
+      "notes": "Every final full-page PNG and enlarged code PNG is SHA256-identical to the directly inspected renders. All62 contact sheets also byte-identical. No changed/unreviewed render."
     },
     "artifact_hashes": {
       "answers.json": "17d50f2f54c4e303fa01f115fbfb6cea3db222cbd6761b6dc8965f90934f35be",
       "pages/answers/001.png": "c06be5ee9d19c55af7f2b88bb3687b24d49c0d2bccb2f9c70c92b3d71270bdcf",
       "pages/answers/002.png": "7caa7d7d674077cd470ada1e9ecee7a3921b600e5a2e16926fa033314e5380f1",
       "pages/answers/003.png": "47e304969ad8afd380337fc3be1fbb181ffd36ca72f1b33abd37746bc669d3d5",
-      "pages/answers/004.png": "6c561d187800a93dcaff914e30c3baa6259a07306f91424fe00fc8858d3ac621",
+      "pages/answers/004.png": "25ebefdd77a0ac20afb10e2eae010a8ac45a9992889dcdd9121d1bf82e1522d5",
       "pages/answers/005.png": "dfc89d3d30244cf868216e3cf7760efe76a38b0579dc048f23ea4a7718200276",
       "pages/problems/001.png": "0d77625bc317c0e4221a9a35507a4243894b85e579e58cdbfe59bac0448f4c52",
       "pages/problems/002.png": "eb684ed066c5a93911eef4cff686cba22b10bde71c7a7b14f4ce4024d078f3fd",
       "pages/problems/003.png": "90b6e129717083aae468bb807127ea099de2c553846abf1d8826deead173ce58",
-      "pages/problems/004.png": "f37a3acc3022db18342df7efc798736eaf04681ed37cc5b2fe58edcf98eb31a7",
+      "pages/problems/004.png": "fdaa3dabc8a5faad48c73bd7c6f9363b202b74e4d02b54a367312a5e44a2e582",
       "problems.json": "e65e5b2873e8433699ce19e81cf55ff87fb5e1fc8899def08c77e2388eec23aa",
-      "복습문제_1008_Stack-답안.pdf": "d4c88b2c5dd2d9102e5f1d4cb2f4531e5f2e66d92fbd29f9b849acd29af3be4d",
-      "복습문제_1008_Stack-문제.pdf": "8c0419275a598eed7c889cdd049d335f498dbaab5c0e8e974548c15ad8f76341"
+      "복습문제_1008_Stack-답안.pdf": "b690601e59d8b5695c46f2097013396d049ca99abe10b8894aa18c112cb847a7",
+      "복습문제_1008_Stack-문제.pdf": "f5f78f0ab53fbfdba9cd2e2559873cad89025c5b4d2b9ef7d8800fb84cb2d1ae"
     },
-    "report_sha256": "f473ab0a390098b6424a068795dc04d7bcec907a3b46efa9b658ca7a484be404"
+    "report_sha256": "e43b9d5a37539bc5df63133c674e53513da037390e84d11d309cef95c95d62ad"
   },
   "status": "published",
   "probes": {
@@ -165,6 +245,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -192,6 +273,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -219,6 +301,7 @@
               "h": 794.671052631579
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -243,7 +326,7 @@
               "x": 63.09210526315789,
               "y": 229.4736842105263,
               "w": 571.7105263157895,
-              "h": 173.66228070175438
+              "h": 177.5
             },
             {
               "tag": "DIV",
@@ -252,6 +335,103 @@
               "y": 81.11842105263158,
               "w": 1059.232456140351,
               "h": 794.671052631579
+            }
+          ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 229.4736842105263,
+                "w": 571.7105263157895,
+                "h": 177.5
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "push(A, 1);\npush(A, 2);\npush(A, 3);\npop(A);\npush(A, 4);\npush(A, 5);\npop(A);",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 237.01754385964912,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 237.01754385964912,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 260.219298245614,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 260.219298245614,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 283.42105263157896,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 283.42105263157896,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 306.62280701754383,
+                  "w": 67.21491228070175,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 137.85087719298244,
+                  "y": 306.62280701754383,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 329.82456140350877,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 329.82456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 353.0263157894737,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 353.0263157894737,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 376.2280701754386,
+                  "w": 67.21491228070175,
+                  "h": 21.052631578947366
+                }
+              ]
             }
           ],
           "labels": [
@@ -329,6 +509,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -364,6 +545,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -399,6 +581,7 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [],
           "labels": [
             "구할 것"
           ]
@@ -423,7 +606,7 @@
               "x": 63.09210526315789,
               "y": 229.4736842105263,
               "w": 571.7105263157895,
-              "h": 173.66228070175438
+              "h": 177.5
             },
             {
               "tag": "DIV",
@@ -442,6 +625,103 @@
               "h": 60.94298245614035
             }
           ],
+          "code": [
+            {
+              "region": "panel",
+              "rect": {
+                "x": 63.09210526315789,
+                "y": 229.4736842105263,
+                "w": 571.7105263157895,
+                "h": 177.5
+              },
+              "font_family": "\"DS JetBrains Mono\", \"DS Pretendard\", monospace",
+              "font_size_css_px": 16,
+              "effective_pdf_pt": 12,
+              "line_height_css_px": 23.2,
+              "text": "push(A, 1);\npush(A, 2);\npush(A, 3);\npop(A);\npush(A, 4);\npush(A, 5);\npop(A);",
+              "hanging_indent_ch": 2,
+              "displayed_lines": [
+                {
+                  "x": 70.6359649122807,
+                  "y": 237.01754385964912,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 237.01754385964912,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 260.219298245614,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 260.219298245614,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 283.42105263157896,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 283.42105263157896,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 306.62280701754383,
+                  "w": 67.21491228070175,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 137.85087719298244,
+                  "y": 306.62280701754383,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 329.82456140350877,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 329.82456140350877,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 353.0263157894737,
+                  "w": 105.6140350877193,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 176.25,
+                  "y": 353.0263157894737,
+                  "w": 0,
+                  "h": 21.052631578947366
+                },
+                {
+                  "x": 70.6359649122807,
+                  "y": 376.2280701754386,
+                  "w": 67.21491228070175,
+                  "h": 21.052631578947366
+                }
+              ]
+            }
+          ],
           "labels": [
             "구할 것",
             "코드"
@@ -453,6 +733,7 @@
             "h": 1079.780701754386
           },
           "regions": [],
+          "code": [],
           "labels": []
         }
       },
@@ -669,19 +950,18 @@
     "pages/answers/001.png": "c06be5ee9d19c55af7f2b88bb3687b24d49c0d2bccb2f9c70c92b3d71270bdcf",
     "pages/answers/002.png": "7caa7d7d674077cd470ada1e9ecee7a3921b600e5a2e16926fa033314e5380f1",
     "pages/answers/003.png": "47e304969ad8afd380337fc3be1fbb181ffd36ca72f1b33abd37746bc669d3d5",
-    "pages/answers/004.png": "6c561d187800a93dcaff914e30c3baa6259a07306f91424fe00fc8858d3ac621",
+    "pages/answers/004.png": "25ebefdd77a0ac20afb10e2eae010a8ac45a9992889dcdd9121d1bf82e1522d5",
     "pages/answers/005.png": "dfc89d3d30244cf868216e3cf7760efe76a38b0579dc048f23ea4a7718200276",
     "pages/problems/001.png": "0d77625bc317c0e4221a9a35507a4243894b85e579e58cdbfe59bac0448f4c52",
     "pages/problems/002.png": "eb684ed066c5a93911eef4cff686cba22b10bde71c7a7b14f4ce4024d078f3fd",
     "pages/problems/003.png": "90b6e129717083aae468bb807127ea099de2c553846abf1d8826deead173ce58",
-    "pages/problems/004.png": "f37a3acc3022db18342df7efc798736eaf04681ed37cc5b2fe58edcf98eb31a7",
+    "pages/problems/004.png": "fdaa3dabc8a5faad48c73bd7c6f9363b202b74e4d02b54a367312a5e44a2e582",
     "problems.json": "e65e5b2873e8433699ce19e81cf55ff87fb5e1fc8899def08c77e2388eec23aa",
-    "복습문제_1008_Stack-답안.pdf": "d4c88b2c5dd2d9102e5f1d4cb2f4531e5f2e66d92fbd29f9b849acd29af3be4d",
-    "복습문제_1008_Stack-문제.pdf": "8c0419275a598eed7c889cdd049d335f498dbaab5c0e8e974548c15ad8f76341"
+    "복습문제_1008_Stack-답안.pdf": "b690601e59d8b5695c46f2097013396d049ca99abe10b8894aa18c112cb847a7",
+    "복습문제_1008_Stack-문제.pdf": "f5f78f0ab53fbfdba9cd2e2559873cad89025c5b4d2b9ef7d8800fb84cb2d1ae"
   },
   "checks": {
     "status": "pass",
     "errors": []
-  },
-  "layout_extension_sha256": "58733a59ea062e9c719c3f12316d58aa1540af87b8026ef23c056357fcd7715f"
+  }
 }
