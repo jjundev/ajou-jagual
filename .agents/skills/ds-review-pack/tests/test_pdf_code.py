@@ -90,3 +90,39 @@ def test_code_free_pages_keep_existing_layout(tmp_path):
     d=data('problems');d['problems'][0]['html']['code']=''
     p=pdf_render.probe(d,'problems','video-16x9',tmp_path)
     assert not p.geometry['p1']['code'] and '코드' not in p.geometry['p1']['labels']
+
+def test_final_pdf_gate_detects_shrunken_or_fallback_code(tmp_path):
+    from pdf_code import check_pdf_code
+    g={'p1':{'code':[{'rect':{'x':40,'y':40,'w':400,'h':100},'text':'int x = 1;','effective_pdf_pt':12}]}}
+    for font,size in [('cour',12),('cour',8.3)]:
+        pdf=tmp_path/f'{size}.pdf'
+        doc=fitz.open();p=doc.new_page(width=1440,height=810);p.insert_text((40,50),'int x = 1;',fontname=font,fontsize=size);doc.save(pdf);doc.close()
+        assert check_pdf_code(pdf,g)
+    pdf=tmp_path/'good.pdf';probe=pdf_render._run(data('answers'),'answers','video-16x9',tmp_path/'good',pdf)
+    assert not check_pdf_code(pdf,probe.geometry)
+
+def test_publish_rejects_font_changed_after_review(tmp_path):
+    from test_pdf_publish import PublishTests
+    import pdf_code,pdf_publish,shutil
+    fixture=PublishTests();fixture.setUp()
+    try:
+        src,report=fixture.stage()
+        for name in report['pdfs']:(src.parent/name).write_bytes(b'old')
+        report.update(code_style_version=1,code_font=pdf_code.font_manifest())
+        pdf_publish.dump(fixture.run/'report.json',report);fixture.approve()
+        shutil.copytree(pdf_code.FONT_DIR,tmp_path/'font')
+        (tmp_path/'font/JetBrainsMono-Regular.ttf').write_bytes(b'corrupt')
+        with patch.object(pdf_code,'FONT_DIR',tmp_path/'font'):
+            with pytest.raises(PdfError,match='font'):pdf_publish.publish_stage(fixture.run,fixture.repo)
+        assert not (fixture.run/'backups').exists()
+        assert all((src.parent/n).read_bytes()==b'old' for n in report['pdfs'])
+    finally:fixture.doCleanups()
+
+def test_legacy_report_compatibility():
+    from test_pdf_publish import PublishTests
+    fixture=PublishTests();fixture.setUp()
+    try:
+        src,report=fixture.stage();fixture.approve()
+        import pdf_publish
+        assert pdf_publish.publish_stage(fixture.run,fixture.repo).is_dir()
+    finally:fixture.doCleanups()

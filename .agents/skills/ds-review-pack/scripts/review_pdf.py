@@ -14,6 +14,7 @@ from pdf_layout import plan_pages,check_coverage
 from pdf_render import render,render_session,ASSETS
 from pdf_publish import dump,stage_hashes,publish_stage
 from pdf_ds_layout import extension_hash,check_extension
+from pdf_code import font_manifest,check_font_assets,check_pdf_code
 
 
 def discover_reviews(repo,target):
@@ -45,6 +46,9 @@ def check_stage(run):
     if 'layout_extension_sha256' in r:
         try:check_extension(r)
         except PdfError as exc:errors.append(str(exc))
+    if r.get('code_style_version'):
+        try:check_font_assets(r['code_font'])
+        except PdfError as exc:errors.append(str(exc))
     pack=read_pack(Path(r['source']));pages=_pages(r['page_slices']);errors.extend(check_coverage(pack,pages))
     for name,sha in r['template_hashes'].items():
         if digest(ASSETS/'ec2'/name)!=sha:errors.append('Template changed: '+name)
@@ -54,6 +58,7 @@ def check_stage(run):
     for mode,result in r['probes'].items():
         errors.extend(result['errors']);errors.extend('Overflow: '+pid for pid in result['overflow'])
         pdf=run/'stage'/r['pdfs'][0 if mode=='problems' else 1]
+        if r.get('code_style_version'):errors.extend(check_pdf_code(pdf,result['geometry']))
         with fitz.open(pdf) as doc:
             if len(doc)!=len(result['page_ids']):errors.append(mode+': PDF page count differs from DOM')
             for p in doc:
@@ -93,7 +98,7 @@ def build_pack(review,run):
        'dest':str(pack.source.parent),'range':pack.range,'slug':pack.slug,'logical_ids':[c.id for c in pack.cards],
        'template_hashes':{p.name:digest(p) for p in (ASSETS/'ec2').iterdir() if p.is_file()},
        'vendor_hashes':{str(p.relative_to(ASSETS)):digest(p) for p in (ASSETS/'vendor').rglob('*') if p.is_file()},
-       'layout_extension_sha256':extension_hash(),
+       'layout_extension_sha256':extension_hash(),'code_style_version':1,'code_font':font_manifest(),
        'browser':{'status':'not_run'},'status':'staged','probes':{},'input_assets':{}}
     if not pack.cards:
         report.update(status='skipped',checks={'status':'pass','errors':[]},pdfs=[],artifact_hashes={})

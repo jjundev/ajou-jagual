@@ -39,6 +39,12 @@ def publish_stage(run,repo):
     with lock.open('a') as handle:
         try:fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
         except BlockingIOError as exc:raise PdfError('Pack publication lock busy') from exc
+        if report.get('code_style_version'):
+            from pdf_code import check_font_assets
+            check_font_assets(report['code_font'])
+            from review_pdf import check_stage
+            errors=check_stage(run)
+            if errors:raise PdfError('Final code/stage checks: '+ '; '.join(errors))
         ensure_report_owner(source)
         if 'layout_extension_sha256' in report:check_extension(report)
         if digest(source)!=report['source_sha256']:raise PdfError('Source changed since build')

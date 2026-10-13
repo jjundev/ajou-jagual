@@ -34,3 +34,11 @@ backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 run
 전자회로2 원본 4개 파일은 해시 그대로 보존한다. `pdf_ds_layout.py`가 맞춤/넘침 측정 전에 빈 조건 블록을 제거하고 문제 코드의 좌측 `코드` 섹션을 만든다. 문장 안의 인라인 코드는 유지한다. 문제의 `<pre>` 블록은 내용·들여쓰기·줄바꿈을 보존한다.
 
 작성용 표는 명시적으로 지정한 1012 P2·P3에 적용한다. 문제지에서는 원래 표를 중앙 작업 공간으로 옮기며, 답안지에서는 좌측에 유지한다. 답안의 풀이 표는 중앙에 그대로 둔다. 참고용 표는 옮기지 않는다. 확장 코드의 해시도 build/check/publish에서 검증한다.
+
+## 블록 코드 가독성 계약 (code_style_version 1)
+
+최종 1440×810pt PDF의 블록 코드는 실제 12pt(±0.05pt), JetBrains Mono Regular 400이다. 공식 v2.304 static TTF와 OFL-1.1 라이선스를 vendor/jetbrains-mono에 고정하며 manifest의 SHA256을 빌드·검사·게시 때 검증한다. 한글 주석은 번들 Pretendard로 출력하고 실제 PDF 글꼴도 검사한다. 온라인 또는 시스템 폰트 fallback은 통과 근거가 아니다.
+
+줄 간격 1.45, 합자 비활성화, tab-size 4, 긴 줄 2ch 내어쓰기를 적용한다. 원문 개행·공백·탭은 변경하지 않으며 긴 코드는 문제/해설 공통 PageSlice로 이어진다. inline code에는 이 계약을 적용하지 않는다. 원래 EC2 템플릿 파일은 수정하지 않는다.
+
+새 보고서에는 code_font와 code_style_version을 기록한다. 코드 영역 geometry와 최종 PDF의 실제 glyph font/size/text를 대조한다. 글꼴 누락·교체·잘못된 크기·내용 누락·경계 밖 줄은 빌드 실패다. 검토 후 자산이 바뀌면 게시 lock 안에서 거부하고 기존 PDF와 보고서를 보존한다. 구형 보고서에 새 필드가 없으면 기존 검증 경로를 유지한다. 실패 시 자산과 소스를 복구하고 새 RUN에서 다시 빌드·시각검토한다. 오래된 review.json을 재사용하지 않는다.

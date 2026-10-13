@@ -36,3 +36,34 @@ def code_css(layout):
 .ds-code-line {{ display: block; box-sizing: border-box; width: 100%; min-height: 1.45em;
  white-space: pre-wrap; overflow-wrap: anywhere; padding-left: 2ch; text-indent: -2ch; }}
 .panel pre, .work pre {{ padding: 2mm; border-radius: 1mm; }}'''
+
+def check_pdf_code(pdf: Path, geometry: dict) -> list[str]:
+    """Check actual glyphs in measured block-code rectangles (CSS px → PDF pt)."""
+    import fitz
+    import re
+    errors=[]
+    compact=lambda t:re.sub(r'\s+','',t)
+    with fitz.open(pdf) as doc:
+        if len(doc)!=len(geometry):return ['Code geometry/PDF page count mismatch']
+        for page,(pid,g) in zip(doc,geometry.items()):
+            spans=[s for b in page.get_text('rawdict')['blocks'] if 'lines' in b for l in b['lines'] for s in l['spans']]
+            for index,code in enumerate(g.get('code',[])):
+                r=code['rect'];box=fitz.Rect(r['x']*.75,r['y']*.75,(r['x']+r['w'])*.75,(r['y']+r['h'])*.75)
+                text=[]
+                for span in spans:
+                    chars=[c['c'] for c in span['chars'] if box.contains(fitz.Point((c['bbox'][0]+c['bbox'][2])/2,(c['bbox'][1]+c['bbox'][3])/2))]
+                    if not chars:continue
+                    text.extend(chars)
+                    visible=''.join(chars).strip()
+                    if not visible:continue
+                    prefix=f'{pid} code {index+1}: '
+                    if abs(span['size']-12)>.05:errors.append(prefix+'actual size '+str(span['size']))
+                    if any(ord(c)<128 and not c.isspace() for c in chars) and 'JetBrainsMono' not in span['font']:
+                        errors.append(prefix+'actual English font '+span['font'])
+                    if any('\uac00'<=c<='\ud7a3' for c in chars) and 'Pretendard' not in span['font']:
+                        errors.append(prefix+'actual Korean font '+span['font'])
+                wanted=compact(code['text']);actual=compact(''.join(text))
+                if wanted!=actual:errors.append(f'{pid} code {index+1}: code text missing/changed')
+                if '\ufffd' in actual or '\u25a1' in actual and '\u25a1' not in wanted:
+                    errors.append(f'{pid} code {index+1}: missing glyph')
+    return list(dict.fromkeys(errors))
