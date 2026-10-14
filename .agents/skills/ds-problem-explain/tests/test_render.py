@@ -121,3 +121,31 @@ def test_authored_style_still_refused(tmp_path):
     pack,fragments=make(tmp_path)
     with pytest.raises(ExplainError,match='style'):
         build_explanation(pack,{'p1':fragments['p1']+'<figure style="margin:16px 0">x</figure>'},tmp_path/'stage',tmp_path/'repo')
+
+def test_problem_panel_left_of_content():
+    t=(Path(__file__).resolve().parents[1]/'assets/note-template.html').read_text()
+    bar=t[t.index('<header class="topbar">'):t.index('</header>')]
+    assert bar.index('id="toggle-left"')<bar.index('id="toggle-prob"')<bar.index('class="brand"')<bar.index('id="toggle-right"')
+    assert t.index('id="panel-left"')<t.index('id="panel-prob"')<t.index('<div class="content">')<t.index('id="panel-right"')
+    right=t[t.index('id="panel-right"'):]
+    assert 'id="tab-problem"' not in right and 'id="tab-summary"' not in t
+    prob=t[t.index('id="panel-prob"'):t.index('<div class="content">')]
+    assert 'id="tab-original"' in prob and 'data-side="prob"' in prob
+    assert "'od-panels:' + kind + ':v2'" in t or "od-panels:explain:v2" in t
+
+
+def test_problem_panel_dock_controls():
+    t=(Path(__file__).resolve().parents[1]/'assets/note-template.html').read_text()
+    assert '<div class="layout" data-left="open" data-prob="open" data-right="closed" data-prob-dock="left">' in t
+    prob=t[t.index('id="panel-prob"'):t.index('<div class="content">')]
+    group=prob[prob.index('class="prob-dock"'):]
+    assert 'role="radiogroup"' in group and 'aria-label="문제 패널 위치"' in group and group.count('role="radio"')==3
+    assert [d for d in ('left','right','float') if f'data-dock="{d}"' in group]==['left','right','float']
+    assert group.index('data-dock="left"')<group.index('data-dock="right"')<group.index('data-dock="float"')
+    assert 'class="float-move"' in prob and 'class="float-resize"' in prob and 'aria-label="문제 창 이동. 화살표로 이동"' in prob
+    assert 'class="dock-preview"' in t and "PREF + ':prob'" in t
+
+def test_template_is_ds_branded():
+    t=(Path(__file__).resolve().parents[1]/'assets/note-template.html').read_text()
+    assert 'bio-' not in t and "const TAB = 'ds-problem-explain-tab';" in t
+    assert '.verdict-card {' in t  # 판정 카드 코드는 비활성 상태로 남는다
