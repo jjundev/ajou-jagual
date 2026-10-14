@@ -27,6 +27,18 @@ def test_current_source_and_all_problem_ids_required(delivery):
  i['problem_ids']=[f'p{n}' for n in range(1,13)];i['source_sha256']='old';assert check_pack(r,i)
  m['problems']=m['problems'][:8];(r/i['manifest']).write_text(json.dumps(m));assert check_pack(r,i)
 
+def test_republished_in_pack_layout_accepted(delivery):
+ # A later publish writes manifest keys under .pack/; the report still names the pre-.pack paths.
+ r,i,m,v=delivery;d=r/'복습노트/1012';pack=d/'.pack';pack.mkdir()
+ (d/'문제설명_1012_Queue.md').rename(pack/'문제설명_1012_Queue.md');(d/'자료_문제설명_1012_Queue').rename(pack/'자료_문제설명_1012_Queue')
+ manifest=pack/'자료_문제설명_1012_Queue/manifest.json'
+ m['files']={'문제설명_1012_Queue.html':digest(d/'문제설명_1012_Queue.html'),'.pack/문제설명_1012_Queue.md':digest(pack/'문제설명_1012_Queue.md')}
+ manifest.write_text(json.dumps(m));v['artifact_hashes']={**m['files'],'.pack/자료_문제설명_1012_Queue/manifest.json':digest(manifest)}
+ (pack/'자료_문제설명_1012_Queue/validation.json').write_text(json.dumps(v))
+ assert check_pack(r,i)==[]
+ v['artifact_hashes']['.pack/문제설명_1012_Queue.md']='0'*64;(pack/'자료_문제설명_1012_Queue/validation.json').write_text(json.dumps(v))
+ assert 'artifact hash set differs' in check_pack(r,i)
+
 @pytest.mark.parametrize('status',['not_run','fail','disputed'])
 def test_unreviewed_delivery_rejected(delivery,status):
  r,i,m,v=delivery;v['independent']['items']['p12:main']['status']=status;(r/i['validation']).write_text(json.dumps(v));assert check_pack(r,i)

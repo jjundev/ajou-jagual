@@ -35,13 +35,16 @@ def check_pack(root,item):
     items=entry.get('items',{})
     if set(items)!=expected or any(not approved(e) for e in items.values()):errors.append('unapproved items '+kind)
     if kind=='independent' and any(e.get('method') not in ('exact','symbolic','numerical','proof','qualitative') or not e.get('conclusion') for e in items.values()):errors.append('independent conclusions missing')
-  files={**m['files'],safe(root,item['manifest'],False).relative_to(dest).as_posix():sha(manifest)}
+  # Manifests published before the .pack/ move key files by their old place; later publishes key them under .pack/.
+  mkey=safe(root,item['manifest'],False).relative_to(dest).as_posix()
+  if mkey not in v.get('artifact_hashes',{}):mkey=manifest.relative_to(dest).as_posix()
+  files={**m['files'],mkey:sha(manifest)}
   if files!=v.get('artifact_hashes'):errors.append('artifact hash set differs')
   for name,d in files.items():
    if not same(safe(dest,name,False),d):errors.append('changed artifact '+name)
   for key in ('html','md'):
    path=safe(root,item[key])
-   if path.parent not in (dest,dest/PACK_DIR) or path.name not in m['files']:errors.append('missing '+key)
+   if path.parent not in (dest,dest/PACK_DIR) or not {path.name,path.relative_to(dest).as_posix()}&set(m['files']):errors.append('missing '+key)
   for name,d in item.get('protected_files',{}).items():
    if not same(safe(root,name,False),d):errors.append('protected file changed '+name)
  except (OSError,ValueError,KeyError,TypeError) as e:errors.append(str(e))
