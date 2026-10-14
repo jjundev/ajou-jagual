@@ -1434,6 +1434,18 @@
         }
       ],
       "reason": "2026-10-14 problem panel review fix: a changed reference that content/independent relied on resets those reviews."
+    },
+    {
+      "destination": "tests/test_render.py",
+      "base_sha256": "e3d840550be6f19a30e549785c63584a4eb9eb6026d2781076773e2cf054d75c",
+      "current_sha256": "dfd3d3e7a1505860eb18d3ba9f0aef821aaa01c68569af6968b5bd60459a0fa7",
+      "replacements": [
+        {
+          "old": "    assert re.search(r'\\]\\(\\.\\./'+re.escape(quote(pack.path.name,safe=''))+'#p1\\)',result.md.read_text())\n",
+          "new": "    assert re.search(r'\\]\\(\\.\\./'+re.escape(quote(pack.path.name,safe=''))+r'#p1\\)',result.md.read_text())\n"
+        }
+      ],
+      "reason": "2026-10-14 problem panel review minor: raw string for the md anchor regex."
     }
   ]
 }

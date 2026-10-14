@@ -23,6 +23,7 @@ def record(date_dir, before):
         after = sha((date_dir / rel).read_bytes())
         if after != digest:
             rewritten[rel] = {'before': digest, 'after': after}
+    if not rewritten: raise SystemExit(f'{date_dir}: nothing changed since the base; nothing to record')
     path.write_text(json.dumps({'date': '2026-10-14', 'reason': REASON, 'moved': [], 'rewritten': rewritten},
                                ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     return path

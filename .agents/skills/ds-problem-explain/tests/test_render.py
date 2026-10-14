@@ -94,7 +94,7 @@ def test_nfd_image_link_and_missing_anchor(tmp_path):
     assert re.search(r'!\[그림\]\(figures_[^)]+\.png\)',result.md.read_text())
     assert re.search(r'<img src="\.pack/figures_[^"]+\.png"',result.html.read_text())
     assert result.md.parent.name=='.pack'
-    assert re.search(r'\]\(\.\./'+re.escape(quote(pack.path.name,safe=''))+'#p1\)',result.md.read_text())
+    assert re.search(r'\]\(\.\./'+re.escape(quote(pack.path.name,safe=''))+r'#p1\)',result.md.read_text())
     with pytest.raises(ExplainError,match='앵커'):
         build_explanation(pack,{'p1':fragments['p1']+'<a href="'+pack.path.name+'#missing">x</a>'},tmp_path/'bad',tmp_path/'repo')
 

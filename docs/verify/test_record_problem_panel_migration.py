@@ -59,3 +59,10 @@ def test_owned_before_covers_data_and_figure_folders(tmp_path):
     assert before['.pack/자료_문제설명_1012_Queue/validation.json'] == sha('v')
     rewritten = json.loads(mod.record(d, before).read_text())['rewritten']
     assert set(rewritten) == {'문제설명_1012_Queue.html', '.pack/자료_문제설명_1012_Queue/validation.json'}
+
+
+def test_record_refuses_when_nothing_changed(tmp_path):
+    d = date_dir(tmp_path)
+    with pytest.raises(SystemExit):
+        mod.record(d, {'문제설명_1012_Queue.html': sha('new html'), '.pack/문제설명_1012_Queue.md': sha('new md')})
+    assert not (d / '.pack/migration-2026-10-14-problem-panel.json').exists()
