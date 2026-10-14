@@ -63,7 +63,7 @@ def resources(markup, problem, pack, repo, stage, fig_name, destination, scope):
     nodes = list(root.find_all(lambda n: True))
     errors = markup_errors(root, allow_summary=True)
     # Existing textbook figures carry static presentation; authored styles stay forbidden.
-    if scope == 'source':
+    if scope in ('source', 'original'):
         for node in nodes:
             value = node.attrs.get('style', '')
             allowed = (node.tag == 'figure' and value == 'margin:16px 0') or (
@@ -144,14 +144,17 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
     articles = []
     toc = []
     for p in pack.problems:
-        reading = (f'<div class="layer formal" data-source-problem="{p.id}"><h4>주어진 조건</h4>'
+        reading = (f'<div class="layer formal" data-source-problem="{p.id}">'
                    + '<div data-source-field="conditions">' + p.conditions_html + '</div>'
                    + ('<h4>구할 것</h4><div data-source-field="ask">' + p.ask_html + '</div>' if p.ask_html else '')
                    + ''.join(p.figures_html) + '</div>')
-        if p.original_html:
-            reading += '<div class="layer formal" data-original-problem="' + p.id + '"><h4>기출 원문</h4>' + p.original_html + '</div>'
-        # Validate each block separately: a summary remains a direct fragment child.
+        # Validate each block separately: details wraps the original only after its content passed.
         reading = resources(reading, p, pack, repo, stage, fig_rel, pack.path.parent, 'source')
+        if p.original_html:
+            original = resources(p.original_html, p, pack, repo, stage, fig_rel, pack.path.parent, 'original')
+            reading += ('<details class="original" data-original-problem="' + p.id + '"><summary>기출 원문 보기</summary>'
+                        + original + '</details>')
+        reading = f'<div class="problem-pane" data-problem-for="{p.id}">' + reading + '</div>'
         explanation = resources(fragments[p.id], p, pack, repo, stage, fig_rel, pack.path.parent, 'explain')
         original_link = quote(pack.path.name, safe='') + '#' + p.id
         articles.append(f'<article class="topic" id="{p.id}"><h3>{html.escape(p.title)}</h3>'
@@ -163,9 +166,10 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
     title = f'자료구조및알고리즘이해 {"과제" if pack.profile == "homework" else "복습"} {pack.range} 문제설명'
     values = {'PAGE_TITLE': html.escape(title), 'BRAND': '문제풀이 입문 설명', 'DESCRIPTION': '첫 줄부터 완성 답과 검산까지 설명해요.',
               'TOC': '<ul class="toc-list">' + ''.join(toc) + '</ul>', 'TITLE': html.escape(title),
-              'SUBTITLE': '주어진 조건을 읽고, 첫 줄을 쓰고, 이유를 따라가며 답을 확인해요.',
+              'SUBTITLE': '왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.',
               'SECTIONS': '<section id="problems"><h2>문항별 설명</h2>' + ''.join(articles) + '</section>',
-              'FOOTER': '원 문제·정리노트·PDF는 보존해요.', 'SCRIPTS': '',
+              'FOOTER': '원 문제·정리노트·PDF는 보존해요.',
+              'SCRIPTS': '<script type="application/json" id="explain-choice-model">{}</script>',
               'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': f'{PACK_DIR}/{data_name}/vendor'}
     text = (ASSETS / 'note-template.html').read_text(encoding='utf-8')
     for key, value in values.items():

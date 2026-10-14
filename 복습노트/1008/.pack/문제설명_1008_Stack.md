@@ -1,6 +1,6 @@
 # 자료구조및알고리즘이해 복습 1008 문제설명
 
-주어진 조건을 읽고, 첫 줄을 쓰고, 이유를 따라가며 답을 확인해요.
+왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.
 
 문제의 첫 줄부터 검산까지 설명해요.
 
@@ -22,8 +22,6 @@
 
 textbook-ch04-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p1)
 
-#### 주어진 조건
-
 스택에서 삽입작업이 발생하면 top의 값은 어떻게 변경되는가?
 
 (1)
@@ -42,7 +40,7 @@ top = top-1
 
 top = top+1
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 4장 스택 · 01번 · 책 142쪽
 
@@ -63,6 +61,8 @@ top = top-1
 (4)
 
 top = top+1
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -116,8 +116,6 @@ push 성공 → top+1
 
 textbook-ch04-q04 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p2)
 
-#### 주어진 조건
-
 배열로 구현된 스택에서 top가 3이면 현재 스택에 저장된 요소들의 개수는?
 
 (1)
@@ -136,7 +134,7 @@ textbook-ch04-q04 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
 
 4
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 4장 스택 · 04번 · 책 142쪽
 
@@ -157,6 +155,8 @@ textbook-ch04-q04 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
 (4)
 
 4
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -210,8 +210,6 @@ size=top+1=4
 
 textbook-ch04-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p3)
 
-#### 주어진 조건
-
 다음 중 배열로 구현된 스택에서 공백상태에 해당하는 조건은? 또 포화상태에 해당되는 조건은?
 
 (1)
@@ -230,7 +228,7 @@ top == (MAX_STACK_SIZE-1)
 
 top == MAX_STACK_SIZE
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 4장 스택 · 05번 · 책 142쪽
 
@@ -251,6 +249,8 @@ top == (MAX_STACK_SIZE-1)
 (4)
 
 top == MAX_STACK_SIZE
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -304,8 +304,6 @@ empty −1, full M−1
 
 textbook-ch04-q08 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p4)
 
-#### 주어진 조건
-
 크기가 5인, 배열로 구현된 스택 A에 다음과 같이 삽입과 삭제가 되풀이되었을 경우에 각 단계에서의 스택의 내용(1차원 배열의 내용, top의 값)을 나타내시오.
 
 `push(A, 1);
@@ -316,7 +314,7 @@ push(A, 4);
 push(A, 5);
 pop(A);`
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 4장 스택 · 08번 · 책 142쪽 · 책 143쪽
 
@@ -329,6 +327,8 @@ pop(A);
 push(A, 4);
 push(A, 5);
 pop(A);`
+
+</details>
 
 #### 문제를 내 말로 읽어요
 

@@ -1,6 +1,6 @@
 # 자료구조및알고리즘이해 복습 0928 문제설명
 
-주어진 조건을 읽고, 첫 줄을 쓰고, 이유를 따라가며 답을 확인해요.
+왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.
 
 문제의 첫 줄부터 검산까지 설명해요.
 
@@ -22,8 +22,6 @@
 
 textbook-ch03-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p1)
 
-#### 주어진 조건
-
 다음 배열 중에서 크기가 가장 큰 배열은?
 
 (1)
@@ -44,7 +42,7 @@ float array4[10];
 
 비교 기준: 이 팩의 C 검산 환경은 int 4, double 8, char 1, float 4바이트예요.
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 3장 배열, 구조체, 포인터 · 03번 · 책 98쪽
 
@@ -65,6 +63,8 @@ char array3[40];
 (4)
 
 float array4[10];
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -118,15 +118,13 @@ array1=10×4=40바이트라고 적어요.
 
 textbook-ch03-q07 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p2)
 
-#### 주어진 조건
-
 복소수를 구조체로 표현해보자. 복소수 a와 복소수 b를 받아서 a+b를 계산하는 함수를 작성해보자. 함수는 구조체를 반환할 수 있다. 알다시피 복소수는 real+imag\*i와 같은 형태를 갖는다.
 
 `Complex complex_add(Complex a, Complex b) {
     ...
 }`
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 3장 배열, 구조체, 포인터 · 07번 · 책 98쪽
 
@@ -135,6 +133,8 @@ textbook-ch03-q07 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
 `Complex complex_add(Complex a, Complex b) {
     ...
 }`
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -194,15 +194,15 @@ Complex result;
 
 textbook-ch03-q12 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p3)
 
-#### 주어진 조건
-
 1개의 정수와 최대 크기가 20인 문자열로 이루어진 구조체를 저장할 수 있도록 동적 메모리를 할당받고 여기에 정수 100과 문자열 “just testing”을 저장한 다음, 동적 메모리를 반납하는 프로그램을 작성하라.
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 3장 배열, 구조체, 포인터 · 12번 · PDF 2쪽
 
 1개의 정수와 최대 크기가 20인 문자열로 이루어진 구조체를 저장할 수 있도록 동적 메모리를 할당받고 여기에 정수 100과 문자열 “just testing”을 저장한 다음, 동적 메모리를 반납하는 프로그램을 작성하라.
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -268,8 +268,6 @@ malloc(sizeof \*p) → NULL 검사 → 저장 → free
 
 textbook-ch01-q17 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p4)
 
-#### 주어진 조건
-
 배열에 정수가 들어 있다고 가정하고 다음의 작업의 최악, 최선의 시간복잡도를 빅오 표기법으로 말하라.
 
 (1)
@@ -284,7 +282,7 @@ textbook-ch01-q17 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
 
 배열의 모든 숫자를 더한다.
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 1장 자료구조와 알고리즘 · 17번 · 책 37쪽
 
@@ -301,6 +299,8 @@ textbook-ch01-q17 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
 (3)
 
 배열의 모든 숫자를 더한다.
+
+</details>
 
 #### 문제를 내 말로 읽어요
 

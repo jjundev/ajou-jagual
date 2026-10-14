@@ -8,7 +8,7 @@ def test_install_has_no_ml_runtime_dependency(tmp_path):
     copied=tmp_path/'skill';shutil.copytree(S,copied,ignore=shutil.ignore_patterns('__pycache__'))
     result=subprocess.run([sys.executable,str(copied/'scripts/mpe_cli.py'),'--help'],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
-    assert 'extract' in result.stdout and 'publish' in result.stdout
+    assert 'extract' in result.stdout and 'publish' in result.stdout and 'rerender' in result.stdout
 
 def undo_overrides(current,chain):
     """Peel approved local edits newest-first; each step must restore its recorded base bytes exactly."""
@@ -43,3 +43,9 @@ def test_claude_link_and_provenance():
             assert sha256(path)==entry['destination_sha256']
         if entry['destination'].startswith('assets/') and entry['source_path']:
             assert entry['source_sha256']==entry['destination_sha256']
+
+def test_skill_documents_rerender_and_panel():
+    skill=(S/'SKILL.md').read_text();verification=(S/'references/verification.md').read_text()
+    assert '### 레이아웃만 바뀐 기존 발행분 재발행' in skill and 'mpe_cli.py rerender' in skill
+    assert 'od-panels:explain:v2:prob' in skill and '원문 탭' in verification and '띄우기' in verification
+    assert 'content·independent도 not_run으로 되돌리고' in skill

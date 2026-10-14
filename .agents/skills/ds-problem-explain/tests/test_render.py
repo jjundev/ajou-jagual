@@ -8,6 +8,7 @@ from mpe_source import load_source, sha256
 from mpe_shared import parse
 from mpe_types import ExplainError
 from mpe_render import build_explanation, check_artifacts
+from test_skill_files import undo_overrides
 
 def make(tmp_path):
     source=source_file(tmp_path/'repo');pack=load_source(source,tmp_path/'repo')
@@ -26,19 +27,48 @@ def test_legacy_statement_rendered_once(tmp_path):
     assert '자료구조및알고리즘이해' in text
     assert result.html.name=='문제설명_0917_Recursion.html'
     assert '이 문제를 봤을 때 떠올릴 개념과 공식' in md
-    assert not list(parse(text).find_all(lambda n:n.tag=='details'))
+    details=list(parse(text).find_all(lambda n:n.tag=='details'))
+    assert len(details)==1 and 'original' in details[0].classes
+    assert '왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.' in text
+    assert md.index('printf') < md.index('이 문제를 봤을 때')
     assert 'https://cdn.' not in text
+
+def test_problem_pane_wraps_statement_and_original(tmp_path):
+    pack,fragments=make(tmp_path);result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')
+    assert check_artifacts(pack,result)==[]
+    doc=parse(result.html.read_text())
+    panes=list(doc.find_all(lambda n:'problem-pane' in n.classes))
+    assert [n.attrs['data-problem-for'] for n in panes]==['p1']
+    assert len(list(panes[0].find_all(lambda n:n.attrs.get('data-source-problem')=='p1')))==1
+    original=[n for n in panes[0].find_all(lambda n:n.tag=='details')]
+    assert len(original)==1 and 'original' in original[0].classes and '기출 원문 보기' in original[0].text()
+    assert '주어진 조건</h4>' not in result.html.read_text()
+
+def test_choice_model_is_empty(tmp_path):
+    pack,fragments=make(tmp_path);text=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo').html.read_text()
+    assert re.search(r'id="explain-choice-model">\{\}</script>',text)
+
+def test_statement_and_original_sharing_svg_ids_stay_unique(tmp_path):
+    pack,fragments=make(tmp_path)
+    svg='<svg viewBox="0 0 10 10"><defs><marker id="m"></marker></defs><path marker-end="url(#m)" d="M0 0L5 5"></path></svg>'
+    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+svg,original_html=pack.problems[0].original_html+svg)
+    pack=replace(pack,problems=(p,))
+    result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')
+    assert check_artifacts(pack,result)==[]
+
+def test_problem_without_original_has_no_details(tmp_path):
+    pack,fragments=make(tmp_path)
+    pack=replace(pack,problems=(replace(pack.problems[0],original_html=''),))
+    result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')
+    assert check_artifacts(pack,result)==[]
+    assert not list(parse(result.html.read_text()).find_all(lambda n:n.tag=='details'))
 
 def test_template_bytes_match_pinned_ml():
     template=Path(__file__).resolve().parents[1]/'assets/note-template.html'
     provenance=json.loads((template.parent/'port-provenance.json').read_text())
-    original=template.read_bytes()
     chain=[o for o in provenance.get('local_overrides',[]) if o['destination']=='assets/note-template.html']
-    for override in reversed(chain):
-        assert hashlib.sha256(original).hexdigest()==override['current_sha256']
-        inserted=override['inserted_text'].encode('utf-8')
-        assert original.count(inserted)==1
-        original=original.replace(inserted,b'',1)
+    assert hashlib.sha256(template.read_bytes()).hexdigest()==chain[-1]['current_sha256']
+    original=undo_overrides(template.read_bytes(),chain)
     assert hashlib.sha256(original).hexdigest()=='d0fe664a773920cf017ccf69fc9e7b69ef9a7c6b0b066601da36aaf1f338ba50'
 
 def test_repeated_svg_ids_scoped(tmp_path):
@@ -64,7 +94,7 @@ def test_nfd_image_link_and_missing_anchor(tmp_path):
     assert re.search(r'!\[그림\]\(figures_[^)]+\.png\)',result.md.read_text())
     assert re.search(r'<img src="\.pack/figures_[^"]+\.png"',result.html.read_text())
     assert result.md.parent.name=='.pack'
-    assert re.search(r'\]\(\.\./'+re.escape(quote(pack.path.name,safe=''))+'#p1\)',result.md.read_text())
+    assert re.search(r'\]\(\.\./'+re.escape(quote(pack.path.name,safe=''))+r'#p1\)',result.md.read_text())
     with pytest.raises(ExplainError,match='앵커'):
         build_explanation(pack,{'p1':fragments['p1']+'<a href="'+pack.path.name+'#missing">x</a>'},tmp_path/'bad',tmp_path/'repo')
 
@@ -124,3 +154,30 @@ def test_authored_style_still_refused(tmp_path):
     pack,fragments=make(tmp_path)
     with pytest.raises(ExplainError,match='style'):
         build_explanation(pack,{'p1':fragments['p1']+'<figure style="margin:16px 0">x</figure>'},tmp_path/'stage',tmp_path/'repo')
+
+def test_problem_panel_left_of_content():
+    t=(Path(__file__).resolve().parents[1]/'assets/note-template.html').read_text()
+    bar=t[t.index('<header class="topbar">'):t.index('</header>')]
+    assert bar.index('id="toggle-left"')<bar.index('id="toggle-prob"')<bar.index('class="brand"')<bar.index('id="toggle-right"')
+    assert t.index('id="panel-left"')<t.index('id="panel-prob"')<t.index('<div class="content">')<t.index('id="panel-right"')
+    right=t[t.index('id="panel-right"'):]
+    assert 'id="tab-problem"' not in right and 'id="tab-summary"' not in t
+    prob=t[t.index('id="panel-prob"'):t.index('<div class="content">')]
+    assert 'id="tab-original"' in prob and 'data-side="prob"' in prob
+    assert "'od-panels:' + kind + ':v2'" in t or "od-panels:explain:v2" in t
+
+def test_problem_panel_dock_controls():
+    t=(Path(__file__).resolve().parents[1]/'assets/note-template.html').read_text()
+    assert '<div class="layout" data-left="open" data-prob="open" data-right="closed" data-prob-dock="left">' in t
+    prob=t[t.index('id="panel-prob"'):t.index('<div class="content">')]
+    group=prob[prob.index('class="prob-dock"'):]
+    assert 'role="radiogroup"' in group and 'aria-label="문제 패널 위치"' in group and group.count('role="radio"')==3
+    assert [d for d in ('left','right','float') if f'data-dock="{d}"' in group]==['left','right','float']
+    assert group.index('data-dock="left"')<group.index('data-dock="right"')<group.index('data-dock="float"')
+    assert 'class="float-move"' in prob and 'class="float-resize"' in prob and 'aria-label="문제 창 이동. 화살표로 이동"' in prob
+    assert 'class="dock-preview"' in t and "PREF + ':prob'" in t
+
+def test_template_is_ds_branded():
+    t=(Path(__file__).resolve().parents[1]/'assets/note-template.html').read_text()
+    assert 'bio-' not in t and "const TAB = 'ds-problem-explain-tab';" in t
+    assert '.verdict-card {' in t  # 판정 카드 코드는 비활성 상태로 남는다
