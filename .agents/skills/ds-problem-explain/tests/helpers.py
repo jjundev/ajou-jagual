@@ -58,7 +58,7 @@ def acceptance_pack(repo):
     text=path.read_text().replace('<p>함수 결과를 구해요.</p><pre><code>printf("$%d", n);</code></pre>',
        '<pre><code>'+html.escape(code)+'</code></pre><ol><li>(a) 상태를 구하라</li><li>(b) 복잡도를 설명하라</li></ol>')
     card=text[text.index('<article'):text.index('</article>')+10]
-    text=text.replace('</section>',card.replace('id="p1"','id="p2"').replace('1001 기출','1002 기출')+'</section>')
+    text=text.replace('</section>',card.replace('id="p1"','id="p2"').replace('1001 기출','1002 기출').replace('<ol><li>(a)','<img src="그림.png" alt="문제 그림"><figure><svg viewBox="0 0 40 10" role="img" aria-label="문제 화살표"><defs><marker id="arrow" markerWidth="4" markerHeight="4" refX="2" refY="2"><path d="M0 0L4 2L0 4z"></path></marker></defs><path d="M2 5H36" stroke="currentColor" marker-end="url(#arrow)"></path></svg></figure><ol><li>(a)')+'</section>')
     path.write_text(text)
     (path.parent/'그림.png').write_bytes(base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jJ1sAAAAASUVORK5CYII='))
     pack=load_source(path,repo)

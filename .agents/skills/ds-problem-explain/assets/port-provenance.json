@@ -1194,6 +1194,66 @@
         }
       ],
       "reason": "2026-10-14 problem panel: template structure tests."
+    },
+    {
+      "destination": "scripts/mpe_render.py",
+      "base_sha256": "ca6ad4fdcc48d236d6a3def2080e06a3444958e234a8a7cd3752f35516ef0f18",
+      "current_sha256": "cd6dd6866c52edc99687acbb477a401c8895521eb0d8133894b2e303f3edcadc",
+      "replacements": [
+        {
+          "old": "    if scope == 'source':\n",
+          "new": "    if scope in ('source', 'original'):\n"
+        },
+        {
+          "old": "        reading = (f'<div class=\"layer formal\" data-source-problem=\"{p.id}\"><h4>주어진 조건</h4>'\n",
+          "new": "        reading = (f'<div class=\"layer formal\" data-source-problem=\"{p.id}\">'\n"
+        },
+        {
+          "old": "",
+          "new": "        # Validate each block separately: details wraps the original only after its content passed.\n        reading = resources(reading, p, pack, repo, stage, fig_rel, pack.path.parent, 'source')\n"
+        },
+        {
+          "old": "            reading += '<div class=\"layer formal\" data-original-problem=\"' + p.id + '\"><h4>기출 원문</h4>' + p.original_html + '</div>'\n        # Validate each block separately: a summary remains a direct fragment child.\n        reading = resources(reading, p, pack, repo, stage, fig_rel, pack.path.parent, 'source')\n",
+          "new": "            original = resources(p.original_html, p, pack, repo, stage, fig_rel, pack.path.parent, 'original')\n            reading += ('<details class=\"original\" data-original-problem=\"' + p.id + '\"><summary>기출 원문 보기</summary>'\n                        + original + '</details>')\n        reading = f'<div class=\"problem-pane\" data-problem-for=\"{p.id}\">' + reading + '</div>'\n"
+        },
+        {
+          "old": "              'SUBTITLE': '주어진 조건을 읽고, 첫 줄을 쓰고, 이유를 따라가며 답을 확인해요.',\n",
+          "new": "              'SUBTITLE': '왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.',\n"
+        },
+        {
+          "old": "              'FOOTER': '원 문제·정리노트·PDF는 보존해요.', 'SCRIPTS': '',\n",
+          "new": "              'FOOTER': '원 문제·정리노트·PDF는 보존해요.',\n              'SCRIPTS': '<script type=\"application/json\" id=\"explain-choice-model\">{}</script>',\n"
+        }
+      ],
+      "reason": "2026-10-14 problem panel: wrap problem and original for the panel; empty choice model."
+    },
+    {
+      "destination": "tests/test_render.py",
+      "base_sha256": "835a73cbe1aac368a7d9d3069d3aa4b6d31493c1d48aac31135ee71235eaae8a",
+      "current_sha256": "e3d840550be6f19a30e549785c63584a4eb9eb6026d2781076773e2cf054d75c",
+      "replacements": [
+        {
+          "old": "    assert '이 문제를 봤을 때 떠올릴 개념과 공식' in md\n    assert not list(parse(text).find_all(lambda n:n.tag=='details'))\n    assert 'https://cdn.' not in text\n\n",
+          "new": "    assert '이 문제를 봤을 때 떠올릴 개념과 공식' in md\n    details=list(parse(text).find_all(lambda n:n.tag=='details'))\n    assert len(details)==1 and 'original' in details[0].classes\n    assert '왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.' in text\n    assert md.index('printf') < md.index('이 문제를 봤을 때')\n    assert 'https://cdn.' not in text\n\ndef test_problem_pane_wraps_statement_and_original(tmp_path):\n    pack,fragments=make(tmp_path);result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')\n    assert check_artifacts(pack,result)==[]\n    doc=parse(result.html.read_text())\n    panes=list(doc.find_all(lambda n:'problem-pane' in n.classes))\n    assert [n.attrs['data-problem-for'] for n in panes]==['p1']\n    assert len(list(panes[0].find_all(lambda n:n.attrs.get('data-source-problem')=='p1')))==1\n    original=[n for n in panes[0].find_all(lambda n:n.tag=='details')]\n    assert len(original)==1 and 'original' in original[0].classes and '기출 원문 보기' in original[0].text()\n    assert '주어진 조건</h4>' not in result.html.read_text()\n\ndef test_choice_model_is_empty(tmp_path):\n    pack,fragments=make(tmp_path);text=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo').html.read_text()\n    assert re.search(r'id=\"explain-choice-model\">\\{\\}</script>',text)\n\ndef test_statement_and_original_sharing_svg_ids_stay_unique(tmp_path):\n    pack,fragments=make(tmp_path)\n    svg='<svg viewBox=\"0 0 10 10\"><defs><marker id=\"m\"></marker></defs><path marker-end=\"url(#m)\" d=\"M0 0L5 5\"></path></svg>'\n    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+svg,original_html=pack.problems[0].original_html+svg)\n    pack=replace(pack,problems=(p,))\n    result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')\n    assert check_artifacts(pack,result)==[]\n\ndef test_problem_without_original_has_no_details(tmp_path):\n    pack,fragments=make(tmp_path)\n    pack=replace(pack,problems=(replace(pack.problems[0],original_html=''),))\n    result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')\n    assert check_artifacts(pack,result)==[]\n    assert not list(parse(result.html.read_text()).find_all(lambda n:n.tag=='details'))\n\n"
+        },
+        {
+          "old": "\n\ndef test_problem_panel_dock_controls():\n",
+          "new": "\ndef test_problem_panel_dock_controls():\n"
+        }
+      ],
+      "reason": "2026-10-14 problem panel: wrap problem and original for the panel; empty choice model."
+    },
+    {
+      "destination": "tests/helpers.py",
+      "base_sha256": "ba12eab8132b363a1a00784364c7098f93bb9113cfecad2fe09fc2b085477951",
+      "current_sha256": "56f5e76089dd037341279edd710da5262d2df85721392595bf572b9a68c7e9fb",
+      "replacements": [
+        {
+          "old": "    text=text.replace('</section>',card.replace('id=\"p1\"','id=\"p2\"').replace('1001 기출','1002 기출')+'</section>')\n",
+          "new": "    text=text.replace('</section>',card.replace('id=\"p1\"','id=\"p2\"').replace('1001 기출','1002 기출').replace('<ol><li>(a)','<img src=\"그림.png\" alt=\"문제 그림\"><figure><svg viewBox=\"0 0 40 10\" role=\"img\" aria-label=\"문제 화살표\"><defs><marker id=\"arrow\" markerWidth=\"4\" markerHeight=\"4\" refX=\"2\" refY=\"2\"><path d=\"M0 0L4 2L0 4z\"></path></marker></defs><path d=\"M2 5H36\" stroke=\"currentColor\" marker-end=\"url(#arrow)\"></path></svg></figure><ol><li>(a)')+'</section>')\n"
+        }
+      ],
+      "reason": "2026-10-14 problem panel: wrap problem and original for the panel; empty choice model."
     }
   ]
 }
