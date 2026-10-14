@@ -37,7 +37,7 @@ description: 자구알의 기존 복습문제 HTML로 문제 단서, 떠올릴 �
    python3 .agents/skills/ds-problem-explain/scripts/mpe_cli.py check --run tmp/ds-problem-explain/0917-first
    ```
 
-6. [검토 기록](references/verification.md)을 읽고 실제 source_visual/content/independent/browser 결과를 `review.json`에 기록한다. 사용한 참조 파일의 절대 path와 SHA-256을 references에 기록한다. 구조 통과를 정답 검증으로 기록하지 않는다. 로컬 브라우저에서 1280×900/375×812, light/dark의 모든 문항·목차·이전/다음·요약·수식·그림·코드·상태 표를 확인한다. 콘솔·KaTeX 오류·누락 자원·외부 요청·문서 가로 넘침은 0이어야 한다. 코드 블록 내부 스크롤은 허용한다. stage의 원 문제/개념 링크는 최종 발행 디렉터리 기준이므로 실제 원 파일과 anchor도 대조한다. 템플릿 결함은 근거를 보고하며 임의로 템플릿을 수정하지 않는다.
+6. [검토 기록](references/verification.md)을 읽고 실제 source_visual/content/independent/browser 결과를 `review.json`에 기록한다. 사용한 참조 파일의 절대 path와 SHA-256을 references에 기록한다. 구조 통과를 정답 검증으로 기록하지 않는다. 로컬 브라우저에서 1280×900/375×812, light/dark의 모든 문항·목차·이전/다음·요약·수식·그림·코드·상태 표를 확인한다. 콘솔·KaTeX 오류·누락 자원·외부 요청·문서 가로 넘침은 0이어야 한다. 코드 블록 내부 스크롤은 허용한다. stage의 원 문제/개념 링크는 최종 발행 디렉터리 기준이므로 실제 원 파일과 anchor도 대조한다. 문제는 넓은 화면에서 목차 오른쪽·본문 왼쪽의 문제 패널 [문제 | 원문] 탭(원문 탭은 원문이 있는 문항만)으로 기본 표시되고, 패널 머리 버튼이나 끌어서 붙이기·떼기로 오른쪽에 붙이거나 띄운 창(이동·크기 조절)으로 바꿀 수 있으며 방식·위치는 `od-panels:explain:v2:prob`에 기억된다. 요약은 오른쪽 요약 패널, 좁은 화면에서 해설 위 접힘 버튼으로 표시된다. 템플릿 결함은 근거를 보고하며 임의로 템플릿을 수정하지 않는다.
 7. 실제 검토가 모두 pass이고 현재 해시가 일치하면 사용자 호출 범위에서 추가 확인 없이 발행한다. 미검토·변경·실패·disputed는 해당 팩의 발행을 막는다.
 
    ```sh
@@ -45,6 +45,14 @@ description: 자구알의 기존 복습문제 HTML로 문제 단서, 떠올릴 �
    ```
 
 설명 소유 파일만 백업·교체하며 실패하면 복구한다. 다중 파일 교체는 OS 원자적 transaction이 아니다. 팩별 성공·보류 이유, HTML·MD와 백업 경로를 보고한다. 유용하면 HTML을 Codex 패널로 연다. 커밋·푸시는 별도 사용자 요청이 있을 때만 수행한다.
+
+### 레이아웃만 바뀐 기존 발행분 재발행
+
+템플릿·레이아웃만 바뀌고 원 복습문제와 설명 조각이 그대로이면 조각을 다시 쓰지 않는다. 팩마다 새 RUN으로 `rerender`를 실행하면 발행 자료 폴더 `.pack/자료_문제설명_…/`의 `fragments/`·`evidence/`를 복사해 build하고, 발행된 `validation.json`의 input_hash가 현재 입력과 같을 때 references·content·independent 검토를 이식한다. 원 복습문제나 참조 자료가 `<style>`·실행 `<script>`(JSON 데이터 스크립트는 제외)만 다르면 같은 입력으로 보고 참조 경로·hash를 새로 적는다. 그 밖의 변경·누락은 "참조 자료 변경"·"참조 자료 없음"으로 알리며, 그 참조로 한 검토를 다시 하고 references를 실제로 읽은 현재 파일로 고쳐 적는다. 이어서 `check` → source_visual·browser 실제 검토 → `publish` 순서로 진행한다. "입력 변경: 네 검토 모두 다시 필요"가 나오면 1~7단계 전체를 따른다. `all`이면 최신 → 0907 순으로 팩마다 반복하고 결과 표로 보고한다.
+
+   ```sh
+   python3 .agents/skills/ds-problem-explain/scripts/mpe_cli.py rerender --repo "$PWD" --target "$PWD/복습노트/1012/복습문제_1012_Queue.html" --run tmp/ds-problem-explain/1012-rerender
+   ```
 
 ## 산출 위치
 

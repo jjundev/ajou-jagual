@@ -43,3 +43,8 @@ def test_claude_link_and_provenance():
             assert sha256(path)==entry['destination_sha256']
         if entry['destination'].startswith('assets/') and entry['source_path']:
             assert entry['source_sha256']==entry['destination_sha256']
+
+def test_skill_documents_rerender_and_panel():
+    skill=(S/'SKILL.md').read_text();verification=(S/'references/verification.md').read_text()
+    assert '### 레이아웃만 바뀐 기존 발행분 재발행' in skill and 'mpe_cli.py rerender' in skill
+    assert 'od-panels:explain:v2:prob' in skill and '원문 탭' in verification and '띄우기' in verification
