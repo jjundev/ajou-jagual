@@ -1,6 +1,6 @@
 # 자료구조및알고리즘이해 복습 0917 문제설명
 
-주어진 조건을 읽고, 첫 줄을 쓰고, 이유를 따라가며 답을 확인해요.
+왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.
 
 문제의 첫 줄부터 검산까지 설명해요.
 
@@ -30,8 +30,6 @@
 
 2019-mid-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p1)
 
-#### 주어진 조건
-
 아래에 함수 foo의 코드가 있어요. 이 함수를 호출(사용)했을 때 무엇을 하는 함수인지 답해 보세요.
 
 함수 foo는 ( ) 함수이다.
@@ -42,7 +40,7 @@
         return foo(y, x % y);
 }`
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2019 중간 8번 · 2점 · 출제자 미상
 
@@ -55,6 +53,8 @@
 }`
 >
 > "
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -108,8 +108,6 @@ foo(48,18)에서 나머지 12를 첫 줄에 적어요.
 
 2018-mid-c024-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p2)
 
-#### 주어진 조건
-
 다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 나타내고, 빅오 표기법으로 표시해 보세요. 시간 복잡도를 구할 때는 `buffer[i][j] = 0;`의 대입 연산만 고려해요.
 
 `int i, j, k;
@@ -123,7 +121,7 @@ for(i=0; i<n; i++){
 
 답: T(n) =<br>빅오 표기법:
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2018 중간 8번 · 2점 · 출제자 미상
 
@@ -139,6 +137,8 @@ for(i=0; i<n; i++){
 }`
 >
 > 답: T(n) =<br>빅오 표기법:"
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -192,8 +192,6 @@ i=0일 때 j는 n번, i=1일 때 n−1번이라고 적어요.
 
 2018-mid-c024-q15 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p3)
 
-#### 주어진 조건
-
 임의의 두 양의 정수의 최대 공약수를 구해주는 gcd를 순환 함수로 구현해 보세요. 두 양의 정수는 main 함수에서 입력받아요.
 
 `#include <stdio.h>
@@ -208,7 +206,7 @@ int main(){
     return 0;
 }`
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2018 중간 15번 · 5점 · 출제자 미상
 
@@ -221,6 +219,8 @@ int gcd(int i, int j){
 (중략)`
 >
 > "
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -277,17 +277,17 @@ j=0 종료, 아니면 gcd(j,i%j)
 
 2018-mid-c102-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p4)
 
-#### 주어진 조건
-
 빈칸에 알맞은 말을 써 보세요.
 
 함수가 수행 도중에 자기 자신을 다시 호출하여 문제를 해결하는 기법을 ( ) 이라고 한다.
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2018 중간 1번 · 2점 · 출제자 미상
 
 > "1. 함수가 수행 도중에 자기 자신을 다시 호출하여 문제를 해결하는 기법을 ( ) 이라고 한다. [2 points]"
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -341,8 +341,6 @@ j=0 종료, 아니면 gcd(j,i%j)
 
 2017-mid-c050-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p5)
 
-#### 주어진 조건
-
 다음 코드에서 순환 함수 dec_to_bin을 구현해 보세요. (예: 십진수 입력:10 , 1010 )
 
 `#include <stdio.h>
@@ -362,7 +360,7 @@ int main(){
     return 0;
 }`
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2017 중간 11번 · 5점 · 출제자 미상
 
@@ -376,6 +374,8 @@ void dec_to_bin(int n){
 (중략)`
 >
 > "
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -433,8 +433,6 @@ n/2 먼저 호출, 돌아와 n%2 출력
 
 unk-final-ltk-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p6)
 
-#### 주어진 조건
-
 다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 쓰고, 빅오 표기법으로도 써 보세요. 시간 복잡도를 구할 때는 `buffer[i][j] = 0;`의 대입 연산만 고려해요.
 
 `int i, j, p, k, n;
@@ -450,7 +448,7 @@ for(i=1; i<n; i++){
 
 아래와 같이 쓰고 답을 작성해요.<br>T(n) =<br>빅오 표기법:
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 기말 1번 · 4점 · 이태권
 
@@ -468,6 +466,8 @@ for(i=1; i<n; i++){
 }`
 >
 > (중략)"
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -521,8 +521,6 @@ j 증감 추적, (k끝−1)×삼각수
 
 2018-mid-c024-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p7)
 
-#### 주어진 조건
-
 다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 나타내고, 빅오 표기법으로 표시해 보세요. 시간 복잡도를 구할 때는 `buffer[i][j] = 0;`의 대입 연산만 고려해요.
 
 `int i, j, k;
@@ -536,7 +534,7 @@ for(i=0; i<n; i++){
 
 답: T(n) =<br>빅오 표기법:
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2018 중간 8번 · 2점 · 출제자 미상
 
@@ -554,6 +552,8 @@ for(i=0; i<n; i++){
 }`
 >
 > 답: T(n) =<br>빅오 표기법:"
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -607,8 +607,6 @@ i=0일 때 j는 n번, i=1일 때 n−1번이라고 적어요.
 
 unk-final-ltk-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p8)
 
-#### 주어진 조건
-
 다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 쓰고, 빅오 표기법으로도 써 보세요. 시간 복잡도를 구할 때는 `buffer[i][j] = 0;`의 대입 연산만 고려해요.
 
 `int i, j, p, k, n;
@@ -624,7 +622,7 @@ for(i=1; i<n; i++){
 
 아래와 같이 쓰고 답을 작성해요.<br>T(n) =<br>빅오 표기법:
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 기말 1번 · 4점 · 이태권
 
@@ -644,6 +642,8 @@ for(i=1; i<n; i++){
 }`
 >
 > (중략)"
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -697,8 +697,6 @@ j 증감 추적, (k끝−1)×삼각수
 
 textbook-ch02-q06 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p9)
 
-#### 주어진 조건
-
 다음의 순환호출 함수에서 잘못된 점은 무엇인가?
 
 `int recursive(int n)
@@ -707,7 +705,7 @@ textbook-ch02-q06 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
     return n*recursive(n-1);
 }`
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2장 순환 · 06번 · 책 63쪽
 
@@ -718,6 +716,8 @@ textbook-ch02-q06 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
     printf("recursive(%d)\n", n);
     return n*recursive(n-1);
 }`
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -771,8 +771,6 @@ recursive(2)→recursive(1)→recursive(0)을 적어요.
 
 textbook-ch02-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p10)
 
-#### 주어진 조건
-
 다음 함수를 recursive(10)로 호출하였을 때, 화면에 출력되는 내용과 함수의 반환값을 구하라.
 
 `int recursive(int n)
@@ -782,7 +780,7 @@ textbook-ch02-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
     else return( recursive(n-3)+1 );
 }`
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2장 순환 · 09번 · 책 64쪽
 
@@ -794,6 +792,8 @@ textbook-ch02-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
     if( n<1) return -1;
     else return( recursive(n-3)+1 );
 }`
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -847,19 +847,19 @@ n=1은 n&lt;1을 만족하지 않으므로 한 번 더 호출해요.
 
 textbook-ch02-q13 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p11)
 
-#### 주어진 조건
-
 다음을 계산하는 순환적인 프로그램을 작성하시오.
 
 1 + 2 + 3 + ... + n
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2장 순환 · 13번 · 책 65쪽
 
 다음을 계산하는 순환적인 프로그램을 작성하시오.
 
 1 + 2 + 3 + ... + n
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
@@ -916,8 +916,6 @@ if (n == 1) return 1;
 
 textbook-ch02-q16 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p12)
 
-#### 주어진 조건
-
 다음의 순환적인 프로그램을 반복 구조를 사용한 비순환적 프로그램으로 바꾸시오.
 
 `int sum(int n)
@@ -926,7 +924,7 @@ textbook-ch02-q16 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
     else return (n + sum(n-1));
 }`
 
-#### 기출 원문
+<details><summary>기출 원문 보기</summary>
 
 2장 순환 · 16번 · 책 65쪽
 
@@ -937,6 +935,8 @@ textbook-ch02-q16 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
     if(n == 1 ) return 1;
     else return (n + sum(n-1));
 }`
+
+</details>
 
 #### 문제를 내 말로 읽어요
 
