@@ -8,6 +8,7 @@ from mpe_source import load_source, sha256
 from mpe_shared import parse
 from mpe_types import ExplainError
 from mpe_render import build_explanation, check_artifacts
+from test_skill_files import undo_overrides
 
 def make(tmp_path):
     source=source_file(tmp_path/'repo');pack=load_source(source,tmp_path/'repo')
@@ -32,13 +33,9 @@ def test_legacy_statement_rendered_once(tmp_path):
 def test_template_bytes_match_pinned_ml():
     template=Path(__file__).resolve().parents[1]/'assets/note-template.html'
     provenance=json.loads((template.parent/'port-provenance.json').read_text())
-    original=template.read_bytes()
     chain=[o for o in provenance.get('local_overrides',[]) if o['destination']=='assets/note-template.html']
-    for override in reversed(chain):
-        assert hashlib.sha256(original).hexdigest()==override['current_sha256']
-        inserted=override['inserted_text'].encode('utf-8')
-        assert original.count(inserted)==1
-        original=original.replace(inserted,b'',1)
+    assert hashlib.sha256(template.read_bytes()).hexdigest()==chain[-1]['current_sha256']
+    original=undo_overrides(template.read_bytes(),chain)
     assert hashlib.sha256(original).hexdigest()=='d0fe664a773920cf017ccf69fc9e7b69ef9a7c6b0b066601da36aaf1f338ba50'
 
 def test_repeated_svg_ids_scoped(tmp_path):

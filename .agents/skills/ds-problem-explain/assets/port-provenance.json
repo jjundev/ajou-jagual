@@ -1010,6 +1010,22 @@
         }
       ],
       "reason": "2026-10-13 themed scrollbar: peel stacked template overrides newest-first."
+    },
+    {
+      "destination": "tests/test_render.py",
+      "base_sha256": "bd746ce2420608f6dfb271f65426baa960e10246c6e46aa71a985ef53c00fbad",
+      "current_sha256": "56b2ae4e6a8da66a10a93f7445db06708ce0bb98a657853068ce3b5ef769eed9",
+      "replacements": [
+        {
+          "old": "from mpe_render import build_explanation, check_artifacts\n\n",
+          "new": "from mpe_render import build_explanation, check_artifacts\nfrom test_skill_files import undo_overrides\n\n"
+        },
+        {
+          "old": "    provenance=json.loads((template.parent/'port-provenance.json').read_text())\n    original=template.read_bytes()\n    chain=[o for o in provenance.get('local_overrides',[]) if o['destination']=='assets/note-template.html']\n    for override in reversed(chain):\n        assert hashlib.sha256(original).hexdigest()==override['current_sha256']\n        inserted=override['inserted_text'].encode('utf-8')\n        assert original.count(inserted)==1\n        original=original.replace(inserted,b'',1)\n    assert hashlib.sha256(original).hexdigest()=='d0fe664a773920cf017ccf69fc9e7b69ef9a7c6b0b066601da36aaf1f338ba50'\n",
+          "new": "    provenance=json.loads((template.parent/'port-provenance.json').read_text())\n    chain=[o for o in provenance.get('local_overrides',[]) if o['destination']=='assets/note-template.html']\n    assert hashlib.sha256(template.read_bytes()).hexdigest()==chain[-1]['current_sha256']\n    original=undo_overrides(template.read_bytes(),chain)\n    assert hashlib.sha256(original).hexdigest()=='d0fe664a773920cf017ccf69fc9e7b69ef9a7c6b0b066601da36aaf1f338ba50'\n"
+        }
+      ],
+      "reason": "2026-10-14 problem panel: peel replacement overrides too."
     }
   ]
 }
