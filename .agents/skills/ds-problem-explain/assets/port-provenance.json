@@ -1410,6 +1410,30 @@
         }
       ],
       "reason": "2026-10-14 problem panel: document rerender and panel checks; browser acceptance for the panel."
+    },
+    {
+      "destination": "SKILL.md",
+      "base_sha256": "50528faf6bd9e2369ec65ee7ce25f82fc6e8cf4f8727aed465e8c24b0565b769",
+      "current_sha256": "5bc13f7d4864715cd0b6a665d5c60035b8d04681e1ec6b08e8c68af15ca71c2e",
+      "replacements": [
+        {
+          "old": "템플릿·레이아웃만 바뀌고 원 복습문제와 설명 조각이 그대로이면 조각을 다시 쓰지 않는다. 팩마다 새 RUN으로 `rerender`를 실행하면 발행 자료 폴더 `.pack/자료_문제설명_…/`의 `fragments/`·`evidence/`를 복사해 build하고, 발행된 `validation.json`의 input_hash가 현재 입력과 같을 때 references·content·independent 검토를 이식한다. 원 복습문제나 참조 자료가 `<style>`·실행 `<script>`(JSON 데이터 스크립트는 제외)만 다르면 같은 입력으로 보고 참조 경로·hash를 새로 적는다. 그 밖의 변경·누락은 \"참조 자료 변경\"·\"참조 자료 없음\"으로 알리며, 그 참조로 한 검토를 다시 하고 references를 실제로 읽은 현재 파일로 고쳐 적는다. 이어서 `check` → source_visual·browser 실제 검토 → `publish` 순서로 진행한다. \"입력 변경: 네 검토 모두 다시 필요\"가 나오면 1~7단계 전체를 따른다. `all`이면 최신 → 0907 순으로 팩마다 반복하고 결과 표로 보고한다.\n",
+          "new": "템플릿·레이아웃만 바뀌고 원 복습문제와 설명 조각이 그대로이면 조각을 다시 쓰지 않는다. 팩마다 새 RUN으로 `rerender`를 실행하면 발행 자료 폴더 `.pack/자료_문제설명_…/`의 `fragments/`·`evidence/`를 복사해 build하고, 발행된 `validation.json`의 input_hash가 현재 입력과 같을 때 references·content·independent 검토를 이식한다. 원 복습문제나 참조 자료가 `<style>`·실행 `<script>`(JSON 데이터 스크립트는 제외)만 다르면 같은 입력으로 보고 참조 경로·hash를 새로 적는다. 그 밖의 변경·누락은 \"참조 자료 변경\"·\"참조 자료 없음\"으로 알린다. 그 참조가 템플릿·도구처럼 화면 검토(source_visual·browser)에만 쓰였으면 그 검토를 다시 하고 references를 실제로 읽은 현재 파일로 고쳐 적는다. content·independent가 기댄 참조(원 문제·정리노트·교과서 등)가 내용까지 바뀌었으면 rerender가 이식한 content·independent도 not_run으로 되돌리고 다시 검토한다. 이어서 `check` → source_visual·browser 실제 검토 → `publish` 순서로 진행한다. \"입력 변경: 네 검토 모두 다시 필요\"가 나오면 1~7단계 전체를 따른다. `all`이면 최신 → 0907 순으로 팩마다 반복하고 결과 표로 보고한다.\n"
+        }
+      ],
+      "reason": "2026-10-14 problem panel review fix: a changed reference that content/independent relied on resets those reviews."
+    },
+    {
+      "destination": "tests/test_skill_files.py",
+      "base_sha256": "7eceaf0cbcc821a8b5df8692cadcbf6c99b0fd57de74173a2eaaeca24c90cfd6",
+      "current_sha256": "315a1349aada194253210b10b73b7f22001167c1209f7715f3009281e011d6a5",
+      "replacements": [
+        {
+          "old": "",
+          "new": "    assert 'content·independent도 not_run으로 되돌리고' in skill\n"
+        }
+      ],
+      "reason": "2026-10-14 problem panel review fix: a changed reference that content/independent relied on resets those reviews."
     }
   ]
 }

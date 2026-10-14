@@ -48,7 +48,7 @@ description: 자구알의 기존 복습문제 HTML로 문제 단서, 떠올릴 �
 
 ### 레이아웃만 바뀐 기존 발행분 재발행
 
-템플릿·레이아웃만 바뀌고 원 복습문제와 설명 조각이 그대로이면 조각을 다시 쓰지 않는다. 팩마다 새 RUN으로 `rerender`를 실행하면 발행 자료 폴더 `.pack/자료_문제설명_…/`의 `fragments/`·`evidence/`를 복사해 build하고, 발행된 `validation.json`의 input_hash가 현재 입력과 같을 때 references·content·independent 검토를 이식한다. 원 복습문제나 참조 자료가 `<style>`·실행 `<script>`(JSON 데이터 스크립트는 제외)만 다르면 같은 입력으로 보고 참조 경로·hash를 새로 적는다. 그 밖의 변경·누락은 "참조 자료 변경"·"참조 자료 없음"으로 알리며, 그 참조로 한 검토를 다시 하고 references를 실제로 읽은 현재 파일로 고쳐 적는다. 이어서 `check` → source_visual·browser 실제 검토 → `publish` 순서로 진행한다. "입력 변경: 네 검토 모두 다시 필요"가 나오면 1~7단계 전체를 따른다. `all`이면 최신 → 0907 순으로 팩마다 반복하고 결과 표로 보고한다.
+템플릿·레이아웃만 바뀌고 원 복습문제와 설명 조각이 그대로이면 조각을 다시 쓰지 않는다. 팩마다 새 RUN으로 `rerender`를 실행하면 발행 자료 폴더 `.pack/자료_문제설명_…/`의 `fragments/`·`evidence/`를 복사해 build하고, 발행된 `validation.json`의 input_hash가 현재 입력과 같을 때 references·content·independent 검토를 이식한다. 원 복습문제나 참조 자료가 `<style>`·실행 `<script>`(JSON 데이터 스크립트는 제외)만 다르면 같은 입력으로 보고 참조 경로·hash를 새로 적는다. 그 밖의 변경·누락은 "참조 자료 변경"·"참조 자료 없음"으로 알린다. 그 참조가 템플릿·도구처럼 화면 검토(source_visual·browser)에만 쓰였으면 그 검토를 다시 하고 references를 실제로 읽은 현재 파일로 고쳐 적는다. content·independent가 기댄 참조(원 문제·정리노트·교과서 등)가 내용까지 바뀌었으면 rerender가 이식한 content·independent도 not_run으로 되돌리고 다시 검토한다. 이어서 `check` → source_visual·browser 실제 검토 → `publish` 순서로 진행한다. "입력 변경: 네 검토 모두 다시 필요"가 나오면 1~7단계 전체를 따른다. `all`이면 최신 → 0907 순으로 팩마다 반복하고 결과 표로 보고한다.
 
    ```sh
    python3 .agents/skills/ds-problem-explain/scripts/mpe_cli.py rerender --repo "$PWD" --target "$PWD/복습노트/1012/복습문제_1012_Queue.html" --run tmp/ds-problem-explain/1012-rerender
