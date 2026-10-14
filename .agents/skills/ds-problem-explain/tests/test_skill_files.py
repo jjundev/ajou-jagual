@@ -8,7 +8,7 @@ def test_install_has_no_ml_runtime_dependency(tmp_path):
     copied=tmp_path/'skill';shutil.copytree(S,copied,ignore=shutil.ignore_patterns('__pycache__'))
     result=subprocess.run([sys.executable,str(copied/'scripts/mpe_cli.py'),'--help'],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
-    assert 'extract' in result.stdout and 'publish' in result.stdout
+    assert 'extract' in result.stdout and 'publish' in result.stdout and 'rerender' in result.stdout
 
 def undo_overrides(current,chain):
     """Peel approved local edits newest-first; each step must restore its recorded base bytes exactly."""

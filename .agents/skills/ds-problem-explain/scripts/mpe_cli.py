@@ -1,14 +1,18 @@
 """Extract → agent-authored fragments → build/check → reviewed publication."""
 import argparse
-from dataclasses import asdict
+from dataclasses import asdict, replace
+import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
+import subprocess
 import sys
+import tempfile
 import uuid
 from mpe_contract import initial_reviews, payload_hash, validate_fragment
 from mpe_source import inside, load_source, resolve_sources, sha256
-from mpe_render import build_explanation, check_artifacts, artifact_hashes, dump
+from mpe_render import PACK_DIR, build_explanation, check_artifacts, artifact_hashes, dump, names
 from mpe_publish import publish_explanation
 from mpe_types import Artifacts, ExplainError
 
@@ -114,6 +118,111 @@ def build(item, fragments):
     dump(folder / 'review.json', review)
     print('build:', artifacts.html)
 
+# Page code (CSS, executable scripts) is layout; JSON data scripts such as the answer model are content.
+CODE_RE = re.compile(r'<style\b[^>]*>.*?</style>|<script\b(?![^>]*application/json)[^>]*>.*?</script>', re.S | re.I)
+
+def same_problems(old, new):
+    """Problems of the published source equal the current ones."""
+    return tuple(old) == tuple(new)
+
+def git_blob(path, digest):
+    """Bytes of the committed version of path whose SHA-256 is digest, or None. path may since be deleted."""
+    git = lambda *args: subprocess.run(['git', *args], cwd=path.parent, capture_output=True, check=True).stdout
+    try:
+        commits = git('log', '--format=%H', '--', path.name).decode().split()
+    except (OSError, subprocess.CalledProcessError):
+        return None
+    for commit in commits:
+        try:
+            data = git('show', f'{commit}:./{path.name}')
+        except (OSError, subprocess.CalledProcessError):
+            continue  # the commit that deleted or moved the file
+        if hashlib.sha256(data).hexdigest() == digest:
+            return data
+    return None
+
+def published_source(pack, digest):
+    """The review source as it was when published, loaded from its git blob."""
+    data = git_blob(pack.path, digest) if pack.profile == 'review' else None
+    if data is None:
+        return None
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / pack.path.parent.name / pack.path.name
+            path.parent.mkdir()
+            path.write_bytes(data)
+            return load_source(path, Path(tmp))
+    except (OSError, ExplainError):
+        return None
+
+def carried_references(references, old_repo, repo):
+    """Rebase reference paths onto this checkout; accept files changed only in page code."""
+    carried, notes = [], []
+    strip = lambda data: CODE_RE.sub('', data.decode('utf-8', 'replace'))
+    for reference in references:
+        path = Path(reference['path'])
+        if path.is_relative_to(old_repo):
+            path = repo / path.relative_to(old_repo)
+        reference = {**reference, 'path': str(path)}
+        if not path.is_file():
+            notes.append(f'참조 자료 없음: 검토를 다시 하세요: {path.name}')
+        elif sha256(path) != reference['sha256']:
+            old = git_blob(path, reference['sha256'])
+            if old is not None and strip(old) == strip(path.read_bytes()):
+                reference['sha256'] = sha256(path)
+                notes.append(f'참조 자료는 스타일·스크립트만 바뀌었어요: {path.name}')
+            else:
+                notes.append(f'참조 자료 변경: 검토를 다시 하세요: {path.name}')
+        carried.append(reference)
+    return carried, notes
+
+def rerender(repo, target, run):
+    """Rebuild published packs with the current template from their published fragments and evidence."""
+    if extract(repo, target, run):
+        return 1
+    failed = False
+    for item in load_run(run):
+        try:
+            pack, folder = item['pack'], item['folder']
+            data = pack.path.parent / PACK_DIR / names(pack)[2]
+            published = data / 'fragments'
+            if not published.is_dir() or {p.stem for p in published.glob('*.html')} != {p.id for p in pack.problems}:
+                raise ExplainError('발행된 조각 없음/불일치: 정상 저작 절차를 쓰세요')
+            for p in pack.problems:
+                shutil.copy2(inside(published / f'{p.id}.html', item['repo']), folder / 'explanations' / f'{p.id}.html')
+            if (data / 'evidence').is_dir():
+                shutil.copytree(inside(data / 'evidence', item['repo']), folder / 'evidence', dirs_exist_ok=True)
+            fragments = load_fragments(item)
+            build(item, fragments)
+            stored = data / 'validation.json'
+            stored = read_json(inside(stored, item['repo'])) if stored.is_file() else {}
+            manifest = read_json(inside(data / 'manifest.json', item['repo'])) if stored else {}
+            # The payload hash covers source and fragments, not the template, so content reviews stay valid.
+            same = stored.get('input_hash') == payload_hash(pack, fragments)
+            note = ''
+            if not same and stored.get('input_hash'):
+                # A source edited only outside its cards (e.g. page CSS) keeps the same problems.
+                digest = manifest.get('source_sha256', '')
+                old = published_source(pack, digest)
+                same = (old is not None and same_problems(old.problems, pack.problems)
+                        and payload_hash(replace(pack, sha256=digest), fragments) == stored['input_hash'])
+                note = '원본 파일은 바뀌었지만 문항 내용은 같아요: ' if same else ''
+            if same:
+                review = read_json(folder / 'review.json')
+                for key in ('content', 'independent'):
+                    review[key] = stored[key]
+                review['references'], notes = carried_references(stored['references'], Path(manifest['repo']), item['repo'])
+                dump(folder / 'review.json', review)
+                for line in notes:
+                    print('rerender:', line)
+                print(f'rerender: {note}content·independent 재사용, source_visual·browser 재검토 필요')
+            else:
+                print('rerender: 입력 변경: 네 검토 모두 다시 필요')
+        except (ExplainError, OSError, ValueError, KeyError, TypeError) as exc:
+            failed = True
+            print(f'{folder.name}: {exc}', file=sys.stderr)
+    return int(failed)
+
 def main(argv=None):
     if hasattr(sys.stdout, 'reconfigure'):
         sys.stdout.reconfigure(encoding='utf-8')
@@ -126,10 +235,16 @@ def main(argv=None):
     extraction.add_argument('--run', type=Path, required=True)
     for name in ('build', 'check', 'publish'):
         commands.add_parser(name).add_argument('--run', type=Path, required=True)
+    rerendering = commands.add_parser('rerender')
+    rerendering.add_argument('--repo', type=Path, required=True)
+    rerendering.add_argument('--target', required=True)
+    rerendering.add_argument('--run', type=Path, required=True)
     args = parser.parse_args(argv)
     try:
         if args.command == 'extract':
             return extract(args.repo, args.target, args.run)
+        if args.command == 'rerender':
+            return rerender(args.repo, args.target, args.run)
         load_errors = []
         items = load_run(args.run, errors=load_errors)
         failed = bool(load_errors)
