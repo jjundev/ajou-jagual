@@ -46,6 +46,6 @@ def test_claude_link_and_provenance():
 
 def test_skill_documents_rerender_and_panel():
     skill=(S/'SKILL.md').read_text();verification=(S/'references/verification.md').read_text()
-    assert '### 레이아웃만 바뀐 기존 발행분 재발행' in skill and 'mpe_cli.py rerender' in skill
+    assert '### 레이아웃만 바뀐 기존 발행분 재발행' in skill and 'mpe_cli.py" rerender' in skill
     assert 'od-panels:explain:v2:prob' in skill and '원문 탭' in verification and '띄우기' in verification
     assert 'content·independent도 not_run으로 되돌리고' in skill

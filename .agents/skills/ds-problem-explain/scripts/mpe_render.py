@@ -1,3 +1,5 @@
+from mpe_review_policy import POLICY_VERSION
+from mpe_rerender import source_resources
 """Assemble explanation notes with local resources and auditable preservation."""
 import hashlib
 import html
@@ -58,6 +60,16 @@ def md_resource(src):
     """HTML 기준 자원 경로(.pack/...) → .pack/ 안 md 기준 경로."""
     return src[len(PACK_DIR) + 1:] if src.startswith(PACK_DIR + '/') else src
 
+SVG_STROKE_TAGS = ('rect', 'circle', 'ellipse', 'line', 'polyline', 'polygon', 'path', 'g', 'text')
+
+def _inside_svg(node):
+    parent = node.parent
+    while parent is not None:
+        if getattr(parent, 'tag', None) == 'svg':
+            return True
+        parent = getattr(parent, 'parent', None)
+    return False
+
 def resources(markup, problem, pack, repo, stage, fig_name, destination, scope):
     root = parse(markup)
     nodes = list(root.find_all(lambda n: True))
@@ -76,6 +88,12 @@ def resources(markup, problem, pack, repo, stage, fig_name, destination, scope):
                     r'background:white;width:[1-9][0-9]{0,3}px;max-width:none;height:auto', value))
             if allowed:
                 errors.remove('허용하지 않는 속성: style')
+    for node in nodes:
+        value = node.attrs.get('style', '')
+        if (node.tag in SVG_STROKE_TAGS and _inside_svg(node)
+                and re.fullmatch(r'stroke-width:[0-9]+(\.[0-9]+)?(px)?;?',value)
+                and '허용하지 않는 속성: style' in errors):
+            errors.remove('허용하지 않는 속성: style')
     if errors:
         raise ExplainError(f'{problem.id}: 원문/설명 마크업 오류: ' + ' / '.join(errors))
     # Scope SVG identifiers per occurrence (original English and reading may repeat media).
@@ -172,7 +190,7 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
               'SUBTITLE': '왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.',
               'SECTIONS': '<section id="problems"><h2>문항별 설명</h2>' + ''.join(articles) + '</section>',
               'FOOTER': '원 문제·정리노트·PDF는 보존해요.',
-              'SCRIPTS': '<script type="application/json" id="explain-choice-model">{}</script>',
+              'SCRIPTS': '<script type="application/json" id="explain-choice-model">'+json.dumps({p.id:{'answer':p.choice.answer,'mode':p.choice.mode,'options':list(p.choice.option_ids)} for p in pack.problems if p.choice},ensure_ascii=False).replace('</','<\\/')+'</script>',
               'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': f'{PACK_DIR}/{data_name}/vendor'}
     text = (ASSETS / 'note-template.html').read_text(encoding='utf-8')
     for key, value in values.items():
@@ -186,6 +204,7 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
     files = tuple(sorted(p for p in stage.rglob('*') if p.is_file()))
     dump(manifest_path, {'version': 1, 'profile': pack.profile, 'range': pack.range, 'slug': pack.slug,
                          'source': str(pack.path), 'source_sha256': pack.sha256,
+                         'review_policy_version': POLICY_VERSION, 'source_resources': source_resources(pack,repo),
                          'input_hash': payload_hash(pack, fragments), 'reading_key': values['RANGE'],
                          'destination': str(pack.path.parent), 'repo': str(repo.resolve()),
                          'problems': [{'id': p.id, 'subparts': list(p.subparts)} for p in pack.problems],

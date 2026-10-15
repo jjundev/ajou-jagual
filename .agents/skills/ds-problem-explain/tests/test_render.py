@@ -101,7 +101,7 @@ def test_nfd_image_link_and_missing_anchor(tmp_path):
 def test_missing_images_and_duplicate_svg_ids_refused(tmp_path):
     pack,fragments=make(tmp_path)
     for extra,match in [('<img src="missing.png">','경로|그림'),('<svg><g id="a"></g><g id="a"></g></svg>','중복.*ID')]:
-        with pytest.raises(ExplainError,match=match):build_explanation(pack,{'p1':fragments['p1']+extra},tmp_path/match.replace('|',''),tmp_path/'repo')
+        with pytest.raises(ExplainError,match=match):build_explanation(pack,{'p1':fragments['p1']+extra},tmp_path/('invalid-svg' if 'ID' in match else 'missing-image'),tmp_path/'repo')
 
 def test_tampered_output_detected(tmp_path):
     pack,fragments=make(tmp_path);result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')

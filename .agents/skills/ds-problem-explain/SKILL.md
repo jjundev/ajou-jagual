@@ -46,14 +46,6 @@ description: 자구알의 기존 복습문제 HTML로 문제 단서, 떠올릴 �
 
 설명 소유 파일만 백업·교체하며 실패하면 복구한다. 다중 파일 교체는 OS 원자적 transaction이 아니다. 팩별 성공·보류 이유, HTML·MD와 백업 경로를 보고한다. 유용하면 HTML을 Codex 패널로 연다. 커밋·푸시는 별도 사용자 요청이 있을 때만 수행한다.
 
-### 레이아웃만 바뀐 기존 발행분 재발행
-
-템플릿·레이아웃만 바뀌고 원 복습문제와 설명 조각이 그대로이면 조각을 다시 쓰지 않는다. 팩마다 새 RUN으로 `rerender`를 실행하면 발행 자료 폴더 `.pack/자료_문제설명_…/`의 `fragments/`·`evidence/`를 복사해 build하고, 발행된 `validation.json`의 input_hash가 현재 입력과 같을 때 references·content·independent 검토를 이식한다. 원 복습문제나 참조 자료가 `<style>`·실행 `<script>`(JSON 데이터 스크립트는 제외)만 다르면 같은 입력으로 보고 참조 경로·hash를 새로 적는다. 그 밖의 변경·누락은 "참조 자료 변경"·"참조 자료 없음"으로 알린다. 그 참조가 템플릿·도구처럼 화면 검토(source_visual·browser)에만 쓰였으면 그 검토를 다시 하고 references를 실제로 읽은 현재 파일로 고쳐 적는다. content·independent가 기댄 참조(원 문제·정리노트·교과서 등)가 내용까지 바뀌었으면 rerender가 이식한 content·independent도 not_run으로 되돌리고 다시 검토한다. 이어서 `check` → source_visual·browser 실제 검토 → `publish` 순서로 진행한다. "입력 변경: 네 검토 모두 다시 필요"가 나오면 1~7단계 전체를 따른다. `all`이면 최신 → 0907 순으로 팩마다 반복하고 결과 표로 보고한다.
-
-   ```sh
-   python3 .agents/skills/ds-problem-explain/scripts/mpe_cli.py rerender --repo "$PWD" --target "$PWD/복습노트/1012/복습문제_1012_Queue.html" --run tmp/ds-problem-explain/1012-rerender
-   ```
-
 ## 산출 위치
 
 입력과 같은 날짜 폴더 루트에는 `문제설명_<range>_<slug>.html`만 두고, `.md`·`figures_문제설명_<range>_<slug>/`·`자료_문제설명_<range>_<slug>/`는 그 폴더의 숨김 폴더 `.pack/` 안에 저장한다(예: `복습노트/1012/.pack/문제설명_1012_Queue.md`). 숨김 폴더라 검색 도구가 건너뛸 수 있으니 이 경로를 직접 연다. 자료 폴더에는 생성 기록·검토·설명 조각·검산·로컬 자원이 들어간다. 정리노트 링크를 자동 삽입하지 않는다. 읽음 상태 범위는 `ds-problem-explain-review-<range>-<slug>`다.
@@ -63,3 +55,23 @@ description: 자구알의 기존 복습문제 HTML로 문제 단서, 떠올릴 �
 ## 독립 코드와 실행결과
 
 독립된 코드 조각과 실행결과는 한 줄이어도 `<pre><code>...</code></pre>`로 묶는다. 설명 문장은 블록 밖의 문단에 두고, 문장 속 `head`, `p->link` 같은 짧은 표기는 인라인 `<code>`로 유지한다. pre에는 직계 code 하나와 공백만 허용하며 빈 블록을 만들지 않는다. 코드의 문자·공백·들여쓰기·줄바꿈·연산 순서를 보존하고 `<`, `&`는 HTML escape한다. `$`는 수식으로 해석하지 않는다. 공통 템플릿의 테마 배경·테두리·여백을 사용하고 긴 줄은 블록 안에서만 스크롤한다. 일반 문장에서 코드를 자동 추측해 변환하지 않는다.
+
+
+## 공통 업데이트: 대상·화면·검토 기준
+
+- `all`: 기존 복습팩만 끝 날짜 내림차순으로 처리한다. 과제·forecast는 자동 선택하지 않는다. 전자회로2는 `.assets/problems.txt`가 있는 팩만 선택한다. 여러 후보는 명시 경로(전자회로2는 날짜 범위)로 해소하고 새 문제를 출제하지 않는다.
+- 화면: 1024px 이상은 목차와 문제 패널이 기본으로 함께 열린다. 저장된 닫힘 선택은 유지한다. 문제 패널은 `문제 | 원문` 탭, 왼쪽·오른쪽 붙이기·띄우기, 이동·크기 조절을 지원한다. 상태 키는 `od-panels:explain:v2:prob`다. 원문 없는 문항은 원문 탭을 숨기고, 모바일은 해설 위 `문제 보기`로 펼친다. 그림 확대와 인쇄 원문 보존도 검토한다.
+- 객관식: 입력에 명시된 정답 모델의 보기 ID·순서·정답·mode가 실제 보기와 맞을 때만 클릭 판정·알림·다시 풀기를 제공한다. 모델 없음/불일치는 정적 표시하고 진단한다. 해설 문장이나 보기 위치로 정답 모델을 추측하지 않는다. 전자회로2 workbook 입력은 정적 표시한다.
+- 현재 검토 기준은 `review_policy_version="problem-explain-2026-10-15"`다. build의 review.json과 manifest에 기록하며, 이전 기준이나 기준 없는 기록은 새 발행을 승인하지 못한다. 기존 발행 HTML의 열람에는 영향을 주지 않는다.
+
+### 레이아웃만 바뀐 기존 발행분 재발행
+
+발행 자료 `.pack/자료_문제설명_<range>_<slug>/`의 fragments·evidence를 새 RUN으로 복사하고 stage만 조립한다. CLI의 rerender는 자동 발행하지 않는다.
+
+```sh
+python3 ".agents/skills/ds-problem-explain/scripts/mpe_cli.py" rerender --repo "<저장소 절대경로>" --target 1007 --run "<비어 있는 새 RUN 절대경로>"
+```
+
+입력·설명 조각·입력 그림·검산 자료·참조 파일이 검증되고 검토 기준도 현재와 같을 때만 content·independent를 재사용한다. 전자회로2는 problems.txt뿐 아니라 문제 MD·그림 전체의 합성 해시가 같아야 한다. 참조 누락·내용 변경·기준 누락/변경이면 content·independent도 not_run으로 되돌리고 실제 검토를 다시 한다. 경로 이전은 실제 대상과 바이트/링크 동등성을 입증할 때만 허용하며, 입증하지 못하면 재검토한다. 원본 HTML의 스타일·실행 스크립트만 바뀐 경우는 과거 입력을 확인할 수 있을 때만 동일 문항으로 인정하고 JSON 정답 데이터는 내용으로 취급한다.
+
+`check` 뒤 source_visual·browser를 실제로 다시 확인한다. 검토 기준이 바뀐 이번 업데이트의 옛 발행분은 내용 검토·독립 검산도 새로 필요하다. 네 검토가 모두 pass인 뒤에만 별도 publish 절차를 사용한다. 사용자가 stage까지만 요청했다면 publish를 실행하지 않는다. 새로 해설을 저작해야 하면 기존 정상 저작 절차로 돌아간다.

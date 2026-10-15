@@ -337,7 +337,7 @@
     .figure-sheet { width: min(96vw, 1100px); max-height: 90dvh; margin: auto; border-radius: 16px; }
     .figure-sheet img, .figure-sheet svg { display: block; width: 100%; max-width: 100%; height: auto; cursor: default; }
 
-    /* 클릭형 보기: 생명과학 문제설명 스킬 be26a42 에서 이식 */
+    /* 클릭형 보기: pinned bio template review-interaction.css의 보기 규칙 */
     .review-ready .choices { list-style:none; padding:0; }
     .review-ready .choices > li { margin:0 0 var(--s3); }
     .review-choice {
@@ -347,7 +347,7 @@
     }
     .review-choice:hover { border-color:var(--accent); }
     .review-choice:focus-visible, .review-reset:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
-    /* 생명과학 문제설명 스킬 be26a42 에서 이식 */
+    /* pinned bio template review-interaction.css에서 복사 — test_choice_feedback_copied_from_review_pack이 어긋남을 잡는다 */
     .review-choice[data-result="correct"], .review-choice[data-result="intended"] { border:3px solid var(--accent); }
     .review-choice[data-result="selected"] { border:3px solid var(--danger); }
     .review-choice[data-result="uncertain"] { border:3px solid var(--ink-2); }
@@ -359,7 +359,7 @@
     .review-choice-content { padding:var(--s2) 0; }
     .review-choice-content > :first-child { margin-top:0; }
     .review-choice-content > :last-child { margin-bottom:0; }
-    /* 보기 판정 알림: 생명과학 문제설명 스킬 be26a42 에서 이식 */
+    /* 보기 판정 알림: pinned bio template review-interaction.css에서 복사 */
     .review-feedback {
       position:fixed; top:calc(env(safe-area-inset-top) + 72px); left:50%; z-index:100;
       transform:translateX(-50%); width:max-content; max-width:calc(100vw - 32px);
@@ -655,7 +655,7 @@
       function docked() {
         const pref = store.get(PREF, {});
         // 문제해설은 본문 왼쪽 문제 패널을 기본으로 연다
-        if (kind === 'explain') return { left: pref.left ?? roomyMq.matches, prob: pref.prob ?? true, right: pref.right ?? false };
+        if (kind === 'explain') return { left: pref.left ?? wideMq.matches, prob: pref.prob ?? true, right: pref.right ?? false };
         return { left: pref.left ?? true, prob: false, right: pref.right ?? roomyMq.matches };
       }
       // 본문이 최소 폭(320px)보다 좁아지면 먼저 직접 넓힌 패널(문제 → 요약)을 이번 화면에서만 줄이고,
@@ -1131,7 +1131,7 @@
         const ui = {};
         let targetTimer = 0;
         const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // 판정 알림과 보기 스크롤: 생명과학 문제설명 스킬 be26a42 에서 이식 (root→document, win→window)
+        // 판정 알림과 보기 스크롤: pinned bio template review-interaction.js에서 복사 (root→document, win→window)
         function scrollAnswerIntoView(scroller, selectedLi, answerLi, selectedButton, answerButton) {
             if (!scroller || !selectedLi.getClientRects().length) return;
             const viewport = scroller.getBoundingClientRect();
@@ -1148,7 +1148,7 @@
               target = span(selectedButton, selectedButton);
             scroller.scrollTop += (target.top + target.bottom - viewport.top - viewport.bottom) / 2;
           }
-  
+
         let feedback = null;
         let feedbackTimer = null;
         let feedbackOwner = null;
@@ -1357,7 +1357,8 @@
           curId = key === 'intro' ? null : key;
           Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
           empty.hidden = Boolean(sums[key]);
-          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
+          if (key === 'intro') sub.textContent = '전체 흐름';
+          else sub.innerHTML = (s.querySelector('h3') || {}).innerHTML || ''; // preserve rendered title math
           if (wideMq.matches) {
             Object.keys(panes).forEach((id) => { panes[id].hidden = id !== curId; });
             Object.keys(origs).forEach((id) => { origs[id].hidden = id !== curId; });
