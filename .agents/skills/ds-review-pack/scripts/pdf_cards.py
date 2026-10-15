@@ -39,7 +39,12 @@ def blocks(node):
             start=int(child.attrs.get('start','1'))
             for i,li in enumerate(c for c in child.children if isinstance(c,Node) and c.tag=='li'):
                 if 'steps' in child.classes:
-                    out.append(Block('prose', ''.join(markup(c) for c in li.children), li.text()))
+                    # A step can contain a real code block. Expose its lines to
+                    # pagination instead of treating the entire step as prose.
+                    if any(li.find_all(lambda n:n.tag=='pre')):
+                        out.extend(blocks(li))
+                    else:
+                        out.append(Block('prose', ''.join(markup(c) for c in li.children), li.text()))
                 else:
                     attrs=f' start="{start+i}"' if child.tag=='ol' else ''
                     out.append(Block('prose',f'<{child.tag}{attrs}>'+markup(li)+f'</{child.tag}>',li.text()))

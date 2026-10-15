@@ -155,6 +155,23 @@ def test_authored_style_still_refused(tmp_path):
     with pytest.raises(ExplainError,match='style'):
         build_explanation(pack,{'p1':fragments['p1']+'<figure style="margin:16px 0">x</figure>'},tmp_path/'stage',tmp_path/'repo')
 
+def test_source_scroll_table_preserves_cells_and_static_width(tmp_path):
+    pack,fragments=make(tmp_path)
+    table='<div class="table-wrap" style="overflow-x:auto"><table style="min-width:500px"><tr><th>front</th><td>3</td><th>rear</th><td>5</td></tr></table></div>'
+    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+table,original_html=pack.problems[0].original_html+table)
+    pack=replace(pack,problems=(p,))
+    result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')
+    assert check_artifacts(pack,result)==[]
+    assert result.html.read_text().count('min-width:500px')==2
+
+@pytest.mark.parametrize('style',['min-width:500px;position:fixed','min-width:500px;background:url(https://example.com/x)','min-width:0px'])
+def test_source_scroll_table_does_not_allow_extra_style(tmp_path,style):
+    pack,fragments=make(tmp_path)
+    p=replace(pack.problems[0],conditions_html=f'<table style="{style}"><tr><td>x</td></tr></table>')
+    pack=replace(pack,problems=(p,))
+    with pytest.raises(ExplainError,match='style'):
+        build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')
+
 def test_problem_panel_left_of_content():
     t=(Path(__file__).resolve().parents[1]/'assets/note-template.html').read_text()
     bar=t[t.index('<header class="topbar">'):t.index('</header>')]

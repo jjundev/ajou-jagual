@@ -1,0 +1,25 @@
+<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>위에서만 꺼낼 수 있는 두 통으로, 먼저 넣은 물건을 먼저 꺼내는 줄을 만들어요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘두 스택’, ‘입력은 스택 #1’, ‘출력은 스택 #2’라는 단서에서 스택의 후입선출(LIFO) 순서를 두 번 뒤집어 큐의 선입선출(FIFO)을 만드는 방법을 떠올려요. 입력 스택 <code>in</code>에는 새 값을 쌓아요. 출력 스택 <code>out</code>이 비었을 때에만 <code>in</code>의 값을 모두 옮기면, 가장 오래된 값이 <code>out</code>의 맨 위에 와요. <code>out</code>에 값이 남아 있을 때 옮기면 나중에 온 값이 먼저 나오는 오류가 생겨요.</p><p>각 값은 입력·이동·출력에서 상수 번만 다뤄지므로 여러 연산을 합친 분할상환(amortized) 비용은 연산당 $O(1)$이에요. 한 번의 이동을 포함한 <code>dequeue</code> 최악 비용은 $O(n)$이에요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>“<code>enqueue</code>는 #1에 push, <code>dequeue</code>는 #2가 빌 때만 #1 전체를 #2로 이동한 뒤 pop”이라고 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>아래 C 함수는 원 카드의 용량 256, 두 <code>top</code> 초기값 0, 성공 1·실패 0 계약을 그대로 사용해요. <code>in.top + out.top</code>은 전체 저장 개수라 용량 검사는 두 스택을 합쳐야 해요.</p><pre><code class="language-c">#define CAP 256
+typedef struct { int a[CAP], top; } Stack;
+typedef struct { Stack in, out; } TwoStackQueue;
+/* 두 top은 0으로 초기화해 사용해요. 1은 성공, 0은 실패예요. */
+int enqueue(TwoStackQueue *q, int value) {
+    if (q-&gt;in.top + q-&gt;out.top &gt;= CAP) return 0;
+    q-&gt;in.a[q-&gt;in.top++] = value;
+    return 1;
+}
+int dequeue(TwoStackQueue *q, int *value) {
+    if (q-&gt;out.top == 0) {
+        while (q-&gt;in.top &gt; 0)
+            q-&gt;out.a[q-&gt;out.top++] = q-&gt;in.a[--q-&gt;in.top];
+    }
+    if (q-&gt;out.top == 0) return 0;
+    *value = q-&gt;out.a[--q-&gt;out.top];
+    return 1;
+}</code></pre><ol><li>10, 20, 30을 넣으면 <code>in</code>의 아래에서 위로 10, 20, 30이에요.</li><li>첫 삭제 때 #2가 비었으므로 30, 20, 10 순서로 옮겨 <code>out</code>의 위가 10이 돼요. 10을 꺼내요.</li><li>40을 새로 넣어도 <code>out</code>에 20, 30이 남아 있으므로 이동하지 않아요. 이어서 20, 30을 꺼내요.</li><li>그다음 #2가 비면 #1의 40을 옮겨 꺼내요. 전체 출력은 10, 20, 30, 40이에요.</li></ol></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>두 스택으로 FIFO 큐를 구현할 수 있어요. 독립 시뮬레이션에서 <code>enqueue(10), enqueue(20), enqueue(30), dequeue(), enqueue(40), dequeue(), dequeue(), dequeue()</code>의 출력이 10, 20, 30, 40이었어요. 빈 큐 삭제는 0을 반환하고 출력 포인터의 기존 값을 유지해요. 총 256개 저장 후 추가 삽입은 0을 반환해요. <code>q</code>와 <code>value</code>는 유효한 포인터여야 해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>#2에 값이 남았는데 #1을 옮기면 나중에 들어온 40이 먼저 나올 수 있어요. #1만 보고 용량을 검사하면 두 스택의 합이 배열 용량을 넘어갈 수 있어요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>#1과 #2의 아래·위 방향을 그리세요.</li><li>10, 20, 30을 넣고 한 번 꺼낸 뒤 40을 넣으세요.</li><li>#2가 남은 동안 다음 값이 무엇인지 쓰세요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>입력은 #1, 출력은 #2가 빌 때만 옮긴 뒤 pop.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>스택을 두 번 뒤집으면 FIFO. 분할상환 $O(1)$, 이동하는 한 번은 최악 $O(n)$.</p></div><div class="summary-group"><h4>답과 검산</h4><p>교차 삽입·삭제의 출력은 10, 20, 30, 40이에요.</p></div></div>

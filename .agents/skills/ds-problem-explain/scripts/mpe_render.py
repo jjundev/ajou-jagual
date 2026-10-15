@@ -62,11 +62,14 @@ def resources(markup, problem, pack, repo, stage, fig_name, destination, scope):
     root = parse(markup)
     nodes = list(root.find_all(lambda n: True))
     errors = markup_errors(root, allow_summary=True)
-    # Existing textbook figures carry static presentation; authored styles stay forbidden.
+    # Existing figures/tables carry static presentation; authored styles stay forbidden.
     if scope in ('source', 'original'):
         for node in nodes:
             value = node.attrs.get('style', '')
             allowed = (node.tag == 'figure' and value == 'margin:16px 0') or (
+                node.tag == 'div' and 'table-wrap' in node.classes and
+                value == 'overflow-x:auto') or (
+                node.tag == 'table' and re.fullmatch(r'min-width:[1-9][0-9]{0,3}px', value)) or (
                 node.tag == 'div' and 'figure-scroll' in node.classes and
                 value == 'max-width:100%;overflow-x:auto;background:white') or (
                 node.tag == 'svg' and re.fullmatch(

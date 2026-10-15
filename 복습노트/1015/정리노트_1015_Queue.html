@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>자료구조및알고리즘이해 정리노트 1015</title>
+  <meta name="description" content="이정원 교수님 자료구조및알고리즘이해 · 1015 수업 (Software_6 Queue)">
+  <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']})"></script>
+  <style>
+    /* ---------- 토큰 ---------- */
+    :root {
+      color-scheme: light;
+      --bg: #ffffff; --surface: #f7f8fa; --ink: #111111; --ink-2: #6b7280; --line: #d9dee7;
+      --accent: #1677ff; --accent-ink: #1b64da; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #b54708; --prof: #6941c6; --supp: #067647; --danger: #d92d20;
+      --font: 'Pretendard', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --fs-title: clamp(28px, 6vw, 36px); --fs-h3: clamp(26px, 5.4vw, 32px); --fs-layer: 19px; --fs-lead: 22px; --fs-body: 17px; --fs-sub: 15px; --fs-small: 14px; --fs-label: 13px; --fs-fig: 12px;
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+      --radius: 8px; --measure: 680px; --tap: 48px; --btn-min: 160px;
+      --dur: 220ms; --dur-exit: 150ms; --ease-out: cubic-bezier(.2, .8, .2, 1);
+      /* 예전 조각이 참조할 수 있는 이름 */
+      --surface-2: var(--surface); --accent-soft: var(--surface); --warn-soft: var(--surface);
+      --prof-soft: var(--surface); --supp-soft: var(--surface); --eli5: var(--accent-ink); --eli5-soft: var(--surface);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+        --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+        --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+      --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+    }
+
+    /* ---------- 기본 ---------- */
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+      background: var(--bg); color: var(--ink); font-family: var(--font); font-size: var(--fs-body); line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+    a { color: var(--accent-ink); text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    [hidden] { display: none !important; }
+
+    /* ---------- 상단 바 ---------- */
+    .topbar { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s2) var(--s4); display: flex; align-items: center; gap: var(--s3); min-height: 56px; }
+    .brand { flex: 1 1 auto; min-width: 0; font-size: var(--fs-body); font-weight: 700; white-space: nowrap; }
+    .text-btn { flex: none; min-height: 44px; min-width: 44px; padding: 0 var(--s3); border: 0; border-radius: var(--radius);
+      background: transparent; color: var(--ink); font: 600 var(--fs-small)/1 var(--font); cursor: pointer; }
+    .bar { height: 2px; background: var(--line); overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+
+    /* ---------- 본문 ---------- */
+    main { flex: 1 0 auto; width: 100%; max-width: var(--measure); margin: 0 auto; padding: var(--s6) var(--s5) var(--s7); }
+    .hero h1 { font-size: var(--fs-title); line-height: 1.3; margin: 0 0 var(--s3); letter-spacing: -0.02em; }
+    .hero p { color: var(--ink-2); margin: 0; }
+    section { margin-top: var(--s7); }
+    section > h2 { font-size: 22px; line-height: 1.4; margin: 0 0 var(--s4); }
+    .topic { padding: var(--s6) 0; border-top: 1px solid var(--line); }
+    .topic h3 { margin: 0 0 var(--s2); font-size: var(--fs-h3); font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; }
+    .tags { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); }
+    .tag { font-size: var(--fs-label); line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); white-space: nowrap; }
+
+    /* 레이어: 배경 없이 라벨과 구분선으로 나눈다 */
+    .layer { margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); }
+    .layer.eli5 { margin-top: 0; padding-top: 0; border-top: 0; }
+    .layer > :first-child { margin-top: 0; }
+    .layer > :last-child { margin-bottom: 0; }
+    .layer-title { display: block; font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; color: var(--ink); margin-bottom: var(--s3); }
+    .layer.eli5 .layer-title { color: var(--accent-ink); }
+    .layer.eli5 .lead { font-size: var(--fs-lead); font-weight: 700; line-height: 1.5; letter-spacing: -0.01em; margin: 0 0 var(--s4); }
+    /* 정확히 말하면: 본문 크기 그대로, 굵은 첫머리만 진하게 */
+    .layer.formal b { font-weight: 700; color: var(--ink); }
+    /* 교수님 말씀 · 주의: 보조 정보는 한 단계 작게 */
+    .layer.prof, .layer.warn { font-size: var(--fs-sub); line-height: 1.7; }
+    .layer.prof blockquote { font-size: var(--fs-sub); }
+    .layer.prof .layer-title { color: var(--prof); }
+    .layer.warn { background: var(--surface); border-top: 0; border-radius: var(--radius); padding: var(--s4); }
+    .layer.warn .layer-title { color: var(--warn); font-size: var(--fs-body); }
+    .layer.supp .badge.supp { margin-bottom: var(--s2); }
+    .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
+    .badge.supp { color: var(--supp); }
+    blockquote { margin: var(--s3) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
+    pre { margin: var(--s3) 0; padding: var(--s3) var(--s4); overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      font: var(--fs-small)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; white-space: pre; word-break: normal; overflow-wrap: normal; tab-size: 4; }
+    code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: .92em; }
+    pre code { font-size: inherit; }
+    ol.steps { padding-left: 1.4em; }
+    ol.steps li { margin: var(--s2) 0; }
+
+    /* 그림 · 수식 · 표 */
+    .figure { margin: var(--s4) 0; text-align: center; }
+    .figure svg { width: 100%; height: auto; max-width: 560px; color: var(--ink); }
+    .figure figcaption { font-size: var(--fs-small); color: var(--ink-2); margin-top: var(--s1); }
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: var(--s1) 0; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
+    th, td { border-bottom: 1px solid var(--line); padding: var(--s2); text-align: left; vertical-align: top; }
+    th { color: var(--ink-2); font-weight: 600; }
+    td:first-child, th:first-child { min-width: 6em; }
+
+    /* 위젯 */
+    .widget { background: var(--surface); border-radius: var(--radius); padding: var(--s4); margin: var(--s5) 0; }
+    .widget h4 { margin: 0 0 var(--s1); font-size: var(--fs-layer); line-height: 1.4; }
+    .widget-help { font-size: var(--fs-small); color: var(--ink-2); margin: 0 0 var(--s3); }
+    .controls { display: grid; gap: var(--s2); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: var(--s2); font-size: var(--fs-small); }
+    .controls label { display: flex; align-items: center; gap: var(--s2); min-height: 44px; }
+    .controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+    .widget svg { width: 100%; height: auto; background: var(--bg); border-radius: var(--radius); }
+    .readout { font-size: var(--fs-small); margin-top: var(--s2); }
+    .legend { font-size: var(--fs-label); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: var(--s3); }
+    .sw { display: inline-block; width: 14px; height: 4px; vertical-align: middle; margin-right: var(--s1); border-radius: 2px; }
+    .sw.truth { background: var(--ink-2); } .sw.fit { background: var(--accent); } .sw.train { background: var(--accent); height: 10px; width: 10px; border-radius: 50%; }
+    .sw.test { background: var(--warn); height: 10px; width: 10px; border-radius: 50%; } .sw.like { background: var(--accent); } .sw.prior { background: var(--prof); } .sw.post { background: var(--supp); }
+    .axis { stroke: var(--line); stroke-width: 1.5; }
+    .tick { fill: var(--ink-2); font-size: 11px; }
+    .plot-truth { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .plot-fit { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+    .pt-train { fill: var(--accent); }
+    .pt-test { fill: var(--warn); }
+    .plot-like { fill: none; stroke: var(--accent); stroke-width: 2; }
+    .plot-prior { fill: none; stroke: var(--prof); stroke-width: 2; stroke-dasharray: 6 4; }
+    .plot-post { fill: none; stroke: var(--supp); stroke-width: 3; }
+    .mark-ml { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .mark-map { stroke: var(--supp); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .fig-ink { stroke: currentColor; fill: none; stroke-width: 2; }
+    .fig-accent { stroke: var(--accent); fill: none; stroke-width: 2.5; }
+    .fig-danger { stroke: var(--danger); fill: none; stroke-width: 2.5; }
+    .fig-dot { fill: var(--accent); }
+    .fig-text { fill: currentColor; font-size: 13px; font-family: inherit; }
+    .fig-muted { fill: var(--ink-2); font-size: var(--fs-fig); font-family: inherit; }
+
+    footer { width: 100%; max-width: var(--measure); margin: 0 auto; padding: 0 var(--s5) var(--s6); color: var(--ink-2); font-size: var(--fs-small); }
+
+    /* ---------- 하단 이동 바 ---------- */
+    .pager { position: sticky; bottom: 0; z-index: 10; background: var(--bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+    .pager-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s3) var(--s4); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--s3); }
+    .pager-count { font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; min-width: 4em; }
+    .btn { min-height: var(--tap); min-width: var(--btn-min); padding: 0 var(--s6); border-radius: var(--radius); border: 0; font: 700 var(--fs-body)/1 var(--font); cursor: pointer; white-space: nowrap;
+      transition: background-color 150ms ease-out, opacity 150ms ease-out; }
+    .btn-ghost { justify-self: start; background: var(--surface); color: var(--ink); }
+    .btn-primary { justify-self: end; background: var(--btn-bg); color: var(--on-btn); }
+    .btn:disabled { opacity: .4; cursor: default; }
+    @media (hover: hover) {
+      .text-btn:hover, .btn-ghost:not(:disabled):hover { background: var(--line); }
+      .btn-primary:not(:disabled):hover { box-shadow: inset 0 0 0 100px rgba(0, 0, 0, .14); }
+    }
+
+    /* ---------- 목차 시트 ---------- */
+    .sheet { width: min(100%, var(--measure)); max-width: 100%; max-height: 80dvh; margin: auto auto 0; padding: 0; border: 0;
+      border-radius: 16px 16px 0 0; background: var(--bg); color: var(--ink); }
+    .sheet::backdrop { background: rgba(0, 0, 0, .4); }
+    .sheet-inner { padding: var(--s4) var(--s5) calc(var(--s5) + env(safe-area-inset-bottom)); }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    .sheet-head h2 { margin: 0; font-size: var(--fs-lead); }
+    .toc { display: flex; flex-direction: column; }
+    .toc > a, .toc-group > a { display: block; padding: var(--s3) 0 var(--s1); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); text-decoration: none; }
+    .toc-list { list-style: none; margin: 0 0 var(--s2); padding: 0; }
+    .toc-list a { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); padding: var(--s2) var(--s3); margin: 0 calc(-1 * var(--s3));
+      border-radius: var(--radius); color: var(--ink); text-decoration: none; line-height: 1.4; }
+    .toc-list a[aria-current="true"] { background: var(--surface); font-weight: 700; color: var(--accent-ink); }
+    .toc-list .toc-title { flex: 1 1 0; min-width: 0; }
+    @media (hover: hover) { .toc-list a:hover { background: var(--surface); } }
+
+    /* ---------- 한 화면에 하나씩 (JS가 켤 때만) ---------- */
+    html:not(.js) .pager, html:not(.js) #toc-open { display: none; }
+    html:not(.js) .sheet { display: block; position: static; width: 100%; max-height: none; margin: 0 auto; border-radius: 0; border-bottom: 1px solid var(--line); }
+    html:not(.js) .sheet-close { display: none; }
+    .js main > .hero:not(.is-current), .js main > section:not(.is-on), .js .screen:not(.is-current) { display: none; }
+    .js main > section { margin-top: 0; }
+    .js main > section > h2 { font-size: var(--fs-small); font-weight: 600; color: var(--accent-ink); margin: 0 0 var(--s2); }
+    .js .topic { padding: 0; border-top: 0; }
+    .js .hero { padding-top: 12vh; }
+    .js footer { display: none; }
+    .js body.at-end footer { display: block; }
+    .screen.enter-next { animation: enter-next var(--dur) var(--ease-out); }
+    .screen.enter-prev { animation: enter-prev var(--dur) var(--ease-out); }
+    @keyframes enter-next { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    @keyframes enter-prev { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .screen.enter-next, .screen.enter-prev { animation: none; }
+      .bar > span, .btn { transition: none; }
+    }
+    @media (max-width: 480px) {
+      main { padding: var(--s5) var(--s4) var(--s6); }
+      footer { padding: 0 var(--s4) var(--s5); }
+      .btn { min-width: 120px; padding: 0 var(--s5); }
+    }
+    @media print {
+      .topbar, .pager, .sheet { display: none !important; }
+      .js main > .hero, .js main > section, .js .screen, .js footer { display: block !important; }
+    }
+
+    /* ---------- 좌우 패널 (drawer) ---------- */
+    :root { --panel-l: clamp(240px, 18vw, 320px); --panel-r-min: 320px; --panel-r-max: 720px; --scrollbar: 16px; --drawer-l: 304px; --drawer-r: 360px; --fs-panel: 16px; --scrim: rgba(0, 0, 0, .4); }
+    body { height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+    .topbar-inner { max-width: none; padding: var(--s2) var(--s3); gap: var(--s2); }
+    .panel-toggle { display: inline-flex; align-items: center; gap: var(--s1); padding: 0 var(--s2); }
+    .panel-toggle svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .panel-toggle .strip { fill: transparent; stroke: none; transition: fill 150ms ease-out; }
+    .panel-toggle[aria-expanded="true"] { color: var(--accent-ink); }
+    .panel-toggle[aria-expanded="true"] .strip { fill: currentColor; }
+    .theme-toggle { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+    .theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .theme-toggle .i-sun { display: none; }
+    :root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+    :root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .i-sun { display: block; }
+      :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+    }
+
+    .layout { display: grid; grid-template-columns: auto minmax(320px, 1fr) auto; min-height: 0; }
+    .content { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding-top: var(--s4); }
+    .panel { position: relative; display: flex; flex-direction: column; min-height: 0; overflow: hidden; background: var(--bg); color: var(--ink); font-size: var(--fs-panel); line-height: 1.6; }
+    .panel-left { grid-column: 1; border-right: 1px solid var(--line); }
+    .content { grid-column: 2; }
+    .panel-right { grid-column: 3; border-left: 1px solid var(--line); }
+    .panel-inner { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s4) var(--s4) var(--s6); }
+    :root { --scroll: #c9d0db; --scroll-hover: #9aa3b2; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --scroll: #3f414b; --scroll-hover: #5b5e6a; } }
+    :root[data-theme="dark"] { --scroll: #3f414b; --scroll-hover: #5b5e6a; }
+    .content::-webkit-scrollbar, .panel-inner::-webkit-scrollbar { width: 8px; }
+    :is(pre, .table-wrap, .katex-display)::-webkit-scrollbar { height: 8px; }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display)::-webkit-scrollbar-track { background: transparent; }
+    :is(.content, .panel-inner, .table-wrap, .katex-display)::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--bg); }
+    pre::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--surface); }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display)::-webkit-scrollbar-thumb:hover { background: var(--scroll-hover); }
+    @supports (scrollbar-color: auto) { :is(.content, .panel-inner, pre, .table-wrap, .katex-display) { scrollbar-width: thin; scrollbar-color: var(--scroll) transparent; } }
+    .panel-resize { display: none; }
+    .panel-head { display: flex; align-items: center; gap: var(--s2); min-height: 44px; margin-bottom: var(--s2); }
+    .panel-head h2 { flex: 1 1 0; min-width: 0; margin: 0; font-size: var(--fs-lead); line-height: 1.4; }
+    .panel-sub { margin: 0 0 var(--s4); font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
+    .panel-empty { margin: 0; color: var(--ink-2); }
+    .panel-label { display: block; margin: var(--s5) 0 var(--s2); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+
+    /* 진행 상태 */
+    .panel-meta { margin: 0 0 var(--s2); font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+    .panel-meta b { color: var(--ink); }
+    .progress { height: 4px; margin-bottom: var(--s3); border-radius: 2px; background: var(--line); overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+    .panel .toc-list a { margin: 0 calc(-1 * var(--s2)); padding: var(--s2); font-size: var(--fs-panel); }
+    .toc-mark { flex: none; display: block; width: 20px; height: 20px; color: var(--ink-2); }
+    .toc-mark svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .toc-mark.is-done { color: var(--accent-ink); }
+
+    /* 복습문제: 원문 · 힌트 · 풀이 */
+    .aid details:last-of-type { border-bottom: 1px solid var(--line); }
+    .aid details.original > summary { font-size: var(--fs-panel); }
+    .solved-btn { display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%; min-height: var(--tap); margin-top: var(--s5); padding: 0 var(--s4);
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 700 var(--fs-panel)/1.2 var(--font); cursor: pointer; }
+    .solved-btn svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .solved-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); }
+
+    /* 정리노트: 페이지 요약 */
+    .sum-lead { margin: 0; font-size: var(--fs-body); font-weight: 700; line-height: 1.6; }
+    .eq-list { list-style: none; margin: 0; padding: 0; }
+    .eq-list li { padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+    .eq-list li:first-child { padding-top: 0; }
+    .eq-name { display: block; font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+    .eq-list .katex-display { margin: var(--s1) 0 0; text-align: left; }
+    .eq-list .katex-display > .katex { text-align: left; }
+    .terms { margin: 0; }
+    .terms dt { font-size: var(--fs-panel); font-weight: 700; margin-top: var(--s4); }
+    .terms dt:first-child { margin-top: 0; }
+    .terms dd { margin: var(--s1) 0 0; font-size: var(--fs-sub); line-height: 1.6; color: var(--ink-2); }
+    .flow { margin: 0; padding-left: 1.4em; font-size: var(--fs-sub); }
+    .flow li { margin: var(--s2) 0; }
+
+    @media (hover: hover) { .solved-btn:hover { background: var(--surface); } }
+
+    /* 넓은 화면: 본문 옆에 붙는 패널 */
+    @media (min-width: 1024px) {
+      .layout { --l: var(--panel-l-user, var(--panel-l)); }
+      .layout[data-left="closed"] { --l: 0px; }
+      .panel-left { width: var(--l); }
+      /* 기본값: 왼쪽 패널과 본문 폭을 뺀 나머지를 오른쪽 패널이 차지 → 본문 옆 빈 여백이 생기지 않는다 */
+      .panel-right { width: var(--panel-r-user, clamp(var(--panel-r-min), calc(100vw - var(--l) - var(--measure) - var(--scrollbar)), var(--panel-r-max))); }
+      .panel-resize { display: block; position: absolute; top: 0; bottom: 0; z-index: 2; width: 12px; padding: 0; border: 0; background: transparent; cursor: col-resize; touch-action: none; }
+      .panel-left .panel-resize { right: 0; }
+      .panel-right .panel-resize { left: 0; }
+      .panel-resize::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: 0; transition: opacity 150ms ease-out; }
+      .panel-left .panel-resize::after { right: 0; }
+      .panel-right .panel-resize::after { left: 0; }
+      .panel-resize:focus-visible { outline: none; }
+      .panel-resize:focus-visible::after, .is-resizing .panel-resize:active::after { opacity: 1; }
+      @media (hover: hover) { .panel-resize:hover::after { opacity: 1; } }
+      body.is-resizing { cursor: col-resize; user-select: none; }
+      .layout[data-left="closed"] .panel-left, .layout[data-right="closed"] .panel-right { display: none; }
+      .panel.is-shown { animation: panel-fade var(--dur) var(--ease-out); }
+      .scrim, .panel-close { display: none; }
+    }
+    @keyframes panel-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* 좁은 화면: 가장자리에서 밀려 나오는 drawer */
+    @media (max-width: 1023.98px) {
+      .panel { position: fixed; top: 0; bottom: 0; z-index: 40; visibility: hidden;
+        transition: transform var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .panel-left { left: 0; width: min(var(--drawer-l), 88vw); transform: translateX(-100%); }
+      .panel-right { right: 0; width: min(var(--drawer-r), 88vw); transform: translateX(100%); }
+      .panel.is-open { visibility: visible; transform: none; transition: transform var(--dur) var(--ease-out); }
+      .panel-inner { padding-top: calc(var(--s3) + env(safe-area-inset-top)); padding-bottom: calc(var(--s6) + env(safe-area-inset-bottom)); }
+      .scrim { position: fixed; inset: 0; z-index: 35; background: var(--scrim); opacity: 0; visibility: hidden;
+        transition: opacity var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .scrim.is-on { opacity: 1; visibility: visible; transition: opacity var(--dur) var(--ease-out); }
+      html:not(.js) .panel-left { display: none; }
+    }
+    @media (max-width: 480px) { .panel-toggle { padding: 0 var(--s1); } }
+    html:not(.js) .panel-toggle, html:not(.js) .panel-right, html:not(.js) .scrim { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .panel.is-open, .scrim, .scrim.is-on, .progress > span, .panel-toggle .strip { transition: none; }
+      .panel.is-shown { animation: none; }
+      .panel-resize::after { transition: none; }
+    }
+    @media print {
+      body { display: block; height: auto; overflow: visible; }
+      .layout { display: block; }
+      .content { overflow: visible; }
+      .panel, .scrim { display: none !important; }
+    }
+  </style>
+</head>
+<body data-screens="article.topic" data-panels="note" data-range="1015">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
+      <strong class="brand">정리노트</strong>
+      <button class="text-btn theme-toggle" id="theme-toggle" type="button" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="text-btn panel-toggle" id="toggle-right" type="button" aria-controls="panel-right" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="15" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span>요약</span></button>
+    </div>
+    <div class="bar" aria-hidden="true"><span id="pager-bar"></span></div>
+  </header>
+  <div class="layout" data-left="open" data-right="closed">
+    <aside class="panel panel-left" id="panel-left" aria-labelledby="panel-left-title">
+      <div class="panel-resize" data-side="left" role="separator" aria-orientation="vertical" aria-controls="panel-left" aria-label="왼쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-left-title">목차</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-meta">읽은 토픽 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+        <nav class="toc" aria-label="목차"><a href="#s0">1 원형 큐</a><a href="#s1">2 연결 큐·덱</a><a href="#s2">3 버퍼·시뮬레이션</a><a href="#s3">4 요약·예고</a></nav>
+      </div>
+    </aside>
+    <div class="content">
+  <main>
+    <div class="hero">
+      <h1>원형 큐·덱·대기열 시뮬레이션 — 5살도 이해하는 정리노트</h1>
+      <p>이정원 교수님 자료구조및알고리즘이해 · 1015 수업 (Software_6 Queue)</p>
+    </div>
+    <section id="s0"><h2>1. 원형 큐: 빈칸을 다시 쓰는 법</h2>
+<article class="topic" id="s0-buffer"><h3>줄을 보관하는 큐와 선형 배열의 한계</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p2–5</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">매표소 줄에서는 먼저 온 사람이 먼저 표를 받아요.</p><figure class="figure"><svg id="fig-queue-line" viewBox="0 0 540 150" role="img" aria-label="매표소 앞에 세 사람이 줄을 서고, 먼저 온 사람이 가장 앞에 있는 그림"><rect class="fig-ink" x="16" y="53" width="94" height="58" rx="8" fill="none"/><text class="fig-text" x="63" y="88" text-anchor="middle" font-size="14">매표소</text><rect class="fig-accent" x="167" y="62" width="60" height="42" rx="7" fill="none"/><rect class="fig-ink" x="280" y="62" width="60" height="42" rx="7" fill="none"/><rect class="fig-ink" x="393" y="62" width="60" height="42" rx="7" fill="none"/><text class="fig-text" x="197" y="88" text-anchor="middle" font-size="14">가</text><text class="fig-text" x="310" y="88" text-anchor="middle" font-size="14">나</text><text class="fig-text" x="423" y="88" text-anchor="middle" font-size="14">다</text><path class="fig-ink" d="M 155 82 L 122 82 M 122 82 L 130 76 M 122 82 L 130 88" fill="none"/></svg><figcaption>줄의 앞사람부터 차례로 나가요.</figcaption></figure></div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p>큐(queue)는 먼저 들어온 요소가 먼저 나가는 선입선출(FIFO) 자료구조예요. 삽입은 후단(rear), 삭제는 전단(front)에서 해요. 공항·은행 대기열과 통신 패킷, 프린터와 컴퓨터 사이의 버퍼(buffer)가 응용이에요.</p><p>선형 큐(linear queue)를 배열에 구현해 삭제 위치를 계속 뒤로 옮기면, 앞쪽 빈칸이 남아도 후단이 배열 끝에 이르러 삽입을 못 해요. 다시 쓰려면 남은 요소를 앞쪽으로 옮겨야 해요. 원형 큐(circular queue)는 같은 배열의 마지막 인덱스 다음을 0으로 취급해 빈칸을 다시 이용해요. 배열의 물리적 모양이 바뀌는 것은 아니에요.</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>매표소 줄의 앞 빈자리에 새 고객을 끼워 넣으면 도착 순서가 깨진다고 비유했어요. 구현 상태를 눈으로 확인하는 시각화도 중요하다고 강조했어요. (1015 Part 01, 시간 정보 없음)</p></div>
+  <div class="sum" hidden><p class="sum-lead">원형 큐는 도착 순서를 지키면서 배열 앞쪽의 빈칸을 다시 써요.</p><p class="panel-label">용어</p><dl class="terms"><dt>선입선출(FIFO)</dt><dd>먼저 들어온 요소가 먼저 나가요.</dd><dt>버퍼(buffer)</dt><dd>처리 속도가 다른 두 곳 사이에 데이터를 잠시 보관해요.</dd></dl></div>
+</article>
+<article class="topic" id="s0-index"><h3>front와 rear가 가리키는 자리</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p6–7</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">줄 맨 앞사람보다 한 칸 앞에 출구 표시를 두어요.</p><figure class="figure"><svg id="fig-queue-index" viewBox="0 0 540 150" role="img" aria-label="배열 앞 세 칸에서 빈 0번 칸 앞 표시와 가가 있는 1번 칸, 나가 있는 2번 칸 끝 표시"><rect class="fig-ink" x="20" y="62" width="52" height="42" rx="6" fill="none"/><rect class="fig-accent" x="82" y="62" width="52" height="42" rx="6" fill="none"/><rect class="fig-ink" x="144" y="62" width="52" height="42" rx="6" fill="none"/><text class="fig-muted" x="46" y="55" text-anchor="middle" font-size="12">0</text><text class="fig-muted" x="108" y="55" text-anchor="middle" font-size="12">1</text><text class="fig-muted" x="170" y="55" text-anchor="middle" font-size="12">2</text><text class="fig-text" x="108" y="89" text-anchor="middle" font-size="14">가</text><text class="fig-text" x="170" y="89" text-anchor="middle" font-size="14">나</text><text class="fig-text" x="46" y="130" text-anchor="middle" font-size="13">앞 표시</text><text class="fig-text" x="170" y="130" text-anchor="middle" font-size="13">끝 표시</text></svg><figcaption>앞 표시는 첫 사람의 자리가 아니라 그 앞 빈칸에 있어요.</figcaption></figure></div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p>이 강의의 원형 큐에서는 <code>front</code>가 <strong>첫 번째 요소 하나 앞</strong>의 인덱스이고, <code>rear</code>가 마지막 요소의 인덱스예요. 빈 큐를 <code>front = rear = 0</code>으로 시작하면 다음처럼 변해요.</p><ol class="steps"><li>초기: <code>front=0, rear=0</code>, 목록은 비어 있어요.</li><li><code>enqueue(A)</code>: <code>rear=1</code>, 1번 칸에 A를 저장해요.</li><li><code>enqueue(B)</code>: <code>rear=2</code>, 2번 칸에 B를 저장해요.</li><li><code>dequeue()</code>: <code>front=1</code>로 옮긴 뒤 1번 칸의 A를 읽어요. 목록에는 B가 남아요.</li><li><code>dequeue()</code>: <code>front=2, rear=2</code>가 되어 다시 비어요. 공백 인덱스는 0일 필요가 없어요.</li></ol><p>현재 요소 수는 <code>(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE</code>로 셀 수 있어요.</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>처음에는 <code>front</code>를 첫 요소 자리라고 말했지만, 뒤의 그림과 연산에서는 첫 요소 하나 앞을 가리켜요. 노트는 슬라이드 S6 p6·p9의 정의로 통일했어요. (1015 Part 01–02, 시간 정보 없음)</p></div>
+  <div class="sum" hidden><p class="sum-lead">front는 첫 요소 하나 앞, rear는 마지막 요소를 가리켜요.</p><p class="panel-label">용어</p><dl class="terms"><dt>front</dt><dd>첫 번째 요소 하나 앞의 인덱스예요.</dd><dt>rear</dt><dd>마지막 요소의 인덱스예요.</dd></dl></div>
+</article>
+<article class="topic" id="s0-state"><h3>한 칸을 비우는 이유와 나머지 연산</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p8–9</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">둥근 자리판에서 한 자리를 늘 비워 두면, 가득 찬 때와 텅 빈 때를 헷갈리지 않아요.</p><figure class="figure"><svg id="fig-queue-gap" viewBox="0 0 540 160" role="img" aria-label="여덟 칸 중 일곱 칸에 손님이 있고 0번 한 칸은 비어 있는 원형 자리판"><circle class="fig-ink" cx="270" cy="80" r="62" fill="none"/><circle class="fig-accent" cx="270" cy="20" r="18" fill="none"/><circle class="fig-ink" cx="312" cy="38" r="18" fill="none"/><circle class="fig-ink" cx="330" cy="80" r="18" fill="none"/><circle class="fig-ink" cx="312" cy="122" r="18" fill="none"/><circle class="fig-ink" cx="270" cy="140" r="18" fill="none"/><circle class="fig-ink" cx="228" cy="122" r="18" fill="none"/><circle class="fig-ink" cx="210" cy="80" r="18" fill="none"/><circle class="fig-ink" cx="228" cy="38" r="18" fill="none"/><text class="fig-text" x="270" y="25" text-anchor="middle" font-size="13">빈칸</text><text class="fig-muted" x="270" y="85" text-anchor="middle" font-size="13">자리판</text></svg><figcaption>한 칸을 남겨 두어 꽉 찬 상태를 표시해요.</figcaption></figure></div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p>배열 크기를 <code>MAX_QUEUE_SIZE</code>라고 하면 다음 인덱스는 <code>(index + 1) % MAX_QUEUE_SIZE</code>예요. 나머지 연산으로 마지막 칸 다음이 0번 칸이 돼요. 8칸에서는 <code>(7 + 1) % 8 = 0</code>이에요.</p><p>공백은 <code>front == rear</code>, 포화는 <code>(rear + 1) % MAX_QUEUE_SIZE == front</code>예요. 둘을 구분하려고 한 칸을 항상 비워요. 따라서 물리적 칸이 8개면 최대 7개를 저장해요. 마지막 빈칸까지 채우면 공백과 같은 인덱스 관계가 되어 두 상태를 구별할 수 없어요.</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 “왜 8개의 방 중 하나를 비우는가”를 질문으로 던지고 공백과 포화의 구별로 답했어요. (1015 Part 01–02, 시간 정보 없음)</p></div>
+  <div class="sum" hidden><p class="sum-lead">한 칸을 비워야 두 인덱스로 공백과 포화를 구별해요.</p><p class="panel-label">용어</p><dl class="terms"><dt>공백</dt><dd><code>front == rear</code>예요.</dd><dt>포화</dt><dd><code>(rear + 1) % MAX_QUEUE_SIZE == front</code>예요.</dd></dl></div>
+</article>
+<article class="topic" id="s0-ops"><h3>삽입·삭제 코드와 연산별 추적</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p7–9</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">새 사람은 줄 끝으로 가고, 나갈 사람은 맨 앞에서 나와요.</p><figure class="figure"><svg id="fig-queue-ops" viewBox="0 0 540 145" role="img" aria-label="배열 일부에서 앞의 가를 꺼내면 나만 남고 뒤 빈칸에 새 사람이 들어오는 흐름"><rect class="fig-accent" x="52" y="54" width="64" height="45" rx="7" fill="none"/><rect class="fig-ink" x="129" y="54" width="64" height="45" rx="7" fill="none"/><rect class="fig-ink" x="206" y="54" width="64" height="45" rx="7" fill="none"/><text class="fig-text" x="84" y="82" text-anchor="middle" font-size="14">가</text><text class="fig-text" x="161" y="82" text-anchor="middle" font-size="14">나</text><text class="fig-muted" x="238" y="82" text-anchor="middle" font-size="14">빈칸</text><path class="fig-accent" d="M 83 41 L 83 16 L 44 16 M 44 16 L 52 11 M 44 16 L 52 21" fill="none"/><path class="fig-ink" d="M 333 77 L 278 77 M 278 77 L 286 71 M 278 77 L 286 83" fill="none"/><text class="fig-text" x="404" y="82" text-anchor="middle" font-size="13">새 사람</text></svg><figcaption>앞사람을 꺼내고, 새 사람은 뒤 빈칸에 넣어요.</figcaption></figure></div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span><p><code>enqueue</code>는 포화를 먼저 검사하고 <code>rear</code>를 다음 칸으로 옮긴 뒤 저장해요. <code>dequeue</code>는 공백을 먼저 검사하고 <code>front</code>를 다음 칸으로 옮긴 뒤 그 칸을 읽어요. 다음은 S6 p9의 핵심 코드 조각이에요.</p><pre><code class="language-c">int is_empty(QueueType *q)
+{
+    return (q-&gt;front == q-&gt;rear);
+}
+int is_full(QueueType *q)
+{
+    return ((q-&gt;rear+1)%MAX_QUEUE_SIZE == q-&gt;front);
+}
+void enqueue(QueueType *q, element item)
+{
+    if( is_full(q) )
+        error("큐가 포화상태입니다");
+    q-&gt;rear = (q-&gt;rear+1) % MAX_QUEUE_SIZE;
+    q-&gt;queue[q-&gt;rear] = item;
+}
+element dequeue(QueueType *q)
+{
+    if( is_empty(q) )
+        error("큐가 공백상태입니다");
+    q-&gt;front = (q-&gt;front+1) % MAX_QUEUE_SIZE;
+    return q-&gt;queue[q-&gt;front];
+}</code></pre><p>8칸에서 <code>front=rear=0</code>으로 시작해 A와 B를 넣으면 <code>front=0, rear=2</code>, 목록은 <code>[A, B]</code>예요. A를 꺼내면 <code>front=1, rear=2</code>, 반환값은 A이고 목록은 <code>[B]</code>예요. 각 연산은 일정한 인덱스 계산과 배열 접근만 하므로 시간복잡도는 O(1)이에요.</p>
+<div class="widget" id="widget-queue"><h4>직접 해 보기: 원형 큐에 넣고 빼기</h4><p class="widget-help">값을 넣거나 빼면 여덟 칸, 앞·뒤 인덱스, 목록과 상태가 함께 바뀌어요.</p><div class="controls" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><label>넣을 값 <input id="queue-item" type="text" maxlength="3" value="A" aria-label="넣을 원소"></label><button class="btn btn-primary" id="queue-enqueue" type="button" style="justify-self:auto;min-width:0;padding:0 16px">enqueue</button><button class="btn btn-ghost" id="queue-dequeue" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">dequeue</button><button class="btn btn-ghost" id="queue-reset" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">초기화</button></div><svg id="queue-plot" viewBox="0 0 560 230" role="img" aria-label="여덟 칸 원형 큐"></svg><p class="readout" aria-live="polite"><b id="queue-out">공백: front = rear = 0 | 상태: 공백 | 목록: 없음 | 0/7개</b></p><div class="widget-static" hidden><figure class="figure"><svg id="widget-queue-static-1" viewBox="0 0 560 230" role="img" aria-label="공백: front 0, rear 0, 0개"><rect class="fig-ink" x="30" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="57" y="78" text-anchor="middle" font-size="13">0</text><text class="fig-text" x="57" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="94" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="121" y="78" text-anchor="middle" font-size="13">1</text><text class="fig-text" x="121" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="158" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="185" y="78" text-anchor="middle" font-size="13">2</text><text class="fig-text" x="185" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="222" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="249" y="78" text-anchor="middle" font-size="13">3</text><text class="fig-text" x="249" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="286" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="313" y="78" text-anchor="middle" font-size="13">4</text><text class="fig-text" x="313" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="350" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="377" y="78" text-anchor="middle" font-size="13">5</text><text class="fig-text" x="377" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="414" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="441" y="78" text-anchor="middle" font-size="13">6</text><text class="fig-text" x="441" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="478" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="505" y="78" text-anchor="middle" font-size="13">7</text><text class="fig-text" x="505" y="120" text-anchor="middle" font-size="14">·</text><path class="fig-accent" d="M 505 149 C 545 193, 10 193, 37 149" fill="none"/><path class="fig-accent" d="M 37 149 L 35 158 M 37 149 L 47 151" fill="none"/><path class="fig-accent" d="M 57 28 L 57 61" fill="none"/><path class="fig-accent" d="M 57 61 L 52 54 M 57 61 L 62 54" fill="none"/><text class="fig-text" x="57" y="22" text-anchor="middle" font-size="13">front</text><path class="fig-ink" d="M 57 196 L 57 153" fill="none"/><path class="fig-ink" d="M 57 153 L 52 160 M 57 153 L 62 160" fill="none"/><text class="fig-text" x="57" y="213" text-anchor="middle" font-size="13">rear</text></svg><figcaption>공백: front=0, rear=0, 0개</figcaption></figure><figure class="figure"><svg id="widget-queue-static-2" viewBox="0 0 560 230" role="img" aria-label="A와 B 삽입: front 0, rear 2, 2개"><rect class="fig-ink" x="30" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="57" y="78" text-anchor="middle" font-size="13">0</text><text class="fig-text" x="57" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="94" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="121" y="78" text-anchor="middle" font-size="13">1</text><text class="fig-text" x="121" y="120" text-anchor="middle" font-size="14">A</text><rect class="fig-ink" x="158" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="185" y="78" text-anchor="middle" font-size="13">2</text><text class="fig-text" x="185" y="120" text-anchor="middle" font-size="14">B</text><rect class="fig-ink" x="222" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="249" y="78" text-anchor="middle" font-size="13">3</text><text class="fig-text" x="249" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="286" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="313" y="78" text-anchor="middle" font-size="13">4</text><text class="fig-text" x="313" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="350" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="377" y="78" text-anchor="middle" font-size="13">5</text><text class="fig-text" x="377" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="414" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="441" y="78" text-anchor="middle" font-size="13">6</text><text class="fig-text" x="441" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="478" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="505" y="78" text-anchor="middle" font-size="13">7</text><text class="fig-text" x="505" y="120" text-anchor="middle" font-size="14">·</text><path class="fig-accent" d="M 505 149 C 545 193, 10 193, 37 149" fill="none"/><path class="fig-accent" d="M 37 149 L 35 158 M 37 149 L 47 151" fill="none"/><path class="fig-accent" d="M 57 28 L 57 61" fill="none"/><path class="fig-accent" d="M 57 61 L 52 54 M 57 61 L 62 54" fill="none"/><text class="fig-text" x="57" y="22" text-anchor="middle" font-size="13">front</text><path class="fig-ink" d="M 185 196 L 185 153" fill="none"/><path class="fig-ink" d="M 185 153 L 180 160 M 185 153 L 190 160" fill="none"/><text class="fig-text" x="185" y="213" text-anchor="middle" font-size="13">rear</text></svg><figcaption>A와 B 삽입: front=0, rear=2, 2개</figcaption></figure><figure class="figure"><svg id="widget-queue-static-3" viewBox="0 0 560 230" role="img" aria-label="7개 삽입 후 포화: front 0, rear 7, 7개"><rect class="fig-ink" x="30" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="57" y="78" text-anchor="middle" font-size="13">0</text><text class="fig-text" x="57" y="120" text-anchor="middle" font-size="14">·</text><rect class="fig-ink" x="94" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="121" y="78" text-anchor="middle" font-size="13">1</text><text class="fig-text" x="121" y="120" text-anchor="middle" font-size="14">A</text><rect class="fig-ink" x="158" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="185" y="78" text-anchor="middle" font-size="13">2</text><text class="fig-text" x="185" y="120" text-anchor="middle" font-size="14">B</text><rect class="fig-ink" x="222" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="249" y="78" text-anchor="middle" font-size="13">3</text><text class="fig-text" x="249" y="120" text-anchor="middle" font-size="14">C</text><rect class="fig-ink" x="286" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="313" y="78" text-anchor="middle" font-size="13">4</text><text class="fig-text" x="313" y="120" text-anchor="middle" font-size="14">D</text><rect class="fig-ink" x="350" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="377" y="78" text-anchor="middle" font-size="13">5</text><text class="fig-text" x="377" y="120" text-anchor="middle" font-size="14">E</text><rect class="fig-ink" x="414" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="441" y="78" text-anchor="middle" font-size="13">6</text><text class="fig-text" x="441" y="120" text-anchor="middle" font-size="14">F</text><rect class="fig-ink" x="478" y="88" width="54" height="50" rx="7" fill="none"/><text class="fig-muted" x="505" y="78" text-anchor="middle" font-size="13">7</text><text class="fig-text" x="505" y="120" text-anchor="middle" font-size="14">G</text><path class="fig-accent" d="M 505 149 C 545 193, 10 193, 37 149" fill="none"/><path class="fig-accent" d="M 37 149 L 35 158 M 37 149 L 47 151" fill="none"/><path class="fig-accent" d="M 57 28 L 57 61" fill="none"/><path class="fig-accent" d="M 57 61 L 52 54 M 57 61 L 62 54" fill="none"/><text class="fig-text" x="57" y="22" text-anchor="middle" font-size="13">front</text><path class="fig-ink" d="M 505 196 L 505 153" fill="none"/><path class="fig-ink" d="M 505 153 L 500 160 M 505 153 L 510 160" fill="none"/><text class="fig-text" x="505" y="213" text-anchor="middle" font-size="13">rear</text></svg><figcaption>7개 삽입 후 포화: front=0, rear=7, 7개</figcaption></figure><div class="table-wrap"><table><thead><tr><th>설정</th><th>인덱스</th><th>상태</th><th>목록</th></tr></thead><tbody><tr><td>공백</td><td>front=0, rear=0</td><td>0/7개, 공백</td><td>없음</td></tr><tr><td>A와 B 삽입</td><td>front=0, rear=2</td><td>2/7개, 삽입·삭제 가능</td><td>A, B</td></tr><tr><td>7개 삽입 후 포화</td><td>front=0, rear=7</td><td>7/7개, 포화</td><td>A, B, C, D, E, F, G</td></tr></tbody></table></div></div></div>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>삭제를 설명할 때 꺼낸 뒤 <code>front</code>를 늘린다고 말한 대목이 있지만, 슬라이드 코드는 <code>front</code>를 먼저 늘리고 새 위치를 읽어요. (1015 Part 02, 시간 정보 없음)</p></div>
+  <div class="sum" hidden><p class="sum-lead">넣을 때 rear를 먼저 옮기고, 꺼낼 때 front를 먼저 옮겨요.</p><p class="panel-label">용어</p><dl class="terms"><dt>enqueue</dt><dd>포화 검사 뒤 rear를 옮기고 저장해요.</dd><dt>dequeue</dt><dd>공백 검사 뒤 front를 옮기고 읽어요.</dd></dl></div>
+</article>
+    </section>
+    <section id="s1"><h2>2. 연결된 큐와 양쪽 문이 있는 덱</h2>
+<article class="topic" id="s1-linked"><h3>연결된 큐의 머리와 꼬리</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p10–11</span></div>
+<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">기차 칸을 이어 줄을 만들어요. 새 칸은 맨 뒤에 붙이고 맨 앞 칸을 떼어요.</p><figure class="figure"><svg id="fig-linked-queue" viewBox="0 0 400 90" role="img" aria-label="앞에서 A, B, C 순으로 연결되고 앞 표시가 A, 뒤 표시가 C를 가리키는 그림"><text class="fig-muted" x="20" y="18">앞</text><path class="fig-accent" d="M28 23 V36 M24 32 L28 36 L32 32"/><rect class="fig-ink" x="10" y="38" width="70" height="34"/><text class="fig-text" x="40" y="61">A</text><path class="fig-ink" d="M80 55 H145 M139 51 L145 55 L139 59"/><rect class="fig-ink" x="145" y="38" width="70" height="34"/><text class="fig-text" x="175" y="61">B</text><path class="fig-ink" d="M215 55 H280 M274 51 L280 55 L274 59"/><rect class="fig-ink" x="280" y="38" width="70" height="34"/><text class="fig-text" x="310" y="61">C</text><text class="fig-muted" x="302" y="18">뒤</text><path class="fig-accent" d="M315 23 V36 M311 32 L315 36 L319 32"/></svg><figcaption>양 끝의 자리를 기억해요.</figcaption></figure></div>
+<div class="layer formal"><span class="layer-title">정확히 말하면</span><p>연결 큐(linked queue)는 단순 연결 리스트(singly linked list)를 이용해요. 배열 인덱스 대신 포인터를 쓰며 <code>front</code>는 첫 노드, <code>rear</code>는 마지막 노드를 가리켜요. 공백이면 둘 다 <code>NULL</code>이에요. 원형 큐에서 <code>front</code>가 첫 요소 하나 앞을 가리킨 것과 위치가 달라요.</p><ol class="steps"><li>삽입: 새 노드를 기존 <code>rear</code> 다음에 연결하고 <code>rear</code>를 옮겨요. 공백이었다면 <code>front</code>도 새 노드를 가리켜요.</li><li>삭제: 옛 <code>front</code>를 임시 포인터에 보관하고 <code>front</code>를 다음 노드로 옮긴 뒤 옛 노드를 해제해요. 마지막 노드였다면 <code>rear</code>도 <code>NULL</code>로 바꿔요.</li></ol><p>끝 포인터를 유지한 삽입·삭제는 $O(1)$이에요. 크기를 미리 정하기 어렵다면 연결 큐를 고려해요.</p></div>
+<div class="layer prof"><span class="layer-title">교수님 말씀</span><p>큐의 삽입은 늘 뒤, 삭제는 늘 앞이라는 추상 동작을 강조했어요. 먼저 노드를 없애면 남은 줄이 “낙동강 오리알”이 된다고 비유했어요. (1015 Part 02)</p></div><div class="sum" hidden><p class="sum-lead">연결 큐는 앞과 뒤 노드를 포인터로 기억해요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">끝단 연산</span>$O(1)$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>front</dt><dd>첫 노드를 가리키는 포인터</dd><dt>rear</dt><dd>마지막 노드를 가리키는 포인터</dd><dt>NULL</dt><dd>공백일 때 두 포인터의 값</dd></dl></div></article>
+<article class="topic" id="s1-deque"><h3>덱의 양 끝 연산과 이중 연결</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p12–15</span></div>
+<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">양쪽에 문이 있는 줄이에요. 어느 문으로든 들어오고 나갈 수 있어요.</p><figure class="figure"><svg id="fig-deque-ends" viewBox="0 0 400 90" role="img" aria-label="A와 B가 양방향 화살표로 이어지고 양 끝에 출입문이 있는 그림"><text class="fig-muted" x="10" y="23">앞문</text><path class="fig-accent" d="M50 52 H95 M89 48 L95 52 L89 56"/><rect class="fig-ink" x="96" y="36" width="75" height="34"/><text class="fig-text" x="128" y="58">A</text><path class="fig-ink" d="M171 45 H228 M222 41 L228 45 L222 49 M228 61 H171 M177 57 L171 61 L177 65"/><rect class="fig-ink" x="229" y="36" width="75" height="34"/><text class="fig-text" x="261" y="58">B</text><path class="fig-accent" d="M305 52 H350 M311 48 L305 52 L311 56"/><text class="fig-muted" x="348" y="23">뒷문</text></svg><figcaption>가운데 칸은 양쪽 이웃을 기억해요.</figcaption></figure></div>
+<div class="layer formal"><span class="layer-title">정확히 말하면</span><p>덱(<code>deque</code>, double-ended queue)은 전단과 후단 모두에서 삽입·삭제할 수 있어요. <code>create</code>·<code>init</code>은 생성·초기화, <code>is_empty</code>·<code>is_full</code>은 상태 검사예요. <code>add_front</code>·<code>add_rear</code>는 삽입, <code>delete_front</code>·<code>delete_rear</code>는 반환 후 삭제, <code>get_front</code>·<code>get_rear</code>는 삭제 없이 조회해요.</p><ol class="steps"><li><code>add_front(A)</code>: [A]</li><li><code>add_rear(B)</code>: [A, B]</li><li><code>add_front(C)</code>: [C, A, B]</li><li><code>add_rear(D)</code>: [C, A, B, D]</li><li><code>delete_front()</code>: C를 꺼내 [A, B, D]</li><li><code>delete_rear()</code>: D를 꺼내 [A, B]</li></ol><p>수업 구현은 이중 연결 리스트(doubly linked list)를 써요. 노드의 <code>llink</code>는 앞 이웃, <code>rlink</code>는 뒤 이웃을 가리키고 덱은 <code>head</code>·<code>tail</code>을 유지해요. 양쪽 끝 연산은 $O(1)$이에요.</p><pre><code class="language-c">typedef int element;
+typedef struct DlistNode {
+    element data;
+    struct DlistNode *llink;
+    struct DlistNode *rlink;
+} DlistNode;
+typedef struct DequeType {
+    DlistNode *head;
+    DlistNode *tail;
+} DequeType;</code></pre></div>
+<div class="layer prof"><span class="layer-title">교수님 말씀</span><p>앞쪽 삽입 때 배열 요소를 옮기지 않으려고 이중 연결 리스트를 골랐어요. 덱을 배열로도 구현할 수 있지만 수업 코드는 연결 방식이에요. (1015 Part 03)</p><p>이름은 <code>deque</code>예요. 일반 큐에서 앞을 꺼내는 <code>dequeue</code>와 소리가 비슷하지만, 덱의 앞쪽 삭제 연산 이름은 <code>delete_front</code>예요.</p></div><div class="sum" hidden><p class="sum-lead">덱은 양 끝에서 넣고 꺼내요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">끝단 연산</span>$O(1)$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>deque</dt><dd>양 끝에서 삽입·삭제하는 큐</dd><dt>llink</dt><dd>앞 이웃으로 가는 연결</dd><dt>rlink</dt><dd>뒤 이웃으로 가는 연결</dd></dl></div></article>
+<article class="topic" id="s1-add"><h3>덱 삽입: 비어 있는 경우부터</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p16</span></div>
+<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">새 칸이 먼저 옆 칸을 잡아요. 그다음 줄의 끝 표시를 새 칸으로 옮겨요.</p><figure class="figure"><svg id="fig-deque-add" viewBox="0 0 400 90" role="img" aria-label="기존 A와 새 B가 양방향으로 연결된 뒤 끝 표시가 B로 옮겨진 그림"><rect class="fig-ink" x="55" y="38" width="76" height="34"/><text class="fig-text" x="87" y="60">A</text><rect class="fig-ink" x="240" y="38" width="76" height="34"/><text class="fig-text" x="272" y="60">B</text><path class="fig-ink" d="M131 46 H240 M234 42 L240 46 L234 50 M240 63 H131 M137 59 L131 63 L137 67"/><text class="fig-muted" x="258" y="20">새 끝</text><path class="fig-accent" d="M277 23 V36 M273 32 L277 36 L281 32"/></svg><figcaption>이웃을 연결한 뒤 끝자리를 바꿔요.</figcaption></figure></div>
+<div class="layer formal"><span class="layer-title">정확히 말하면</span><p><code>create_node</code>의 인자 순서는 왼쪽 연결, 데이터, 오른쪽 연결이에요. <code>add_rear</code>는 새 노드의 <code>llink</code>에 기존 꼬리를 넣고, 비었다면 <code>head</code>도 새 노드로 두어요. 아니면 이전 꼬리의 <code>rlink</code>를 새 노드에 연결해요. 마지막에 <code>tail</code>을 옮겨요.</p><pre><code class="language-c">void add_rear(DequeType *dq, element item)
+{
+    DlistNode *new_node
+        = create_node(dq-&gt;tail, item, NULL);
+    if( is_empty(dq))
+        dq-&gt;head = new_node;
+    else
+        dq-&gt;tail-&gt;rlink = new_node;
+    dq-&gt;tail = new_node;
+}</code></pre><p><code>add_front</code>는 대칭적이에요. 새 노드의 <code>rlink</code>에 기존 머리를 넣고, 비었다면 <code>tail</code>도 새 노드로 두어요. 아니라면 이전 머리의 <code>llink</code>를 새 노드에 연결한 뒤 <code>head</code>를 옮겨요.</p><pre><code class="language-c">void add_front(DequeType *dq, element item)
+{
+    DlistNode *new_node =
+        create_node(NULL, item, dq-&gt;head);
+    if( is_empty(dq))
+        dq-&gt;tail = new_node;
+    else
+        dq-&gt;head-&gt;llink = new_node;
+    dq-&gt;head = new_node;
+}</code></pre></div>
+<div class="layer prof"><span class="layer-title">교수님 말씀</span><p>새 노드가 먼저 “팔을 뻗어” 기존 노드를 잡고 양쪽 연결을 만든 뒤 끝 포인터를 옮겨야 한다고 강조했어요.</p><blockquote>“이 create_node의 바디를 보여 주지 않더라도 여러분들이 추정할 수 있어야 돼요.”</blockquote><p>인자 순서와 주변 코드로 연결 방향을 읽으라는 시험 관련 강조예요. (1015 Part 03, 시간 정보 없음)</p></div><div class="sum" hidden><p class="sum-lead">새 노드의 연결을 만든 다음 머리나 꼬리를 옮겨요.</p><p class="panel-label">용어</p><dl class="terms"><dt>add_front</dt><dd>덱 앞에 넣는 연산</dd><dt>add_rear</dt><dd>덱 뒤에 넣는 연산</dd><dt>create_node</dt><dd>새 노드를 만드는 함수</dd></dl></div></article>
+<article class="topic" id="s1-delete"><h3>덱 삭제: 노드를 보관한 뒤 연결 바꾸기</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p17</span></div>
+<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">떼어 낼 칸을 잠시 붙잡아요. 다음 칸을 새 맨 앞에 세운 뒤 붙잡은 칸을 치워요.</p><figure class="figure"><svg id="fig-deque-delete" viewBox="0 0 400 90" role="img" aria-label="임시 표시가 삭제할 A를, 새 앞 표시가 다음 B를 가리키는 그림"><rect class="fig-ink" x="65" y="38" width="76" height="34"/><text class="fig-text" x="97" y="60">A</text><rect class="fig-ink" x="240" y="38" width="76" height="34"/><text class="fig-text" x="272" y="60">B</text><path class="fig-ink" d="M141 55 H240 M234 51 L240 55 L234 59"/><text class="fig-muted" x="72" y="20">보관</text><path class="fig-accent" d="M103 23 V36 M99 32 L103 36 L107 32"/><text class="fig-muted" x="260" y="20">새 앞</text><path class="fig-accent" d="M279 23 V36 M275 32 L279 36 L283 32"/></svg><figcaption>치울 칸을 기억해야 안전하게 정리해요.</figcaption></figure></div>
+<div class="layer formal"><span class="layer-title">정확히 말하면</span><p><code>delete_front</code>는 공백을 확인하고 <code>removed_node</code>에 옛 머리를 보관해요. 반환값 <code>item</code>을 읽은 뒤 <code>head</code>를 다음 노드로 옮기고 <code>free</code>로 옛 노드를 반납해요. 새 <code>head</code>가 <code>NULL</code>이면 <code>tail</code>도 <code>NULL</code>로, 아니면 새 머리의 <code>llink</code>를 <code>NULL</code>로 만들어요.</p><pre><code class="language-c">element delete_front(DequeType *dq)
+{
+    element item;
+    DlistNode *removed_node;
+    if (is_empty(dq))  error("공백덱에서삭제");
+    else {
+        removed_node = dq-&gt;head;   // 삭제할노드
+        item = removed_node-&gt;data; // 데이터추출
+        dq-&gt;head = dq-&gt;head-&gt;rlink; // 헤드포인터변경
+        free(removed_node);
+        // 메모리공간반납
+        if (dq-&gt;head == NULL)
+            // 공백상태이면
+            dq-&gt;tail = NULL;
+        else
+            // 공백상태가아니면
+            dq-&gt;head-&gt;llink=NULL;
+    }
+    return item;
+}</code></pre><p>이 코드는 S6 p17의 슬라이드 발췌예요. 공백일 때 호출하는 <code>error()</code>가 실행을 중단해야 안전해요. 만약 <code>error()</code>가 복귀하면 초기화되지 않은 <code>item</code>을 반환하므로, 이 발췌문만 일반적인 실행 가능 C 함수로 사용하면 안 돼요.</p><p>한 노드만 있었다면 <code>head</code>를 옮긴 뒤 공백이므로 <code>tail</code>도 지워요. 반대쪽 <code>delete_rear</code>는 대칭적으로 처리해요. 함수의 반환형 <code>element</code>는 반환값의 자료형이에요. 슬라이드에서는 <code>typedef int element;</code>이므로 정수형 값을 돌려줘요.</p></div>
+<div class="layer prof"><span class="layer-title">교수님 말씀</span><p>“front가 얘를 가리키게 한 다음에 얘를 삭제해 줘야 돼요.”라며 접근 경로를 남기는 순서를 강조했어요. 한 문을 여러 사람이 가리킬 수 있듯 한 노드를 여러 포인터가 가리킬 수 있다고 비유했어요. (1015 Part 02–04)</p><p>수업에서는 반환값을 설명하며 함수를 변수처럼 표현했지만, 정확히는 함수 호출 결과가 <code>element</code>형 값을 갖는다는 뜻이에요. 함수 자체가 변수는 아니에요.</p></div><div class="sum" hidden><p class="sum-lead">삭제할 노드를 보관하고 값을 읽은 뒤 연결을 바꿔 해제해요.</p><p class="panel-label">용어</p><dl class="terms"><dt>delete_front</dt><dd>앞의 값을 반환하고 노드를 없애는 연산</dd><dt>removed_node</dt><dd>옛 머리를 보관하는 포인터</dd><dt>free</dt><dd>동적 할당 노드의 메모리 반납</dd></dl></div></article>
+    </section>
+    <section id="s2"><h2>3. 큐 응용: 속도 차이와 대기 시간</h2>
+<article class="topic" id="s2-lock"><h3>생산자·소비자와 버퍼의 열쇠</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p18–19</span></div>
+<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">만드는 쪽과 쓰는 쪽의 속도가 다르면 중간 바구니에 잠시 담아요. 함께 바구니를 만질 때는 열쇠를 돌려 써요.</p><figure class="figure"><svg id="fig-producer-buffer" viewBox="0 0 410 100" role="img" aria-label="만드는 쪽에서 가운데 네 칸의 대기 바구니로 보내고 쓰는 쪽에서 차례대로 가져가는 그림"><rect class="fig-ink" x="7" y="38" width="82" height="38"/><text class="fig-text" x="22" y="62">만들기</text><path class="fig-accent" d="M89 57 H125 M119 53 L125 57 L119 61"/><rect class="fig-ink" x="126" y="38" width="34" height="38"/><rect class="fig-ink" x="160" y="38" width="34" height="38"/><rect class="fig-ink" x="194" y="38" width="34" height="38"/><rect class="fig-ink" x="228" y="38" width="34" height="38"/><path class="fig-accent" d="M263 57 H299 M293 53 L299 57 L293 61"/><rect class="fig-ink" x="300" y="38" width="82" height="38"/><text class="fig-text" x="316" y="62">사용하기</text><text class="fig-muted" x="161" y="25">차례대로 보관</text></svg><figcaption>속도 차이가 나도 들어온 순서를 지켜요.</figcaption></figure></div>
+<div class="layer formal"><span class="layer-title">정확히 말하면</span><p>큐는 서로 다른 속도로 실행되는 생산자(producer)와 소비자(consumer) 사이의 버퍼(buffer)예요. CPU와 프린터, 키보드와 CPU가 예시예요. 생산자는 가득 차지 않았을 때 <code>enqueue</code>, 소비자는 비지 않았을 때 <code>dequeue</code>해요. 먼저 들어온 데이터가 먼저 처리되므로 순서를 보존해요.</p><p>둘이 같은 버퍼를 갱신한다면 <code>lock</code>으로 접근 권한을 얻고 작업 뒤 <code>unlock</code>해요. 수업의 열쇠 비유는 동시에 삽입하거나 삽입과 삭제가 겹칠 때 순서를 조정해야 한다는 뜻이에요. <code>while(1)</code>은 생산과 소비를 계속 반복한다는 표기예요.</p><p>S6 p19의 생산자·소비자 코드는 동작을 설명하는 의사코드예요. 원문 <code>while( lock(buffer) == SUCCESS ) ;</code>는 잠금 성공 때 반복한다는 듯 읽혀 구두 설명과 맞지 않아요. 성공·실패 의미와 동시성 보장이 명시되지 않아 실행 가능한 C 잠금 구현으로 사용하면 안 돼요.</p><pre><code class="language-c">/* 강의 슬라이드의 개념용 의사코드 일부 */
+while( lock(buffer) == SUCCESS ) ;
+if( !is_full(buffer) ){
+    enqueue(buffer, 데이터);
+}
+unlock(buffer);
+/* 소비자도 잠금 뒤 공백을 검사하고 dequeue */</code></pre></div>
+<div class="layer prof"><span class="layer-title">교수님 말씀</span><p>버퍼의 열쇠를 가진 쪽이 잠시 주도권을 갖고 작업 뒤 돌려준다고 설명했어요. 은행 원서 제출과 네트워크 패킷이 동시에 들어오는 상황도 예로 들었어요. (1015 Part 04)</p></div><div class="sum" hidden><p class="sum-lead">큐가 생산과 소비의 속도 차이를 흡수하고 접근을 조정해요.</p><p class="panel-label">용어</p><dl class="terms"><dt>생산자</dt><dd>데이터를 만들어 버퍼에 넣는 쪽</dd><dt>소비자</dt><dd>버퍼에서 데이터를 꺼내 쓰는 쪽</dd><dt>lock</dt><dd>버퍼 접근 권한을 얻는 동작</dd><dt>unlock</dt><dd>버퍼 접근 권한을 놓는 동작</dd></dl></div></article>
+<article class="topic" id="s2-simulation"><h3>은행 대기열의 시간과 평균 계산</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p20–21</span></div>
+<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">창구가 하나라면 먼저 온 사람이 먼저 일을 봐요. 뒤에 온 사람은 차례가 올 때까지 기다려요.</p><figure class="figure"><svg id="fig-bank-wait" viewBox="0 0 410 100" role="img" aria-label="고객 셋이 차례대로 한 창구를 향해 줄을 선 모습"><rect class="fig-ink" x="7" y="36" width="70" height="38"/><text class="fig-text" x="24" y="60">셋째</text><rect class="fig-ink" x="91" y="36" width="70" height="38"/><text class="fig-text" x="108" y="60">둘째</text><rect class="fig-ink" x="175" y="36" width="70" height="38"/><text class="fig-text" x="192" y="60">첫째</text><path class="fig-accent" d="M246 55 H291 M285 51 L291 55 L285 59"/><rect class="fig-ink" x="292" y="30" width="102" height="50"/><text class="fig-text" x="327" y="61">창구</text></svg><figcaption>기다린 시간은 차례가 시작될 때 정해져요.</figcaption></figure></div>
+<div class="layer formal"><span class="layer-title">정확히 말하면</span><p>큐잉 모델(queueing model)은 고객과 서비스를 처리하는 서버(server)로 구성해요. 은행 창구가 서버이고 고객은 도착 순서대로 큐에 들어가요. 현재 시각 <code>clock</code>을 증가시키며 도착, 서비스 시작, 남은 <code>service_time</code>을 추적해요. 고객마다 도착 시각과 필요한 서비스 시간이 달라요. 대기 시간은 서비스 시작 시각에서 도착 시각을 뺀 값이에요.</p><ol class="steps"><li>시각 1: 고객 0 도착, 3분 서비스 시작. 대기 0분.</li><li>시각 2: 고객 1 도착, 5분 서비스가 필요해 대기열에 들어감.</li><li>시각 3: 고객 2 도착, 3분 서비스가 필요해 뒤에 섬.</li><li>시각 4: 구두 예시에서는 고객 1이 시작. 고객 1의 대기는 $4-2=2$분. 고객 3도 도착.</li><li>시각 9: 구두 예시에서는 다음 고객이 서비스를 시작해 대기 6분으로 집계돼요.</li></ol><p>구두 예시의 대기 시간 합계는 $0+2+6=8$분이고, 시각 10까지 서비스가 <strong>시작된</strong> 고객 3명의 평균은 $8/3 \approx 2.67$분이에요. 이 셋이 종료 시각까지 모두 서비스를 완료했다는 뜻은 아니에요. 교수는 이 평균과 대기열을 보고 창구 수를 늘릴지 판단하는 예를 들었어요.</p><p>구두 추적의 시작 시각 1·4·9는 S6 p22의 조건문을 글자 그대로 한 번씩 실행한 시각과 달라요. 그 코드에서 <code>service_time</code>이 1에서 0으로 줄어든 틱에는 다음 고객을 꺼내지 않고 다음 틱에 꺼내요. 처음 서비스 길이가 3·5분이면 시작 시각은 1·5·11이에요. 따라서 구두 평균 2.67을 p22 코드의 실행 결과라고 단정할 수 없어요.</p></div>
+<div class="layer prof"><span class="layer-title">교수님 말씀</span><p>창구가 하나일 때 고객의 평균 대기를 줄이는 것이 목표라고 했어요. 고객을 작업, 창구를 처리 장치로 바꾸면 운영체제의 대기열에도 같은 모델을 생각할 수 있다고 했어요. (1015 Part 04–05)</p></div><div class="sum" hidden><p class="sum-lead">구두 예시에서는 세 고객의 서비스 시작 시점 대기를 평균 냈어요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">고객 1 대기</span>$4-2=2$</li><li><span class="eq-name">대기 합계</span>$0+2+6=8$</li><li><span class="eq-name">평균 대기</span>$8/3 \approx 2.67$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>clock</dt><dd>현재 시각</dd><dt>service_time</dt><dd>현재 서비스의 남은 시간</dd></dl></div></article>
+<article class="topic" id="s2-code"><h3>시뮬레이션 반복문과 시험 안내</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p21–22</span></div>
+<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">시계를 한 칸씩 돌리며 새 손님이 왔는지 살펴요. 창구가 바쁘면 일을 이어 하고 비면 다음 손님을 불러요.</p><figure class="figure"><svg id="fig-simulation-loop" viewBox="0 0 410 105" role="img" aria-label="시계, 도착 확인, 창구 확인 세 상자가 화살표로 이어지고 마지막에서 처음으로 돌아가는 흐름"><rect class="fig-ink" x="8" y="35" width="95" height="38"/><text class="fig-text" x="32" y="59">시계</text><path class="fig-accent" d="M103 54 H149 M143 50 L149 54 L143 58"/><rect class="fig-ink" x="150" y="35" width="105" height="38"/><text class="fig-text" x="174" y="59">도착 확인</text><path class="fig-accent" d="M255 54 H301 M295 50 L301 54 L295 58"/><rect class="fig-ink" x="302" y="35" width="102" height="38"/><text class="fig-text" x="325" y="59">창구 확인</text><path class="fig-ink" d="M353 74 V92 H56 V75 M52 81 L56 75 L60 81"/></svg><figcaption>정해 둔 때까지 같은 순서를 반복해요.</figcaption></figure></div>
+<div class="layer formal"><span class="layer-title">정확히 말하면</span><p><code>duration</code>은 시뮬레이션 종료 시각이에요. <code>is_customer_arrived</code>는 난수와 도착 확률 매개변수를 비교해 새 고객을 만들지 판단해요. 새 고객의 ID·도착 시각·서비스 필요 시간을 기록하고 큐에 넣어요. 필요한 서비스 시간도 난수로 만들어요. 슬라이드에서 도착 확률 변수의 표기는 불분명하므로 여기서는 이름을 확정하지 않아요.</p><p>아래는 S6 p22의 슬라이드 코드 발췌예요. <code>void main()</code> 등은 원문 표기이고 독립 실행 가능한 표준 C 프로그램으로 제시한 것은 아니에요.</p><pre><code class="language-c">void main()
+{
+int service_time=0;
+clock=0;
+while(clock &lt; duration){
+clock++;
+printf("현재시각=%d\n",clock);
+if (is_customer_arrived()) {
+insert_customer(clock);
+}
+if (service_time &gt; 0)
+service_time--;
+else {
+service_time = remove_customer();
+}
+}
+print_stat();
+}</code></pre><ol class="steps"><li><code>clock</code>이 <code>duration</code>에 이르기 전까지 반복하고 한 틱씩 늘려요.</li><li>고객이 도착하면 도착 시각을 붙여 대기열에 넣어요.</li><li><code>service_time &gt; 0</code>이면 남은 시간을 하나 줄여요.</li><li>그렇지 않으면 큐에서 다음 고객을 꺼내 서비스를 시작해요. 이 분기는 시간이 막 0이 된 같은 틱에는 실행되지 않아요.</li><li>반복이 끝나면 <code>print_stat()</code>로 통계를 출력해요.</li></ol><p>큐에서 꺼낼 고객이 없을 때 <code>remove_customer()</code>의 반환 처리는 발췌문만으로 확정할 수 없어요.</p></div>
+<div class="layer prof"><span class="layer-title">교수님 말씀</span><p>아이스크림 가게 대기열에도 같은 시뮬레이션을 적용할 수 있다고 했어요. 교재 <code>연습문제</code>와 강의 자료의 코드를 시험 준비 자료로 언급했어요.</p><blockquote>“교재에 있는 연습문제 조금 좀 바꿔서 냈고요, 똑같이 낸 것도 있어요.”</blockquote><blockquote>“강의 자료에 있는 코드들도 조금 보면 좋을 거 같고.”</blockquote><p>명시적인 새 시험 범위 지정은 없었어요. (1015 Part 05, 시간 정보 없음)</p></div><div class="sum" hidden><p class="sum-lead">시계를 늘리며 도착과 서비스 상태를 검사해요.</p><p class="panel-label">용어</p><dl class="terms"><dt>duration</dt><dd>종료 시각</dd><dt>is_customer_arrived</dt><dd>새 고객 도착 여부를 판단하는 함수</dd><dt>연습문제</dt><dd>수업에서 시험 준비 자료로 언급한 문제</dd></dl></div></article>
+    </section>
+    <section id="s3"><h2>4. 요약 · 예고</h2>
+<article class="topic" id="s3-cheatsheet"><h3>한눈에 보는 큐·덱</h3><div class="tags"><span class="tag date">1015 수업</span><span class="tag slide">S6 p5–22</span></div><div class="table-wrap"><table><thead><tr><th>상황</th><th>핵심 규칙</th></tr></thead><tbody><tr><td>원형 큐 공백</td><td><code>front == rear</code></td></tr><tr><td>원형 큐 포화</td><td><code>(rear + 1) % MAX_QUEUE_SIZE == front</code></td></tr><tr><td>원형 큐 삽입</td><td>rear를 한 칸 돌린 뒤 저장해요.</td></tr><tr><td>원형 큐 삭제</td><td>front를 한 칸 돌린 뒤 읽어요.</td></tr><tr><td>연결된 큐</td><td>front가 실제 첫 노드를, rear가 실제 마지막 노드를 가리켜요.</td></tr><tr><td>덱</td><td>양 끝에서 삽입·삭제할 수 있어요.</td></tr><tr><td>버퍼</td><td>생산 속도와 소비 속도 차이를 사이에서 받아 줘요.</td></tr><tr><td>대기 시간</td><td>서비스 시작 시각에서 도착 시각을 빼요.</td></tr></tbody></table></div><p>원형 큐의 front와 연결된 큐의 front는 의미가 달라요. 배열 인덱스인지 노드 포인터인지부터 확인해요.</p></article>
+<article class="topic" id="s3-next"><h3>다음 시간 예고</h3><ul><li>다음 범위: 강의록 순서상 S7 Tree가 이어져요. 1015 전사에서는 시작하지 않았으며 다음 수업 진도는 확정되지 않았어요.</li><li>S7의 이진트리·루트·서브트리는 아직 배우지 않았어요.</li></ul></article>
+<article class="topic" id="s3-links"><h3>함께 보면 좋은 자료</h3><ul><li><a href="복습문제_1015_Queue.html">1015 복습문제 8선</a></li><li><a href="../../자료구조_강의록_2026/Software_6_Queue.pdf">S6 Queue 강의록</a></li><li><a href="../1012/정리노트_1012_Queue.html">1012 큐 도입 복습</a></li></ul><p>교과서의 두 스택 구현과 덱 회문 판정은 배운 연산을 조합하는 응용문제예요. 그 알고리즘을 교수님이 수업에서 직접 설명한 것으로 표시하지 않았어요.</p></article>
+    </section>
+  </main>
+  <footer>출처: 이정원 교수님 강의록(Software_6 Queue) · 수업 녹음 전사(1015). 전사에 시각 정보가 없어 인용은 Part 기준이에요.</footer>
+    </div>
+    <aside class="panel panel-right" id="panel-right" aria-labelledby="panel-right-title">
+      <div class="panel-resize" data-side="right" role="separator" aria-orientation="vertical" aria-controls="panel-right" aria-label="오른쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-right-title">페이지 요약</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-sub" id="sum-for">전체 흐름</p>
+        <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
+        <div class="sums"></div>
+      </div>
+    </aside>
+  </div>
+  <div class="scrim" id="panel-scrim" aria-hidden="true"></div>
+  <nav class="pager" aria-label="화면 이동">
+    <div class="pager-inner">
+      <button class="btn btn-ghost" id="pager-prev" type="button">이전</button>
+      <span class="pager-count" id="pager-count"></span>
+      <button class="btn btn-primary" id="pager-next" type="button">시작하기</button>
+    </div>
+  </nav>
+  <p class="sr-only" id="pager-status" aria-live="polite"></p>
+  <script id="widget-queue-ui">(function () {
+    const SIZE = 8;
+    function fresh() { return { front: 0, rear: 0, cells: Array(SIZE).fill(null), message: '공백: front = rear = 0' }; }
+    function length(s) { return (s.rear - s.front + SIZE) % SIZE; }
+    function status(s) { return s.front === s.rear ? '공백' : (s.rear + 1) % SIZE === s.front ? '포화' : '삽입·삭제 가능'; }
+    function enqueue(s, item) {
+        if ((s.rear + 1) % SIZE === s.front) { s.message = '포화: 한 칸은 비워 두므로 더 넣을 수 없어요.'; return false; }
+        s.rear = (s.rear + 1) % SIZE;
+        s.cells[s.rear] = item;
+        s.message = item + ' 삽입: rear = ' + s.rear;
+        return true;
+    }
+    function dequeue(s) {
+        if (s.front === s.rear) { s.message = '공백: 꺼낼 원소가 없어요.'; return null; }
+        s.front = (s.front + 1) % SIZE;
+        const item = s.cells[s.front];
+        s.cells[s.front] = null;
+        s.message = item + ' 삭제: front = ' + s.front;
+        return item;
+    }
+    function ordered(s) {
+        const a = [];
+        for (let k = 1; k <= length(s); k++) a.push(s.cells[(s.front + k) % SIZE]);
+        return a;
+    }
+    function esc(v) { return String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    function svg(s) {
+        const box = Array.from({length: SIZE}, (_, i) => {
+            const x = 30 + i * 64;
+            const value = s.cells[i] == null ? '·' : esc(s.cells[i]);
+            return '<rect class="fig-ink" x="' + x + '" y="88" width="54" height="50" rx="7" fill="none"/>' +
+                '<text class="fig-muted" x="' + (x+27) + '" y="78" text-anchor="middle" font-size="13">' + i + '</text>' +
+                '<text class="fig-text" x="' + (x+27) + '" y="120" text-anchor="middle" font-size="14">' + value + '</text>';
+        }).join('');
+        const fx = 57 + s.front * 64, rx = 57 + s.rear * 64;
+        return box +
+            '<path class="fig-accent" d="M 505 149 C 545 193, 10 193, 37 149" fill="none"/>' +
+            '<path class="fig-accent" d="M 37 149 L 35 158 M 37 149 L 47 151" fill="none"/>' +
+            '<path class="fig-accent" d="M ' + fx + ' 28 L ' + fx + ' 61" fill="none"/>' +
+            '<path class="fig-accent" d="M ' + fx + ' 61 L ' + (fx-5) + ' 54 M ' + fx + ' 61 L ' + (fx+5) + ' 54" fill="none"/>' +
+            '<text class="fig-text" x="' + fx + '" y="22" text-anchor="middle" font-size="13">front</text>' +
+            '<path class="fig-ink" d="M ' + rx + ' 196 L ' + rx + ' 153" fill="none"/>' +
+            '<path class="fig-ink" d="M ' + rx + ' 153 L ' + (rx-5) + ' 160 M ' + rx + ' 153 L ' + (rx+5) + ' 160" fill="none"/>' +
+            '<text class="fig-text" x="' + rx + '" y="213" text-anchor="middle" font-size="13">rear</text>';
+    }
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = {fresh, length, status, enqueue, dequeue, ordered, svg};
+        if (require.main === module) {
+            const a = fresh(), b = fresh(), c = fresh();
+            enqueue(b, 'A'); enqueue(b, 'B');
+            'ABCDEFG'.split('').forEach(x => enqueue(c, x));
+            console.log(JSON.stringify([a,b,c].map(s => ({front:s.front,rear:s.rear,count:length(s),status:status(s),list:ordered(s),svg:svg(s)}))));
+        }
+        return;
+    }
+    const root = document.getElementById('widget-queue');
+    if (!root) return;
+    const plot = document.getElementById('queue-plot');
+    const out = document.getElementById('queue-out');
+    const item = document.getElementById('queue-item');
+    let s = fresh();
+    function draw() {
+        plot.innerHTML = svg(s);
+        plot.setAttribute('aria-label', '8칸 원형 큐. front ' + s.front + ', rear ' + s.rear + ', ' + status(s));
+        out.textContent = s.message + ' | 상태: ' + status(s) + ' | 목록: ' + (ordered(s).join(', ') || '없음') + ' | ' + length(s) + '/7개';
+    }
+    document.getElementById('queue-enqueue').addEventListener('click', () => {
+        const value = item.value.trim().slice(0, 3);
+        if (!value) { s.message = '넣을 원소를 입력해 주세요.'; draw(); return; }
+        enqueue(s, value); draw();
+    });
+    document.getElementById('queue-dequeue').addEventListener('click', () => { dequeue(s); draw(); });
+    document.getElementById('queue-reset').addEventListener('click', () => { s = fresh(); draw(); });
+    draw();
+})();
+</script>
+  <script id="theme-ui">
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const sysDark = matchMedia('(prefers-color-scheme: dark)');
+      const KEY = 'od-theme';
+      const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : sysDark.matches;
+      function label() {
+        const next = isDark() ? '라이트 모드로 전환' : '다크 모드로 전환';
+        btn.setAttribute('aria-label', next);
+        btn.title = next;
+      }
+      btn.addEventListener('click', () => {
+        const t = isDark() ? 'light' : 'dark';
+        // 시스템 설정과 같아지면 저장을 지워 다시 시스템을 따른다
+        if ((t === 'dark') === sysDark.matches) { delete root.dataset.theme; try { localStorage.removeItem(KEY); } catch (e) {} }
+        else { root.dataset.theme = t; try { localStorage.setItem(KEY, t); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+        label();
+      });
+      sysDark.addEventListener('change', label);
+      window.addEventListener('storage', (e) => {
+        if (e.key !== KEY) return;
+        if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue; else delete root.dataset.theme;
+        label();
+      });
+      label();
+    })();
+  </script>
+  <script id="panels-ui">
+    (function () {
+      const body = document.body;
+      const layout = document.querySelector('.layout');
+      const kind = body.dataset.panels;
+      const panels = { left: document.getElementById('panel-left'), right: document.getElementById('panel-right') };
+      const toggles = { left: document.getElementById('toggle-left'), right: document.getElementById('toggle-right') };
+      const scrim = document.getElementById('panel-scrim');
+      const blockers = [document.querySelector('.topbar'), document.querySelector('.content'), document.querySelector('.pager')];
+      const wideMq = matchMedia('(min-width: 1024px)');
+      const roomyMq = matchMedia('(min-width: 1280px)');
+      const store = {
+        get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+      };
+      const PREF = 'od-panels:' + kind;
+      // 팩마다 문제·토픽 id가 p1, s1-…로 겹치므로 진행 기록은 기간별로 나눈다
+      const RANGE = body.dataset.range || '';
+      const ICON_TODO = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>';
+      const ICON_DONE = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 10"/></svg>';
+      let overlay = null;
+
+      // ---------- 열고 닫기 ----------
+      function docked() {
+        const pref = store.get(PREF, {});
+        return { left: pref.left ?? true, right: pref.right ?? roomyMq.matches };
+      }
+      function sync() {
+        const wide = wideMq.matches;
+        const d = docked();
+        ['left', 'right'].forEach((side) => {
+          const open = wide ? d[side] : overlay === side;
+          const p = panels[side];
+          layout.dataset[side] = open ? 'open' : 'closed';
+          p.classList.toggle('is-open', !wide && open);
+          p.inert = !open;
+          if (!wide && open) { p.setAttribute('role', 'dialog'); p.setAttribute('aria-modal', 'true'); }
+          else { p.removeAttribute('role'); p.removeAttribute('aria-modal'); }
+          toggles[side].setAttribute('aria-expanded', String(open));
+        });
+        const drawer = !wide && overlay !== null;
+        scrim.classList.toggle('is-on', drawer);
+        body.classList.toggle('drawer-open', drawer);
+        blockers.forEach((el) => { el.inert = drawer; });
+      }
+      function openDrawer(side) {
+        overlay = side;
+        sync();
+        requestAnimationFrame(() => panels[side].querySelector('[data-panel-close]').focus());
+      }
+      function closeDrawer(refocus) {
+        if (overlay === null) return;
+        const side = overlay;
+        overlay = null;
+        sync();
+        if (refocus) toggles[side].focus();
+      }
+      function toggle(side) {
+        if (wideMq.matches) {
+          const d = docked();
+          d[side] = !d[side];
+          store.set(PREF, d);
+          sync();
+          if (d[side]) { const p = panels[side]; p.classList.remove('is-shown'); void p.offsetWidth; p.classList.add('is-shown'); }
+        } else if (overlay === side) closeDrawer(true);
+        else openDrawer(side);
+      }
+
+      toggles.left.addEventListener('click', () => toggle('left'));
+      toggles.right.addEventListener('click', () => toggle('right'));
+      scrim.addEventListener('click', () => closeDrawer(true));
+      document.querySelectorAll('[data-panel-close]').forEach((b) => b.addEventListener('click', () => closeDrawer(true)));
+      panels.left.addEventListener('click', (e) => { if (e.target.closest('.toc a')) closeDrawer(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay !== null) { e.preventDefault(); closeDrawer(true); } });
+
+      // ---------- 패널 너비: 기본은 화면 폭에 맞춰 자동, 경계를 끌면 직접 조절 ----------
+      const WIDTH = { left: { min: 220, max: 480, prop: '--panel-l-user' }, right: { min: 280, max: 720, prop: '--panel-r-user' } };
+      function applyWidths() {
+        const w = store.get(PREF + ':w', {});
+        ['left', 'right'].forEach((side) => {
+          if (w[side]) layout.style.setProperty(WIDTH[side].prop, w[side] + 'px');
+          else layout.style.removeProperty(WIDTH[side].prop);
+        });
+      }
+      function maxFor(side) {
+        const other = side === 'left' ? panels.right : panels.left;
+        const otherW = layout.dataset[side === 'left' ? 'right' : 'left'] === 'open' ? other.getBoundingClientRect().width : 0;
+        return Math.max(WIDTH[side].min, Math.min(WIDTH[side].max, window.innerWidth - otherW - 400));
+      }
+      function setWidth(side, px, save) {
+        const v = Math.round(Math.min(Math.max(px, WIDTH[side].min), maxFor(side)));
+        layout.style.setProperty(WIDTH[side].prop, v + 'px');
+        panels[side].querySelector('.panel-resize').setAttribute('aria-valuenow', String(v));
+        if (save) { const w = store.get(PREF + ':w', {}); w[side] = v; store.set(PREF + ':w', w); }
+      }
+      function resetWidth(side) {
+        const w = store.get(PREF + ':w', {});
+        delete w[side];
+        store.set(PREF + ':w', w);
+        layout.style.removeProperty(WIDTH[side].prop);
+      }
+      document.querySelectorAll('.panel-resize').forEach((handle) => {
+        const side = handle.dataset.side;
+        const dir = side === 'left' ? 1 : -1;
+        handle.setAttribute('aria-valuemin', String(WIDTH[side].min));
+        handle.setAttribute('aria-valuemax', String(WIDTH[side].max));
+        handle.addEventListener('pointerdown', (e) => {
+          if (!wideMq.matches || e.button !== 0) return;
+          e.preventDefault();
+          const startX = e.clientX;
+          const startW = panels[side].getBoundingClientRect().width;
+          handle.setPointerCapture(e.pointerId);
+          body.classList.add('is-resizing');
+          const move = (ev) => setWidth(side, startW + dir * (ev.clientX - startX), false);
+          const up = () => {
+            handle.removeEventListener('pointermove', move);
+            handle.removeEventListener('pointerup', up);
+            handle.removeEventListener('pointercancel', up);
+            body.classList.remove('is-resizing');
+            setWidth(side, panels[side].getBoundingClientRect().width, true);
+          };
+          handle.addEventListener('pointermove', move);
+          handle.addEventListener('pointerup', up);
+          handle.addEventListener('pointercancel', up);
+        });
+        handle.addEventListener('dblclick', () => resetWidth(side));
+        handle.addEventListener('keydown', (e) => {
+          const step = e.shiftKey ? 64 : 16;
+          const cur = panels[side].getBoundingClientRect().width;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            e.stopPropagation();
+            setWidth(side, cur + (e.key === 'ArrowRight' ? step : -step) * dir, true);
+          } else if (e.key === 'Home') { e.preventDefault(); resetWidth(side); }
+        });
+      });
+      applyWidths();
+      const onMq = () => { overlay = null; sync(); };
+      wideMq.addEventListener('change', onMq);
+      roomyMq.addEventListener('change', onMq);
+
+      // ---------- 목차의 진행 표시 ----------
+      const progressN = document.getElementById('progress-n');
+      const progressBar = document.getElementById('progress-bar');
+      const progressTotal = document.getElementById('progress-total');
+      function markToc(done, total, doneLabel) {
+        panels.left.querySelectorAll('.toc-list a').forEach((a) => {
+          const id = decodeURIComponent(a.getAttribute('href').slice(1));
+          let mark = a.querySelector('.toc-mark');
+          if (!mark) {
+            mark = document.createElement('span');
+            mark.className = 'toc-mark';
+            mark.setAttribute('aria-hidden', 'true');
+            const state = document.createElement('span');
+            state.className = 'sr-only toc-state';
+            a.append(mark, state);
+          }
+          const isDone = done.has(id);
+          mark.classList.toggle('is-done', isDone);
+          mark.innerHTML = isDone ? ICON_DONE : ICON_TODO;
+          a.querySelector('.toc-state').textContent = isDone ? ' (' + doneLabel + ')' : '';
+        });
+        progressN.textContent = String(done.size);
+        progressTotal.textContent = String(total);
+        progressBar.style.transform = 'scaleX(' + (total ? done.size / total : 0) + ')';
+      }
+      function revealCurrent() {
+        const link = panels.left.querySelector('.toc-list a[aria-current="true"]');
+        if (link && layout.dataset.left === 'open') link.scrollIntoView({ block: 'nearest' });
+      }
+
+      // ---------- 복습문제: 오른쪽 = 원문 · 힌트 · 풀이 ----------
+      function setupReview() {
+        const KEY = 'od-review-solved:' + RANGE;
+        const cards = Array.from(document.querySelectorAll('main article.card'));
+        const aids = panels.right.querySelector('.aids');
+        const sub = document.getElementById('aid-for');
+        const empty = panels.right.querySelector('.panel-empty');
+        const btn = document.getElementById('solved-btn');
+        const groups = {};
+        const solved = new Set(store.get(KEY, []).filter((id) => cards.some((c) => c.id === id)));
+        cards.forEach((card) => {
+          const g = document.createElement('div');
+          g.className = 'aid';
+          g.hidden = true;
+          card.querySelectorAll(':scope > details').forEach((d) => g.appendChild(d));
+          aids.appendChild(g);
+          groups[card.id] = g;
+        });
+        let curId = null;
+        function paintBtn() {
+          const on = solved.has(curId);
+          btn.setAttribute('aria-pressed', String(on));
+          btn.innerHTML = (on ? ICON_DONE : ICON_TODO) + '<span>' + (on ? '푼 문제 · 표시 해제' : '푼 문제로 표시') + '</span>';
+        }
+        btn.addEventListener('click', () => {
+          if (!curId) return;
+          if (solved.has(curId)) solved.delete(curId); else solved.add(curId);
+          store.set(KEY, Array.from(solved));
+          paintBtn();
+          markToc(solved, cards.length, '푼 문제');
+        });
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          curId = s.matches('article.card') ? s.id : null;
+          Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
+          empty.hidden = Boolean(curId);
+          btn.hidden = !curId;
+          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';
+          sub.hidden = !curId;
+          if (curId) paintBtn();
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(solved, cards.length, '푼 문제');
+          revealCurrent();
+        });
+      }
+
+      // ---------- 정리노트: 오른쪽 = 페이지(토픽)별 요약 ----------
+      function setupNote() {
+        const KEY = 'od-note-read:' + RANGE;
+        const topics = Array.from(document.querySelectorAll('main article.topic'));
+        const read = new Set(store.get(KEY, []).filter((id) => topics.some((t) => t.id === id)));
+        // 조각의 <div class="sum" hidden> 을 오른쪽 패널로 옮긴다. 없으면 안내 문구만 보인다.
+        const box = panels.right.querySelector('.sums');
+        const sums = {};
+        topics.forEach((t) => {
+          const el = t.querySelector(':scope > .sum');
+          if (!el) return;
+          el.hidden = true;
+          box.appendChild(el);
+          sums[t.id] = el;
+        });
+        const sub = document.getElementById('sum-for');
+        const empty = document.getElementById('sum-empty');
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          const key = s.matches('article.topic') ? s.id : 'intro';
+          Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
+          empty.hidden = Boolean(sums[key]);
+          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
+          if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(read, topics.length, '읽음');
+          revealCurrent();
+        });
+      }
+
+      if (kind === 'review') setupReview();
+      if (kind === 'note') setupNote();
+      sync();
+    })();
+  </script>
+  <script id="pager-ui">
+    (function () {
+      const root = document.documentElement;
+      const main = document.querySelector('main');
+      const hero = main.querySelector('.hero');
+      const screens = [hero].concat(Array.from(main.querySelectorAll(document.body.dataset.screens)));
+      if (screens.length < 2) { root.classList.remove('js'); return; }
+      screens.forEach((s) => s.classList.add('screen'));
+
+      const last = screens.length - 1;
+      const prevBtn = document.getElementById('pager-prev');
+      const nextBtn = document.getElementById('pager-next');
+      const count = document.getElementById('pager-count');
+      const bar = document.getElementById('pager-bar');
+      const status = document.getElementById('pager-status');
+      const toc = document.querySelector('#panel-left .toc');
+      const scroller = document.querySelector('.content');
+      const titleOf = (s) => ((s.querySelector('h3') || s.querySelector('h1') || {}).textContent || '').trim();
+      let cur = -1;
+
+      // 목차: 섹션 링크 아래에 화면(토픽·카드) 목록을 붙인다
+      const tocLinks = [];
+      Array.from(toc.querySelectorAll(':scope > a')).forEach((a) => {
+        const sec = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+        const group = document.createElement('div');
+        group.className = 'toc-group';
+        a.replaceWith(group);
+        group.appendChild(a);
+        if (!sec) return;
+        const list = document.createElement('ol');
+        list.className = 'toc-list';
+        screens.forEach((s, i) => {
+          if (!sec.contains(s)) return;
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#' + s.id;
+          link.innerHTML = '<span class="toc-title"></span>';
+          link.firstChild.textContent = titleOf(s);
+          li.appendChild(link);
+          list.appendChild(li);
+          tocLinks[i] = link;
+        });
+        group.appendChild(list);
+      });
+
+      function indexFor(hash) {
+        const id = decodeURIComponent((hash || '').replace(/^#/, ''));
+        const el = id && document.getElementById(id);
+        if (!el || !main.contains(el)) return { i: 0 };
+        const i = screens.findIndex((s) => s.contains(el) || el.contains(s));
+        return { i: Math.max(i, 0), target: i >= 0 && screens[i].contains(el) && screens[i] !== el ? el : null };
+      }
+
+      function render(i, target) {
+        const dir = cur < 0 ? '' : i > cur ? 'enter-next' : 'enter-prev';
+        if (i !== cur) {
+          if (cur >= 0) screens[cur].classList.remove('is-current', 'enter-next', 'enter-prev');
+          main.querySelectorAll(':scope > section.is-on').forEach((sec) => sec.classList.remove('is-on'));
+          const s = screens[i];
+          const sec = s.closest('section');
+          if (sec) sec.classList.add('is-on');
+          s.classList.add('is-current');
+          if (dir) { s.classList.remove('enter-next', 'enter-prev'); void s.offsetWidth; s.classList.add(dir); }
+          cur = i;
+          document.body.classList.toggle('at-end', i === last);
+          prevBtn.disabled = i === 0;
+          nextBtn.textContent = i === 0 ? '시작하기' : i === last ? '처음으로' : '다음';
+          count.textContent = i === 0 ? '' : i + ' / ' + last;
+          bar.style.transform = 'scaleX(' + (i / last) + ')';
+          status.textContent = i === 0 ? titleOf(s) : i + ' / ' + last + ', ' + titleOf(s);
+          tocLinks.forEach((link, k) => link && link.setAttribute('aria-current', String(k === i)));
+          document.dispatchEvent(new CustomEvent('od:screen', { detail: { index: i, screen: s } }));
+        }
+        if (target) target.scrollIntoView({ block: 'start' });
+        else scroller.scrollTo(0, 0);
+      }
+
+      function go(i) {
+        i = Math.min(Math.max(i, 0), last);
+        if (i === cur) return;
+        const url = i === 0 ? location.pathname + location.search : '#' + screens[i].id;
+        history.pushState(null, '', url);
+        render(i);
+      }
+
+      prevBtn.addEventListener('click', () => go(cur - 1));
+      nextBtn.addEventListener('click', () => go(cur === last ? 0 : cur + 1));
+      const fromUrl = () => { const r = indexFor(location.hash); render(r.i, r.target); };
+      window.addEventListener('hashchange', fromUrl);
+      window.addEventListener('popstate', fromUrl);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || document.body.classList.contains('drawer-open')) return;
+        if (e.target.closest('input, select, textarea, [contenteditable="true"]')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+      });
+
+      // 좌우로 밀어서 넘기기 (가로로 스크롤되는 영역은 제외)
+      let sx = 0, sy = 0, skip = true;
+      main.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY;
+        skip = e.touches.length > 1 || Boolean(e.target.closest('.widget, .katex-display, .table-wrap, pre, svg, input, details'));
+      }, { passive: true });
+      main.addEventListener('touchend', (e) => {
+        if (skip) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        if (Math.abs(dx) > 64 && Math.abs(dx) > 2 * Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      fromUrl();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+{
+  "status": "complete",
+  "range": "1015",
+  "files": {
+    "root": [
+      "문제설명_1015_Queue.html",
+      "복습문제_1015_Queue-문제.pdf",
+      "정리노트_1015_Queue.html",
+      "복습문제_1015_Queue.html",
+      "복습문제_1015_Queue-답안.pdf"
+    ],
+    "markdown": [
+      "복습문제_1015_Queue.md",
+      "문제설명_1015_Queue.md",
+      "정리노트_1015_Queue.md"
+    ],
+    "note_figures": 16,
+    "explanation_figures": 2
+  },
+  "scope": {
+    "taught": "S6 p2–22, p2–4 recap, mainp5–22",
+    "preview": "S7 not started; next class unconfirmed",
+    "no_timestamps": "STT has Part01–05 without MM:SS"
+  },
+  "problems": [
+    {
+      "id": "p1",
+      "source": "2019-mid-q7",
+      "source_kind": "past-exam",
+      "answer": "front=4, rear=2"
+    },
+    {
+      "id": "p2",
+      "source": "2017-mid-c050-q7",
+      "source_kind": "past-exam",
+      "answer": "(a) front=3, rear=5; (b) front=3, rear=1"
+    },
+    {
+      "id": "p3",
+      "source": "textbook-ch05-q02",
+      "source_kind": "textbook",
+      "answer": "(b) 2개"
+    },
+    {
+      "id": "p4",
+      "source": "textbook-ch05-q04",
+      "source_kind": "textbook",
+      "answer": "(c) front == rear"
+    },
+    {
+      "id": "p5",
+      "source": "textbook-ch05-q07",
+      "source_kind": "textbook",
+      "answer": "(a) O(1)"
+    },
+    {
+      "id": "p6",
+      "source": "textbook-ch05-q08",
+      "source_kind": "textbook",
+      "answer": "(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE"
+    },
+    {
+      "id": "p7",
+      "source": "textbook-ch05-q09",
+      "source_kind": "textbook",
+      "answer": "두 스택으로 FIFO를 구현할 수 있어요."
+    },
+    {
+      "id": "p8",
+      "source": "textbook-ch05-q11",
+      "source_kind": "textbook",
+      "answer": "양 끝에서 꺼낸 문자가 모두 같으면 회문이에요."
+    }
+  ],
+  "variants": 0,
+  "textbook": {
+    "count": 6,
+    "chapter": 5,
+    "questions": [
+      "02",
+      "04",
+      "07",
+      "08",
+      "09",
+      "11"
+    ],
+    "book_pages": [
+      171,
+      172
+    ],
+    "verification": "sourcePDF matching + Python simulation + C11 compile/run; UTF8 preprocessing is implementation supplement"
+  },
+  "bank_answer_differences": [],
+  "bank_problem_text_differences": [],
+  "excluded_pending_sources": [],
+  "decisions": {
+    "slug": "Queue",
+    "sections": 4,
+    "concept_topics": 11,
+    "widget": "s0-ops,8slots enqueue/dequeue/reset to show wrap,full,empty",
+    "excluded": [
+      {
+        "source": "2018-mid-c024-q10",
+        "reason": "원형 큐 연속 추적이 기출 두 문항과 중복"
+      },
+      {
+        "source": "unk-final-ltk-q2",
+        "reason": "포화 후 오류 처리 규약이 문제에 명시되지 않아 다의적"
+      },
+      {
+        "source": "textbook-ch05-q01",
+        "reason": "1012 팩에서 이미 사용"
+      },
+      {
+        "source": "textbook-ch05-q03",
+        "reason": "1012 팩에서 이미 사용"
+      },
+      {
+        "source": "textbook-ch05-q05",
+        "reason": "front/rear 추적 개념이 기출 두 문항과 중복"
+      },
+      {
+        "source": "textbook-ch05-q06",
+        "reason": "원형 큐 추적 개념 중복"
+      },
+      {
+        "source": "textbook-ch05-q10",
+        "reason": "원문 F(b)와 절차가 불명확"
+      },
+      {
+        "source": "textbook-ch05-q12",
+        "reason": "구체적인 스케줄링·동시 실행 모델 미학습"
+      }
+    ],
+    "source_discrepancies": "S6p19 lock pseudo-code semantics unclear; p22 literal if/else startticks1/5/11 differ from oral1/4/9; both explicitlydistinguished; error() mustterminate",
+    "minor_unapplied": [
+      "P2 —rear cosmetic label; correct position and answer preserved"
+    ]
+  },
+  "explanation": {
+    "status": "published",
+    "questions": 8,
+    "reviewed_items": 18,
+    "choice_options_are_not_separate_questions": true,
+    "reviews": {
+      "source_visual": "pass",
+      "content": "pass",
+      "independent": "pass",
+      "browser": "pass"
+    },
+    "run": "/private/tmp/ds-explain-1015",
+    "backup": "/private/tmp/ds-explain-1015/review-1015-Queue/backups"
+  },
+  "pdf": {
+    "status": "published",
+    "problem_pages": 9,
+    "answer_pages": 10,
+    "run": "/private/tmp/ds-pdf-1015-v2",
+    "backup": "/private/tmp/ds-pdf-1015-v2/backups",
+    "validation": "coverage+fonts+all19pagevisualpass; sharedP8continuedworkspace andhintappendix included"
+  },
+  "tool_fixes": [
+    "pdf_cards.py: nestedprein solutionstep exposed forlinepagination",
+    "mpe_render.py: source-only static scrolltable styles preserved; authoredstyles stillrejected"
+  ],
+  "tests": {
+    "pdf": 21,
+    "explanation_render_contract": 43,
+    "card": 7,
+    "total": 71
+  },
+  "unresolved": [],
+  "run": "/private/tmp/ds-review-pack/1015",
+  "runtime_python": "/Users/hyunjun_macbook_pro/.cache/codex-study/ds-review-pack-venv/bin/python",
+  "backups": "new1015pack; no previous notes/review; output-specific backup dirs listed",
+  "commit_suggestion": "git add 복습노트/1015 && git commit -m \"docs(notes): add ds review pack 1015\"",
+  "tools_commit": "Separate review/commit recommended for 2 generator fixes + 2 regression test files; no commit or push performed"
+}

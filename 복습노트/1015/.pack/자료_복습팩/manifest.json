@@ -1,0 +1,389 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "1015",
+  "slug": "Queue",
+  "note_title": "원형 큐·덱·대기열 시뮬레이션 — 5살도 이해하는 정리노트",
+  "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1015 수업 (Software_6 Queue)",
+  "review_title": "복습문제 8선 — 1015 수업 범위",
+  "review_intro": "다른 기출 2개와 교과서 6개로 복습해요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
+  "footer_note": "출처: 이정원 교수님 강의록(Software_6 Queue) · 수업 녹음 전사(1015). 전사에 시각 정보가 없어 인용은 Part 기준이에요.",
+  "footer_review": "출처: 2019 중간·2017 중간(출제자 미상), 교과서 5장 큐 02·04·07·08·09·11번(p171–172). 풀이는 자체 작성하며 답은 Python 시뮬레이션·C11 실행·강의 근거 대조로 검증했어요.",
+  "sessions": [
+    {
+      "date": "1015",
+      "stt": "STT/1015 자구알.md",
+      "summary": "summaries/stt-1015.md",
+      "slides": "S6 p5–22 (p2–4 복기)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "title": "1. 원형 큐: 빈칸을 다시 쓰는 법",
+      "short": "1 원형 큐",
+      "topics": [
+        {
+          "id": "s0-buffer",
+          "title": "줄을 보관하는 큐와 선형 배열의 한계",
+          "required_terms": [
+            "FIFO",
+            "버퍼",
+            "선형 큐"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-index",
+          "title": "front와 rear가 가리키는 자리",
+          "required_terms": [
+            "front",
+            "rear",
+            "첫 번째 요소 하나 앞"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-state",
+          "title": "한 칸을 비우는 이유와 나머지 연산",
+          "required_terms": [
+            "front == rear",
+            "MAX_QUEUE_SIZE",
+            "나머지"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-ops",
+          "title": "삽입·삭제 코드와 연산별 추적",
+          "required_terms": [
+            "enqueue",
+            "dequeue",
+            "O(1)"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 연결된 큐와 양쪽 문이 있는 덱",
+      "short": "2 연결 큐·덱",
+      "topics": [
+        {
+          "id": "s1-linked",
+          "title": "연결된 큐의 머리와 꼬리",
+          "required_terms": [
+            "front",
+            "rear",
+            "NULL"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-deque",
+          "title": "덱의 양 끝 연산과 이중 연결",
+          "required_terms": [
+            "deque",
+            "llink",
+            "rlink"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-add",
+          "title": "덱 삽입: 비어 있는 경우부터",
+          "required_terms": [
+            "add_front",
+            "add_rear",
+            "create_node"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-delete",
+          "title": "덱 삭제: 노드를 보관한 뒤 연결 바꾸기",
+          "required_terms": [
+            "delete_front",
+            "removed_node",
+            "free"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "3. 큐 응용: 속도 차이와 대기 시간",
+      "short": "3 버퍼·시뮬레이션",
+      "topics": [
+        {
+          "id": "s2-lock",
+          "title": "생산자·소비자와 버퍼의 열쇠",
+          "required_terms": [
+            "생산자",
+            "소비자",
+            "lock",
+            "unlock"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-simulation",
+          "title": "은행 대기열의 시간과 평균 계산",
+          "required_terms": [
+            "clock",
+            "service_time",
+            "2.67"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-code",
+          "title": "시뮬레이션 반복문과 시험 안내",
+          "required_terms": [
+            "duration",
+            "is_customer_arrived",
+            "연습문제"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 요약 · 예고",
+      "short": "4 요약·예고",
+      "topics": [
+        {
+          "id": "s3-cheatsheet",
+          "title": "한눈에 보는 큐·덱",
+          "required_terms": [
+            "공백",
+            "포화"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "다음 범위"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "복습문제"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s3-next",
+  "forbidden_outside_preview": [
+    "이진트리",
+    "루트",
+    "서브트리"
+  ],
+  "parts": [
+    {
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B 다른 기출"
+    },
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "part": "partB",
+      "source": "2019-mid-q7",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s0-ops",
+      "level": 2,
+      "date": "1015",
+      "terms": [
+        "front=4, rear=2"
+      ],
+      "answer": "front=4, rear=2"
+    },
+    {
+      "id": "p2",
+      "part": "partB",
+      "source": "2017-mid-c050-q7",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s0-ops",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "(a) front=3, rear=5; (b) front=3, rear=1"
+      ],
+      "answer": "(a) front=3, rear=5; (b) front=3, rear=1"
+    },
+    {
+      "id": "p3",
+      "part": "partD",
+      "source": "textbook-ch05-q02",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-index",
+      "level": 1,
+      "date": "1015",
+      "terms": [
+        "(b) 2개"
+      ],
+      "answer": "(b) 2개"
+    },
+    {
+      "id": "p4",
+      "part": "partD",
+      "source": "textbook-ch05-q04",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-state",
+      "level": 1,
+      "date": "1015",
+      "terms": [
+        "(c) front == rear"
+      ],
+      "answer": "(c) front == rear"
+    },
+    {
+      "id": "p5",
+      "part": "partD",
+      "source": "textbook-ch05-q07",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-ops",
+      "level": 1,
+      "date": "1015",
+      "terms": [
+        "(a) O(1)"
+      ],
+      "answer": "(a) O(1)"
+    },
+    {
+      "id": "p6",
+      "part": "partD",
+      "source": "textbook-ch05-q08",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-index",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE"
+      ],
+      "answer": "(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE"
+    },
+    {
+      "id": "p7",
+      "part": "partD",
+      "source": "textbook-ch05-q09",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-buffer",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "FIFO"
+      ],
+      "answer": "두 스택으로 FIFO를 구현할 수 있어요."
+    },
+    {
+      "id": "p8",
+      "part": "partD",
+      "source": "textbook-ch05-q11",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-deque",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "회문"
+      ],
+      "answer": "양 끝에서 꺼낸 문자가 모두 같으면 회문이에요."
+    }
+  ],
+  "links": [
+    {
+      "topic": "s3-links",
+      "href": "복습문제_1015_Queue.html"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../../자료구조_강의록_2026/Software_6_Queue.pdf"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../1012/정리노트_1012_Queue.html"
+    }
+  ]
+}

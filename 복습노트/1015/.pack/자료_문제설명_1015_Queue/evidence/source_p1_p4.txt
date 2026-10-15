@@ -1,0 +1,6 @@
+Source comparison for p1-p4 (2026-10-15)
+P1: 2019 midterm reconstructed text, CP949 file 19-1 중간 복원.txt, question 7. It says 10,20,30,04,50,60; four deletions; 70,80,90,100; key front=4,rear=2. The token 04 was preserved literally.
+P2: 2017 midterm C050 model-answer PDF page 1 has question 7(a), initial front=rear=0, 10..50, delete 3, and diagram front=3,rear=5 with 40/50. PDF page 2 has (b) continuing (a), add 60..90, and diagram front=3,rear=1 with 40,50,60,70,80,90. Rendered pages exam2017-p1.png and exam2017-p2.png were visually inspected.
+P3: textbook 05_큐_연습문제.pdf, book p171, PDF page 1, question 02: front=3,rear=5,M=8, options 1,2,3,4. Rendered textbook-ch05-1.png visually inspected. S6 slide p6 defines front as the index before the first item. Direct count gives slots 4 and 5, 2 items.
+P4: same textbook PDF page/book p171, question 04: options (a) front==0 && rear==0; (b) both MAX_QUEUE_SIZE-1; (c) front==rear; (d) front==(rear+1)%MAX_QUEUE_SIZE. S6 slide p8 states empty front==rear and full front%M==(rear+1)%M. Empty can occur at nonzero indices, and (d) is full.
+Independent procedure/output: independent_p1_p4.py and independent_p1_p4.txt. The simulation uses an 8-slot ring, checks full/empty before operations, and asserts occupied-slot count equals modular index difference after each case.

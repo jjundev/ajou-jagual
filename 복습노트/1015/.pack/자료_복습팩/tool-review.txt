@@ -1,0 +1,5 @@
+Review: no actionable Critical/Important/Minor findings.
+Scope: unstaged pdf_cards.py, mpe_render.py, test_render.py, and untracked test_pdf_nested_code.py.
+Evidence: solution steps with descendant pre now recurse through blocks(li); direct pre becomes code and existing units/regroup preserve blank lines and indentation. Regression checks order, line units, and regroup text. Existing non-code steps retain prior behavior.
+Evidence: source/original style exceptions require exact overflow-x:auto on div.table-wrap or fullmatch min-width:[1-9][0-9]{0,3}px on table; extra declarations and zero width rejected. Explain scope receives no exception, and validate_fragment still forbids authored styles. markup_errors emits one style error per attribute, matching removal behavior.
+Validation: parent-reported passed suites not independently rerun; inspected implementation, parser traversal, pagination, contract, and regression source.

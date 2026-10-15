@@ -1,0 +1,16 @@
+<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>빙글 돌아가는 줄에서 앞 표시와 뒤 표시만 보고, 실제로 몇 칸이 차 있는지 세는 함수를 만들어요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘원형 큐’, ‘요소의 개수’, ‘get_count’라는 단서에서 두 인덱스 사이의 순환 거리를 떠올려요. 수업의 원형 큐에서 <code>front</code>는 첫 요소 하나 앞, <code>rear</code>는 마지막 요소의 칸이에요. 크기 $M$인 배열에서 다음 칸은 $(i+1)\bmod M$이고 한 칸을 비워 실제 개수는 $0$부터 $M-1$까지예요. 그래서 순환 거리 <code>(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE</code>가 개수예요. $M$은 <code>MAX_QUEUE_SIZE</code>, 나머지 연산은 끝에서 0으로 돌아간 위치를 정규화해요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>종이에 <code>front</code> 다음 칸부터 <code>rear</code>까지 시계 방향으로 세어 보고, “개수 = 순환 거리”라고 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p><code>front</code>가 3이고 <code>rear</code>가 5라면 방문 칸은 4, 5이므로 두 개예요. 7에서 1로 감겨도 방문 칸은 0, 1이므로 두 개예요. 단순 차이는 음수가 될 수 있어 $M$을 더한 뒤 나머지를 취해요. 공백이면 두 인덱스가 같아 0이에요.</p><pre><code class="language-c">#define MAX_QUEUE_SIZE 8
+typedef struct {
+    int front;
+    int rear;
+} QueueType;
+
+int get_count(const QueueType *q) {
+    return (q-&gt;rear - q-&gt;front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE;
+}</code></pre><p>이 함수는 유효한 인덱스와 한 칸 비우는 원형 큐 규칙을 전제해요. 인덱스 두 개를 읽고 일정 횟수로 계산해 $O(1)$이에요.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답은 <code>(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE</code>예요. $M=8$에서 $(5-3+8)\bmod8=2$, $(1-7+8)\bmod8=2$예요. 별도의 시계 방향 순회 계산으로 유효한 <code>front</code>·<code>rear</code> 조합 64개를 모두 대조했고 값이 일치했어요. 포화 상태도 한 칸 비워 7로 나와요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p><code>front</code> 칸 자체를 세면 하나가 많아져요. <code>rear - front</code>만 쓰면 인덱스가 7에서 0으로 돌아갈 때 음수가 돼요. 모든 칸을 채우는 다른 원형 큐 구현에는 별도의 포화 구분 정보가 필요하므로 이 식을 그대로 적용할 수 없어요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li><code>front=7, rear=1</code>에서 실제 점유 칸을 적으세요.</li><li>순환 거리 식에 대입하세요.</li><li>공백과 포화 경계에서 각각 0과 7이 되는지 확인하세요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p><code>front</code> 다음부터 <code>rear</code>까지 세어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>원형 큐의 순환 거리: <code>(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE</code>.</p></div><div class="summary-group"><h4>답과 검산</h4><p>64개 인덱스 쌍을 직접 순회한 개수와 식이 모두 같아요.</p></div></div>
