@@ -1,0 +1,426 @@
+{
+  "method": "independent Python write/bind table",
+  "compiler_unavailable": true,
+  "cases": [
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 10,
+        "b": 20,
+        "mode": "double"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 10,
+        "b": 20,
+        "mode": "single"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 10,
+        "b": 20,
+        "mode": "double"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 10,
+        "b": 20,
+        "mode": "null"
+      },
+      "writes_checked": 2,
+      "diagnostic": "NULL_DEREFERENCE",
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 20,
+        "b": 20,
+        "mode": "double"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": -99,
+        "b": -99,
+        "mode": "double"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 0,
+        "b": 0,
+        "mode": "double"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 99,
+        "b": 99,
+        "mode": "double"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": -99,
+        "b": -99,
+        "mode": "single"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 0,
+        "b": 0,
+        "mode": "single"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 99,
+        "b": 99,
+        "mode": "single"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": -99,
+        "b": -99,
+        "mode": "null"
+      },
+      "writes_checked": 2,
+      "diagnostic": "NULL_DEREFERENCE",
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 0,
+        "b": 0,
+        "mode": "null"
+      },
+      "writes_checked": 2,
+      "diagnostic": "NULL_DEREFERENCE",
+      "status": "pass"
+    },
+    {
+      "topic": "double-pointer",
+      "input": {
+        "a": 99,
+        "b": 99,
+        "mode": "null"
+      },
+      "writes_checked": 2,
+      "diagnostic": "NULL_DEREFERENCE",
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": 10,
+        "value": 20,
+        "mode": "normal"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": 10,
+        "value": 20,
+        "mode": "normal"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": 10,
+        "value": 20,
+        "mode": "null"
+      },
+      "writes_checked": 1,
+      "diagnostic": "NULL_DEREFERENCE",
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": 99,
+        "value": -99,
+        "mode": "normal"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": -99,
+        "value": -99,
+        "mode": "normal"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": 0,
+        "value": 0,
+        "mode": "normal"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": 99,
+        "value": 99,
+        "mode": "normal"
+      },
+      "writes_checked": 3,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": -99,
+        "value": -99,
+        "mode": "null"
+      },
+      "writes_checked": 1,
+      "diagnostic": "NULL_DEREFERENCE",
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": 0,
+        "value": 0,
+        "mode": "null"
+      },
+      "writes_checked": 1,
+      "diagnostic": "NULL_DEREFERENCE",
+      "status": "pass"
+    },
+    {
+      "topic": "pointer-target",
+      "input": {
+        "a": 99,
+        "value": 99,
+        "mode": "null"
+      },
+      "writes_checked": 1,
+      "diagnostic": "NULL_DEREFERENCE",
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 1,
+        "b": 2,
+        "mode": "address"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 1,
+        "b": 2,
+        "mode": "value"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 1,
+        "b": 2,
+        "mode": "address"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 1,
+        "b": 2,
+        "mode": "alias"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": -99,
+        "b": 99,
+        "mode": "address"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": -99,
+        "b": -99,
+        "mode": "address"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 0,
+        "b": 0,
+        "mode": "address"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 99,
+        "b": 99,
+        "mode": "address"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": -99,
+        "b": -99,
+        "mode": "value"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 0,
+        "b": 0,
+        "mode": "value"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 99,
+        "b": 99,
+        "mode": "value"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": -99,
+        "b": -99,
+        "mode": "alias"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 0,
+        "b": 0,
+        "mode": "alias"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    },
+    {
+      "topic": "value-address",
+      "input": {
+        "a": 99,
+        "b": 99,
+        "mode": "alias"
+      },
+      "writes_checked": 6,
+      "diagnostic": null,
+      "status": "pass"
+    }
+  ],
+  "total": 38,
+  "status": "pass"
+}

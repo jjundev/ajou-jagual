@@ -1,0 +1,72 @@
+{
+  "references": {
+    "복습노트\\0928\\문제설명_0928_ArrayStructureList.html": "e2b6a9a1dd81a01ac5fae6310a5ecdb681e5f9a4373e349dcd2695d415152822",
+    "복습노트\\0928\\복습문제_0928_ArrayStructureList-답안.pdf": "645b20402f8f8ced90743ebedc5de20b112c07d6120a907755bf98eb27e3a694",
+    "복습노트\\0928\\복습문제_0928_ArrayStructureList-문제.pdf": "d12347df43f2692064ee966cca375b9212f3e5cd2d5dd5b9c3a791ef23960e9b",
+    "복습노트\\0928\\복습문제_0928_ArrayStructureList.html": "57b29018e69de1b50a192e9c87123c170f734a38533b131d45d2bad6907b48ae",
+    "복습노트\\0928\\정리노트_0928_ArrayStructureList.html": "2518310fcf9a473a1a9c1bf0ff52e926d930b0f8882f8767c7f3898f1ffbe734",
+    "복습노트\\0928\\.pack\\문제설명_0928_ArrayStructureList.md": "8894106b5bb37716f9ddce9cf2ddc4bc6cb0f46870c920bdd6bf64f9b9f62e99",
+    "복습노트\\0928\\.pack\\복습문제_0928_ArrayStructureList.md": "89c16252f7dd54a83d8c8329a9aae79d510acc304e85382c4a1bdc9831c7e954",
+    "복습노트\\0928\\.pack\\정리노트_0928_ArrayStructureList.md": "1b8f7cdadeed025b1d2f43f1d4e4924e0a5979aba667ce4218d2649c5083f528",
+    "복습노트\\0928\\.pack\\자료_문제설명_0928_ArrayStructureList\\evidence\\code-block-review.md": "818c1d1e212275fef76fed13b12cef6ed44cc4faec9cf7a4c94829b1cdcc788a",
+    "복습노트\\0928\\.pack\\자료_문제설명_0928_ArrayStructureList\\evidence\\replay-instructions.md": "026585c8fd248ae4885a4282159307e241c216fa53511b2f3819302b0b874c7c",
+    "복습노트\\0928\\.pack\\자료_문제설명_0928_ArrayStructureList\\evidence\\source-review.md": "4d79d4e1b866efee572908cbf2136d9ab633fa982cf440e1d928c47e6ef804d9",
+    "복습노트\\0928\\.pack\\자료_문제설명_0928_ArrayStructureList\\fragments\\p1.html": "61457d6646504b83bff7203d6caa99516792c98af86c4fe51c51443e6e0d9b8e",
+    "복습노트\\0928\\.pack\\자료_문제설명_0928_ArrayStructureList\\fragments\\p2.html": "955d9efdf817c9bc7c8937d330739a977bc10ab34898b876dab2ab1bda84b1dd",
+    "복습노트\\0928\\.pack\\자료_문제설명_0928_ArrayStructureList\\fragments\\p3.html": "02c0789a737bf5f8934e89d0b1d69a5040150bd0b1afda2ba4b74fcd2c74f3ea",
+    "복습노트\\0928\\.pack\\자료_문제설명_0928_ArrayStructureList\\fragments\\p4.html": "1284844fed245235934d3aecad47a59463ae8e5d472825588cbd27fd14d625b9",
+    "복습노트\\0928\\.pack\\자료_문제설명_0928_ArrayStructureList\\evidence\\code-block-history\\문제설명_0928_ArrayStructureList.html": "aafb0192399d739903dfe8c73e3add642de6e26d0b10b09faee022454ee2d988",
+    "STT\\0928 자구알.md": "f7b1e09cfca6a28b98f1b05c7e6653423be172543e848bfb78837ab272cf2cf0",
+    "자료구조_강의록_2026\\Software_3_ArrayStructureList.pdf": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a"
+  },
+  "sources": [
+    {
+      "id": "address",
+      "label": "주소 값 복사 · 강의 swap",
+      "language": "c",
+      "text": "#include <stddef.h>\nvoid swap(int *px, int *py)\n{\n    int tmp;\n    tmp = *px;\n    *px = *py;\n    *py = tmp;\n}\nint main(void)\n{\n    int a = {{a}}, b = {{b}};\n    swap(&a, &b);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "page": 22,
+        "section": "s1-swap / s1-call-by-value",
+        "supplement": false,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "adjustments": "원본 swap 함수 보존. #include와 int main(void), 입력값·비교 모드 호출자는 보충. 원본 printf는 생략."
+      }
+    },
+    {
+      "id": "value",
+      "label": "정수 값 복사 · 비교 예제",
+      "language": "c",
+      "text": "#include <stddef.h>\nvoid swap(int px, int py)\n{\n    int tmp;\n    tmp = px;\n    px = py;\n    py = tmp;\n}\nint main(void)\n{\n    int a = {{a}}, b = {{b}};\n    swap(a, b);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "page": 22,
+        "section": "s1-swap / s1-call-by-value",
+        "supplement": true,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "adjustments": "원본 swap 함수 보존. #include와 int main(void), 입력값·비교 모드 호출자는 보충. 원본 printf는 생략."
+      }
+    },
+    {
+      "id": "alias",
+      "label": "같은 대상 두 번 · 보충",
+      "language": "c",
+      "text": "#include <stddef.h>\nvoid swap(int *px, int *py)\n{\n    int tmp;\n    tmp = *px;\n    *px = *py;\n    *py = tmp;\n}\nint main(void)\n{\n    int a = {{a}}, b = {{b}};\n    swap(&a, &a);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "page": 22,
+        "section": "s1-swap / s1-call-by-value",
+        "supplement": true,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "adjustments": "원본 swap 함수 보존. #include와 int main(void), 입력값·비교 모드 호출자는 보충. 원본 printf는 생략."
+      }
+    }
+  ],
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "verification": "PDF p20/22/25 rendered and visually read; note HTML, .pack MD and STT cross-checked"
+}
