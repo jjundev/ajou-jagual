@@ -173,7 +173,8 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
         reading = resources(reading, p, pack, repo, stage, fig_rel, pack.path.parent, 'source')
         if p.original_html:
             original = resources(p.original_html, p, pack, repo, stage, fig_rel, pack.path.parent, 'original')
-            reading += ('<details class="original" data-original-problem="' + p.id + '"><summary>기출 원문 보기</summary>'
+            original_label = '강의 예제 보기' if p.source.startswith('lecture-') else '교과서 원문 보기' if p.source.startswith('textbook-') else '기출 원문 보기'
+            reading += ('<details class="original" data-original-problem="' + p.id + '"><summary>'+original_label+'</summary>'
                         + original + '</details>')
         reading = f'<div class="problem-pane" data-problem-for="{p.id}">' + reading + '</div>'
         explanation = resources(fragments[p.id], p, pack, repo, stage, fig_rel, pack.path.parent, 'explain')

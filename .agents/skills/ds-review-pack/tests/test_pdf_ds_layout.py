@@ -20,13 +20,22 @@ def test_code_has_own_section_preserving_lines():
 
 def test_fill_tables_use_center_only_on_questions():
  with tempfile.TemporaryDirectory() as tmp:
-  for pid in ('p2','p3'):
-   q=payload('1012',pid,'problems',tmp);a=payload('1012',pid,'answers',tmp)
-   assert '<table>' in q['workspace_html']
-   assert '<table>' not in q['html']['ask']
-   assert '<table>' in a['html']['ask']
-   assert not a['workspace_html']
-   assert q['workspace_html'] in a['html']['ask']
+  from dataclasses import replace
+  pack=read_pack(next((REPO/'복습노트/1012').glob('복습문제_*.html')))
+  original=next(c for c in pack.cards if c.source=='2018-mid-c024-q9')
+  for source in ('2018-mid-c024-q9','2017-mid-c050-q6'):
+   c=replace(original,id='p99',source=source)
+   reordered=replace(pack,cards=(c,))
+   page=(PageSlice(c.id,c.id,1,c.problem,c.solution,True,True),)
+   q=to_payload(reordered,'problems',page,Path(tmp))['problems'][0]
+   a=to_payload(reordered,'answers',page,Path(tmp))['problems'][0]
+   assert '<table>' in q['workspace_html'] and '<table>' not in q['html']['ask']
+   assert '<table>' in a['html']['ask'] and not a['workspace_html']
+  c=replace(original,id='p2',source='unrelated-source')
+  unrelated=replace(pack,cards=(c,))
+  q=to_payload(unrelated,'problems',(PageSlice(c.id,c.id,1,c.problem,c.solution,True,True),),Path(tmp))['problems'][0]
+  assert not q['workspace_html'] and '<table>' in q['html']['ask']
+
 
 def test_extension_before_fit_and_empty_conditions_guard():
  for mode in ('problems','answers'):

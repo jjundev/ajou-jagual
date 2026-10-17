@@ -125,8 +125,12 @@ def validate(m: dict) -> list[str]:
         if not ok:
             continue
         kind = q.get("source_kind", "past-exam")
-        if kind not in {"past-exam", "textbook"} or q["source"].startswith("textbook-") != (kind == "textbook"):
+        if kind not in {"past-exam", "textbook", "lecture-code"} or q["source"].startswith("textbook-") != (kind == "textbook"):
             errors.append(f"{where}.source_kind: 종류와 source ID 불일치")
+        if kind == "lecture-code":
+            from lecture_sources import validate_lecture_source
+            for key in ("lecture_ref", "objectives", "task_family"):
+                if not q.get(key): errors.append(f"{where}.{key}: required")
         new_id(q["id"], where)
         _strings(q["terms"], f"{where}.terms", errors)
         if q["part"] not in part_ids:

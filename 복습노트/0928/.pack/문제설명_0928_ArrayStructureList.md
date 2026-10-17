@@ -11,6 +11,8 @@
   - [P2. 복소수 구조체 더하기](#p2)
   - [P3. 구조체를 동적으로 만들고 반납](#p3)
   - [P4. 배열 접근·전체 방문의 복잡도](#p4)
+  - [P5. swap: 주소 전달과 값 전달](#p5)
+  - [P6. 동적 구조체 배열의 두 원소](#p6)
 
 <a id="problems"></a>
 
@@ -42,7 +44,7 @@ float array4[10];
 
 비교 기준: 이 팩의 C 검산 환경은 int 4, double 8, char 1, float 4바이트예요.
 
-<details><summary>기출 원문 보기</summary>
+<details><summary>교과서 원문 보기</summary>
 
 3장 배열, 구조체, 포인터 · 03번 · 책 98쪽
 
@@ -124,7 +126,7 @@ textbook-ch03-q07 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
     ...
 }`
 
-<details><summary>기출 원문 보기</summary>
+<details><summary>교과서 원문 보기</summary>
 
 3장 배열, 구조체, 포인터 · 07번 · 책 98쪽
 
@@ -196,7 +198,7 @@ textbook-ch03-q12 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
 
 1개의 정수와 최대 크기가 20인 문자열로 이루어진 구조체를 저장할 수 있도록 동적 메모리를 할당받고 여기에 정수 100과 문자열 “just testing”을 저장한 다음, 동적 메모리를 반납하는 프로그램을 작성하라.
 
-<details><summary>기출 원문 보기</summary>
+<details><summary>교과서 원문 보기</summary>
 
 3장 배열, 구조체, 포인터 · 12번 · PDF 2쪽
 
@@ -282,7 +284,7 @@ textbook-ch01-q17 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
 
 배열의 모든 숫자를 더한다.
 
-<details><summary>기출 원문 보기</summary>
+<details><summary>교과서 원문 보기</summary>
 
 1장 자료구조와 알고리즘 · 17번 · 책 37쪽
 
@@ -345,6 +347,179 @@ textbook-ch01-q17 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
 #### 검산
 
 본문의 조건과 독립 추적을 함께 확인해요.
+
+---
+
+<a id="p5"></a>
+
+### P5. swap: 주소 전달과 값 전달
+
+lecture-s03-p22-swap · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p5)
+
+**강의 예제 기반 자체 출제** S3 p22
+
+int a=1,b=2;에서 위 함수를 부르는 문장을 쓰고 각 대입 뒤의 (a,b,tmp)를 추적하세요. 매개변수가 int x,int y이고 값만 서로 바꾸는 함수라면 호출자의 a,b가 바뀌는지도 설명하세요.
+
+`void swap(int *px, int *py)
+{
+    int tmp;
+    tmp = *px;
+    *px = *py;
+    *py = tmp;
+}`
+
+<details><summary>강의 예제 보기</summary>
+
+S3 p22 · Software_3_ArrayStructureList.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.
+
+`void swap(int *px, int *py)
+{
+    int tmp;
+    tmp = *px;
+    *px = *py;
+    *py = tmp;
+}`
+
+</details>
+
+#### 문제를 내 말로 읽어요
+
+int a=1,b=2;에서 위 함수를 부르는 문장을 쓰고 각 대입 뒤의 (a,b,tmp)를 추적하세요. 매개변수가 int x,int y이고 값만 서로 바꾸는 함수라면 호출자의 a,b가 바뀌는지도 설명하세요.
+
+#### 이 문제를 봤을 때 떠올릴 개념과 공식
+
+문제의 단서는 “swap: 주소 전달과 값 전달”예요. 주소 연산자 &로 a,b의 위치를 넘겨요. 함수는 주소의 복사본 px,py를 받지만 역참조로 원래 객체에 접근해요. b에 tmp를 대입하면 2,1이 돼요. 값 전달 함수는 별도 지역 변수만 바꾸므로 호출자에게 반영되지 않아요.
+
+#### 종이에 적을 첫 줄
+
+swap(&a,&b); 다음 tmp=\*px에서 tmp=1을 적어요.
+
+#### 왜 이렇게 푸는지 함께 따라가요
+
+1. 주소 연산자 &로 a,b의 위치를 넘겨요. 함수는 주소의 복사본 px,py를 받지만 역참조로 원래 객체에 접근해요.
+2. 먼저 a의 값 1을 tmp에 보관해요. a에 b의 값 2를 대입해도 1은 tmp에 남아요.
+3. b에 tmp를 대입하면 2,1이 돼요. 값 전달 함수는 별도 지역 변수만 바꾸므로 호출자에게 반영되지 않아요.
+
+swap(&a,&b);. tmp=\*px 뒤 (1,2,1), \*px=\*py 뒤 (2,2,1), \*py=tmp 뒤 (2,1,1). 값 매개변수 x,y만 바꾸면 호출자의 a,b는 1,2 그대로다.
+
+#### 완성 답과 검산
+
+swap(&a,&b);. tmp=\*px 뒤 (1,2,1), \*px=\*py 뒤 (2,2,1), \*py=tmp 뒤 (2,1,1). 값 매개변수 x,y만 바꾸면 호출자의 a,b는 1,2 그대로다.
+
+시작 조건에서 다시 추적한 결과가 위 답과 일치해요. b에 tmp를 대입하면 2,1이 돼요. 값 전달 함수는 별도 지역 변수만 바꾸므로 호출자에게 반영되지 않아요.
+
+#### 이 문제에서 조심할 점
+
+px=py는 주소 변수만 바꿔요. \*px=\*py와 의미가 달라요.
+
+#### 설명을 닫고 다시 해 봐요
+
+1. 주어진 시작 상태와 필요한 입력 조건을 적어요.
+2. 첫 줄부터 연산 순서를 따라 답을 완성해요.
+3. 경계 경우와 오류 경로를 확인해요.
+
+**페이지 요약**
+
+#### 첫 줄
+
+swap(&a,&b); 다음 tmp=\*px에서 tmp=1을 적어요.
+
+#### 떠올릴 개념·공식
+
+주소 연산자 &로 a,b의 위치를 넘겨요. 함수는 주소의 복사본 px,py를 받지만 역참조로 원래 객체에 접근해요.
+
+#### 검산
+
+swap(&a,&b);. tmp=\*px 뒤 (1,2,1), \*px=\*py 뒤 (2,2,1), \*py=tmp 뒤 (2,1,1). 값 매개변수 x,y만 바꾸면 호출자의 a,b는 1,2 그대로다.
+
+---
+
+<a id="p6"></a>
+
+### P6. 동적 구조체 배열의 두 원소
+
+lecture-s03-p31-malloc-record · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p6)
+
+**강의 예제 기반 자체 출제** S3 p31
+
+할당이 성공했다고 가정해요. 두 원소의 필드 값을 쓰고 p+1의 바이트 이동량을 sizeof로 표현하세요. 필요한 표준 헤더, free에 넘길 주소, free 뒤 p-&gt;number를 읽어도 되는지 설명하세요.
+
+`struct Example { int number; char name[10]; };
+struct Example *p;
+p = (struct Example *)malloc(2*sizeof(struct Example));
+if(p==NULL) { fprintf(stderr,"can't allocate memory\n"); exit(1); }
+p->number=1;
+strcpy(p->name,"Park");
+(p+1)->number=2;
+strcpy((p+1)->name,"Kim");
+free(p);`
+
+<details><summary>강의 예제 보기</summary>
+
+S3 p31 · Software_3_ArrayStructureList.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.
+
+`struct Example { int number; char name[10]; };
+struct Example *p;
+p = (struct Example *)malloc(2*sizeof(struct Example));
+if(p==NULL) { fprintf(stderr,"can't allocate memory\n"); exit(1); }
+p->number=1;
+strcpy(p->name,"Park");
+(p+1)->number=2;
+strcpy((p+1)->name,"Kim");
+free(p);`
+
+</details>
+
+#### 문제를 내 말로 읽어요
+
+할당이 성공했다고 가정해요. 두 원소의 필드 값을 쓰고 p+1의 바이트 이동량을 sizeof로 표현하세요. 필요한 표준 헤더, free에 넘길 주소, free 뒤 p-&gt;number를 읽어도 되는지 설명하세요.
+
+#### 이 문제를 봤을 때 떠올릴 개념과 공식
+
+문제의 단서는 “동적 구조체 배열의 두 원소”예요. malloc의 크기는 구조체 2개 분량이에요. sizeof에는 패딩도 포함되므로 필드 크기 합으로 바꾸지 않아요. free 뒤 포인터 변수 자체가 자동 NULL이 되지는 않아요. 해제된 저장 공간을 읽으면 미정의 동작이므로 정상 출력값을 구하지 않아요.
+
+#### 종이에 적을 첫 줄
+
+할당 크기=2\*sizeof(struct Example)와 p[0],p[1] 두 칸을 그려요.
+
+#### 왜 이렇게 푸는지 함께 따라가요
+
+1. malloc의 크기는 구조체 2개 분량이에요. sizeof에는 패딩도 포함되므로 필드 크기 합으로 바꾸지 않아요.
+2. p-&gt;는 첫 원소, (p+1)-&gt;는 두 번째 원소의 필드에 접근해요. 포인터 덧셈은 바이트가 아닌 원소 단위예요.
+3. malloc/free/exit는 stdlib.h, fprintf/stderr는 stdio.h, strcpy는 string.h가 선언해요.
+4. free 뒤 포인터 변수 자체가 자동 NULL이 되지는 않아요. 해제된 저장 공간을 읽으면 미정의 동작이므로 정상 출력값을 구하지 않아요.
+
+p[0]={1,"Park"}, p[1]={2,"Kim"}. p+1은 sizeof(struct Example)바이트 뒤. stdlib.h,stdio.h,string.h. free(p)로 최초 할당 주소를 넘기고 해제 뒤 역참조하면 안 된다.
+
+#### 완성 답과 검산
+
+p[0]={1,"Park"}, p[1]={2,"Kim"}. p+1은 sizeof(struct Example)바이트 뒤. stdlib.h,stdio.h,string.h. free(p)로 최초 할당 주소를 넘기고 해제 뒤 역참조하면 안 된다.
+
+시작 조건에서 다시 추적한 결과가 위 답과 일치해요. free 뒤 포인터 변수 자체가 자동 NULL이 되지는 않아요. 해제된 저장 공간을 읽으면 미정의 동작이므로 정상 출력값을 구하지 않아요.
+
+#### 이 문제에서 조심할 점
+
+free(p+1)은 최초 할당 주소가 아니므로 사용할 수 없어요. 구조체 크기를 14바이트로 단정하지 마세요.
+
+#### 설명을 닫고 다시 해 봐요
+
+1. 주어진 시작 상태와 필요한 입력 조건을 적어요.
+2. 첫 줄부터 연산 순서를 따라 답을 완성해요.
+3. 경계 경우와 오류 경로를 확인해요.
+
+**페이지 요약**
+
+#### 첫 줄
+
+할당 크기=2\*sizeof(struct Example)와 p[0],p[1] 두 칸을 그려요.
+
+#### 떠올릴 개념·공식
+
+malloc의 크기는 구조체 2개 분량이에요. sizeof에는 패딩도 포함되므로 필드 크기 합으로 바꾸지 않아요.
+
+#### 검산
+
+p[0]={1,"Park"}, p[1]={2,"Kim"}. p+1은 sizeof(struct Example)바이트 뒤. stdlib.h,stdio.h,string.h. free(p)로 최초 할당 주소를 넘기고 해제 뒤 역참조하면 안 된다.
 
 ---
 

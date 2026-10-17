@@ -1,154 +1,24 @@
-# 복습문제 4선 — 1008 수업 범위
+# 복습문제 3선 — 1008 수업 범위
 
-기존 문제 **0개**를 유지하고 교과서 문제 **4개**를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.
+핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.
 
 > 원문, 힌트, 풀이는 접혀 있어요. 먼저 풀어 보고 펼쳐 보세요.
 
 **목차**
 
-- [D. 교과서 연습문제](#partD)
-  - [P1. push 후 top의 변화](#p1)
-  - [P2. top과 원소 수](#p2)
-  - [P3. 스택의 공백과 포화](#p3)
-  - [P4. 배열 스택의 단계별 상태](#p4)
+- [A. 검토한 기출·교과서 문제](#partA)
+  - [P1. 스택의 공백과 포화](#p1)
+- [B. 강의 예제 코드](#partB)
+  - [P2. ListType 삭제 래퍼의 메모리 누수 찾기](#p2)
+  - [P3. push·pop·peek의 순서 복원](#p3)
 
-<a id="partD"></a>
+<a id="partA"></a>
 
-## D. 교과서 연습문제
+## A. 검토한 기출·교과서 문제
 
 <a id="p1"></a>
 
-### P1. push 후 top의 변화
-
-스택에서 삽입작업이 발생하면 top의 값은 어떻게 변경되는가?
-
-(1)
-
-top=0
-
-(2)
-
-top=1
-
-(3)
-
-top = top-1
-
-(4)
-
-top = top+1
-
-<details><summary>교과서 원문 보기</summary>
-
-4장 스택 · 01번 · 책 142쪽
-
-스택에서 삽입작업이 발생하면 top의 값은 어떻게 변경되는가?
-
-(1)
-
-top=0
-
-(2)
-
-top=1
-
-(3)
-
-top = top-1
-
-(4)
-
-top = top+1
-
-</details>
-
-<details><summary>힌트 보기</summary>
-
-배열의 다음 빈칸으로 top을 옮겨 보세요.
-
-</details>
-
-<details><summary>풀이 보기</summary>
-
-1. top은 마지막으로 넣은 원소의 인덱스예요.
-2. 가득 차지 않았다면 top을 1 증가시킨 뒤 그 자리에 저장해요.
-3. 빈 상태 top=-1에서 한 번 넣으면 top=0이에요.
-4. 수업과의 연결: 1008 수업 정리노트의 “4. 검사하고 올리고 꺼내고 내리기” 토픽과 강의록에서 다룬 연산·표현을 적용해요.
-
-**정답:** (4) top = top+1
-
-</details>
-
----
-
-<a id="p2"></a>
-
-### P2. top과 원소 수
-
-배열로 구현된 스택에서 top가 3이면 현재 스택에 저장된 요소들의 개수는?
-
-(1)
-
-1
-
-(2)
-
-2
-
-(3)
-
-3
-
-(4)
-
-4
-
-<details><summary>교과서 원문 보기</summary>
-
-4장 스택 · 04번 · 책 142쪽
-
-배열로 구현된 스택에서 top가 3이면 현재 스택에 저장된 요소들의 개수는?
-
-(1)
-
-1
-
-(2)
-
-2
-
-(3)
-
-3
-
-(4)
-
-4
-
-</details>
-
-<details><summary>힌트 보기</summary>
-
-0번부터 3번까지 인덱스를 세어 보세요.
-
-</details>
-
-<details><summary>풀이 보기</summary>
-
-1. 원소가 array[0], array[1], array[2], array[3]에 있어요.
-2. 0부터 시작하므로 개수는 마지막 인덱스보다 1 커요.
-3. top+1=3+1=4개예요.
-4. 수업과의 연결: 1008 수업 정리노트의 “3. 배열과 top으로 상태 표현하기” 토픽과 강의록에서 다룬 연산·표현을 적용해요.
-
-**정답:** (4) 4개
-
-</details>
-
----
-
-<a id="p3"></a>
-
-### P3. 스택의 공백과 포화
+### P1. 스택의 공백과 포화
 
 다음 중 배열로 구현된 스택에서 공백상태에 해당하는 조건은? 또 포화상태에 해당되는 조건은?
 
@@ -211,57 +81,115 @@ top은 개수가 아니라 마지막 원소의 인덱스예요.
 
 ---
 
-<a id="p4"></a>
+<a id="partB"></a>
 
-### P4. 배열 스택의 단계별 상태
+## B. 강의 예제 코드
 
-크기가 5인, 배열로 구현된 스택 A에 다음과 같이 삽입과 삭제가 되풀이되었을 경우에 각 단계에서의 스택의 내용(1차원 배열의 내용, top의 값)을 나타내시오.
+<a id="p2"></a>
 
+### P2. ListType 삭제 래퍼의 메모리 누수 찾기
+
+**강의 예제 기반 자체 출제** S4 p48 · 추가 근거 p28,47
+
+강의 p47에서 get_node_at의 음수 위치 반환은 NULL이고 p28의 remove_node는 p==NULL이면 head를 다음으로 옮긴 뒤 free(removed)를 실행해요. 길이 1인 리스트에서 pos=0을 삭제하면 head와 length는 바뀌지만 어떤 메모리 문제가 남나요? removed 인자를 고치세요.
+
+```c
+ListNode *p=get_node_at(list,pos-1);
+remove_node(&(list->head),p,(p!=NULL)?p->link:NULL);
+list->length--;
 ```
-push(A, 1);
-push(A, 2);
-push(A, 3);
-pop(A);
-push(A, 4);
-push(A, 5);
-pop(A);
-```
 
-<details><summary>교과서 원문 보기</summary>
+<details><summary>강의 예제 보기</summary>
 
-4장 스택 · 08번 · 책 142쪽 · 책 143쪽
+S4 p48 · 추가 근거 p28,47 · Software_4_List.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.
 
-크기가 5인, 배열로 구현된 스택 A에 다음과 같이 삽입과 삭제가 되풀이되었을 경우에 각 단계에서의 스택의 내용(1차원 배열의 내용, top의 값)을 나타내시오.
-
-```
-push(A, 1);
-push(A, 2);
-push(A, 3);
-pop(A);
-push(A, 4);
-push(A, 5);
-pop(A);
+```c
+ListNode *p=get_node_at(list,pos-1);
+remove_node(&(list->head),p,(p!=NULL)?p->link:NULL);
+list->length--;
 ```
 
 </details>
 
 <details><summary>힌트 보기</summary>
 
-pop은 top만 줄여도 된다는 점을 기억해 보세요.
+pos-1=-1이므로 get_node_at은 NULL을 반환해요. 삼항식의 거짓 분기도 NULL을 넘겨요.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. push 1: [1], top=0 → push 2: [1,2], top=1 → push 3: [1,2,3], top=2
-2. pop: [1,2], top=1 → push 4: [1,2,4], top=2 → push 5: [1,2,4,5], top=3
-3. pop: [1,2,4], top=2예요. 실제 5칸 메모리는 [1,2,4,5,미사용]일 수 있어요. top 뒤 값은 스택에 들어 있지 않아요.
-4. 수업과의 연결: 1008 수업 정리노트의 “3. 넣고 꺼내는 순서를 따라가기” 토픽과 강의록에서 다룬 연산·표현을 적용해요.
+1. pos-1=-1이므로 get_node_at은 NULL을 반환해요. 삼항식의 거짓 분기도 NULL을 넘겨요.
+2. remove_node는 head를 다음으로 옮기지만 free(NULL)은 아무 메모리도 반납하지 않아요. 기존 첫 노드 주소를 잃으므로 누수가 남아요.
+3. 호출 시점의 list-&gt;head를 removed로 넘기면 remove_node가 갱신 전에 받은 첫 노드 주소를 해제할 수 있어요. 비어 있지 않고 위치가 유효하다는 래퍼의 검사는 유지해요.
 
-**정답:** 최종 유효 원소 [1, 2, 4], top=2
+**정답:** p=NULL,removed=NULL로 전달되어 head=NULL,length=0이지만 실제 첫 노드는 free되지 않아 누수된다. removed 인자는 (p!=NULL)?p-&gt;link:list-&gt;head로 고친다.
+
+이 예제는 강의 원문의 결함을 찾는 문제예요. 원문을 몰래 수정하거나 누수를 정상 동작으로 승인하지 않아요.
 
 </details>
 
 ---
 
-출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.
+<a id="p3"></a>
+
+### P3. push·pop·peek의 순서 복원
+
+**강의 예제 기반 자체 출제** S5 p11 · 추가 근거 p12
+
+인덱스 0부터 쓰는 용량 3의 스택이며 초기 top=-1이에요. push(5),push(8),peek(),pop(),push(2),pop()의 반환값과 각 단계 top을 쓰세요. peek를 pop과 구별하고 빈 스택에서 먼저 top을 줄여 읽으면 안 되는 이유도 설명하세요.
+
+```c
+push(S,x)
+    if is_full(S) then error "overflow"
+    else top <- top+1
+         stack[top] <- x
+
+pop(S)
+    if is_empty(S) then error "underflow"
+    else e <- stack[top]
+         top <- top-1
+         return e
+```
+
+<details><summary>강의 예제 보기</summary>
+
+S5 p11 · 추가 근거 p12 · Software_5_Stack.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.
+
+```c
+push(S,x)
+    if is_full(S) then error "overflow"
+    else top <- top+1
+         stack[top] <- x
+
+pop(S)
+    if is_empty(S) then error "underflow"
+    else e <- stack[top]
+         top <- top-1
+         return e
+```
+
+</details>
+
+<details><summary>힌트 보기</summary>
+
+top=-1은 원소가 없다는 뜻이에요. push는 먼저 top을 올리고 그 위치에 저장해요.
+
+</details>
+
+<details><summary>풀이 보기</summary>
+
+1. top=-1은 원소가 없다는 뜻이에요. push는 먼저 top을 올리고 그 위치에 저장해요.
+2. 5와 8을 넣으면 top=1이에요. peek는 8을 읽기만 해서 top=1을 유지해요.
+3. pop은 현재 top의 8을 보관한 뒤 top을 0으로 줄여요. 2를 넣고 꺼내면 다시 5만 남아요.
+4. top을 먼저 줄여 읽으면 꺼낼 원소가 아닌 그 아래를 읽어요. 빈 상태에서는 배열 범위 밖 접근이 될 수 있어요.
+
+**정답:** top: 0,1,1,0,1,0. peek=8, 첫 pop=8, 마지막 pop=2. 남은 스택 {5}. peek는 top을 바꾸지 않는다. 빈 스택은 접근 전에 검사해야 한다.
+
+peek에도 top--를 적용하면 조회가 삭제로 바뀌어요.
+
+</details>
+
+---
+
+기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.

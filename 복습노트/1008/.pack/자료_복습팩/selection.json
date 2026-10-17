@@ -1,403 +1,355 @@
 {
-  "range": "1008",
-  "mode": "retrofit",
-  "taught_evidence": {
-    "range_ch": [
-      4,
-      5
-    ],
-    "taught": [
-      1,
-      2,
-      3,
-      4,
-      5
-    ],
-    "taught_pages": "S4 p44–48; S5 p1–12",
-    "preview": "스택 응용 S5 p13 이후 미학습; 과제 설명은 별도"
-  },
-  "concept_overrides": {},
+  "mode": "revision",
+  "policy_version": "review-questions-2026-10-17",
   "selected": [
     {
       "id": "p1",
-      "source": "textbook-ch04-q01",
+      "part": "partA",
+      "source": "textbook-ch04-q05",
       "source_kind": "textbook",
-      "original_id": "ch04-q01",
+      "variant": false,
+      "anchor": "s2-array",
+      "level": 1,
+      "date": "1008",
+      "terms": [
+        "공백 (1) top==-1 / 포화 (3) top==MAX_STACK_SIZE-1"
+      ],
+      "answer": "공백 (1) top==-1 / 포화 (3) top==MAX_STACK_SIZE-1",
+      "objectives": [
+        "retained-textbook-ch04-q05"
+      ],
+      "task_family": "textbook-ch04-q05",
+      "origin": "retained",
+      "old_id": "p3",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "f83fbd5a0a8ea5e28e5570ed041e6048c4b49fefa5a3377bd58d4d431b06ea58",
+        "independent_answer": "Empty: (1) top==-1. Full: (3) top==MAX_STACK_SIZE-1.",
+        "reasoning": "With zero-based storage, occupied indexes are 0..top. No occupied index corresponds to -1; the last permitted occupied index is capacity-1.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/1008/정리노트_1008_Stack.html",
-          "locator": "#s2-pushpop",
-          "sha256": "08c20883b6cc1295d96ef52bed4fbde93221c434572e3d11910e9b029f74fe7c"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1008/p1"
         },
         {
-          "path": "STT/1008 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s2-pushpop",
-          "sha256": "7dcbcb1ceaeb681b9173172f8d2a7600b3ca20de2172c46b363afe79d9bf94c1"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
-          "locator": "PDF page 11",
-          "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1008/p1"
         }
-      ],
-      "answer": "(4) top = top+1",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch04-q01",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/04_스택_연습문제.json",
-        "payload_sha256": "6cbfba9256f600610bc1a7941cc75e3f1f49d70ac59371c300c687676620f6e5",
-        "source_refs": [
-          {
-            "source_id": "s04",
-            "pdf_page": 1,
-            "book_page": 142
-          }
-        ],
-        "sources": [
-          {
-            "id": "s04",
-            "path": "origin/04_스택_연습문제.pdf",
-            "sha256": "f8f13f78bd19aa317bec82cc1a08186174794cc2eb9814ca834f58ec676548d4",
-            "page_count": 3
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "p2",
-      "source": "textbook-ch04-q04",
-      "source_kind": "textbook",
-      "original_id": "ch04-q04",
+      "part": "partB",
+      "source": "lecture-s04-p48-list-delete-leak",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-adapter",
+      "level": 3,
+      "date": "1008",
+      "terms": [
+        "ListType 삭제 래퍼의 메모리 누수 찾기"
+      ],
+      "answer": "p=NULL,removed=NULL로 전달되어 head=NULL,length=0이지만 실제 첫 노드는 free되지 않아 누수된다. removed 인자는 (p!=NULL)?p->link:list->head로 고친다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 48,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "list-delete-leak",
+        "taught_on": "1008",
+        "extra_pages": [
+          28,
+          47
+        ]
+      },
+      "objectives": [
+        "list-delete-leak"
+      ],
+      "task_family": "list-delete-leak",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "206c4044af3e689d1217331b5bb8dd5c945b9c84a51ab616662b882654ea247b",
+        "independent_answer": "The lone node leaks: get_node_at(list,-1) returns NULL, head is advanced to NULL, free(NULL) does nothing, and length becomes 0 while the original allocation is unreachable. Correct argument: (p!=NULL)?p->link:list->head.",
+        "reasoning": "For position zero, removed must be the current head, saved/evaluated before remove_node changes head. For later positions, it is the predecessor successor. free(NULL) is defined and harmless, so this bug is a leak rather than a NULL-free crash.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "1008",
+        "ch": 4,
+        "page": 48,
+        "name": "list-delete-leak",
+        "anchor": "s0-adapter",
+        "title": "ListType 삭제 래퍼의 메모리 누수 찾기",
+        "code": "ListNode *p=get_node_at(list,pos-1);\nremove_node(&(list->head),p,(p!=NULL)?p->link:NULL);\nlist->length--;",
+        "prompt": "강의 p47에서 get_node_at의 음수 위치 반환은 NULL이고 p28의 remove_node는 p==NULL이면 head를 다음으로 옮긴 뒤 free(removed)를 실행해요. 길이 1인 리스트에서 pos=0을 삭제하면 head와 length는 바뀌지만 어떤 메모리 문제가 남나요? removed 인자를 고치세요.",
+        "answer": "p=NULL,removed=NULL로 전달되어 head=NULL,length=0이지만 실제 첫 노드는 free되지 않아 누수된다. removed 인자는 (p!=NULL)?p->link:list->head로 고친다.",
+        "steps": [
+          "pos-1=-1이므로 get_node_at은 NULL을 반환해요. 삼항식의 거짓 분기도 NULL을 넘겨요.",
+          "remove_node는 head를 다음으로 옮기지만 free(NULL)은 아무 메모리도 반납하지 않아요. 기존 첫 노드 주소를 잃으므로 누수가 남아요.",
+          "호출 시점의 list->head를 removed로 넘기면 remove_node가 갱신 전에 받은 첫 노드 주소를 해제할 수 있어요. 비어 있지 않고 위치가 유효하다는 래퍼의 검사는 유지해요."
+        ],
+        "pitfall": "이 예제는 강의 원문의 결함을 찾는 문제예요. 원문을 몰래 수정하거나 누수를 정상 동작으로 승인하지 않아요.",
+        "extra_pages": [
+          28,
+          47
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/1008/정리노트_1008_Stack.html",
-          "locator": "#s2-array",
-          "sha256": "08c20883b6cc1295d96ef52bed4fbde93221c434572e3d11910e9b029f74fe7c"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1008/p2"
         },
         {
-          "path": "STT/1008 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s2-array",
-          "sha256": "7dcbcb1ceaeb681b9173172f8d2a7600b3ca20de2172c46b363afe79d9bf94c1"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
-          "locator": "PDF page 9",
-          "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1008/p2"
         }
-      ],
-      "answer": "(4) 4개",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch04-q04",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/04_스택_연습문제.json",
-        "payload_sha256": "daa13b7a6689709407c3cf7406e2e615e1e30c17b01c4d6ea1f6efe4b048a8f7",
-        "source_refs": [
-          {
-            "source_id": "s04",
-            "pdf_page": 1,
-            "book_page": 142
-          }
-        ],
-        "sources": [
-          {
-            "id": "s04",
-            "path": "origin/04_스택_연습문제.pdf",
-            "sha256": "f8f13f78bd19aa317bec82cc1a08186174794cc2eb9814ca834f58ec676548d4",
-            "page_count": 3
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "p3",
-      "source": "textbook-ch04-q05",
-      "source_kind": "textbook",
-      "original_id": "ch04-q05",
+      "part": "partB",
+      "source": "lecture-s05-p11-stack-adt",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-adt",
+      "level": 3,
+      "date": "1008",
+      "terms": [
+        "push·pop·peek의 순서 복원"
+      ],
+      "answer": "top: 0,1,1,0,1,0. peek=8, 첫 pop=8, 마지막 pop=2. 남은 스택 {5}. peek는 top을 바꾸지 않는다. 빈 스택은 접근 전에 검사해야 한다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 11,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "stack-adt",
+        "taught_on": "1008",
+        "extra_pages": [
+          12
+        ]
+      },
+      "objectives": [
+        "stack-adt"
+      ],
+      "task_family": "stack-adt",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "b66b53e2f370101594034f9ddc317a52fc2f1f8d5d3b47b59b4d7fdd678c69a3",
+        "independent_answer": "push(5): no return value, top=0, stack=[5]. push(8): no return, top=1, [5,8]. peek(): returns 8, top=1, unchanged. pop(): returns 8, top=0, [5]. push(2): no return, top=1, [5,2]. pop(): returns 2, top=0, [5].",
+        "reasoning": "peek observes the top value without changing top; pop reads the current top before decrement. Underflow must be checked first: an empty stack has top=-1, and decrementing then reading would address -2; even a nonempty top=0 would skip its only valid item if decremented first.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "1008",
+        "ch": 5,
+        "page": 11,
+        "name": "stack-adt",
+        "anchor": "s1-adt",
+        "title": "push·pop·peek의 순서 복원",
+        "code": "push(S,x)\n    if is_full(S) then error \"overflow\"\n    else top <- top+1\n         stack[top] <- x\n\npop(S)\n    if is_empty(S) then error \"underflow\"\n    else e <- stack[top]\n         top <- top-1\n         return e",
+        "prompt": "인덱스 0부터 쓰는 용량 3의 스택이며 초기 top=-1이에요. push(5),push(8),peek(),pop(),push(2),pop()의 반환값과 각 단계 top을 쓰세요. peek를 pop과 구별하고 빈 스택에서 먼저 top을 줄여 읽으면 안 되는 이유도 설명하세요.",
+        "answer": "top: 0,1,1,0,1,0. peek=8, 첫 pop=8, 마지막 pop=2. 남은 스택 {5}. peek는 top을 바꾸지 않는다. 빈 스택은 접근 전에 검사해야 한다.",
+        "steps": [
+          "top=-1은 원소가 없다는 뜻이에요. push는 먼저 top을 올리고 그 위치에 저장해요.",
+          "5와 8을 넣으면 top=1이에요. peek는 8을 읽기만 해서 top=1을 유지해요.",
+          "pop은 현재 top의 8을 보관한 뒤 top을 0으로 줄여요. 2를 넣고 꺼내면 다시 5만 남아요.",
+          "top을 먼저 줄여 읽으면 꺼낼 원소가 아닌 그 아래를 읽어요. 빈 상태에서는 배열 범위 밖 접근이 될 수 있어요."
+        ],
+        "pitfall": "peek에도 top--를 적용하면 조회가 삭제로 바뀌어요.",
+        "extra_pages": [
+          12
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/1008/정리노트_1008_Stack.html",
-          "locator": "#s2-array",
-          "sha256": "08c20883b6cc1295d96ef52bed4fbde93221c434572e3d11910e9b029f74fe7c"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1008/p3"
         },
         {
-          "path": "STT/1008 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s2-array",
-          "sha256": "7dcbcb1ceaeb681b9173172f8d2a7600b3ca20de2172c46b363afe79d9bf94c1"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
-          "locator": "PDF page 10",
-          "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1008/p3"
         }
-      ],
-      "answer": "공백 (1) top==-1 / 포화 (3) top==MAX_STACK_SIZE-1",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch04-q05",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/04_스택_연습문제.json",
-        "payload_sha256": "e14a942a102cc81019f16e3b565e855af93b44126643b4ccb51418e049e2a6ae",
-        "source_refs": [
-          {
-            "source_id": "s04",
-            "pdf_page": 1,
-            "book_page": 142
-          }
-        ],
-        "sources": [
-          {
-            "id": "s04",
-            "path": "origin/04_스택_연습문제.pdf",
-            "sha256": "f8f13f78bd19aa317bec82cc1a08186174794cc2eb9814ca834f58ec676548d4",
-            "page_count": 3
-          }
-        ]
-      }
-    },
-    {
-      "id": "p4",
-      "source": "textbook-ch04-q08",
-      "source_kind": "textbook",
-      "original_id": "ch04-q08",
-      "prerequisites": [],
-      "evidence": [
-        {
-          "path": "복습노트/1008/정리노트_1008_Stack.html",
-          "locator": "#s1-trace",
-          "sha256": "08c20883b6cc1295d96ef52bed4fbde93221c434572e3d11910e9b029f74fe7c"
-        },
-        {
-          "path": "STT/1008 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-trace",
-          "sha256": "7dcbcb1ceaeb681b9173172f8d2a7600b3ca20de2172c46b363afe79d9bf94c1"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
-          "locator": "PDF page 6",
-          "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
-        }
-      ],
-      "answer": "최종 유효 원소 [1, 2, 4], top=2",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch04-q08",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/04_스택_연습문제.json",
-        "payload_sha256": "be4363163738a1cd5c9b0bd5827d02de8ca28d6e7fa6d971c5ad7e2277589005",
-        "source_refs": [
-          {
-            "source_id": "s04",
-            "pdf_page": 1,
-            "book_page": 142
-          },
-          {
-            "source_id": "s04",
-            "pdf_page": 2,
-            "book_page": 143
-          }
-        ],
-        "sources": [
-          {
-            "id": "s04",
-            "path": "origin/04_스택_연습문제.pdf",
-            "sha256": "f8f13f78bd19aa317bec82cc1a08186174794cc2eb9814ca834f58ec676548d4",
-            "page_count": 3
-          },
-          {
-            "id": "s04",
-            "path": "origin/04_스택_연습문제.pdf",
-            "sha256": "f8f13f78bd19aa317bec82cc1a08186174794cc2eb9814ca834f58ec676548d4",
-            "page_count": 3
-          }
-        ]
-      }
+      ]
     }
   ],
   "excluded": [
     {
-      "source": "textbook-ch04-q02",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p1",
+      "old_source": "textbook-ch04-q01",
+      "old_content_sha256": "6afe9d9790aaadefeed04b02271b577d9dcfcbae3e90d435b7a355b087a36d43",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p2",
+        "p3"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch04-q03",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p2",
+      "old_source": "textbook-ch04-q04",
+      "old_content_sha256": "34a70ed45aecef6a78cd6554c56d922f90007d3dfd5ae363b22fb9144c8c1372",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p2",
+        "p3"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch04-q06",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q07",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q09",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q10",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q11",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q12",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q13",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q14",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q15",
-      "reason": "blocking/외부 본문/원문 오류"
-    },
-    {
-      "source": "textbook-ch04-q16",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q01",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q02",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q03",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
-    },
-    {
-      "source": "textbook-ch06-q04",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
-    },
-    {
-      "source": "textbook-ch06-q05",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q06",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q07",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
-    },
-    {
-      "source": "textbook-ch06-q08",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q09",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q10",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
-    },
-    {
-      "source": "textbook-ch06-q11",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q12",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q13",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q14",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q15",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q16",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q17",
-      "reason": "blocking/외부 본문/원문 오류"
-    },
-    {
-      "source": "textbook-ch06-q18",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q19",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q20",
-      "reason": "blocking/외부 본문/원문 오류"
-    },
-    {
-      "source": "textbook-ch06-q21",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q22",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q23",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch06-q24",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch07-q01",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch07-q02",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch07-q03",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch07-q04",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch07-q05",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch07-q06",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch07-q07",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p4",
+      "old_source": "textbook-ch04-q08",
+      "old_content_sha256": "427b19bc550b687a5f8f5aa96857504752ea21bd0d492cc94de7af0e9949e91f",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p2",
+        "p3"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     }
-  ]
+  ],
+  "coverage": [
+    {
+      "objective": "retained-textbook-ch04-q05",
+      "questions": [
+        "p1"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "list-delete-leak",
+      "questions": [
+        "p2"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 48,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "list-delete-leak",
+        "taught_on": "1008",
+        "extra_pages": [
+          28,
+          47
+        ]
+      }
+    },
+    {
+      "objective": "stack-adt",
+      "questions": [
+        "p3"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 11,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "stack-adt",
+        "taught_on": "1008",
+        "extra_pages": [
+          12
+        ]
+      }
+    }
+  ],
+  "replacements": [
+    {
+      "old_id": "p1",
+      "old_source": "textbook-ch04-q01",
+      "old_content_sha256": "6afe9d9790aaadefeed04b02271b577d9dcfcbae3e90d435b7a355b087a36d43",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p3"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1008/p3 (lecture-s05-p11-stack-adt)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1008",
+          "id": "p3",
+          "source": "lecture-s05-p11-stack-adt",
+          "content_sha256": "b66b53e2f370101594034f9ddc317a52fc2f1f8d5d3b47b59b4d7fdd678c69a3"
+        }
+      ]
+    },
+    {
+      "old_id": "p2",
+      "old_source": "textbook-ch04-q04",
+      "old_content_sha256": "34a70ed45aecef6a78cd6554c56d922f90007d3dfd5ae363b22fb9144c8c1372",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p3"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1008/p3 (lecture-s05-p11-stack-adt)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1008",
+          "id": "p3",
+          "source": "lecture-s05-p11-stack-adt",
+          "content_sha256": "b66b53e2f370101594034f9ddc317a52fc2f1f8d5d3b47b59b4d7fdd678c69a3"
+        }
+      ]
+    },
+    {
+      "old_id": "p3",
+      "old_source": "textbook-ch04-q05",
+      "old_content_sha256": "f83fbd5a0a8ea5e28e5570ed041e6048c4b49fefa5a3377bd58d4d431b06ea58",
+      "decision": "retain",
+      "new_ids": [
+        "p1"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1008",
+          "id": "p1",
+          "source": "textbook-ch04-q05",
+          "content_sha256": "f83fbd5a0a8ea5e28e5570ed041e6048c4b49fefa5a3377bd58d4d431b06ea58"
+        }
+      ]
+    },
+    {
+      "old_id": "p4",
+      "old_source": "textbook-ch04-q08",
+      "old_content_sha256": "f6e363cd6dc0f3b2eb94d734a2329dc925ece2915c34c2f01806ed019f44c601",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p3"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1008/p3 (lecture-s05-p11-stack-adt)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1008",
+          "id": "p3",
+          "source": "lecture-s05-p11-stack-adt",
+          "content_sha256": "b66b53e2f370101594034f9ddc317a52fc2f1f8d5d3b47b59b4d7fdd678c69a3"
+        }
+      ]
+    }
+  ],
+  "duplicate_decisions": [],
+  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음"
 }

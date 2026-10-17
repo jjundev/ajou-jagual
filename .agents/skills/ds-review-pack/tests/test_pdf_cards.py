@@ -11,9 +11,9 @@ class CardsTests(unittest.TestCase):
  def setUp(self): self.assertIsNotNone(read_pack, 'PDF adapter missing')
  def test_solution_extra_code_preserved(self):
   source=next((REPO/'복습노트/1005').glob('복습문제_*.html')); pack=read_pack(source)
-  b=Builder();b.feed(source.read_text());article=next(n for n in b.root.find_all(lambda n:n.attrs.get('id')=='p4'))
+  b=Builder();b.feed(source.read_text());article=next(n for n in b.root.find_all(lambda n:n.attrs.get('data-source')=='textbook-ch06-q10'))
   sol=next(article.find_all(lambda n:'solution' in n.classes));pre=next(sol.find_all(lambda n:n.tag=='pre'))
-  self.assertIn(pre.text(),[x.text for x in pack.cards[3].solution if x.kind=='code'])
+  self.assertIn(pre.text(),[x.text for x in next(c for c in pack.cards if c.source=='textbook-ch06-q10').solution if x.kind=='code'])
  def test_problem_payload_has_no_solution(self):
   pack=read_pack(next((REPO/'복습노트/1005').glob('복습문제_*.html')))
   pages=tuple(PageSlice(c.id,c.id,1,c.problem,c.solution,True,True) for c in pack.cards)
@@ -28,7 +28,7 @@ class CardsTests(unittest.TestCase):
    p.write_text('');self.assertEqual(read_pack(p).cards,())
  def test_all_counts(self):
   sources=sorted((REPO/'복습노트').glob('*/복습문제_*.html'))
-  self.assertEqual([len(read_pack(p).cards) for p in sources],[4,12,12,8,4,4,4,4,12])
+  self.assertEqual([len(read_pack(p).cards) for p in sources],[len(json.loads((p.parent/'.pack/자료_복습팩/manifest.json').read_text(encoding='utf-8'))['problems']) for p in sources])
 
  def test_solution_steps_retain_inline_markup(self):
   source=next((REPO/'복습노트/0914').glob('복습문제_*.html'));pack=read_pack(source)
@@ -38,7 +38,7 @@ class CardsTests(unittest.TestCase):
 
  def test_past_source_is_not_labeled_chapter_problem(self):
   pack=read_pack(next((REPO/'복습노트/0914').glob('복습문제_*.html')))
-  self.assertEqual(pack.cards[0].source,'2019-mid-q8');self.assertEqual(pack.cards[0].kind,'기출')
+  self.assertEqual(pack.cards[0].source,'2018-mid-c024-q8');self.assertEqual(pack.cards[0].kind,'기출')
 
  def test_images_frozen_in_solution_answer_hint(self):
   from PIL import Image

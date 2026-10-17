@@ -1,12 +1,12 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>예시 10을 1010으로 출력하도록 dec_to_bin의 순환 본문을 채워요. 여기서는 양의 정수 입력을 기본으로 두어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>n=2q+r, r∈{0,1}에서 r=n%2는 맨 오른쪽 비트예요. 높은 자리 q=n/2를 먼저 출력해야 왼쪽부터 읽는 이진수(binary)가 돼요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">if (n == 0) return;</code></pre></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">void dec_to_bin(int n) {
-    if (n == 0) return;
-    dec_to_bin(n / 2);
-    printf(&quot;%d&quot;, n % 2);
-}</code></pre></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>10→5→2→1→0으로 호출해요. 복귀할 때 1%2=1, 2%2=0, 5%2=1, 10%2=0을 출력하여 1010이에요. 1×8+0×4+1×2+0=10으로 역변환해 확인해요. 이 본문은 입력 0에 아무것도 출력하지 않으므로 0도 허용하려면 호출부에서 printf("0") 처리가 별도로 필요해요. 음수는 범위 밖이에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>printf를 순환 호출보다 먼저 쓰면 끝자리부터 출력해서 10에서 0101이 돼요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>if (n == 0) return;</li><li>n/2 먼저 호출, 돌아와 n%2 출력</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>if (n == 0) return;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>n/2 먼저 호출, 돌아와 n%2 출력</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>실수부와 허수부를 갖는 타입 complex를 만들고 두 변수를 선언해요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>typedef는 새로운 표현을 발명하는 것이 아니라 기존 타입에 이름 alias를 붙여요. real과 imaginary는 float, c1과 c2는 이 두 필드를 갖는 객체예요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>typedef struct { 로 시작해요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">typedef struct {
+    float real;
+    float imaginary;
+} complex;
+complex c1, c2;</code></pre></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>complex c1,c2는 각각 두 float 멤버를 가진 변수를 만들어요. C 컴파일에서 c1.real=1.0f, c2.imaginary=2.0f 접근이 가능해요. typedef 선언만으로는 c1,c2 객체가 생기지 않으므로 별도 선언을 확인해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>complex를 구조체 태그와 변수 이름으로 혼동하지 않아요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>typedef struct { 로 시작해요.</li><li>typedef 별명 뒤 변수 c1,c2 선언</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>typedef struct { 로 시작해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>typedef 별명 뒤 변수 c1,c2 선언</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

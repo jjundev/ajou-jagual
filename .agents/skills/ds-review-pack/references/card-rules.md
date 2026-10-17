@@ -40,3 +40,7 @@
 교과서 근거는 problems.md의 교과서 브리프·검증된 JSON/catalog·선택 근거·answers.py이며 기출 전사 경로·연도·시험을 요구하지 않는다.
 `data-source="textbook-chNN-qNN" data-source-kind="textbook"`를 manifest와 같게 쓴다. `original` summary는 `교과서 원문 보기`, 첫 줄은 장 제목·문항 번호·책 쪽번호(없으면 PDF 쪽번호)이다. 배지는 추가하지 않는다. `textbook_blocks.render_question`으로 선택지 label/순서·코드·재귀 소문항·검수된 SVG를 보존한다. 기존 기출에 적용되는 원문 중략 규칙은 교과서에는 적용하지 않는다. 문제와 원문에 동일 그림을 넣으면 서로 다른 prefix로 SVG id/href/url 참조를 모두 바꾼다. 흰 배경·대체 설명을 유지하고 observations나 정답 그림을 원문에 넣지 않는다. 의존하는 이전 문항은 같은 팩에 포함하거나 제외한다. 풀이 마지막 단계는 해당 날짜 수업과의 연결이다.
 그림 글자가 모바일에서 작아지면 원래 SVG의 폭을 유지하고 `.figure-scroll` 내부에서 가로로 스크롤하게 한다. 바깥 문서의 가로 넘침은 허용하지 않는다. 원문 그림의 값·좌표·연결을 수정해 해결하지 않는다.
+
+## 강의 예제·전역 검토 연동
+
+신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 최종 전체 날짜 audit를 통과한 정확한 최종 HTML 경로만 설명·PDF 입력으로 사용한다. update-existing의 기존 카드 보존 계약은 유지한다.

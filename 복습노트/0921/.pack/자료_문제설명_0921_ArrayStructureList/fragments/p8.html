@@ -1,12 +1,7 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>실수부와 허수부를 갖는 타입 complex를 만들고 두 변수를 선언해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>typedef는 새로운 표현을 발명하는 것이 아니라 기존 타입에 이름 alias를 붙여요. real과 imaginary는 float, c1과 c2는 이 두 필드를 갖는 객체예요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>typedef struct { 로 시작해요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">typedef struct {
-    float real;
-    float imaginary;
-} complex;
-complex c1, c2;</code></pre></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>complex c1,c2는 각각 두 float 멤버를 가진 변수를 만들어요. C 컴파일에서 c1.real=1.0f, c2.imaginary=2.0f 접근이 가능해요. typedef 선언만으로는 c1,c2 객체가 생기지 않으므로 별도 선언을 확인해요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>complex를 구조체 태그와 변수 이름으로 혼동하지 않아요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>typedef struct { 로 시작해요.</li><li>typedef 별명 뒤 변수 c1,c2 선언</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>typedef struct { 로 시작해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>typedef 별명 뒤 변수 c1,c2 선언</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>link의 자료형을 가리고 복원하세요. link를 포인터가 아닌 struct ListNode link;로 선언할 수 없는 이유를 설명하고, ListNode *p에서 데이터와 다음 노드에 접근하는 식을 쓰세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “자체 참조 구조체의 링크 타입”예요. 현재 구조체 정의 안에서는 struct ListNode라는 태그로 자신을 지칭할 수 있어요. typedef 이름은 정의 끝에서 만들어져요. p가 유효한 노드를 가리킬 때 -&gt;로 필드를 읽어요. p-&gt;link는 다음 노드의 주소이고 *(p-&gt;link)는 그 노드예요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>struct ListNode *link;처럼 주소를 저장하는 필드를 선언해요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>현재 구조체 정의 안에서는 struct ListNode라는 태그로 자신을 지칭할 수 있어요. typedef 이름은 정의 끝에서 만들어져요.</li><li>포인터는 다른 노드의 주소만 보관하므로 크기가 유한해요. 노드 자체를 값으로 포함하는 선언은 불가능해요.</li><li>p가 유효한 노드를 가리킬 때 -&gt;로 필드를 읽어요. p-&gt;link는 다음 노드의 주소이고 *(p-&gt;link)는 그 노드예요.</li></ol><p>struct ListNode *link;. 같은 구조체를 값으로 포함하면 자신의 크기를 무한히 포함해야 하므로 완성할 수 없다. 데이터 p-&gt;data, 다음 노드 p-&gt;link.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>struct ListNode *link;. 같은 구조체를 값으로 포함하면 자신의 크기를 무한히 포함해야 하므로 완성할 수 없다. 데이터 p-&gt;data, 다음 노드 p-&gt;link.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. p가 유효한 노드를 가리킬 때 -&gt;로 필드를 읽어요. p-&gt;link는 다음 노드의 주소이고 *(p-&gt;link)는 그 노드예요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>포인터 선언만으로 다음 노드가 자동 할당되지는 않아요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>struct ListNode *link;처럼 주소를 저장하는 필드를 선언해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>현재 구조체 정의 안에서는 struct ListNode라는 태그로 자신을 지칭할 수 있어요. typedef 이름은 정의 끝에서 만들어져요.</p></div><div class="summary-group"><h4>검산</h4><p>struct ListNode *link;. 같은 구조체를 값으로 포함하면 자신의 크기를 무한히 포함해야 하므로 완성할 수 없다. 데이터 p-&gt;data, 다음 노드 p-&gt;link.</p></div></div>

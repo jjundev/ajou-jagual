@@ -1,0 +1,52 @@
+[
+  {
+    "range": "0917",
+    "id": "p2",
+    "source": "2017-mid-c050-q11",
+    "answer": "void dec_to_bin(int n){ if(n>=2) dec_to_bin(n/2); printf(\"%d\",n%2); }\nInput 0 prints 0; input 10 prints 1010.",
+    "reasoning": "For n>=2, recurse on its higher-order binary digits via n/2, then print the final digit n%2 on return. For n=0 or 1 the recursive branch is skipped and that one digit is printed. For 10: calls 10,5,2,1; emitted digits 1,0,1,0. Only nonnegative int inputs are required, so no negative-value or INT_MIN convention is needed.",
+    "issues": []
+  },
+  {
+    "range": "0917",
+    "id": "p5",
+    "source": "lecture-s02-p10-power",
+    "answer": "Blank: x*power(x*x,(n-1)/2). Calls (x,n): (2,5)->(4,2)->(16,1)->(256,0). Return values in reverse call order: 1,16,16,32. Final result 32. O(log n) for positive n versus O(n) for slow_power; n=0 is O(1).",
+    "reasoning": "For odd n, x^n=x*(x*x)^((n-1)/2); for even n, x^n=(x*x)^(n/2). The exponent is roughly halved per recursive level, and each level has constant arithmetic work in the given machine-number model. A repeated-multiplication implementation performs n multiplications.",
+    "issues": []
+  },
+  {
+    "range": "0921",
+    "id": "p8",
+    "source": "lecture-s03-p18-self-reference",
+    "answer": "Restore the field declaration as struct ListNode *link;. For a valid ListNode *p, its data array is p->data, its next-node pointer is p->link, and the next node data is p->link->data if that pointer is non-NULL.",
+    "reasoning": "Inside the structure body, struct ListNode is incomplete but a pointer to it has a known finite representation. A direct by-value struct ListNode member would require the incomplete structure own full size and recursively contain itself without a finite stopping size. The typedef alias ListNode is introduced only when the typedef declaration finishes, so struct ListNode * is the self-reference spelling available here.",
+    "issues": []
+  },
+  {
+    "range": "1012",
+    "id": "p4",
+    "source": "2017-mid-c050-q10",
+    "answer": "Normal-path push blank: s->stack[++(s->top)] = item;\nNormal-path pop else blank: item = s->stack[s->top]; s->top--; return item;\nNormal-path main loop: if(str[i]>='0' && str[i]<='9'){push(&s,str[i]-'0');}else{op2=pop(&s);op1=pop(&s);if(str[i]=='+')push(&s,op1+op2);else if(str[i]=='*')push(&s,op1*op2);}\nSeparate robustness repairs: add exit(EXIT_FAILURE) to error branches (especially pop underflow); use scanf(\"%99s\",str) and check that its return is 1; if relaxing the stated valid-input assumptions, validate operand count, allowed characters, and exactly one remaining result.",
+    "reasoning": "The stack uses occupied slots 0..top with empty top=-1, so pushing increments before storing; popping reads before decrementing. Each digit pushes its numeric value. Each binary operator removes its right operand then left operand and pushes the result. The explicit valid postfix and representable arithmetic assumptions make the normal branches sufficient for the exercise. At most 99 characters cannot overflow 100 stack slots.",
+    "issues": [
+      "The retained original pop error branch still reaches the end of a non-void function without a value; using that result would be undefined behavior outside the valid-input contract. The retained original scanf has no width. Both are now explicitly acknowledged by the statement as separate repair items, not hidden assumptions."
+    ]
+  },
+  {
+    "range": "1015",
+    "id": "p1",
+    "source": "textbook-ch05-q08",
+    "answer": "int get_count(const QueueType *q){ if(q->rear>=q->front) return q->rear-q->front; return MAX_QUEUE_SIZE-q->front+q->rear; }\nEquivalently, for ordinary small capacities: (q->rear-q->front+MAX_QUEUE_SIZE)%MAX_QUEUE_SIZE.",
+    "reasoning": "Count the forward cyclic index distance from the slot before the first item (front) to the last item (rear). If rear>=front the distance is their difference; otherwise it wraps across M and equals M-front+rear. The reserved slot makes front==rear uniquely empty and maximum count M-1. The branch version avoids an unnecessarily large intermediate sum in the modulo expression. O(1) time and auxiliary space.",
+    "issues": []
+  },
+  {
+    "range": "1015",
+    "id": "p5",
+    "source": "lecture-s06-p22-simulation",
+    "answer": "Original if/else: clock1 1->0, B still waiting; clock2 0->2, B starts at clock2 with waiting time 1; clock3 2->1.\nAfter replacing else with an independent if(service_time==0): clock1 1->0->2, B starts at clock1 with waiting time 0; clock2 2->1; clock3 1->0->0, since remove_customer sees an empty queue and returns 0.",
+    "reasoning": "The original else is skipped whenever service_time was positive at the preceding if test, even if decrement makes it zero. The independent second if re-tests the updated value, allowing a waiting customer to start in the same clock iteration that completes the prior service. B requires two later decrements after being loaded with service_time=2.",
+    "issues": []
+  }
+]

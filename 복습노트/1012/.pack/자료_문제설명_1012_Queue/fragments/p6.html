@@ -1,24 +1,27 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>push,pop과 main의 for문 빈칸을 완성해요. 한 자리 숫자와 +,*만 있는 유효 후위식이 입력이라는 조건을 사용해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>배열 스택의 top은 최신 위치예요. 문자 digit를 값으로 바꾸려면 str[i]−'0'을 써요. +,*는 두 값을 pop하고 결과를 push해요. 원 pop의 공백 분기는 반환값이 없으므로 오류 경로를 정상 계산으로 쓰면 안 돼요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">/* push else */
-s-&gt;stack[++s-&gt;top] = item;</code></pre></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">/* push else */
-s-&gt;stack[++s-&gt;top] = item;
-/* pop else */
-item = s-&gt;stack[s-&gt;top--];
-return item;
-/* main for문 안 */
-if (str[i] == &#x27;+&#x27; || str[i] == &#x27;*&#x27;) {
-    op2 = pop(&amp;s);  /* 오른쪽 값 */
-    op1 = pop(&amp;s);  /* 왼쪽 값 */
-    if (str[i] == &#x27;+&#x27;) push(&amp;s, op1 + op2);
-    else push(&amp;s, op1 * op2);
-} else {
-    push(&amp;s, str[i] - &#x27;0&#x27;);
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>여는 괄호에 새 번호를 주고 닫는 괄호에는 짝인 여는 번호를 출력하는 프로그램이에요. 번호 출력과 괄호식의 유효성 검사는 구별해요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>가장 최근 여는 번호를 닫는 괄호에 붙여야 하므로 stack에 번호를 저장해요. counter는 여는 괄호에서만 증가하고 pop으로 감소시키지 않아요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">int next_id=0, top=-1;</code></pre></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">#include &lt;stdio.h&gt;
+int main(void) {
+    char expr[101]; int stack[100], top=-1, next_id=0, first=1;
+    printf(&quot;수식: &quot;);
+    if (scanf(&quot;%100s&quot;, expr)!=1) return 1;
+    printf(&quot;괄호 수: &quot;);
+    for (int i=0; expr[i]; ++i) {
+        int id;
+        if (expr[i]==&#x27;(&#x27;) {
+            id=++next_id; stack[++top]=id;
+        } else if (expr[i]==&#x27;)&#x27;) {
+            if (top&lt;0) { fprintf(stderr,&quot;짝 없는 닫는 괄호\n&quot;); return 1; }
+            id=stack[top--];
+        } else continue;
+        printf(&quot;%s%d&quot;, first?&quot;&quot;:&quot; &quot;, id); first=0;
+    }
+    printf(&quot;\n&quot;);
+    if (top&gt;=0) fprintf(stderr,&quot;미닫힌 괄호 %d개\n&quot;, top+1);
+    return 0;
 }</code></pre></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>23+4*는 [2]→[2,3]→[5]→[5,4]→[20] 후 main의 마지막 pop이 20을 출력해요. 52*3+는 13이에요. 전체 검산 코드는 evidence의 안전한 완성본을 컴파일해 실행해요. 입력 길이≤99, 모든 연산 전에 원소≥2, 결과는 int 범위 안인 정상 입력을 전제로 해요. 입력 제한 scanf("%99s",str), 공백 오류 종료는 추가 안전 처리이며 빈칸 원문 자체의 보장은 아니에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>잘못된 후위식·과긴 입력에서 원문 코드가 안전하다고 주장하지 않아요. 여기서 main은 결과를 pop하므로 앞 횟수 문제의 “남기기” 조건과 달라요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>/* push else */
-s-&gt;stack[++s-&gt;top] = item;</li><li>++top 저장, top 읽고--, digit 변환·연산 결과 push</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>/* push else */
-s-&gt;stack[++s-&gt;top] = item;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>++top 저장, top 읽고--, digit 변환·연산 결과 push</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>((())(()))의 출력은 1 2 3 3 2 4 5 5 4 1이에요. ((((()는 1 2 3 4 5 5를 출력하고 미닫힌 번호1..4가 남아요. 두 번째 원문은 균형 잡힌 괄호식이 아니지만 번호 출력은 주어진 예와 같아요. 독립 번호 추적에서 두 문자열 모두 대조해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>counter를 닫힐 때 줄이면 다음 새 괄호에 이전 번호를 재사용해요. 미닫힘을 정상 균형 상태라고 말하지 않아요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>int next_id=0, top=-1;</li><li>열면 새 번호 push, 닫으면 짝 번호 pop</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>int next_id=0, top=-1;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>열면 새 번호 push, 닫으면 짝 번호 pop</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

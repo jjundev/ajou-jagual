@@ -1,4 +1,15 @@
 # Preserve verbatim source-reading evidence, including original whitespace.
 복습노트/**/evidence/source-reading.txt -whitespace
+# Keep command-output evidence verbatim.
+docs/verify/review-overhaul-20261017/*.log -whitespace
 # Preserve the official font license byte-for-byte.
 .agents/skills/ds-review-pack/assets/pdf/vendor/jetbrains-mono/OFL.txt -whitespace
+
+# Frozen PDF assets are hashed bytes; keep LF on Windows checkouts.
+.agents/skills/ds-review-pack/assets/pdf/**/*.html text eol=lf
+.agents/skills/ds-review-pack/assets/pdf/**/*.py text eol=lf
+.agents/skills/ds-review-pack/assets/pdf/**/*.css text eol=lf
+.agents/skills/ds-review-pack/assets/pdf/**/*.js text eol=lf
+.agents/skills/ds-review-pack/assets/pdf/**/*.json text eol=lf
+.agents/skills/ds-review-pack/assets/pdf/**/LICENSE text eol=lf
+.agents/skills/ds-review-pack/assets/pdf/**/OFL.txt text eol=lf

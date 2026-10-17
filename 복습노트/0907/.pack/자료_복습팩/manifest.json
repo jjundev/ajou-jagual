@@ -5,9 +5,9 @@
   "note_title": "자료구조와 알고리즘, 왜 배울까 — 5살도 이해하는 정리노트",
   "note_subtitle": "기존 노트 보존",
   "review_title": "복습문제 4선 — 0907 수업 범위",
-  "review_intro": "기존 문제 <b>0개</b>를 유지하고 교과서 문제 <b>4개</b>를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.",
+  "review_intro": "핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
   "footer_note": "기존 노트 보존",
-  "footer_review": "출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.",
+  "footer_review": "기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.",
   "sessions": [
     {
       "date": "0907",
@@ -292,15 +292,20 @@
   "forbidden_outside_preview": [],
   "parts": [
     {
-      "id": "partD",
-      "title": "D. 교과서 연습문제",
-      "short": "D 교과서"
+      "id": "partA",
+      "title": "A. 검토한 기출·교과서 문제",
+      "short": "A 기존 문제"
+    },
+    {
+      "id": "partB",
+      "title": "B. 강의 예제 코드",
+      "short": "B 강의 코드"
     }
   ],
   "problems": [
     {
       "id": "p1",
-      "part": "partD",
+      "part": "partA",
       "source": "textbook-ch01-q01",
       "source_kind": "textbook",
       "variant": false,
@@ -310,25 +315,15 @@
       "terms": [
         "temp ← a; a ← b; b ← temp"
       ],
-      "answer": "temp ← a; a ← b; b ← temp"
+      "answer": "temp ← a; a ← b; b ← temp",
+      "objectives": [
+        "retained-textbook-ch01-q01"
+      ],
+      "task_family": "textbook-ch01-q01"
     },
     {
       "id": "p2",
-      "part": "partD",
-      "source": "textbook-ch01-q02",
-      "source_kind": "textbook",
-      "variant": false,
-      "anchor": "s0-algorithm-def",
-      "level": 3,
-      "date": "0907",
-      "terms": [
-        "a ≥ b이면 a, 아니면 b"
-      ],
-      "answer": "a ≥ b이면 a, 아니면 b"
-    },
-    {
-      "id": "p3",
-      "part": "partD",
+      "part": "partA",
       "source": "textbook-ch01-q03",
       "source_kind": "textbook",
       "variant": false,
@@ -338,11 +333,15 @@
       "terms": [
         "sum ← 0; i=1..n에 대해 sum ← sum+i; sum 출력"
       ],
-      "answer": "sum ← 0; i=1..n에 대해 sum ← sum+i; sum 출력"
+      "answer": "sum ← 0; i=1..n에 대해 sum ← sum+i; sum 출력",
+      "objectives": [
+        "retained-textbook-ch01-q03"
+      ],
+      "task_family": "textbook-ch01-q03"
     },
     {
-      "id": "p4",
-      "part": "partD",
+      "id": "p3",
+      "part": "partA",
       "source": "textbook-ch05-q01",
       "source_kind": "textbook",
       "variant": false,
@@ -352,8 +351,39 @@
       "terms": [
         "(a) A, B, C, D, E"
       ],
-      "answer": "(a) A, B, C, D, E"
+      "answer": "(a) A, B, C, D, E",
+      "objectives": [
+        "retained-textbook-ch05-q01"
+      ],
+      "task_family": "textbook-ch05-q01"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "lecture-s01-p21-find-max",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-algorithm-def",
+      "level": 3,
+      "date": "0907",
+      "terms": [
+        "최대값 탐색의 초기값과 종료 조건"
+      ],
+      "answer": "tmp: -8 → -3 → -3 → -1, 반환 -1. 0으로 초기화하면 배열에 없는 0을 잘못 반환한다. 1≤n≤배열 용량이고 앞 n개가 초기화되어야 한다. i가 1씩 증가해 n에 도달하므로 종료한다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
+        "pdf_page": 21,
+        "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba",
+        "example": "find-max",
+        "taught_on": "0907",
+        "extra_pages": []
+      },
+      "objectives": [
+        "find-max"
+      ],
+      "task_family": "find-max"
     }
   ],
-  "links": []
+  "links": [],
+  "policy_version": "review-questions-2026-10-17"
 }

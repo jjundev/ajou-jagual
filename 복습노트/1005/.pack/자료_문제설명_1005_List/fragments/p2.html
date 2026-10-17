@@ -1,8 +1,33 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>현재 노드 다음의 노드 주소를 p에 넣는 문장을 골라요. p는 유효한 노드 주소여야 해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>노드가 따로 할당되어 연속 주소라는 보장이 없으므로 pointer arithmetic보다 저장된 link를 따라가야 해요. p->link는 다음 노드 주소이고 p->data는 데이터예요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>현재 A 주소와 A.link에 들어 있는 B 주소를 적어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a">p++는 구조체 한 개 크기만큼 주소를 증가시켜요. 다음 노드가 그 위치에 있다는 보장은 없어요.</div><div data-subpart="b">p--는 구조체 한 개 크기만큼 감소시켜요. 다음 노드 연결과 무관해요.</div><div data-subpart="c">p=p->link가 정답이에요. 현재 노드가 저장한 다음 주소를 읽어 p에 대입해요.</div><div data-subpart="d">p=p->data는 데이터 필드를 주소인 것처럼 대입해요. int 데이터라면 포인터 타입과도 맞지 않아요.</div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="a">A=주소1000,B=주소9000 예에서 p++는 B를 얻지 못해요. 숫자 주소는 개념 그림이며 실제 C 정수-주소 산술 예제가 아니에요.</div><div data-subpart="b">같은 예에서 주소 감소도 B에 닿는다는 규칙이 없어요.</div><div data-subpart="c">A.link=B 주소를 대입하면 p는 정확히 B가 돼요. 마지막에서는 NULL이 돼요.</div><div data-subpart="d">A.data=5라도 다음 주소 B와 관계없어요.</div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>p가 NULL이면 p->link 자체가 안전하지 않아요. 이동 전에 p!=NULL을 검사해요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>현재 A 주소와 A.link에 들어 있는 B 주소를 적어요.</li><li>다음 주소 p=p-&gt;link</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>현재 A 주소와 A.link에 들어 있는 B 주소를 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>다음 주소 p=p->link</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>입력 노드들을 연결하고 head에서 출발해 실제 노드 수를 세는 프로그램을 만들어요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>linked list traversal은 link를 따라 NULL까지 방문하는 것이에요. 입력으로 받은 n을 그대로 결과로 쓰는 대신 실제 연결 구조를 세어야 해요. count는 방문한 노드 수예요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">int count = 0;</code></pre></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct Node { int data; struct Node *link; } Node;
+int count_nodes(const Node *head) {
+    int count=0;
+    for (const Node *p=head; p!=NULL; p=p-&gt;link) ++count;
+    return count;
+}
+int main(void) {
+    int n, value, ok=1;
+    Node *head=NULL, *tail=NULL;
+    printf(&quot;노드의 개수 : &quot;);
+    if (scanf(&quot;%d&quot;, &amp;n)!=1 || n&lt;0 || n&gt;10000) return 1;
+    for (int i=0; i&lt;n; ++i) {
+        printf(&quot;노드 #%d 데이터 : &quot;, i+1);
+        if (scanf(&quot;%d&quot;, &amp;value)!=1) { ok=0; break; }
+        Node *node=malloc(sizeof *node);
+        if (node==NULL) { ok=0; break; }
+        node-&gt;data=value; node-&gt;link=NULL;
+        if (tail) tail-&gt;link=node; else head=node;
+        tail=node;
+    }
+    if (ok) printf(&quot;연결 리스트 노드의 개수 = %d\n&quot;, count_nodes(head));
+    while (head) { Node *next=head-&gt;link; free(head); head=next; }
+    return ok?0:1;
+}</code></pre></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>입력 3,5,6,7로 5→6→7→NULL이 만들어져 count는 0→1→2→3이에요. 빈 입력 n=0에서는 0이에요. count가 이미 방문한 접두 노드 수라는 불변식으로 acyclic 리스트의 정확성을 확인해요. 10000 제한은 검산 프로그램의 입력 보호 선택이에요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>마지막 노드도 세어야 하므로 조건을 p->link!=NULL로 쓰지 않아요. 순환 링크를 가진 구조는 이 단순 리스트 전제 밖이에요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>int count = 0;</li><li>head부터 p!=NULL 동안 한 노드당 +1</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>int count = 0;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>head부터 p!=NULL 동안 한 노드당 +1</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

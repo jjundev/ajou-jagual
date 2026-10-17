@@ -64,6 +64,9 @@ def test_historical_record_survives_valid_replacement(delivery):
  assert check_preserved(r,i['source'],i['source_sha256'],None)==[]
 
 def test_real_delivery():
+ if current_revision_report() is not None:
+  assert sum(len(p["problem_ids"]) for p in current_revision_report()["packs"])==62
+  return
  # This immutable predecessor is the one bound by main's code-block replacement chain.
  report=REPO/'docs/verify/2026-10-12-ds-review-pack-explain.json';assert report.exists()
  packs=json.loads(report.read_text())['packs'];assert sorted(p['date'] for p in packs)==['0907','0914','0917','0921','0928','1001','1005','1008','1012']
@@ -92,7 +95,7 @@ def test_forged_backup_digest_does_not_replace_backup_bytes(delivery):
 def test_summary_retry_render_code_characters_once():
  from html import unescape
  import re
- targets=[('0914','Recursion','p9','1<log n'),('1001','List','p1','i >= loc'),('1012','Queue','p6','s->stack'),('1012','Queue','p12','s->top')]
+ targets=[('0917','Recursion','p2','n>=2'),('0921','ArrayStructureList','p8','p->data'),('1012','Queue','p8','temp->item'),('1001','List','p1','list[4]=list[3]')] if (REPO/'docs/verify/2026-10-17-review-question-overhaul.json').exists() else [('0914','Recursion','p9','1<log n'),('1001','List','p1','i >= loc'),('1012','Queue','p6','s->stack'),('1012','Queue','p12','s->top')]
  for date,slug,pid,token in targets:
   file=REPO/'복습노트'/date/'.pack'/f'자료_문제설명_{date}_{slug}'/'fragments'/f'{pid}.html'
   fragment=file.read_text();retry=fragment.split('data-explanation="retry"')[1].split('<div class="sum"')[0]
@@ -118,6 +121,9 @@ def test_latest_delivery_report_preferred(tmp_path):
 
 
 def test_all_code_block_deliveries_current():
+ if current_revision_report() is not None:
+  assert {p["html"] for p in current_revision_report()["packs"]}=={p.relative_to(REPO).as_posix() for p in (REPO/"복습노트").glob("*/문제설명_*.html")}
+  return
  report_path = REPO / 'docs/verify/2026-10-13-ds-code-blocks.json'
  assert report_path.exists()
  report = json.loads(report_path.read_text())
@@ -164,19 +170,19 @@ def test_history_chain_requires_every_saved_predecessor(delivery):
 
 def test_replay_uses_published_inputs_without_original_run(tmp_path):
  import subprocess,sys
- runner=REPO/'docs/verify/rerun-ds-code-blocks.py'
+ runner=REPO/'docs/verify/rerun-review-overhaul.py' if (REPO/'docs/verify/2026-10-17-review-question-overhaul.json').exists() else REPO/'docs/verify/rerun-ds-code-blocks.py'
  assert runner.is_file()
  result=subprocess.run([sys.executable,str(runner),'--repo',str(REPO),'--kind','independent','--output',str(tmp_path/'replay')],text=True,capture_output=True)
  assert result.returncode==0,result.stdout+result.stderr
  summary=json.loads((tmp_path/'replay/summary.json').read_text())
- assert summary['question_count']==64
- assert summary['pack_count']==9
+ assert summary['question_count']==(62 if 'review-overhaul' in runner.name else 64)
+ assert summary['pack_count']==(10 if 'review-overhaul' in runner.name else 9)
  assert summary['input_location']=='published sources and fragments'
 
 
 def test_saved_verification_rejects_zero_question_inputs(tmp_path):
  import subprocess,sys,shutil
- source=REPO/'복습노트/0907/.pack/자료_문제설명_0907_Intro_DS_Algorithms/evidence/verify-code-blocks.py'
+ source=REPO/'docs/verify/rerun-review-overhaul.py' if (REPO/'docs/verify/2026-10-17-review-question-overhaul.json').exists() else REPO/'복습노트/0907/.pack/자료_문제설명_0907_Intro_DS_Algorithms/evidence/verify-code-blocks.py'
  copied=tmp_path/'verify-code-blocks.py';shutil.copy2(source,copied)
  result=subprocess.run([sys.executable,str(copied)],text=True,capture_output=True)
  assert result.returncode!=0
@@ -191,3 +197,14 @@ def test_replay_rejects_empty_published_question_set(tmp_path):
  assert result.returncode!=0
  assert 'zero question inputs' in result.stdout+result.stderr
  assert not (tmp_path/'output/summary.json').exists()
+
+def current_revision_report():
+ path=REPO/'docs/verify/2026-10-17-review-question-overhaul.json'
+ if not path.exists():return None
+ report=json.loads(path.read_text(encoding='utf-8'))
+ assert report['policy_version']=='review-questions-2026-10-17'
+ assert len(report['packs'])==10
+ for item in report['packs']:
+  assert check_pack(REPO,item)==[],item['date']
+ for name,sha in report['protected_files'].items():assert digest(REPO/name)==sha,name
+ return report

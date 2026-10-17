@@ -4,10 +4,10 @@
   "slug": "Recursion",
   "note_title": "순환(재귀) — 5살도 이해하는 정리노트",
   "note_subtitle": "기존 노트 보존",
-  "review_title": "복습문제 12선 — 0917 수업 범위",
-  "review_intro": "기존 문제 <b>8개</b>를 유지하고 교과서 문제 <b>4개</b>를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.",
+  "review_title": "복습문제 6선 — 0917 수업 범위",
+  "review_intro": "핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
   "footer_note": "기존 노트 보존",
-  "footer_review": "출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.",
+  "footer_review": "기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.",
   "sessions": [
     {
       "date": "0917",
@@ -247,51 +247,20 @@
   "forbidden_outside_preview": [],
   "parts": [
     {
+      "id": "partA",
+      "title": "A. 검토한 기출·교과서 문제",
+      "short": "A 기존 문제"
+    },
+    {
       "id": "partB",
-      "title": "B. 다른 기출",
-      "short": "B. 다른 기출"
-    },
-    {
-      "id": "partC",
-      "title": "C. 기출 변형",
-      "short": "C. 기출 변형"
-    },
-    {
-      "id": "partD",
-      "title": "D. 교과서 연습문제",
-      "short": "D 교과서"
+      "title": "B. 강의 예제 코드",
+      "short": "B 강의 코드"
     }
   ],
   "problems": [
     {
       "id": "p1",
-      "part": "partB",
-      "source": "2019-mid-q8",
-      "variant": false,
-      "anchor": "s0-factorial",
-      "level": 2,
-      "date": "0917",
-      "terms": [
-        "x와"
-      ],
-      "answer": "x와 y의 최대공약수를 구해주는 (foo(48, 18) = 6)"
-    },
-    {
-      "id": "p2",
-      "part": "partB",
-      "source": "2018-mid-c024-q8",
-      "variant": false,
-      "anchor": "s0-factorial",
-      "level": 2,
-      "date": "0917",
-      "terms": [
-        "T(n)"
-      ],
-      "answer": "T(n) = 30n(n+1)/2 = 15n^2 + 15n, O(n^2)"
-    },
-    {
-      "id": "p3",
-      "part": "partB",
+      "part": "partA",
       "source": "2018-mid-c024-q15",
       "variant": false,
       "anchor": "s0-factorial",
@@ -300,90 +269,32 @@
       "terms": [
         "if"
       ],
-      "answer": "if ( j == 0 ) return i; else return gcd( j, i%j );   (48 18 → gcd:6)"
-    },
-    {
-      "id": "p4",
-      "part": "partB",
-      "source": "2018-mid-c102-q1",
-      "variant": false,
-      "anchor": "s0-factorial",
-      "level": 2,
-      "date": "0917",
-      "terms": [
-        "순환"
+      "answer": "if ( j == 0 ) return i; else return gcd( j, i%j );   (48 18 → gcd:6)",
+      "objectives": [
+        "retained-2018-mid-c024-q15"
       ],
-      "answer": "순환"
+      "task_family": "2018-mid-c024-q15"
     },
     {
-      "id": "p5",
-      "part": "partB",
+      "id": "p2",
+      "part": "partA",
       "source": "2017-mid-c050-q11",
       "variant": false,
       "anchor": "s0-factorial",
       "level": 2,
       "date": "0917",
       "terms": [
-        "if"
+        "0→0"
       ],
-      "answer": "if (n == 0) return; else { dec_to_bin(n / 2); printf(\"%d\", n % 2); }   (10 → 1010)"
+      "answer": "n>=2이면 dec_to_bin(n/2) 호출 후 printf(\"%d\",n%2). 10→1010, 0→0.",
+      "objectives": [
+        "retained-2017-mid-c050-q11"
+      ],
+      "task_family": "2017-mid-c050-q11"
     },
     {
-      "id": "p6",
-      "part": "partB",
-      "source": "unk-final-ltk-q1",
-      "variant": false,
-      "anchor": "s0-factorial",
-      "level": 2,
-      "date": "0917",
-      "terms": [
-        "T(n)"
-      ],
-      "answer": "T(n) = 29n(n-1)/2, O(n^2)"
-    },
-    {
-      "id": "p7",
-      "part": "partC",
-      "source": "2018-mid-c024-q8",
-      "variant": true,
-      "anchor": "s0-factorial",
-      "level": 2,
-      "date": "0917",
-      "terms": [
-        "T(n)"
-      ],
-      "answer": "T(n) = 20n(n+1)/2 = 10n^2 + 10n, O(n^2)"
-    },
-    {
-      "id": "p8",
-      "part": "partC",
-      "source": "unk-final-ltk-q1",
-      "variant": true,
-      "anchor": "s0-factorial",
-      "level": 2,
-      "date": "0917",
-      "terms": [
-        "T(n)"
-      ],
-      "answer": "T(n) = 9n(n-1)/2, O(n^2)"
-    },
-    {
-      "id": "p9",
-      "part": "partD",
-      "source": "textbook-ch02-q06",
-      "source_kind": "textbook",
-      "variant": false,
-      "anchor": "s0-structure",
-      "level": 2,
-      "date": "0917",
-      "terms": [
-        "종료 조건이 없어 호출이 끝나지 않음"
-      ],
-      "answer": "종료 조건이 없어 호출이 끝나지 않음"
-    },
-    {
-      "id": "p10",
-      "part": "partD",
+      "id": "p3",
+      "part": "partA",
       "source": "textbook-ch02-q09",
       "source_kind": "textbook",
       "variant": false,
@@ -393,25 +304,15 @@
       "terms": [
         "출력: 10 7 4 1 -2 / 반환값: 3"
       ],
-      "answer": "출력: 10 7 4 1 -2 / 반환값: 3"
-    },
-    {
-      "id": "p11",
-      "part": "partD",
-      "source": "textbook-ch02-q13",
-      "source_kind": "textbook",
-      "variant": false,
-      "anchor": "s1-vs-iter",
-      "level": 3,
-      "date": "0917",
-      "terms": [
-        "n≤1이면 1, 아니면 n+sum(n-1)"
+      "answer": "출력: 10 7 4 1 -2 / 반환값: 3",
+      "objectives": [
+        "retained-textbook-ch02-q09"
       ],
-      "answer": "n≤1이면 1, 아니면 n+sum(n-1)"
+      "task_family": "textbook-ch02-q09"
     },
     {
-      "id": "p12",
-      "part": "partD",
+      "id": "p4",
+      "part": "partA",
       "source": "textbook-ch02-q16",
       "source_kind": "textbook",
       "variant": false,
@@ -421,8 +322,68 @@
       "terms": [
         "total=0에서 1..n을 더해 반환"
       ],
-      "answer": "total=0에서 1..n을 더해 반환"
+      "answer": "total=0에서 1..n을 더해 반환",
+      "objectives": [
+        "retained-textbook-ch02-q16"
+      ],
+      "task_family": "textbook-ch02-q16"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "lecture-s02-p10-power",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-power",
+      "level": 3,
+      "date": "0917",
+      "terms": [
+        "거듭제곱: 홀수 분기와 호출 크기"
+      ],
+      "answer": "홀수 분기 x*power(x*x,(n-1)/2). 호출 (2,5)→(4,2)→(16,1)→(256,0), 반환 1→16→16→32. power는 O(log n), slow_power는 O(n)이다(n≥1).",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
+        "pdf_page": 10,
+        "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe",
+        "example": "power",
+        "taught_on": "0917",
+        "extra_pages": []
+      },
+      "objectives": [
+        "power"
+      ],
+      "task_family": "power"
+    },
+    {
+      "id": "p6",
+      "part": "partB",
+      "source": "lecture-s02-p12-fibonacci",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s3-fib-waste",
+      "level": 3,
+      "date": "0917",
+      "terms": [
+        "피보나치의 중복 호출과 반복 상태"
+      ],
+      "answer": "fib(6)=8, fib(3)은 3회. tmp=current; current+=last; last=tmp;. 두 자식 호출의 하위 호출이 겹치고 계산 결과를 저장하지 않기 때문이다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
+        "pdf_page": 12,
+        "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe",
+        "example": "fibonacci",
+        "taught_on": "0917",
+        "extra_pages": [
+          13,
+          14
+        ]
+      },
+      "objectives": [
+        "fibonacci"
+      ],
+      "task_family": "fibonacci"
     }
   ],
-  "links": []
+  "links": [],
+  "policy_version": "review-questions-2026-10-17"
 }

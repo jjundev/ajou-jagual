@@ -1,1 +1,36 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 먼저 읽어요</h4><p>앞 표시가 세 번째 칸, 끝 표시가 다섯 번째 칸에 있어요. 그 사이에 실제 값이 몇 개 있는지 골라요.</p></div><div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“원형큐”, <code>front=3</code>, <code>rear=5</code>, <code>MAX_QUEUE_SIZE=8</code>이 단서예요. 원형 큐(circular queue)의 <code>front</code>는 첫 원소 하나 앞이에요. 따라서 3번 칸은 세지 않고 4번부터 마지막 원소가 있는 5번까지 세어요.</p><p>순환할 수도 있으므로 일반식은 <code>(rear-front+MAX_QUEUE_SIZE)%MAX_QUEUE_SIZE</code>예요. 여기서는 rear가 front보다 커서 직접 두 칸을 세어도 같아요. 선택지 네 개 중 정확한 개수 하나를 고르면 돼요.</p></div><div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>종이에 <code>front=3 → 첫 원소는 4번, rear=5 → 마지막 원소는 5번</code>이라고 적어요.</p></div><div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 1개라면 4번만 있어야 하지만 rear가 5번이므로 맞지 않아요.</p></div><div data-subpart="b"><p>(b) 4번과 5번, 두 칸이에요. <code>(5-3+8)%8=2</code>이므로 <strong>2개</strong>가 맞아요.</p></div><div data-subpart="c"><p>(c) 3개는 front가 가리키는 3번까지 세었을 때 생기는 오답이에요. front는 원소 칸이 아니에요.</p></div><div data-subpart="d"><p>(d) 4개를 얻으려면 3번 이전까지 더 세어야 해요. 주어진 front·rear와 맞지 않아요.</p></div></div><div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="a"><p>(a) 1은 실제 칸 4·5 중 하나를 빠뜨려 틀려요.</p></div><div data-subpart="b"><p>(b) 정답은 <strong>2개</strong>예요. 첫 원소 4번, 마지막 원소 5번을 직접 세어도 2개예요.</p></div><div data-subpart="c"><p>(c) 3은 3·4·5 세 칸인데 3번은 front라 원소가 아니므로 틀려요.</p></div><div data-subpart="d"><p>(d) 4는 공식 계산값 <code>(5-3+8)%8=2</code>와 다르므로 틀려요.</p></div></div><div class="layer warn" data-explanation="pitfall"><h4>여기서 실수하기 쉬워요</h4><p><code>front</code>가 첫 원소를 가리킨다고 생각하면 3개를 고르게 돼요. 강의 슬라이드 S6 p6의 정의는 “첫번째 요소 하나 앞의 인덱스”예요.</p></div><div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>front가 포함되는 칸인지 말해 봐요.</li><li>4번과 5번을 직접 세어요.</li><li>나머지 공식으로 다시 계산해요.</li></ol></div><div class="sum" hidden><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>front는 첫 원소 하나 앞; 원소 수=(rear-front+M)%M이에요.</p></div><div class="summary-group"><h4>첫 줄</h4><p>front=3 다음 칸인 4번부터 적어요.</p></div><div class="summary-group"><h4>핵심 판단</h4><p>4번과 5번 두 칸이므로 (b) 2개예요.</p></div><div class="summary-group"><h4>검산</h4><p>(5-3+8)%8=2로 직접 센 수와 같아요.</p></div></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>문장의 양끝 글자를 하나씩 꺼내 비교해요. 쉼표와 빈칸은 건너뛰고, 끝까지 같으면 거꾸로 읽어도 같은 말이에요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘앞뒤 어느 쪽에서 읽어도 같음’, ‘덱을 이용’이라는 단서에서 덱(deque)의 앞·뒤 삭제를 떠올려요. 회문(palindrome)은 무시할 구두점·공백을 걷어 내고 대소문자를 맞춘 문자들의 양 끝이 매번 같은 문자열이에요. 양끝이 다르면 즉시 거짓이고, 길이가 0 또는 1이 되도록 모두 맞으면 참이에요. 문자 수가 $k$이면 비교는 최대 $\lfloor k/2\rfloor$번이에요.</p><p>교과서에는 C 구현을 위한 인코딩·로캘 규칙이 없어요. 아래 카드의 C 코드는 UTF-8 입력과 실행 환경의 UTF-8 로캘을 전제로 <code>wchar_t</code> 문자로 해독해요. 이 해독과 <code>iswalnum</code>·<code>towlower</code>는 수업의 덱 원리에서 유도한 내용이 아니라 구현 보충이에요. 로캘별 문자 분류와 한 글자씩의 소문자화에 한정하며 모든 유니코드 정규화·완전한 대소문자 접기는 수행하지 않아요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>“문자를 정리해 덱에 넣고, 두 개 이상 남는 동안 앞과 뒤를 하나씩 꺼내 비교한다”라고 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>원 카드의 코드에서는 <code>head</code>와 <code>tail</code>이 배열 덱의 양쪽 경계예요. 유효한 문자만 뒤에 추가해 <code>d[head..tail)</code>을 만들고, 앞에서는 <code>d[head++]</code>, 뒤에서는 <code>d[--tail]</code>을 꺼내요. 코드 자체는 카드와 같은 구현이에요.</p><pre><code class="language-c">#include &lt;locale.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;wchar.h&gt;
+#include &lt;wctype.h&gt;
+#define CAP 256
+/* UTF-8 로캘에서 1=회문, 0=비회문, -1=입력·로캘 오류/용량 초과 */
+int is_palindrome(const char *s) {
+    if (!s) return -1;
+    const char *loc = setlocale(LC_CTYPE, "");
+    if (!loc || !(strstr(loc, "UTF-8") || strstr(loc, "utf8"))) return -1;
+    wchar_t d[CAP];
+    size_t head = 0, tail = 0, i = 0;
+    mbstate_t state = {0};
+    while (s[i] != '\0') {
+        wchar_t ch;
+        size_t n = mbrtowc(&amp;ch, s + i, strlen(s + i), &amp;state);
+        if (n == (size_t)-1 || n == (size_t)-2 || n == 0) return -1;
+        if (iswalnum(ch)) {
+            if (tail == CAP) return -1;
+            d[tail++] = towlower(ch);
+        }
+        i += n;
+    }
+    while (tail - head &gt; 1) {
+        if (d[head++] != d[--tail]) return 0;
+    }
+    return 1;
+}</code></pre><ol><li><code>radar</code>: r와 r, a와 a가 같고 d 한 글자가 남아 참이에요.</li><li><code>A man, a plan, a canal: Panama!</code>: 빈칸·구두점·대소문자를 정리하면 <code>amanaplanacanalpanama</code>가 되어 양끝 비교가 모두 같아요.</li><li><code>가나</code>: UTF-8 로캘에서 가와 나가 달라 거짓이에요. 한글 바이트를 버리고 빈 문자열로 오판하지 않아요.</li></ol></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>양 끝에서 꺼낸 문자가 모두 같으면 회문이에요. 제시한 코드의 반환값은 회문 1, 비회문 0, 입력·로캘 오류나 용량 초과 -1이에요. 독립 실행에서 <code>radar</code>, 문장 예시, 빈 문자열, 한 글자는 1이고 <code>가나</code>는 0이에요. 잘못된 UTF-8 바이트와 정리 후 257자는 -1이에요. 입력이 <code>NULL</code>인 경우도 -1이에요. 양 끝을 하나씩 없애므로 덱에서 $O(k)$번의 삭제를 해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>바이트마다 <code>isalnum</code>을 호출하면 UTF-8 한글을 문자로 읽지 못해 <code>가나</code>를 잘못 참으로 판단할 수 있어요. 실행 환경에 UTF-8 로캘이 없으면 이 코드는 -1을 반환해요. 배열 크기 <code>CAP</code>은 원본 바이트가 아니라 정리 후 문자 수의 상한이에요. 원문 그림의 <code>rear</code>·<code>front</code> 방향보다 양 끝에서 같은 문자를 하나씩 꺼낸다는 규칙이 핵심이에요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>구두점·공백·대소문자를 어떻게 처리할지 적으세요.</li><li><code>radar</code>의 양끝을 두 차례 비교하세요.</li><li>비회문과 잘못된 입력에서 반환값을 구별하세요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>정리한 문자를 덱에 넣고 양 끝을 하나씩 비교해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>덱 양끝 삭제로 최대 $\lfloor k/2\rfloor$번 비교해요. UTF-8 문자 해독은 구현 보충이에요.</p></div><div class="summary-group"><h4>답과 검산</h4><p>같으면 1, 다르면 0, 입력·로캘·용량 오류는 -1이에요.</p></div></div>

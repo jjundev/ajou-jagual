@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>복습문제 12선 — 0917 수업 범위</title>
-  <meta name="description" content="복습문제 12선 — 0917 수업 범위">
+  <title>복습문제 6선 — 0917 수업 범위</title>
+  <meta name="description" content="복습문제 6선 — 0917 수업 범위">
   <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-screens="article.card" data-panels="review" data-range="0917">
+<body data-revision="1ae2abb57592d2519661" data-screens="article.card" data-panels="review" data-range="0917">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -369,101 +369,15 @@
         </div>
         <p class="panel-meta">푼 문제 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
         <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
-        <nav class="toc" aria-label="목차"><a href="#partB">B 다른 기출</a><a href="#partC">C 변형</a><a href="#partD">D 교과서</a></nav>
+        <nav class="toc" aria-label="목차"><a href="#partA">A 기존 문제</a><a href="#partB">B 강의 코드</a></nav>
       </div>
     </aside>
     <div class="content">
   <main>
-    <div class="hero"><h1>복습문제 12선 — 0917 수업 범위</h1><p>기존 문제 <b>8개</b>를 유지하고 교과서 문제 <b>4개</b>를 추가했어요. 먼저 풀어 보고, 막히면 힌트와 풀이를 열어 보세요.</p></div>
-    <section id="partB"><h2>B. 다른 기출</h2>
-<article class="card" id="p1" data-source="2019-mid-q8">
-  <h3>P1. 함수 foo는 무엇을 하는 함수일까요</h3>
-  <div class="problem">
-    <p>아래에 함수 foo의 코드가 있어요. 이 함수를 호출(사용)했을 때 무엇을 하는 함수인지 답해 보세요.</p>
-    <p>함수 foo는 (&nbsp;&nbsp;&nbsp;) 함수이다.</p>
-<pre><code class="language-c">int foo (int x, int y){
-    if (x % y == 0) return y;
-    else
-        return foo(y, x % y);
-}</code></pre>
-  </div>
-  <details class="original"><summary>기출 원문 보기</summary>
-    <p>2019 중간 8번 · 2점 · 출제자 미상</p>
-    <blockquote>
-      <p>"아래에는 함수 foo에 대한 코드가 있으며 이 함수를 호출(사용)하였을 때 무엇을 하는 함수인지에 대해서 답을 하시오.<br>함수 foo는 (&nbsp;&nbsp;&nbsp;) 함수이다. (2점)</p>
-<pre><code class="language-c">int foo (int x, int y){
-    if (x % y == 0) return y;
-    else
-        return foo(y, x % y);
-}</code></pre>
-      <p>"</p>
-    </blockquote>
-  </details>
-  <details class="hint"><summary>힌트 보기</summary>
-    <p>작은 수를 넣고 호출을 직접 따라가 보세요. 예를 들어 foo(48, 18)이 무엇을 돌려주는지 보고, 그 값이 48과 18에게 어떤 수인지 생각해 보세요.</p>
-  </details>
-  <details class="solution"><summary>풀이 보기</summary>
-    <ol class="steps">
-      <li>foo(48, 18): 48 % 18 = 12라서 0이 아니에요. → foo(18, 12)를 불러요.</li>
-      <li>foo(18, 12): 18 % 12 = 6이라서 0이 아니에요. → foo(12, 6)을 불러요.</li>
-      <li>foo(12, 6): 12 % 6 = 0이에요. → 6을 돌려줘요. 이 값이 그대로 위로 올라가 foo(48, 18) = 6이 돼요.</li>
-      <li>6은 48(= 6 × 8)과 18(= 6 × 3)을 모두 나누는 가장 큰 수, 곧 최대공약수예요.</li>
-      <li>왜 늘 그렇게 될까요? x를 y로 나눈 나머지를 r이라 하면, x와 y를 함께 나누는 수는 y와 r도 함께 나눠요. 그래서 foo(x, y)와 foo(y, x % y)가 찾는 최대공약수는 같아요.</li>
-      <li>나머지가 0이 되면 y가 x를 나누어떨어지게 하니, 그때의 y가 최대공약수예요. 이게 멈추는 부분 <code>if (x % y == 0) return y;</code>예요.</li>
-      <li>x가 y보다 작아도 괜찮아요. foo(18, 48)은 18 % 48 = 18이라 foo(48, 18)을 불러, 한 번에 두 수의 자리가 바뀌어요.</li>
-      <li>수업과의 연결: 0917 수업의 순환 알고리즘 두 조건과 같아요. 순환을 멈추는 부분은 <code>x % y == 0</code>이고, 순환 호출 foo(y, x % y)는 둘째 인자가 18 → 12 → 6으로 줄어 종결 조건으로 수렴해요.</li>
-    </ol>
-    <p class="answer">정답: x와 y의 최대공약수를 구해주는 (foo(48, 18) = 6)</p>
-  </details>
-</article>
-<article class="card" id="p2" data-source="2018-mid-c024-q8">
-  <h3>P2. 세 겹 for 루프의 T(n)과 빅오</h3>
-  <div class="problem">
-    <p>다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 나타내고, 빅오 표기법으로 표시해 보세요. 시간 복잡도를 구할 때는 <code>buffer[i][j] = 0;</code>의 대입 연산만 고려해요.</p>
-<pre><code class="language-c">int i, j, k;
-for(i=0; i&lt;n; i++){
-    for(j=i; j&lt;n; j++){
-        for(k=0; k&lt;30; k++){
-            buffer[i][j] = 0;
-        }
-    }
-}</code></pre>
-    <p>답: T(n) =<br>빅오 표기법:</p>
-  </div>
-  <details class="original"><summary>기출 원문 보기</summary>
-    <p>2018 중간 8번 · 2점 · 출제자 미상</p>
-    <blockquote>
-      <p>"다음의 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 나타내고 빅오 표기법으로 표시하시오. ( 시간 복잡도를 구할 때 buffer[i][j] = 0; 의 대입 연산만 고려 ) [2 points].</p>
-<pre><code class="language-c">int i, j, k;
-for(i=0; i&lt;n; i++){
-    for(j=i; j&lt;n; j++){
-        for(k=0; k&lt;30; k++){
-            buffer[i][j] = 0;
-        }
-    }
-}</code></pre>
-      <p>답: T(n) =<br>빅오 표기법:"</p>
-    </blockquote>
-  </details>
-  <details class="hint"><summary>힌트 보기</summary>
-    <p>가장 안쪽 루프는 i, j와 상관없이 늘 같은 횟수만큼 돌아요. 가운데 루프가 i마다 몇 번 도는지 세어 더해 보세요.</p>
-  </details>
-  <details class="solution"><summary>풀이 보기</summary>
-    <ol class="steps">
-      <li>가장 안쪽 루프: k = 0, 1, …, 29라서 대입이 30번 일어나요.</li>
-      <li>가운데 루프: j가 i부터 n-1까지 돌아서 $n-i$번 돌아요.</li>
-      <li>바깥 루프: i = 0, 1, …, n-1이에요. 가운데 루프 횟수는 n, n-1, …, 1이 돼요.</li>
-      <li>모두 더하면 $n + (n-1) + \cdots + 1 = \frac{n(n+1)}{2}$번이에요.</li>
-      <li>각각 30번씩 대입하니 T(n) = 30n(n+1)/2, 곧 $T(n) = \frac{30n(n+1)}{2} = 15n^2 + 15n$이에요.</li>
-      <li>확인: n = 3이면 30 × (3 + 2 + 1) = 180이고, 30 × 3 × 4 / 2 = 180으로 같아요.</li>
-      <li>빅오: 계수 15와 낮은 차수 항 $15n$을 떼면 최고차항은 $n^2$이라서 $O(n^2)$예요.</li>
-      <li>수업과의 연결: 0917 수업에서 factorial_iter를 $O(n)$으로 읽을 때처럼, 연산 수를 센 뒤 계수와 꼬랑지를 떼고 최고차항의 차수만 남겨요($2n+1 = O(n)$과 같은 방식).</li>
-    </ol>
-    <p class="answer">정답: T(n) = 30n(n+1)/2 = 15n^2 + 15n, O(n^2)</p>
-  </details>
-</article>
-<article class="card" id="p3" data-source="2018-mid-c024-q15">
-  <h3>P3. 최대 공약수 gcd를 순환 함수로</h3>
+<div class="hero"><h1>복습문제 6선 — 0917 수업 범위</h1><p>핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.</p></div>
+<section id="partA"><h2>A. 검토한 기출·교과서 문제</h2>
+<article class="card" id="p1" data-source="2018-mid-c024-q15">
+  <h3>P1. 최대 공약수 gcd를 순환 함수로</h3>
   <div class="problem">
     <p>임의의 두 양의 정수의 최대 공약수를 구해주는 gcd를 순환 함수로 구현해 보세요. 두 양의 정수는 main 함수에서 입력받아요.</p>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
@@ -516,35 +430,9 @@ int gcd(int i, int j){
     <p class="answer">정답: <code>if ( j == 0 ) return i; else return gcd( j, i%j );</code>  (48 18 → gcd:6)</p>
   </details>
 </article>
-<article class="card" id="p4" data-source="2018-mid-c102-q1">
-  <h3>P4. 자기 자신을 다시 부르는 기법</h3>
-  <div class="problem">
-    <p>빈칸에 알맞은 말을 써 보세요.</p>
-    <p>함수가 수행 도중에 자기 자신을 다시 호출하여 문제를 해결하는 기법을 (&nbsp;&nbsp;) 이라고 한다.</p>
-  </div>
-  <details class="original"><summary>기출 원문 보기</summary>
-    <p>2018 중간 1번 · 2점 · 출제자 미상</p>
-    <blockquote>
-      <p>"1. 함수가 수행 도중에 자기 자신을 다시 호출하여 문제를 해결하는 기법을 (&nbsp;&nbsp;) 이라고 한다. [2 points]"</p>
-    </blockquote>
-  </details>
-  <details class="hint"><summary>힌트 보기</summary>
-    <p>factorial 함수가 안에서 factorial(n-1)을 부르던 모습을 떠올려 보세요. 영어로는 recursion이에요.</p>
-  </details>
-  <details class="solution"><summary>풀이 보기</summary>
-    <ol class="steps">
-      <li>재귀 팩토리얼은 <code>else return (n * factorial(n-1) );</code>처럼 수행 도중에 자기 자신을 다시 불러요.</li>
-      <li>factorial(5) → factorial(4) → factorial(3) → factorial(2) → factorial(1)로 불리고, 1을 돌려받으면 되돌아오며 120이 돼요.</li>
-      <li>이렇게 자기 자신을 다시 호출해 문제를 푸는 기법을 순환(recursion)이라고 해요. 재귀라고도 불러요.</li>
-      <li>for나 while로 되풀이하는 반복(iteration)과 짝을 이루는 말이에요.</li>
-      <li>수업과의 연결: 0917 수업의 민국이 쌍둥이 비유와 같아요. 한 번 부른 민국이가 복제되어 다음 민국이에게 묻고, 종결 조건을 만나면 답이 거꾸로 올라와요.</li>
-    </ol>
-    <p class="answer">정답: 순환</p>
-  </details>
-</article>
-<article class="card" id="p5" data-source="2017-mid-c050-q11">
-  <h3>P5. 십진수를 이진수로 찍는 순환 함수</h3>
-  <div class="problem">
+<article class="card" id="p2" data-source="2017-mid-c050-q11">
+  <h3>P2. 십진수를 이진수로 찍는 순환 함수</h3>
+  <div class="problem"><p>풀이 조건: 입력은 0 이상의 int예요. 0도 한 자리 0으로 출력하세요. 음수 표기 방식은 이번 문제 범위에서 제외해요.</p>
     <p>다음 코드에서 순환 함수 dec_to_bin을 구현해 보세요. (예: 십진수 입력:10 , 1010 )</p>
 <pre><code class="language-c">#include &lt;stdio.h&gt;
 
@@ -589,193 +477,12 @@ void dec_to_bin(int n){
   <details class="hint"><summary>힌트 보기</summary>
     <p>n % 2는 이진수의 맨 끝 자리, n / 2는 그 앞자리들이에요. 앞자리를 먼저 찍게 하려면 printf를 순환 호출보다 뒤에 두어 보세요.</p>
   </details>
-  <details class="solution"><summary>풀이 보기</summary>
-    <ol class="steps">
-      <li>멈추는 부분: n이 0이면 더 찍을 자리가 없으니 돌아가요. <code>if (n == 0) return;</code></li>
-      <li>순환 호출하는 부분: 앞자리들(n / 2)을 먼저 찍고, 그다음 끝자리(n % 2)를 찍어요. <code>dec_to_bin(n / 2);</code> 다음에 <code>printf("%d", n % 2);</code></li>
-      <li>10을 넣어 따라가 볼게요. 내려갈 때 쌓이는 호출: dec_to_bin(10) → dec_to_bin(5) → dec_to_bin(2) → dec_to_bin(1) → dec_to_bin(0)</li>
-      <li>dec_to_bin(0): n == 0이라 아무것도 찍지 않고 돌아가요. 출력: (없음)</li>
-      <li>dec_to_bin(1)로 돌아옴: 1 % 2 = 1을 찍어요. 출력: 1</li>
-      <li>dec_to_bin(2)로 돌아옴: 2 % 2 = 0을 찍어요. 출력: 10</li>
-      <li>dec_to_bin(5)로 돌아옴: 5 % 2 = 1을 찍어요. 출력: 101</li>
-      <li>dec_to_bin(10)으로 돌아옴: 10 % 2 = 0을 찍어요. 출력: 1010</li>
-      <li>완성한 함수예요.
-<pre><code class="language-c">void dec_to_bin(int n){
-    if (n == 0) return;
-    else{
-        dec_to_bin(n / 2);
-        printf("%d", n % 2);
-    }
-}</code></pre></li>
-      <li>수업과의 연결: 0917 수업의 책 더미(내부 스택)와 같아요. 나머지 0, 1, 0, 1이 쌓였다가 위에서부터 빠져나오며 거꾸로 찍혀요. 인자는 n/2로 줄어 종결 조건 0으로 수렴해요.</li>
-    </ol>
-    <p class="answer">정답: <code>if (n == 0) return; else { dec_to_bin(n / 2); printf("%d", n % 2); }</code>  (10 → 1010)</p>
-  </details>
+  <details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>앞자리 n/2를 먼저 출력하고 마지막 자리 n%2를 뒤에 출력해요.</li><li>n이 0 또는 1이면 더 호출하지 않고 그 숫자를 출력해요. 이 조건은 0 입력도 처리해요.</li><li>10→5→2→1로 호출하고 1,0,1,0을 차례로 출력해요.</li></ol><pre><code class="language-c">void dec_to_bin(int n) {
+    if(n &gt;= 2) dec_to_bin(n/2);
+    printf("%d",n%2);
+}</code></pre><p class="answer">정답: n&gt;=2일 때 dec_to_bin(n/2)를 먼저 호출한 뒤 n%2를 출력. 10→1010, 0→0.</p><p>n==0이면 바로 return하는 구현은 양수 예시는 통과하지만 0 입력에는 아무것도 출력하지 않아요.</p></details>
 </article>
-<article class="card" id="p6" data-source="unk-final-ltk-q1">
-  <h3>P6. 네 겹 for 루프의 T(n)과 빅오</h3>
-  <div class="problem">
-    <p>다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 쓰고, 빅오 표기법으로도 써 보세요. 시간 복잡도를 구할 때는 <code>buffer[i][j] = 0;</code>의 대입 연산만 고려해요.</p>
-<pre><code class="language-c">int i, j, p, k, n;
-for(i=1; i&lt;n; i++){
-  for(j=1; j&lt;n; j++){
-    for(p=1; j&lt;=i; j++){
-      for(k=1; k&lt;30; k++){
-        buffer[i][j] = 1;
-      }
-    }
-  }
-}</code></pre>
-    <p>아래와 같이 쓰고 답을 작성해요.<br>T(n) =<br>빅오 표기법:</p>
-  </div>
-  <details class="original"><summary>기출 원문 보기</summary>
-    <p>기말 1번 · 4점 · 이태권</p>
-    <blockquote>
-      <p>"다음의 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 쓰시오. 또한 빅오 표기법으로 쓰시오.<br>( 시간 복잡도를 구할 때 buffer[i][j] = 0; 의 대입 연산만 고려함. ) [4 점]<br>.</p>
-<pre><code class="language-c">int i, j, p, k, n;
-for(i=1; i&lt;n; i++){
-  for(j=1; j&lt;n; j++){
-    for(p=1; j&lt;=i; j++){
-      for(k=1; k&lt;30; k++){
-        buffer[i][j] = 1;
-      }
-    }
-  }
-}</code></pre>
-      <p>(중략)"</p>
-    </blockquote>
-  </details>
-  <details class="hint"><summary>힌트 보기</summary>
-    <p>셋째 루프를 글자 그대로 읽어 보세요. p가 아니라 j를 올리고, 조건도 <code>j&lt;=i</code>예요. i 하나를 정해 두고 j가 어떻게 움직이는지 따라가 보세요.</p>
-  </details>
-  <details class="solution"><summary>풀이 보기</summary>
-    <ol class="steps">
-      <li>문제 글은 <code>buffer[i][j] = 0;</code>이라고 했지만 코드의 대입은 <code>buffer[i][j] = 1;</code>이에요. 코드 속 이 대입 한 줄을 세면 돼요.</li>
-      <li>넷째 루프: k = 1, 2, …, 29라서 대입이 29번이에요. k&lt;30이니 30번이 아니에요.</li>
-      <li>셋째 루프 <code>for(p=1; j&lt;=i; j++)</code>는 p를 1로 둘 뿐, 조건과 증가는 j에 걸려 있어요. 그래서 j가 i보다 커질 때까지 j를 올리며 돌아요.</li>
-      <li>i 하나를 정하면: 둘째 루프가 j=1로 들어와요 → 셋째 루프가 j = 1, 2, …, i로 i번 돌아요 → 이때 대입은 29·i번이에요.</li>
-      <li>셋째 루프가 끝나면 j = i+1이고, 둘째 루프의 j++로 j = i+2가 돼요. 이 뒤로는 j&lt;=i가 늘 거짓이라 셋째 루프에 다시 들어가지 않아요. 그래서 i마다 대입은 29·i번뿐이에요.</li>
-      <li>i = 1, 2, …, n-1을 더하면 $29(1 + 2 + \cdots + (n-1)) = \frac{29n(n-1)}{2}$예요. 곧 T(n) = 29n(n-1)/2예요.</li>
-      <li>확인: n = 4이면 i = 1, 2, 3에서 29 + 58 + 87 = 174이고, 29 × 4 × 3 / 2 = 174로 같아요.</li>
-      <li>빅오: 네 겹 루프처럼 보여도 실제로는 $\frac{29}{2}n^2 - \frac{29}{2}n$이라서 최고차항의 차수만 남기면 $O(n^2)$예요.</li>
-      <li>수업과의 연결: 0917 수업에서 power가 return 한 줄이라 $O(1)$처럼 보여도 안을 들여다봐야 $O(\log n)$이 보였듯, 루프 겹 수가 아니라 실제로 도는 횟수를 세야 해요. 계수와 꼬랑지를 떼는 건 factorial_iter의 $2n+1 = O(n)$과 같아요.</li>
-    </ol>
-    <p class="answer">정답: T(n) = 29n(n-1)/2, O(n^2)</p>
-  </details>
-</article>
-    </section>
-    <section id="partC"><h2>C. 기출 변형</h2>
-<article class="card" id="p7" data-source="2018-mid-c024-q8">
-  <h3>P7. 세 겹 for 루프의 T(n)과 빅오 (변형)</h3>
-  <div class="problem">
-    <p>다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 나타내고, 빅오 표기법으로 표시해 보세요. 시간 복잡도를 구할 때는 <code>buffer[i][j] = 0;</code>의 대입 연산만 고려해요.</p>
-<pre><code class="language-c">int i, j, k;
-for(i=0; i&lt;n; i++){
-    for(j=i; j&lt;n; j++){
-        for(k=0; k&lt;20; k++){
-            buffer[i][j] = 0;
-        }
-    }
-}</code></pre>
-    <p>답: T(n) =<br>빅오 표기법:</p>
-  </div>
-  <details class="original"><summary>기출 원문 보기</summary>
-    <p>2018 중간 8번 · 2점 · 출제자 미상</p>
-    <p>원문은 <code>k&lt;30</code>이고, 이 카드는 <code>k&lt;20</code>으로 바꿨어요.</p>
-    <blockquote>
-      <p>"다음의 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 나타내고 빅오 표기법으로 표시하시오. ( 시간 복잡도를 구할 때 buffer[i][j] = 0; 의 대입 연산만 고려 ) [2 points].</p>
-<pre><code class="language-c">int i, j, k;
-for(i=0; i&lt;n; i++){
-    for(j=i; j&lt;n; j++){
-        for(k=0; k&lt;30; k++){
-            buffer[i][j] = 0;
-        }
-    }
-}</code></pre>
-      <p>답: T(n) =<br>빅오 표기법:"</p>
-    </blockquote>
-  </details>
-  <details class="hint"><summary>힌트 보기</summary>
-    <p>가장 안쪽 루프는 i, j와 상관없이 늘 같은 횟수만큼 돌아요. 가운데 루프가 i마다 몇 번 도는지 세어 더해 보세요.</p>
-  </details>
-  <details class="solution"><summary>풀이 보기</summary>
-    <ol class="steps">
-      <li>가장 안쪽 루프: k = 0, 1, …, 19라서 대입이 20번 일어나요.</li>
-      <li>가운데 루프: j가 i부터 n-1까지 돌아서 $n-i$번 돌아요.</li>
-      <li>바깥 루프: i = 0, 1, …, n-1이에요. 가운데 루프 횟수는 n, n-1, …, 1이 돼요.</li>
-      <li>모두 더하면 $n + (n-1) + \cdots + 1 = \frac{n(n+1)}{2}$번이에요.</li>
-      <li>각각 20번씩 대입하니 T(n) = 20n(n+1)/2, 곧 $T(n) = \frac{20n(n+1)}{2} = 10n^2 + 10n$이에요.</li>
-      <li>확인: n = 3이면 20 × (3 + 2 + 1) = 120이고, 20 × 3 × 4 / 2 = 120으로 같아요.</li>
-      <li>빅오: 계수 10과 낮은 차수 항 $10n$을 떼면 최고차항은 $n^2$이라서 $O(n^2)$예요. 안쪽 횟수 20은 계수에만 들어가서 빅오를 바꾸지 않아요.</li>
-      <li>수업과의 연결: 0917 수업에서 factorial_iter를 $O(n)$으로 읽을 때처럼, 연산 수를 센 뒤 계수와 꼬랑지를 떼고 최고차항의 차수만 남겨요($2n+1 = O(n)$과 같은 방식).</li>
-    </ol>
-    <p class="answer">정답: T(n) = 20n(n+1)/2 = 10n^2 + 10n, O(n^2)</p>
-  </details>
-</article>
-<article class="card" id="p8" data-source="unk-final-ltk-q1">
-  <h3>P8. 네 겹 for 루프의 T(n)과 빅오 (변형)</h3>
-  <div class="problem">
-    <p>다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 쓰고, 빅오 표기법으로도 써 보세요. 시간 복잡도를 구할 때는 <code>buffer[i][j] = 0;</code>의 대입 연산만 고려해요.</p>
-<pre><code class="language-c">int i, j, p, k, n;
-for(i=1; i&lt;n; i++){
-  for(j=1; j&lt;n; j++){
-    for(p=1; j&lt;=i; j++){
-      for(k=1; k&lt;10; k++){
-        buffer[i][j] = 1;
-      }
-    }
-  }
-}</code></pre>
-    <p>아래와 같이 쓰고 답을 작성해요.<br>T(n) =<br>빅오 표기법:</p>
-  </div>
-  <details class="original"><summary>기출 원문 보기</summary>
-    <p>기말 1번 · 4점 · 이태권</p>
-    <p>원문은 <code>k&lt;30</code>이고, 이 카드는 <code>k&lt;10</code>으로 바꿨어요.</p>
-    <blockquote>
-      <p>"다음의 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 쓰시오. 또한 빅오 표기법으로 쓰시오.<br>( 시간 복잡도를 구할 때 buffer[i][j] = 0; 의 대입 연산만 고려함. ) [4 점]<br>.</p>
-<pre><code class="language-c">int i, j, p, k, n;
-for(i=1; i&lt;n; i++){
-  for(j=1; j&lt;n; j++){
-    for(p=1; j&lt;=i; j++){
-      for(k=1; k&lt;30; k++){
-        buffer[i][j] = 1;
-      }
-    }
-  }
-}</code></pre>
-      <p>(중략)"</p>
-    </blockquote>
-  </details>
-  <details class="hint"><summary>힌트 보기</summary>
-    <p>셋째 루프를 글자 그대로 읽어 보세요. p가 아니라 j를 올리고, 조건도 <code>j&lt;=i</code>예요. i 하나를 정해 두고 j가 어떻게 움직이는지 따라가 보세요.</p>
-  </details>
-  <details class="solution"><summary>풀이 보기</summary>
-    <ol class="steps">
-      <li>문제 글은 <code>buffer[i][j] = 0;</code>이라고 했지만 코드의 대입은 <code>buffer[i][j] = 1;</code>이에요. 코드 속 이 대입 한 줄을 세면 돼요.</li>
-      <li>넷째 루프: k = 1, 2, …, 9라서 대입이 9번이에요. k&lt;10이니 10번이 아니에요.</li>
-      <li>셋째 루프 <code>for(p=1; j&lt;=i; j++)</code>는 p를 1로 둘 뿐, 조건과 증가는 j에 걸려 있어요. 그래서 j가 i보다 커질 때까지 j를 올리며 돌아요.</li>
-      <li>i 하나를 정하면: 둘째 루프가 j=1로 들어와요 → 셋째 루프가 j = 1, 2, …, i로 i번 돌아요 → 이때 대입은 9·i번이에요.</li>
-      <li>셋째 루프가 끝나면 j = i+1이고, 둘째 루프의 j++로 j = i+2가 돼요. 이 뒤로는 j&lt;=i가 늘 거짓이라 셋째 루프에 다시 들어가지 않아요. 그래서 i마다 대입은 9·i번뿐이에요.</li>
-      <li>i = 1, 2, …, n-1을 더하면 $9(1 + 2 + \cdots + (n-1)) = \frac{9n(n-1)}{2}$예요. 곧 T(n) = 9n(n-1)/2예요.</li>
-      <li>확인: n = 4이면 i = 1, 2, 3에서 9 + 18 + 27 = 54이고, 9 × 4 × 3 / 2 = 54로 같아요.</li>
-      <li>빅오: 네 겹 루프처럼 보여도 실제로는 $\frac{9}{2}n^2 - \frac{9}{2}n$이라서 최고차항의 차수만 남기면 $O(n^2)$예요.</li>
-      <li>수업과의 연결: 0917 수업에서 power가 return 한 줄이라 $O(1)$처럼 보여도 안을 들여다봐야 $O(\log n)$이 보였듯, 루프 겹 수가 아니라 실제로 도는 횟수를 세야 해요. 계수와 꼬랑지를 떼는 건 factorial_iter의 $2n+1 = O(n)$과 같아요.</li>
-    </ol>
-    <p class="answer">정답: T(n) = 9n(n-1)/2, O(n^2)</p>
-  </details>
-</article>
-    </section>
-  <section id="partD"><h2>D. 교과서 연습문제</h2>
-<article class="card" id="p9" data-source="textbook-ch02-q06" data-source-kind="textbook"><h3>P9. 바닥 조건이 없는 재귀</h3><div class="problem"><p>다음의 순환호출 함수에서 잘못된 점은 무엇인가?</p><pre><code>int recursive(int n)
-{
-    printf(&quot;recursive(%d)\n&quot;, n);
-    return n*recursive(n-1);
-}</code></pre><div class="options"></div></div><details class="original"><summary>교과서 원문 보기</summary><p>2장 순환 · 06번 · 책 63쪽</p><p>다음의 순환호출 함수에서 잘못된 점은 무엇인가?</p><pre><code>int recursive(int n)
-{
-    printf(&quot;recursive(%d)\n&quot;, n);
-    return n*recursive(n-1);
-}</code></pre><div class="options"></div></details><details class="hint"><summary>힌트 보기</summary><p>n이 작아진다는 사실만으로 멈추는지 확인해 보세요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>n=5에서 5,4,3,2,1,0,-1,…로 계속 내려가요.</li><li>n이 작아져도 반환하는 바닥 조건이 없어요.</li><li>유한하게 끝날 조건을 먼저 검사해야 해요. 이 코드는 실행 결과를 정답처럼 제시할 수 없어요.</li><li>수업과의 연결: 0917 수업 정리노트의 “2. 순환 알고리즘의 두 조건” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><p class="answer">정답: 종료 조건이 없어 호출이 끝나지 않음</p></details></article>
-<article class="card" id="p10" data-source="textbook-ch02-q09" data-source-kind="textbook"><h3>P10. 3씩 줄어드는 호출</h3><div class="problem"><p>다음 함수를 recursive(10)로 호출하였을 때, 화면에 출력되는 내용과 함수의 반환값을 구하라.</p><pre><code>int recursive(int n)
+<article class="card" id="p3" data-source="textbook-ch02-q09" data-source-kind="textbook"><h3>P3. 3씩 줄어드는 호출</h3><div class="problem"><p>다음 함수를 recursive(10)로 호출하였을 때, 화면에 출력되는 내용과 함수의 반환값을 구하라.</p><pre><code>int recursive(int n)
 {
     printf(&quot;%d\n&quot;, n);
     if( n&lt;1) return -1;
@@ -786,11 +493,7 @@ for(i=1; i&lt;n; i++){
     if( n&lt;1) return -1;
     else return( recursive(n-3)+1 );
 }</code></pre><div class="options"></div></details><details class="hint"><summary>힌트 보기</summary><p>출력은 호출 직후, +1은 돌아올 때 실행돼요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>호출 인수와 출력은 10 → 7 → 4 → 1 → -2예요. 각각 별도 줄에 나와요.</li><li>-2는 n&lt;1이므로 -1을 반환해요.</li><li>돌아올 때 recursive(1)=0, recursive(4)=1, recursive(7)=2, recursive(10)=3이에요.</li><li>수업과의 연결: 0917 수업 정리노트의 “2. 순환 알고리즘의 두 조건” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><p class="answer">정답: 출력: 10 7 4 1 -2 / 반환값: 3</p></details></article>
-<article class="card" id="p11" data-source="textbook-ch02-q13" data-source-kind="textbook"><h3>P11. 순환으로 합 구하기</h3><div class="problem"><p>다음을 계산하는 순환적인 프로그램을 작성하시오.</p><p>1 + 2 + 3 + ... + n</p><div class="options"></div></div><details class="original"><summary>교과서 원문 보기</summary><p>2장 순환 · 13번 · 책 65쪽</p><p>다음을 계산하는 순환적인 프로그램을 작성하시오.</p><p>1 + 2 + 3 + ... + n</p><div class="options"></div></details><details class="hint"><summary>힌트 보기</summary><p>현재 n과 남은 1부터 n-1까지의 합으로 나눠 보세요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>입력은 양의 정수 n이고 결과가 int 범위에 들어오는 경우예요.</li><li>sum(1)=1을 바로 반환해요.</li><li>sum(4)=4+sum(3)=4+3+2+1=10이에요.</li><li>수업과의 연결: 0917 수업 정리노트의 “3. 순환 대 반복” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><pre><code class="language-c">int sum(int n) {
-    if (n &lt;= 1) return 1;
-    return n + sum(n - 1);
-}</code></pre><p class="answer">정답: n≤1이면 1, 아니면 n+sum(n-1)</p></details></article>
-<article class="card" id="p12" data-source="textbook-ch02-q16" data-source-kind="textbook"><h3>P12. 재귀 합을 반복문으로</h3><div class="problem"><p>다음의 순환적인 프로그램을 반복 구조를 사용한 비순환적 프로그램으로 바꾸시오.</p><pre><code>int sum(int n)
+<article class="card" id="p4" data-source="textbook-ch02-q16" data-source-kind="textbook"><h3>P4. 재귀 합을 반복문으로</h3><div class="problem"><p>다음의 순환적인 프로그램을 반복 구조를 사용한 비순환적 프로그램으로 바꾸시오.</p><pre><code>int sum(int n)
 {
     if(n == 1 ) return 1;
     else return (n + sum(n-1));
@@ -804,8 +507,44 @@ for(i=1; i&lt;n; i++){
     return total;
 }</code></pre><p class="answer">정답: total=0에서 1..n을 더해 반환</p></details></article>
 </section>
+<section id="partB"><h2>B. 강의 예제 코드</h2>
+<article class="card" id="p5" data-source="lecture-s02-p10-power" data-source-kind="lecture-code">
+<h3>P5. 거듭제곱: 홀수 분기와 호출 크기</h3>
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S2 p10</p><p>n≥0이고 중간 계산이 double 범위 안에 있다고 가정해요. 홀수 분기를 가리고 반환식을 다시 쓰세요. power(2,5)의 (x,n) 호출 순서와 최종 반환값을 적고, 한 번씩 x를 곱하는 slow_power와 시간복잡도를 비교하세요.</p><pre><code class="language-c">double power(double x, int n)
+{
+    if(n==0) return 1;
+    else if((n%2)==0) return power(x*x,n/2);
+    else return /* 빈칸 */;
+}</code></pre></div>
+<details class="original"><summary>강의 예제 보기</summary><p>S2 p10 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">double power(double x, int n)
+{
+    if(n==0) return 1;
+    else if((n%2)==0) return power(x*x,n/2);
+    else return x*power(x*x,(n-1)/2);
+}</code></pre></details>
+<details class="hint"><summary>힌트 보기</summary><p>홀수 n=2k+1이면 x^n=x×(x²)^k예요. 이 항등식에서 홀수 분기의 식이 나와요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>홀수 n=2k+1이면 x^n=x×(x²)^k예요. 이 항등식에서 홀수 분기의 식이 나와요.</li><li>(2,5)는 2×power(4,2)를 기다리고, (4,2)는 power(16,1)을 기다려요.</li><li>(16,1)은 16×power(256,0)을 기다려요. 마지막 호출이 1을 반환하면 16,16,32로 돌아와요.</li><li>지수가 매번 절반으로 줄어 호출 깊이가 로그로 늘어요. 한 번에 1씩 줄이는 반복 곱셈은 n번 수행해요.</li></ol><p class="answer">정답: 홀수 분기 x*power(x*x,(n-1)/2). 호출 (2,5)→(4,2)→(16,1)→(256,0), 반환 1→16→16→32. power는 O(log n), slow_power는 O(n)이다(n≥1).</p><p>짝수 분기를 power(x,n/2)로 쓰면 밑을 제곱하지 않아 원래 거듭제곱과 달라져요.</p></details>
+</article>
+<article class="card" id="p6" data-source="lecture-s02-p12-fibonacci" data-source-kind="lecture-code">
+<h3>P6. 피보나치의 중복 호출과 반복 상태</h3>
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S2 p12 · 추가 근거 p13,14</p><p>fib(6)의 값과 실행 중 fib(3)이 호출되는 횟수를 구하세요. 반복 구현에서 last=F(i-2), current=F(i-1)인 상태를 다음 단계로 갱신하려고 해요. tmp를 사용한 세 대입문을 쓰고, 왜 순환 구현에서 같은 부분 문제가 반복되는지 설명하세요.</p><pre><code class="language-c">int fib(int n)
+{
+    if(n==0) return 0;
+    if(n==1) return 1;
+    return fib(n-1)+fib(n-2);
+}</code></pre></div>
+<details class="original"><summary>강의 예제 보기</summary><p>S2 p12 · 추가 근거 p13,14 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">int fib(int n)
+{
+    if(n==0) return 0;
+    if(n==1) return 1;
+    return fib(n-1)+fib(n-2);
+}</code></pre></details>
+<details class="hint"><summary>힌트 보기</summary><p>F(0)=0,F(1)=1이고 두 앞 항을 더하므로 0,1,1,2,3,5,8을 얻어요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>F(0)=0,F(1)=1이고 두 앞 항을 더하므로 0,1,1,2,3,5,8을 얻어요.</li><li>fib(6)의 자식 fib(5),fib(4)를 나누어 그려요. fib(5) 쪽에서 fib(3)이 2번, fib(4) 쪽에서 1번 호출돼요.</li><li>반복에서는 이전 current를 tmp에 먼저 보관해요. current에 last를 더해 새 항을 만들고 last를 이전 current로 옮겨요.</li><li>last를 먼저 current로 바꿔 버리면 서로 다른 두 항의 합을 유지하지 못해요. 반복은 이미 구한 두 항을 재사용해요.</li></ol><p class="answer">정답: fib(6)=8, fib(3)은 3회. tmp=current; current+=last; last=tmp;. 두 자식 호출의 하위 호출이 겹치고 계산 결과를 저장하지 않기 때문이다.</p><p>값 F(3)=2와 fib(3)의 호출 횟수 3회를 혼동하지 마세요.</p></details>
+</article>
+</section>
 </main>
-  <footer>출처: 기존 기출 문제은행·교과서 연습문제 JSON. 추가 문항의 원문은 추출·검수본이며 풀이와 정답은 직접 작성·검증했습니다.</footer>
+  <footer>기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.</footer>
     </div>
     <aside class="panel panel-right" id="panel-right" aria-labelledby="panel-right-title">
       <div class="panel-resize" data-side="right" role="separator" aria-orientation="vertical" aria-controls="panel-right" aria-label="오른쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
@@ -1032,7 +771,7 @@ for(i=1; i&lt;n; i++){
 
       // ---------- 복습문제: 오른쪽 = 원문 · 힌트 · 풀이 ----------
       function setupReview() {
-        const KEY = 'od-review-solved:' + RANGE;
+        const KEY = 'od-review-solved:' + RANGE + ':' + document.body.dataset.revision;
         const cards = Array.from(document.querySelectorAll('main article.card'));
         const aids = panels.right.querySelector('.aids');
         const sub = document.getElementById('aid-for');

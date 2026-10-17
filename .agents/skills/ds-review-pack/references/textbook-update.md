@@ -11,3 +11,7 @@
 7. 1280×900·375×812, light/dark에서 모든 신규 카드·선택지·소문항·원문/힌트/풀이·TOC·pager·기존 링크를 검사한다. `복습노트/<range>/.pack/자료_복습팩/{manifest.json,selection.json,answers.py,validation.json}`과 보고서를 만든다. 미실행 검증은 pass로 쓰지 않는다.
 8. 모든 검증 통과 후 `publish_update({target: bytes,...}, backup=새_백업_경로)`로 발행한다. 백업 후 대상이 바뀌면 중단, 저장 실패면 원래 bytes로 rollback한다. 재실행 동일성과 최종 경로 검사를 확인한다. 발행된 최종 리뷰 HTML의 정확한 절대 경로로 `problem-explain.md`의 공통 절차를 실행하여 기존·추가 문항 전체를 설명한다. 날짜 선택이나 update-existing 재호출은 하지 않는다. 같은 최종 리뷰 절대 경로로 `pdf-build.md`의 PDF 절차도 실행한다. PDF와 문제설명은 각각 검증·발행한다.
 9. 날짜별 기존/추가/총합, 부족 이유, 제외 후보, 검산·브라우저 결과, 보존·백업 경로와 문제설명 발행/보류·HTML/MD·검토·RUN·백업 경로를 보고한다. 설명 실패 시 검증된 리뷰를 유지하고 “복습팩 생성됨 / 문제설명 보류”와 이유를 적는다. PDF 두 경로·페이지·PDF_RUN·검증·백업 및 withheld/stale/skipped 이유도 보고한다. PDF 실패는 다른 산출물을 삭제하지 않는다. 커밋·푸시는 제안만 한다.
+
+## 강의 예제·전역 검토 연동
+
+신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 최종 전체 날짜 audit를 통과한 정확한 최종 HTML 경로만 설명·PDF 입력으로 사용한다. update-existing의 기존 카드 보존 계약은 유지한다.

@@ -207,7 +207,7 @@ def select(bank: dict, range_ch: set[int], taught: set[int], used=frozenset(), *
     return out
 
 
-def check_manifest(bank: dict, manifest: dict, *, textbook=None) -> list[str]:
+def check_manifest(bank: dict, manifest: dict, *, textbook=None, repo: Path | None = None) -> list[str]:
     """manifest problems의 source가 쓸 수 있는 은행 문항인지. 변형(variant)은 같은 문항을 다시 써도 된다."""
     items = manifest.get("problems") if isinstance(manifest, dict) else None
     if not isinstance(items, list):
@@ -220,8 +220,14 @@ def check_manifest(bank: dict, manifest: dict, *, textbook=None) -> list[str]:
         where = f"problems[{i}].source"
         src = p.get("source") if isinstance(p, dict) else None
         kind = p.get("source_kind", "past-exam") if isinstance(p, dict) else None
-        if kind not in {"past-exam", "textbook"} or (isinstance(src,str) and src.startswith("textbook-")) != (kind == "textbook"):
+        if kind not in {"past-exam", "textbook", "lecture-code"} or (isinstance(src,str) and src.startswith("textbook-")) != (kind == "textbook"):
             errors.append(f"{where}: source_kind와 ID 불일치")
+            continue
+        if kind == "lecture-code":
+            from lecture_sources import validate_lecture_source
+            errors.extend(validate_lecture_source(repo, p, manifest.get("sessions", [])) if repo else ["lecture-code requires --repo"])
+            if src in originals: errors.append(f"{where}: same source reused: {src}")
+            originals.add(src)
             continue
         if kind == "textbook":
             from textbook import eligible
@@ -242,10 +248,9 @@ def check_manifest(bank: dict, manifest: dict, *, textbook=None) -> list[str]:
             errors.append(f"{where}: 중복 문항이므로 원 문항 {q['duplicate_of']}을 써야 함")
         if not sources[q["source"]]["reviewed"]:
             errors.append(f"{where}: 검수 전 원본의 문항: {src}")
-        if not p.get("variant"):
-            if src in originals:
-                errors.append(f"{where}: 같은 문항이 두 번: {src}")
-            originals.add(src)
+        if src in originals:
+            errors.append(f"{where}: 같은 문항이 두 번: {src}")
+        originals.add(src)
     return errors
 
 
@@ -262,6 +267,7 @@ def main(argv: list[str] | None = None) -> int:
     cp = sub.add_parser("check-manifest")
     cp.add_argument("bank")
     cp.add_argument("manifest")
+    cp.add_argument("--repo")
     for parser in (sp, cp):
         parser.add_argument("--textbook-dir")
         parser.add_argument("--textbook-python", default=sys.executable)
@@ -286,7 +292,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"후보 {len(rows)}개", file=sys.stderr)
             return 0
         manifest = json.loads(Path(a.manifest).read_text(encoding="utf-8"))
-        errors = check_manifest(bank, manifest, textbook=catalog)
+        errors = check_manifest(bank, manifest, textbook=catalog, repo=Path(a.repo) if a.repo else None)
     except (BankError, OSError, json.JSONDecodeError) as e:
         print(e, file=sys.stderr)
         return 1

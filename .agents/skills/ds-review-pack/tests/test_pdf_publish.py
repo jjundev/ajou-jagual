@@ -51,11 +51,11 @@ class PublishTests(unittest.TestCase):
   with self.assertRaises(PdfError):pdf_publish.publish_stage(self.run,self.repo)
 
  def test_lock_contention(self):
-  import fcntl,hashlib
+  import hashlib
   src,_=self.stage();self.approve()
   lock=Path(tempfile.gettempdir())/'ds-pdf-locks'/(hashlib.sha256(str(src.parent.resolve()).encode()).hexdigest()+'.lock');lock.parent.mkdir(exist_ok=True)
-  with lock.open('a') as handle:
-   fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
+  with lock.open('a+') as handle:
+   pdf_publish.lock_handle(handle)
    with self.assertRaisesRegex(PdfError,'lock busy'):pdf_publish.publish_stage(self.run,self.repo)
 
  def test_direct_publish_rejects_peer_review(self):

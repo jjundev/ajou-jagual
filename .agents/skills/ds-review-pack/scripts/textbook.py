@@ -4,6 +4,10 @@ from pathlib import Path
 import json
 import subprocess
 import unicodedata
+import hashlib
+import shutil
+import tempfile
+from contextlib import contextmanager
 from bank import BankError
 
 @dataclass
@@ -35,11 +39,34 @@ def resolve_package(path: Path) -> Path:
         raise BankError(f'교과서 폴더 없음: {path}')
     return current.resolve()
 
+@contextmanager
+def validation_package(package):
+    """Validate an exact LF checkout in scratch, never rewrite protected sources.
+
+    Only declared SVGs whose CRLF→LF bytes match their pinned SHA qualify.
+    Any other mutation reaches the original strict validator unchanged.
+    """
+    fixes=[]
+    for file in package.glob('*.json'):
+        for asset in json.loads(file.read_text(encoding='utf-8')).get('assets',[]):
+            path=(package/asset['path']).resolve()
+            if not path.is_relative_to(package.resolve()) or not path.is_file():continue
+            raw=path.read_bytes();canonical=raw.replace(b'\r\n',b'\n')
+            if raw!=canonical and path.suffix=='.svg' and hashlib.sha256(canonical).hexdigest()==asset['sha256']:
+                fixes.append((path.relative_to(package),canonical))
+    if not fixes:
+        yield package;return
+    with tempfile.TemporaryDirectory(prefix='ds-textbook-lf-') as directory:
+        copy=Path(directory)/'package';shutil.copytree(package,copy)
+        for relative,data in fixes:(copy/relative).write_bytes(data)
+        yield copy
+
 def load_textbook(package: Path, *, python: str) -> TextbookCatalog:
     package = resolve_package(package)
     validator = package/'제작자료/scripts/validate.py'
     try:
-        result = subprocess.run([python,str(validator),str(package),'--complete'],capture_output=True,text=True,timeout=120)
+        with validation_package(package) as checked:
+            result = subprocess.run([python,str(checked/'제작자료/scripts/validate.py'),str(checked),'--complete'],capture_output=True,text=True,timeout=120)
     except (OSError,subprocess.SubprocessError) as e:
         raise BankError(f'교과서 검증 실행 실패 ({python}; PyMuPDF/jsonschema 필요): {e}') from e
     if result.returncode:

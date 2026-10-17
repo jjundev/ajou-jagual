@@ -1,232 +1,800 @@
 {
-  "range": "1015",
-  "mode": "new",
-  "taught_evidence": [
-    {
-      "path": "STT/1015 자구알.md",
-      "locator": "Part 01–05",
-      "scope": "S6 p5–22"
-    }
-  ],
-  "concept_overrides": {},
+  "mode": "revision",
+  "policy_version": "review-questions-2026-10-17",
   "selected": [
     {
       "id": "p1",
-      "source": "2019-mid-q7",
-      "source_kind": "past-exam",
-      "original_id": "2019-mid-q7",
-      "prerequisites": [
-        "S6 p5–17",
-        "1칸 비우기 규약"
+      "part": "partA",
+      "source": "textbook-ch05-q08",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-index",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE"
       ],
+      "answer": "(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE",
+      "objectives": [
+        "retained-textbook-ch05-q08"
+      ],
+      "task_family": "textbook-ch05-q08",
+      "origin": "retained",
+      "old_id": "p6",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "c2666804a23cac991ffefc5d2c23efeffe815ae252ceefa6c0caba2fda23ea75",
+        "independent_answer": "int get_count(const QueueType *q){ if(q->rear>=q->front) return q->rear-q->front; return MAX_QUEUE_SIZE-q->front+q->rear; }\nEquivalently, for ordinary small capacities: (q->rear-q->front+MAX_QUEUE_SIZE)%MAX_QUEUE_SIZE.",
+        "reasoning": "Count the forward cyclic index distance from the slot before the first item (front) to the last item (rear). If rear>=front the distance is their difference; otherwise it wraps across M and equals M-front+rear. The reserved slot makes front==rear uniquely empty and maximum count M-1. The branch version avoids an unnecessarily large intermediate sum in the modulo expression. O(1) time and auxiliary space.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "prerequisites": [],
       "evidence": [
         {
-          "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/from_the_past/기출/_전사/2019-mid.md",
-          "locator": "2019-mid-q7",
-          "sha256": "63d75acb6c15fd010bf5f2f701a071a7422eb0bb5de79202d236c6628e4a29c0"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1015/p1"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1015/p1"
         }
-      ],
-      "answer": "front=4, rear=2",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py",
-        "result": "pass"
-      }
+      ]
     },
     {
       "id": "p2",
-      "source": "2017-mid-c050-q7",
-      "source_kind": "past-exam",
-      "original_id": "2017-mid-c050-q7",
-      "prerequisites": [
-        "S6 p5–17",
-        "1칸 비우기 규약"
+      "part": "partA",
+      "source": "textbook-ch05-q09",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-buffer",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "FIFO"
       ],
+      "answer": "두 스택으로 FIFO를 구현할 수 있어요.",
+      "objectives": [
+        "retained-textbook-ch05-q09"
+      ],
+      "task_family": "textbook-ch05-q09",
+      "origin": "retained",
+      "old_id": "p7",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "42e47378201ccf871a7151c02f005a12b789074743ce7552b25a5e6a254486dc",
+        "independent_answer": "#include <stdio.h>\n#include <stdlib.h>\n#define M 100\ntypedef struct {int in[M],out[M];int ni,no;} Queue;\nvoid enqueue(Queue *q,int x){if(q->ni+q->no==M){fputs(\"overflow\\n\",stderr);exit(EXIT_FAILURE);}q->in[q->ni++]=x;}\nint dequeue(Queue *q){if(q->no==0)while(q->ni>0)q->out[q->no++]=q->in[--q->ni];if(q->no==0){fputs(\"underflow\\n\",stderr);exit(EXIT_FAILURE);}return q->out[--q->no];}\nint main(void){Queue q={0};enqueue(&q,10);enqueue(&q,20);printf(\"%d\\n\",dequeue(&q));enqueue(&q,30);printf(\"%d\\n\",dequeue(&q));printf(\"%d\\n\",dequeue(&q));return 0;}\nOutput: 10,20,30 on separate lines. Stack in receives arrivals, out supplies removals; transfer only when out is empty.",
+        "reasoning": "Reversing in makes its oldest item the top of out. Existing out items must be consumed before transferring later in arrivals, preserving FIFO. Each item is pushed/popped at most once per stack, so enqueue O(1), dequeue worst O(n), amortized O(1).",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "prerequisites": [],
       "evidence": [
         {
-          "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/from_the_past/기출/_전사/2017-mid-c050.md",
-          "locator": "2017-mid-c050-q7",
-          "sha256": "7196fdaf3968cfc43054ffda888405f1fd1f1a2a79fbccfc1cb18814e4c1c01c"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1015/p2"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1015/p2"
         }
-      ],
-      "answer": "(a) front=3, rear=5; (b) front=3, rear=1",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py",
-        "result": "pass"
-      }
+      ]
     },
     {
       "id": "p3",
-      "source": "textbook-ch05-q02",
+      "part": "partA",
+      "source": "textbook-ch05-q11",
       "source_kind": "textbook",
-      "original_id": "ch05-q02",
-      "prerequisites": [
-        "S6 p5–17",
-        "1칸 비우기 규약"
+      "variant": false,
+      "anchor": "s1-deque",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "회문"
       ],
+      "answer": "양 끝에서 꺼낸 문자가 모두 같으면 회문이에요.",
+      "objectives": [
+        "retained-textbook-ch05-q11"
+      ],
+      "task_family": "textbook-ch05-q11",
+      "origin": "retained",
+      "old_id": "p8",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "81dd341c36ff00eb9fc0927304d4c1a0a6fc225d23227fdcb13e95907e6532c7",
+        "independent_answer": "#include <stdio.h>\n#include <ctype.h>\nint main(void){unsigned char deque[4096];size_t front=0,rear=0;int c;while((c=getchar())!=EOF&&c!='\\n'){if(isalnum((unsigned char)c)){if(rear==sizeof deque)return 1;deque[rear++]=(unsigned char)tolower((unsigned char)c);}}while(rear-front>1){int left=deque[front++];int right=deque[--rear];if(left!=right){puts(\"회문 아님\");return 0;}}puts(\"회문\");return 0;}",
+        "reasoning": "Append normalized alphanumeric characters at one end, then repeatedly remove and compare the two ends. Punctuation and spaces never enter the deque; case folding makes A and a equal. An empty or one-character normalized deque is a palindrome. radar compares r/r then a/a and leaves d.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "prerequisites": [],
       "evidence": [
         {
-          "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/교과서/05_큐_연습문제.json",
-          "locator": "ch05-q02",
-          "sha256": "9c736952a6db6f56e69ddca54c8bcd1e6b77b974fb15a1ebeb918ca06d1b2bf2"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1015/p3"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1015/p3"
         }
-      ],
-      "answer": "(b) 2개",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py",
-        "result": "pass"
-      }
+      ]
     },
     {
       "id": "p4",
-      "source": "textbook-ch05-q04",
-      "source_kind": "textbook",
-      "original_id": "ch05-q04",
-      "prerequisites": [
-        "S6 p5–17",
-        "1칸 비우기 규약"
+      "part": "partB",
+      "source": "lecture-s06-p11-linked-queue",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-linked",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "연결 큐 그림에서 갱신 코드 만들기"
       ],
+      "answer": "enqueue: if(front==NULL) front=N; else rear->link=N; rear=N;. dequeue는 old=front; item=old->data; front=old->link; if(front==NULL) rear=NULL; free(old);. 빈 큐는 양 끝이 모두 NULL이어야 한다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 11,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "linked-queue",
+        "taught_on": "1015",
+        "extra_pages": []
+      },
+      "objectives": [
+        "linked-queue"
+      ],
+      "task_family": "linked-queue",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "a359fba66f2b8861a702e625fbac99214051217eda0b2ff5266c3853a175cd92",
+        "independent_answer": "if(q->front==NULL){q->front=N;q->rear=N;}else{q->rear->link=N;q->rear=N;} Dequeue: save old=q->front and its data; q->front=old->link; if(q->front==NULL)q->rear=NULL; free(old); return saved data.",
+        "reasoning": "Both front and rear identify the unique node after an enqueue into empty. Removing the unique node leaves neither valid endpoint. Resetting rear prevents a dangling pointer to freed storage and restores the empty-queue invariant front==rear==NULL.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "1015",
+        "ch": 6,
+        "page": 11,
+        "name": "linked-queue",
+        "anchor": "s1-linked",
+        "title": "연결 큐 그림에서 갱신 코드 만들기",
+        "code": "/* 강의 연결 큐 그림을 바탕으로 작성할 의사코드 */\nenqueue: 새 노드를 rear 뒤에 연결하고 rear를 갱신\ndequeue: front 노드의 값을 보관하고 front를 다음으로 이동",
+        "prompt": "강의 그림을 바탕으로 직접 코드를 작성하는 문제예요. 단순 연결 큐의 노드는 data,link를 가지며 빈 큐 front=rear=NULL이에요. 이미 할당·초기화한 새 노드 N의 link=NULL일 때 enqueue의 빈 경우·나머지 경우 대입문을 쓰세요. 유일한 노드를 dequeue한 뒤 rear도 NULL로 만들어야 하는 이유를 설명하세요.",
+        "answer": "enqueue: if(front==NULL) front=N; else rear->link=N; rear=N;. dequeue는 old=front; item=old->data; front=old->link; if(front==NULL) rear=NULL; free(old);. 빈 큐는 양 끝이 모두 NULL이어야 한다.",
+        "steps": [
+          "첫 노드를 넣을 때는 기존 rear가 없으므로 rear->link에 접근하지 않아요. front부터 N으로 정한 뒤 공통으로 rear=N을 실행해요.",
+          "기존 노드가 있으면 rear->link=N으로 이어 주고 rear=N으로 옮겨요.",
+          "삭제는 값을 보관하고 front를 이동한 다음 old를 해제해요. front가 NULL이면 마지막 노드였으므로 rear도 NULL로 바꿔 해제된 주소가 남지 않게 해요."
+        ],
+        "pitfall": "이 카드는 슬라이드의 연결 그림으로부터 코드를 작성하는 자체 출제예요. 원문에 없던 C 코드를 원문이라고 제시하지 않아요.",
+        "adaptation": "강의 연결 그림의 동작을 요약한 자체 의사코드이며 강의 원문 C 코드는 아닙니다."
+      },
+      "prerequisites": [],
       "evidence": [
         {
-          "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/교과서/05_큐_연습문제.json",
-          "locator": "ch05-q04",
-          "sha256": "9c736952a6db6f56e69ddca54c8bcd1e6b77b974fb15a1ebeb918ca06d1b2bf2"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1015/p4"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1015/p4"
         }
-      ],
-      "answer": "(c) front == rear",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py",
-        "result": "pass"
-      }
+      ]
     },
     {
       "id": "p5",
-      "source": "textbook-ch05-q07",
-      "source_kind": "textbook",
-      "original_id": "ch05-q07",
-      "prerequisites": [
-        "S6 p5–17",
-        "1칸 비우기 규약"
+      "part": "partB",
+      "source": "lecture-s06-p22-simulation",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-code",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "시뮬레이션의 if/else가 만드는 한 틱"
       ],
+      "answer": "clock1:1→0, 같은 틱에 else는 실행하지 않음. clock2:0→2이며 B 시작, 대기 2-1=1. clock3:2→1. else를 별도 if(service_time==0)로 바꾸면 clock1에 B를 바로 시작시켜 대기시간이 0이 된다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 22,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "simulation",
+        "taught_on": "1015",
+        "extra_pages": []
+      },
+      "objectives": [
+        "simulation"
+      ],
+      "task_family": "simulation",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "e943754886ecaad533052d2d58b8553386f87114ce18a2fce461d47c86996202",
+        "independent_answer": "Original if/else: clock1 1->0, B still waiting; clock2 0->2, B starts at clock2 with waiting time 1; clock3 2->1.\nAfter replacing else with an independent if(service_time==0): clock1 1->0->2, B starts at clock1 with waiting time 0; clock2 2->1; clock3 1->0->0, since remove_customer sees an empty queue and returns 0.",
+        "reasoning": "The original else is skipped whenever service_time was positive at the preceding if test, even if decrement makes it zero. The independent second if re-tests the updated value, allowing a waiting customer to start in the same clock iteration that completes the prior service. B requires two later decrements after being loaded with service_time=2.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "1015",
+        "ch": 6,
+        "page": 22,
+        "name": "simulation",
+        "anchor": "s2-code",
+        "title": "시뮬레이션의 if/else가 만드는 한 틱",
+        "code": "if(is_customer_arrived()) insert_customer(clock);\nif(service_time>0) service_time--;\nelse service_time=remove_customer();",
+        "prompt": "강의 루프의 일부예요. clock=1에서 처리 직전 service_time=1이고 B가 방금 도착해 기다려요. clock=2,3에는 새 도착이 없고 B의 서비스 시간은 2예요. remove_customer는 큐가 비면 0을 반환하고 꺼낼 때 대기시간을 기록한다고 가정해요. clock=1,2,3에서 service_time이 어떻게 바뀌고 B는 언제 시작하나요? else를 별도의 if(service_time==0)로 바꾸면 어떤 차이가 생기나요?",
+        "answer": "clock1:1→0, 같은 틱에 else는 실행하지 않음. clock2:0→2이며 B 시작, 대기 2-1=1. clock3:2→1. else를 별도 if(service_time==0)로 바꾸면 clock1에 B를 바로 시작시켜 대기시간이 0이 된다.",
+        "steps": [
+          "if 조건은 해당 분기로 들어갈 때 평가해요. 1을 0으로 줄였더라도 그 if에 연결된 else가 뒤이어 실행되지는 않아요.",
+          "다음 틱 clock=2에서 처음부터 service_time=0이므로 B를 꺼내요. 시작 시각-도착 시각=1이 대기시간이에요.",
+          "clock=3에서는 2를 1로 줄이기만 해요. 별도 if로 쓰면 같은 틱 안에 두 번째 조건을 새로 평가하므로 이벤트 순서가 달라져요."
+        ],
+        "pitfall": "강의 문장 설명과 실제 if/else 순서를 구별하세요. 서비스가 0이 된 직후 즉시 다음 고객을 꺼내는 코드가 아니에요."
+      },
+      "prerequisites": [],
       "evidence": [
         {
-          "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/교과서/05_큐_연습문제.json",
-          "locator": "ch05-q07",
-          "sha256": "9c736952a6db6f56e69ddca54c8bcd1e6b77b974fb15a1ebeb918ca06d1b2bf2"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1015/p5"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1015/p5"
         }
-      ],
-      "answer": "(a) O(1)",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py",
-        "result": "pass"
-      }
+      ]
     },
     {
       "id": "p6",
-      "source": "textbook-ch05-q08",
-      "source_kind": "textbook",
-      "original_id": "ch05-q08",
-      "prerequisites": [
-        "S6 p5–17",
-        "1칸 비우기 규약"
+      "part": "partB",
+      "source": "lecture-s06-p9-circular-queue",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-ops",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "원형 큐의 인덱스를 먼저 옮기기"
       ],
+      "answer": "dequeue: A, front=4,rear=1, [B,C]. enqueue(D): front=4,rear=2,[B,C,D]. enqueue(E): front=4,rear=3,[B,C,D,E], 포화. 유효 용량 M-1=4, (rear+1)%M==front가 포화식이다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 9,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "circular-queue",
+        "taught_on": "1015",
+        "extra_pages": []
+      },
+      "objectives": [
+        "circular-queue"
+      ],
+      "task_family": "circular-queue",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "238049e4dea4de1ae0a34a598bfc72869df5d508ffebb7bfe7777e87c16873c6",
+        "independent_answer": "dequeue returns A: front=4,rear=1, logical [B,C]. enqueue(D): no return value, front=4,rear=2, [B,C,D]. enqueue(E): no return, front=4,rear=3, [B,C,D,E], full. Usable capacity=M-1=4; full iff (rear+1)%M==front.",
+        "reasoning": "Advancing front consumes index4. Enqueues next fill indices2 and3. One physical slot stays unused to distinguish front==rear empty from full; final (3+1)%5=4 equals front.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "1015",
+        "ch": 6,
+        "page": 9,
+        "name": "circular-queue",
+        "anchor": "s0-ops",
+        "title": "원형 큐의 인덱스를 먼저 옮기기",
+        "code": "/* enqueue의 정상 경로 */\nq->rear=(q->rear+1)%MAX_QUEUE_SIZE;\nq->queue[q->rear]=item;\n/* dequeue의 정상 경로 */\nq->front=(q->front+1)%MAX_QUEUE_SIZE;\nreturn q->queue[q->front];",
+        "prompt": "크기 M=5, front=3,rear=1이며 유효 원소는 queue[4]=A,queue[0]=B,queue[1]=C예요. dequeue,enqueue(D),enqueue(E)의 반환값·front·rear·논리적 원소를 순서대로 쓰고 마지막 포화 여부를 판단하세요. 배열의 유효 용량과 포화식을 설명하세요.",
+        "answer": "dequeue: A, front=4,rear=1, [B,C]. enqueue(D): front=4,rear=2,[B,C,D]. enqueue(E): front=4,rear=3,[B,C,D,E], 포화. 유효 용량 M-1=4, (rear+1)%M==front가 포화식이다.",
+        "steps": [
+          "front는 첫 원소 바로 앞자리예요. 먼저 (3+1)%5=4로 옮기고 A를 꺼내요.",
+          "rear는 마지막 원소 자리예요. 1에서 2로 옮겨 D를 저장하고 3으로 옮겨 E를 저장해요.",
+          "마지막 rear의 다음 자리는 4로 front와 같아요. 한 칸을 비워 공백 front==rear와 포화를 구별해요."
+        ],
+        "pitfall": "front 자리의 값을 먼저 반환하면 이미 삭제한 자리나 빈자리를 읽어요."
+      },
+      "prerequisites": [],
       "evidence": [
         {
-          "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/교과서/05_큐_연습문제.json",
-          "locator": "ch05-q08",
-          "sha256": "9c736952a6db6f56e69ddca54c8bcd1e6b77b974fb15a1ebeb918ca06d1b2bf2"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1015/p6"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1015/p6"
         }
-      ],
-      "answer": "(rear - front + MAX_QUEUE_SIZE) % MAX_QUEUE_SIZE",
-      "verification": {
-        "method": "c-run",
-        "reference": "answers.py",
-        "result": "pass"
-      }
+      ]
     },
     {
       "id": "p7",
-      "source": "textbook-ch05-q09",
-      "source_kind": "textbook",
-      "original_id": "ch05-q09",
-      "prerequisites": [
-        "S6 p5–17",
-        "S5 스택 기본 연산"
+      "part": "partB",
+      "source": "lecture-s06-p16-deque-add",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-add",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "덱의 첫 삽입과 양 끝 포인터"
       ],
+      "answer": "첫 삽입 head=tail=A,A.llink=A.rlink=NULL. 두 번째 head=A,tail=B,A.rlink=B,B.llink=A,A.llink=B.rlink=NULL. create_node는 node->llink=left; node->data=item; node->rlink=right;. 빈 덱에서 head를 설정하지 않으면 첫 노드에 접근할 수 없다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 16,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "deque-add",
+        "taught_on": "1015",
+        "extra_pages": []
+      },
+      "objectives": [
+        "deque-add"
+      ],
+      "task_family": "deque-add",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "c1f63fda791bb5b6ca00ee5ab72694e65fadc61f17e79db425869e8eea0448ec",
+        "independent_answer": "After A: head=tail=A, A.llink=NULL,A.rlink=NULL. After B: head=A,tail=B; A.llink=NULL,A.rlink=B; B.llink=A,B.rlink=NULL. create_node fields: node->llink=left;node->data=item;node->rlink=right; return node.",
+        "reasoning": "An empty deque has no previous tail to patch and must establish both endpoint pointers. On the next insertion, the old tail links right to the new node and tail advances; new node already links left to the old tail and right to NULL.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "1015",
+        "ch": 6,
+        "page": 16,
+        "name": "deque-add",
+        "anchor": "s1-add",
+        "title": "덱의 첫 삽입과 양 끝 포인터",
+        "code": "void add_rear(DequeType *dq,element item)\n{\n    DlistNode *new_node=create_node(dq->tail,item,NULL);\n    if(is_empty(dq)) dq->head=new_node;\n    else dq->tail->rlink=new_node;\n    dq->tail=new_node;\n}",
+        "prompt": "create_node(left,item,right)는 새 노드의 llink,data,rlink를 각각 설정하며 할당 실패는 종료한다고 가정해요. 빈 덱 head=tail=NULL에 A를 넣고 이어 B를 넣은 뒤 모든 포인터를 쓰세요. 비어 있을 때 head도 바꾸는 이유와 create_node의 세 필드 대입문을 쓰세요.",
+        "answer": "첫 삽입 head=tail=A,A.llink=A.rlink=NULL. 두 번째 head=A,tail=B,A.rlink=B,B.llink=A,A.llink=B.rlink=NULL. create_node는 node->llink=left; node->data=item; node->rlink=right;. 빈 덱에서 head를 설정하지 않으면 첫 노드에 접근할 수 없다.",
+        "steps": [
+          "빈 덱에서는 새 노드가 첫 노드이자 마지막 노드예요. create_node(NULL,A,NULL)가 양 끝 NULL을 만들어요.",
+          "B를 넣을 때 create_node(A,B,NULL)이 B의 왼쪽을 A로 설정해요. 기존 tail=A의 오른쪽을 B로 연결하고 tail을 B로 옮겨요.",
+          "할당과 필드 초기화는 create_node의 책임이고 덱 전체의 head,tail 연결은 add_rear의 책임이에요. 두 책임을 합쳐 검산해요."
+        ],
+        "pitfall": "tail만 새 노드로 옮기면 이전 노드에서 새 노드로 가는 연결이 생기지 않아요."
+      },
+      "prerequisites": [],
       "evidence": [
         {
-          "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/교과서/05_큐_연습문제.json",
-          "locator": "ch05-q09",
-          "sha256": "9c736952a6db6f56e69ddca54c8bcd1e6b77b974fb15a1ebeb918ca06d1b2bf2"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1015/p7"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1015/p7"
         }
-      ],
-      "answer": "두 스택으로 FIFO를 구현할 수 있어요.",
-      "verification": {
-        "method": "c-run",
-        "reference": "answers.py",
-        "result": "pass"
-      }
+      ]
     },
     {
       "id": "p8",
-      "source": "textbook-ch05-q11",
-      "source_kind": "textbook",
-      "original_id": "ch05-q11",
-      "prerequisites": [
-        "S6 p5–17",
-        "C 문자열 순회"
+      "part": "partB",
+      "source": "lecture-s06-p17-deque-delete",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-delete",
+      "level": 3,
+      "date": "1015",
+      "terms": [
+        "덱에서 마지막 원소를 삭제할 때"
       ],
+      "answer": "첫 반환 A, head=tail=B,B.llink=NULL. 두 번째 반환 B, head=tail=NULL. 빈 덱의 양 끝은 모두 NULL이고 비어 있지 않은 덱의 head.llink는 NULL이다. 생략하면 tail이 해제된 노드를 가리키거나 새 head의 왼쪽이 해제된 노드를 가리킨다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 17,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "deque-delete",
+        "taught_on": "1015",
+        "extra_pages": []
+      },
+      "objectives": [
+        "deque-delete"
+      ],
+      "task_family": "deque-delete",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "16022db169eea07414d11565a415bec09ede18e336a17dc82e7acf8f37d6e15a",
+        "independent_answer": "First delete_front returns A: head=tail=B; B.llink=NULL,B.rlink=NULL; A freed. Second returns B: head=tail=NULL; B freed.",
+        "reasoning": "If new head is NULL, tail must also become NULL so empty endpoints agree and no dangling tail remains. Otherwise the new head left link must become NULL so it does not reference the removed node. Omitting the test and unconditionally dereferencing head crashes/causes UB on the final deletion; omitting updates leaves stale tail or dangling llink.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "1015",
+        "ch": 6,
+        "page": 17,
+        "name": "deque-delete",
+        "anchor": "s1-delete",
+        "title": "덱에서 마지막 원소를 삭제할 때",
+        "code": "element delete_front(DequeType *dq)\n{\n    element item; DlistNode *removed_node;\n    if(is_empty(dq)) error(\"공백 덱에서 삭제\");\n    else {\n        removed_node=dq->head;\n        item=removed_node->data;\n        dq->head=dq->head->rlink;\n        free(removed_node);\n        if(dq->head==NULL) dq->tail=NULL;\n        else dq->head->llink=NULL;\n    }\n    return item;\n}",
+        "prompt": "error는 종료해요. A↔B인 덱에서 delete_front를 두 번 실행한 뒤 반환값과 head,tail 상태를 쓰세요. 마지막 if/else 두 분기가 각각 지키는 불변식과 이 검사를 생략했을 때의 문제를 설명하세요.",
+        "answer": "첫 반환 A, head=tail=B,B.llink=NULL. 두 번째 반환 B, head=tail=NULL. 빈 덱의 양 끝은 모두 NULL이고 비어 있지 않은 덱의 head.llink는 NULL이다. 생략하면 tail이 해제된 노드를 가리키거나 새 head의 왼쪽이 해제된 노드를 가리킨다.",
+        "steps": [
+          "A의 값을 item에 보관한 다음 head를 B로 옮기고 A를 해제해요. B가 있으므로 B의 왼쪽을 NULL로 끊어요.",
+          "두 번째는 B의 오른쪽이 NULL이어서 head=NULL이 돼요. 이때 tail도 NULL로 만들어 빈 상태를 일치시켜요.",
+          "free 전에 값을 저장했으므로 반환은 유효해요. 남아 있는 포인터가 해제된 노드를 가리키지 않는지도 함께 검사해야 해요."
+        ],
+        "pitfall": "head=NULL인 경우 head->llink=NULL을 실행하면 NULL 역참조예요. 빈 경우와 남은 경우를 나눠야 해요."
+      },
+      "prerequisites": [],
       "evidence": [
         {
-          "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/교과서/05_큐_연습문제.json",
-          "locator": "ch05-q11",
-          "sha256": "9c736952a6db6f56e69ddca54c8bcd1e6b77b974fb15a1ebeb918ca06d1b2bf2"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1015/p8"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1015/p8"
         }
-      ],
-      "answer": "양 끝에서 꺼낸 문자가 모두 같으면 회문이에요.",
-      "verification": {
-        "method": "c-run",
-        "reference": "answers.py",
-        "result": "pass"
-      }
+      ]
     }
   ],
   "excluded": [
     {
-      "source": "2018-mid-c024-q10",
-      "reason": "원형 큐 연속 추적이 기출 두 문항과 중복"
+      "old_id": "p1",
+      "old_source": "2019-mid-q7",
+      "old_content_sha256": "09c00de9b2cd6d7253d3f1d631c565b490508cd282f79099d74555b2dfe2e70b",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "unk-final-ltk-q2",
-      "reason": "포화 후 오류 처리 규약이 문제에 명시되지 않아 다의적"
+      "old_id": "p2",
+      "old_source": "2017-mid-c050-q7",
+      "old_content_sha256": "5fd7bbce9e5cbf7a98c19bd5fc2946df30519b78ca5b2dc00e0e8932a166c7b7",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch05-q01",
-      "reason": "1012 팩에서 이미 사용"
+      "old_id": "p3",
+      "old_source": "textbook-ch05-q02",
+      "old_content_sha256": "fff0f92594a3e459002395e807959204ce68455ccda915fdf24b8b41471da1eb",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch05-q03",
-      "reason": "1012 팩에서 이미 사용"
+      "old_id": "p4",
+      "old_source": "textbook-ch05-q04",
+      "old_content_sha256": "45ee87471ec96a36d644e654248c54cec04ae843f624d42633aaa5967795e728",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch05-q05",
-      "reason": "front/rear 추적 개념이 기출 두 문항과 중복"
-    },
-    {
-      "source": "textbook-ch05-q06",
-      "reason": "원형 큐 추적 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q10",
-      "reason": "원문 F(b)와 절차가 불명확"
-    },
-    {
-      "source": "textbook-ch05-q12",
-      "reason": "구체적인 스케줄링·동시 실행 모델 미학습"
+      "old_id": "p5",
+      "old_source": "textbook-ch05-q07",
+      "old_content_sha256": "9e8f15c7bc77a2170316f351dac42fa30aad23a7e77ebdbb30150e9232cafd6f",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p4",
+        "p5",
+        "p6",
+        "p7",
+        "p8"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     }
-  ]
+  ],
+  "coverage": [
+    {
+      "objective": "retained-textbook-ch05-q08",
+      "questions": [
+        "p1"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch05-q09",
+      "questions": [
+        "p2"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch05-q11",
+      "questions": [
+        "p3"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "linked-queue",
+      "questions": [
+        "p4"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 11,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "linked-queue",
+        "taught_on": "1015",
+        "extra_pages": []
+      }
+    },
+    {
+      "objective": "simulation",
+      "questions": [
+        "p5"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 22,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "simulation",
+        "taught_on": "1015",
+        "extra_pages": []
+      }
+    },
+    {
+      "objective": "circular-queue",
+      "questions": [
+        "p6"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 9,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "circular-queue",
+        "taught_on": "1015",
+        "extra_pages": []
+      }
+    },
+    {
+      "objective": "deque-add",
+      "questions": [
+        "p7"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 16,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "deque-add",
+        "taught_on": "1015",
+        "extra_pages": []
+      }
+    },
+    {
+      "objective": "deque-delete",
+      "questions": [
+        "p8"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
+        "pdf_page": 17,
+        "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f",
+        "example": "deque-delete",
+        "taught_on": "1015",
+        "extra_pages": []
+      }
+    }
+  ],
+  "replacements": [
+    {
+      "old_id": "p1",
+      "old_source": "2019-mid-q7",
+      "old_content_sha256": "09c00de9b2cd6d7253d3f1d631c565b490508cd282f79099d74555b2dfe2e70b",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p6"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1015/p6 (lecture-s06-p9-circular-queue)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1015",
+          "id": "p6",
+          "source": "lecture-s06-p9-circular-queue",
+          "content_sha256": "238049e4dea4de1ae0a34a598bfc72869df5d508ffebb7bfe7777e87c16873c6"
+        }
+      ]
+    },
+    {
+      "old_id": "p2",
+      "old_source": "2017-mid-c050-q7",
+      "old_content_sha256": "5fd7bbce9e5cbf7a98c19bd5fc2946df30519b78ca5b2dc00e0e8932a166c7b7",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p6"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1015/p6 (lecture-s06-p9-circular-queue)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1015",
+          "id": "p6",
+          "source": "lecture-s06-p9-circular-queue",
+          "content_sha256": "238049e4dea4de1ae0a34a598bfc72869df5d508ffebb7bfe7777e87c16873c6"
+        }
+      ]
+    },
+    {
+      "old_id": "p3",
+      "old_source": "textbook-ch05-q02",
+      "old_content_sha256": "fff0f92594a3e459002395e807959204ce68455ccda915fdf24b8b41471da1eb",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p1"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1015/p1 (textbook-ch05-q08)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1015",
+          "id": "p1",
+          "source": "textbook-ch05-q08",
+          "content_sha256": "c2666804a23cac991ffefc5d2c23efeffe815ae252ceefa6c0caba2fda23ea75"
+        }
+      ]
+    },
+    {
+      "old_id": "p4",
+      "old_source": "textbook-ch05-q04",
+      "old_content_sha256": "45ee87471ec96a36d644e654248c54cec04ae843f624d42633aaa5967795e728",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p6"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1015/p6 (lecture-s06-p9-circular-queue)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1015",
+          "id": "p6",
+          "source": "lecture-s06-p9-circular-queue",
+          "content_sha256": "238049e4dea4de1ae0a34a598bfc72869df5d508ffebb7bfe7777e87c16873c6"
+        }
+      ]
+    },
+    {
+      "old_id": "p5",
+      "old_source": "textbook-ch05-q07",
+      "old_content_sha256": "9e8f15c7bc77a2170316f351dac42fa30aad23a7e77ebdbb30150e9232cafd6f",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p6"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1015/p6 (lecture-s06-p9-circular-queue)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1015",
+          "id": "p6",
+          "source": "lecture-s06-p9-circular-queue",
+          "content_sha256": "238049e4dea4de1ae0a34a598bfc72869df5d508ffebb7bfe7777e87c16873c6"
+        }
+      ]
+    },
+    {
+      "old_id": "p6",
+      "old_source": "textbook-ch05-q08",
+      "old_content_sha256": "b36c1ef07d27b5e95b60edb258ca4e95024c830f032b08a5d9f8f9cc6fa9a431",
+      "decision": "retain",
+      "new_ids": [
+        "p1"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1015",
+          "id": "p1",
+          "source": "textbook-ch05-q08",
+          "content_sha256": "c2666804a23cac991ffefc5d2c23efeffe815ae252ceefa6c0caba2fda23ea75"
+        }
+      ]
+    },
+    {
+      "old_id": "p7",
+      "old_source": "textbook-ch05-q09",
+      "old_content_sha256": "42e47378201ccf871a7151c02f005a12b789074743ce7552b25a5e6a254486dc",
+      "decision": "retain",
+      "new_ids": [
+        "p2"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1015",
+          "id": "p2",
+          "source": "textbook-ch05-q09",
+          "content_sha256": "42e47378201ccf871a7151c02f005a12b789074743ce7552b25a5e6a254486dc"
+        }
+      ]
+    },
+    {
+      "old_id": "p8",
+      "old_source": "textbook-ch05-q11",
+      "old_content_sha256": "81dd341c36ff00eb9fc0927304d4c1a0a6fc225d23227fdcb13e95907e6532c7",
+      "decision": "retain",
+      "new_ids": [
+        "p3"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1015",
+          "id": "p3",
+          "source": "textbook-ch05-q11",
+          "content_sha256": "81dd341c36ff00eb9fc0927304d4c1a0a6fc225d23227fdcb13e95907e6532c7"
+        }
+      ]
+    }
+  ],
+  "duplicate_decisions": [],
+  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음"
 }

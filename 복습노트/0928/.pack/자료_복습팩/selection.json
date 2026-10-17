@@ -1,263 +1,460 @@
 {
-  "range": "0928",
-  "mode": "retrofit",
-  "taught_evidence": {
-    "range_ch": [
-      3
-    ],
-    "taught": [
-      1,
-      2,
-      3
-    ],
-    "taught_pages": "S3 p19–31; 이전 배열·구조체 복습",
-    "preview": "S4 리스트 예고"
-  },
-  "concept_overrides": {
-    "ch01-q17": [
-      3
-    ]
-  },
+  "mode": "revision",
+  "policy_version": "review-questions-2026-10-17",
   "selected": [
     {
       "id": "p1",
+      "part": "partA",
       "source": "textbook-ch03-q03",
       "source_kind": "textbook",
-      "original_id": "ch03-q03",
+      "variant": false,
+      "anchor": "s3-sizeof-align",
+      "level": 1,
+      "date": "0928",
+      "terms": [
+        "(2) double array2[10] — 검산 환경 기준"
+      ],
+      "answer": "(2) double array2[10] — 검산 환경 기준",
+      "objectives": [
+        "retained-textbook-ch03-q03"
+      ],
+      "task_family": "textbook-ch03-q03",
+      "origin": "retained",
+      "old_id": "p1",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "f3d3bb3994061e015de641847300cc1c1029953620158f6a8f4062768842e0da",
+        "independent_answer": "(2) double array2[10], 80 bytes. Others: array1=40, array3=40, array4=40 bytes.",
+        "reasoning": "Multiply each stated element size by its array length; the prompt explicitly fixes the implementation sizes.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0928/정리노트_0928_ArrayStructureList.html",
-          "locator": "#s3-sizeof-align",
-          "sha256": "5cfd7632a44db9ff8968629d1ad30f7710e4a2a19782bf569bb0d7ee82ef7f98"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0928/p1"
         },
         {
-          "path": "STT/0928 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s3-sizeof-align",
-          "sha256": "a2543289348daf1ee5e200d793af3e8c9e4b568c99d76e85163d01102405dec2"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
-          "locator": "PDF page 30",
-          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0928/p1"
         }
-      ],
-      "answer": "(2) double array2[10] — 검산 환경 기준",
-      "verification": {
-        "method": "c-run",
-        "reference": "answers.py:ch03-q03",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/03_배열, 구조체, 포인터_연습문제.json",
-        "payload_sha256": "b70b03cb3297b9a9f8d004ba36a34cfdddca285071d939166e28c2829fd291bb",
-        "source_refs": [
-          {
-            "source_id": "s03",
-            "pdf_page": 1,
-            "book_page": 98
-          }
-        ],
-        "sources": [
-          {
-            "id": "s03",
-            "path": "origin/03_배열, 구조체, 포인터_연습문제.pdf",
-            "sha256": "caebe288a03103bf164f7e7d078cf87cbc412a8f666e228a4033b2cd556b5833",
-            "page_count": 2
-          }
-        ]
-      },
-      "assumptions": "C11 검산 환경 sizeof: int=4 double=8 char=1 float=4; 원문에는 크기가 명시되지 않아 화면에 기준을 밝혔음"
+      ]
     },
     {
       "id": "p2",
+      "part": "partA",
       "source": "textbook-ch03-q07",
       "source_kind": "textbook",
-      "original_id": "ch03-q07",
+      "variant": false,
+      "anchor": "s1-call-by-value",
+      "level": 3,
+      "date": "0928",
+      "terms": [
+        "실수부끼리, 허수부끼리 더한 Complex를 반환"
+      ],
+      "answer": "실수부끼리, 허수부끼리 더한 Complex를 반환",
+      "objectives": [
+        "retained-textbook-ch03-q07"
+      ],
+      "task_family": "textbook-ch03-q07",
+      "origin": "retained",
+      "old_id": "p2",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "68dd201dea5898c477cdd96a8a1f5a3168afb419b99147ae2dd7c27e82586309",
+        "independent_answer": "typedef struct {float real,imag;} Complex;\nComplex complex_add(Complex a,Complex b){Complex c={a.real+b.real,a.imag+b.imag};return c;}",
+        "reasoning": "Complex addition independently adds real and imaginary components: (ar+ai*i)+(br+bi*i)=(ar+br)+(ai+bi)*i.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0928/정리노트_0928_ArrayStructureList.html",
-          "locator": "#s1-call-by-value",
-          "sha256": "5cfd7632a44db9ff8968629d1ad30f7710e4a2a19782bf569bb0d7ee82ef7f98"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0928/p2"
         },
         {
-          "path": "STT/0928 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-call-by-value",
-          "sha256": "a2543289348daf1ee5e200d793af3e8c9e4b568c99d76e85163d01102405dec2"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
-          "locator": "PDF page 17",
-          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0928/p2"
         }
-      ],
-      "answer": "실수부끼리, 허수부끼리 더한 Complex를 반환",
-      "verification": {
-        "method": "c-run",
-        "reference": "answers.py:ch03-q07",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/03_배열, 구조체, 포인터_연습문제.json",
-        "payload_sha256": "2c3f3128a54802d3ccd87bb5f1b47ef25147fcc68ff51c12e927f22361ff68cc",
-        "source_refs": [
-          {
-            "source_id": "s03",
-            "pdf_page": 1,
-            "book_page": 98
-          }
-        ],
-        "sources": [
-          {
-            "id": "s03",
-            "path": "origin/03_배열, 구조체, 포인터_연습문제.pdf",
-            "sha256": "caebe288a03103bf164f7e7d078cf87cbc412a8f666e228a4033b2cd556b5833",
-            "page_count": 2
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "p3",
+      "part": "partA",
       "source": "textbook-ch03-q12",
       "source_kind": "textbook",
-      "original_id": "ch03-q12",
+      "variant": false,
+      "anchor": "s3-malloc-example",
+      "level": 3,
+      "date": "0928",
+      "terms": [
+        "malloc → 값 100·just testing 저장 → free"
+      ],
+      "answer": "malloc → 값 100·just testing 저장 → free",
+      "objectives": [
+        "retained-textbook-ch03-q12"
+      ],
+      "task_family": "textbook-ch03-q12",
+      "origin": "retained",
+      "old_id": "p3",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "e3a3568a3a2f76f77536f20592d6f738af730f8166e6421e0516aae15ad0886e",
+        "independent_answer": "#include <stdlib.h>\n#include <string.h>\ntypedef struct {int number;char text[21];} Record;\nint main(void){Record *p=malloc(sizeof *p);if(!p)return 1;p->number=100;strcpy(p->text,\"just testing\");free(p);return 0;}",
+        "reasoning": "Allocate exactly one whole object; check allocation, assign the integer, copy a terminated string, then release the original allocation address. The literal has 12 characters plus the terminator.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0928/정리노트_0928_ArrayStructureList.html",
-          "locator": "#s3-malloc-example",
-          "sha256": "5cfd7632a44db9ff8968629d1ad30f7710e4a2a19782bf569bb0d7ee82ef7f98"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0928/p3"
         },
         {
-          "path": "STT/0928 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s3-malloc-example",
-          "sha256": "a2543289348daf1ee5e200d793af3e8c9e4b568c99d76e85163d01102405dec2"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
-          "locator": "PDF page 31",
-          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0928/p3"
         }
-      ],
-      "answer": "malloc → 값 100·just testing 저장 → free",
-      "verification": {
-        "method": "c-run",
-        "reference": "answers.py:ch03-q12",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/03_배열, 구조체, 포인터_연습문제.json",
-        "payload_sha256": "948fc9dba979b005e16c1799fa0e7b4fe8f97035a06c8f0ed74d78f283005331",
-        "source_refs": [
-          {
-            "source_id": "s03",
-            "pdf_page": 2,
-            "book_page": null
-          }
-        ],
-        "sources": [
-          {
-            "id": "s03",
-            "path": "origin/03_배열, 구조체, 포인터_연습문제.pdf",
-            "sha256": "caebe288a03103bf164f7e7d078cf87cbc412a8f666e228a4033b2cd556b5833",
-            "page_count": 2
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "p4",
+      "part": "partA",
       "source": "textbook-ch01-q17",
       "source_kind": "textbook",
-      "original_id": "ch01-q17",
+      "variant": false,
+      "anchor": "s1-array-pointer",
+      "level": 2,
+      "date": "0928",
+      "terms": [
+        "(1) 최선·최악 O(1), (2) 최선·최악 O(n), (3) 최선·최악 O(n)"
+      ],
+      "answer": "(1) 최선·최악 O(1), (2) 최선·최악 O(n), (3) 최선·최악 O(n)",
+      "objectives": [
+        "retained-textbook-ch01-q17"
+      ],
+      "task_family": "textbook-ch01-q17",
+      "origin": "retained",
+      "old_id": "p4",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "568b1dc6449ea01b4aadf9ae7dd31d8ddb574507261a71156bf6e6312c3790fe",
+        "independent_answer": "(1) best O(1), worst O(1). (2) best O(n), worst O(n). (3) best O(n), worst O(n).",
+        "reasoning": "Random-access indexing reads the requested existing element directly. Without ordering or additional metadata, finding minimum or sum must inspect every input element even in the best case under the usual full scan algorithm.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0928/정리노트_0928_ArrayStructureList.html",
-          "locator": "#s1-array-pointer",
-          "sha256": "5cfd7632a44db9ff8968629d1ad30f7710e4a2a19782bf569bb0d7ee82ef7f98"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0928/p4"
         },
         {
-          "path": "STT/0928 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-array-pointer",
-          "sha256": "a2543289348daf1ee5e200d793af3e8c9e4b568c99d76e85163d01102405dec2"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
-          "locator": "PDF page 23",
-          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a"
-        },
-        {
-          "path": "복습노트/0914/정리노트_0914_Recursion.html",
-          "locator": "#s1-arraymax",
-          "sha256": "1c861d482d1aa0eda8e162f72b93c25711a48361e6f7b98a7784dba037d09927"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0928/p4"
         }
+      ]
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "lecture-s03-p22-swap",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-swap",
+      "level": 3,
+      "date": "0928",
+      "terms": [
+        "swap: 주소 전달과 값 전달"
       ],
-      "answer": "(1) 최선·최악 O(1), (2) 최선·최악 O(n), (3) 최선·최악 O(n)",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch01-q17",
-        "result": "pass"
+      "answer": "swap(&a,&b);. tmp=*px 뒤 (1,2,1), *px=*py 뒤 (2,2,1), *py=tmp 뒤 (2,1,1). 값 매개변수 x,y만 바꾸면 호출자의 a,b는 1,2 그대로다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 22,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "swap",
+        "taught_on": "0928",
+        "extra_pages": []
       },
-      "provenance": {
-        "json_path": "교과서/01_자료구조와 알고리즘_연습문제.json",
-        "payload_sha256": "f9b5078fae5975949f60992b5d914c7a4500d9305bd32d6f80523ac0b0fdb493",
-        "source_refs": [
-          {
-            "source_id": "s01",
-            "pdf_page": 2,
-            "book_page": 37
-          }
-        ],
-        "sources": [
-          {
-            "id": "s01",
-            "path": "origin/01_자료구조와 알고리즘_연습문제.pdf",
-            "sha256": "d1f78d5cb573eb820fca6587b0f8219bce91c7b31c063bf4c2c132e1c572d696",
-            "page_count": 2
-          }
+      "objectives": [
+        "swap"
+      ],
+      "task_family": "swap",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "9361606988558d09bc97edfd1673bd73b892de80d40ccab7e45b8b9bc3d7dc2d",
+        "independent_answer": "Call swap(&a,&b). After tmp=*px: (a,b,tmp)=(1,2,1). After *px=*py: (2,2,1). After *py=tmp: (2,1,1). A function receiving int x,int y and only swapping those local values leaves caller (a,b)=(1,2).",
+        "reasoning": "The pointer values are passed by value, but dereferencing them writes the original objects. Passing integers instead only modifies local parameter objects.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
         ]
+      },
+      "authoring": {
+        "date": "0928",
+        "ch": 3,
+        "page": 22,
+        "name": "swap",
+        "anchor": "s1-swap",
+        "title": "swap: 주소 전달과 값 전달",
+        "code": "void swap(int *px, int *py)\n{\n    int tmp;\n    tmp = *px;\n    *px = *py;\n    *py = tmp;\n}",
+        "prompt": "int a=1,b=2;에서 위 함수를 부르는 문장을 쓰고 각 대입 뒤의 (a,b,tmp)를 추적하세요. 매개변수가 int x,int y이고 값만 서로 바꾸는 함수라면 호출자의 a,b가 바뀌는지도 설명하세요.",
+        "answer": "swap(&a,&b);. tmp=*px 뒤 (1,2,1), *px=*py 뒤 (2,2,1), *py=tmp 뒤 (2,1,1). 값 매개변수 x,y만 바꾸면 호출자의 a,b는 1,2 그대로다.",
+        "steps": [
+          "주소 연산자 &로 a,b의 위치를 넘겨요. 함수는 주소의 복사본 px,py를 받지만 역참조로 원래 객체에 접근해요.",
+          "먼저 a의 값 1을 tmp에 보관해요. a에 b의 값 2를 대입해도 1은 tmp에 남아요.",
+          "b에 tmp를 대입하면 2,1이 돼요. 값 전달 함수는 별도 지역 변수만 바꾸므로 호출자에게 반영되지 않아요."
+        ],
+        "pitfall": "px=py는 주소 변수만 바꿔요. *px=*py와 의미가 달라요."
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0928/p5"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0928/p5"
+        }
+      ]
+    },
+    {
+      "id": "p6",
+      "part": "partB",
+      "source": "lecture-s03-p31-malloc-record",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s3-malloc-example",
+      "level": 3,
+      "date": "0928",
+      "terms": [
+        "동적 구조체 배열의 두 원소"
+      ],
+      "answer": "p[0]={1,\"Park\"}, p[1]={2,\"Kim\"}. p+1은 sizeof(struct Example)바이트 뒤. stdlib.h,stdio.h,string.h. free(p)로 최초 할당 주소를 넘기고 해제 뒤 역참조하면 안 된다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 31,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "malloc-record",
+        "taught_on": "0928",
+        "extra_pages": []
+      },
+      "objectives": [
+        "malloc-record"
+      ],
+      "task_family": "malloc-record",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "2ecc3a7c4f9149ca27d6245596a4c12ff959cb9126d7459d00b7aca69ad22216",
+        "independent_answer": "Before free: p[0]={1,\"Park\"}, p[1]={2,\"Kim\"}; p+1 advances sizeof(struct Example) bytes. Headers: <stdlib.h> for malloc/free/exit, <stdio.h> for fprintf/stderr, <string.h> for strcpy. free(p), the original base address. Reading p->number after free is undefined behavior.",
+        "reasoning": "Pointer arithmetic scales by the pointed-to type, including any padding. Both objects fit in the allocation. After free the lifetime and access rights of both records have ended.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "0928",
+        "ch": 3,
+        "page": 31,
+        "name": "malloc-record",
+        "anchor": "s3-malloc-example",
+        "title": "동적 구조체 배열의 두 원소",
+        "code": "struct Example { int number; char name[10]; };\nstruct Example *p;\np = (struct Example *)malloc(2*sizeof(struct Example));\nif(p==NULL) { fprintf(stderr,\"can't allocate memory\\n\"); exit(1); }\np->number=1;\nstrcpy(p->name,\"Park\");\n(p+1)->number=2;\nstrcpy((p+1)->name,\"Kim\");\nfree(p);",
+        "prompt": "할당이 성공했다고 가정해요. 두 원소의 필드 값을 쓰고 p+1의 바이트 이동량을 sizeof로 표현하세요. 필요한 표준 헤더, free에 넘길 주소, free 뒤 p->number를 읽어도 되는지 설명하세요.",
+        "answer": "p[0]={1,\"Park\"}, p[1]={2,\"Kim\"}. p+1은 sizeof(struct Example)바이트 뒤. stdlib.h,stdio.h,string.h. free(p)로 최초 할당 주소를 넘기고 해제 뒤 역참조하면 안 된다.",
+        "steps": [
+          "malloc의 크기는 구조체 2개 분량이에요. sizeof에는 패딩도 포함되므로 필드 크기 합으로 바꾸지 않아요.",
+          "p->는 첫 원소, (p+1)->는 두 번째 원소의 필드에 접근해요. 포인터 덧셈은 바이트가 아닌 원소 단위예요.",
+          "malloc/free/exit는 stdlib.h, fprintf/stderr는 stdio.h, strcpy는 string.h가 선언해요.",
+          "free 뒤 포인터 변수 자체가 자동 NULL이 되지는 않아요. 해제된 저장 공간을 읽으면 미정의 동작이므로 정상 출력값을 구하지 않아요."
+        ],
+        "pitfall": "free(p+1)은 최초 할당 주소가 아니므로 사용할 수 없어요. 구조체 크기를 14바이트로 단정하지 마세요."
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0928/p6"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0928/p6"
+        }
+      ]
+    }
+  ],
+  "excluded": [],
+  "coverage": [
+    {
+      "objective": "retained-textbook-ch03-q03",
+      "questions": [
+        "p1"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch03-q07",
+      "questions": [
+        "p2"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch03-q12",
+      "questions": [
+        "p3"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch01-q17",
+      "questions": [
+        "p4"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "swap",
+      "questions": [
+        "p5"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 22,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "swap",
+        "taught_on": "0928",
+        "extra_pages": []
+      }
+    },
+    {
+      "objective": "malloc-record",
+      "questions": [
+        "p6"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 31,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "malloc-record",
+        "taught_on": "0928",
+        "extra_pages": []
       }
     }
   ],
-  "excluded": [
+  "replacements": [
     {
-      "source": "textbook-ch03-q01",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
+      "old_id": "p1",
+      "old_source": "textbook-ch03-q03",
+      "old_content_sha256": "f3d3bb3994061e015de641847300cc1c1029953620158f6a8f4062768842e0da",
+      "decision": "retain",
+      "new_ids": [
+        "p1"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0928",
+          "id": "p1",
+          "source": "textbook-ch03-q03",
+          "content_sha256": "f3d3bb3994061e015de641847300cc1c1029953620158f6a8f4062768842e0da"
+        }
+      ]
     },
     {
-      "source": "textbook-ch03-q02",
-      "reason": "원문 주소 계산과 보기 불일치; 기준을 추측하지 않음"
+      "old_id": "p2",
+      "old_source": "textbook-ch03-q07",
+      "old_content_sha256": "68dd201dea5898c477cdd96a8a1f5a3168afb419b99147ae2dd7c27e82586309",
+      "decision": "retain",
+      "new_ids": [
+        "p2"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0928",
+          "id": "p2",
+          "source": "textbook-ch03-q07",
+          "content_sha256": "68dd201dea5898c477cdd96a8a1f5a3168afb419b99147ae2dd7c27e82586309"
+        }
+      ]
     },
     {
-      "source": "textbook-ch03-q04",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
+      "old_id": "p3",
+      "old_source": "textbook-ch03-q12",
+      "old_content_sha256": "e3a3568a3a2f76f77536f20592d6f738af730f8166e6421e0516aae15ad0886e",
+      "decision": "retain",
+      "new_ids": [
+        "p3"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0928",
+          "id": "p3",
+          "source": "textbook-ch03-q12",
+          "content_sha256": "e3a3568a3a2f76f77536f20592d6f738af730f8166e6421e0516aae15ad0886e"
+        }
+      ]
     },
     {
-      "source": "textbook-ch03-q05",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
-    },
-    {
-      "source": "textbook-ch03-q06",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
-    },
-    {
-      "source": "textbook-ch03-q08",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch03-q09",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch03-q10",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch03-q11",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p4",
+      "old_source": "textbook-ch01-q17",
+      "old_content_sha256": "568b1dc6449ea01b4aadf9ae7dd31d8ddb574507261a71156bf6e6312c3790fe",
+      "decision": "retain",
+      "new_ids": [
+        "p4"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0928",
+          "id": "p4",
+          "source": "textbook-ch01-q17",
+          "content_sha256": "568b1dc6449ea01b4aadf9ae7dd31d8ddb574507261a71156bf6e6312c3790fe"
+        }
+      ]
     }
-  ]
+  ],
+  "duplicate_decisions": [],
+  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음"
 }

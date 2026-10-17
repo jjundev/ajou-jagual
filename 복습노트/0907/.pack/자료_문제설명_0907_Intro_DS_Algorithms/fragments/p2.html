@@ -1,10 +1,11 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>두 정수를 읽어 큰 쪽을 내보내요. 같은 값이면 어느 쪽을 골라도 같은 최댓값이에요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“더 큰 수”는 comparison과 selection의 단서예요. a≥b와 a&lt;b는 가능한 입력을 겹치지 않게 전부 나눠요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">read a, b</code></pre></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">read a, b
-if a &gt;= b then output a
-else output b</code></pre></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>3,8→8; 8,3→8; -2,-7→-2; 4,4→4예요. 두 분기에서 출력이 두 입력 이상이며 실제 입력 중 하나이므로 max의 정의를 만족해요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>초기 최대값을 0으로 두면 음수 두 개에서 잘못된 답이 나와요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>read a, b</li><li>입력 두 개를 비교해 큰 값 선택</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>read a, b</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>입력 두 개를 비교해 큰 값 선택</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>1부터 양의 정수 n까지 빠짐없이 더하는 알고리즘이에요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“1부터 n까지”는 누적 합 accumulator의 단서예요. 합의 항등원은 0이고 각 반복에서 현재 i를 정확히 한 번 더해요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">sum ← 0</code></pre></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">sum ← 0
+for i ← 1 to n
+    sum ← sum + i
+output sum</code></pre></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>n=4에서 sum은 0→1→3→6→10이에요. i까지 끝났을 때 sum=1+…+i라는 불변식이 초기·유지·종료를 만족해요. 별도 공식 n(n+1)/2도 10을 주어요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>i&lt;n으로 반복하면 n을 빼먹어요. C로 옮길 때는 합이 정수 타입 범위 안에 있어야 해요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>sum ← 0</li><li>0에서 시작해 1..n 누적</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>sum ← 0</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>0에서 시작해 1..n 누적</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

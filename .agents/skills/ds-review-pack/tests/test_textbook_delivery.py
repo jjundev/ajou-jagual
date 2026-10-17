@@ -5,8 +5,29 @@ from _util import REPO
 from update_review import extract_cards
 from explanation_delivery_checks import check_preserved
 from pack_layout import current_digest
-ROOT=Path(os.environ.get('DS_REVIEW_DELIVERY_ROOT',REPO));DATES=('0907','0914','0917','0921','0928','1001','1005','1008','1012')
+ROOT=Path(os.environ.get('DS_REVIEW_DELIVERY_ROOT',REPO));DATES=('0907','0914','0917','0921','0928','1001','1005','1008','1012','1015')
 class DeliveryTests(unittest.TestCase):
+ def assert_revision(self,date,s,m,v):
+  from review_audit import POLICY_VERSION
+  from lecture_sources import validate_lecture_source
+  from check_html import parse_html
+  self.assertEqual(s['policy_version'],POLICY_VERSION)
+  self.assertEqual([q['id'] for q in s['selected']],[q['id'] for q in m['problems']])
+  self.assertEqual(v['counts']['total'],len(m['problems']))
+  self.assertTrue(s['coverage']);self.assertTrue(s['replacements'])
+  note=next((ROOT/'복습노트'/date).glob('정리노트*.html'))
+  anchors=parse_html(note.read_text(encoding='utf-8')).containers
+  for q in s['selected']:
+   self.assertEqual(q['verification']['result'],'pass')
+   self.assertIn(q['anchor'],anchors)
+   self.assertTrue(q['verification']['evidence'])
+   for ev in q['evidence']:
+    path=ROOT/ev['path'];self.assertTrue(path.is_file())
+    self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),ev['sha256'])
+   if q.get('source_kind')=='lecture-code':self.assertEqual(validate_lecture_source(ROOT,q,m['sessions']),[])
+  for name,sha in v['preserved']['files'].items():
+   self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),sha)
+
  def selections(self):
   out=[]
   for d in DATES:
@@ -16,10 +37,14 @@ class DeliveryTests(unittest.TestCase):
  def test_counts_and_chronological_originals_not_reused(self):
   used=set()
   for d,s,m,v in self.selections():
+   if s["mode"]=="revision":
+    self.assert_revision(d,s,m,v);continue
    self.assertEqual(s['mode'],'retrofit');self.assertTrue(4<=len(s['selected'])<=8 or v['unresolved']);self.assertEqual(v['counts']['total'],v['counts']['existing']+v['counts']['added'])
    for q in s['selected']:self.assertNotIn(q['source'],used);used.add(q['source'])
  def test_answers_evidence_and_dependencies(self):
   for d,s,m,v in self.selections():
+   if s["mode"]=="revision":
+    self.assert_revision(d,s,m,v);continue
    ids={q['source'] for q in s['selected']}
    for q in s['selected']:
     self.assertTrue(q['answer']);self.assertEqual(q['verification']['result'],'pass');self.assertTrue(q['evidence']);self.assertTrue(set(q['prerequisites'])<=ids)
@@ -27,12 +52,16 @@ class DeliveryTests(unittest.TestCase):
      file=REPO/ev['path'];self.assertTrue(file.exists());self.assertEqual(hashlib.sha256(file.read_bytes()).hexdigest(),current_digest(file,ev['sha256']))
  def test_manifest_card_ids_and_existing_raw_hashes(self):
   for d,s,m,v in self.selections():
+   if s["mode"]=="revision":
+    self.assert_revision(d,s,m,v);continue
    cards=extract_cards(next((ROOT/'복습노트'/d).glob('복습문제*.html')).read_text());byid={c['id']:c for c in cards}
    self.assertEqual([c['id'] for c in cards],[q['id'] for q in m['problems']])
    for q in s['selected']:self.assertEqual(byid[q['id']]['source'],q['source'])
    for q in v['preserved']['cards']:self.assertEqual(hashlib.sha256(byid[q['id']]['raw'].encode()).hexdigest(),q['sha256'])
  def test_preserved_note_figures_and_explanations(self):
   for d,s,m,v in self.selections():
+   if s["mode"]=="revision":
+    self.assert_revision(d,s,m,v);continue
    for file,digest in v['preserved']['files'].items():
     report_path=ROOT/'docs/verify/2026-10-13-ds-code-blocks.json'
     report=json.loads(report_path.read_text()) if report_path.exists() else None
@@ -40,6 +69,8 @@ class DeliveryTests(unittest.TestCase):
  def test_selected_ids_have_current_provenance(self):
   questions={q['id']:q for p in (REPO/'교과서').glob('*.json') for q in json.loads(p.read_text()).get('questions',[])}
   for d,s,m,v in self.selections():
+   if s["mode"]=="revision":
+    self.assert_revision(d,s,m,v);continue
    for q in s['selected']:
     original=questions[q['original_id']];self.assertEqual(q['source'],'textbook-'+original['id']);self.assertIsNone(original['answer']);self.assertEqual(q['provenance']['payload_sha256'],original['review']['payload_sha256']);self.assertEqual(q['provenance']['source_refs'],original['source_refs'])
 
@@ -48,6 +79,8 @@ class DeliveryContentTests(DeliveryTests):
   import re
   from html import unescape
   for date,selection,manifest,validation in self.selections():
+   if selection["mode"]=="revision":
+    self.assert_revision(date,selection,manifest,validation);continue
    cards={c['id']:c for c in extract_cards(next((ROOT/'복습노트'/date).glob('복습문제*.html')).read_text())}
    titles={t['id']:t['title'] for s in manifest['sections'] for t in s['topics']}
    byid={q['id']:q for q in manifest['problems']}
@@ -59,6 +92,8 @@ class DeliveryContentTests(DeliveryTests):
   from html import unescape
   complete={'ch03-q04','ch03-q12','ch06-q10'}
   for date,selection,manifest,validation in self.selections():
+   if selection["mode"]=="revision":
+    self.assert_revision(date,selection,manifest,validation);continue
    cards={c['id']:c for c in extract_cards(next((ROOT/'복습노트'/date).glob('복습문제*.html')).read_text())}
    for q in selection['selected']:
     if q['original_id'] not in complete:continue
@@ -69,6 +104,8 @@ class DeliveryContentTests(DeliveryTests):
  def test_corrected_scope_pages(self):
   expected={'ch05-q01':14,'ch01-q09':28,'ch03-q08':11,'ch03-q09':11,'ch03-q10':12,'ch03-q11':12,'ch06-q03':21,'ch06-q04':29,'ch06-q07':29,'ch06-q10':29,'ch04-q01':11,'ch04-q11':21}
   for date,selection,manifest,validation in self.selections():
+   if selection["mode"]=="revision":
+    self.assert_revision(date,selection,manifest,validation);continue
    for q in selection['selected']:
     if q['original_id'] in expected:
      pdf=[e for e in q['evidence'] if e['path'].endswith('.pdf')][0]

@@ -46,7 +46,8 @@ class TestAssemble(unittest.TestCase):
         # 팩마다 p1, s1-… id가 겹치므로 진행 기록 키에 기간이 들어가야 한다.
         for html in (self.note_html, self.review_html):
             self.assertIn('data-range="0101-0102"', html)
-            self.assertIn("const KEY = 'od-review-solved:' + RANGE;", html)
+            expected = "const KEY = 'od-review-solved:' + RANGE;" if html is self.note_html else "const KEY = 'od-review-solved:' + RANGE + ':' + document.body.dataset.revision;"
+            self.assertIn(expected, html)
             self.assertIn("const KEY = 'od-note-read:' + RANGE;", html)
 
     def test_theme_toggle_in_both_pages(self):

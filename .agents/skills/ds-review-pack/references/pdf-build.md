@@ -33,7 +33,7 @@ backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 run
 
 전자회로2 원본 4개 파일은 해시 그대로 보존한다. `pdf_ds_layout.py`가 맞춤/넘침 측정 전에 빈 조건 블록을 제거하고 문제 코드의 좌측 `코드` 섹션을 만든다. 문장 안의 인라인 코드는 유지한다. 문제의 `<pre>` 블록은 내용·들여쓰기·줄바꿈을 보존한다.
 
-작성용 표는 명시적으로 지정한 1012 P2·P3에 적용한다. 문제지에서는 원래 표를 중앙 작업 공간으로 옮기며, 답안지에서는 좌측에 유지한다. 답안의 풀이 표는 중앙에 그대로 둔다. 참고용 표는 옮기지 않는다. 확장 코드의 해시도 build/check/publish에서 검증한다.
+작성용 표는 source ID 2018-mid-c024-q9, 2017-mid-c050-q6에 적용하며 문항 번호 변경과 무관하다. 문제지에서는 원래 표를 중앙 작업 공간으로 옮기며, 답안지에서는 좌측에 유지한다. 답안의 풀이 표는 중앙에 그대로 둔다. 참고용 표는 옮기지 않는다. 확장 코드의 해시도 build/check/publish에서 검증한다.
 
 ## 블록 코드 가독성 계약 (code_style_version 1)
 
@@ -44,3 +44,7 @@ backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 run
 새 보고서에는 code_font와 code_style_version을 기록한다. 코드 영역 geometry와 최종 PDF의 실제 glyph font/size/text를 대조한다. 글꼴 누락·교체·잘못된 크기·내용 누락·경계 밖 줄은 빌드 실패다. 검토 후 자산이 바뀌면 게시 lock 안에서 거부하고 기존 PDF와 보고서를 보존한다. 구형 보고서에 새 필드가 없으면 기존 검증 경로를 유지한다. 실패 시 자산과 소스를 복구하고 새 RUN에서 다시 빌드·시각검토한다. 오래된 review.json을 재사용하지 않는다.
 
 한글 블록 코드에는 시스템 local()을 우선하는 일반 Pretendard face 대신 `DS Pretendard` 별칭을 사용한다. 별칭은 고정된 Regular woff2 URL만 사용하며, loaded FontFace를 확인한다. 기존 vendor/provenance를 빌드 전에 검사하고 새 보고서의 vendor_hashes를 검사·게시 시 다시 확인한다. 최종 PDF도 `JetBrainsMono-Regular`와 `Pretendard-Regular`를 정확히 요구하여 동명 Bold/다른 face를 거부한다.
+
+## 강의 예제·전역 검토 연동
+
+신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 최종 전체 날짜 audit를 통과한 정확한 최종 HTML 경로만 설명·PDF 입력으로 사용한다. update-existing의 기존 카드 보존 계약은 유지한다.

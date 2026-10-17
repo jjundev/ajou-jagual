@@ -1,8 +1,8 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>주어진 후위식의 각 토큰 뒤 스택 칸을 채워요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>후위식은 연산자 직전 스택 위 두 항을 결합해요. /와 −는 교환법칙이 없으므로 second=첫 pop,first=둘째 pop으로 first op second를 계산해요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>처음 7을 읽고 스택 [7]을 적어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main">6/2=3을 만들고 7−3=4를 만들어요. 이어 5*4=20을 만들고 4+20=24를 만들어요.<table><thead><tr><th>토큰</th><th>스택 (왼쪽=바닥)</th></tr></thead><tbody><tr><td>7</td><td>[7]</td></tr><tr><td>6</td><td>[7,6]</td></tr><tr><td>2</td><td>[7,6,2]</td></tr><tr><td>/</td><td>[7,3]</td></tr><tr><td>−</td><td>[4]</td></tr><tr><td>5</td><td>[4,5]</td></tr><tr><td>4</td><td>[4,5,4]</td></tr><tr><td>*</td><td>[4,20]</td></tr><tr><td>+</td><td>[24]</td></tr></tbody></table></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>별도 중위식 7−6/2+5*4=24와 같아요. 토큰별 연산 전에 두 값이 있는지 확인했고 최종 한 값 24만 남아요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>첫 pop−둘째 pop으로 계산하면 3−7=−4가 돼요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>처음 7을 읽고 스택 [7]을 적어요.</li><li>스택 추적 최종24, pop 순서 주의</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>처음 7을 읽고 스택 [7]을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>스택 추적 최종24, pop 순서 주의</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>괄호 검사에 적합한 자료구조 이름을 쓰세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>가장 나중에 열린 괄호를 가장 먼저 닫아야 하므로 LIFO인 stack을 떠올려요. 열린 괄호를 미해결 상태로 저장해요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>빈칸에 스택(stack)을 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>여는 괄호는 push, 닫는 괄호는 top과 종류를 비교하고 pop해요. 닫는 순간 빈 스택이거나 종류가 다르면 실패, 전체 후 남아 있어도 실패예요. 예 ([ ])에서 ]는 가장 최근 [와 짝이고 마지막 )는 (와 짝이에요.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>([])는 (,[를 쌓고 ],)에서 역순으로 꺼내 끝에 비어요. ([)]는 )를 만났을 때 top=[라 불일치예요. 이 반례로 FIFO 큐가 적합하지 않음을 확인해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>여는/닫는 개수만 같아도 종류와 순서가 틀릴 수 있어요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>빈칸에 스택(stack)을 적어요.</li><li>최근 열린 괄호 먼저 닫기 → 스택</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>빈칸에 스택(stack)을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최근 열린 괄호 먼저 닫기 → 스택</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

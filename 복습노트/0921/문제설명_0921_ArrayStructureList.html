@@ -337,7 +337,7 @@
     .figure-sheet { width: min(96vw, 1100px); max-height: 90dvh; margin: auto; border-radius: 16px; }
     .figure-sheet img, .figure-sheet svg { display: block; width: 100%; max-width: 100%; height: auto; cursor: default; }
 
-    /* 클릭형 보기: 생명과학 문제설명 스킬 be26a42 에서 이식 */
+    /* 클릭형 보기: pinned bio template review-interaction.css의 보기 규칙 */
     .review-ready .choices { list-style:none; padding:0; }
     .review-ready .choices > li { margin:0 0 var(--s3); }
     .review-choice {
@@ -347,7 +347,7 @@
     }
     .review-choice:hover { border-color:var(--accent); }
     .review-choice:focus-visible, .review-reset:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
-    /* 생명과학 문제설명 스킬 be26a42 에서 이식 */
+    /* pinned bio template review-interaction.css에서 복사 — test_choice_feedback_copied_from_review_pack이 어긋남을 잡는다 */
     .review-choice[data-result="correct"], .review-choice[data-result="intended"] { border:3px solid var(--accent); }
     .review-choice[data-result="selected"] { border:3px solid var(--danger); }
     .review-choice[data-result="uncertain"] { border:3px solid var(--ink-2); }
@@ -359,7 +359,7 @@
     .review-choice-content { padding:var(--s2) 0; }
     .review-choice-content > :first-child { margin-top:0; }
     .review-choice-content > :last-child { margin-bottom:0; }
-    /* 보기 판정 알림: 생명과학 문제설명 스킬 be26a42 에서 이식 */
+    /* 보기 판정 알림: pinned bio template review-interaction.css에서 복사 */
     .review-feedback {
       position:fixed; top:calc(env(safe-area-inset-top) + 72px); left:50%; z-index:100;
       transform:translateX(-50%); width:max-content; max-width:calc(100vw - 32px);
@@ -527,7 +527,7 @@
         </div>
         <p class="panel-meta">읽은 토픽 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
         <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
-        <nav class="toc" aria-label="목차"><ul class="toc-list"><li><a href="#p1">P1. 함수 foo가 하는 일</a></li><li><a href="#p2">P2. 순환 함수 gcd 구현하기</a></li><li><a href="#p3">P3. 자기 자신을 다시 부르는 기법</a></li><li><a href="#p4">P4. 순환 함수 dec_to_bin 구현하기</a></li><li><a href="#p5">P5. 2차원 배열의 바이트 수</a></li><li><a href="#p6">P6. 배열에 2의 거듭제곱 저장</a></li><li><a href="#p7">P7. 사람 정보를 구조체로</a></li><li><a href="#p8">P8. typedef로 complex 만들기</a></li></ul></nav>
+        <nav class="toc" aria-label="목차"><ul class="toc-list"><li><a href="#p1">P1. 2차원 배열의 바이트 수</a></li><li><a href="#p2">P2. 배열에 2의 거듭제곱 저장</a></li><li><a href="#p3">P3. 사람 정보를 구조체로</a></li><li><a href="#p4">P4. typedef로 complex 만들기</a></li><li><a href="#p5">P5. 행렬 예제를 C 배열과 세 쌍으로 표현하기</a></li><li><a href="#p6">P6. 하노이 코드의 매개변수 역할</a></li><li><a href="#p7">P7. 계수 배열의 순서와 공간 낭비</a></li><li><a href="#p8">P8. 자체 참조 구조체의 링크 타입</a></li></ul></nav>
       </div>
     </aside>
     <aside class="panel panel-prob" id="panel-prob" aria-labelledby="panel-prob-title">
@@ -559,116 +559,14 @@
       <h1>자료구조및알고리즘이해 복습 0921 문제설명</h1>
       <p>왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.</p>
     </div>
-<section id="problems"><h2>문항별 설명</h2><article class="topic" id="p1"><h3>P1. 함수 foo가 하는 일</h3><p class="panel-meta">2019-mid-q8 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p1">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p1"><div class="layer formal" data-source-problem="p1"><div data-source-field="conditions"><p>아래에 함수 foo의 코드가 있어요. 이 함수를 호출(사용)했을 때 무엇을 하는 함수인지 답해 보세요.</p>
-    <p>함수 foo는 (   ) 함수이다.</p>
-    <pre><code class="language-c">int foo (int x, int y){
-    if (x % y == 0) return y;
-    else
-        return foo(y, x % y);
-}</code></pre></div></div><details class="original" data-original-problem="p1"><summary>기출 원문 보기</summary><p>2019 중간 8번 · 2점 · 출제자 미상</p>
-    <p>"아래에는 함수 foo에 대한 코드가 있으며 이 함수를 호출(사용)하였을 때 무엇을 하는 함수인지에 대해서 답을 하시오.<br>함수 foo는 (   ) 함수이다. (2점)"</p>
-    <pre><code class="language-c">int foo (int x, int y){
-    if (x % y == 0) return y;
-    else
-        return foo(y, x % y);
-}</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>코드가 어떤 문제를 푸는지 이름이 아니라 인자 변화로 판단해요. 입력은 양의 정수 x,y로 두어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>x%y라는 “나머지”와 (y,x%y) 호출은 Euclidean algorithm의 단서예요. x=qy+r일 때 x,y의 공약수 집합은 y,r의 공약수 집합과 같아요. y&gt;0일 때 0≤r&lt;y예요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>foo(48,18)에서 나머지 12를 첫 줄에 적어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>(48,18)→(18,12)→(12,6)에서 나머지가 0이 되어 6을 반환해요. 공약수 d가 x,y를 나누면 x−qy=r도 나누고, 반대로 y,r을 나누면 qy+r=x도 나눠요. 그래서 매 호출의 최대공약수가 같아요. 나머지가 양의 이전 y보다 작아 종료해요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>48의 약수와 18의 약수 중 공통 최대는 6이에요. 순서를 바꾼 foo(18,48)도 (48,18)로 이어져 6이에요. 따라서 답은 최대공약수 GCD예요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>원 함수는 y=0에서 %0이므로 정의되지 않아요. 양의 입력 조건 없이 모든 정수에 안전하다고 쓰지 않아요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>foo(48,18)에서 나머지 12를 첫 줄에 적어요.</li><li>나머지로 줄이는 유클리드 호제법</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>foo(48,18)에서 나머지 12를 첫 줄에 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>나머지로 줄이는 유클리드 호제법</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p2"><h3>P2. 순환 함수 gcd 구현하기</h3><p class="panel-meta">2018-mid-c024-q15 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p2">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p2"><div class="layer formal" data-source-problem="p2"><div data-source-field="conditions"><p>임의의 두 양의 정수의 최대 공약수를 구해 주는 gcd를 순환 함수로 구현해 보세요. (main함수에서 임의의 두 양의 정수를 입력해요.)</p>
-    <pre><code class="language-c">#include &lt;stdio.h&gt;
-int gcd(int i, int j){
-
-
-
-}
-int main(){
-    int i, j;
-    printf("임의의 두 양의 정수 입력:");
-    scanf("%d %d", &amp;i, &amp;j);
-    printf("gcd:%d\n", gcd(i, j));
-    return 0;
-}</code></pre></div></div><details class="original" data-original-problem="p2"><summary>기출 원문 보기</summary><p>2018 중간 15번 · 5점 · 출제자 미상</p>
-    <p>"임의의 두 양의 정수의 최대 공약수를 구해주는 gcd를 순환 함수로 구현하시오.<br>( main함수에서 임의의 두 양의 정수를 입력 ) [5 points]"</p>
-    <pre><code class="language-c">#include &lt;stdio.h&gt;
-int gcd(int i, int j){
-
-
-
-}</code></pre>
-    <p>(중략)</p></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>빈 gcd 본문을 채워 양의 두 정수의 최대공약수를 반환해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“순환 함수”와 “최대공약수”에서 gcd(i,j)=gcd(j,i%j)를 떠올려요. %를 계산하기 전에 j=0을 검사해야 나눗셈 오류 없이 종료해요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">if (j == 0) return i;</code></pre></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">int gcd(int i, int j) {
-    if (j == 0) return i;
-    return gcd(j, i % j);
-}</code></pre></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>gcd(48,18)→(18,12)→(12,6)→(6,0)→6이에요. 반환값은 추가 계산 없이 위 호출로 전달돼요. 공약수 집합 보존과 두 번째 인자의 감소가 정확성과 종료를 증명해요. 입력 변환 성공과 양의 int 범위를 가정해요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>if 앞에서 i%j를 계산하면 마지막 호출에서 %0을 하게 돼요. “0이 모든 수를 나눈다”가 아니라 모든 양의 수가 0을 나눈다는 뜻이에요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>if (j == 0) return i;</li><li>j=0 종료, 아니면 gcd(j,i%j)</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>if (j == 0) return i;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>j=0 종료, 아니면 gcd(j,i%j)</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p3"><h3>P3. 자기 자신을 다시 부르는 기법</h3><p class="panel-meta">2018-mid-c102-q1 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p3">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p3"><div class="layer formal" data-source-problem="p3"><div data-source-field="conditions"><p>함수가 수행 도중에 자기 자신을 다시 호출하여 문제를 해결하는 기법을 (  ) 이라고 해요. 빈칸을 채워 보세요.</p></div></div><details class="original" data-original-problem="p3"><summary>기출 원문 보기</summary><p>2018 중간 1번 · 2점 · 출제자 미상</p>
-    <p>"1. 함수가 수행 도중에 자기 자신을 다시 호출하여 문제를 해결하는 기법을 (  ) 이라고 한다. [2 points]"</p></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>함수가 자기 자신을 호출한다는 설명에 맞는 이름을 쓰는 문제예요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“자기 자신을 다시 호출”은 recursion, 수업 용어로 순환(재귀)이에요. 일반 반복 iteration은 루프를 돌지만 별도의 자기 호출을 만들지 않아요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>빈칸에 순환(recursion)을 적어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>답은 순환, 또는 동의어 재귀예요. 예를 들어 factorial(3)이 factorial(2)를 호출하면 작은 문제의 답을 받아 현재 답을 만들어요. 올바른 순환은 즉시 답을 주는 바닥 조건과 그 조건으로 다가가는 감소를 함께 가져요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>반복문만 있는 sum은 자기 호출이 없어요. 반대로 함수 안의 자기 호출은 루프가 없어도 순환이에요. 이 차이로 용어를 확인해요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>함수 이름을 두 번 썼다고 항상 실행 중 자기 호출은 아니에요. 실제 호출 관계를 보아요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>빈칸에 순환(recursion)을 적어요.</li><li>자기 호출 = 순환/재귀</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>빈칸에 순환(recursion)을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>자기 호출 = 순환/재귀</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p4"><h3>P4. 순환 함수 dec_to_bin 구현하기</h3><p class="panel-meta">2017-mid-c050-q11 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p4">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p4"><div class="layer formal" data-source-problem="p4"><div data-source-field="conditions"><p>다음 코드에서 순환 함수 dec_to_bin을 구현해 보세요. (예: 십진수 입력:10 , 1010 )</p>
-    <pre><code class="language-c">#include &lt;stdio.h&gt;
-
-
-
-void dec_to_bin(int n){
-
-
-
-
-}
-
-int main(){
-    int decimal;
-
-    printf("십진수 입력:");
-    scanf("%d", &amp;decimal);
-
-    dec_to_bin(decimal);
-
-    return 0;
-}</code></pre></div></div><details class="original" data-original-problem="p4"><summary>기출 원문 보기</summary><p>2017 중간 11번 · 5점 · 출제자 미상</p>
-    <p>"11. 다음의 코드에서 순환 함수 dec_to_bin을 구현하시오. [5 points]<br>(예: 십진수 입력:10 , 1010 )"</p>
-    <pre><code class="language-c">#include &lt;stdio.h&gt;
-
-
-
-void dec_to_bin(int n){
-
-
-
-
-}</code></pre>
-    <p>(중략)</p></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>예시 10을 1010으로 출력하도록 dec_to_bin의 순환 본문을 채워요. 여기서는 양의 정수 입력을 기본으로 두어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>n=2q+r, r∈{0,1}에서 r=n%2는 맨 오른쪽 비트예요. 높은 자리 q=n/2를 먼저 출력해야 왼쪽부터 읽는 이진수(binary)가 돼요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">if (n == 0) return;</code></pre></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">void dec_to_bin(int n) {
-    if (n == 0) return;
-    dec_to_bin(n / 2);
-    printf("%d", n % 2);
-}</code></pre></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>10→5→2→1→0으로 호출해요. 복귀할 때 1%2=1, 2%2=0, 5%2=1, 10%2=0을 출력하여 1010이에요. 1×8+0×4+1×2+0=10으로 역변환해 확인해요. 이 본문은 입력 0에 아무것도 출력하지 않으므로 0도 허용하려면 호출부에서 printf("0") 처리가 별도로 필요해요. 음수는 범위 밖이에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>printf를 순환 호출보다 먼저 쓰면 끝자리부터 출력해서 10에서 0101이 돼요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>if (n == 0) return;</li><li>n/2 먼저 호출, 돌아와 n%2 출력</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>if (n == 0) return;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>n/2 먼저 호출, 돌아와 n%2 출력</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p5"><h3>P5. 2차원 배열의 바이트 수</h3><p class="panel-meta">textbook-ch03-q01 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p5">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p5"><div class="layer formal" data-source-problem="p5"><div data-source-field="conditions"><p>int a[10][20]에서 배열이 차지하는 메모리 공간의 크기는 얼마인가? int형은 4바이트라고 하자.</p><div class="options"><div class="option"><p>(1)</p><p>200바이트</p></div><div class="option"><p>(2)</p><p>400바이트</p></div><div class="option"><p>(3)</p><p>600바이트</p></div><div class="option"><p>(4)</p><p>800바이트</p></div></div></div></div><details class="original" data-original-problem="p5"><summary>기출 원문 보기</summary><p>3장 배열, 구조체, 포인터 · 01번 · 책 98쪽</p><p>int a[10][20]에서 배열이 차지하는 메모리 공간의 크기는 얼마인가? int형은 4바이트라고 하자.</p><div class="options"><div class="option"><p>(1)</p><p>200바이트</p></div><div class="option"><p>(2)</p><p>400바이트</p></div><div class="option"><p>(3)</p><p>600바이트</p></div><div class="option"><p>(4)</p><p>800바이트</p></div></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>10행 20열의 int 배열 전체 바이트 수를 구해요. int=4바이트는 문제에서 정한 값이에요.</p></div>
+<section id="problems"><h2>문항별 설명</h2><article class="topic" id="p1"><h3>P1. 2차원 배열의 바이트 수</h3><p class="panel-meta">textbook-ch03-q01 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p1">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p1"><div class="layer formal" data-source-problem="p1"><div data-source-field="conditions"><p>int a[10][20]에서 배열이 차지하는 메모리 공간의 크기는 얼마인가? int형은 4바이트라고 하자.</p><div class="options"><div class="option"><p>(1)</p><p>200바이트</p></div><div class="option"><p>(2)</p><p>400바이트</p></div><div class="option"><p>(3)</p><p>600바이트</p></div><div class="option"><p>(4)</p><p>800바이트</p></div></div></div></div><details class="original" data-original-problem="p1"><summary>교과서 원문 보기</summary><p>3장 배열, 구조체, 포인터 · 01번 · 책 98쪽</p><p>int a[10][20]에서 배열이 차지하는 메모리 공간의 크기는 얼마인가? int형은 4바이트라고 하자.</p><div class="options"><div class="option"><p>(1)</p><p>200바이트</p></div><div class="option"><p>(2)</p><p>400바이트</p></div><div class="option"><p>(3)</p><p>600바이트</p></div><div class="option"><p>(4)</p><p>800바이트</p></div></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>10행 20열의 int 배열 전체 바이트 수를 구해요. int=4바이트는 문제에서 정한 값이에요.</p></div>
 <div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“배열이 차지하는 공간”은 원소 개수×원소 한 개의 크기예요. 배열은 같은 타입 원소를 연속 배치하므로 별도 행 포인터 10개가 붙는 것이 아니에요.</p></div>
 <div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>원소 수=10×20=200을 적어요.</p></div>
 <div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>200×4=800바이트, 정답 (4)예요. 각 행이 20×4=80바이트이고 10행을 합쳐도 800이에요.</p></div></div>
 <div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>두 방식 200원소×4와 10행×80이 같아요. 실제 C 검산에서도 sizeof(int)==4인 환경의 sizeof a가 800이에요.</p></div></div>
 <div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>10+20으로 원소 수를 세거나 int**의 저장 크기와 섞지 않아요.</p></div>
 <div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>원소 수=10×20=200을 적어요.</li><li>행×열×int 크기 = 800</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>원소 수=10×20=200을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>행×열×int 크기 = 800</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p6"><h3>P6. 배열에 2의 거듭제곱 저장</h3><p class="panel-meta">textbook-ch03-q04 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p6">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p6"><div class="layer formal" data-source-problem="p6"><div data-source-field="conditions"><p>크기가 10인 배열 two[]를 선언하고 여기에 2의 제곱 값들을 저장해보자. 즉 배열의 첫 번째 요소에는 2⁰을 저장하고 두 번째 요소에는 2¹값을 저장한다. 마지막 요소에는 2⁹값을 저장한다. for 루프를 이용하여 two[] 배열의 전체 요소의 값을 출력하는 프로그램을 작성하라.</p><div class="options"></div></div></div><details class="original" data-original-problem="p6"><summary>기출 원문 보기</summary><p>3장 배열, 구조체, 포인터 · 04번 · 책 98쪽</p><p>크기가 10인 배열 two[]를 선언하고 여기에 2의 제곱 값들을 저장해보자. 즉 배열의 첫 번째 요소에는 2⁰을 저장하고 두 번째 요소에는 2¹값을 저장한다. 마지막 요소에는 2⁹값을 저장한다. for 루프를 이용하여 two[] 배열의 전체 요소의 값을 출력하는 프로그램을 작성하라.</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>two[0]부터 two[9]까지 2⁰..2⁹를 저장하고 출력해요.</p></div>
+<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>원소 수=10×20=200을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>행×열×int 크기 = 800</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p2"><h3>P2. 배열에 2의 거듭제곱 저장</h3><p class="panel-meta">textbook-ch03-q04 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p2">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p2"><div class="layer formal" data-source-problem="p2"><div data-source-field="conditions"><p>크기가 10인 배열 two[]를 선언하고 여기에 2의 제곱 값들을 저장해보자. 즉 배열의 첫 번째 요소에는 2⁰을 저장하고 두 번째 요소에는 2¹값을 저장한다. 마지막 요소에는 2⁹값을 저장한다. for 루프를 이용하여 two[] 배열의 전체 요소의 값을 출력하는 프로그램을 작성하라.</p><div class="options"></div></div></div><details class="original" data-original-problem="p2"><summary>교과서 원문 보기</summary><p>3장 배열, 구조체, 포인터 · 04번 · 책 98쪽</p><p>크기가 10인 배열 two[]를 선언하고 여기에 2의 제곱 값들을 저장해보자. 즉 배열의 첫 번째 요소에는 2⁰을 저장하고 두 번째 요소에는 2¹값을 저장한다. 마지막 요소에는 2⁹값을 저장한다. for 루프를 이용하여 two[] 배열의 전체 요소의 값을 출력하는 프로그램을 작성하라.</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>two[0]부터 two[9]까지 2⁰..2⁹를 저장하고 출력해요.</p></div>
 <div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“이전 값의 두 배”라는 점화식 two[i]=2×two[i−1]로 거듭제곱 power를 만들 수 있어요. C의 ^는 거듭제곱이 아니라 XOR이므로 쓰지 않아요.</p></div>
 <div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">int two[10];
 two[0] = 1;</code></pre></div>
@@ -685,7 +583,7 @@ int main(void) {
 <div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>int two[10];
 two[0] = 1;</li><li>two[0]=1, 이전 원소×2</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
 <div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>int two[10];
-two[0] = 1;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>two[0]=1, 이전 원소×2</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p7"><h3>P7. 사람 정보를 구조체로</h3><p class="panel-meta">textbook-ch03-q05 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p7">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p7"><div class="layer formal" data-source-problem="p7"><div data-source-field="conditions"><p>person이라는 구조체를 만들어보자. 이 구조체에는 문자 배열로 된 이름, 사람의 나이를 나타내는 정수 값, 각 개인의 월급을 나타내는 float 값 등이 변수로 들어가야 한다.</p><div class="options"></div></div></div><details class="original" data-original-problem="p7"><summary>기출 원문 보기</summary><p>3장 배열, 구조체, 포인터 · 05번 · 책 98쪽</p><p>person이라는 구조체를 만들어보자. 이 구조체에는 문자 배열로 된 이름, 사람의 나이를 나타내는 정수 값, 각 개인의 월급을 나타내는 float 값 등이 변수로 들어가야 한다.</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>이름·나이·월급을 한 사람의 구조체로 묶어요.</p></div>
+two[0] = 1;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>two[0]=1, 이전 원소×2</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p3"><h3>P3. 사람 정보를 구조체로</h3><p class="panel-meta">textbook-ch03-q05 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p3">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p3"><div class="layer formal" data-source-problem="p3"><div data-source-field="conditions"><p>person이라는 구조체를 만들어보자. 이 구조체에는 문자 배열로 된 이름, 사람의 나이를 나타내는 정수 값, 각 개인의 월급을 나타내는 float 값 등이 변수로 들어가야 한다.</p><div class="options"></div></div></div><details class="original" data-original-problem="p3"><summary>교과서 원문 보기</summary><p>3장 배열, 구조체, 포인터 · 05번 · 책 98쪽</p><p>person이라는 구조체를 만들어보자. 이 구조체에는 문자 배열로 된 이름, 사람의 나이를 나타내는 정수 값, 각 개인의 월급을 나타내는 float 값 등이 변수로 들어가야 한다.</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>이름·나이·월급을 한 사람의 구조체로 묶어요.</p></div>
 <div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>서로 다른 타입 필드는 structure의 단서예요. name은 문자 배열 char[], age는 int, salary는 문제에서 지정한 float예요.</p></div>
 <div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>struct person { 를 먼저 적어요.</p></div>
 <div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">struct person {
@@ -696,7 +594,7 @@ two[0] = 1;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4
 <div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>세 필드의 타입과 이름을 요구사항과 하나씩 대조해요. name의 100칸은 설계 선택이며 최대 99바이트와 종료 널을 보관해요. 문제는 길이를 지정하지 않아 다른 적절한 길이도 가능해요. C 컴파일로 멤버 접근과 선언을 확인해요.</p></div></div>
 <div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>서로 다른 필드를 int 배열 하나로 대신하지 않아요. 구조체 선언 끝의 세미콜론도 필요해요.</p></div>
 <div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>struct person { 를 먼저 적어요.</li><li>char name[], int age, float salary</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>struct person { 를 먼저 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>char name[], int age, float salary</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p8"><h3>P8. typedef로 complex 만들기</h3><p class="panel-meta">textbook-ch03-q06 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p8">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p8"><div class="layer formal" data-source-problem="p8"><div data-source-field="conditions"><p>C언어의 typedef을 이용하여 complex라고 하는 새로운 자료형을 정의하라. complex 자료형은 구조체로서 float형인 real 변수와 역시 float형인 imaginary 변수를 갖는다. complex 자료형으로 변수 c1과 c2를 선언하여보라.</p><div class="options"></div></div></div><details class="original" data-original-problem="p8"><summary>기출 원문 보기</summary><p>3장 배열, 구조체, 포인터 · 06번 · 책 98쪽</p><p>C언어의 typedef을 이용하여 complex라고 하는 새로운 자료형을 정의하라. complex 자료형은 구조체로서 float형인 real 변수와 역시 float형인 imaginary 변수를 갖는다. complex 자료형으로 변수 c1과 c2를 선언하여보라.</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>실수부와 허수부를 갖는 타입 complex를 만들고 두 변수를 선언해요.</p></div>
+<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>struct person { 를 먼저 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>char name[], int age, float salary</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p4"><h3>P4. typedef로 complex 만들기</h3><p class="panel-meta">textbook-ch03-q06 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p4">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p4"><div class="layer formal" data-source-problem="p4"><div data-source-field="conditions"><p>C언어의 typedef을 이용하여 complex라고 하는 새로운 자료형을 정의하라. complex 자료형은 구조체로서 float형인 real 변수와 역시 float형인 imaginary 변수를 갖는다. complex 자료형으로 변수 c1과 c2를 선언하여보라.</p><div class="options"></div></div></div><details class="original" data-original-problem="p4"><summary>교과서 원문 보기</summary><p>3장 배열, 구조체, 포인터 · 06번 · 책 98쪽</p><p>C언어의 typedef을 이용하여 complex라고 하는 새로운 자료형을 정의하라. complex 자료형은 구조체로서 float형인 real 변수와 역시 float형인 imaginary 변수를 갖는다. complex 자료형으로 변수 c1과 c2를 선언하여보라.</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>실수부와 허수부를 갖는 타입 complex를 만들고 두 변수를 선언해요.</p></div>
 <div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>typedef는 새로운 표현을 발명하는 것이 아니라 기존 타입에 이름 alias를 붙여요. real과 imaginary는 float, c1과 c2는 이 두 필드를 갖는 객체예요.</p></div>
 <div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>typedef struct { 로 시작해요.</p></div>
 <div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">typedef struct {
@@ -707,7 +605,63 @@ complex c1, c2;</code></pre></div></div>
 <div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>complex c1,c2는 각각 두 float 멤버를 가진 변수를 만들어요. C 컴파일에서 c1.real=1.0f, c2.imaginary=2.0f 접근이 가능해요. typedef 선언만으로는 c1,c2 객체가 생기지 않으므로 별도 선언을 확인해요.</p></div></div>
 <div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>complex를 구조체 태그와 변수 이름으로 혼동하지 않아요.</p></div>
 <div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>typedef struct { 로 시작해요.</li><li>typedef 별명 뒤 변수 c1,c2 선언</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>typedef struct { 로 시작해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>typedef 별명 뒤 변수 c1,c2 선언</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article></section>
+<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>typedef struct { 로 시작해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>typedef 별명 뒤 변수 c1,c2 선언</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p5"><h3>P5. 행렬 예제를 C 배열과 세 쌍으로 표현하기</h3><p class="panel-meta">lecture-s03-p14-sparse-triples · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p5">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p5"><div class="layer formal" data-source-problem="p5"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S3 p14</p><p>코드는 강의 그림의 행렬 A를 C로 옮긴 것이에요. 0부터 시작하는 (행,열,값)으로 0이 아닌 원소를 행 우선 순서대로 나열하세요. 9개 값 저장과 세 정수로 된 7개 항 저장 중 이 예제에서 어느 쪽이 적은 정수를 쓰는지 비교하고, 희소 표현이 언제 유리한지도 설명하세요.</p><pre><code class="language-c">/* 강의의 행렬 A를 C 초기화식으로 옮긴 자체 작성 코드 */
+int A[3][3]={{2,3,0},{8,9,1},{7,0,5}};</code></pre></div></div><details class="original" data-original-problem="p5"><summary>강의 예제 보기</summary><p>S3 p14 · Software_3_ArrayStructureList.pdf. 그림의 행렬 A를 C 초기화식으로 옮긴 자체 작성 코드이며 강의 원문 C 코드는 아닙니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">/* 강의의 행렬 A를 C 초기화식으로 옮긴 자체 작성 코드 */
+int A[3][3]={{2,3,0},{8,9,1},{7,0,5}};</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>코드는 강의 그림의 행렬 A를 C로 옮긴 것이에요. 0부터 시작하는 (행,열,값)으로 0이 아닌 원소를 행 우선 순서대로 나열하세요. 9개 값 저장과 세 정수로 된 7개 항 저장 중 이 예제에서 어느 쪽이 적은 정수를 쓰는지 비교하고, 희소 표현이 언제 유리한지도 설명하세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “행렬 예제를 C 배열과 세 쌍으로 표현하기”예요. 행 0에서 2,3을 기록하고 0은 빼요. 행 1에는 세 값이 모두 있고 행 2에는 첫 칸과 끝 칸이 있어요. 0이 조금 있다고 희소 표현이 항상 작은 것은 아니에요. t가 충분히 작아야 주소 정보의 추가 비용을 상쇄해요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>행 0, 열 0의 값 2를 (0,0,2)로 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>행 0에서 2,3을 기록하고 0은 빼요. 행 1에는 세 값이 모두 있고 행 2에는 첫 칸과 끝 칸이 있어요.</li><li>값만 저장하는 배열과 달리 삼중항에는 각 값의 행과 열도 들어가요. 따라서 7×3=21개 정수예요.</li><li>0이 조금 있다고 희소 표현이 항상 작은 것은 아니에요. t가 충분히 작아야 주소 정보의 추가 비용을 상쇄해요.</li></ol><p>(0,0,2),(0,1,3),(1,0,8),(1,1,9),(1,2,1),(2,0,7),(2,2,5). 전체 배열 9개, 삼중항 21개 정수이므로 A에서는 전체 배열이 작다. 행렬 크기 부가정보를 제외하면 3t&lt;행수×열수일 때 삼중항이 작다.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>(0,0,2),(0,1,3),(1,0,8),(1,1,9),(1,2,1),(2,0,7),(2,2,5). 전체 배열 9개, 삼중항 21개 정수이므로 A에서는 전체 배열이 작다. 행렬 크기 부가정보를 제외하면 3t&lt;행수×열수일 때 삼중항이 작다.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. 0이 조금 있다고 희소 표현이 항상 작은 것은 아니에요. t가 충분히 작아야 주소 정보의 추가 비용을 상쇄해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>항 개수 7개와 저장하는 정수 개수 21개를 혼동하지 마세요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>행 0, 열 0의 값 2를 (0,0,2)로 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>행 0에서 2,3을 기록하고 0은 빼요. 행 1에는 세 값이 모두 있고 행 2에는 첫 칸과 끝 칸이 있어요.</p></div><div class="summary-group"><h4>검산</h4><p>(0,0,2),(0,1,3),(1,0,8),(1,1,9),(1,2,1),(2,0,7),(2,2,5). 전체 배열 9개, 삼중항 21개 정수이므로 A에서는 전체 배열이 작다. 행렬 크기 부가정보를 제외하면 3t&lt;행수×열수일 때 삼중항이 작다.</p></div></div></article><article class="topic" id="p6"><h3>P6. 하노이 코드의 매개변수 역할</h3><p class="panel-meta">lecture-s02-p19-hanoi · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p6">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p6"><div class="layer formal" data-source-problem="p6"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S2 p19</p><p>n≥1이에요. hanoi_tower(3,'A','B','C')의 이동을 원판 번호와 출발·도착 막대로 쓰세요. 첫 번째 순환 호출에서 to와 tmp의 위치가 바뀌는 이유와 최소 이동 횟수의 점화식도 설명하세요.</p><pre><code class="language-c">void hanoi_tower(int n, char from, char tmp, char to)
+{
+    if(n==1) printf("원판1을%c에서%c으로옮긴다.\n",from,to);
+    else {
+        hanoi_tower(n-1,from,to,tmp);
+        printf("원판%d을%c에서%c으로옮긴다.\n",n,from,to);
+        hanoi_tower(n-1,tmp,from,to);
+    }
+}</code></pre></div></div><details class="original" data-original-problem="p6"><summary>강의 예제 보기</summary><p>S2 p19 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">void hanoi_tower(int n, char from, char tmp, char to)
+{
+    if(n==1) printf("원판1을%c에서%c으로옮긴다.\n",from,to);
+    else {
+        hanoi_tower(n-1,from,to,tmp);
+        printf("원판%d을%c에서%c으로옮긴다.\n",n,from,to);
+        hanoi_tower(n-1,tmp,from,to);
+    }
+}</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>n≥1이에요. hanoi_tower(3,'A','B','C')의 이동을 원판 번호와 출발·도착 막대로 쓰세요. 첫 번째 순환 호출에서 to와 tmp의 위치가 바뀌는 이유와 최소 이동 횟수의 점화식도 설명하세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “하노이 코드의 매개변수 역할”예요. 가장 큰 원판을 A에서 C로 옮기기 전에 위의 2개를 B로 옮겨야 해요. 그래서 첫 호출의 도착 막대는 tmp(B)이고 보조 막대는 to(C)가 돼요. 위 n-1개 이동, 가장 큰 원판 1회, 위 n-1개 이동이 반드시 필요해요. 같은 전략으로 이 하한을 달성하므로 점화식은 최소 횟수예요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>맨 큰 원판 3을 A→C로 옮기려면 위 2개를 A→B로 먼저 옮겨요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>가장 큰 원판을 A에서 C로 옮기기 전에 위의 2개를 B로 옮겨야 해요. 그래서 첫 호출의 도착 막대는 tmp(B)이고 보조 막대는 to(C)가 돼요.</li><li>hanoi(2,A,C,B)는 1:A→C,2:A→B,1:C→B를 출력해요. 이어서 3:A→C를 출력해요.</li><li>마지막 hanoi(2,B,A,C)는 1:B→A,2:B→C,1:A→C를 출력해요.</li><li>위 n-1개 이동, 가장 큰 원판 1회, 위 n-1개 이동이 반드시 필요해요. 같은 전략으로 이 하한을 달성하므로 점화식은 최소 횟수예요.</li></ol><p>1:A→C, 2:A→B, 1:C→B, 3:A→C, 1:B→A, 2:B→C, 1:A→C. T(1)=1, T(n)=2T(n-1)+1, T(3)=7.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>1:A→C, 2:A→B, 1:C→B, 3:A→C, 1:B→A, 2:B→C, 1:A→C. T(1)=1, T(n)=2T(n-1)+1, T(3)=7.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. 위 n-1개 이동, 가장 큰 원판 1회, 위 n-1개 이동이 반드시 필요해요. 같은 전략으로 이 하한을 달성하므로 점화식은 최소 횟수예요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>from,tmp,to는 고정된 막대 이름이 아니라 현재 호출에서 맡은 역할이에요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>맨 큰 원판 3을 A→C로 옮기려면 위 2개를 A→B로 먼저 옮겨요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>가장 큰 원판을 A에서 C로 옮기기 전에 위의 2개를 B로 옮겨야 해요. 그래서 첫 호출의 도착 막대는 tmp(B)이고 보조 막대는 to(C)가 돼요.</p></div><div class="summary-group"><h4>검산</h4><p>1:A→C, 2:A→B, 1:C→B, 3:A→C, 1:B→A, 2:B→C, 1:A→C. T(1)=1, T(n)=2T(n-1)+1, T(3)=7.</p></div></div></article><article class="topic" id="p7"><h3>P7. 계수 배열의 순서와 공간 낭비</h3><p class="panel-meta">lecture-s03-p7-polynomial · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p7">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p7"><div class="layer formal" data-source-problem="p7"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S3 p7</p><p>MAX_DEGREE는 6 이상이에요. 강의의 내림차순 계수 저장 규칙으로 a가 나타내는 다항식과 coef[4]의 차수를 쓰세요. 1000차 항과 상수항만 있는 다항식을 이 방식과 (계수,차수) 쌍 방식으로 저장할 때 필요한 유효 항목 수를 비교하세요.</p><pre><code class="language-c">typedef struct {
+    int degree;
+    float coef[MAX_DEGREE];
+} polynomial;
+polynomial a = {5,{10,0,0,0,6,3}};</code></pre></div></div><details class="original" data-original-problem="p7"><summary>강의 예제 보기</summary><p>S3 p7 · Software_3_ArrayStructureList.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">typedef struct {
+    int degree;
+    float coef[MAX_DEGREE];
+} polynomial;
+polynomial a = {5,{10,0,0,0,6,3}};</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>MAX_DEGREE는 6 이상이에요. 강의의 내림차순 계수 저장 규칙으로 a가 나타내는 다항식과 coef[4]의 차수를 쓰세요. 1000차 항과 상수항만 있는 다항식을 이 방식과 (계수,차수) 쌍 방식으로 저장할 때 필요한 유효 항목 수를 비교하세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “계수 배열의 순서와 공간 낭비”예요. degree=5이므로 인덱스 i의 차수는 5-i예요. coef[0]은 5차, coef[4]는 1차, coef[5]는 상수항이에요. 1000차부터 0차까지는 총 1001개예요. 쌍 표현은 0이 아닌 두 항만 저장하지만 각 항의 차수도 별도로 저장해야 해요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>인덱스 i의 차수는 degree-i=5-i라고 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>degree=5이므로 인덱스 i의 차수는 5-i예요. coef[0]은 5차, coef[4]는 1차, coef[5]는 상수항이에요.</li><li>0인 계수도 자리를 차지하므로 x^4,x^3,x² 항이 없다는 사실을 배열에 남겨요.</li><li>1000차부터 0차까지는 총 1001개예요. 쌍 표현은 0이 아닌 두 항만 저장하지만 각 항의 차수도 별도로 저장해야 해요.</li></ol><p>10x^5+6x+3, coef[4]는 1차 항. 모든 차수 배열은 1001개 계수, 쌍 방식은 2개 항(계수와 차수 각각 2개)을 저장한다.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>10x^5+6x+3, coef[4]는 1차 항. 모든 차수 배열은 1001개 계수, 쌍 방식은 2개 항(계수와 차수 각각 2개)을 저장한다.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. 1000차부터 0차까지는 총 1001개예요. 쌍 표현은 0이 아닌 두 항만 저장하지만 각 항의 차수도 별도로 저장해야 해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>이 강의에서는 coef[0]이 상수항이 아니에요. 저장 규칙을 먼저 확인하세요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>인덱스 i의 차수는 degree-i=5-i라고 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>degree=5이므로 인덱스 i의 차수는 5-i예요. coef[0]은 5차, coef[4]는 1차, coef[5]는 상수항이에요.</p></div><div class="summary-group"><h4>검산</h4><p>10x^5+6x+3, coef[4]는 1차 항. 모든 차수 배열은 1001개 계수, 쌍 방식은 2개 항(계수와 차수 각각 2개)을 저장한다.</p></div></div></article><article class="topic" id="p8"><h3>P8. 자체 참조 구조체의 링크 타입</h3><p class="panel-meta">lecture-s03-p18-self-reference · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p8">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p8"><div class="layer formal" data-source-problem="p8"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S3 p18</p><p>link의 자료형을 가리고 복원하세요. link를 포인터가 아닌 struct ListNode link;로 선언할 수 없는 이유를 설명하고, ListNode *p에서 데이터와 다음 노드에 접근하는 식을 쓰세요.</p><pre><code class="language-c">typedef struct ListNode {
+    char data[10];
+    /* link 필드를 선언하세요 */
+} ListNode;</code></pre></div></div><details class="original" data-original-problem="p8"><summary>강의 예제 보기</summary><p>S3 p18 · Software_3_ArrayStructureList.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">typedef struct ListNode {
+    char data[10];
+    struct ListNode *link;
+} ListNode;</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>link의 자료형을 가리고 복원하세요. link를 포인터가 아닌 struct ListNode link;로 선언할 수 없는 이유를 설명하고, ListNode *p에서 데이터와 다음 노드에 접근하는 식을 쓰세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “자체 참조 구조체의 링크 타입”예요. 현재 구조체 정의 안에서는 struct ListNode라는 태그로 자신을 지칭할 수 있어요. typedef 이름은 정의 끝에서 만들어져요. p가 유효한 노드를 가리킬 때 -&gt;로 필드를 읽어요. p-&gt;link는 다음 노드의 주소이고 *(p-&gt;link)는 그 노드예요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>struct ListNode *link;처럼 주소를 저장하는 필드를 선언해요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>현재 구조체 정의 안에서는 struct ListNode라는 태그로 자신을 지칭할 수 있어요. typedef 이름은 정의 끝에서 만들어져요.</li><li>포인터는 다른 노드의 주소만 보관하므로 크기가 유한해요. 노드 자체를 값으로 포함하는 선언은 불가능해요.</li><li>p가 유효한 노드를 가리킬 때 -&gt;로 필드를 읽어요. p-&gt;link는 다음 노드의 주소이고 *(p-&gt;link)는 그 노드예요.</li></ol><p>struct ListNode *link;. 같은 구조체를 값으로 포함하면 자신의 크기를 무한히 포함해야 하므로 완성할 수 없다. 데이터 p-&gt;data, 다음 노드 p-&gt;link.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>struct ListNode *link;. 같은 구조체를 값으로 포함하면 자신의 크기를 무한히 포함해야 하므로 완성할 수 없다. 데이터 p-&gt;data, 다음 노드 p-&gt;link.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. p가 유효한 노드를 가리킬 때 -&gt;로 필드를 읽어요. p-&gt;link는 다음 노드의 주소이고 *(p-&gt;link)는 그 노드예요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>포인터 선언만으로 다음 노드가 자동 할당되지는 않아요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>struct ListNode *link;처럼 주소를 저장하는 필드를 선언해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>현재 구조체 정의 안에서는 struct ListNode라는 태그로 자신을 지칭할 수 있어요. typedef 이름은 정의 끝에서 만들어져요.</p></div><div class="summary-group"><h4>검산</h4><p>struct ListNode *link;. 같은 구조체를 값으로 포함하면 자신의 크기를 무한히 포함해야 하므로 완성할 수 없다. 데이터 p-&gt;data, 다음 노드 p-&gt;link.</p></div></div></article></section>
   </main>
   <footer>원 문제·정리노트·PDF는 보존해요.</footer>
     </div>
@@ -803,7 +757,7 @@ complex c1, c2;</code></pre></div></div>
       function docked() {
         const pref = store.get(PREF, {});
         // 문제해설은 본문 왼쪽 문제 패널을 기본으로 연다
-        if (kind === 'explain') return { left: pref.left ?? roomyMq.matches, prob: pref.prob ?? true, right: pref.right ?? false };
+        if (kind === 'explain') return { left: pref.left ?? wideMq.matches, prob: pref.prob ?? true, right: pref.right ?? false };
         return { left: pref.left ?? true, prob: false, right: pref.right ?? roomyMq.matches };
       }
       // 본문이 최소 폭(320px)보다 좁아지면 먼저 직접 넓힌 패널(문제 → 요약)을 이번 화면에서만 줄이고,
@@ -1279,7 +1233,7 @@ complex c1, c2;</code></pre></div></div>
         const ui = {};
         let targetTimer = 0;
         const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // 판정 알림과 보기 스크롤: 생명과학 문제설명 스킬 be26a42 에서 이식 (root→document, win→window)
+        // 판정 알림과 보기 스크롤: pinned bio template review-interaction.js에서 복사 (root→document, win→window)
         function scrollAnswerIntoView(scroller, selectedLi, answerLi, selectedButton, answerButton) {
             if (!scroller || !selectedLi.getClientRects().length) return;
             const viewport = scroller.getBoundingClientRect();
@@ -1296,7 +1250,7 @@ complex c1, c2;</code></pre></div></div>
               target = span(selectedButton, selectedButton);
             scroller.scrollTop += (target.top + target.bottom - viewport.top - viewport.bottom) / 2;
           }
-  
+
         let feedback = null;
         let feedbackTimer = null;
         let feedbackOwner = null;
@@ -1505,7 +1459,8 @@ complex c1, c2;</code></pre></div></div>
           curId = key === 'intro' ? null : key;
           Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
           empty.hidden = Boolean(sums[key]);
-          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
+          if (key === 'intro') sub.textContent = '전체 흐름';
+          else sub.innerHTML = (s.querySelector('h3') || {}).innerHTML || ''; // preserve rendered title math
           if (wideMq.matches) {
             Object.keys(panes).forEach((id) => { panes[id].hidden = id !== curId; });
             Object.keys(origs).forEach((id) => { origs[id].hidden = id !== curId; });

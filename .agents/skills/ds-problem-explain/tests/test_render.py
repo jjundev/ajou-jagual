@@ -15,6 +15,13 @@ def make(tmp_path):
     p=pack.problems[0]
     return pack,{p.id:fragment(p)}
 
+@pytest.mark.parametrize('source,label',[('lecture-s02-p10-power','강의 예제 보기'),('textbook-ch02-q01','교과서 원문 보기')])
+def test_non_exam_original_label(tmp_path,source,label):
+    pack,fragments=make(tmp_path)
+    pack=replace(pack,problems=(replace(pack.problems[0],source=source),))
+    result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')
+    assert '<summary>'+label+'</summary>' in result.html.read_text(encoding='utf-8')
+
 def test_legacy_statement_rendered_once(tmp_path):
     pack,fragments=make(tmp_path)
     result=build_explanation(pack,fragments,tmp_path/'stage',tmp_path/'repo')

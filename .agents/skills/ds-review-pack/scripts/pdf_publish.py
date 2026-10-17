@@ -1,5 +1,8 @@
 """Hash-bound visual review gate and pack-level backup/rollback."""
-import fcntl
+try:
+    import fcntl
+except ImportError:
+    fcntl=None
 import hashlib
 import json
 import os
@@ -11,6 +14,18 @@ from pdf_cards import digest, ensure_report_owner
 from pdf_types import PdfError
 from pack_layout import pdf_report_path
 from pdf_ds_layout import check_extension
+
+def lock_handle(handle):
+    if fcntl:
+        fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    else:
+        import msvcrt
+        try:
+            handle.seek(0)
+            if not handle.read(1):handle.write('0');handle.flush()
+            handle.seek(0)
+            msvcrt.locking(handle.fileno(),msvcrt.LK_NBLCK,1)
+        except OSError as exc:raise BlockingIOError('lock busy') from exc
 
 
 def dump(path,value):
@@ -37,8 +52,8 @@ def publish_stage(run,repo):
     if report['checks']['status']!='pass' or report['checks']['errors']:raise PdfError('Machine checks not pass')
     lockdir=Path(tempfile.gettempdir())/'ds-pdf-locks';lockdir.mkdir(exist_ok=True)
     lock=lockdir/(hashlib.sha256(str(dest).encode()).hexdigest()+'.lock')
-    with lock.open('a') as handle:
-        try:fcntl.flock(handle,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    with lock.open('a+') as handle:
+        try:lock_handle(handle)
         except BlockingIOError as exc:raise PdfError('Pack publication lock busy') from exc
         if report.get('code_style_version'):
             from pdf_code import check_font_assets
@@ -68,7 +83,7 @@ def publish_stage(run,repo):
                 with temp.open('wb') as output:
                     output.write(src.read_bytes());output.flush();os.fsync(output.fileno())
                 os.replace(temp,target);completed.append(target)
-            for folder in {target.parent for _,target in files}:
+            for folder in ({target.parent for _,target in files} if os.name!='nt' else []):
                 fd=os.open(folder,os.O_RDONLY)
                 try:os.fsync(fd)
                 finally:os.close(fd)

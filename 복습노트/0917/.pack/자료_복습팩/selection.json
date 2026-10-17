@@ -1,284 +1,690 @@
 {
-  "range": "0917",
-  "mode": "retrofit",
-  "taught_evidence": {
-    "range_ch": [
-      2
-    ],
-    "taught": [
-      1,
-      2
-    ],
-    "taught_pages": "S2 p3–18",
-    "preview": "하노이 완성코드는 다음 수업"
-  },
-  "concept_overrides": {},
+  "mode": "revision",
+  "policy_version": "review-questions-2026-10-17",
   "selected": [
     {
-      "id": "p9",
-      "source": "textbook-ch02-q06",
-      "source_kind": "textbook",
-      "original_id": "ch02-q06",
+      "id": "p1",
+      "part": "partA",
+      "source": "2018-mid-c024-q15",
+      "variant": false,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "if"
+      ],
+      "answer": "if ( j == 0 ) return i; else return gcd( j, i%j );   (48 18 → gcd:6)",
+      "objectives": [
+        "retained-2018-mid-c024-q15"
+      ],
+      "task_family": "2018-mid-c024-q15",
+      "origin": "retained",
+      "old_id": "p3",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "45054011afec95be28f5d0cea2ed2b7654709f602e49471e57674188587bfe86",
+        "independent_answer": "int gcd(int i,int j){ if(j==0) return i; return gcd(j,i%j); }",
+        "reasoning": "For positive inputs, gcd(i,j)=gcd(j,i mod j); the nonnegative remainder is smaller than j. The second argument reaches zero, at which point the first is the gcd.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0917/정리노트_0917_Recursion.html",
-          "locator": "#s0-structure",
-          "sha256": "ea7f7ad8b6fe97816a9744988252df760035f7f91aa99b032988ed66936583c7"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0917/p1"
         },
         {
-          "path": "STT/0917 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s0-structure",
-          "sha256": "815e66bd3fe60fb58d75e6b7af51ac98223d3acfe3b98e7a325a2e8b32ea0c45"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
-          "locator": "PDF page 6",
-          "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0917/p1"
         }
-      ],
-      "answer": "종료 조건이 없어 호출이 끝나지 않음",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch02-q06",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/02_순환_연습문제.json",
-        "payload_sha256": "955f747839787cf5d5d0699c8b3d58883e778378823a959599d1bf24d10a9e52",
-        "source_refs": [
-          {
-            "source_id": "s02",
-            "pdf_page": 1,
-            "book_page": 63
-          }
-        ],
-        "sources": [
-          {
-            "id": "s02",
-            "path": "origin/02_순환_연습문제.pdf",
-            "sha256": "25167006c3fde12ae9b65da97a9e4cdea43503b3d0c21a43d92514e5ca99bc99",
-            "page_count": 5
-          }
-        ]
-      }
+      ]
     },
     {
-      "id": "p10",
+      "id": "p2",
+      "part": "partA",
+      "source": "2017-mid-c050-q11",
+      "variant": false,
+      "anchor": "s0-factorial",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "0→0"
+      ],
+      "answer": "n>=2이면 dec_to_bin(n/2) 호출 후 printf(\"%d\",n%2). 10→1010, 0→0.",
+      "objectives": [
+        "retained-2017-mid-c050-q11"
+      ],
+      "task_family": "2017-mid-c050-q11",
+      "origin": "retained",
+      "old_id": "p5",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "1713b2b1919edcd673beec3712285d626e9493d00d71b6c3aea5e175db7ccfe2",
+        "independent_answer": "void dec_to_bin(int n){ if(n>=2) dec_to_bin(n/2); printf(\"%d\",n%2); }\nInput 0 prints 0; input 10 prints 1010.",
+        "reasoning": "For n>=2, recurse on its higher-order binary digits via n/2, then print the final digit n%2 on return. For n=0 or 1 the recursive branch is skipped and that one digit is printed. For 10: calls 10,5,2,1; emitted digits 1,0,1,0. Only nonnegative int inputs are required, so no negative-value or INT_MIN convention is needed.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0917/p2"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0917/p2"
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "part": "partA",
       "source": "textbook-ch02-q09",
       "source_kind": "textbook",
-      "original_id": "ch02-q09",
-      "prerequisites": [],
-      "evidence": [
-        {
-          "path": "복습노트/0917/정리노트_0917_Recursion.html",
-          "locator": "#s0-structure",
-          "sha256": "ea7f7ad8b6fe97816a9744988252df760035f7f91aa99b032988ed66936583c7"
-        },
-        {
-          "path": "STT/0917 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s0-structure",
-          "sha256": "815e66bd3fe60fb58d75e6b7af51ac98223d3acfe3b98e7a325a2e8b32ea0c45"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
-          "locator": "PDF page 5",
-          "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe"
-        }
+      "variant": false,
+      "anchor": "s0-structure",
+      "level": 2,
+      "date": "0917",
+      "terms": [
+        "출력: 10 7 4 1 -2 / 반환값: 3"
       ],
       "answer": "출력: 10 7 4 1 -2 / 반환값: 3",
+      "objectives": [
+        "retained-textbook-ch02-q09"
+      ],
+      "task_family": "textbook-ch02-q09",
+      "origin": "retained",
+      "old_id": "p10",
       "verification": {
-        "method": "c-run",
-        "reference": "answers.py:ch02-q09",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/02_순환_연습문제.json",
-        "payload_sha256": "f615318bc8c589f5d3ba9d83f37f95471e8e9514ad4cba2eb0792ba35004be1a",
-        "source_refs": [
-          {
-            "source_id": "s02",
-            "pdf_page": 2,
-            "book_page": 64
-          }
-        ],
-        "sources": [
-          {
-            "id": "s02",
-            "path": "origin/02_순환_연습문제.pdf",
-            "sha256": "25167006c3fde12ae9b65da97a9e4cdea43503b3d0c21a43d92514e5ca99bc99",
-            "page_count": 5
-          }
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "24304f95a3a5bbe62b30c7c7e6ed88d6c2c5653486b64d2a383ff51c8e5f1f7f",
+        "independent_answer": "Printed on separate lines: 10, 7, 4, 1, -2. Return value: 3.",
+        "reasoning": "-2 prints before its base test and returns -1. Unwinding yields return values 0 at n=1, 1 at n=4, 2 at n=7, 3 at n=10.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
         ]
-      }
-    },
-    {
-      "id": "p11",
-      "source": "textbook-ch02-q13",
-      "source_kind": "textbook",
-      "original_id": "ch02-q13",
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0917/정리노트_0917_Recursion.html",
-          "locator": "#s1-vs-iter",
-          "sha256": "ea7f7ad8b6fe97816a9744988252df760035f7f91aa99b032988ed66936583c7"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0917/p3"
         },
         {
-          "path": "STT/0917 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-vs-iter",
-          "sha256": "815e66bd3fe60fb58d75e6b7af51ac98223d3acfe3b98e7a325a2e8b32ea0c45"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
-          "locator": "PDF page 4",
-          "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0917/p3"
         }
-      ],
-      "answer": "n≤1이면 1, 아니면 n+sum(n-1)",
-      "verification": {
-        "method": "c-run",
-        "reference": "answers.py:ch02-q13",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/02_순환_연습문제.json",
-        "payload_sha256": "da4b40961f3e8ca894085964e1159d858f8346898cef693d9be9aef4425f3f9d",
-        "source_refs": [
-          {
-            "source_id": "s02",
-            "pdf_page": 3,
-            "book_page": 65
-          }
-        ],
-        "sources": [
-          {
-            "id": "s02",
-            "path": "origin/02_순환_연습문제.pdf",
-            "sha256": "25167006c3fde12ae9b65da97a9e4cdea43503b3d0c21a43d92514e5ca99bc99",
-            "page_count": 5
-          }
-        ]
-      }
+      ]
     },
     {
-      "id": "p12",
+      "id": "p4",
+      "part": "partA",
       "source": "textbook-ch02-q16",
       "source_kind": "textbook",
-      "original_id": "ch02-q16",
+      "variant": false,
+      "anchor": "s1-vs-iter",
+      "level": 3,
+      "date": "0917",
+      "terms": [
+        "total=0에서 1..n을 더해 반환"
+      ],
+      "answer": "total=0에서 1..n을 더해 반환",
+      "objectives": [
+        "retained-textbook-ch02-q16"
+      ],
+      "task_family": "textbook-ch02-q16",
+      "origin": "retained",
+      "old_id": "p12",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "1c59aba31968c1a4c2d61c3d885dfaebc22fe6891eca8cf3b087fd7e4b33804c",
+        "independent_answer": "int sum(int n){int s=0; for(int i=n;i>=1;--i) s+=i; return s;} for n>=1 and representable sums.",
+        "reasoning": "Descending accumulation evaluates n+(n-1)+...+1, the same recurrence expansion; a loop replaces call-stack storage.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0917/정리노트_0917_Recursion.html",
-          "locator": "#s1-vs-iter",
-          "sha256": "ea7f7ad8b6fe97816a9744988252df760035f7f91aa99b032988ed66936583c7"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0917/p4"
         },
         {
-          "path": "STT/0917 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-vs-iter",
-          "sha256": "815e66bd3fe60fb58d75e6b7af51ac98223d3acfe3b98e7a325a2e8b32ea0c45"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
-          "locator": "PDF page 8",
-          "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0917/p4"
         }
+      ]
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "lecture-s02-p10-power",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-power",
+      "level": 3,
+      "date": "0917",
+      "terms": [
+        "거듭제곱: 홀수 분기와 호출 크기"
       ],
-      "answer": "total=0에서 1..n을 더해 반환",
-      "verification": {
-        "method": "c-run",
-        "reference": "answers.py:ch02-q16",
-        "result": "pass"
+      "answer": "홀수 분기 x*power(x*x,(n-1)/2). 호출 (2,5)→(4,2)→(16,1)→(256,0), 반환 1→16→16→32. power는 O(log n), slow_power는 O(n)이다(n≥1).",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
+        "pdf_page": 10,
+        "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe",
+        "example": "power",
+        "taught_on": "0917",
+        "extra_pages": []
       },
-      "provenance": {
-        "json_path": "교과서/02_순환_연습문제.json",
-        "payload_sha256": "01188986e4074c0db26987d63f291541cb95c9d09fbd634e9405843e86e43f66",
-        "source_refs": [
-          {
-            "source_id": "s02",
-            "pdf_page": 3,
-            "book_page": 65
-          }
-        ],
-        "sources": [
-          {
-            "id": "s02",
-            "path": "origin/02_순환_연습문제.pdf",
-            "sha256": "25167006c3fde12ae9b65da97a9e4cdea43503b3d0c21a43d92514e5ca99bc99",
-            "page_count": 5
-          }
+      "objectives": [
+        "power"
+      ],
+      "task_family": "power",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "75d961290e3ff6bada01cd1203ba1d06feeea383be67df5154c1ce160c5b866f",
+        "independent_answer": "Blank: x*power(x*x,(n-1)/2). Calls (x,n): (2,5)->(4,2)->(16,1)->(256,0). Return values in reverse call order: 1,16,16,32. Final result 32. O(log n) for positive n versus O(n) for slow_power; n=0 is O(1).",
+        "reasoning": "For odd n, x^n=x*(x*x)^((n-1)/2); for even n, x^n=(x*x)^(n/2). The exponent is roughly halved per recursive level, and each level has constant arithmetic work in the given machine-number model. A repeated-multiplication implementation performs n multiplications.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
         ]
-      }
+      },
+      "authoring": {
+        "date": "0917",
+        "ch": 2,
+        "page": 10,
+        "name": "power",
+        "anchor": "s2-power",
+        "title": "거듭제곱: 홀수 분기와 호출 크기",
+        "code": "double power(double x, int n)\n{\n    if(n==0) return 1;\n    else if((n%2)==0) return power(x*x,n/2);\n    else return x*power(x*x,(n-1)/2);\n}",
+        "prompt": "n≥0이고 중간 계산이 double 범위 안에 있다고 가정해요. 홀수 분기를 가리고 반환식을 다시 쓰세요. power(2,5)의 (x,n) 호출 순서와 최종 반환값을 적고, 한 번씩 x를 곱하는 slow_power와 시간복잡도를 비교하세요.",
+        "answer": "홀수 분기 x*power(x*x,(n-1)/2). 호출 (2,5)→(4,2)→(16,1)→(256,0), 반환 1→16→16→32. power는 O(log n), slow_power는 O(n)이다(n≥1).",
+        "steps": [
+          "홀수 n=2k+1이면 x^n=x×(x²)^k예요. 이 항등식에서 홀수 분기의 식이 나와요.",
+          "(2,5)는 2×power(4,2)를 기다리고, (4,2)는 power(16,1)을 기다려요.",
+          "(16,1)은 16×power(256,0)을 기다려요. 마지막 호출이 1을 반환하면 16,16,32로 돌아와요.",
+          "지수가 매번 절반으로 줄어 호출 깊이가 로그로 늘어요. 한 번에 1씩 줄이는 반복 곱셈은 n번 수행해요."
+        ],
+        "pitfall": "짝수 분기를 power(x,n/2)로 쓰면 밑을 제곱하지 않아 원래 거듭제곱과 달라져요."
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0917/p5"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0917/p5"
+        }
+      ]
+    },
+    {
+      "id": "p6",
+      "part": "partB",
+      "source": "lecture-s02-p12-fibonacci",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s3-fib-waste",
+      "level": 3,
+      "date": "0917",
+      "terms": [
+        "피보나치의 중복 호출과 반복 상태"
+      ],
+      "answer": "fib(6)=8, fib(3)은 3회. tmp=current; current+=last; last=tmp;. 두 자식 호출의 하위 호출이 겹치고 계산 결과를 저장하지 않기 때문이다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
+        "pdf_page": 12,
+        "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe",
+        "example": "fibonacci",
+        "taught_on": "0917",
+        "extra_pages": [
+          13,
+          14
+        ]
+      },
+      "objectives": [
+        "fibonacci"
+      ],
+      "task_family": "fibonacci",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "8a7cb8567933ed866a329e220b3226514b7f5a72fe02141b3f20f28c027d8a39",
+        "independent_answer": "fib(6)=8; fib(3) is invoked 3 times. Updates: tmp=last+current; last=current; current=tmp;",
+        "reasoning": "F0=0,F1=1 gives 0,1,1,2,3,5,8. Count of F3 calls: C(3)=1,C(4)=1,C(5)=2,C(6)=3. The new pair must become F(i-1),F(i); tmp preserves the sum before overwriting last. Recursive branches overlap: fib(6) calls fib(5) and fib(4), and fib(5) again calls fib(4).",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "0917",
+        "ch": 2,
+        "page": 12,
+        "name": "fibonacci",
+        "anchor": "s3-fib-waste",
+        "title": "피보나치의 중복 호출과 반복 상태",
+        "code": "int fib(int n)\n{\n    if(n==0) return 0;\n    if(n==1) return 1;\n    return fib(n-1)+fib(n-2);\n}",
+        "prompt": "fib(6)의 값과 실행 중 fib(3)이 호출되는 횟수를 구하세요. 반복 구현에서 last=F(i-2), current=F(i-1)인 상태를 다음 단계로 갱신하려고 해요. tmp를 사용한 세 대입문을 쓰고, 왜 순환 구현에서 같은 부분 문제가 반복되는지 설명하세요.",
+        "answer": "fib(6)=8, fib(3)은 3회. tmp=current; current+=last; last=tmp;. 두 자식 호출의 하위 호출이 겹치고 계산 결과를 저장하지 않기 때문이다.",
+        "steps": [
+          "F(0)=0,F(1)=1이고 두 앞 항을 더하므로 0,1,1,2,3,5,8을 얻어요.",
+          "fib(6)의 자식 fib(5),fib(4)를 나누어 그려요. fib(5) 쪽에서 fib(3)이 2번, fib(4) 쪽에서 1번 호출돼요.",
+          "반복에서는 이전 current를 tmp에 먼저 보관해요. current에 last를 더해 새 항을 만들고 last를 이전 current로 옮겨요.",
+          "last를 먼저 current로 바꿔 버리면 서로 다른 두 항의 합을 유지하지 못해요. 반복은 이미 구한 두 항을 재사용해요."
+        ],
+        "pitfall": "값 F(3)=2와 fib(3)의 호출 횟수 3회를 혼동하지 마세요.",
+        "extra_pages": [
+          13,
+          14
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0917/p6"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0917/p6"
+        }
+      ]
     }
   ],
   "excluded": [
     {
-      "source": "textbook-ch02-q01",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
+      "old_id": "p1",
+      "old_source": "2019-mid-q8",
+      "old_content_sha256": "e633e3564e0e7530244e72c6dea9ce63c3ec87813073b78eda69869e6c40a3b1",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p5",
+        "p6"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch02-q02",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p2",
+      "old_source": "2018-mid-c024-q8",
+      "old_content_sha256": "8872b9c798e4c767bb60f087e08a86399e5ebb49fae2ac45ec2bffc15a17839b",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p5",
+        "p6"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch02-q03",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p4",
+      "old_source": "2018-mid-c102-q1",
+      "old_content_sha256": "9cba19e5f0c98491091d637436c7f259b231cd4bc2060bc3f74356daaf4adec9",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p5",
+        "p6"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch02-q04",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p6",
+      "old_source": "unk-final-ltk-q1",
+      "old_content_sha256": "7ec9a45f87783b320a3bd0032504236ab5cc19c870094307f8859b4d8b25baeb",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p5",
+        "p6"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch02-q05",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
+      "old_id": "p7",
+      "old_source": "2018-mid-c024-q8",
+      "old_content_sha256": "5b35a4651c9ed4c6caf559b7df968657e8d1f262f80394165ccb38f7011d6362",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p5",
+        "p6"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch02-q07",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p8",
+      "old_source": "unk-final-ltk-q1",
+      "old_content_sha256": "ee4049492a888d8046e4c8bad895368ff5c2c1ddac93cb407b3cef46f4f4f728",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p5",
+        "p6"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch02-q08",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p9",
+      "old_source": "textbook-ch02-q06",
+      "old_content_sha256": "56326c61688ea406d949b11a86fcd9386b379573314d1b330cf318acf7e38ebe",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p5",
+        "p6"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch02-q10",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch02-q11",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch02-q12",
-      "reason": "blocking/외부 본문/원문 오류"
-    },
-    {
-      "source": "textbook-ch02-q14",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch02-q15",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch02-q17",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch02-q18",
-      "reason": "blocking/외부 본문/원문 오류"
-    },
-    {
-      "source": "textbook-ch02-q19",
-      "reason": "blocking/외부 본문/원문 오류"
-    },
-    {
-      "source": "textbook-ch02-q20",
-      "reason": "blocking/외부 본문/원문 오류"
-    },
-    {
-      "source": "textbook-ch02-q21",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p11",
+      "old_source": "textbook-ch02-q13",
+      "old_content_sha256": "2a76cd65b410ccf8aaac00ca6b0437c2651f6b4e6429420510ee6cc9f8a180d3",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p5",
+        "p6"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     }
-  ]
+  ],
+  "coverage": [
+    {
+      "objective": "retained-2018-mid-c024-q15",
+      "questions": [
+        "p1"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-2017-mid-c050-q11",
+      "questions": [
+        "p2"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch02-q09",
+      "questions": [
+        "p3"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch02-q16",
+      "questions": [
+        "p4"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "power",
+      "questions": [
+        "p5"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
+        "pdf_page": 10,
+        "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe",
+        "example": "power",
+        "taught_on": "0917",
+        "extra_pages": []
+      }
+    },
+    {
+      "objective": "fibonacci",
+      "questions": [
+        "p6"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
+        "pdf_page": 12,
+        "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe",
+        "example": "fibonacci",
+        "taught_on": "0917",
+        "extra_pages": [
+          13,
+          14
+        ]
+      }
+    }
+  ],
+  "replacements": [
+    {
+      "old_id": "p1",
+      "old_source": "2019-mid-q8",
+      "old_content_sha256": "fa5ab9c4bd4d172576dafe3d5c7e4b54b225b4edd2789670846817465970bd56",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p1"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0917/p1 (2018-mid-c024-q15)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0917",
+          "id": "p1",
+          "source": "2018-mid-c024-q15",
+          "content_sha256": "45054011afec95be28f5d0cea2ed2b7654709f602e49471e57674188587bfe86"
+        }
+      ]
+    },
+    {
+      "old_id": "p2",
+      "old_source": "2018-mid-c024-q8",
+      "old_content_sha256": "2459dbafcf8f9aa7286f7fc7e4d9724e12cb9fae41fcafc37ace2cba4b747f51",
+      "decision": "merge-or-replace",
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p1 (2018-mid-c024-q8)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0914",
+          "id": "p1",
+          "source": "2018-mid-c024-q8",
+          "content_sha256": "ceffea8108660ef51a012f1f1cc4cc2cc916d0588c38e4850b3890cdea75789c"
+        }
+      ]
+    },
+    {
+      "old_id": "p3",
+      "old_source": "2018-mid-c024-q15",
+      "old_content_sha256": "45054011afec95be28f5d0cea2ed2b7654709f602e49471e57674188587bfe86",
+      "decision": "retain",
+      "new_ids": [
+        "p1"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0917",
+          "id": "p1",
+          "source": "2018-mid-c024-q15",
+          "content_sha256": "45054011afec95be28f5d0cea2ed2b7654709f602e49471e57674188587bfe86"
+        }
+      ]
+    },
+    {
+      "old_id": "p4",
+      "old_source": "2018-mid-c102-q1",
+      "old_content_sha256": "86dbe260224363ec823cebadfd776afa5d9213d7f807449fb963cb0c8a8ad210",
+      "decision": "merge-or-replace",
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p2 (2018-mid-c102-q1)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0914",
+          "id": "p2",
+          "source": "2018-mid-c102-q1",
+          "content_sha256": "9b36f9ada48b8e673896fe2db13496228bcf024465937f90c4e218d345f4364f"
+        }
+      ]
+    },
+    {
+      "old_id": "p5",
+      "old_source": "2017-mid-c050-q11",
+      "old_content_sha256": "15939896cab0ea2f95c36123e3265f6297a7e0d26e38bf43bf9052d3bad46267",
+      "decision": "revise-answer",
+      "new_ids": [
+        "p2"
+      ],
+      "reason": "기출 원문 보존; n>=0과 0 한 자리 출력 조건을 명시하고 기존 0 입력의 빈 출력 문제를 수정",
+      "targets": [
+        {
+          "range": "0917",
+          "id": "p2",
+          "source": "2017-mid-c050-q11",
+          "content_sha256": "1713b2b1919edcd673beec3712285d626e9493d00d71b6c3aea5e175db7ccfe2"
+        }
+      ]
+    },
+    {
+      "old_id": "p6",
+      "old_source": "unk-final-ltk-q1",
+      "old_content_sha256": "644d597ffefbcab7d19bd4b11d4113aef7b3e2a04c028f09e0b55fa8f954f2af",
+      "decision": "merge-or-replace",
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p1 (2018-mid-c024-q8)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0914",
+          "id": "p1",
+          "source": "2018-mid-c024-q8",
+          "content_sha256": "ceffea8108660ef51a012f1f1cc4cc2cc916d0588c38e4850b3890cdea75789c"
+        }
+      ]
+    },
+    {
+      "old_id": "p7",
+      "old_source": "2018-mid-c024-q8",
+      "old_content_sha256": "634438c96a99e79ce8301554e058ff879e47c99115425b909f309e375607e80f",
+      "decision": "merge-or-replace",
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p1 (2018-mid-c024-q8)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0914",
+          "id": "p1",
+          "source": "2018-mid-c024-q8",
+          "content_sha256": "ceffea8108660ef51a012f1f1cc4cc2cc916d0588c38e4850b3890cdea75789c"
+        }
+      ]
+    },
+    {
+      "old_id": "p8",
+      "old_source": "unk-final-ltk-q1",
+      "old_content_sha256": "7a45f01feeb04a567f09c649ce45548cde59a20148cc340f1859386ed53b7256",
+      "decision": "merge-or-replace",
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p1 (2018-mid-c024-q8)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0914",
+          "id": "p1",
+          "source": "2018-mid-c024-q8",
+          "content_sha256": "ceffea8108660ef51a012f1f1cc4cc2cc916d0588c38e4850b3890cdea75789c"
+        }
+      ]
+    },
+    {
+      "old_id": "p9",
+      "old_source": "textbook-ch02-q06",
+      "old_content_sha256": "0ac0b1fcb719a99c9bb9bc83f918820584a46e9e6dfc3440428f5ab9963f4c76",
+      "decision": "merge-or-replace",
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p8 (lecture-s02-p4-factorial)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0914",
+          "id": "p8",
+          "source": "lecture-s02-p4-factorial",
+          "content_sha256": "10ef94e6d6f6400c1fa52a39207a4d30f1100e94920ed6d25fccea264c2084b9"
+        }
+      ]
+    },
+    {
+      "old_id": "p10",
+      "old_source": "textbook-ch02-q09",
+      "old_content_sha256": "24304f95a3a5bbe62b30c7c7e6ed88d6c2c5653486b64d2a383ff51c8e5f1f7f",
+      "decision": "retain",
+      "new_ids": [
+        "p3"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0917",
+          "id": "p3",
+          "source": "textbook-ch02-q09",
+          "content_sha256": "24304f95a3a5bbe62b30c7c7e6ed88d6c2c5653486b64d2a383ff51c8e5f1f7f"
+        }
+      ]
+    },
+    {
+      "old_id": "p11",
+      "old_source": "textbook-ch02-q13",
+      "old_content_sha256": "2a76cd65b410ccf8aaac00ca6b0437c2651f6b4e6429420510ee6cc9f8a180d3",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p4"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0917/p4 (textbook-ch02-q16)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0917",
+          "id": "p4",
+          "source": "textbook-ch02-q16",
+          "content_sha256": "1c59aba31968c1a4c2d61c3d885dfaebc22fe6891eca8cf3b087fd7e4b33804c"
+        }
+      ]
+    },
+    {
+      "old_id": "p12",
+      "old_source": "textbook-ch02-q16",
+      "old_content_sha256": "1c59aba31968c1a4c2d61c3d885dfaebc22fe6891eca8cf3b087fd7e4b33804c",
+      "decision": "retain",
+      "new_ids": [
+        "p4"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0917",
+          "id": "p4",
+          "source": "textbook-ch02-q16",
+          "content_sha256": "1c59aba31968c1a4c2d61c3d885dfaebc22fe6891eca8cf3b087fd7e4b33804c"
+        }
+      ]
+    }
+  ],
+  "duplicate_decisions": [],
+  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음"
 }

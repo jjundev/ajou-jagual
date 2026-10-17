@@ -337,7 +337,7 @@
     .figure-sheet { width: min(96vw, 1100px); max-height: 90dvh; margin: auto; border-radius: 16px; }
     .figure-sheet img, .figure-sheet svg { display: block; width: 100%; max-width: 100%; height: auto; cursor: default; }
 
-    /* 클릭형 보기: 생명과학 문제설명 스킬 be26a42 에서 이식 */
+    /* 클릭형 보기: pinned bio template review-interaction.css의 보기 규칙 */
     .review-ready .choices { list-style:none; padding:0; }
     .review-ready .choices > li { margin:0 0 var(--s3); }
     .review-choice {
@@ -347,7 +347,7 @@
     }
     .review-choice:hover { border-color:var(--accent); }
     .review-choice:focus-visible, .review-reset:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
-    /* 생명과학 문제설명 스킬 be26a42 에서 이식 */
+    /* pinned bio template review-interaction.css에서 복사 — test_choice_feedback_copied_from_review_pack이 어긋남을 잡는다 */
     .review-choice[data-result="correct"], .review-choice[data-result="intended"] { border:3px solid var(--accent); }
     .review-choice[data-result="selected"] { border:3px solid var(--danger); }
     .review-choice[data-result="uncertain"] { border:3px solid var(--ink-2); }
@@ -359,7 +359,7 @@
     .review-choice-content { padding:var(--s2) 0; }
     .review-choice-content > :first-child { margin-top:0; }
     .review-choice-content > :last-child { margin-bottom:0; }
-    /* 보기 판정 알림: 생명과학 문제설명 스킬 be26a42 에서 이식 */
+    /* 보기 판정 알림: pinned bio template review-interaction.css에서 복사 */
     .review-feedback {
       position:fixed; top:calc(env(safe-area-inset-top) + 72px); left:50%; z-index:100;
       transform:translateX(-50%); width:max-content; max-width:calc(100vw - 32px);
@@ -527,7 +527,7 @@
         </div>
         <p class="panel-meta">읽은 토픽 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
         <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
-        <nav class="toc" aria-label="목차"><ul class="toc-list"><li><a href="#p1">P1. 마지막 노드의 링크</a></li><li><a href="#p2">P2. 다음 노드로 이동</a></li><li><a href="#p3">P3. 반복문이 멈추는 노드</a></li><li><a href="#p4">P4. 연결 리스트 노드 세기</a></li></ul></nav>
+        <nav class="toc" aria-label="목차"><ul class="toc-list"><li><a href="#p1">P1. 반복문이 멈추는 노드</a></li><li><a href="#p2">P2. 연결 리스트 노드 세기</a></li><li><a href="#p3">P3. 두 연결 리스트를 이어 붙일 때</a></li><li><a href="#p4">P4. 역순 코드의 세 포인터</a></li><li><a href="#p5">P5. 연결 리스트 삽입의 세 경우</a></li><li><a href="#p6">P6. 삭제할 노드를 해제하기 전의 연결</a></li><li><a href="#p7">P7. 꼬리를 head로 두는 원형 리스트</a></li><li><a href="#p8">P8. 이중 연결 리스트의 삽입과 삭제</a></li></ul></nav>
       </div>
     </aside>
     <aside class="panel panel-prob" id="panel-prob" aria-labelledby="panel-prob-title">
@@ -559,22 +559,8 @@
       <h1>자료구조및알고리즘이해 복습 1005 문제설명</h1>
       <p>왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.</p>
     </div>
-<section id="problems"><h2>문항별 설명</h2><article class="topic" id="p1"><h3>P1. 마지막 노드의 링크</h3><p class="panel-meta">textbook-ch06-q03 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p1">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p1"><div class="layer formal" data-source-problem="p1"><div data-source-field="conditions"><p>단순 연결 리스트에서 포인터 last가 마지막 노드를 가리킨다고 할 때 다음 수식 중, 참인 것은?</p><div class="options"><div class="option"><p>(1)</p><p>last == NULL</p></div><div class="option"><p>(2)</p><p>last-&gt;data == NULL</p></div><div class="option"><p>(3)</p><p>last-&gt;link == NULL</p></div><div class="option"><p>(4)</p><p>last-&gt;link-&gt;link == NULL</p></div></div></div></div><details class="original" data-original-problem="p1"><summary>기출 원문 보기</summary><p>6장 연결 리스트 I · 03번 · 책 216쪽</p><p>단순 연결 리스트에서 포인터 last가 마지막 노드를 가리킨다고 할 때 다음 수식 중, 참인 것은?</p><div class="options"><div class="option"><p>(1)</p><p>last == NULL</p></div><div class="option"><p>(2)</p><p>last-&gt;data == NULL</p></div><div class="option"><p>(3)</p><p>last-&gt;link == NULL</p></div><div class="option"><p>(4)</p><p>last-&gt;link-&gt;link == NULL</p></div></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>last가 실제 마지막 노드를 가리킨다는 조건에서 참인 식을 고르세요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>연결 리스트 linked list는 다음 노드 주소를 link에 저장해요. 마지막 노드는 존재하되 다음 노드가 없어서 link만 NULL이에요. last 자체와 last-&gt;link는 서로 다른 값이에요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>last → [data | NULL]을 그려요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>정답 (3) last-&gt;link==NULL이에요. (1)은 노드가 없다는 뜻이므로 조건과 달라요. (2)의 data는 저장 데이터이며 마지막 여부와 무관해요. (4)는 NULL인 last-&gt;link를 다시 역참조해서 안전하게 참·거짓을 평가할 수 없어요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>한 노드 리스트에서도 last는 노드 주소이고 link는 NULL이에요. data=7인 예에서는 (2)도 거짓이며 끝 노드 규칙은 data와 관계없이 유지돼요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>NULL-&gt;link를 읽어 판단하지 않아요. last가 NULL인 빈 리스트는 주어진 조건 밖이에요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>last → [data | NULL]을 그려요.</li><li>마지막 노드의 link만 NULL</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>last → [data | NULL]을 그려요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>마지막 노드의 link만 NULL</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p2"><h3>P2. 다음 노드로 이동</h3><p class="panel-meta">textbook-ch06-q04 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p2">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p2"><div class="layer formal" data-source-problem="p2"><div data-source-field="conditions"><p>단순 연결 리스트의 노드들을 포인터 p로 방문하고자 한다. 현재 p가 가리키는 노드에서 다음 노드로 가려면 어떤 코드를 사용해야 하는가?</p><div class="options"><div class="option"><p>(a)</p><p>p++;</p></div><div class="option"><p>(b)</p><p>p--;</p></div><div class="option"><p>(c)</p><p>p=p-&gt;link;</p></div><div class="option"><p>(d)</p><p>p=p-&gt;data;</p></div></div></div></div><details class="original" data-original-problem="p2"><summary>기출 원문 보기</summary><p>6장 연결 리스트 I · 04번 · 책 216쪽</p><p>단순 연결 리스트의 노드들을 포인터 p로 방문하고자 한다. 현재 p가 가리키는 노드에서 다음 노드로 가려면 어떤 코드를 사용해야 하는가?</p><div class="options"><div class="option"><p>(a)</p><p>p++;</p></div><div class="option"><p>(b)</p><p>p--;</p></div><div class="option"><p>(c)</p><p>p=p-&gt;link;</p></div><div class="option"><p>(d)</p><p>p=p-&gt;data;</p></div></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>현재 노드 다음의 노드 주소를 p에 넣는 문장을 골라요. p는 유효한 노드 주소여야 해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>노드가 따로 할당되어 연속 주소라는 보장이 없으므로 pointer arithmetic보다 저장된 link를 따라가야 해요. p-&gt;link는 다음 노드 주소이고 p-&gt;data는 데이터예요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>현재 A 주소와 A.link에 들어 있는 B 주소를 적어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a">p++는 구조체 한 개 크기만큼 주소를 증가시켜요. 다음 노드가 그 위치에 있다는 보장은 없어요.</div><div data-subpart="b">p--는 구조체 한 개 크기만큼 감소시켜요. 다음 노드 연결과 무관해요.</div><div data-subpart="c">p=p-&gt;link가 정답이에요. 현재 노드가 저장한 다음 주소를 읽어 p에 대입해요.</div><div data-subpart="d">p=p-&gt;data는 데이터 필드를 주소인 것처럼 대입해요. int 데이터라면 포인터 타입과도 맞지 않아요.</div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="a">A=주소1000,B=주소9000 예에서 p++는 B를 얻지 못해요. 숫자 주소는 개념 그림이며 실제 C 정수-주소 산술 예제가 아니에요.</div><div data-subpart="b">같은 예에서 주소 감소도 B에 닿는다는 규칙이 없어요.</div><div data-subpart="c">A.link=B 주소를 대입하면 p는 정확히 B가 돼요. 마지막에서는 NULL이 돼요.</div><div data-subpart="d">A.data=5라도 다음 주소 B와 관계없어요.</div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>p가 NULL이면 p-&gt;link 자체가 안전하지 않아요. 이동 전에 p!=NULL을 검사해요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>현재 A 주소와 A.link에 들어 있는 B 주소를 적어요.</li><li>다음 주소 p=p-&gt;link</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>현재 A 주소와 A.link에 들어 있는 B 주소를 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>다음 주소 p=p-&gt;link</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p3"><h3>P3. 반복문이 멈추는 노드</h3><p class="panel-meta">textbook-ch06-q07 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p3">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p3"><div class="layer formal" data-source-problem="p3"><div data-source-field="conditions"><p>다음과 같은 연결 리스트에 아래와 같은 코드를 실행한다고 하자. 실행이 끝난 후에 포인터 p가 가리키는 노드는 어떤 노드인가?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200" role="img" aria-label="원문의 연결 리스트와 포인터" style="background:white;width:1000px;max-width:none;height:auto"><title>원문의 연결 리스트와 포인터</title><text x="10" y="78" font-family="sans-serif" font-size="18" fill="#17212b">list-&gt;head</text><line x1="25" y1="125" x2="120" y2="125" stroke="#26394a" stroke-width="2"/><polygon points="120,125 108.94726807196538,129.6730201077038 108.94726807196538,120.3269798922962" fill="#26394a"/><rect x="120" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="192.8" y1="90" x2="192.8" y2="165" stroke="#26394a"/><text x="128" y="118" font-family="sans-serif" font-size="20" fill="#17212b">A</text><circle cx="211.83999999999997" cy="127" r="3" fill="#26394a"/><line x1="211.83999999999997" y1="127" x2="277" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="277,127 265.94726807196537,131.6730201077038 265.94726807196537,122.3269798922962" fill="#26394a"/><rect x="280" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="352.8" y1="90" x2="352.8" y2="165" stroke="#26394a"/><text x="288" y="118" font-family="sans-serif" font-size="20" fill="#17212b">B</text><circle cx="371.84" cy="127" r="3" fill="#26394a"/><line x1="371.84" y1="127" x2="437" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="437,127 425.94726807196537,131.6730201077038 425.94726807196537,122.3269798922962" fill="#26394a"/><rect x="440" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="512.8" y1="90" x2="512.8" y2="165" stroke="#26394a"/><text x="448" y="118" font-family="sans-serif" font-size="20" fill="#17212b">C</text><circle cx="531.84" cy="127" r="3" fill="#26394a"/><line x1="531.84" y1="127" x2="597" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="597,127 585.9472680719654,131.6730201077038 585.9472680719654,122.3269798922962" fill="#26394a"/><rect x="600" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="672.8" y1="90" x2="672.8" y2="165" stroke="#26394a"/><text x="608" y="118" font-family="sans-serif" font-size="20" fill="#17212b">D</text><text x="676.16" y="132" font-family="sans-serif" font-size="13" fill="#17212b">NULL</text></svg></div><figcaption>원문의 연결 리스트와 포인터 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><p>data    link</p><pre><code>for(p=list-&gt;head; p-&gt;link!= NULL; p=p-&gt;link)
-    ;</code></pre><div class="options"></div></div></div><details class="original" data-original-problem="p3"><summary>기출 원문 보기</summary><p>6장 연결 리스트 I · 07번 · 책 216쪽</p><p>다음과 같은 연결 리스트에 아래와 같은 코드를 실행한다고 하자. 실행이 끝난 후에 포인터 p가 가리키는 노드는 어떤 노드인가?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200" role="img" aria-label="원문의 연결 리스트와 포인터" style="background:white;width:1000px;max-width:none;height:auto"><title>원문의 연결 리스트와 포인터</title><text x="10" y="78" font-family="sans-serif" font-size="18" fill="#17212b">list-&gt;head</text><line x1="25" y1="125" x2="120" y2="125" stroke="#26394a" stroke-width="2"/><polygon points="120,125 108.94726807196538,129.6730201077038 108.94726807196538,120.3269798922962" fill="#26394a"/><rect x="120" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="192.8" y1="90" x2="192.8" y2="165" stroke="#26394a"/><text x="128" y="118" font-family="sans-serif" font-size="20" fill="#17212b">A</text><circle cx="211.83999999999997" cy="127" r="3" fill="#26394a"/><line x1="211.83999999999997" y1="127" x2="277" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="277,127 265.94726807196537,131.6730201077038 265.94726807196537,122.3269798922962" fill="#26394a"/><rect x="280" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="352.8" y1="90" x2="352.8" y2="165" stroke="#26394a"/><text x="288" y="118" font-family="sans-serif" font-size="20" fill="#17212b">B</text><circle cx="371.84" cy="127" r="3" fill="#26394a"/><line x1="371.84" y1="127" x2="437" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="437,127 425.94726807196537,131.6730201077038 425.94726807196537,122.3269798922962" fill="#26394a"/><rect x="440" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="512.8" y1="90" x2="512.8" y2="165" stroke="#26394a"/><text x="448" y="118" font-family="sans-serif" font-size="20" fill="#17212b">C</text><circle cx="531.84" cy="127" r="3" fill="#26394a"/><line x1="531.84" y1="127" x2="597" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="597,127 585.9472680719654,131.6730201077038 585.9472680719654,122.3269798922962" fill="#26394a"/><rect x="600" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="672.8" y1="90" x2="672.8" y2="165" stroke="#26394a"/><text x="608" y="118" font-family="sans-serif" font-size="20" fill="#17212b">D</text><text x="676.16" y="132" font-family="sans-serif" font-size="13" fill="#17212b">NULL</text></svg></div><figcaption>원문의 연결 리스트와 포인터 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><p>data    link</p><pre><code>for(p=list-&gt;head; p-&gt;link!= NULL; p=p-&gt;link)
+<section id="problems"><h2>문항별 설명</h2><article class="topic" id="p1"><h3>P1. 반복문이 멈추는 노드</h3><p class="panel-meta">textbook-ch06-q07 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p1">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p1"><div class="layer formal" data-source-problem="p1"><div data-source-field="conditions"><p>다음과 같은 연결 리스트에 아래와 같은 코드를 실행한다고 하자. 실행이 끝난 후에 포인터 p가 가리키는 노드는 어떤 노드인가?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200" role="img" aria-label="원문의 연결 리스트와 포인터" style="background:white;width:1000px;max-width:none;height:auto"><title>원문의 연결 리스트와 포인터</title><text x="10" y="78" font-family="sans-serif" font-size="18" fill="#17212b">list-&gt;head</text><line x1="25" y1="125" x2="120" y2="125" stroke="#26394a" stroke-width="2"/><polygon points="120,125 108.94726807196538,129.6730201077038 108.94726807196538,120.3269798922962" fill="#26394a"/><rect x="120" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="192.8" y1="90" x2="192.8" y2="165" stroke="#26394a"/><text x="128" y="118" font-family="sans-serif" font-size="20" fill="#17212b">A</text><circle cx="211.83999999999997" cy="127" r="3" fill="#26394a"/><line x1="211.83999999999997" y1="127" x2="277" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="277,127 265.94726807196537,131.6730201077038 265.94726807196537,122.3269798922962" fill="#26394a"/><rect x="280" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="352.8" y1="90" x2="352.8" y2="165" stroke="#26394a"/><text x="288" y="118" font-family="sans-serif" font-size="20" fill="#17212b">B</text><circle cx="371.84" cy="127" r="3" fill="#26394a"/><line x1="371.84" y1="127" x2="437" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="437,127 425.94726807196537,131.6730201077038 425.94726807196537,122.3269798922962" fill="#26394a"/><rect x="440" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="512.8" y1="90" x2="512.8" y2="165" stroke="#26394a"/><text x="448" y="118" font-family="sans-serif" font-size="20" fill="#17212b">C</text><circle cx="531.84" cy="127" r="3" fill="#26394a"/><line x1="531.84" y1="127" x2="597" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="597,127 585.9472680719654,131.6730201077038 585.9472680719654,122.3269798922962" fill="#26394a"/><rect x="600" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="672.8" y1="90" x2="672.8" y2="165" stroke="#26394a"/><text x="608" y="118" font-family="sans-serif" font-size="20" fill="#17212b">D</text><text x="676.16" y="132" font-family="sans-serif" font-size="13" fill="#17212b">NULL</text></svg></div><figcaption>원문의 연결 리스트와 포인터 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><p>data    link</p><pre><code>for(p=list-&gt;head; p-&gt;link!= NULL; p=p-&gt;link)
+    ;</code></pre><div class="options"></div></div></div><details class="original" data-original-problem="p1"><summary>교과서 원문 보기</summary><p>6장 연결 리스트 I · 07번 · 책 216쪽</p><p>다음과 같은 연결 리스트에 아래와 같은 코드를 실행한다고 하자. 실행이 끝난 후에 포인터 p가 가리키는 노드는 어떤 노드인가?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200" role="img" aria-label="원문의 연결 리스트와 포인터" style="background:white;width:1000px;max-width:none;height:auto"><title>원문의 연결 리스트와 포인터</title><text x="10" y="78" font-family="sans-serif" font-size="18" fill="#17212b">list-&gt;head</text><line x1="25" y1="125" x2="120" y2="125" stroke="#26394a" stroke-width="2"/><polygon points="120,125 108.94726807196538,129.6730201077038 108.94726807196538,120.3269798922962" fill="#26394a"/><rect x="120" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="192.8" y1="90" x2="192.8" y2="165" stroke="#26394a"/><text x="128" y="118" font-family="sans-serif" font-size="20" fill="#17212b">A</text><circle cx="211.83999999999997" cy="127" r="3" fill="#26394a"/><line x1="211.83999999999997" y1="127" x2="277" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="277,127 265.94726807196537,131.6730201077038 265.94726807196537,122.3269798922962" fill="#26394a"/><rect x="280" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="352.8" y1="90" x2="352.8" y2="165" stroke="#26394a"/><text x="288" y="118" font-family="sans-serif" font-size="20" fill="#17212b">B</text><circle cx="371.84" cy="127" r="3" fill="#26394a"/><line x1="371.84" y1="127" x2="437" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="437,127 425.94726807196537,131.6730201077038 425.94726807196537,122.3269798922962" fill="#26394a"/><rect x="440" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="512.8" y1="90" x2="512.8" y2="165" stroke="#26394a"/><text x="448" y="118" font-family="sans-serif" font-size="20" fill="#17212b">C</text><circle cx="531.84" cy="127" r="3" fill="#26394a"/><line x1="531.84" y1="127" x2="597" y2="127" stroke="#26394a" stroke-width="2"/><polygon points="597,127 585.9472680719654,131.6730201077038 585.9472680719654,122.3269798922962" fill="#26394a"/><rect x="600" y="90" width="112.0" height="75" fill="#eaf3e5" stroke="#26394a"/><line x1="672.8" y1="90" x2="672.8" y2="165" stroke="#26394a"/><text x="608" y="118" font-family="sans-serif" font-size="20" fill="#17212b">D</text><text x="676.16" y="132" font-family="sans-serif" font-size="13" fill="#17212b">NULL</text></svg></div><figcaption>원문의 연결 리스트와 포인터 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><p>data    link</p><pre><code>for(p=list-&gt;head; p-&gt;link!= NULL; p=p-&gt;link)
     ;</code></pre><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>A→B→C→D→NULL에서 for 종료 후 p가 가리키는 노드를 구해요. 빈 리스트는 그림의 조건이 아니에요.</p></div>
 <div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>조건은 p!=NULL이 아니라 p-&gt;link!=NULL이에요. 현재 노드의 다음 주소가 없을 때 현재 노드에서 멈춰요. 빈 본문 뒤 세미콜론도 반복문 본문이에요.</p></div>
 <div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>p=A, A.link=B≠NULL을 적어요.</p></div>
@@ -582,11 +568,11 @@
 <div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>각 검사 시점의 p는 A,B,C,D로 네 번이고 이동은 세 번이에요. 한 노드인 경우 첫 조건이 거짓으로 그 노드에서 멈추는 규칙도 같아요.</p></div></div>
 <div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>head=NULL일 때 이 코드의 p-&gt;link는 UB예요. 주어진 비어 있지 않은 그림에서만 계산해요.</p></div>
 <div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>p=A, A.link=B≠NULL을 적어요.</li><li>다음 링크 검사 → 마지막 D에서 정지</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>p=A, A.link=B≠NULL을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>다음 링크 검사 → 마지막 D에서 정지</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p4"><h3>P4. 연결 리스트 노드 세기</h3><p class="panel-meta">textbook-ch06-q10 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p4">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p4"><div class="layer formal" data-source-problem="p4"><div data-source-field="conditions"><p>다음과 같이 단순 연결 리스트의 노드들의 개수를 계산하는 프로그램을 작성해보자.</p><pre><code>노드의 개수 : 3 [Enter↵]
+<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>p=A, A.link=B≠NULL을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>다음 링크 검사 → 마지막 D에서 정지</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p2"><h3>P2. 연결 리스트 노드 세기</h3><p class="panel-meta">textbook-ch06-q10 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p2">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p2"><div class="layer formal" data-source-problem="p2"><div data-source-field="conditions"><p>다음과 같이 단순 연결 리스트의 노드들의 개수를 계산하는 프로그램을 작성해보자.</p><pre><code>노드의 개수 : 3 [Enter↵]
 노드 #1 데이터 : 5 [Enter↵]
 노드 #2 데이터 : 6 [Enter↵]
 노드 #3 데이터 : 7 [Enter↵]
-연결 리스트 노드의 개수 = 3</code></pre><div class="options"></div></div></div><details class="original" data-original-problem="p4"><summary>기출 원문 보기</summary><p>6장 연결 리스트 I · 10번 · 책 217쪽</p><p>다음과 같이 단순 연결 리스트의 노드들의 개수를 계산하는 프로그램을 작성해보자.</p><pre><code>노드의 개수 : 3 [Enter↵]
+연결 리스트 노드의 개수 = 3</code></pre><div class="options"></div></div></div><details class="original" data-original-problem="p2"><summary>교과서 원문 보기</summary><p>6장 연결 리스트 I · 10번 · 책 217쪽</p><p>다음과 같이 단순 연결 리스트의 노드들의 개수를 계산하는 프로그램을 작성해보자.</p><pre><code>노드의 개수 : 3 [Enter↵]
 노드 #1 데이터 : 5 [Enter↵]
 노드 #2 데이터 : 6 [Enter↵]
 노드 #3 데이터 : 7 [Enter↵]
@@ -622,7 +608,151 @@ int main(void) {
 <div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>입력 3,5,6,7로 5→6→7→NULL이 만들어져 count는 0→1→2→3이에요. 빈 입력 n=0에서는 0이에요. count가 이미 방문한 접두 노드 수라는 불변식으로 acyclic 리스트의 정확성을 확인해요. 10000 제한은 검산 프로그램의 입력 보호 선택이에요.</p></div></div>
 <div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>마지막 노드도 세어야 하므로 조건을 p-&gt;link!=NULL로 쓰지 않아요. 순환 링크를 가진 구조는 이 단순 리스트 전제 밖이에요.</p></div>
 <div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>int count = 0;</li><li>head부터 p!=NULL 동안 한 노드당 +1</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>int count = 0;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>head부터 p!=NULL 동안 한 노드당 +1</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article></section>
+<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>int count = 0;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>head부터 p!=NULL 동안 한 노드당 +1</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div></article><article class="topic" id="p3"><h3>P3. 두 연결 리스트를 이어 붙일 때</h3><p class="panel-meta">lecture-s04-p31-concat · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p3">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p3"><div class="layer formal" data-source-problem="p3"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p31</p><p>서로 노드를 공유하지 않는 유한한 리스트 head1=A→B→NULL, head2=C→D→NULL이에요. 반환 포인터와 변경되는 링크를 쓰세요. 첫 리스트가 비었을 때의 결과, while(p!=NULL)로 바꾸면 생기는 오류, 첫 리스트 길이 m에 대한 시간복잡도도 설명하세요.</p><pre><code class="language-c">ListNode *concat(ListNode *head1,ListNode *head2)
+{
+    ListNode *p;
+    if(head1==NULL) return head2;
+    else if(head2==NULL) return head1;
+    else {
+        p=head1;
+        while(p-&gt;link!=NULL) p=p-&gt;link;
+        p-&gt;link=head2;
+        return head1;
+    }
+}</code></pre></div></div><details class="original" data-original-problem="p3"><summary>강의 예제 보기</summary><p>S4 p31 · Software_4_List.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">ListNode *concat(ListNode *head1,ListNode *head2)
+{
+    ListNode *p;
+    if(head1==NULL) return head2;
+    else if(head2==NULL) return head1;
+    else {
+        p=head1;
+        while(p-&gt;link!=NULL) p=p-&gt;link;
+        p-&gt;link=head2;
+        return head1;
+    }
+}</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>서로 노드를 공유하지 않는 유한한 리스트 head1=A→B→NULL, head2=C→D→NULL이에요. 반환 포인터와 변경되는 링크를 쓰세요. 첫 리스트가 비었을 때의 결과, while(p!=NULL)로 바꾸면 생기는 오류, 첫 리스트 길이 m에 대한 시간복잡도도 설명하세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “두 연결 리스트를 이어 붙일 때”예요. 마지막 노드에 붙여야 하므로 현재 노드의 link가 NULL인 순간 멈춰요. p=B에서 종료해요. p 자체가 NULL인 순간까지 가면 마지막 노드를 잃어요. 두 입력이 노드를 공유하면 순환이 생길 수도 있어 입력 조건이 필요해요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>head1=A,head2=C에서 p=A로 시작해요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>마지막 노드에 붙여야 하므로 현재 노드의 link가 NULL인 순간 멈춰요. p=B에서 종료해요.</li><li>B-&gt;link를 C로 바꾸고 처음 시작인 A를 반환해요. 노드를 복사하거나 새로 할당하지 않아요.</li><li>p 자체가 NULL인 순간까지 가면 마지막 노드를 잃어요. 두 입력이 노드를 공유하면 순환이 생길 수도 있어 입력 조건이 필요해요.</li></ol><p>반환 head1=A, B-&gt;link=C, 결과 A→B→C→D. 첫 리스트가 비면 head2를 반환한다. p!=NULL까지 이동하면 p=NULL에서 p-&gt;link를 쓰게 된다. O(m).</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>반환 head1=A, B-&gt;link=C, 결과 A→B→C→D. 첫 리스트가 비면 head2를 반환한다. p!=NULL까지 이동하면 p=NULL에서 p-&gt;link를 쓰게 된다. O(m).</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. p 자체가 NULL인 순간까지 가면 마지막 노드를 잃어요. 두 입력이 노드를 공유하면 순환이 생길 수도 있어 입력 조건이 필요해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>단순 이어 붙이기는 정렬 병합이 아니며 두 리스트를 값 순으로 섞지 않아요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>head1=A,head2=C에서 p=A로 시작해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>마지막 노드에 붙여야 하므로 현재 노드의 link가 NULL인 순간 멈춰요. p=B에서 종료해요.</p></div><div class="summary-group"><h4>검산</h4><p>반환 head1=A, B-&gt;link=C, 결과 A→B→C→D. 첫 리스트가 비면 head2를 반환한다. p!=NULL까지 이동하면 p=NULL에서 p-&gt;link를 쓰게 된다. O(m).</p></div></div></article><article class="topic" id="p4"><h3>P4. 역순 코드의 세 포인터</h3><p class="panel-meta">lecture-s04-p32-reverse · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p4">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p4"><div class="layer formal" data-source-problem="p4"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p32</p><p>A→B→C→NULL에 대해 각 반복이 끝난 직후 p,q,r과 이미 뒤집힌 부분을 적으세요. q-&gt;link=r을 p=p-&gt;link보다 먼저 실행하면 원래 나머지 리스트를 잃는 이유와 빈 리스트의 반환값도 설명하세요.</p><pre><code class="language-c">ListNode *reverse(ListNode *head)
+{
+    ListNode *p,*q,*r;
+    p=head; q=NULL;
+    while(p!=NULL) {
+        r=q;
+        q=p;
+        p=p-&gt;link;
+        q-&gt;link=r;
+    }
+    return q;
+}</code></pre></div></div><details class="original" data-original-problem="p4"><summary>강의 예제 보기</summary><p>S4 p32 · Software_4_List.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">ListNode *reverse(ListNode *head)
+{
+    ListNode *p,*q,*r;
+    p=head; q=NULL;
+    while(p!=NULL) {
+        r=q;
+        q=p;
+        p=p-&gt;link;
+        q-&gt;link=r;
+    }
+    return q;
+}</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>A→B→C→NULL에 대해 각 반복이 끝난 직후 p,q,r과 이미 뒤집힌 부분을 적으세요. q-&gt;link=r을 p=p-&gt;link보다 먼저 실행하면 원래 나머지 리스트를 잃는 이유와 빈 리스트의 반환값도 설명하세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “역순 코드의 세 포인터”예요. p는 아직 처리하지 않은 부분의 첫 노드이고 q는 이미 뒤집힌 부분의 첫 노드예요. 반복이 끝나면 p=NULL이고 q가 전체 역순 리스트의 첫 노드예요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>처리 전 p=A,q=NULL을 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>p는 아직 처리하지 않은 부분의 첫 노드이고 q는 이미 뒤집힌 부분의 첫 노드예요.</li><li>현재 p를 q로 옮기기 전 기존 q를 r에 보관해요. 다음 처리 위치 p-&gt;link를 저장한 뒤 q-&gt;link를 r로 뒤집어요.</li><li>링크를 먼저 뒤집으면 p와 q가 같은 노드를 가리키므로 p-&gt;link가 원래 다음 노드가 아니게 돼요.</li><li>반복이 끝나면 p=NULL이고 q가 전체 역순 리스트의 첫 노드예요.</li></ol><p>1회 p=B,q=A,r=NULL, A→NULL. 2회 p=C,q=B,r=A, B→A→NULL. 3회 p=NULL,q=C,r=B, C→B→A→NULL. 빈 입력 반환 NULL.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>1회 p=B,q=A,r=NULL, A→NULL. 2회 p=C,q=B,r=A, B→A→NULL. 3회 p=NULL,q=C,r=B, C→B→A→NULL. 빈 입력 반환 NULL.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. 반복이 끝나면 p=NULL이고 q가 전체 역순 리스트의 첫 노드예요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>원래 head 변수가 자동으로 새 첫 노드를 가리키는 것은 아니에요. 반환값을 받아야 해요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>처리 전 p=A,q=NULL을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>p는 아직 처리하지 않은 부분의 첫 노드이고 q는 이미 뒤집힌 부분의 첫 노드예요.</p></div><div class="summary-group"><h4>검산</h4><p>1회 p=B,q=A,r=NULL, A→NULL. 2회 p=C,q=B,r=A, B→A→NULL. 3회 p=NULL,q=C,r=B, C→B→A→NULL. 빈 입력 반환 NULL.</p></div></div></article><article class="topic" id="p5"><h3>P5. 연결 리스트 삽입의 세 경우</h3><p class="panel-meta">lecture-s04-p25-insert-node · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p5">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p5"><div class="layer formal" data-source-problem="p5"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p25</p><p>각 상황은 독립적이고 new_node=N은 새로 할당한 노드예요. 빈 리스트, A→B→NULL에서 p=NULL, 같은 리스트에서 p=A인 경우의 결과를 쓰세요. phead가 이중 포인터인 이유와 마지막 두 대입문의 순서가 중요한 이유도 설명하세요.</p><pre><code class="language-c">void insert_node(ListNode **phead,ListNode *p,ListNode *new_node)
+{
+    if(*phead==NULL) {
+        new_node-&gt;link=NULL;
+        *phead=new_node;
+    } else if(p==NULL) {
+        new_node-&gt;link=*phead;
+        *phead=new_node;
+    } else {
+        new_node-&gt;link=p-&gt;link;
+        p-&gt;link=new_node;
+    }
+}</code></pre></div></div><details class="original" data-original-problem="p5"><summary>강의 예제 보기</summary><p>S4 p25 · Software_4_List.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">void insert_node(ListNode **phead,ListNode *p,ListNode *new_node)
+{
+    if(*phead==NULL) {
+        new_node-&gt;link=NULL;
+        *phead=new_node;
+    } else if(p==NULL) {
+        new_node-&gt;link=*phead;
+        *phead=new_node;
+    } else {
+        new_node-&gt;link=p-&gt;link;
+        p-&gt;link=new_node;
+    }
+}</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>각 상황은 독립적이고 new_node=N은 새로 할당한 노드예요. 빈 리스트, A→B→NULL에서 p=NULL, 같은 리스트에서 p=A인 경우의 결과를 쓰세요. phead가 이중 포인터인 이유와 마지막 두 대입문의 순서가 중요한 이유도 설명하세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “연결 리스트 삽입의 세 경우”예요. *phead는 호출자의 head예요. 빈 리스트에서는 N만 연결하면 돼요. p-&gt;link=N을 먼저 쓰면 다음 문장에서 N-&gt;link=N이 되어 원래 뒷부분을 잃어요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>세 경우를 *phead==NULL / p==NULL / 나머지로 나눠요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>*phead는 호출자의 head예요. 빈 리스트에서는 N만 연결하면 돼요.</li><li>맨 앞 삽입에서는 N의 link에 기존 head를 보관하고 head를 N으로 바꿔요.</li><li>중간 삽입에서는 기존 p-&gt;link=B를 N-&gt;link에 먼저 저장해요. 그다음 p-&gt;link를 N으로 바꿔요.</li><li>p-&gt;link=N을 먼저 쓰면 다음 문장에서 N-&gt;link=N이 되어 원래 뒷부분을 잃어요.</li></ol><p>빈 리스트 N→NULL. p=NULL이면 N→A→B→NULL. p=A이면 A→N→B→NULL. 호출자의 head 값을 바꾸기 위해 그 주소를 받는다. N의 다음 링크를 먼저 보관해야 B를 잃거나 자기 순환을 만들지 않는다.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>빈 리스트 N→NULL. p=NULL이면 N→A→B→NULL. p=A이면 A→N→B→NULL. 호출자의 head 값을 바꾸기 위해 그 주소를 받는다. N의 다음 링크를 먼저 보관해야 B를 잃거나 자기 순환을 만들지 않는다.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. p-&gt;link=N을 먼저 쓰면 다음 문장에서 N-&gt;link=N이 되어 원래 뒷부분을 잃어요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>p==NULL은 비어 있다는 뜻이 아니라 선행 노드가 없어 맨 앞에 삽입한다는 뜻이에요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>세 경우를 *phead==NULL / p==NULL / 나머지로 나눠요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>*phead는 호출자의 head예요. 빈 리스트에서는 N만 연결하면 돼요.</p></div><div class="summary-group"><h4>검산</h4><p>빈 리스트 N→NULL. p=NULL이면 N→A→B→NULL. p=A이면 A→N→B→NULL. 호출자의 head 값을 바꾸기 위해 그 주소를 받는다. N의 다음 링크를 먼저 보관해야 B를 잃거나 자기 순환을 만들지 않는다.</p></div></div></article><article class="topic" id="p6"><h3>P6. 삭제할 노드를 해제하기 전의 연결</h3><p class="panel-meta">lecture-s04-p28-remove-node · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p6">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p6"><div class="layer formal" data-source-problem="p6"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p28</p><p>리스트 A→B→C→NULL의 노드는 각각 malloc으로 할당했어요. B를 삭제할 p와 removed, A를 삭제할 p와 removed를 쓰세요(두 상황은 독립적). 하나뿐인 A를 삭제하면 head는 무엇이 되나요? free를 먼저 하면 안 되는 이유도 설명하세요.</p><pre><code class="language-c">void remove_node(ListNode **phead,ListNode *p,ListNode *removed)
+{
+    if(p==NULL) *phead=(*phead)-&gt;link;
+    else p-&gt;link=removed-&gt;link;
+    free(removed);
+}</code></pre></div></div><details class="original" data-original-problem="p6"><summary>강의 예제 보기</summary><p>S4 p28 · Software_4_List.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">void remove_node(ListNode **phead,ListNode *p,ListNode *removed)
+{
+    if(p==NULL) *phead=(*phead)-&gt;link;
+    else p-&gt;link=removed-&gt;link;
+    free(removed);
+}</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>리스트 A→B→C→NULL의 노드는 각각 malloc으로 할당했어요. B를 삭제할 p와 removed, A를 삭제할 p와 removed를 쓰세요(두 상황은 독립적). 하나뿐인 A를 삭제하면 head는 무엇이 되나요? free를 먼저 하면 안 되는 이유도 설명하세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “삭제할 노드를 해제하기 전의 연결”예요. p는 삭제 대상이 아니라 그 선행 노드예요. removed는 실제로 반납할 노드예요. 단일 노드의 link는 NULL이므로 head도 NULL이 돼요. 링크를 읽고 갱신한 다음 free해야 해요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>B 삭제에서 p=A,removed=B를 그림에 표시해요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>p는 삭제 대상이 아니라 그 선행 노드예요. removed는 실제로 반납할 노드예요.</li><li>중간 삭제는 A의 link를 B의 다음인 C로 우회시켜요. 맨 앞 삭제는 head를 기존 head의 link로 옮겨요.</li><li>단일 노드의 link는 NULL이므로 head도 NULL이 돼요. 링크를 읽고 갱신한 다음 free해야 해요.</li></ol><p>B 삭제: p=A,removed=B, 결과 A→C. A 삭제: p=NULL,removed=A, 결과 B→C. 단일 노드 삭제 뒤 head=NULL. free 뒤 removed-&gt;link를 읽으면 해제된 메모리 접근이다.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>B 삭제: p=A,removed=B, 결과 A→C. A 삭제: p=NULL,removed=A, 결과 B→C. 단일 노드 삭제 뒤 head=NULL. free 뒤 removed-&gt;link를 읽으면 해제된 메모리 접근이다.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. 단일 노드의 link는 NULL이므로 head도 NULL이 돼요. 링크를 읽고 갱신한 다음 free해야 해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>이 함수는 removed가 유효하고 p가 올바른 선행 노드라는 전제가 필요해요. 빈 리스트 삭제를 호출하면 안 돼요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>B 삭제에서 p=A,removed=B를 그림에 표시해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>p는 삭제 대상이 아니라 그 선행 노드예요. removed는 실제로 반납할 노드예요.</p></div><div class="summary-group"><h4>검산</h4><p>B 삭제: p=A,removed=B, 결과 A→C. A 삭제: p=NULL,removed=A, 결과 B→C. 단일 노드 삭제 뒤 head=NULL. free 뒤 removed-&gt;link를 읽으면 해제된 메모리 접근이다.</p></div></div></article><article class="topic" id="p7"><h3>P7. 꼬리를 head로 두는 원형 리스트</h3><p class="panel-meta">lecture-s04-p35-circular-last · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p7">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p7"><div class="layer formal" data-source-problem="p7"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p35</p><p>강의의 head는 마지막 노드를 가리켜요. 순서 A→B→A, head=B인 원형 리스트에 N을 끝으로 삽입한 뒤 head와 첫 노드, 모든 link를 쓰세요. 마지막 *phead=node;를 생략하면 논리적인 삽입 위치가 어떻게 달라지나요?</p><pre><code class="language-c">void insert_last(ListNode **phead,ListNode *node)
+{
+    if(*phead==NULL) {
+        *phead=node; node-&gt;link=node;
+    } else {
+        node-&gt;link=(*phead)-&gt;link;
+        (*phead)-&gt;link=node;
+        *phead=node;
+    }
+}</code></pre></div></div><details class="original" data-original-problem="p7"><summary>강의 예제 보기</summary><p>S4 p35 · Software_4_List.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">void insert_last(ListNode **phead,ListNode *node)
+{
+    if(*phead==NULL) {
+        *phead=node; node-&gt;link=node;
+    } else {
+        node-&gt;link=(*phead)-&gt;link;
+        (*phead)-&gt;link=node;
+        *phead=node;
+    }
+}</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>강의의 head는 마지막 노드를 가리켜요. 순서 A→B→A, head=B인 원형 리스트에 N을 끝으로 삽입한 뒤 head와 첫 노드, 모든 link를 쓰세요. 마지막 *phead=node;를 생략하면 논리적인 삽입 위치가 어떻게 달라지나요?</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “꼬리를 head로 두는 원형 리스트”예요. 원형 리스트의 시작은 head 자체가 아니라 head-&gt;link예요. B-&gt;link=A를 먼저 N-&gt;link에 저장해요. head=B를 그대로 두면 첫 원소는 B-&gt;link=N이므로 N,A,B 순서가 돼요. 같은 원형 연결도 기준 포인터에 따라 논리적 순서가 달라져요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>head=B이고 head-&gt;link=A가 첫 원소임을 표시해요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>원형 리스트의 시작은 head 자체가 아니라 head-&gt;link예요. B-&gt;link=A를 먼저 N-&gt;link에 저장해요.</li><li>B-&gt;link=N으로 바꾸면 A→B→N→A가 돼요. head도 N으로 바꾸면 첫 원소 A는 유지돼요.</li><li>head=B를 그대로 두면 첫 원소는 B-&gt;link=N이므로 N,A,B 순서가 돼요. 같은 원형 연결도 기준 포인터에 따라 논리적 순서가 달라져요.</li></ol><p>head=N, 첫 노드 A. A-&gt;link=B,B-&gt;link=N,N-&gt;link=A. head 갱신을 생략하면 head=B이고 첫 노드가 N이므로 앞 삽입이 된다.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>head=N, 첫 노드 A. A-&gt;link=B,B-&gt;link=N,N-&gt;link=A. head 갱신을 생략하면 head=B이고 첫 노드가 N이므로 앞 삽입이 된다.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. head=B를 그대로 두면 첫 원소는 B-&gt;link=N이므로 N,A,B 순서가 돼요. 같은 원형 연결도 기준 포인터에 따라 논리적 순서가 달라져요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>여기서 head를 첫 노드라고 해석하면 모든 결과가 한 칸씩 달라져요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>head=B이고 head-&gt;link=A가 첫 원소임을 표시해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>원형 리스트의 시작은 head 자체가 아니라 head-&gt;link예요. B-&gt;link=A를 먼저 N-&gt;link에 저장해요.</p></div><div class="summary-group"><h4>검산</h4><p>head=N, 첫 노드 A. A-&gt;link=B,B-&gt;link=N,N-&gt;link=A. head 갱신을 생략하면 head=B이고 첫 노드가 N이므로 앞 삽입이 된다.</p></div></div></article><article class="topic" id="p8"><h3>P8. 이중 연결 리스트의 삽입과 삭제</h3><p class="panel-meta">lecture-s04-p38-dlist · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1005_List.html#p8">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p8"><div class="layer formal" data-source-problem="p8"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p38 · 추가 근거 p39</p><p>유효한 이중 원형 리스트에서 before=A, A의 오른쪽=B예요. N을 삽입한 뒤 바뀌는 네 링크를 쓰고 마지막 두 문장을 뒤집으면 어떤 링크가 잘못되는지 설명하세요. 삽입한 N을 다시 삭제할 때 양옆을 이어 주는 두 대입문도 쓰세요.</p><pre><code class="language-c">void dinsert_node(DlistNode *before,DlistNode *new_node)
+{
+    new_node-&gt;llink=before;
+    new_node-&gt;rlink=before-&gt;rlink;
+    before-&gt;rlink-&gt;llink=new_node;
+    before-&gt;rlink=new_node;
+}</code></pre></div></div><details class="original" data-original-problem="p8"><summary>강의 예제 보기</summary><p>S4 p38 · 추가 근거 p39 · Software_4_List.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">void dinsert_node(DlistNode *before,DlistNode *new_node)
+{
+    new_node-&gt;llink=before;
+    new_node-&gt;rlink=before-&gt;rlink;
+    before-&gt;rlink-&gt;llink=new_node;
+    before-&gt;rlink=new_node;
+}</code></pre></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>유효한 이중 원형 리스트에서 before=A, A의 오른쪽=B예요. N을 삽입한 뒤 바뀌는 네 링크를 쓰고 마지막 두 문장을 뒤집으면 어떤 링크가 잘못되는지 설명하세요. 삽입한 N을 다시 삭제할 때 양옆을 이어 주는 두 대입문도 쓰세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “이중 연결 리스트의 삽입과 삭제”예요. 새 노드의 양쪽을 먼저 A,B로 정해요. 그런 다음 기존 B의 왼쪽과 A의 오른쪽을 N으로 바꿔요. 삭제는 N을 건너뛰어 A와 B를 양방향으로 연결해요. 반납은 연결을 복구한 뒤 수행하고 헤드 노드 자체는 삭제하지 않아요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>A의 현재 오른쪽 노드가 B임을 먼저 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>새 노드의 양쪽을 먼저 A,B로 정해요. 그런 다음 기존 B의 왼쪽과 A의 오른쪽을 N으로 바꿔요.</li><li>세 번째 문장의 before-&gt;rlink는 아직 B여야 해요. 네 번째 문장을 먼저 실행하면 이 식이 N을 가리키므로 다른 링크를 고치게 돼요.</li><li>삭제는 N을 건너뛰어 A와 B를 양방향으로 연결해요. 반납은 연결을 복구한 뒤 수행하고 헤드 노드 자체는 삭제하지 않아요.</li></ol><p>N-&gt;llink=A,N-&gt;rlink=B,B-&gt;llink=N,A-&gt;rlink=N. 순서를 뒤집으면 before-&gt;rlink가 N이어서 N-&gt;llink=N으로 바뀌고 B-&gt;llink가 갱신되지 않는다. 삭제: N-&gt;llink-&gt;rlink=N-&gt;rlink; N-&gt;rlink-&gt;llink=N-&gt;llink; 뒤에 free(N).</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>N-&gt;llink=A,N-&gt;rlink=B,B-&gt;llink=N,A-&gt;rlink=N. 순서를 뒤집으면 before-&gt;rlink가 N이어서 N-&gt;llink=N으로 바뀌고 B-&gt;llink가 갱신되지 않는다. 삭제: N-&gt;llink-&gt;rlink=N-&gt;rlink; N-&gt;rlink-&gt;llink=N-&gt;llink; 뒤에 free(N).</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. 삭제는 N을 건너뛰어 A와 B를 양방향으로 연결해요. 반납은 연결을 복구한 뒤 수행하고 헤드 노드 자체는 삭제하지 않아요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>새 노드 자신의 링크 두 개만 설정해서는 기존 두 노드가 새 노드를 가리키지 않아요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>A의 현재 오른쪽 노드가 B임을 먼저 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>새 노드의 양쪽을 먼저 A,B로 정해요. 그런 다음 기존 B의 왼쪽과 A의 오른쪽을 N으로 바꿔요.</p></div><div class="summary-group"><h4>검산</h4><p>N-&gt;llink=A,N-&gt;rlink=B,B-&gt;llink=N,A-&gt;rlink=N. 순서를 뒤집으면 before-&gt;rlink가 N이어서 N-&gt;llink=N으로 바뀌고 B-&gt;llink가 갱신되지 않는다. 삭제: N-&gt;llink-&gt;rlink=N-&gt;rlink; N-&gt;rlink-&gt;llink=N-&gt;llink; 뒤에 free(N).</p></div></div></article></section>
   </main>
   <footer>원 문제·정리노트·PDF는 보존해요.</footer>
     </div>
@@ -718,7 +848,7 @@ int main(void) {
       function docked() {
         const pref = store.get(PREF, {});
         // 문제해설은 본문 왼쪽 문제 패널을 기본으로 연다
-        if (kind === 'explain') return { left: pref.left ?? roomyMq.matches, prob: pref.prob ?? true, right: pref.right ?? false };
+        if (kind === 'explain') return { left: pref.left ?? wideMq.matches, prob: pref.prob ?? true, right: pref.right ?? false };
         return { left: pref.left ?? true, prob: false, right: pref.right ?? roomyMq.matches };
       }
       // 본문이 최소 폭(320px)보다 좁아지면 먼저 직접 넓힌 패널(문제 → 요약)을 이번 화면에서만 줄이고,
@@ -1194,7 +1324,7 @@ int main(void) {
         const ui = {};
         let targetTimer = 0;
         const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        // 판정 알림과 보기 스크롤: 생명과학 문제설명 스킬 be26a42 에서 이식 (root→document, win→window)
+        // 판정 알림과 보기 스크롤: pinned bio template review-interaction.js에서 복사 (root→document, win→window)
         function scrollAnswerIntoView(scroller, selectedLi, answerLi, selectedButton, answerButton) {
             if (!scroller || !selectedLi.getClientRects().length) return;
             const viewport = scroller.getBoundingClientRect();
@@ -1211,7 +1341,7 @@ int main(void) {
               target = span(selectedButton, selectedButton);
             scroller.scrollTop += (target.top + target.bottom - viewport.top - viewport.bottom) / 2;
           }
-  
+
         let feedback = null;
         let feedbackTimer = null;
         let feedbackOwner = null;
@@ -1420,7 +1550,8 @@ int main(void) {
           curId = key === 'intro' ? null : key;
           Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
           empty.hidden = Boolean(sums[key]);
-          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
+          if (key === 'intro') sub.textContent = '전체 흐름';
+          else sub.innerHTML = (s.querySelector('h3') || {}).innerHTML || ''; // preserve rendered title math
           if (wideMq.matches) {
             Object.keys(panes).forEach((id) => { panes[id].hidden = id !== curId; });
             Object.keys(origs).forEach((id) => { origs[id].hidden = id !== curId; });

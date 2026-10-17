@@ -35,6 +35,13 @@ HTML_ATTR_RE = re.compile(r'((?:href|src)=")((?:자료_문제설명_|figures_문
 def nfc(s) -> str:
     return unicodedata.normalize("NFC", str(s))
 
+def normalized_child(parent, name) -> Path:
+    """Resolve a single NFC/NFD name; never silently choose ambiguous siblings."""
+    parent=Path(parent)
+    matches=[p for p in parent.iterdir() if nfc(p.name)==nfc(name)] if parent.is_dir() else []
+    if len(matches)>1:raise ValueError(f'ambiguous normalized path: {parent / name}')
+    return matches[0] if matches else parent/name
+
 
 def pack_dir(root) -> Path:
     """팩 루트(날짜 폴더) → .pack/ 경로."""
@@ -46,7 +53,7 @@ def pdf_report_path(root) -> Path:
 
 
 def pack_folders(repo) -> list[Path]:
-    notes = Path(repo) / "복습노트"
+    notes = normalized_child(repo, "복습노트")
     if not notes.is_dir():
         return []
     return sorted((d for d in notes.iterdir() if d.is_dir() and RANGE_RE.fullmatch(nfc(d.name))),

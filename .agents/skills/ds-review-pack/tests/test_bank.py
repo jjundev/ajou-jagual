@@ -164,9 +164,9 @@ class TestCheckManifest(unittest.TestCase):
         m = {"problems": [{"id": f"p{i + 1}", "source": s, "variant": v} for i, (s, v) in enumerate(items)]}
         return bank.check_manifest(mini_bank(), m)
 
-    def test_ok_with_variant_of_same_problem(self):
-        self.assertEqual(self.errors(("2016-final-ljw-q1", False), ("2016-final-ljw-q1", True),
-                                     ("2019-mid-q8", False)), [])
+    def test_variant_cannot_reuse_same_problem(self):
+        self.assertTrue(self.errors(("2016-final-ljw-q1", False), ("2016-final-ljw-q1", True),
+                                     ("2019-mid-q8", False)))
 
     def test_unknown_source(self):
         self.assertEqual(self.errors(("nope-q1", False)), ["problems[0].source: 은행에 없는 문항: 'nope-q1'"])

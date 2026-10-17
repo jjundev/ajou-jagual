@@ -1,275 +1,336 @@
 {
-  "range": "0907",
-  "mode": "retrofit",
-  "taught_evidence": {
-    "range_ch": [
-      1
-    ],
-    "taught": [
-      1
-    ],
-    "taught_pages": "S1 p2–21",
-    "preview": "ADT·시간복잡도 미학습"
-  },
-  "concept_overrides": {
-    "ch05-q01": [
-      1
-    ]
-  },
+  "mode": "revision",
+  "policy_version": "review-questions-2026-10-17",
   "selected": [
     {
       "id": "p1",
+      "part": "partA",
       "source": "textbook-ch01-q01",
       "source_kind": "textbook",
-      "original_id": "ch01-q01",
+      "variant": false,
+      "anchor": "s0-algorithm-def",
+      "level": 3,
+      "date": "0907",
+      "terms": [
+        "temp ← a; a ← b; b ← temp"
+      ],
+      "answer": "temp ← a; a ← b; b ← temp",
+      "objectives": [
+        "retained-textbook-ch01-q01"
+      ],
+      "task_family": "textbook-ch01-q01",
+      "origin": "retained",
+      "old_id": "p1",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "3cd55bac2d69e795d9d721a9e4c5de34b5ef2cb482a8f733b639799483da4967",
+        "independent_answer": "tmp <- a; a <- b; b <- tmp.",
+        "reasoning": "Preserving old a before overwriting it gives final a=old b, b=old a; this also works for equal values.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0907/정리노트_0907_Intro_DS_Algorithms.html",
-          "locator": "#s0-algorithm-def",
-          "sha256": "5d32e44d22104e075a310b4d244cdc86784b2f2e80a2c3f3e128e3028327eef9"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0907/p1"
         },
         {
-          "path": "STT/0907 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s0-algorithm-def",
-          "sha256": "eeff28241fb70ba8b8b7600e2892ee8046688b73f757a487b785597aa4e30324"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
-          "locator": "PDF page 5",
-          "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0907/p1"
         }
-      ],
-      "answer": "temp ← a; a ← b; b ← temp",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch01-q01",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/01_자료구조와 알고리즘_연습문제.json",
-        "payload_sha256": "d8a68aaec11d818091b8514c82f8fb65af39ae2405eec236844d8a16a5dd5b41",
-        "source_refs": [
-          {
-            "source_id": "s01",
-            "pdf_page": 1,
-            "book_page": 36
-          }
-        ],
-        "sources": [
-          {
-            "id": "s01",
-            "path": "origin/01_자료구조와 알고리즘_연습문제.pdf",
-            "sha256": "d1f78d5cb573eb820fca6587b0f8219bce91c7b31c063bf4c2c132e1c572d696",
-            "page_count": 2
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "p2",
-      "source": "textbook-ch01-q02",
+      "part": "partA",
+      "source": "textbook-ch01-q03",
       "source_kind": "textbook",
-      "original_id": "ch01-q02",
+      "variant": false,
+      "anchor": "s0-algorithm-def",
+      "level": 3,
+      "date": "0907",
+      "terms": [
+        "sum ← 0; i=1..n에 대해 sum ← sum+i; sum 출력"
+      ],
+      "answer": "sum ← 0; i=1..n에 대해 sum ← sum+i; sum 출력",
+      "objectives": [
+        "retained-textbook-ch01-q03"
+      ],
+      "task_family": "textbook-ch01-q03",
+      "origin": "retained",
+      "old_id": "p3",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "7e35cc5f0e489f037e834360d47c6214e8f63ceaf9348e6b8f19879e194bf145",
+        "independent_answer": "sum <- 0; for i <- 1 to n: sum <- sum+i; return sum. For n=0 this returns 0.",
+        "reasoning": "For nonnegative integral n, after iteration i, sum=1+...+i; finite n iterations. An alternative is n(n+1)/2.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0907/정리노트_0907_Intro_DS_Algorithms.html",
-          "locator": "#s0-algorithm-def",
-          "sha256": "5d32e44d22104e075a310b4d244cdc86784b2f2e80a2c3f3e128e3028327eef9"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0907/p2"
         },
         {
-          "path": "STT/0907 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s0-algorithm-def",
-          "sha256": "eeff28241fb70ba8b8b7600e2892ee8046688b73f757a487b785597aa4e30324"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
-          "locator": "PDF page 5",
-          "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0907/p2"
         }
-      ],
-      "answer": "a ≥ b이면 a, 아니면 b",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch01-q02",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/01_자료구조와 알고리즘_연습문제.json",
-        "payload_sha256": "6df283160ca87a4f1dccef999e0017f78dc6c6a30a3f777d19b68705afe5ee5f",
-        "source_refs": [
-          {
-            "source_id": "s01",
-            "pdf_page": 1,
-            "book_page": 36
-          }
-        ],
-        "sources": [
-          {
-            "id": "s01",
-            "path": "origin/01_자료구조와 알고리즘_연습문제.pdf",
-            "sha256": "d1f78d5cb573eb820fca6587b0f8219bce91c7b31c063bf4c2c132e1c572d696",
-            "page_count": 2
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "p3",
-      "source": "textbook-ch01-q03",
+      "part": "partA",
+      "source": "textbook-ch05-q01",
       "source_kind": "textbook",
-      "original_id": "ch01-q03",
+      "variant": false,
+      "anchor": "s3-queue-stack",
+      "level": 1,
+      "date": "0907",
+      "terms": [
+        "(a) A, B, C, D, E"
+      ],
+      "answer": "(a) A, B, C, D, E",
+      "objectives": [
+        "retained-textbook-ch05-q01"
+      ],
+      "task_family": "textbook-ch05-q01",
+      "origin": "retained",
+      "old_id": "p4",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "c1e8678ee20f97916af711c4f0a6ba183ed4e0cac1036fae8203a1c6ebaa18dc",
+        "independent_answer": "(a) A, B, C, D, E.",
+        "reasoning": "Queue FIFO removes the earliest enqueued remaining item each time.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0907/정리노트_0907_Intro_DS_Algorithms.html",
-          "locator": "#s0-algorithm-def",
-          "sha256": "5d32e44d22104e075a310b4d244cdc86784b2f2e80a2c3f3e128e3028327eef9"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0907/p3"
         },
         {
-          "path": "STT/0907 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s0-algorithm-def",
-          "sha256": "eeff28241fb70ba8b8b7600e2892ee8046688b73f757a487b785597aa4e30324"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
-          "locator": "PDF page 5",
-          "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0907/p3"
         }
-      ],
-      "answer": "sum ← 0; i=1..n에 대해 sum ← sum+i; sum 출력",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch01-q03",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/01_자료구조와 알고리즘_연습문제.json",
-        "payload_sha256": "b1736c9f3c56a27554feaa4e8b587a6839fb728594b43c9facfd7c845bff6dfa",
-        "source_refs": [
-          {
-            "source_id": "s01",
-            "pdf_page": 1,
-            "book_page": 36
-          }
-        ],
-        "sources": [
-          {
-            "id": "s01",
-            "path": "origin/01_자료구조와 알고리즘_연습문제.pdf",
-            "sha256": "d1f78d5cb573eb820fca6587b0f8219bce91c7b31c063bf4c2c132e1c572d696",
-            "page_count": 2
-          }
-        ]
-      }
+      ]
     },
     {
       "id": "p4",
-      "source": "textbook-ch05-q01",
-      "source_kind": "textbook",
-      "original_id": "ch05-q01",
+      "part": "partB",
+      "source": "lecture-s01-p21-find-max",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-algorithm-def",
+      "level": 3,
+      "date": "0907",
+      "terms": [
+        "최대값 탐색의 초기값과 종료 조건"
+      ],
+      "answer": "tmp: -8 → -3 → -3 → -1, 반환 -1. 0으로 초기화하면 배열에 없는 0을 잘못 반환한다. 1≤n≤배열 용량이고 앞 n개가 초기화되어야 한다. i가 1씩 증가해 n에 도달하므로 종료한다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
+        "pdf_page": 21,
+        "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba",
+        "example": "find-max",
+        "taught_on": "0907",
+        "extra_pages": []
+      },
+      "objectives": [
+        "find-max"
+      ],
+      "task_family": "find-max",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "a76369990d87ad8b135ba9b78872d63a9466337108888214fc9c263093e12c8f",
+        "independent_answer": "tmp=-8 initially; after i=1: -3; i=2: -3; i=3: -1; return -1. Initializing tmp=0 incorrectly returns 0, which is not an input element. Require 1 <= n <= number of accessible score elements.",
+        "reasoning": "Each iteration preserves the maximum of score[0..i]. i increases by one toward n; for the example there are exactly three iterations.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "0907",
+        "ch": 1,
+        "page": 21,
+        "name": "find-max",
+        "anchor": "s0-algorithm-def",
+        "title": "최대값 탐색의 초기값과 종료 조건",
+        "code": "int find_max_score(int n)\n{\n    int i, tmp;\n    tmp = score[0];\n    for(i=1;i<n;i++){\n        if(score[i] > tmp) tmp = score[i];\n    }\n    return tmp;\n}",
+        "prompt": "강의 코드에서 score의 앞 n개가 입력이에요. score={-8,-3,-10,-1}, n=4일 때 tmp의 변화와 반환값을 적으세요. tmp를 0으로 초기화하면 생기는 오류, n에 필요한 조건, 이 반복이 유한한 이유도 설명하세요.",
+        "answer": "tmp: -8 → -3 → -3 → -1, 반환 -1. 0으로 초기화하면 배열에 없는 0을 잘못 반환한다. 1≤n≤배열 용량이고 앞 n개가 초기화되어야 한다. i가 1씩 증가해 n에 도달하므로 종료한다.",
+        "steps": [
+          "배열은 데이터를 보관하는 자료구조이고 반복·비교는 최대값을 찾는 알고리즘이에요.",
+          "첫 원소 -8을 tmp에 놓아요. i=1에서 -3으로 바꾸고, i=2에서는 -10이 작으므로 유지해요. i=3에서 -1로 바꿔요.",
+          "반복 직전 tmp는 이미 읽은 원소들의 최대값이에요. 매번 다음 원소와 비교하므로 마지막에는 전체 최대값이 돼요.",
+          "입력 범위와 종료 조건은 코드가 유효한 알고리즘이 되기 위한 조건이에요. n=0은 이 함수의 계약에서 제외해요."
+        ],
+        "pitfall": "최대값의 초기값을 무조건 0으로 놓으면 음수만 있는 입력에서 틀려요."
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/0907/정리노트_0907_Intro_DS_Algorithms.html",
-          "locator": "#s3-queue-stack",
-          "sha256": "5d32e44d22104e075a310b4d244cdc86784b2f2e80a2c3f3e128e3028327eef9"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "0907/p4"
         },
         {
-          "path": "STT/0907 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s3-queue-stack",
-          "sha256": "eeff28241fb70ba8b8b7600e2892ee8046688b73f757a487b785597aa4e30324"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
-          "locator": "PDF page 14",
-          "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "0907/p4"
         }
-      ],
-      "answer": "(a) A, B, C, D, E",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch05-q01",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/05_큐_연습문제.json",
-        "payload_sha256": "b488a26c743435873aa14a97ebbc895efa2085b710ac66e6207b85bf6e38003d",
-        "source_refs": [
-          {
-            "source_id": "s05",
-            "pdf_page": 1,
-            "book_page": 171
-          }
-        ],
-        "sources": [
-          {
-            "id": "s05",
-            "path": "origin/05_큐_연습문제.pdf",
-            "sha256": "d8b1c2126f374f944d951e395e13174d1f6cde570bcf09e3380ac99518696649",
-            "page_count": 3
-          }
-        ]
-      }
+      ]
     }
   ],
   "excluded": [
     {
-      "source": "textbook-ch01-q04",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q05",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q06",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q07",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q08",
-      "reason": "Big-O 원문에 타이트한 상한 조건이 없어 (3),(4) 모두 성립; 유일답 불확실 문항 제외"
-    },
-    {
-      "source": "textbook-ch01-q09",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q10",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q11",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q12",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q13",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q14",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q15",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q16",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch01-q17",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p2",
+      "old_source": "textbook-ch01-q02",
+      "old_content_sha256": "b0adf75522661531572e6049829fcfc9e1b6bd0cf8394932e2e1408028d6268f",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p4"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     }
-  ]
+  ],
+  "coverage": [
+    {
+      "objective": "retained-textbook-ch01-q01",
+      "questions": [
+        "p1"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch01-q03",
+      "questions": [
+        "p2"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch05-q01",
+      "questions": [
+        "p3"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "find-max",
+      "questions": [
+        "p4"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
+        "pdf_page": 21,
+        "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba",
+        "example": "find-max",
+        "taught_on": "0907",
+        "extra_pages": []
+      }
+    }
+  ],
+  "replacements": [
+    {
+      "old_id": "p1",
+      "old_source": "textbook-ch01-q01",
+      "old_content_sha256": "3cd55bac2d69e795d9d721a9e4c5de34b5ef2cb482a8f733b639799483da4967",
+      "decision": "retain",
+      "new_ids": [
+        "p1"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0907",
+          "id": "p1",
+          "source": "textbook-ch01-q01",
+          "content_sha256": "3cd55bac2d69e795d9d721a9e4c5de34b5ef2cb482a8f733b639799483da4967"
+        }
+      ]
+    },
+    {
+      "old_id": "p2",
+      "old_source": "textbook-ch01-q02",
+      "old_content_sha256": "b0adf75522661531572e6049829fcfc9e1b6bd0cf8394932e2e1408028d6268f",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p4"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0907/p4 (lecture-s01-p21-find-max)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0907",
+          "id": "p4",
+          "source": "lecture-s01-p21-find-max",
+          "content_sha256": "a76369990d87ad8b135ba9b78872d63a9466337108888214fc9c263093e12c8f"
+        }
+      ]
+    },
+    {
+      "old_id": "p3",
+      "old_source": "textbook-ch01-q03",
+      "old_content_sha256": "7e35cc5f0e489f037e834360d47c6214e8f63ceaf9348e6b8f19879e194bf145",
+      "decision": "retain",
+      "new_ids": [
+        "p2"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0907",
+          "id": "p2",
+          "source": "textbook-ch01-q03",
+          "content_sha256": "7e35cc5f0e489f037e834360d47c6214e8f63ceaf9348e6b8f19879e194bf145"
+        }
+      ]
+    },
+    {
+      "old_id": "p4",
+      "old_source": "textbook-ch05-q01",
+      "old_content_sha256": "c1e8678ee20f97916af711c4f0a6ba183ed4e0cac1036fae8203a1c6ebaa18dc",
+      "decision": "retain",
+      "new_ids": [
+        "p3"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "0907",
+          "id": "p3",
+          "source": "textbook-ch05-q01",
+          "content_sha256": "c1e8678ee20f97916af711c4f0a6ba183ed4e0cac1036fae8203a1c6ebaa18dc"
+        }
+      ]
+    }
+  ],
+  "duplicate_decisions": [],
+  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음"
 }

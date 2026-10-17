@@ -1,0 +1,700 @@
+[
+  {
+    "range": "0907",
+    "id": "p1",
+    "source": "textbook-ch01-q01",
+    "status": "reviewed",
+    "independent_answer": "tmp <- a; a <- b; b <- tmp.",
+    "reasoning": "Preserving old a before overwriting it gives final a=old b, b=old a; this also works for equal values.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0907",
+    "id": "p2",
+    "source": "textbook-ch01-q03",
+    "status": "reviewed",
+    "independent_answer": "sum <- 0; for i <- 1 to n: sum <- sum+i; return sum. For n=0 this returns 0.",
+    "reasoning": "For nonnegative integral n, after iteration i, sum=1+...+i; finite n iterations. An alternative is n(n+1)/2.",
+    "issues": [
+      "Assume n is a nonnegative integer and arithmetic has sufficient range; C int addition or the closed-form product can overflow."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0907",
+    "id": "p3",
+    "source": "textbook-ch05-q01",
+    "status": "reviewed",
+    "independent_answer": "(a) A, B, C, D, E.",
+    "reasoning": "Queue FIFO removes the earliest enqueued remaining item each time.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0907",
+    "id": "p4",
+    "source": "lecture-s01-p21-find-max",
+    "status": "reviewed",
+    "independent_answer": "tmp=-8 initially; after i=1: -3; i=2: -3; i=3: -1; return -1. Initializing tmp=0 incorrectly returns 0, which is not an input element. Require 1 <= n <= number of accessible score elements.",
+    "reasoning": "Each iteration preserves the maximum of score[0..i]. i increases by one toward n; for the example there are exactly three iterations.",
+    "issues": [
+      "score must be declared/accessibly supplied elsewhere; n=0 makes score[0] invalid as the specified empty-input maximum, and exceeding the allocated length can cause out-of-bounds UB."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0914",
+    "id": "p1",
+    "source": "2018-mid-c024-q8",
+    "status": "reviewed",
+    "independent_answer": "T(n)=30 sum(i=0..n-1)(n-i)=15n(n+1)=15n²+15n; O(n²), also Theta(n²).",
+    "reasoning": "At row i, j has n-i values, and every pair executes the assignment 30 times. Assume n>=0.",
+    "issues": [
+      "Actual C execution also requires valid buffer dimensions and non-overflowing loop control; the requested model counts only assignments."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0914",
+    "id": "p2",
+    "source": "2018-mid-c102-q1",
+    "status": "reviewed",
+    "independent_answer": "Recursion (순환/재귀 호출).",
+    "reasoning": "A function invokes itself on a subproblem.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0914",
+    "id": "p3",
+    "source": "textbook-ch01-q12",
+    "status": "reviewed",
+    "independent_answer": "O(1), O(log n), O(n), O(n log n), O(n²), O(2^n), O(n!).",
+    "reasoning": "This is the conventional increasing asymptotic growth order as n grows; logarithm base changes only a constant factor.",
+    "issues": [
+      "Big-O classes alone do not give exact runtimes for small n or different hidden constants; the question is interpreted as asymptotic growth ordering."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0914",
+    "id": "p4",
+    "source": "textbook-ch01-q09",
+    "status": "reviewed",
+    "independent_answer": "(1) Number of operations: 7n+10.",
+    "reasoning": "Under the specified cost model the complexity function counts primitive operations as input size n varies, not directly seconds or bytes.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0914",
+    "id": "p5",
+    "source": "textbook-ch02-q05",
+    "status": "reviewed",
+    "independent_answer": "recursive(n) recurses with unchanged n. For n!=1 it never approaches the only base case, and eventually exhausts recursion resources. For n=1 it returns 0. A decreasing call such as recursive(n-1), with an appropriate domain and base return, is required.",
+    "reasoning": "For n=2, all active calls again receive 2. If factorial were intended, use if(n<=1) return 1; return n*recursive(n-1); for n>=0 and representable results.",
+    "issues": [
+      "The intended mathematical function is not stated. Replacing only n by n-1 still makes every positive-input product zero because the original base return is 0; cannot assume factorial without saying so."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0914",
+    "id": "p6",
+    "source": "lecture-s01-p24-nat-no",
+    "status": "reviewed",
+    "independent_answer": "Objects: integers 0 through INT_MAX inclusive. sub(3,5)=0; sub(5,3)=2; mathematical add(INT_MAX,1)=INT_MAX. Safe C for this domain: int add(int x,int y){if(x>INT_MAX-y) return INT_MAX; return x+y;}",
+    "reasoning": "An ADT exposes operations and results while hiding representation. Mathematical pseudocode can evaluate the sum without a machine-width restriction; C signed int cannot evaluate an overflowing sum even to test it.",
+    "issues": [
+      "Directly translating the shown (x+y)<=INT_MAX condition to signed-int C invokes undefined behavior when x+y overflows. Preconditions 0<=x,y<=INT_MAX are needed for the safe subtraction guard."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0914",
+    "id": "p7",
+    "source": "lecture-s01-p29-square-cost",
+    "status": "reviewed",
+    "independent_answer": "A: 2 operations, O(1). B: 1+2n, O(n). C: 1+2n², O(n²). All produce n² under exact arithmetic.",
+    "reasoning": "A has one multiplication and one assignment. B starts with one assignment then n addition/assignment pairs. C starts with one assignment then n² addition/assignment pairs. Loop control is explicitly excluded; identical output does not imply identical work or runtime.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0914",
+    "id": "p8",
+    "source": "lecture-s02-p4-factorial",
+    "status": "reviewed",
+    "independent_answer": "Calls: factorial(3) -> factorial(2) -> factorial(1). Returns: factorial(1)=1 -> factorial(2)=2 -> factorial(3)=6. factorial(0)=1.",
+    "reasoning": "n<=1 is the termination case. For n>=2 the recursive argument n-1 is smaller and reaches 1. Stated nonnegative and representability assumptions prevent invalid input and arithmetic overflow.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0917",
+    "id": "p1",
+    "source": "2018-mid-c024-q15",
+    "status": "reviewed",
+    "independent_answer": "int gcd(int i,int j){ if(j==0) return i; return gcd(j,i%j); }",
+    "reasoning": "For positive inputs, gcd(i,j)=gcd(j,i mod j); the nonnegative remainder is smaller than j. The second argument reaches zero, at which point the first is the gcd.",
+    "issues": [
+      "main assumes successful scanf and positive int inputs; production code should check scanf returns 2 and both values are positive."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0917",
+    "id": "p2",
+    "source": "2017-mid-c050-q11",
+    "status": "reviewed",
+    "independent_answer": "For nonnegative int n: void dec_to_bin(int n){if(n>=2) dec_to_bin(n/2); printf(\"%d\",n%2);} Thus n=10 prints 1010 and n=0 prints 0.",
+    "reasoning": "Recursive division reaches the most significant bit first; printing remainders during return restores correct digit order.",
+    "issues": [
+      "Input domain is unstated. This version explicitly assumes n>=0. For negative input choose signed-magnitude textual output or fixed-width unsigned representation; these are different specifications. Negating INT_MIN in int is UB."
+    ],
+    "resolution": "입력 0의 출력 보완 및 n>=0 명시"
+  },
+  {
+    "range": "0917",
+    "id": "p3",
+    "source": "textbook-ch02-q09",
+    "status": "reviewed",
+    "independent_answer": "Printed on separate lines: 10, 7, 4, 1, -2. Return value: 3.",
+    "reasoning": "-2 prints before its base test and returns -1. Unwinding yields return values 0 at n=1, 1 at n=4, 2 at n=7, 3 at n=10.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0917",
+    "id": "p4",
+    "source": "textbook-ch02-q16",
+    "status": "reviewed",
+    "independent_answer": "int sum(int n){int s=0; for(int i=n;i>=1;--i) s+=i; return s;} for n>=1 and representable sums.",
+    "reasoning": "Descending accumulation evaluates n+(n-1)+...+1, the same recurrence expansion; a loop replaces call-stack storage.",
+    "issues": [
+      "Original recursion terminates only for positive integer n. The shown iterative program gives 0 for n<=0, so equivalence is claimed only on the original terminating domain."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0917",
+    "id": "p5",
+    "source": "lecture-s02-p10-power",
+    "status": "reviewed",
+    "independent_answer": "Odd branch: return x*power(x*x,(n-1)/2); Calls for (2,5): (2,5)->(4,2)->(16,1)->(256,0). Returns: 1,16,16,32. Result 32. power is O(log n) for n>=1, slow_power O(n).",
+    "reasoning": "For even n, x^n=(x²)^(n/2); for odd n, x^n=x(x²)^((n-1)/2). Each recursive call roughly halves n, while multiplying x once per step takes n steps.",
+    "issues": [
+      "The instruction says to hide the odd branch, but the visible prompt already includes it; it is a reconstruction exercise rather than a genuinely blank branch. n=0 is O(1)."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0917",
+    "id": "p6",
+    "source": "lecture-s02-p12-fibonacci",
+    "status": "reviewed",
+    "independent_answer": "fib(6)=8; fib(3) is invoked 3 times. Updates: tmp=last+current; last=current; current=tmp;",
+    "reasoning": "F0=0,F1=1 gives 0,1,1,2,3,5,8. Count of F3 calls: C(3)=1,C(4)=1,C(5)=2,C(6)=3. The new pair must become F(i-1),F(i); tmp preserves the sum before overwriting last. Recursive branches overlap: fib(6) calls fib(5) and fib(4), and fib(5) again calls fib(4).",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0921",
+    "id": "p1",
+    "source": "textbook-ch03-q01",
+    "status": "reviewed",
+    "independent_answer": "(4) 800 bytes.",
+    "reasoning": "10*20=200 int elements, each 4 bytes: 200*4=800.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0921",
+    "id": "p2",
+    "source": "textbook-ch03-q04",
+    "status": "reviewed",
+    "independent_answer": "#include <stdio.h>\nint main(void){int two[10];two[0]=1;for(int i=1;i<10;++i)two[i]=2*two[i-1];for(int i=0;i<10;++i)printf(\"%d%s\",two[i],i==9?\"\\n\":\" \");return 0;}\nOutput: 1 2 4 8 16 32 64 128 256 512.",
+    "reasoning": "Start from 2^0=1 and multiply the preceding value by 2 for the next exponent. All required values fit in even the minimum standard int range.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0921",
+    "id": "p3",
+    "source": "textbook-ch03-q05",
+    "status": "reviewed",
+    "independent_answer": "struct person {char name[100];int age;float salary;};",
+    "reasoning": "The chosen fixed-capacity character array stores a null-terminated name, int stores age, float stores monthly salary.",
+    "issues": [
+      "The required name capacity is unspecified; 100 is an explicit design choice, allowing at most 99 bytes of name plus the terminator."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0921",
+    "id": "p4",
+    "source": "textbook-ch03-q06",
+    "status": "reviewed",
+    "independent_answer": "typedef struct {float real;float imaginary;} complex; complex c1,c2;",
+    "reasoning": "typedef gives the structure type the name complex; each declared variable has both float fields.",
+    "issues": [
+      "If <complex.h> is included, its complex macro can conflict with the requested name. This standalone exercise assumes no such inclusion."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0921",
+    "id": "p5",
+    "source": "lecture-s03-p14-sparse-triples",
+    "status": "reviewed",
+    "independent_answer": "Triples: (0,0,2),(0,1,3),(1,0,8),(1,1,9),(1,2,1),(2,0,7),(2,2,5). Dense uses 9 scalar values; triples use 7*3=21 integers, so dense is smaller here.",
+    "reasoning": "Scan rows in increasing order and columns within each row, skipping zero entries. Ignoring metadata, triple storage uses fewer integer slots only when 3t < rows*cols, where t is the number of nonzeros; metadata and differing field sizes can change the exact threshold.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0921",
+    "id": "p6",
+    "source": "lecture-s02-p19-hanoi",
+    "status": "reviewed",
+    "independent_answer": "Moves: 1 A->C; 2 A->B; 1 C->B; 3 A->C; 1 B->A; 2 B->C; 1 A->C. T(1)=1; T(n)=2T(n-1)+1, hence T(n)=2^n-1.",
+    "reasoning": "The first recursive call moves the n-1 smaller disks from from to tmp, using the final target to as its temporary peg; therefore positional to/tmp roles switch. The largest disk then moves to the destination, and the smaller stack moves onto it. This yields 7 moves for n=3.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0921",
+    "id": "p7",
+    "source": "lecture-s03-p7-polynomial",
+    "status": "reviewed",
+    "independent_answer": "a represents 10x^5+6x+3; coef[4] is the x^1 coefficient. A polynomial with only an x^1000 term and a constant needs 1001 coefficient slots in the dense descending array, but only 2 (coefficient,degree) pairs.",
+    "reasoning": "Degree d uses coef[k] for x^(d-k), including explicit zeros for missing terms. The pair representation records only nonzero terms.",
+    "issues": [
+      "The given struct has MAX_DEGREE coefficient slots, not MAX_DEGREE+1; storing degree 1000 in this particular struct requires MAX_DEGREE>=1001. Count compares valid coefficient entries versus pairs, not equal-size byte units; the separate degree field adds metadata."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0921",
+    "id": "p8",
+    "source": "lecture-s03-p18-self-reference",
+    "status": "reviewed",
+    "independent_answer": "link type: struct ListNode *. Access data with p->data, next-node pointer with p->link; if non-NULL, next node data is p->link->data.",
+    "reasoning": "A pointer has a fixed size even while its target structure is incomplete. A by-value member of the same structure would require the structure to contain another whole instance indefinitely, so no finite complete size can be established.",
+    "issues": [
+      "All -> accesses require valid non-NULL node pointers; p->data is a char array and need not contain a terminated string until initialized."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0928",
+    "id": "p1",
+    "source": "textbook-ch03-q03",
+    "status": "reviewed",
+    "independent_answer": "(2) double array2[10], 80 bytes. Others: array1=40, array3=40, array4=40 bytes.",
+    "reasoning": "Multiply each stated element size by its array length; the prompt explicitly fixes the implementation sizes.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0928",
+    "id": "p2",
+    "source": "textbook-ch03-q07",
+    "status": "reviewed",
+    "independent_answer": "typedef struct {float real,imag;} Complex;\nComplex complex_add(Complex a,Complex b){Complex c={a.real+b.real,a.imag+b.imag};return c;}",
+    "reasoning": "Complex addition independently adds real and imaginary components: (ar+ai*i)+(br+bi*i)=(ar+br)+(ai+bi)*i.",
+    "issues": [
+      "The supplied skeleton omits the Complex definition and field names. This answer explicitly chooses real and imag; use the matching declared imaginary field name if a different definition is supplied."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0928",
+    "id": "p3",
+    "source": "textbook-ch03-q12",
+    "status": "reviewed",
+    "independent_answer": "#include <stdlib.h>\n#include <string.h>\ntypedef struct {int number;char text[21];} Record;\nint main(void){Record *p=malloc(sizeof *p);if(!p)return 1;p->number=100;strcpy(p->text,\"just testing\");free(p);return 0;}",
+    "reasoning": "Allocate exactly one whole object; check allocation, assign the integer, copy a terminated string, then release the original allocation address. The literal has 12 characters plus the terminator.",
+    "issues": [
+      "\"Maximum size 20 string\" may mean char[20] total bytes (19 text characters) or 20 characters plus terminator. This version chooses 20 text bytes plus NUL, char[21]; char[20] also fits the supplied literal."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0928",
+    "id": "p4",
+    "source": "textbook-ch01-q17",
+    "status": "reviewed",
+    "independent_answer": "(1) best O(1), worst O(1). (2) best O(n), worst O(n). (3) best O(n), worst O(n).",
+    "reasoning": "Random-access indexing reads the requested existing element directly. Without ordering or additional metadata, finding minimum or sum must inspect every input element even in the best case under the usual full scan algorithm.",
+    "issues": [
+      "Assume an array of n elements, a valid target index, fixed-width integer I/O cost, no known lower bound allowing early minimum termination, and no precomputed summary. A phrase \"nth number\" refers to a location, not scanning n linked nodes."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0928",
+    "id": "p5",
+    "source": "lecture-s03-p22-swap",
+    "status": "reviewed",
+    "independent_answer": "Call swap(&a,&b). After tmp=*px: (a,b,tmp)=(1,2,1). After *px=*py: (2,2,1). After *py=tmp: (2,1,1). A function receiving int x,int y and only swapping those local values leaves caller (a,b)=(1,2).",
+    "reasoning": "The pointer values are passed by value, but dereferencing them writes the original objects. Passing integers instead only modifies local parameter objects.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "0928",
+    "id": "p6",
+    "source": "lecture-s03-p31-malloc-record",
+    "status": "reviewed",
+    "independent_answer": "Before free: p[0]={1,\"Park\"}, p[1]={2,\"Kim\"}; p+1 advances sizeof(struct Example) bytes. Headers: <stdlib.h> for malloc/free/exit, <stdio.h> for fprintf/stderr, <string.h> for strcpy. free(p), the original base address. Reading p->number after free is undefined behavior.",
+    "reasoning": "Pointer arithmetic scales by the pointed-to type, including any padding. Both objects fit in the allocation. After free the lifetime and access rights of both records have ended.",
+    "issues": [
+      "sizeof(struct Example) is not necessarily sizeof(int)+10 because of padding; do not assert a byte count without an ABI."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1001",
+    "id": "p1",
+    "source": "lecture-s04-p11-array-insert",
+    "status": "reviewed",
+    "independent_answer": "Copies: list[4]=list[3]=40; list[3]=list[2]=30; list[2]=list[1]=20; then list[1]=99. Valid array {10,99,20,30,40}, length=5. Insertion positions satisfy 0<=position<=length; append is position=length. At original length n and position k, n-k shifts; best O(1) at k=n, worst O(n) at k=0.",
+    "reasoning": "Rightward shifts must visit the source suffix from right to left so each source is read before it is overwritten. A left-to-right loop propagates an already copied value, losing later values (20 would overwrite 30 before 30 is preserved).",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1001",
+    "id": "p2",
+    "source": "lecture-s04-p12-array-delete",
+    "status": "reviewed",
+    "independent_answer": "Return 20. Copy list[1]=list[2] (30), then list[2]=list[3] (40). Valid array {10,30,40}, length=3. Shifts=n-k-1; best O(1) deleting k=n-1, worst O(n) deleting k=0.",
+    "reasoning": "The last physical slot may still contain 40 but is outside the valid prefix of length 3. Deletion requires 0<=position<length, because position=length contains no valid item to return; left shifts run from low to high positions to preserve unread sources.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1005",
+    "id": "p1",
+    "source": "textbook-ch06-q07",
+    "status": "reviewed",
+    "independent_answer": "p points to D, the final node.",
+    "reasoning": "Start at A and advance through B,C,D. D->link is NULL, so the condition becomes false while p remains D.",
+    "issues": [
+      "The displayed nonempty acyclic list makes the code valid. On an empty list, evaluating p->link would dereference NULL; a circular list would never terminate."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1005",
+    "id": "p2",
+    "source": "textbook-ch06-q10",
+    "status": "reviewed",
+    "independent_answer": "#include <stdio.h>\n#include <stdlib.h>\ntypedef struct Node{int data;struct Node *link;} Node;\nint count_nodes(const Node *p){int n=0;for(;p;p=p->link)++n;return n;}\nint main(void){int n,x;Node *head=NULL,**tail=&head;if(scanf(\"%d\",&n)!=1||n<0)return 1;for(int i=0;i<n;++i){if(scanf(\"%d\",&x)!=1){while(head){Node *t=head;head=head->link;free(t);}return 1;}Node *t=malloc(sizeof *t);if(!t){while(head){Node *u=head;head=head->link;free(u);}return 1;}t->data=x;t->link=NULL;*tail=t;tail=&t->link;}printf(\"연결 리스트 노드의 개수 = %d\\n\",count_nodes(head));while(head){Node *t=head;head=head->link;free(t);}return 0;}\nFor inputs 3,5,6,7, count=3.",
+    "reasoning": "Append one successfully initialized node per entered datum, then traverse links until NULL while incrementing a separate count. Traversal count is based on actual nodes, not merely echoing the entered n.",
+    "issues": [
+      "Finite acyclic list and count within int range assumed; prompts may be added to match the displayed interaction exactly."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1005",
+    "id": "p3",
+    "source": "lecture-s04-p31-concat",
+    "status": "reviewed",
+    "independent_answer": "Returns head1=A; only existing link B->link changes from NULL to C. Result A->B->C->D->NULL. If head1=NULL, returns head2. For two nonempty lists, Theta(m) time, O(1) auxiliary space.",
+    "reasoning": "The loop stops at the last node rather than NULL so it can modify that node. Replacing the condition by while(p!=NULL) advances to NULL and then p->link=head2 dereferences NULL.",
+    "issues": [
+      "The two empty-head checks return in O(1); Theta(m) describes the actual concatenation traversal with both nonempty, and O(m) is its conventional worst-case bound for m>=1."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1005",
+    "id": "p4",
+    "source": "lecture-s04-p32-reverse",
+    "status": "reviewed",
+    "independent_answer": "After iteration 1: p=B,q=A,r=NULL, reversed prefix A->NULL. Iteration 2: p=C,q=B,r=A, prefix B->A->NULL. Iteration 3: p=NULL,q=C,r=B, prefix C->B->A->NULL. Return C; empty input returns NULL.",
+    "reasoning": "Before overwriting q->link, p must save its old successor. If q->link=r is done before p=p->link, p reads the newly reversed link instead of the original next node, losing the unread suffix.",
+    "issues": [
+      "r is uninitialized before the first loop but is assigned r=q before each use; no UB on the shown path, including empty input where r is never read."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1005",
+    "id": "p5",
+    "source": "lecture-s04-p25-insert-node",
+    "status": "reviewed",
+    "independent_answer": "Empty: head=N,N->link=NULL. Existing A->B with p=NULL: head=N,N->link=A,A->link=B,B->link=NULL. Existing list with p=A: head=A,A->link=N,N->link=B,B->link=NULL.",
+    "reasoning": "A ListNode ** lets the callee assign the caller head variable. For insertion after p, first preserve p->link in new_node->link; reversing the final two assignments makes new_node->link refer to new_node itself and disconnects the original successor suffix.",
+    "issues": [
+      "Non-NULL p is assumed to be a valid node in the list; new_node must not already be a shared node."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1005",
+    "id": "p6",
+    "source": "lecture-s04-p28-remove-node",
+    "status": "reviewed",
+    "independent_answer": "Delete B: p=A,removed=B; A->link=C and free(B). Delete A: p=NULL,removed=A; head=B and free(A). Singleton A deletion: head=NULL.",
+    "reasoning": "Read the successor and reconnect retained nodes before ending removed lifetime. Freeing removed first would make removed->link a use-after-free, including accessing (*phead)->link when head is removed.",
+    "issues": [
+      "Caller must supply a consistent predecessor/removed pair; deleting from empty input or a mismatched pair is not validated by this helper."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1005",
+    "id": "p7",
+    "source": "lecture-s04-p35-circular-last",
+    "status": "reviewed",
+    "independent_answer": "After insertion: head=N; first node=head->link=A; links A->B, B->N, N->A. Logical order A,B,N. If final *phead=node is omitted, head remains B and first becomes N, so logical order N,A,B: front insertion.",
+    "reasoning": "In this representation head denotes the last node, and its successor is the first. Inserting between the previous last and first only becomes an append after moving the last pointer to N.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1005",
+    "id": "p8",
+    "source": "lecture-s04-p38-dlist",
+    "status": "reviewed",
+    "independent_answer": "N->llink=A; N->rlink=B; B->llink=N; A->rlink=N. Delete N with N->llink->rlink=N->rlink; N->rlink->llink=N->llink; then free(N) if heap allocated.",
+    "reasoning": "Swapping the last two insertion statements first changes A->rlink to N; then before->rlink->llink=new_node writes N->llink=N instead of B->llink=N. B retains an obsolete left neighbor and N self-links left. Deletion restores reciprocal neighbor links.",
+    "issues": [
+      "Deletion assumes N is a valid deletable non-sentinel node; preserve any external head/sentinel policy if applicable."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1008",
+    "id": "p1",
+    "source": "textbook-ch04-q05",
+    "status": "reviewed",
+    "independent_answer": "Empty: (1) top==-1. Full: (3) top==MAX_STACK_SIZE-1.",
+    "reasoning": "With zero-based storage, occupied indexes are 0..top. No occupied index corresponds to -1; the last permitted occupied index is capacity-1.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1008",
+    "id": "p2",
+    "source": "lecture-s04-p48-list-delete-leak",
+    "status": "reviewed",
+    "independent_answer": "The lone node leaks: get_node_at(list,-1) returns NULL, head is advanced to NULL, free(NULL) does nothing, and length becomes 0 while the original allocation is unreachable. Correct argument: (p!=NULL)?p->link:list->head.",
+    "reasoning": "For position zero, removed must be the current head, saved/evaluated before remove_node changes head. For later positions, it is the predecessor successor. free(NULL) is defined and harmless, so this bug is a leak rather than a NULL-free crash.",
+    "issues": [
+      "Position bounds and nonempty-list validation must happen before this snippet; the stated length-one pos-zero case itself is valid."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1008",
+    "id": "p3",
+    "source": "lecture-s05-p11-stack-adt",
+    "status": "reviewed",
+    "independent_answer": "push(5): no return value, top=0, stack=[5]. push(8): no return, top=1, [5,8]. peek(): returns 8, top=1, unchanged. pop(): returns 8, top=0, [5]. push(2): no return, top=1, [5,2]. pop(): returns 2, top=0, [5].",
+    "reasoning": "peek observes the top value without changing top; pop reads the current top before decrement. Underflow must be checked first: an empty stack has top=-1, and decrementing then reading would address -2; even a nonempty top=0 would skip its only valid item if decremented first.",
+    "issues": [
+      "push pseudocode has no returned item; do not invent a push return value. peek assumes the usual emptiness guard although its body is not shown."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1012",
+    "id": "p1",
+    "source": "2019-mid-q6",
+    "status": "reviewed",
+    "independent_answer": "Postfix: 5 6 * 4 2 / + 1 -. push count=9; pop count=8; final value=31 remains on the stack.",
+    "reasoning": "Five operand pushes plus one result push for each of four binary operators gives 5+4=9. Each operator pops two operands, 4*2=8. No final pop is performed under the stated final-result requirement.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1012",
+    "id": "p2",
+    "source": "2018-mid-c024-q9",
+    "status": "reviewed",
+    "independent_answer": "(1) Postfix for (2+4)*7-6*3+1: 2 4 + 7 * 6 3 * - 1 +; value=25. (2) Given table tokens 5,6,*,4,2,/,+,1,- produce stacks bottom->top: [5]; [5,6]; [30]; [30,4]; [30,4,2]; [30,2]; [32]; [32,1]; [31].",
+    "reasoning": "Apply parentheses before multiplication, then left-associative subtraction and addition in part (1). For table evaluation, on each binary operator pop right operand then left operand and push left op right. Only the valid stack prefix is shown; unused cells are blank.",
+    "issues": [
+      "The table evaluates 5*6+4/2-1, not the part (1) expression. Treat the two parts as separate inputs rather than claiming the table is a trace of part (1)."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1012",
+    "id": "p3",
+    "source": "2018-mid-c024-q1",
+    "status": "reviewed",
+    "independent_answer": "Stack (스택).",
+    "reasoning": "The last unmatched opening bracket must be paired first, exactly the stack LIFO rule.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1012",
+    "id": "p4",
+    "source": "2017-mid-c050-q10",
+    "status": "reviewed",
+    "independent_answer": "push else: s->stack[++s->top]=item; overflow branch should exit(EXIT_FAILURE). pop: if(is_empty(s)){fprintf(stderr,\"스택 공백 에러\\n\");exit(EXIT_FAILURE);} return s->stack[s->top--]; Main: read with scanf(\"%99s\",str) and require success; each loop digit pushes str[i]-'0'; for + or * require at least two operands, op2=pop(&s);op1=pop(&s);push(&s,str[i]=='+'?op1+op2:op1*op2); other chars reject. After loop require s.top==0, then pop final result.",
+    "reasoning": "Array invariant is occupied positions 0..top. Digits contribute one operand; operators consume two and replace them by one. op1 is the earlier left operand. Successful evaluation leaves exactly one stack item. For this input grammar, at most 99 characters and 100 slots avoid capacity overflow.",
+    "issues": [
+      "As supplied, pop reports underflow but falls off a non-void function; using its nonexistent result is undefined behavior. Overflow reporting without stopping can leave invalid evaluation. Unbounded scanf(\"%s\",str) can overrun str. Even valid postfix over digits can overflow int in arithmetic; assume representable intermediate results or add checked arithmetic."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1012",
+    "id": "p5",
+    "source": "textbook-ch05-q03",
+    "status": "reviewed",
+    "independent_answer": "40,50, in that queue order.",
+    "reasoning": "Three FIFO removals discard 10,20,30.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1012",
+    "id": "p6",
+    "source": "textbook-ch04-q11",
+    "status": "reviewed",
+    "independent_answer": "#include <stdio.h>\nint main(void){int st[1024],top=-1,next=0,ch;printf(\"괄호 수:\");while((ch=getchar())!=EOF&&ch!='\\n'){if(ch=='('){if(top==1023)return 1;st[++top]=++next;printf(\" %d\",next);}else if(ch==')'){if(top<0)return 1;printf(\" %d\",st[top--]);}}putchar('\\n');return 0;}\nFor ((())(())): 1 2 3 3 2 4 5 5 4 1. For (((((): 1 2 3 4 5 5.",
+    "reasoning": "Assign and print a fresh number on every open; push it. On each close, pop and print the matched opening number. Unclosed openings still have printed numbers, consistent with the second supplied example.",
+    "issues": [
+      "The task is bracket numbering, not rejecting every unmatched opening; the second example deliberately leaves openings unmatched. A closing bracket with no opening must be handled as an error. This implementation bounds nesting to 1024; other storage policies are possible."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1012",
+    "id": "p7",
+    "source": "lecture-s05-p14-stack-c",
+    "status": "reviewed",
+    "independent_answer": "Normal push ++top selects next vacant index (first index 0); normal pop top-- reads the current valid index then removes it; peek reads without changing top. Changed push top++ with top=-1 writes stack[-1] and only then makes top=0. Changed pop --top with top=0 reads stack[-1] after reducing top to -1. Both changed accesses are out-of-bounds UB.",
+    "reasoning": "The increment/decrement value used as index depends on prefix versus postfix evaluation. Top updates do not make a negative subscript valid; no deterministic normal output can be inferred from UB.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1012",
+    "id": "p8",
+    "source": "lecture-s05-p17-linked-stack",
+    "status": "reviewed",
+    "independent_answer": "After push: top=N,N->link=A,A->link=B,B->link=NULL. Immediate pop returns N item, restores top=A, and frees N only.",
+    "reasoning": "Push must save old top as the new node successor before changing top. Reversing those two statements sets temp->link=temp, forming a self-loop and losing A/B from stack reachability. Pop must read item and successor before freeing temp; moving free ahead of either read causes use-after-free.",
+    "issues": [
+      "The named N is the newly allocated temp node. Assignment of item and link requires allocation success as stated."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1012",
+    "id": "p9",
+    "source": "lecture-s05-p27-postfix-code",
+    "status": "reviewed",
+    "independent_answer": "Stacks bottom->top: 8:[8]; 2:[8,2]; /:[4]; 3:[4,3]; -:[1]. Result 1. op2 is the most recently pushed right operand, op1 the older left operand. Reversing them changes integer 8/2=4 to 2/8=0 and changes subtraction sign.",
+    "reasoning": "The evaluator interprets each nonoperator character as one operand via ch-'0'. Thus \"12 3+\" is not tokenized as 12,3,+: it interprets 1 and 2 separately and even the space as an invalid numeric offset. It needs a tokenizer and whitespace handling for multidigit expressions.",
+    "issues": [
+      "The displayed switch contains only - and / cases. It correctly traces the supplied expression, but + and * currently pop two items without pushing their result. Since it is explicitly an excerpt, describe the omitted cases rather than treating this as a complete evaluator. A general integer evaluator must also exclude division by zero and INT_MIN/-1 overflow."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1015",
+    "id": "p1",
+    "source": "textbook-ch05-q08",
+    "status": "reviewed",
+    "independent_answer": "For an M-slot one-empty-cell circular queue where front marks the slot before the first item and rear the last item: int get_count(const QueueType *q){return (q->rear-q->front+MAX_QUEUE_SIZE)%MAX_QUEUE_SIZE;}",
+    "reasoning": "Valid items occupy the forward cyclic interval (front,rear]; subtract indices and wrap by M. Equal indices means zero, and the greatest represented count is M-1. Time and extra space are O(1).",
+    "issues": [
+      "Question does not independently specify queue index convention or whether all M slots may be occupied. Formula assumes the lecture convention with one unused slot; an explicit count/full flag representation may need another formula."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1015",
+    "id": "p2",
+    "source": "textbook-ch05-q09",
+    "status": "reviewed",
+    "independent_answer": "#include <stdio.h>\n#include <stdlib.h>\n#define M 100\ntypedef struct {int in[M],out[M];int ni,no;} Queue;\nvoid enqueue(Queue *q,int x){if(q->ni+q->no==M){fputs(\"overflow\\n\",stderr);exit(EXIT_FAILURE);}q->in[q->ni++]=x;}\nint dequeue(Queue *q){if(q->no==0)while(q->ni>0)q->out[q->no++]=q->in[--q->ni];if(q->no==0){fputs(\"underflow\\n\",stderr);exit(EXIT_FAILURE);}return q->out[--q->no];}\nint main(void){Queue q={0};enqueue(&q,10);enqueue(&q,20);printf(\"%d\\n\",dequeue(&q));enqueue(&q,30);printf(\"%d\\n\",dequeue(&q));printf(\"%d\\n\",dequeue(&q));return 0;}\nOutput: 10,20,30 on separate lines. Stack in receives arrivals, out supplies removals; transfer only when out is empty.",
+    "reasoning": "Reversing in makes its oldest item the top of out. Existing out items must be consumed before transferring later in arrivals, preserving FIFO. Each item is pushed/popped at most once per stack, so enqueue O(1), dequeue worst O(n), amortized O(1).",
+    "issues": [
+      "Finite-stack program must define overflow and underflow policy; the described bounded version uses total queue capacity M and two arrays of M each. Do not refill nonempty out, which would reorder old and new items."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1015",
+    "id": "p3",
+    "source": "textbook-ch05-q11",
+    "status": "reviewed",
+    "independent_answer": "#include <stdio.h>\n#include <ctype.h>\nint main(void){unsigned char deque[4096];size_t front=0,rear=0;int c;while((c=getchar())!=EOF&&c!='\\n'){if(isalnum((unsigned char)c)){if(rear==sizeof deque)return 1;deque[rear++]=(unsigned char)tolower((unsigned char)c);}}while(rear-front>1){int left=deque[front++];int right=deque[--rear];if(left!=right){puts(\"회문 아님\");return 0;}}puts(\"회문\");return 0;}",
+    "reasoning": "Append normalized alphanumeric characters at one end, then repeatedly remove and compare the two ends. Punctuation and spaces never enter the deque; case folding makes A and a equal. An empty or one-character normalized deque is a palindrome. radar compares r/r then a/a and leaves d.",
+    "issues": [
+      "This program explicitly uses the C byte/locale character model and capacity 4096 normalized bytes. Unicode Korean or other multibyte text requires Unicode decoding and case/character classification; char-byte ctype alone is insufficient. No more than one input line is processed."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1015",
+    "id": "p4",
+    "source": "lecture-s06-p11-linked-queue",
+    "status": "reviewed",
+    "independent_answer": "if(q->front==NULL){q->front=N;q->rear=N;}else{q->rear->link=N;q->rear=N;} Dequeue: save old=q->front and its data; q->front=old->link; if(q->front==NULL)q->rear=NULL; free(old); return saved data.",
+    "reasoning": "Both front and rear identify the unique node after an enqueue into empty. Removing the unique node leaves neither valid endpoint. Resetting rear prevents a dangling pointer to freed storage and restores the empty-queue invariant front==rear==NULL.",
+    "issues": [
+      "Dequeue must reject empty input before reading front; new node link=NULL and allocation success are stated preconditions."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1015",
+    "id": "p5",
+    "source": "lecture-s06-p22-simulation",
+    "status": "reviewed",
+    "independent_answer": "Original if/else: clock1 service_time 1->0; B remains waiting. clock2 starts B: 0->2; wait=2-1=1. clock3 service_time 2->1. With sequential if(service_time>0)service_time--; if(service_time==0)service_time=remove_customer(): clock1 1->0->2, B starts at 1, wait=0; clock2 2->1; clock3 1->0->0 (empty queue).",
+    "reasoning": "An else branch is chosen from the original positive test, so a decrement to zero cannot dequeue in the same loop iteration. A second independent zero test observes the decremented zero and can immediately start the next customer.",
+    "issues": [
+      "\"Change to two ifs\" needs the exact second condition stated: the comparison above assumes replacing else by if(service_time==0). Repeating if(service_time>0) instead would describe a different and incorrect algorithm. The delay is a property of this discrete loop convention, not a universal waiting-time rule."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1015",
+    "id": "p6",
+    "source": "lecture-s06-p9-circular-queue",
+    "status": "reviewed",
+    "independent_answer": "dequeue returns A: front=4,rear=1, logical [B,C]. enqueue(D): no return value, front=4,rear=2, [B,C,D]. enqueue(E): no return, front=4,rear=3, [B,C,D,E], full. Usable capacity=M-1=4; full iff (rear+1)%M==front.",
+    "reasoning": "Advancing front consumes index4. Enqueues next fill indices2 and3. One physical slot stays unused to distinguish front==rear empty from full; final (3+1)%5=4 equals front.",
+    "issues": [
+      "enqueue normal-path code is a void-style operation with no item return. The given normal-path snippets presume checks before performing full/empty operations."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1015",
+    "id": "p7",
+    "source": "lecture-s06-p16-deque-add",
+    "status": "reviewed",
+    "independent_answer": "After A: head=tail=A, A.llink=NULL,A.rlink=NULL. After B: head=A,tail=B; A.llink=NULL,A.rlink=B; B.llink=A,B.rlink=NULL. create_node fields: node->llink=left;node->data=item;node->rlink=right; return node.",
+    "reasoning": "An empty deque has no previous tail to patch and must establish both endpoint pointers. On the next insertion, the old tail links right to the new node and tail advances; new node already links left to the old tail and right to NULL.",
+    "issues": [],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  },
+  {
+    "range": "1015",
+    "id": "p8",
+    "source": "lecture-s06-p17-deque-delete",
+    "status": "reviewed",
+    "independent_answer": "First delete_front returns A: head=tail=B; B.llink=NULL,B.rlink=NULL; A freed. Second returns B: head=tail=NULL; B freed.",
+    "reasoning": "If new head is NULL, tail must also become NULL so empty endpoints agree and no dangling tail remains. Otherwise the new head left link must become NULL so it does not reference the removed node. Omitting the test and unconditionally dereferencing head crashes/causes UB on the final deletion; omitting updates leaves stale tail or dangling llink.",
+    "issues": [
+      "error must really not return, as explicitly stated; otherwise empty path could return an uninitialized item."
+    ],
+    "resolution": "독립 답과 최종 답의 의미를 대조; 명시된 정상 경로·입력 가정 또는 의도된 결함 문제로 해소"
+  }
+]

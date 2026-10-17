@@ -1,12 +1,7 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>이름·나이·월급을 한 사람의 구조체로 묶어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>서로 다른 타입 필드는 structure의 단서예요. name은 문자 배열 char[], age는 int, salary는 문제에서 지정한 float예요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>struct person { 를 먼저 적어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">struct person {
-    char name[100];
-    int age;
-    float salary;
-};</code></pre></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>세 필드의 타입과 이름을 요구사항과 하나씩 대조해요. name의 100칸은 설계 선택이며 최대 99바이트와 종료 널을 보관해요. 문제는 길이를 지정하지 않아 다른 적절한 길이도 가능해요. C 컴파일로 멤버 접근과 선언을 확인해요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>서로 다른 필드를 int 배열 하나로 대신하지 않아요. 구조체 선언 끝의 세미콜론도 필요해요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>struct person { 를 먼저 적어요.</li><li>char name[], int age, float salary</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>struct person { 를 먼저 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>char name[], int age, float salary</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>MAX_DEGREE는 6 이상이에요. 강의의 내림차순 계수 저장 규칙으로 a가 나타내는 다항식과 coef[4]의 차수를 쓰세요. 1000차 항과 상수항만 있는 다항식을 이 방식과 (계수,차수) 쌍 방식으로 저장할 때 필요한 유효 항목 수를 비교하세요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “계수 배열의 순서와 공간 낭비”예요. degree=5이므로 인덱스 i의 차수는 5-i예요. coef[0]은 5차, coef[4]는 1차, coef[5]는 상수항이에요. 1000차부터 0차까지는 총 1001개예요. 쌍 표현은 0이 아닌 두 항만 저장하지만 각 항의 차수도 별도로 저장해야 해요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>인덱스 i의 차수는 degree-i=5-i라고 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>degree=5이므로 인덱스 i의 차수는 5-i예요. coef[0]은 5차, coef[4]는 1차, coef[5]는 상수항이에요.</li><li>0인 계수도 자리를 차지하므로 x^4,x^3,x² 항이 없다는 사실을 배열에 남겨요.</li><li>1000차부터 0차까지는 총 1001개예요. 쌍 표현은 0이 아닌 두 항만 저장하지만 각 항의 차수도 별도로 저장해야 해요.</li></ol><p>10x^5+6x+3, coef[4]는 1차 항. 모든 차수 배열은 1001개 계수, 쌍 방식은 2개 항(계수와 차수 각각 2개)을 저장한다.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>10x^5+6x+3, coef[4]는 1차 항. 모든 차수 배열은 1001개 계수, 쌍 방식은 2개 항(계수와 차수 각각 2개)을 저장한다.</p><p>시작 조건에서 다시 추적한 결과가 위 답과 일치해요. 1000차부터 0차까지는 총 1001개예요. 쌍 표현은 0이 아닌 두 항만 저장하지만 각 항의 차수도 별도로 저장해야 해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>이 강의에서는 coef[0]이 상수항이 아니에요. 저장 규칙을 먼저 확인하세요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>주어진 시작 상태와 필요한 입력 조건을 적어요.</li><li>첫 줄부터 연산 순서를 따라 답을 완성해요.</li><li>경계 경우와 오류 경로를 확인해요.</li></ol></div><div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>인덱스 i의 차수는 degree-i=5-i라고 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>degree=5이므로 인덱스 i의 차수는 5-i예요. coef[0]은 5차, coef[4]는 1차, coef[5]는 상수항이에요.</p></div><div class="summary-group"><h4>검산</h4><p>10x^5+6x+3, coef[4]는 1차 항. 모든 차수 배열은 1001개 계수, 쌍 방식은 2개 항(계수와 차수 각각 2개)을 저장한다.</p></div></div>

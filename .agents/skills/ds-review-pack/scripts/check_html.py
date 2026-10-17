@@ -284,6 +284,10 @@ def check_note(doc: Doc, m: dict) -> list[Problem]:
 
 def check_review(doc: Doc, m: dict) -> list[Problem]:
     out: list[Problem] = []
+    expected={q['id'] for q in m['problems']}
+    for ident,container in doc.containers.items():
+        if 'card' in container.attrs.get('class','').split() and ident not in expected:
+            out.append(Problem('extra-card',ident,'manifest에 없는 카드'))
     out += [Problem("forbidden-term", "review", term) for term in m["forbidden_outside_preview"] if term in doc.body_text]
     for q in m["problems"]:
         card = doc.containers.get(q["id"])
@@ -293,6 +297,8 @@ def check_review(doc: Doc, m: dict) -> list[Problem]:
         kind = q.get("source_kind", "past-exam")
         if card.attrs.get("data-source-kind", "past-exam") != kind:
             out.append(Problem("card-source-kind", q["id"], "출처 종류 불일치"))
+        if kind=='lecture-code' and ('강의 예제 보기' not in card.text or '강의 예제 기반 자체 출제' not in card.text):
+            out.append(Problem('lecture-label',q['id'],'강의 예제·자체 출제 표기 필요'))
         if card.attrs.get("data-source") != q["source"]:
             out.append(Problem("card-source", q["id"], f"data-source={card.attrs.get('data-source')!r}"))
         missing = CARD_PARTS - card.child_classes

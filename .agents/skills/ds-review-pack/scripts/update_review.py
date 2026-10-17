@@ -5,6 +5,45 @@ from pathlib import Path
 import os
 import re
 import tempfile
+import hashlib
+import json
+
+def revision_hash(manifest, cards):
+    payload=json.dumps({'problems':manifest['problems'],'cards':cards},ensure_ascii=False,sort_keys=True)
+    return hashlib.sha256(payload.encode()).hexdigest()[:20]
+
+def build_revision(existing_html, *, manifest, cards):
+    source=existing_html;spans=Spans(source).spans
+    ordered=[q['id'] for q in manifest['problems']]
+    if set(cards)!=set(ordered):raise ValueError('revision cards/manifest mismatch')
+    for q in manifest['problems']:
+        parsed=extract_cards(cards[q['id']])
+        if len(parsed)!=1 or parsed[0]['id']!=q['id'] or parsed[0]['source']!=q['source']:raise ValueError('revision fragment identity mismatch')
+    sections=[]
+    for part in manifest['parts']:
+        content='\n'.join(cards[q['id']] for q in manifest['problems'] if q['part']==part['id'])
+        sections.append(f'<section id="{part["id"]}"><h2>{escape(part["title"])}</h2>\n{content}\n</section>')
+    main='<main>\n<div class="hero"><h1>'+escape(manifest['review_title'])+'</h1><p>'+manifest['review_intro']+'</p></div>\n'+'\n'.join(sections)+'\n</main>'
+    edits=[]
+    main_span=next(row for row in spans if row[0]=='main')
+    for tag,attrs,start,end in spans:
+        if main_span[2]<start<main_span[3]:continue
+        if tag=='main':edits.append((start,end,main))
+        elif tag=='nav' and 'toc' in attrs.get('class','').split():
+            toc=''.join(f'<a href="#{p["id"]}">{escape(p["short"])}</a>' for p in manifest['parts'])
+            edits.append((start,end,'<nav class="toc" aria-label="목차">'+toc+'</nav>'))
+        elif tag=='title':edits.append((start,end,'<title>'+escape(manifest['review_title'])+'</title>'))
+        elif tag=='footer':edits.append((start,end,'<footer>'+manifest['footer_review']+'</footer>'))
+        elif tag=='meta' and attrs.get('name')=='description':edits.append((start,end,'<meta name="description" content="'+escape(manifest['review_title'],quote=True)+'">'))
+    for start,end,replacement in sorted(edits,reverse=True):source=source[:start]+replacement+source[end:]
+    return stamp_revision(source, manifest, cards)
+
+def stamp_revision(source, manifest, cards):
+    version=revision_hash(manifest,cards)
+    source=re.sub(r'(<body\b[^>]*?)\sdata-revision="[^"]*"',r'\1',source)
+    source=re.sub(r'<body\b',f'<body data-revision="{version}"',source,count=1)
+    source=source.replace("'od-review-solved:' + RANGE;","'od-review-solved:' + RANGE + ':' + document.body.dataset.revision;")
+    return source
 
 class Spans(HTMLParser):
     def __init__(self, source):

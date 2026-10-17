@@ -1,317 +1,881 @@
 {
-  "range": "1012",
-  "mode": "retrofit",
-  "taught_evidence": {
-    "range_ch": [
-      5,
-      6
-    ],
-    "taught": [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6
-    ],
-    "taught_pages": "S5 p9–40; S6 p2–6",
-    "preview": "원형 큐·덱은 다음 수업"
-  },
-  "concept_overrides": {},
+  "mode": "revision",
+  "policy_version": "review-questions-2026-10-17",
   "selected": [
     {
-      "id": "p9",
+      "id": "p1",
+      "part": "partA",
+      "source": "2019-mid-q6",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "push"
+      ],
+      "answer": "push 9번, pop 8번",
+      "objectives": [
+        "retained-2019-mid-q6"
+      ],
+      "task_family": "2019-mid-q6",
+      "origin": "retained",
+      "old_id": "p1",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "a128a6e77e1bd5e5f9fe9dc8388117ffd0c3354bffa57c011fc0635f012aa5e0",
+        "independent_answer": "Postfix: 5 6 * 4 2 / + 1 -. push count=9; pop count=8; final value=31 remains on the stack.",
+        "reasoning": "Five operand pushes plus one result push for each of four binary operators gives 5+4=9. Each operator pops two operands, 4*2=8. No final pop is performed under the stated final-result requirement.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1012/p1"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1012/p1"
+        }
+      ]
+    },
+    {
+      "id": "p2",
+      "part": "partA",
+      "source": "2018-mid-c024-q9",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "(1)"
+      ],
+      "answer": "(1) 2 4 + 7 * 6 3 * - 1 +; (2) 31",
+      "objectives": [
+        "retained-2018-mid-c024-q9"
+      ],
+      "task_family": "2018-mid-c024-q9",
+      "origin": "retained",
+      "old_id": "p2",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "245963d5861e16ceb0dd0df7aaf9ebd76e7a8dd2f091d0050cde739ae077607d",
+        "independent_answer": "(1) Postfix for (2+4)*7-6*3+1: 2 4 + 7 * 6 3 * - 1 +; value=25. (2) Given table tokens 5,6,*,4,2,/,+,1,- produce stacks bottom->top: [5]; [5,6]; [30]; [30,4]; [30,4,2]; [30,2]; [32]; [32,1]; [31].",
+        "reasoning": "Apply parentheses before multiplication, then left-associative subtraction and addition in part (1). For table evaluation, on each binary operator pop right operand then left operand and push left op right. Only the valid stack prefix is shown; unused cells are blank.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1012/p2"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1012/p2"
+        }
+      ]
+    },
+    {
+      "id": "p3",
+      "part": "partA",
+      "source": "2018-mid-c024-q1",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "스택"
+      ],
+      "answer": "스택",
+      "objectives": [
+        "retained-2018-mid-c024-q1"
+      ],
+      "task_family": "2018-mid-c024-q1",
+      "origin": "retained",
+      "old_id": "p4",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "36ab6910706db1dbe6cb18af5c9444b367f43e2e14a6c0783c9df3a2f7ec30ae",
+        "independent_answer": "Stack (스택).",
+        "reasoning": "The last unmatched opening bracket must be paired first, exactly the stack LIFO rule.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1012/p3"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1012/p3"
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "part": "partA",
+      "source": "2017-mid-c050-q10",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "push:"
+      ],
+      "answer": "push: top 증가 후 저장; pop: 현재 top 값 저장 후 top 감소; main: 숫자 push, 연산자면 두 값 pop 후 연산 결과 push",
+      "objectives": [
+        "retained-2017-mid-c050-q10"
+      ],
+      "task_family": "2017-mid-c050-q10",
+      "origin": "retained",
+      "old_id": "p6",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "3b13df2b45d9815dd447b4ec4556dc35578334bca748777c9f118ee33873e484",
+        "independent_answer": "Normal-path push blank: s->stack[++(s->top)] = item;\nNormal-path pop else blank: item = s->stack[s->top]; s->top--; return item;\nNormal-path main loop: if(str[i]>='0' && str[i]<='9'){push(&s,str[i]-'0');}else{op2=pop(&s);op1=pop(&s);if(str[i]=='+')push(&s,op1+op2);else if(str[i]=='*')push(&s,op1*op2);}\nSeparate robustness repairs: add exit(EXIT_FAILURE) to error branches (especially pop underflow); use scanf(\"%99s\",str) and check that its return is 1; if relaxing the stated valid-input assumptions, validate operand count, allowed characters, and exactly one remaining result.",
+        "reasoning": "The stack uses occupied slots 0..top with empty top=-1, so pushing increments before storing; popping reads before decrementing. Each digit pushes its numeric value. Each binary operator removes its right operand then left operand and pushes the result. The explicit valid postfix and representable arithmetic assumptions make the normal branches sufficient for the exercise. At most 99 characters cannot overflow 100 stack slots.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1012/p4"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1012/p4"
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "part": "partA",
       "source": "textbook-ch05-q03",
       "source_kind": "textbook",
-      "original_id": "ch05-q03",
-      "prerequisites": [],
-      "evidence": [
-        {
-          "path": "복습노트/1012/정리노트_1012_Queue.html",
-          "locator": "#s2-fifo",
-          "sha256": "8d72193b33cdc86dc2f9ca4a399d0322b30aa8dfb454069fd1820d30a199c425"
-        },
-        {
-          "path": "STT/1012 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s2-fifo",
-          "sha256": "32d83cab9c8f58e85c777e56bdd2101868a087caf060754d25d82156fa764ad9"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
-          "locator": "PDF page 3",
-          "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f"
-        }
+      "variant": false,
+      "anchor": "s2-fifo",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "40, 50"
       ],
       "answer": "40, 50",
+      "objectives": [
+        "retained-textbook-ch05-q03"
+      ],
+      "task_family": "textbook-ch05-q03",
+      "origin": "retained",
+      "old_id": "p9",
       "verification": {
-        "method": "python",
-        "reference": "answers.py:ch05-q03",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/05_큐_연습문제.json",
-        "payload_sha256": "bf542639ab8e617b9be4b732c3feb4d909c245b75502900c3352c7205e4e1ff3",
-        "source_refs": [
-          {
-            "source_id": "s05",
-            "pdf_page": 1,
-            "book_page": 171
-          }
-        ],
-        "sources": [
-          {
-            "id": "s05",
-            "path": "origin/05_큐_연습문제.pdf",
-            "sha256": "d8b1c2126f374f944d951e395e13174d1f6cde570bcf09e3380ac99518696649",
-            "page_count": 3
-          }
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "cd71f8bbaa5114ddaf827990c804f10b85a214f548170cce026d534bd5ab6d79",
+        "independent_answer": "40,50, in that queue order.",
+        "reasoning": "Three FIFO removals discard 10,20,30.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
         ]
-      }
-    },
-    {
-      "id": "p10",
-      "source": "textbook-ch04-q07",
-      "source_kind": "textbook",
-      "original_id": "ch04-q07",
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/1012/정리노트_1012_Queue.html",
-          "locator": "#s1-eval",
-          "sha256": "8d72193b33cdc86dc2f9ca4a399d0322b30aa8dfb454069fd1820d30a199c425"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1012/p5"
         },
         {
-          "path": "STT/1012 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-eval",
-          "sha256": "32d83cab9c8f58e85c777e56bdd2101868a087caf060754d25d82156fa764ad9"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
-          "locator": "PDF page 26",
-          "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1012/p5"
         }
-      ],
-      "answer": "(1) B + E",
-      "verification": {
-        "method": "python",
-        "reference": "answers.py:ch04-q07",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/04_스택_연습문제.json",
-        "payload_sha256": "ba6e43a83319868dc77ed6a1495e84b38d2129cb39309a77057f0d44527f9f16",
-        "source_refs": [
-          {
-            "source_id": "s04",
-            "pdf_page": 1,
-            "book_page": 142
-          }
-        ],
-        "sources": [
-          {
-            "id": "s04",
-            "path": "origin/04_스택_연습문제.pdf",
-            "sha256": "f8f13f78bd19aa317bec82cc1a08186174794cc2eb9814ca834f58ec676548d4",
-            "page_count": 3
-          }
-        ]
-      }
+      ]
     },
     {
-      "id": "p11",
+      "id": "p6",
+      "part": "partA",
       "source": "textbook-ch04-q11",
       "source_kind": "textbook",
-      "original_id": "ch04-q11",
-      "prerequisites": [],
-      "evidence": [
-        {
-          "path": "복습노트/1012/정리노트_1012_Queue.html",
-          "locator": "#s1-matching",
-          "sha256": "8d72193b33cdc86dc2f9ca4a399d0322b30aa8dfb454069fd1820d30a199c425"
-        },
-        {
-          "path": "STT/1012 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s1-matching",
-          "sha256": "32d83cab9c8f58e85c777e56bdd2101868a087caf060754d25d82156fa764ad9"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
-          "locator": "PDF page 21",
-          "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
-        }
+      "variant": false,
+      "anchor": "s1-matching",
+      "level": 3,
+      "date": "1012",
+      "terms": [
+        "((())(())): 1 2 3 3 2 4 5 5 4 1 / (((((): 1 2 3 4 5 5"
       ],
       "answer": "((())(())): 1 2 3 3 2 4 5 5 4 1 / (((((): 1 2 3 4 5 5",
+      "objectives": [
+        "retained-textbook-ch04-q11"
+      ],
+      "task_family": "textbook-ch04-q11",
+      "origin": "retained",
+      "old_id": "p11",
       "verification": {
-        "method": "c-run",
-        "reference": "answers.py:ch04-q11",
-        "result": "pass"
-      },
-      "provenance": {
-        "json_path": "교과서/04_스택_연습문제.json",
-        "payload_sha256": "99cf85b6ade9d4c9a93f97f601f8a7cd5b893966d8a9b8bfce1dafcdc60c9044",
-        "source_refs": [
-          {
-            "source_id": "s04",
-            "pdf_page": 2,
-            "book_page": 143
-          }
-        ],
-        "sources": [
-          {
-            "id": "s04",
-            "path": "origin/04_스택_연습문제.pdf",
-            "sha256": "f8f13f78bd19aa317bec82cc1a08186174794cc2eb9814ca834f58ec676548d4",
-            "page_count": 3
-          }
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "b98893c481b4bb957e77af48ba121719fe469d7889bcdc6960b6ec6421723f69",
+        "independent_answer": "#include <stdio.h>\nint main(void){int st[1024],top=-1,next=0,ch;printf(\"괄호 수:\");while((ch=getchar())!=EOF&&ch!='\\n'){if(ch=='('){if(top==1023)return 1;st[++top]=++next;printf(\" %d\",next);}else if(ch==')'){if(top<0)return 1;printf(\" %d\",st[top--]);}}putchar('\\n');return 0;}\nFor ((())(())): 1 2 3 3 2 4 5 5 4 1. For (((((): 1 2 3 4 5 5.",
+        "reasoning": "Assign and print a fresh number on every open; push it. On each close, pop and print the matched opening number. Unclosed openings still have printed numbers, consistent with the second supplied example.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
         ]
-      }
-    },
-    {
-      "id": "p12",
-      "source": "textbook-ch04-q14",
-      "source_kind": "textbook",
-      "original_id": "ch04-q14",
+      },
       "prerequisites": [],
       "evidence": [
         {
-          "path": "복습노트/1012/정리노트_1012_Queue.html",
-          "locator": "#s0-array",
-          "sha256": "8d72193b33cdc86dc2f9ca4a399d0322b30aa8dfb454069fd1820d30a199c425"
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1012/p6"
         },
         {
-          "path": "STT/1012 자구알.md",
-          "locator": "해당 날짜 전체 수업; 노트 토픽 s0-array",
-          "sha256": "32d83cab9c8f58e85c777e56bdd2101868a087caf060754d25d82156fa764ad9"
-        },
-        {
-          "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
-          "locator": "PDF page 9",
-          "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1012/p6"
         }
+      ]
+    },
+    {
+      "id": "p7",
+      "part": "partB",
+      "source": "lecture-s05-p14-stack-c",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-pushpop",
+      "level": 3,
+      "date": "1012",
+      "terms": [
+        "배열 스택의 전위·후위 연산"
       ],
-      "answer": "return s->top + 1;",
-      "verification": {
-        "method": "c-run",
-        "reference": "answers.py:ch04-q14",
-        "result": "pass"
+      "answer": "정상 push는 올린 인덱스에 저장하고 정상 pop은 현재 인덱스를 읽은 뒤 줄인다. 잘못된 push top++는 -1에 쓰고 잘못된 pop --top은 -1을 읽어 배열 밖 접근을 일으킨다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 14,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "stack-c",
+        "taught_on": "1012",
+        "extra_pages": []
       },
-      "provenance": {
-        "json_path": "교과서/04_스택_연습문제.json",
-        "payload_sha256": "b56632ed8e7bf84dddf789f10fcca23c2dc2c5855b1054a552fb8987b36a8479",
-        "source_refs": [
-          {
-            "source_id": "s04",
-            "pdf_page": 3,
-            "book_page": 144
-          }
-        ],
-        "sources": [
-          {
-            "id": "s04",
-            "path": "origin/04_스택_연습문제.pdf",
-            "sha256": "f8f13f78bd19aa317bec82cc1a08186174794cc2eb9814ca834f58ec676548d4",
-            "page_count": 3
-          }
+      "objectives": [
+        "stack-c"
+      ],
+      "task_family": "stack-c",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "cda4bdd503a3cbd81b73aafdb731bc45bf5ad520477ee8889f7ffa33974685d6",
+        "independent_answer": "Normal push ++top selects next vacant index (first index 0); normal pop top-- reads the current valid index then removes it; peek reads without changing top. Changed push top++ with top=-1 writes stack[-1] and only then makes top=0. Changed pop --top with top=0 reads stack[-1] after reducing top to -1. Both changed accesses are out-of-bounds UB.",
+        "reasoning": "The increment/decrement value used as index depends on prefix versus postfix evaluation. Top updates do not make a negative subscript valid; no deterministic normal output can be inferred from UB.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
         ]
-      }
+      },
+      "authoring": {
+        "date": "1012",
+        "ch": 5,
+        "page": 14,
+        "name": "stack-c",
+        "anchor": "s0-pushpop",
+        "title": "배열 스택의 전위·후위 연산",
+        "code": "/* push의 정상 경로 */\ns->stack[++(s->top)] = item;\n/* pop의 정상 경로 */\nreturn s->stack[(s->top)--];\n/* peek의 정상 경로 */\nreturn s->stack[s->top];",
+        "prompt": "세 줄은 각각 별도 함수의 정상 경로예요. push에서 ++top과 pop에서 top--를 쓰는 이유를 설명하세요. 둘을 top++와 --top으로 바꾸었을 때 초기 top=-1에서 첫 push, 원소 하나인 top=0에서 첫 pop이 읽거나 쓰는 인덱스를 각각 구하세요. 오류를 정상 출력으로 계산하지 마세요.",
+        "answer": "정상 push는 올린 인덱스에 저장하고 정상 pop은 현재 인덱스를 읽은 뒤 줄인다. 잘못된 push top++는 -1에 쓰고 잘못된 pop --top은 -1을 읽어 배열 밖 접근을 일으킨다.",
+        "steps": [
+          "전위 ++는 식의 값이 증가한 값이고 후위 --는 식의 값이 감소 전 값이에요.",
+          "빈 스택의 다음 저장 위치는 0이므로 -1을 먼저 0으로 바꿔야 해요.",
+          "원소가 하나면 읽을 위치는 0이에요. 0을 읽고 top을 -1로 만들어야 해요.",
+          "바꾼 식은 모두 -1 인덱스를 사용해요. 배열 밖 접근에는 정해진 출력값이 없으므로 미정의 동작이라고 판정해요."
+        ],
+        "pitfall": "후위 연산이 문장 전체가 끝날 때까지 값을 안 바꾼다는 식으로 설명하지 마세요. 식의 값과 변수 갱신을 구별해요."
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1012/p7"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1012/p7"
+        }
+      ]
+    },
+    {
+      "id": "p8",
+      "part": "partB",
+      "source": "lecture-s05-p17-linked-stack",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-linkedpush",
+      "level": 3,
+      "date": "1012",
+      "terms": [
+        "연결 스택의 두 링크 갱신"
+      ],
+      "answer": "push 뒤 N→A→B, pop 뒤 top=A이고 N이 해제된다. push 순서를 뒤집으면 N->link=N이 된다. free 뒤 temp->item이나 temp->link를 읽으면 해제 후 접근이다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 17,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "linked-stack",
+        "taught_on": "1012",
+        "extra_pages": [
+          18
+        ]
+      },
+      "objectives": [
+        "linked-stack"
+      ],
+      "task_family": "linked-stack",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "7ee2650dd0663161be6011c0c957a6efec0788c73ae517fedb7e8c0dbf95e572",
+        "independent_answer": "After push: top=N,N->link=A,A->link=B,B->link=NULL. Immediate pop returns N item, restores top=A, and frees N only.",
+        "reasoning": "Push must save old top as the new node successor before changing top. Reversing those two statements sets temp->link=temp, forming a self-loop and losing A/B from stack reachability. Pop must read item and successor before freeing temp; moving free ahead of either read causes use-after-free.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "1012",
+        "ch": 5,
+        "page": 17,
+        "name": "linked-stack",
+        "anchor": "s0-linkedpush",
+        "title": "연결 스택의 두 링크 갱신",
+        "code": "/* push: 할당 성공 뒤 */\ntemp->item=item;\ntemp->link=s->top;\ns->top=temp;\n/* pop: 비어 있지 않을 때 */\nStackNode *temp=s->top;\nint item=temp->item;\ns->top=s->top->link;\nfree(temp);\nreturn item;",
+        "prompt": "push와 pop의 정상 경로를 분리해서 보세요. top이 A→B→NULL을 가리킬 때 N을 push하고 바로 pop하면 top은 어디를 가리키고 무엇이 해제되나요? push의 마지막 두 문장을 뒤집는 오류와 pop에서 free를 앞당기는 오류도 설명하세요.",
+        "answer": "push 뒤 N→A→B, pop 뒤 top=A이고 N이 해제된다. push 순서를 뒤집으면 N->link=N이 된다. free 뒤 temp->item이나 temp->link를 읽으면 해제 후 접근이다.",
+        "steps": [
+          "temp->link에 기존 top=A를 먼저 저장해야 기존 연결을 보존해요. 그다음 top을 N으로 바꿔요.",
+          "pop은 N의 값을 지역 변수 item에 복사하고 top을 A로 옮겨요. N만 free하므로 A,B는 살아 있어요.",
+          "반납 뒤에는 temp의 필드를 읽지 않아요. 복사한 item을 반환하는 것은 해제한 메모리를 다시 읽는 것이 아니에요."
+        ],
+        "pitfall": "free(temp)가 top까지 자동 갱신해 주지는 않아요.",
+        "extra_pages": [
+          18
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1012/p8"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1012/p8"
+        }
+      ]
+    },
+    {
+      "id": "p9",
+      "part": "partB",
+      "source": "lecture-s05-p27-postfix-code",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-evalcode",
+      "level": 3,
+      "date": "1012",
+      "terms": [
+        "후위식 계산 코드의 입력 계약"
+      ],
+      "answer": "[8]→[8,2]→[4]→[4,3]→[1], 결과 1. 먼저 꺼낸 값은 오른쪽 피연산자다. 코드는 숫자 여러 자리를 묶지 않고 공백도 숫자로 취급하므로 \"12 3+\"는 지원하지 않는다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 27,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "postfix-code",
+        "taught_on": "1012",
+        "extra_pages": []
+      },
+      "objectives": [
+        "postfix-code"
+      ],
+      "task_family": "postfix-code",
+      "origin": "authored",
+      "verification": {
+        "result": "pass",
+        "method": "independent qualitative/exact comparison plus C11 harness where defined",
+        "content_sha256": "8dfb6ea0d6816179b55f03bd51718790949561b498bcde8ac45fd972d13ddc51",
+        "independent_answer": "Stacks bottom->top: 8:[8]; 2:[8,2]; /:[4]; 3:[4,3]; -:[1]. Result 1. op2 is the most recently pushed right operand, op1 the older left operand. Reversing them changes integer 8/2=4 to 2/8=0 and changes subtraction sign.",
+        "reasoning": "The evaluator interprets each nonoperator character as one operand via ch-'0'. Thus \"12 3+\" is not tokenized as 12,3,+: it interprets 1 and 2 separately and even the space as an invalid numeric offset. It needs a tokenizer and whitespace handling for multidigit expressions.",
+        "evidence": [
+          "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "docs/verify/review-overhaul-20261017/independent-delta.json",
+          "docs/verify/review-overhaul-20261017/c11-result.txt"
+        ]
+      },
+      "authoring": {
+        "date": "1012",
+        "ch": 5,
+        "page": 27,
+        "name": "postfix-code",
+        "anchor": "s1-evalcode",
+        "title": "후위식 계산 코드의 입력 계약",
+        "code": "ch=exp[i];\nif(ch!='+' && ch!='-' && ch!='*' && ch!='/') {\n    value=ch-'0';\n    push(&s,value);\n} else {\n    op2=pop(&s);\n    op1=pop(&s);\n    switch(ch) {\n    case '-': push(&s,op1-op2); break;\n    case '/': push(&s,op1/op2); break;\n    }\n}",
+        "prompt": "강의 eval의 일부예요. 피연산자는 한 자리 숫자, 공백 없는 올바른 식만 입력한다고 가정해요. exp=\"82/3-\"를 문자별 스택으로 추적하세요. op1과 op2를 바꾸면 왜 틀리는지, \"12 3+\"를 그대로 처리할 수 없는 이유도 설명하세요.",
+        "answer": "[8]→[8,2]→[4]→[4,3]→[1], 결과 1. 먼저 꺼낸 값은 오른쪽 피연산자다. 코드는 숫자 여러 자리를 묶지 않고 공백도 숫자로 취급하므로 \"12 3+\"는 지원하지 않는다.",
+        "steps": [
+          "숫자 문자는 ch-'0'으로 정수로 바꿔요. 문자 8과 2를 차례로 넣어요.",
+          "/에서 op2=2,op1=8이므로 8/2=4를 넣어요. 3을 넣은 뒤 -에서 4-3=1을 넣어요.",
+          "뺄셈과 나눗셈은 교환법칙이 없어서 pop 순서를 뒤집으면 결과가 달라져요.",
+          "이 예제는 일반 수식 파서가 아니에요. 공백 건너뛰기와 여러 자리 수 토큰화가 없으므로 입력 계약을 벗어난 식을 정상 계산하지 않아요."
+        ],
+        "pitfall": "표시된 switch는 뺄셈·나눗셈 부분만 발췌했어요. 강의 전체에는 +와 * 처리도 있어요."
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/review-overhaul-20261017/independent-answers.json",
+          "sha256": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
+          "locator": "1012/p9"
+        },
+        {
+          "path": "docs/verify/review-overhaul-20261017/c11-result.txt",
+          "sha256": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+          "locator": "1012/p9"
+        }
+      ]
     }
   ],
   "excluded": [
     {
-      "source": "textbook-ch04-q01",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
+      "old_id": "p3",
+      "old_source": "2017-mid-c050-q6",
+      "old_content_sha256": "e0d003c3bd6590ca3f15a7fae56e42e16165f20348180dc84aec070058d7ab20",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p7",
+        "p8",
+        "p9"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch04-q02",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p5",
+      "old_source": "2017-mid-c050-q1",
+      "old_content_sha256": "305b193d7d88640e96ebd5fc25551095b9a4b29c1fabc4db4bfa71cb7ac32300",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p7",
+        "p8",
+        "p9"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch04-q03",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p7",
+      "old_source": "2017-mid-c050-q2",
+      "old_content_sha256": "e5bb09c260f139cbe46a640269606950700ad07bb99c80646e9e5503f2b3393e",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p7",
+        "p8",
+        "p9"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch04-q04",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
+      "old_id": "p8",
+      "old_source": "2019-mid-q4",
+      "old_content_sha256": "39a75e73a4dd34e2b0cc85e948900b72b21b2ad3a7f272f23ed7b5abe45f109e",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p7",
+        "p8",
+        "p9"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch04-q05",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
+      "old_id": "p10",
+      "old_source": "textbook-ch04-q07",
+      "old_content_sha256": "8492233671e3da3d3a5986da61df32a05663840bb4c2b1e0a38cb6188b878ba5",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p7",
+        "p8",
+        "p9"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     },
     {
-      "source": "textbook-ch04-q06",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q08",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
-    },
-    {
-      "source": "textbook-ch04-q09",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q10",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q12",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q13",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch04-q15",
-      "reason": "blocking/외부 본문/원문 오류"
-    },
-    {
-      "source": "textbook-ch04-q16",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q01",
-      "reason": "다른 날짜 교과서 원문 재사용 제외"
-    },
-    {
-      "source": "textbook-ch05-q02",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q04",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q05",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q06",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q07",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q08",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q09",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q10",
-      "reason": "blocking/외부 본문/원문 오류"
-    },
-    {
-      "source": "textbook-ch05-q11",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
-    },
-    {
-      "source": "textbook-ch05-q12",
-      "reason": "해당 날짜 전체 요구 범위 미학습 또는 4문항 구성의 개념 중복"
+      "old_id": "p12",
+      "old_source": "textbook-ch04-q14",
+      "old_content_sha256": "75faffef7fbe0857be313406dae1ad05cea4f68b635771897cb4e9e760103d9c",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p7",
+        "p8",
+        "p9"
+      ],
+      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
     }
-  ]
+  ],
+  "coverage": [
+    {
+      "objective": "retained-2019-mid-q6",
+      "questions": [
+        "p1"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-2018-mid-c024-q9",
+      "questions": [
+        "p2"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-2018-mid-c024-q1",
+      "questions": [
+        "p3"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-2017-mid-c050-q10",
+      "questions": [
+        "p4"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch05-q03",
+      "questions": [
+        "p5"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-textbook-ch04-q11",
+      "questions": [
+        "p6"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "stack-c",
+      "questions": [
+        "p7"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 14,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "stack-c",
+        "taught_on": "1012",
+        "extra_pages": []
+      }
+    },
+    {
+      "objective": "linked-stack",
+      "questions": [
+        "p8"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 17,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "linked-stack",
+        "taught_on": "1012",
+        "extra_pages": [
+          18
+        ]
+      }
+    },
+    {
+      "objective": "postfix-code",
+      "questions": [
+        "p9"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 27,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "postfix-code",
+        "taught_on": "1012",
+        "extra_pages": []
+      }
+    }
+  ],
+  "replacements": [
+    {
+      "old_id": "p1",
+      "old_source": "2019-mid-q6",
+      "old_content_sha256": "a128a6e77e1bd5e5f9fe9dc8388117ffd0c3354bffa57c011fc0635f012aa5e0",
+      "decision": "retain",
+      "new_ids": [
+        "p1"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p1",
+          "source": "2019-mid-q6",
+          "content_sha256": "a128a6e77e1bd5e5f9fe9dc8388117ffd0c3354bffa57c011fc0635f012aa5e0"
+        }
+      ]
+    },
+    {
+      "old_id": "p2",
+      "old_source": "2018-mid-c024-q9",
+      "old_content_sha256": "245963d5861e16ceb0dd0df7aaf9ebd76e7a8dd2f091d0050cde739ae077607d",
+      "decision": "retain",
+      "new_ids": [
+        "p2"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p2",
+          "source": "2018-mid-c024-q9",
+          "content_sha256": "245963d5861e16ceb0dd0df7aaf9ebd76e7a8dd2f091d0050cde739ae077607d"
+        }
+      ]
+    },
+    {
+      "old_id": "p3",
+      "old_source": "2017-mid-c050-q6",
+      "old_content_sha256": "2f7dc83e12716affb89920dd78aed414b3f8095d410a952d64e3e45aa9466585",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p2"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1012/p2 (2018-mid-c024-q9)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p2",
+          "source": "2018-mid-c024-q9",
+          "content_sha256": "245963d5861e16ceb0dd0df7aaf9ebd76e7a8dd2f091d0050cde739ae077607d"
+        }
+      ]
+    },
+    {
+      "old_id": "p4",
+      "old_source": "2018-mid-c024-q1",
+      "old_content_sha256": "36ab6910706db1dbe6cb18af5c9444b367f43e2e14a6c0783c9df3a2f7ec30ae",
+      "decision": "retain",
+      "new_ids": [
+        "p3"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p3",
+          "source": "2018-mid-c024-q1",
+          "content_sha256": "36ab6910706db1dbe6cb18af5c9444b367f43e2e14a6c0783c9df3a2f7ec30ae"
+        }
+      ]
+    },
+    {
+      "old_id": "p5",
+      "old_source": "2017-mid-c050-q1",
+      "old_content_sha256": "02faf36ad4e6ef688661b3003e05c58a6032aa05bd7d1078d697bec7d86e7971",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p3"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1012/p3 (2018-mid-c024-q1)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p3",
+          "source": "2018-mid-c024-q1",
+          "content_sha256": "36ab6910706db1dbe6cb18af5c9444b367f43e2e14a6c0783c9df3a2f7ec30ae"
+        }
+      ]
+    },
+    {
+      "old_id": "p6",
+      "old_source": "2017-mid-c050-q10",
+      "old_content_sha256": "e6dfd283f97c80152614ef24302e375b811c9100c4ed231437e604e96f565f25",
+      "decision": "retain",
+      "new_ids": [
+        "p4"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p4",
+          "source": "2017-mid-c050-q10",
+          "content_sha256": "3b13df2b45d9815dd447b4ec4556dc35578334bca748777c9f118ee33873e484"
+        }
+      ]
+    },
+    {
+      "old_id": "p7",
+      "old_source": "2017-mid-c050-q2",
+      "old_content_sha256": "c168d2afe9c519c342eb40d7a405c4e1bb612229ea83d5330885c1d1f8956e60",
+      "decision": "merge-or-replace",
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0907/p3 (textbook-ch05-q01)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0907",
+          "id": "p3",
+          "source": "textbook-ch05-q01",
+          "content_sha256": "c1e8678ee20f97916af711c4f0a6ba183ed4e0cac1036fae8203a1c6ebaa18dc"
+        }
+      ]
+    },
+    {
+      "old_id": "p8",
+      "old_source": "2019-mid-q4",
+      "old_content_sha256": "97538e509dc87ddf52706bfd1f9ef29f8e28414eea4384d980f8bdb137e485b8",
+      "decision": "merge-or-replace",
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0907/p3 (textbook-ch05-q01)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0907",
+          "id": "p3",
+          "source": "textbook-ch05-q01",
+          "content_sha256": "c1e8678ee20f97916af711c4f0a6ba183ed4e0cac1036fae8203a1c6ebaa18dc"
+        }
+      ]
+    },
+    {
+      "old_id": "p9",
+      "old_source": "textbook-ch05-q03",
+      "old_content_sha256": "cd71f8bbaa5114ddaf827990c804f10b85a214f548170cce026d534bd5ab6d79",
+      "decision": "retain",
+      "new_ids": [
+        "p5"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p5",
+          "source": "textbook-ch05-q03",
+          "content_sha256": "cd71f8bbaa5114ddaf827990c804f10b85a214f548170cce026d534bd5ab6d79"
+        }
+      ]
+    },
+    {
+      "old_id": "p10",
+      "old_source": "textbook-ch04-q07",
+      "old_content_sha256": "8492233671e3da3d3a5986da61df32a05663840bb4c2b1e0a38cb6188b878ba5",
+      "decision": "merge-or-replace",
+      "new_ids": [
+        "p2"
+      ],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1012/p2 (2018-mid-c024-q9)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p2",
+          "source": "2018-mid-c024-q9",
+          "content_sha256": "245963d5861e16ceb0dd0df7aaf9ebd76e7a8dd2f091d0050cde739ae077607d"
+        }
+      ]
+    },
+    {
+      "old_id": "p11",
+      "old_source": "textbook-ch04-q11",
+      "old_content_sha256": "b98893c481b4bb957e77af48ba121719fe469d7889bcdc6960b6ec6421723f69",
+      "decision": "retain",
+      "new_ids": [
+        "p6"
+      ],
+      "reason": "유효 원문과 다른 평가 목표 유지",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p6",
+          "source": "textbook-ch04-q11",
+          "content_sha256": "b98893c481b4bb957e77af48ba121719fe469d7889bcdc6960b6ec6421723f69"
+        }
+      ]
+    },
+    {
+      "old_id": "p12",
+      "old_source": "textbook-ch04-q14",
+      "old_content_sha256": "75faffef7fbe0857be313406dae1ad05cea4f68b635771897cb4e9e760103d9c",
+      "decision": "merge-or-replace",
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1008/p1 (textbook-ch04-q05)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1008",
+          "id": "p1",
+          "source": "textbook-ch04-q05",
+          "content_sha256": "f83fbd5a0a8ea5e28e5570ed041e6048c4b49fefa5a3377bd58d4d431b06ea58"
+        }
+      ]
+    }
+  ],
+  "duplicate_decisions": [
+    {
+      "left": {
+        "range": "1012",
+        "id": "p1",
+        "content_sha256": "a128a6e77e1bd5e5f9fe9dc8388117ffd0c3354bffa57c011fc0635f012aa5e0"
+      },
+      "right": {
+        "range": "1012",
+        "id": "p2",
+        "content_sha256": "245963d5861e16ceb0dd0df7aaf9ebd76e7a8dd2f091d0050cde739ae077607d"
+      },
+      "decision": "distinct",
+      "reason": "P1은 push/pop 횟수와 최종 결과를 남기는 조건, P2는 중위식 변환과 연산별 스택 상태를 평가한다.",
+      "evidence": [
+        "blind independent answers",
+        "fresh final reviewer explicitly accepted distinct objectives"
+      ]
+    }
+  ],
+  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음"
 }

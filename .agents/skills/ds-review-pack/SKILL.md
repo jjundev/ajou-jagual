@@ -1,13 +1,16 @@
 ---
 name: ds-review-pack
-description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(정리노트·복습문제·문제설명)이나 기출 문제은행을 만들 때 사용한다. /ds-review-pack [bank | MMDD | MMDD-MMDD | update-existing MMDD/all] [lite]
+description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(정리노트·복습문제·문제설명)이나 기출 문제은행을 만들 때 사용한다. /ds-review-pack [bank | MMDD | MMDD-MMDD | update-existing MMDD/all | revise-existing MMDD/all] [lite]
 ---
 
 # 자구알 복습팩
 
 수업 녹음 전사(STT)와 강의록(`자료구조_강의록_2026/`), 기출 문제은행과 검증된 교과서 연습문제로 한 기간의 복습팩을 만든다. 문제은행은 `bank` 모드로 먼저 한 번 만들어 둔다. 중간에 사용자에게 묻지 않고(`bank` 모드의 hwp 외부 변환 허락만 B2 전에 한 번 묻는다) 끝에 한 번 보고한다. 커밋은 제안만 한다.
 
+**공통 품질 기준**: 신규·두 갱신 모드는 [전체 문항 검토 지침](references/review-overhaul.md)의 강의 출처·coverage·전역 중복 검사를 적용한다. 핵심 범위 충족 우선이며 숫자 변형으로 문항 수를 채우지 않는다.
+
 **모드**
+- `revise-existing [MMDD|all] [lite]`: 기존 전체 문항을 검토·교체하고 문제설명·PDF까지 갱신한다. `references/review-overhaul.md`를 따른다.
 - `bank`: 기출 원본을 전사해 문제은행을 만들거나 다시 만든다. 절차는 "문제은행 모드" B1~B4.
 - `update-existing [MMDD|all]`: 기존 리뷰를 갱신하고 전체 문항의 문제설명도 다시 만든다. `references/textbook-update.md`를 따른다. 기존 카드와 노트는 보존하고 교과서 원문 4~8개를 추가한다.
 - 그 밖(`[MMDD | MMDD-MMDD] [lite]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
@@ -16,7 +19,7 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 - 루트: `정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, `문제설명_<range>_<slug>.html`, `복습문제_<range>_<slug>-문제.pdf`·`-답안.pdf`. 루트에는 HTML·PDF와 `.pack/`만 둔다.
 - `.pack/`(숨김 폴더): 같은 이름의 `.md` 세 개, `figures_<range>/`, 설명 소유 그림·자료 폴더(`figures_문제설명_*`, `자료_문제설명_*`), `자료_복습팩/`, `자료_PDF/pdf-validation.json`. 검색 도구가 숨김 폴더를 건너뛸 수 있으니 `복습노트/<range>/.pack/<이름>` 경로를 직접 연다.
 
-**인자**: `[bank | MMDD | MMDD-MMDD | update-existing MMDD/all] [lite]`
+**인자**: `[bank | MMDD | MMDD-MMDD | update-existing MMDD/all | revise-existing MMDD/all] [lite]`
 - `lite`: 작성자·요약·전사 에이전트를 가벼운 모델로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다. 문제설명 저작·독립 검산·실자료 검토·브라우저 검증은 생략하지 않는다.
 
 **에이전트 모델** (작성자·요약·전사 공통, 모델은 여기서만 정한다):
@@ -109,13 +112,13 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 - 문제 선별은 `references/problem-selection.md`를 따른다.
   - 정답은 `RUN/answers.py`로 다시 계산한다.
   - 카드 작성자용 문항 원문은 `RUN/problems.md`에 모은다(형식은 `references/problem-selection.md`).
-- 신규 팩은 총 8~12문항, 적합한 교과서가 있으면 최소 2개 포함한다. 기존 추가 모드는 별도 4~8개 정책이다. 교과서 후보 장 대응은 검색용이며 보기·소문항 전체가 배운 범위여야 한다.
+- 신규 팩은 핵심 범위 충족 우선으로 보통 8~12문항을 목표로 하며 적합한 교과서도 포함한다. 기존 추가 모드는 별도 4~8개 정책이다. 교과서 후보 장 대응은 검색용이며 보기·소문항 전체가 배운 범위여야 한다.
 - `scripts/textbook_blocks.py`로 교과서 원문 content/options를 순서대로 렌더링한다. 원문은 숫자·코드·그림·오타를 보존하고 observations/printed_answer를 답으로 쓰지 않는다. 직접 풀이를 Python/C 실행 또는 강의 근거로 검산한다.
 - manifest는 `references/manifest-guide.md`대로 `RUN/manifest.json`에 쓴다.
 - 검증: 둘 다 `OK`여야 한다.
   ```bash
   python3 "$SKILL/scripts/manifest.py" "$RUN/manifest.json"
-  python3 "$SKILL/scripts/bank.py" check-manifest "$BANK" "$RUN/manifest.json" --textbook-dir "$TEXTBOOK" --textbook-python "$TEXTBOOK_PYTHON"
+  python3 "$SKILL/scripts/bank.py" check-manifest "$BANK" "$RUN/manifest.json" --repo "$REPO" --textbook-dir "$TEXTBOOK" --textbook-python "$TEXTBOOK_PYTHON"
   ```
 
 ### 3. 작성
@@ -195,7 +198,7 @@ python3 "$SKILL/scripts/pack_layout.py" check --repo "$REPO"
 본문 단계에 적힌 경우(저장소·은행·STT 없음, PDF 추출 실패, 백업, 검사 2회 실패) 말고는 이 표를 따른다.
 | 상황 | 동작 |
 |---|---|
-| 후보 문항 8개 미만 | `references/problem-selection.md`의 변형 규칙. 4개 미만이면 "미해결"에 문항 부족 |
+| 후보 부족 | 핵심 목표를 확인하고 실제 강의 예제로 자체 출제한다. 숫자 변형으로 채우지 않으며 남은 목표와 제외 이유를 기록한다. |
 | hwp 변환 실패·외부 변환 허락 없음(`bank`) | 그 원본을 빼고 진행, 보고서 "빠진 원본"에 적음 |
 | 원본 판독 불가(`bank`) | `[?]`로 표시하고 보고서에 적음 |
 | 포트 사용 중 | 다른 빈 포트 사용 |

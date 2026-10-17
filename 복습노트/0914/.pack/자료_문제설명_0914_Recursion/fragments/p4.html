@@ -1,11 +1,8 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>빈 gcd 본문을 채워 양의 두 정수의 최대공약수를 반환해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“순환 함수”와 “최대공약수”에서 gcd(i,j)=gcd(j,i%j)를 떠올려요. %를 계산하기 전에 j=0을 검사해야 나눗셈 오류 없이 종료해요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code class="language-c">if (j == 0) return i;</code></pre></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><pre><code class="language-c">int gcd(int i, int j) {
-    if (j == 0) return i;
-    return gcd(j, i % j);
-}</code></pre></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>gcd(48,18)→(18,12)→(12,6)→(6,0)→6이에요. 반환값은 추가 계산 없이 위 호출로 전달돼요. 공약수 집합 보존과 두 번째 인자의 감소가 정확성과 종료를 증명해요. 입력 변환 성공과 양의 int 범위를 가정해요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>if 앞에서 i%j를 계산하면 마지막 호출에서 %0을 하게 돼요. “0이 모든 수를 나눈다”가 아니라 모든 양의 수가 0을 나눈다는 뜻이에요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>if (j == 0) return i;</li><li>j=0 종료, 아니면 gcd(j,i%j)</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>if (j == 0) return i;</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>j=0 종료, 아니면 gcd(j,i%j)</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>T(n)=7n+10이 무엇을 세는지 고르는 문제예요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“시간 복잡도 함수”는 기준 기본 연산(operation)의 실행 횟수를 입력 크기 n의 함수로 표현한 것이에요. 같은 연산을 같은 비용으로 세는 모형이며 실제 초 단위 실행 시간과 같지는 않아요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>n=3일 때 T(3)=31회라고 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>정답은 (1) 연산의 횟수예요. 입력 개수 n에 비례하는 7n회와 입력에 무관한 10회를 더한 식이에요. 메모리 사용량이면 공간 복잡도이고 입력 개수 자체는 n이에요.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>n=0→10회, n=1→17회, n=2→24회로 입력 1개 증가마다 7회 늘어요. 함수의 단위가 “연산 회수”인지 확인해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>7n+10을 7n+10초라고 말하려면 각 연산의 시간에 대한 별도 가정이 필요해요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>n=3일 때 T(3)=31회라고 적어요.</li><li>시간 복잡도는 연산 횟수</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>n=3일 때 T(3)=31회라고 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>시간 복잡도는 연산 횟수</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

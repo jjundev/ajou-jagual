@@ -157,3 +157,10 @@ class TestScrollbar(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+def test_revision_workflow_requires_full_audit_and_lecture_evidence():
+    from _util import SKILL
+    guide=(SKILL/'references/review-overhaul.md').read_text(encoding='utf-8')
+    assert 'review_audit.py' in guide
+    assert 'lecture_ref' in guide
+    assert '핵심 범위 충족 우선' in guide
+    assert 'revise-existing' in (SKILL/'SKILL.md').read_text(encoding='utf-8')

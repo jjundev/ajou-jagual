@@ -82,7 +82,7 @@ def build_review(m: dict, run_dir: Path) -> str:
             scripts += found
             cards.append(body.strip())
         parts.append(f'    <section id="{part["id"]}"><h2>{esc(part["title"])}</h2>\n' + "\n".join(cards) + "\n    </section>")
-    return fill((ASSETS / "review-template.html").read_text(encoding="utf-8"), {
+    result = fill((ASSETS / "review-template.html").read_text(encoding="utf-8"), {
         "PAGE_TITLE": esc(f"{m['course']} 복습문제 {m['range']}"),
         "DESCRIPTION": esc(m["review_title"]),
         "TOC": "".join(f'<a href="#{p["id"]}">{esc(p["short"])}</a>' for p in m["parts"]),
@@ -94,6 +94,10 @@ def build_review(m: dict, run_dir: Path) -> str:
         "SCRIPTS": "\n".join(f"  {s}" for s in scripts),
         "RANGE": m["range"],
     })
+    from update_review import stamp_revision
+    cards={q["id"]:read_fragment(run_dir / "cards" / f"{q['id']}.html",m).strip() for q in m["problems"]}
+    return stamp_revision(result, m, cards)
+
 
 
 def assemble(run_dir: Path | str, out_dir: Path | str) -> tuple[Path, Path]:

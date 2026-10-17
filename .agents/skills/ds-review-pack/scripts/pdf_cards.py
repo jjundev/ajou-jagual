@@ -90,7 +90,7 @@ def read_pack(review: Path) -> Pack:
             raise PdfError(f'{pid}: missing problem/solution/answer')
         title=next(node.find_all(lambda n:n.tag=='h3'),None)
         source=node.attrs.get('data-source','')
-        kind='연습문제' if node.attrs.get('data-source-kind')=='textbook' else ('기출' if re.match(r'(?:\d{4}|unk)-(?:mid|final)-',source) or '기출' in source else '장말문제')
+        kind='강의 코드' if node.attrs.get('data-source-kind')=='lecture-code' else '연습문제' if node.attrs.get('data-source-kind')=='textbook' else ('기출' if re.match(r'(?:\d{4}|unk)-(?:mid|final)-',source) or '기출' in source else '장말문제')
         title=re.sub(r'^P\d+\.\s*','',title.text() if title else pid)
         cards.append(Card(pid,source,kind,title,blocks(problem),blocks(solution),markup(answer),
                           ''.join(markup(c) for c in hint.children if not isinstance(c,Node) or c.tag!='summary') if hint else ''))
@@ -165,7 +165,7 @@ def to_payload(pack: Pack, mode: str, pages: tuple[PageSlice,...], assets: Path)
     for page in pages:
         c=by_id[page.logical_id]
         # Explicit source identity: only these tables are learner worksheets.
-        worksheet = pack.range == '1012' and c.id in ('p2','p3')
+        worksheet = c.source in ('2018-mid-c024-q9','2017-mid-c050-q6')
         code = ''.join(b.html for b in page.problem if b.kind == 'code')
         workspace = ''.join(b.html for b in page.problem if b.kind == 'table') if worksheet and mode == 'problems' else ''
         body = ''.join(b.html for b in page.problem if b.kind != 'code' and not (workspace and b.kind == 'table'))
