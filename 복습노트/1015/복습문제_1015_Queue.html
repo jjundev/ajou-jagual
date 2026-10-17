@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>복습문제 8선 — 1015 수업 범위</title>
-  <meta name="description" content="복습문제 8선 — 1015 수업 범위">
+  <title>복습문제 10선 — 1015 수업 범위</title>
+  <meta name="description" content="복습문제 10선 — 1015 수업 범위">
   <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="46ff0d141d3791170578" data-screens="article.card" data-panels="review" data-range="1015">
+<body data-revision="82ed1177df6ab0f5369d" data-screens="article.card" data-panels="review" data-range="1015">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -369,12 +369,12 @@
         </div>
         <p class="panel-meta">푼 문제 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
         <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
-        <nav class="toc" aria-label="목차"><a href="#partA">A 기존 문제</a><a href="#partB">B 강의 코드</a></nav>
+        <nav class="toc" aria-label="목차"><a href="#partA">A 기존 문제</a><a href="#partB">B 강의 코드</a><a href="#partRestored">C 복구 기출</a></nav>
       </div>
     </aside>
     <div class="content">
   <main>
-<div class="hero"><h1>복습문제 8선 — 1015 수업 범위</h1><p>핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.</p></div>
+<div class="hero"><h1>복습문제 10선 — 1015 수업 범위</h1><p>서로 다른 기출은 풀이 목표가 비슷해도 모두 유지하고, 교과서와 강의 예제 코드를 함께 복습해요.</p></div>
 <section id="partA"><h2>A. 검토한 기출·교과서 문제</h2>
 <article class="card" id="p1" data-source="textbook-ch05-q08" data-source-kind="textbook">
 <h3>P1. 원형 큐의 get_count</h3>
@@ -542,6 +542,22 @@ return q-&gt;queue[q-&gt;front];</code></pre></details>
 }</code></pre></details>
 <details class="hint"><summary>힌트 보기</summary><p>A의 값을 item에 보관한 다음 head를 B로 옮기고 A를 해제해요. B가 있으므로 B의 왼쪽을 NULL로 끊어요.</p></details>
 <details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>A의 값을 item에 보관한 다음 head를 B로 옮기고 A를 해제해요. B가 있으므로 B의 왼쪽을 NULL로 끊어요.</li><li>두 번째는 B의 오른쪽이 NULL이어서 head=NULL이 돼요. 이때 tail도 NULL로 만들어 빈 상태를 일치시켜요.</li><li>free 전에 값을 저장했으므로 반환은 유효해요. 남아 있는 포인터가 해제된 노드를 가리키지 않는지도 함께 검사해야 해요.</li></ol><p class="answer">정답: 첫 반환 A, head=tail=B,B.llink=NULL. 두 번째 반환 B, head=tail=NULL. 빈 덱의 양 끝은 모두 NULL이고 비어 있지 않은 덱의 head.llink는 NULL이다. 생략하면 tail이 해제된 노드를 가리키거나 새 head의 왼쪽이 해제된 노드를 가리킨다.</p><p>head=NULL인 경우 head-&gt;llink=NULL을 실행하면 NULL 역참조예요. 빈 경우와 남은 경우를 나눠야 해요.</p></details>
+</article>
+</section>
+<section id="partRestored"><h2>C. 복구한 기출 원문</h2>
+<article class="card" id="p9" data-source="2019-mid-q7">
+<h3>P9. 원형 큐의 front와 rear</h3>
+<div class="problem"><p>강의 규약: front는 첫 원소 직전, rear는 마지막 원소 인덱스이며 한 칸을 비워요. 삭제한 칸의 잔여 값은 현재 큐 원소로 세지 않아요.</p><p>크기가 8인 원형 큐에서 front와 rear가 0이에요. 10, 20, 30, 04, 50, 60을 차례로 넣고 4개를 삭제해요. 이어서 70, 80, 90, 100을 넣으면 front와 rear는 각각 얼마인가요?</p></div>
+<details class="original"><summary>기출 원문 보기</summary><p>2019 중간 7번 · 4점 · 출제자 미상</p><p>“배열로 구현된 크기가 8인 원형 큐 (circular queue)에서 front와 rear가 모두 0으로 초기화되었다.<br>그 다음에 10, 20, 30, 04, 50, 60을 원형 큐에 추가하고 그 다음에 4개의 항목을 삭제하고<br>다시 원형 큐에 70, 80, 90, 100을 추가하였을 때 front의 값은 (   ) 이고 rear의 값은 (   ) 이다. (4점)”</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>넣을 때 rear, 삭제할 때 front를 한 칸 움직여요. 7 다음은 0이에요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li><div class="table-wrap" style="overflow-x:auto"><table style="min-width:500px"><thead><tr><th>연산</th><th>front</th><th>rear</th><th>0–7번 칸</th></tr></thead><tbody><tr><td>넣기(10)</td><td>0</td><td>1</td><td>[·, 10, ·, ·, ·, ·, ·, ·]</td></tr><tr><td>넣기(20)</td><td>0</td><td>2</td><td>[·, 10, 20, ·, ·, ·, ·, ·]</td></tr><tr><td>넣기(30)</td><td>0</td><td>3</td><td>[·, 10, 20, 30, ·, ·, ·, ·]</td></tr><tr><td>넣기(04)</td><td>0</td><td>4</td><td>[·, 10, 20, 30, 04, ·, ·, ·]</td></tr><tr><td>넣기(50)</td><td>0</td><td>5</td><td>[·, 10, 20, 30, 04, 50, ·, ·]</td></tr><tr><td>넣기(60)</td><td>0</td><td>6</td><td>[·, 10, 20, 30, 04, 50, 60, ·]</td></tr><tr><td>삭제</td><td>1</td><td>6</td><td>[·, ·, 20, 30, 04, 50, 60, ·]</td></tr><tr><td>삭제</td><td>2</td><td>6</td><td>[·, ·, ·, 30, 04, 50, 60, ·]</td></tr><tr><td>삭제</td><td>3</td><td>6</td><td>[·, ·, ·, ·, 04, 50, 60, ·]</td></tr><tr><td>삭제</td><td>4</td><td>6</td><td>[·, ·, ·, ·, ·, 50, 60, ·]</td></tr><tr><td>넣기(70)</td><td>4</td><td>7</td><td>[·, ·, ·, ·, ·, 50, 60, 70]</td></tr><tr><td>넣기(80)</td><td>4</td><td>0</td><td>[80, ·, ·, ·, ·, 50, 60, 70]</td></tr><tr><td>넣기(90)</td><td>4</td><td>1</td><td>[80, 90, ·, ·, ·, 50, 60, 70]</td></tr><tr><td>넣기(100)</td><td>4</td><td>2</td><td>[80, 90, 100, ·, ·, 50, 60, 70]</td></tr></tbody></table></div></li><li>front는 네 번 삭제해 4, rear는 열 번 넣어 2가 돼요.</li><li>수업과의 연결: 1015 원형 큐 삽입·삭제에서 인덱스를 나머지 연산으로 순환시켰어요.</li></ol><p class="answer">정답: front=4, rear=2</p></details>
+</article>
+<article class="card" id="p10" data-source="2017-mid-c050-q7">
+<h3>P10. 원형 큐 상태 두 번 그리기</h3>
+<div class="problem"><p>강의 규약: front는 첫 원소 직전, rear는 마지막 원소 인덱스이며 한 칸을 비워요. 삭제한 칸의 잔여 값은 현재 큐 원소로 세지 않아요.</p><p>크기가 8인 원형 큐에서 front와 rear가 모두 0이에요. 다음 상태를 각각 그려 보세요. front와 rear도 표시해요.</p><ol><li>(a) 10, 20, 30, 40, 50을 넣고 세 항목을 삭제해요.</li><li>(b) (a)의 상태에 60, 70, 80, 90을 넣어요.</li></ol><p>그림을 그릴 0–7번 칸이에요.</p><div class="table-wrap" style="overflow-x:auto"><table style="min-width:500px"><thead><tr><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody><tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div></div>
+<details class="original"><summary>기출 원문 보기</summary><p>2017 중간 7번 · 10점 · 출제자 미상</p><p>“7. 크기가 8인 원형 큐(circular queue)에서 front와 rear가 모두 0으로 초기화되었다고 가정하고 다음 각 물음에 답하라. [10 points]<br>(a) 10, 20, 30, 40, 50을 큐에 넣었다가 세 개의 항목을 삭제하였다고 가정하고, 그 때의 큐의 모양을 그려라. front와 rear도 표시하시오. [5 points]<br>(b) (a)의 결과 상태의 큐에 60, 70, 80, 90을 추가로 넣은 후의 큐의 모양을 그려라. front와 rear도 표시하라. [5 points]”</p><div class="table-wrap" style="overflow-x:auto"><table style="min-width:500px"><thead><tr><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody><tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div></details>
+<details class="hint"><summary>힌트 보기</summary><p>front는 첫 요소 바로 앞 칸이에요. 삭제 후 그 칸에 남은 값은 현재 요소가 아니에요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>(a)의 모든 연산을 따라가요.<div class="table-wrap" style="overflow-x:auto"><table style="min-width:500px"><thead><tr><th>연산</th><th>front</th><th>rear</th><th>0–7번 칸</th></tr></thead><tbody><tr><td>넣기(10)</td><td>0</td><td>1</td><td>[·, 10, ·, ·, ·, ·, ·, ·]</td></tr><tr><td>넣기(20)</td><td>0</td><td>2</td><td>[·, 10, 20, ·, ·, ·, ·, ·]</td></tr><tr><td>넣기(30)</td><td>0</td><td>3</td><td>[·, 10, 20, 30, ·, ·, ·, ·]</td></tr><tr><td>넣기(40)</td><td>0</td><td>4</td><td>[·, 10, 20, 30, 40, ·, ·, ·]</td></tr><tr><td>넣기(50)</td><td>0</td><td>5</td><td>[·, 10, 20, 30, 40, 50, ·, ·]</td></tr><tr><td>삭제</td><td>1</td><td>5</td><td>[·, ·, 20, 30, 40, 50, ·, ·]</td></tr><tr><td>삭제</td><td>2</td><td>5</td><td>[·, ·, ·, 30, 40, 50, ·, ·]</td></tr><tr><td>삭제</td><td>3</td><td>5</td><td>[·, ·, ·, ·, 40, 50, ·, ·]</td></tr></tbody></table></div></li><li>(a)의 결과: <div class="table-wrap" style="overflow-x:auto"><table style="min-width:500px"><thead><tr><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody><tr><td>·</td><td>·</td><td>·</td><td>·</td><td>40</td><td>50</td><td>·</td><td>·</td></tr><tr><td>—</td><td>—</td><td>—</td><td>front</td><td>—</td><td>—rear</td><td>—</td><td>—</td></tr></tbody></table></div></li><li>(b)는 그 상태에서 네 번 더 넣어요.<div class="table-wrap" style="overflow-x:auto"><table style="min-width:500px"><thead><tr><th>연산</th><th>front</th><th>rear</th><th>0–7번 칸</th></tr></thead><tbody><tr><td>넣기(60)</td><td>3</td><td>6</td><td>[·, ·, ·, ·, 40, 50, 60, ·]</td></tr><tr><td>넣기(70)</td><td>3</td><td>7</td><td>[·, ·, ·, ·, 40, 50, 60, 70]</td></tr><tr><td>넣기(80)</td><td>3</td><td>0</td><td>[80, ·, ·, ·, 40, 50, 60, 70]</td></tr><tr><td>넣기(90)</td><td>3</td><td>1</td><td>[80, 90, ·, ·, 40, 50, 60, 70]</td></tr></tbody></table></div></li><li>(b)의 결과: <div class="table-wrap" style="overflow-x:auto"><table style="min-width:500px"><thead><tr><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead><tbody><tr><td>80</td><td>90</td><td>·</td><td>·</td><td>40</td><td>50</td><td>60</td><td>70</td></tr><tr><td>—</td><td>—rear</td><td>—</td><td>front</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div></li><li>수업과의 연결: 1015 원형 큐에서 front는 첫 요소 하나 앞, rear는 마지막 요소 칸이라고 배웠어요.</li></ol><p class="answer">정답: (a) front=3, rear=5; (b) front=3, rear=1</p></details>
 </article>
 </section>
 </main>

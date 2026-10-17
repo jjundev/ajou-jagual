@@ -481,80 +481,218 @@
           "locator": "1012/p9"
         }
       ]
+    },
+    {
+      "id": "p10",
+      "part": "partRestored",
+      "source": "2017-mid-c050-q6",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "토큰별"
+      ],
+      "answer": "토큰별 스택: 7→[7], 6→[7,6], 2→[7,6,2], /→[7,3], −→[4], 5→[4,5], 4→[4,5,4], *→[4,20], +→[24]",
+      "objectives": [
+        "retained-2017-mid-c050-q6"
+      ],
+      "task_family": "2017-mid-c050-q6",
+      "origin": "restored-distinct-exam",
+      "old_id": "p3",
+      "original_range": "1012",
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning and trace simulation; raw UB loop analyzed only",
+        "content_sha256": "2f7dc83e12716affb89920dd78aed414b3f8095d410a952d64e3e45aa9466585",
+        "independent_answer": "최종값 24. 토큰별 스택(바닥→꼭대기): [{\"token\": \"7\", \"bottom_to_top\": [7]}, {\"token\": \"6\", \"bottom_to_top\": [7, 6]}, {\"token\": \"2\", \"bottom_to_top\": [7, 6, 2]}, {\"token\": \"/\", \"bottom_to_top\": [7, 3]}, {\"token\": \"-\", \"bottom_to_top\": [4]}, {\"token\": \"5\", \"bottom_to_top\": [4, 5]}, {\"token\": \"4\", \"bottom_to_top\": [4, 5, 4]}, {\"token\": \"*\", \"bottom_to_top\": [4, 20]}, {\"token\": \"+\", \"bottom_to_top\": [24]}]",
+        "reasoning": "6/2=3, 7-3=4, 5*4=20, 4+20=24. 나눗셈과 뺄셈은 먼저 꺼낸 값을 오른쪽 피연산자로 사용한다.",
+        "evidence": [
+          "docs/verify/exam-restore-20261017/independent-restored.json",
+          "docs/verify/exam-restore-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/exam-restore-20261017/independent-restored.json",
+          "sha256": "69b6dd17c79f4b807ad78f76df4f34d371185d7aa8e764029ff0c266ea9ea323",
+          "locator": "2017-mid-c050-q6"
+        },
+        {
+          "path": "docs/verify/exam-restore-20261017/trace-result.txt",
+          "sha256": "386d4bd12da566ce6834860b44f0b136674508157c5862e86c07122afd596cb7",
+          "locator": "2017-mid-c050-q6"
+        }
+      ]
+    },
+    {
+      "id": "p11",
+      "part": "partRestored",
+      "source": "2017-mid-c050-q1",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "스택"
+      ],
+      "answer": "스택",
+      "objectives": [
+        "retained-2017-mid-c050-q1"
+      ],
+      "task_family": "2017-mid-c050-q1",
+      "origin": "restored-distinct-exam",
+      "old_id": "p5",
+      "original_range": "1012",
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning and trace simulation; raw UB loop analyzed only",
+        "content_sha256": "02faf36ad4e6ef688661b3003e05c58a6032aa05bd7d1078d697bec7d86e7971",
+        "independent_answer": "스택(stack).",
+        "reasoning": "후위식은 피연산자를 스택에 넣고 연산자에서 오른쪽 피연산자부터 두 번 꺼내 계산한 값을 다시 넣는다. 가장 최근 미사용 피연산자를 먼저 사용하므로 LIFO 스택이 맞다.",
+        "evidence": [
+          "docs/verify/exam-restore-20261017/independent-restored.json",
+          "docs/verify/exam-restore-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/exam-restore-20261017/independent-restored.json",
+          "sha256": "69b6dd17c79f4b807ad78f76df4f34d371185d7aa8e764029ff0c266ea9ea323",
+          "locator": "2017-mid-c050-q1"
+        },
+        {
+          "path": "docs/verify/exam-restore-20261017/trace-result.txt",
+          "sha256": "386d4bd12da566ce6834860b44f0b136674508157c5862e86c07122afd596cb7",
+          "locator": "2017-mid-c050-q1"
+        }
+      ]
+    },
+    {
+      "id": "p12",
+      "part": "partRestored",
+      "source": "2017-mid-c050-q2",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "큐"
+      ],
+      "answer": "큐",
+      "objectives": [
+        "retained-2017-mid-c050-q2"
+      ],
+      "task_family": "2017-mid-c050-q2",
+      "origin": "restored-distinct-exam",
+      "old_id": "p7",
+      "original_range": "1012",
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning and trace simulation; raw UB loop analyzed only",
+        "content_sha256": "c168d2afe9c519c342eb40d7a405c4e1bb612229ea83d5330885c1d1f8956e60",
+        "independent_answer": "큐(queue).",
+        "reasoning": "먼저 도착한 고객부터 서비스를 받는 선입선출(FIFO) 대기열을 나타낸다.",
+        "evidence": [
+          "docs/verify/exam-restore-20261017/independent-restored.json",
+          "docs/verify/exam-restore-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/exam-restore-20261017/independent-restored.json",
+          "sha256": "69b6dd17c79f4b807ad78f76df4f34d371185d7aa8e764029ff0c266ea9ea323",
+          "locator": "2017-mid-c050-q2"
+        },
+        {
+          "path": "docs/verify/exam-restore-20261017/trace-result.txt",
+          "sha256": "386d4bd12da566ce6834860b44f0b136674508157c5862e86c07122afd596cb7",
+          "locator": "2017-mid-c050-q2"
+        }
+      ]
+    },
+    {
+      "id": "p13",
+      "part": "partRestored",
+      "source": "2019-mid-q4",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1012",
+      "terms": [
+        "X"
+      ],
+      "answer": "X",
+      "objectives": [
+        "retained-2019-mid-q4"
+      ],
+      "task_family": "2019-mid-q4",
+      "origin": "restored-distinct-exam",
+      "old_id": "p8",
+      "original_range": "1012",
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning and trace simulation; raw UB loop analyzed only",
+        "content_sha256": "97538e509dc87ddf52706bfd1f9ef29f8e28414eea4384d980f8bdb137e485b8",
+        "independent_answer": "X (거짓).",
+        "reasoning": "스택은 FIFO가 아니라 LIFO이다. 괄호 검사에는 스택을 사용할 수 있지만, 문장 앞부분의 스택 특성 설명이 틀렸으므로 전체 명제는 거짓이다.",
+        "evidence": [
+          "docs/verify/exam-restore-20261017/independent-restored.json",
+          "docs/verify/exam-restore-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/exam-restore-20261017/independent-restored.json",
+          "sha256": "69b6dd17c79f4b807ad78f76df4f34d371185d7aa8e764029ff0c266ea9ea323",
+          "locator": "2019-mid-q4"
+        },
+        {
+          "path": "docs/verify/exam-restore-20261017/trace-result.txt",
+          "sha256": "386d4bd12da566ce6834860b44f0b136674508157c5862e86c07122afd596cb7",
+          "locator": "2019-mid-q4"
+        }
+      ]
     }
   ],
   "excluded": [
-    {
-      "old_id": "p3",
-      "old_source": "2017-mid-c050-q6",
-      "old_content_sha256": "e0d003c3bd6590ca3f15a7fae56e42e16165f20348180dc84aec070058d7ab20",
-      "decision": "merge-or-replace",
-      "new_ids": [
-        "p7",
-        "p8",
-        "p9"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
-    },
-    {
-      "old_id": "p5",
-      "old_source": "2017-mid-c050-q1",
-      "old_content_sha256": "305b193d7d88640e96ebd5fc25551095b9a4b29c1fabc4db4bfa71cb7ac32300",
-      "decision": "merge-or-replace",
-      "new_ids": [
-        "p7",
-        "p8",
-        "p9"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
-    },
-    {
-      "old_id": "p7",
-      "old_source": "2017-mid-c050-q2",
-      "old_content_sha256": "e5bb09c260f139cbe46a640269606950700ad07bb99c80646e9e5503f2b3393e",
-      "decision": "merge-or-replace",
-      "new_ids": [
-        "p7",
-        "p8",
-        "p9"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
-    },
-    {
-      "old_id": "p8",
-      "old_source": "2019-mid-q4",
-      "old_content_sha256": "39a75e73a4dd34e2b0cc85e948900b72b21b2ad3a7f272f23ed7b5abe45f109e",
-      "decision": "merge-or-replace",
-      "new_ids": [
-        "p7",
-        "p8",
-        "p9"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
-    },
     {
       "old_id": "p10",
       "old_source": "textbook-ch04-q07",
       "old_content_sha256": "8492233671e3da3d3a5986da61df32a05663840bb4c2b1e0a38cb6188b878ba5",
       "decision": "merge-or-replace",
       "new_ids": [
-        "p7",
-        "p8",
-        "p9"
+        "p2"
       ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1012/p2 (2018-mid-c024-q9)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1012",
+          "id": "p2",
+          "source": "2018-mid-c024-q9",
+          "content_sha256": "245963d5861e16ceb0dd0df7aaf9ebd76e7a8dd2f091d0050cde739ae077607d"
+        }
+      ]
     },
     {
       "old_id": "p12",
       "old_source": "textbook-ch04-q14",
       "old_content_sha256": "75faffef7fbe0857be313406dae1ad05cea4f68b635771897cb4e9e760103d9c",
       "decision": "merge-or-replace",
-      "new_ids": [
-        "p7",
-        "p8",
-        "p9"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
+      "new_ids": [],
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1008/p1 (textbook-ch04-q05)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1008",
+          "id": "p1",
+          "source": "textbook-ch04-q05",
+          "content_sha256": "f83fbd5a0a8ea5e28e5570ed041e6048c4b49fefa5a3377bd58d4d431b06ea58"
+        }
+      ]
     }
   ],
   "coverage": [
@@ -643,6 +781,34 @@
         "taught_on": "1012",
         "extra_pages": []
       }
+    },
+    {
+      "objective": "retained-2017-mid-c050-q6",
+      "questions": [
+        "p10"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-2017-mid-c050-q1",
+      "questions": [
+        "p11"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-2017-mid-c050-q2",
+      "questions": [
+        "p12"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-2019-mid-q4",
+      "questions": [
+        "p13"
+      ],
+      "evidence": {}
     }
   ],
   "replacements": [
@@ -654,7 +820,7 @@
       "new_ids": [
         "p1"
       ],
-      "reason": "유효 원문과 다른 평가 목표 유지",
+      "reason": "같은 기출 2019-mid-q6은 1012/p1에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "1012",
@@ -672,7 +838,7 @@
       "new_ids": [
         "p2"
       ],
-      "reason": "유효 원문과 다른 평가 목표 유지",
+      "reason": "같은 기출 2018-mid-c024-q9은 1012/p2에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "1012",
@@ -686,17 +852,17 @@
       "old_id": "p3",
       "old_source": "2017-mid-c050-q6",
       "old_content_sha256": "2f7dc83e12716affb89920dd78aed414b3f8095d410a952d64e3e45aa9466585",
-      "decision": "merge-or-replace",
+      "decision": "retain",
       "new_ids": [
-        "p2"
+        "p10"
       ],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1012/p2 (2018-mid-c024-q9)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "reason": "같은 기출 2017-mid-c050-q6은 1012/p10에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "1012",
-          "id": "p2",
-          "source": "2018-mid-c024-q9",
-          "content_sha256": "245963d5861e16ceb0dd0df7aaf9ebd76e7a8dd2f091d0050cde739ae077607d"
+          "id": "p10",
+          "source": "2017-mid-c050-q6",
+          "content_sha256": "2f7dc83e12716affb89920dd78aed414b3f8095d410a952d64e3e45aa9466585"
         }
       ]
     },
@@ -708,7 +874,7 @@
       "new_ids": [
         "p3"
       ],
-      "reason": "유효 원문과 다른 평가 목표 유지",
+      "reason": "같은 기출 2018-mid-c024-q1은 1012/p3에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "1012",
@@ -722,17 +888,17 @@
       "old_id": "p5",
       "old_source": "2017-mid-c050-q1",
       "old_content_sha256": "02faf36ad4e6ef688661b3003e05c58a6032aa05bd7d1078d697bec7d86e7971",
-      "decision": "merge-or-replace",
+      "decision": "retain",
       "new_ids": [
-        "p3"
+        "p11"
       ],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1012/p3 (2018-mid-c024-q1)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "reason": "같은 기출 2017-mid-c050-q1은 1012/p11에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "1012",
-          "id": "p3",
-          "source": "2018-mid-c024-q1",
-          "content_sha256": "36ab6910706db1dbe6cb18af5c9444b367f43e2e14a6c0783c9df3a2f7ec30ae"
+          "id": "p11",
+          "source": "2017-mid-c050-q1",
+          "content_sha256": "02faf36ad4e6ef688661b3003e05c58a6032aa05bd7d1078d697bec7d86e7971"
         }
       ]
     },
@@ -744,7 +910,7 @@
       "new_ids": [
         "p4"
       ],
-      "reason": "유효 원문과 다른 평가 목표 유지",
+      "reason": "같은 기출 2017-mid-c050-q10은 1012/p4에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "1012",
@@ -758,15 +924,17 @@
       "old_id": "p7",
       "old_source": "2017-mid-c050-q2",
       "old_content_sha256": "c168d2afe9c519c342eb40d7a405c4e1bb612229ea83d5330885c1d1f8956e60",
-      "decision": "merge-or-replace",
-      "new_ids": [],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0907/p3 (textbook-ch05-q01)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "decision": "retain",
+      "new_ids": [
+        "p12"
+      ],
+      "reason": "같은 기출 2017-mid-c050-q2은 1012/p12에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
-          "range": "0907",
-          "id": "p3",
-          "source": "textbook-ch05-q01",
-          "content_sha256": "c1e8678ee20f97916af711c4f0a6ba183ed4e0cac1036fae8203a1c6ebaa18dc"
+          "range": "1012",
+          "id": "p12",
+          "source": "2017-mid-c050-q2",
+          "content_sha256": "c168d2afe9c519c342eb40d7a405c4e1bb612229ea83d5330885c1d1f8956e60"
         }
       ]
     },
@@ -774,15 +942,17 @@
       "old_id": "p8",
       "old_source": "2019-mid-q4",
       "old_content_sha256": "97538e509dc87ddf52706bfd1f9ef29f8e28414eea4384d980f8bdb137e485b8",
-      "decision": "merge-or-replace",
-      "new_ids": [],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0907/p3 (textbook-ch05-q01)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "decision": "retain",
+      "new_ids": [
+        "p13"
+      ],
+      "reason": "같은 기출 2019-mid-q4은 1012/p13에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
-          "range": "0907",
-          "id": "p3",
-          "source": "textbook-ch05-q01",
-          "content_sha256": "c1e8678ee20f97916af711c4f0a6ba183ed4e0cac1036fae8203a1c6ebaa18dc"
+          "range": "1012",
+          "id": "p13",
+          "source": "2019-mid-q4",
+          "content_sha256": "97538e509dc87ddf52706bfd1f9ef29f8e28414eea4384d980f8bdb137e485b8"
         }
       ]
     },
@@ -877,5 +1047,55 @@
       ]
     }
   ],
-  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음"
+  "count_policy": "기존의 서로 다른 기출 전부 유지; 동일 기출 반복만 제거; 강의·교과서 유지",
+  "exam_retention_policy": "same-exam-reuse-only",
+  "restored_exams": [
+    {
+      "range": "1012",
+      "id": "p10",
+      "source": "2017-mid-c050-q6",
+      "old_range": "1012",
+      "old_id": "p3"
+    },
+    {
+      "range": "1012",
+      "id": "p11",
+      "source": "2017-mid-c050-q1",
+      "old_range": "1012",
+      "old_id": "p5"
+    },
+    {
+      "range": "1012",
+      "id": "p12",
+      "source": "2017-mid-c050-q2",
+      "old_range": "1012",
+      "old_id": "p7"
+    },
+    {
+      "range": "1012",
+      "id": "p13",
+      "source": "2019-mid-q4",
+      "old_range": "1012",
+      "old_id": "p8"
+    }
+  ],
+  "required_exam_sources": [
+    "2017-mid-c050-q1",
+    "2017-mid-c050-q10",
+    "2017-mid-c050-q11",
+    "2017-mid-c050-q2",
+    "2017-mid-c050-q6",
+    "2017-mid-c050-q7",
+    "2018-mid-c024-q1",
+    "2018-mid-c024-q15",
+    "2018-mid-c024-q8",
+    "2018-mid-c024-q9",
+    "2018-mid-c102-q1",
+    "2019-mid-q4",
+    "2019-mid-q6",
+    "2019-mid-q7",
+    "2019-mid-q8",
+    "2019-mid-q9",
+    "unk-final-ltk-q1"
+  ]
 }

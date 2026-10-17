@@ -3,6 +3,53 @@ from _util import SCRIPTS
 from test_review_inventory import make_pack
 from review_audit import audit_reviews
 
+def exam_bank(repo, aliases=None):
+    path=repo/'from_the_past/기출/문제은행.json'
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps({'problems':[{'id':s,'duplicate_of':a} for s,a in (aliases or {'exam-a':None,'exam-b':None}).items()]}))
+
+def test_distinct_exams_survive_same_algorithm_even_duplicate_decision(tmp_path):
+    exam_bank(tmp_path)
+    make_pack(tmp_path,'0914','exam-a')
+    other=make_pack(tmp_path,'0917','exam-b')
+    other.write_text(other.read_text().replace('x=1','y=2'))
+    report=audit_reviews(tmp_path)
+    assert report['status']=='pass' and not report['candidates']
+    assert report['retained_similar_exams']
+
+def test_exact_reprint_and_bank_alias_still_block(tmp_path):
+    exam_bank(tmp_path,{'exam-a':None,'exam-b':'exam-a'})
+    make_pack(tmp_path,'0914','exam-a')
+    other=make_pack(tmp_path,'0917','exam-b')
+    other.write_text(other.read_text().replace('x=1','y=2'))
+    assert audit_reviews(tmp_path)['blocking']
+
+def test_baseline_detects_lost_distinct_exam(tmp_path):
+    from review_inventory import collect_reviews
+    exam_bank(tmp_path)
+    make_pack(tmp_path,'0914','exam-a')
+    other=make_pack(tmp_path,'0917','exam-b')
+    other.write_text(other.read_text().replace('x=1','y=2'))
+    before=collect_reviews(tmp_path)
+    replacement=make_pack(tmp_path/'stage','0917','lecture-new')
+    replacement.write_text(replacement.read_text().replace('x=1','printf("new")'))
+    report=audit_reviews(tmp_path,overlays={'0917':replacement},baseline=before)
+    assert report['status']=='fail'
+    assert any(x.get('missing_exam')=='exam-b' for x in report['blocking'])
+
+def test_required_exam_list_is_enforced(tmp_path):
+    exam_bank(tmp_path)
+    make_pack(tmp_path,'0914','exam-a')
+    report=audit_reviews(tmp_path,required_exams=['exam-a','exam-b'])
+    assert any(x.get('missing_exam')=='exam-b' for x in report['blocking'])
+
+def test_saved_required_exams_apply_without_cli_flags(tmp_path):
+    exam_bank(tmp_path)
+    review=make_pack(tmp_path,'0914','exam-a')
+    (review.parent/'.pack/자료_복습팩/selection.json').write_text(json.dumps({'required_exam_sources':['exam-a','exam-b']}))
+    report=audit_reviews(tmp_path)
+    assert any(x.get('missing_exam')=='exam-b' for x in report['blocking'])
+
 def test_global_sources_and_variants_blocked(tmp_path):
     make_pack(tmp_path,'0914');make_pack(tmp_path,'0917')
     assert audit_reviews(tmp_path)['blocking']

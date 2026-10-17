@@ -521,14 +521,17 @@
       "old_content_sha256": "6adda3150ceab8aeafec2113d5a27c9710a91b0b67e1cbbfbbd67d9002268728",
       "decision": "merge-or-replace",
       "new_ids": [
-        "p3",
-        "p4",
-        "p5",
-        "p6",
-        "p7",
-        "p8"
+        "p6"
       ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1005/p6 (lecture-s04-p28-remove-node)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1005",
+          "id": "p6",
+          "source": "lecture-s04-p28-remove-node",
+          "content_sha256": "4470c407898c06fb2fd8a35464db44af08e7268b4565c370c58bfc7051b46cea"
+        }
+      ]
     },
     {
       "old_id": "p2",
@@ -536,14 +539,17 @@
       "old_content_sha256": "c0f2e4546456a76d646bad368d154222104da0225d4d8efb1e68bbf6c0804c48",
       "decision": "merge-or-replace",
       "new_ids": [
-        "p3",
-        "p4",
-        "p5",
-        "p6",
-        "p7",
-        "p8"
+        "p2"
       ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 1005/p2 (textbook-ch06-q10)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "1005",
+          "id": "p2",
+          "source": "textbook-ch06-q10",
+          "content_sha256": "a681b064042a781b0deabc45e692e133f302d69709ac88c0f32ee8f32d4e1e90"
+        }
+      ]
     }
   ],
   "coverage": [
@@ -723,5 +729,25 @@
     }
   ],
   "duplicate_decisions": [],
-  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음"
+  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음",
+  "required_exam_sources": [
+    "2017-mid-c050-q1",
+    "2017-mid-c050-q10",
+    "2017-mid-c050-q11",
+    "2017-mid-c050-q2",
+    "2017-mid-c050-q6",
+    "2017-mid-c050-q7",
+    "2018-mid-c024-q1",
+    "2018-mid-c024-q15",
+    "2018-mid-c024-q8",
+    "2018-mid-c024-q9",
+    "2018-mid-c102-q1",
+    "2019-mid-q4",
+    "2019-mid-q6",
+    "2019-mid-q7",
+    "2019-mid-q8",
+    "2019-mid-q9",
+    "unk-final-ltk-q1"
+  ],
+  "exam_retention_policy": "same-exam-reuse-only"
 }

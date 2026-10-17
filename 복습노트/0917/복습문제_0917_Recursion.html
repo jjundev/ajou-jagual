@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>복습문제 6선 — 0917 수업 범위</title>
-  <meta name="description" content="복습문제 6선 — 0917 수업 범위">
+  <title>복습문제 7선 — 0917 수업 범위</title>
+  <meta name="description" content="복습문제 7선 — 0917 수업 범위">
   <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="1ae2abb57592d2519661" data-screens="article.card" data-panels="review" data-range="0917">
+<body data-revision="234a84137738da5e1ccb" data-screens="article.card" data-panels="review" data-range="0917">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -369,12 +369,12 @@
         </div>
         <p class="panel-meta">푼 문제 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
         <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
-        <nav class="toc" aria-label="목차"><a href="#partA">A 기존 문제</a><a href="#partB">B 강의 코드</a></nav>
+        <nav class="toc" aria-label="목차"><a href="#partA">A 기존 문제</a><a href="#partB">B 강의 코드</a><a href="#partRestored">C 복구 기출</a></nav>
       </div>
     </aside>
     <div class="content">
   <main>
-<div class="hero"><h1>복습문제 6선 — 0917 수업 범위</h1><p>핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.</p></div>
+<div class="hero"><h1>복습문제 7선 — 0917 수업 범위</h1><p>서로 다른 기출은 풀이 목표가 비슷해도 모두 유지하고, 교과서와 강의 예제 코드를 함께 복습해요.</p></div>
 <section id="partA"><h2>A. 검토한 기출·교과서 문제</h2>
 <article class="card" id="p1" data-source="2018-mid-c024-q15">
   <h3>P1. 최대 공약수 gcd를 순환 함수로</h3>
@@ -541,6 +541,45 @@ void dec_to_bin(int n){
 }</code></pre></details>
 <details class="hint"><summary>힌트 보기</summary><p>F(0)=0,F(1)=1이고 두 앞 항을 더하므로 0,1,1,2,3,5,8을 얻어요.</p></details>
 <details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>F(0)=0,F(1)=1이고 두 앞 항을 더하므로 0,1,1,2,3,5,8을 얻어요.</li><li>fib(6)의 자식 fib(5),fib(4)를 나누어 그려요. fib(5) 쪽에서 fib(3)이 2번, fib(4) 쪽에서 1번 호출돼요.</li><li>반복에서는 이전 current를 tmp에 먼저 보관해요. current에 last를 더해 새 항을 만들고 last를 이전 current로 옮겨요.</li><li>last를 먼저 current로 바꿔 버리면 서로 다른 두 항의 합을 유지하지 못해요. 반복은 이미 구한 두 항을 재사용해요.</li></ol><p class="answer">정답: fib(6)=8, fib(3)은 3회. tmp=current; current+=last; last=tmp;. 두 자식 호출의 하위 호출이 겹치고 계산 결과를 저장하지 않기 때문이다.</p><p>값 F(3)=2와 fib(3)의 호출 횟수 3회를 혼동하지 마세요.</p></details>
+</article>
+</section>
+<section id="partRestored"><h2>C. 복구한 기출 원문</h2>
+<article class="card" id="p7" data-source="2019-mid-q8">
+  <h3>P7. 함수 foo는 무엇을 할까요</h3>
+  <div class="problem"><p>입력 조건: x와 y는 양의 정수예요. y=0은 이 함수의 유효 입력이 아니에요.</p>
+    <p>아래에 함수 foo의 코드가 있어요. 이 함수를 호출하면 무엇을 하는 함수인지 답해 보세요.</p>
+    <p>함수 foo는 (&nbsp;&nbsp;&nbsp;) 함수이다.</p>
+<pre><code class="language-c">int foo (int x, int y){
+    if (x % y == 0) return y;
+    else
+        return foo(y, x % y);
+}</code></pre>
+  </div>
+  <details class="original"><summary>기출 원문 보기</summary>
+    <p>2019 중간 8번 · 2점 · 출제자 미상</p>
+    <blockquote>"아래에는 함수 foo에 대한 코드가 있으며 이 함수를 호출(사용)하였을 때 무엇을 하는 함수인지에 대해서 답을 하시오. 함수 foo는 (&nbsp;&nbsp;&nbsp;) 함수이다. (2점)"</blockquote>
+<pre><code class="language-c">int foo (int x, int y){
+    if (x % y == 0) return y;
+    else
+        return foo(y, x % y);
+}</code></pre>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p><code>foo(12, 18)</code>을 손으로 따라가 보세요. 나머지가 0이 되는 순간 무엇을 돌려주는지 보면 돼요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>끝나는 조건부터 봐요. <code>x % y == 0</code>이면, 즉 y가 x를 나누어떨어지게 하면 y를 돌려주고 끝나요. 이때 y는 x와 y를 둘 다 나누는 수 중 가장 커요.</li>
+      <li>아니면 <code>foo(y, x % y)</code>를 다시 불러요. <code>x % y</code>는 y보다 작아서 두 번째 값이 부를 때마다 줄어들어요. 그래서 언젠가 나누어떨어지는 순간이 와요.</li>
+      <li><code>foo(12, 18)</code>: <code>12 % 18 = 12</code>, 0이 아니에요 → <code>foo(18, 12)</code></li>
+      <li><code>foo(18, 12)</code>: <code>18 % 12 = 6</code> → <code>foo(12, 6)</code></li>
+      <li><code>foo(12, 6)</code>: <code>12 % 6 = 0</code> → 6을 돌려줘요.</li>
+      <li>돌아올 때는 받은 6을 그대로 위로 넘겨요. <code>foo(12, 6)</code> → <code>foo(18, 12)</code> → <code>foo(12, 18)</code> 모두 6이에요. 12와 18을 둘 다 나누는 가장 큰 수가 6이에요.</li>
+      <li>왜 답이 바뀌지 않을까요? $x = q \cdot y + r$ ($r$은 $x$를 $y$로 나눈 나머지)이면, $x$와 $y$를 둘 다 나누는 수는 $r$도 나누고, $y$와 $r$을 둘 다 나누는 수는 $x$도 나눠요. 그래서 $(x, y)$와 $(y, r)$의 공약수가 같아요.</li>
+      <li>수업과의 연결: 0914 수업(60:20–61:16)에서 말한 순환의 두 조건, "끝나는 조건"과 부를 때마다 "크기가 줄어든다"를 foo가 그대로 갖췄어요.</li>
+    </ol>
+    <p class="answer">정답: x와 y의 최대공약수를 구해주는 (함수)</p>
+  </details>
 </article>
 </section>
 </main>

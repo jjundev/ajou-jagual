@@ -16,7 +16,8 @@ def verify(repo):
     from review_audit import audit_reviews
     rows=collect_reviews(repo);audit=audit_reviews(repo)
     if audit['status']!='pass':raise ValueError('global review audit failed')
-    report=json.loads((repo/'docs/verify/2026-10-17-review-question-overhaul.json').read_text(encoding='utf-8'))
+    latest=repo/'docs/verify/2026-10-17-exam-restore.json'
+    report=json.loads((latest if latest.exists() else repo/'docs/verify/2026-10-17-review-question-overhaul.json').read_text(encoding='utf-8'))
     if len(rows)!=len(report['packs']):raise ValueError('pack set changed')
     for row in rows:
         root=Path(row['review_path']).parent

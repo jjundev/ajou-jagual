@@ -432,80 +432,163 @@
           "locator": "0914/p8"
         }
       ]
+    },
+    {
+      "id": "p9",
+      "part": "partRestored",
+      "source": "2019-mid-q9",
+      "variant": false,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "$T(n)"
+      ],
+      "answer": "넷째 i++만 k++로 보정하면 T(n)=30n(n-1)/2, O(n²). 원문 그대로는 n≥2에서 정상 종료 보장 없음/미정의 동작 위험.",
+      "objectives": [
+        "retained-2019-mid-q9"
+      ],
+      "task_family": "2019-mid-q9",
+      "origin": "restored-distinct-exam",
+      "old_id": "p2",
+      "original_range": "0914",
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning and trace simulation; raw UB loop analyzed only",
+        "content_sha256": "b6cb3ee18fe0002fa16d2d3db6dba2816872cbbf828e7f224c8ea7ac6207500a",
+        "independent_answer": "제시 코드 그대로는 일반적인 유한 T(n)과 빅오를 정할 수 없다. n>=2에서 k<30이 계속 참이며 k가 증가하지 않아 정상 종료를 보장하지 않는다. 정의된 유한 크기 C 배열에서는 경계 초과, 이후 signed overflow 등 UB 위험도 있다. n=0,1에는 대입 0회. 단, 카드에 명시된 “넷째 루프 i++는 k++의 오타로 보고 풀기” 조건만 적용하면 T(n)=30*n*(n-1)/2=15*n*(n-1), Θ(n²), 따라서 O(n²).",
+        "reasoning": "n>=2이면 i=0일 때 모든 j에서 j<i가 거짓이라 대입 없이 넘어간다. i=1, j=0에서 세 번째 루프에 진입한다. k=0으로 시작하지만 네 번째 루프 증감식이 i++여서 k는 항상0이다. buffer[1][0], buffer[2][0], buffer[3][0], ...에 계속 접근한다. 세 번째 루프도 p가 아니라 j를 증가시키는 오탈자다. p/k를 증가시키도록 고친 별도 가정 코드는 원 코드의 답이 아니다. 명시 보정 조건에서는 세 번째 루프의 j 증가는 그대로 유지한다. i=0이면 대입0회, i>=1이면 j=0부터 i-1까지 i회 세 번째 루프가 돌고 각각 k=0..29에서30회 대입한다. 이후 j=i에 도달해 세 번째 루프가 멈추고 바깥 j++로 i+1이 되어 남은 j에는 대입이 없다. 따라서30*sum(i=0..n-1)i=15*n*(n-1). 실제 j 증가를 보존한 독립 시뮬레이션 n=0..11: [[0, 0], [1, 0], [2, 30], [3, 90], [4, 180], [5, 300], [6, 450], [7, 630], [8, 840], [9, 1080], [10, 1350], [11, 1650]]",
+        "evidence": [
+          "docs/verify/exam-restore-20261017/independent-restored.json",
+          "docs/verify/exam-restore-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/exam-restore-20261017/independent-restored.json",
+          "sha256": "69b6dd17c79f4b807ad78f76df4f34d371185d7aa8e764029ff0c266ea9ea323",
+          "locator": "2019-mid-q9"
+        },
+        {
+          "path": "docs/verify/exam-restore-20261017/trace-result.txt",
+          "sha256": "386d4bd12da566ce6834860b44f0b136674508157c5862e86c07122afd596cb7",
+          "locator": "2019-mid-q9"
+        }
+      ]
+    },
+    {
+      "id": "p10",
+      "part": "partRestored",
+      "source": "unk-final-ltk-q1",
+      "variant": false,
+      "anchor": "s0-adt-def",
+      "level": 2,
+      "date": "0914",
+      "terms": [
+        "29n(n-1)/2",
+        "O(n^2)"
+      ],
+      "answer": "T(n)=29n(n-1)/2, O(n²)",
+      "objectives": [
+        "retained-unk-final-ltk-q1"
+      ],
+      "task_family": "unk-final-ltk-q1",
+      "origin": "restored-distinct-exam",
+      "old_id": "p8",
+      "original_range": "0914",
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning and trace simulation; raw UB loop analyzed only",
+        "content_sha256": "368e82eed19b920e7d9a0e3b534f8e0bbfc72de6028b1c62ec9ad4a84aa170fa",
+        "independent_answer": "T(n)=29*n*(n-1)/2 (n>=1), Θ(n²), 따라서 O(n²).",
+        "reasoning": "i=1,...,n-1 각각에서 j는1로 시작한다. 세 번째 루프는 p가 아니라 j를 증가시키므로 j=1,...,i까지 정확히 i회 돈다. 각 회 k=1,...,29로 대입29회. 빠져나온 j=i+1에서 바깥 j++가 실행되어 i+2가 되고, 이후 j<i 조건이 다시 참이 될 수 없다. 합계29*(1+...+(n-1))=29*n*(n-1)/2. 독립 while-loop 시뮬레이션 n=1..11: [[1, 0], [2, 29], [3, 87], [4, 174], [5, 290], [6, 435], [7, 609], [8, 812], [9, 1044], [10, 1305], [11, 1595]]",
+        "evidence": [
+          "docs/verify/exam-restore-20261017/independent-restored.json",
+          "docs/verify/exam-restore-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/exam-restore-20261017/independent-restored.json",
+          "sha256": "69b6dd17c79f4b807ad78f76df4f34d371185d7aa8e764029ff0c266ea9ea323",
+          "locator": "unk-final-ltk-q1"
+        },
+        {
+          "path": "docs/verify/exam-restore-20261017/trace-result.txt",
+          "sha256": "386d4bd12da566ce6834860b44f0b136674508157c5862e86c07122afd596cb7",
+          "locator": "unk-final-ltk-q1"
+        }
+      ]
     }
   ],
   "excluded": [
     {
       "old_id": "p1",
       "old_source": "2019-mid-q8",
-      "old_content_sha256": "35e6bf56c77bff4dc3cadeae2fe3653c6046561f84827a99ecfb26df7101f3b4",
-      "decision": "merge-or-replace",
-      "new_ids": [
-        "p6",
-        "p7",
-        "p8"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
-    },
-    {
-      "old_id": "p2",
-      "old_source": "2019-mid-q9",
-      "old_content_sha256": "7c1c6abd8de0d4c2f846f0c605e855974ff7cbf1cfb208aca4658a35a53e34fc",
-      "decision": "merge-or-replace",
-      "new_ids": [
-        "p6",
-        "p7",
-        "p8"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
+      "old_content_sha256": "16c2c1b770bce1d3ba094d51a7eac0b248a0151a7c442ac83dd3467cc4739751",
+      "decision": "same-exam-repeat-removed",
+      "new_ids": [],
+      "reason": "같은 기출 2019-mid-q8은 0917/p7에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
+      "targets": [
+        {
+          "range": "0917",
+          "id": "p7",
+          "source": "2019-mid-q8",
+          "content_sha256": "3130a78098dfa8397134ae06ab1a60780787117861538bdba28adafba0e4baee"
+        }
+      ]
     },
     {
       "old_id": "p4",
       "old_source": "2018-mid-c024-q15",
-      "old_content_sha256": "0a828704474a5a1e1960fbaaf71e10e9ea8b5b36a7ab3363d9d16592ce6c1cf0",
-      "decision": "merge-or-replace",
-      "new_ids": [
-        "p6",
-        "p7",
-        "p8"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
+      "old_content_sha256": "b4c87dcf29941b124a31e45680d26fba01249fa4b18dfbb5275e3fa873d768c5",
+      "decision": "same-exam-repeat-removed",
+      "new_ids": [],
+      "reason": "같은 기출 2018-mid-c024-q15은 0917/p1에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
+      "targets": [
+        {
+          "range": "0917",
+          "id": "p1",
+          "source": "2018-mid-c024-q15",
+          "content_sha256": "45054011afec95be28f5d0cea2ed2b7654709f602e49471e57674188587bfe86"
+        }
+      ]
     },
     {
       "old_id": "p6",
       "old_source": "2017-mid-c050-q11",
-      "old_content_sha256": "96d9b388b67f5450c535af68cc7927d1752aae7a5cf5c125faec4ae7d059bb09",
-      "decision": "merge-or-replace",
-      "new_ids": [
-        "p6",
-        "p7",
-        "p8"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
+      "old_content_sha256": "15939896cab0ea2f95c36123e3265f6297a7e0d26e38bf43bf9052d3bad46267",
+      "decision": "same-exam-repeat-removed",
+      "new_ids": [],
+      "reason": "같은 기출 2017-mid-c050-q11은 0917/p2에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
+      "targets": [
+        {
+          "range": "0917",
+          "id": "p2",
+          "source": "2017-mid-c050-q11",
+          "content_sha256": "1713b2b1919edcd673beec3712285d626e9493d00d71b6c3aea5e175db7ccfe2"
+        }
+      ]
     },
     {
       "old_id": "p7",
       "old_source": "2018-mid-c024-q8",
-      "old_content_sha256": "fcaae2e45a33d8be2cf2eb1472e04b7a185f48223121cfb93f28c010b8b7b767",
-      "decision": "merge-or-replace",
+      "old_content_sha256": "1cfabbecb1140a57ce646ab9d2683e2249c2436baa63e3bed20a8516575dbc17",
+      "decision": "same-exam-repeat-removed",
       "new_ids": [
-        "p6",
-        "p7",
-        "p8"
+        "p1"
       ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
-    },
-    {
-      "old_id": "p8",
-      "old_source": "unk-final-ltk-q1",
-      "old_content_sha256": "c4f122b6fc66792627c6e4e09d94a2e5f27bebd3a95023ab4f086ff326cd4877",
-      "decision": "merge-or-replace",
-      "new_ids": [
-        "p6",
-        "p7",
-        "p8"
-      ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
+      "reason": "같은 기출 2018-mid-c024-q8은 0914/p1에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
+      "targets": [
+        {
+          "range": "0914",
+          "id": "p1",
+          "source": "2018-mid-c024-q8",
+          "content_sha256": "ceffea8108660ef51a012f1f1cc4cc2cc916d0588c38e4850b3890cdea75789c"
+        }
+      ]
     },
     {
       "old_id": "p11",
@@ -513,11 +596,17 @@
       "old_content_sha256": "73fff905f3dd12cba0426a303409e74e67c816d101b0ce3df6fcf96abc1db593",
       "decision": "merge-or-replace",
       "new_ids": [
-        "p6",
-        "p7",
         "p8"
       ],
-      "reason": "전역 원문 재사용·상수 변형·동일 풀이 목표를 제거하고 해당 날짜 강의 핵심 예제로 재편"
+      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p8 (lecture-s02-p4-factorial)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "targets": [
+        {
+          "range": "0914",
+          "id": "p8",
+          "source": "lecture-s02-p4-factorial",
+          "content_sha256": "10ef94e6d6f6400c1fa52a39207a4d30f1100e94920ed6d25fccea264c2084b9"
+        }
+      ]
     }
   ],
   "coverage": [
@@ -597,6 +686,20 @@
         "taught_on": "0914",
         "extra_pages": []
       }
+    },
+    {
+      "objective": "retained-2019-mid-q9",
+      "questions": [
+        "p9"
+      ],
+      "evidence": {}
+    },
+    {
+      "objective": "retained-unk-final-ltk-q1",
+      "questions": [
+        "p10"
+      ],
+      "evidence": {}
     }
   ],
   "replacements": [
@@ -604,15 +707,15 @@
       "old_id": "p1",
       "old_source": "2019-mid-q8",
       "old_content_sha256": "16c2c1b770bce1d3ba094d51a7eac0b248a0151a7c442ac83dd3467cc4739751",
-      "decision": "merge-or-replace",
+      "decision": "same-exam-repeat-removed",
       "new_ids": [],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0917/p1 (2018-mid-c024-q15)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "reason": "같은 기출 2019-mid-q8은 0917/p7에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "0917",
-          "id": "p1",
-          "source": "2018-mid-c024-q15",
-          "content_sha256": "45054011afec95be28f5d0cea2ed2b7654709f602e49471e57674188587bfe86"
+          "id": "p7",
+          "source": "2019-mid-q8",
+          "content_sha256": "3130a78098dfa8397134ae06ab1a60780787117861538bdba28adafba0e4baee"
         }
       ]
     },
@@ -620,17 +723,17 @@
       "old_id": "p2",
       "old_source": "2019-mid-q9",
       "old_content_sha256": "32f548f2099dff2136437974972d634891d0542c12e98d5b4cf9b6053c9c2c85",
-      "decision": "merge-or-replace",
+      "decision": "retain",
       "new_ids": [
-        "p1"
+        "p9"
       ],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p1 (2018-mid-c024-q8)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "reason": "같은 기출 2019-mid-q9은 0914/p9에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "0914",
-          "id": "p1",
-          "source": "2018-mid-c024-q8",
-          "content_sha256": "ceffea8108660ef51a012f1f1cc4cc2cc916d0588c38e4850b3890cdea75789c"
+          "id": "p9",
+          "source": "2019-mid-q9",
+          "content_sha256": "b6cb3ee18fe0002fa16d2d3db6dba2816872cbbf828e7f224c8ea7ac6207500a"
         }
       ]
     },
@@ -642,7 +745,7 @@
       "new_ids": [
         "p1"
       ],
-      "reason": "유효 원문과 다른 평가 목표 유지",
+      "reason": "같은 기출 2018-mid-c024-q8은 0914/p1에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "0914",
@@ -656,9 +759,9 @@
       "old_id": "p4",
       "old_source": "2018-mid-c024-q15",
       "old_content_sha256": "b4c87dcf29941b124a31e45680d26fba01249fa4b18dfbb5275e3fa873d768c5",
-      "decision": "merge-or-replace",
+      "decision": "same-exam-repeat-removed",
       "new_ids": [],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0917/p1 (2018-mid-c024-q15)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "reason": "같은 기출 2018-mid-c024-q15은 0917/p1에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "0917",
@@ -676,7 +779,7 @@
       "new_ids": [
         "p2"
       ],
-      "reason": "유효 원문과 다른 평가 목표 유지",
+      "reason": "같은 기출 2018-mid-c102-q1은 0914/p2에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "0914",
@@ -690,9 +793,9 @@
       "old_id": "p6",
       "old_source": "2017-mid-c050-q11",
       "old_content_sha256": "15939896cab0ea2f95c36123e3265f6297a7e0d26e38bf43bf9052d3bad46267",
-      "decision": "merge-or-replace",
+      "decision": "same-exam-repeat-removed",
       "new_ids": [],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0917/p2 (2017-mid-c050-q11)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "reason": "같은 기출 2017-mid-c050-q11은 0917/p2에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "0917",
@@ -706,11 +809,11 @@
       "old_id": "p7",
       "old_source": "2018-mid-c024-q8",
       "old_content_sha256": "1cfabbecb1140a57ce646ab9d2683e2249c2436baa63e3bed20a8516575dbc17",
-      "decision": "merge-or-replace",
+      "decision": "same-exam-repeat-removed",
       "new_ids": [
         "p1"
       ],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p1 (2018-mid-c024-q8)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "reason": "같은 기출 2018-mid-c024-q8은 0914/p1에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "0914",
@@ -724,17 +827,17 @@
       "old_id": "p8",
       "old_source": "unk-final-ltk-q1",
       "old_content_sha256": "857c56511b1e186496798d2241de7a43257c8d05526b69dd029345b0d0428b9a",
-      "decision": "merge-or-replace",
+      "decision": "retain",
       "new_ids": [
-        "p1"
+        "p10"
       ],
-      "reason": "동일 원문 재사용 또는 같은 풀이 목표를 0914/p1 (2018-mid-c024-q8)에 통합. 해당 수업의 핵심 강의 예제는 coverage의 별도 문항으로 보강.",
+      "reason": "같은 기출 unk-final-ltk-q1은 0914/p10에 한 번 수록. 서로 다른 기출은 풀이 목표가 비슷해도 유지.",
       "targets": [
         {
           "range": "0914",
-          "id": "p1",
-          "source": "2018-mid-c024-q8",
-          "content_sha256": "ceffea8108660ef51a012f1f1cc4cc2cc916d0588c38e4850b3890cdea75789c"
+          "id": "p10",
+          "source": "unk-final-ltk-q1",
+          "content_sha256": "368e82eed19b920e7d9a0e3b534f8e0bbfc72de6028b1c62ec9ad4a84aa170fa"
         }
       ]
     },
@@ -812,5 +915,41 @@
     }
   ],
   "duplicate_decisions": [],
-  "count_policy": "핵심 범위 충족 우선; 숫자 변형으로 개수를 채우지 않음"
+  "count_policy": "기존의 서로 다른 기출 전부 유지; 동일 기출 반복만 제거; 강의·교과서 유지",
+  "exam_retention_policy": "same-exam-reuse-only",
+  "restored_exams": [
+    {
+      "range": "0914",
+      "id": "p9",
+      "source": "2019-mid-q9",
+      "old_range": "0914",
+      "old_id": "p2"
+    },
+    {
+      "range": "0914",
+      "id": "p10",
+      "source": "unk-final-ltk-q1",
+      "old_range": "0914",
+      "old_id": "p8"
+    }
+  ],
+  "required_exam_sources": [
+    "2017-mid-c050-q1",
+    "2017-mid-c050-q10",
+    "2017-mid-c050-q11",
+    "2017-mid-c050-q2",
+    "2017-mid-c050-q6",
+    "2017-mid-c050-q7",
+    "2018-mid-c024-q1",
+    "2018-mid-c024-q15",
+    "2018-mid-c024-q8",
+    "2018-mid-c024-q9",
+    "2018-mid-c102-q1",
+    "2019-mid-q4",
+    "2019-mid-q6",
+    "2019-mid-q7",
+    "2019-mid-q8",
+    "2019-mid-q9",
+    "unk-final-ltk-q1"
+  ]
 }

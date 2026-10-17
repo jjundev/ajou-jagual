@@ -37,8 +37,8 @@ def code_signature(statement):
     result=signature(html.escape(code))
     return result if len(result.split())>=8 else None
 
-def audit_reviews(repo: Path, *, overlays=None, decisions=None):
-    report=dict(policy_version=POLICY_VERSION,inputs=[],blocking=[],candidates=[],decisions=[],status='fail')
+def audit_reviews(repo: Path, *, overlays=None, decisions=None, baseline=None, required_exams=None):
+    report=dict(policy_version=POLICY_VERSION,inputs=[],blocking=[],candidates=[],decisions=[],retained_similar_exams=[],status='fail')
     try: rows=collect_reviews(repo,overlays=overlays)
     except (ValueError,OSError,KeyError) as exc:
         report['blocking'].append({'error':str(exc)});return report
@@ -52,6 +52,23 @@ def audit_reviews(repo: Path, *, overlays=None, decisions=None):
         while aliases.get(source) and source not in seen:seen.add(source);source=aliases[source]
         return source
     allcards=[(row['range'],c) for row in rows for c in row['cards']]
+    expected=set(required_exams or [])
+    try:
+        for row in rows:
+            selection=Path(row['manifest_path']).with_name('selection.json')
+            if selection.is_file():
+                expected.update(json.loads(selection.read_text(encoding='utf-8')).get('required_exam_sources',[]))
+    except (ValueError,OSError,TypeError) as exc:
+        report['blocking'].append({'error':'invalid saved exam retention: '+str(exc)})
+        return report
+    if baseline is not None:
+        expected.update(c['source'] for row in baseline for c in row['cards'] if c['source'] in aliases)
+    present={canonical(c['source']) for _,c in allcards}
+    for source in sorted(expected):
+        if source not in aliases:
+            report['blocking'].append({'error':'required exam not in bank','source':source})
+        elif canonical(source) not in present:
+            report['blocking'].append({'missing_exam':source,'reason':'distinct baseline exam must be retained'})
     for (da,a),(db,b) in combinations(allcards,2):
         pair={'left':identity(da,a),'right':identity(db,b)}
         if canonical(a['source'])==canonical(b['source']):
@@ -61,6 +78,11 @@ def audit_reviews(repo: Path, *, overlays=None, decisions=None):
         same_statement=signature(a['statement_html'])==signature(b['statement_html'])
         left_code=code_signature(a['statement_html']);right_code=code_signature(b['statement_html'])
         if not same_statement and not (left_code and left_code==right_code):continue
+        # Distinct real exams are retained even when their algorithms/skills match.
+        # Source aliases and identical question content were already checked above.
+        if a['source'] in aliases and b['source'] in aliases:
+            report['retained_similar_exams'].append({**pair,'reason':'different exam originals retained'})
+            continue
         match=next((d for d in decisions or [] if d.get('left')==pair['left'] and d.get('right')==pair['right'] and d.get('decision') in ('distinct','duplicate') and d.get('reason') and d.get('evidence')),None)
         if match:
             report['decisions'].append(match)
@@ -71,9 +93,9 @@ def audit_reviews(repo: Path, *, overlays=None, decisions=None):
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--repo',required=True);ap.add_argument('--overlay');ap.add_argument('--decisions');ap.add_argument('--out',required=True)
+    ap.add_argument('--repo',required=True);ap.add_argument('--overlay');ap.add_argument('--decisions');ap.add_argument('--baseline',help='Pre-edit collect_reviews JSON; require every distinct existing exam');ap.add_argument('--required-exams',help='JSON array of required bank question IDs');ap.add_argument('--out',required=True)
     a=ap.parse_args()
-    report=audit_reviews(Path(a.repo),overlays=json.loads(Path(a.overlay).read_text(encoding='utf-8')) if a.overlay else None,decisions=json.loads(Path(a.decisions).read_text(encoding='utf-8')) if a.decisions else None)
+    report=audit_reviews(Path(a.repo),overlays=json.loads(Path(a.overlay).read_text(encoding='utf-8')) if a.overlay else None,decisions=json.loads(Path(a.decisions).read_text(encoding='utf-8')) if a.decisions else None,baseline=json.loads(Path(a.baseline).read_text(encoding='utf-8')) if a.baseline else None,required_exams=json.loads(Path(a.required_exams).read_text(encoding='utf-8')) if a.required_exams else None)
     Path(a.out).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(report['status'],len(report['blocking']),'blocking',len(report['candidates']),'candidates')
     return int(report['status']!='pass')

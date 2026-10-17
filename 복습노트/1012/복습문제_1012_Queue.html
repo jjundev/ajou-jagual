@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>복습문제 9선 — 1012 수업 범위</title>
-  <meta name="description" content="복습문제 9선 — 1012 수업 범위">
+  <title>복습문제 13선 — 1012 수업 범위</title>
+  <meta name="description" content="복습문제 13선 — 1012 수업 범위">
   <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="f8526a56fa680edafd53" data-screens="article.card" data-panels="review" data-range="1012">
+<body data-revision="ed4c0b4c29d47f8a6a6c" data-screens="article.card" data-panels="review" data-range="1012">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -369,12 +369,12 @@
         </div>
         <p class="panel-meta">푼 문제 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
         <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
-        <nav class="toc" aria-label="목차"><a href="#partA">A 기존 문제</a><a href="#partB">B 강의 코드</a></nav>
+        <nav class="toc" aria-label="목차"><a href="#partA">A 기존 문제</a><a href="#partB">B 강의 코드</a><a href="#partRestored">C 복구 기출</a></nav>
       </div>
     </aside>
     <div class="content">
   <main>
-<div class="hero"><h1>복습문제 9선 — 1012 수업 범위</h1><p>핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.</p></div>
+<div class="hero"><h1>복습문제 13선 — 1012 수업 범위</h1><p>서로 다른 기출은 풀이 목표가 비슷해도 모두 유지하고, 교과서와 강의 예제 코드를 함께 복습해요.</p></div>
 <section id="partA"><h2>A. 검토한 기출·교과서 문제</h2>
 <article class="card" id="p1" data-source="2019-mid-q6">
 <h3>P1. 후위식 계산 횟수</h3>
@@ -591,6 +591,38 @@ if(ch!=&#x27;+&#x27; &amp;&amp; ch!=&#x27;-&#x27; &amp;&amp; ch!=&#x27;*&#x27; &
 }</code></pre></details>
 <details class="hint"><summary>힌트 보기</summary><p>숫자 문자는 ch-&#x27;0&#x27;으로 정수로 바꿔요. 문자 8과 2를 차례로 넣어요.</p></details>
 <details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>숫자 문자는 ch-&#x27;0&#x27;으로 정수로 바꿔요. 문자 8과 2를 차례로 넣어요.</li><li>/에서 op2=2,op1=8이므로 8/2=4를 넣어요. 3을 넣은 뒤 -에서 4-3=1을 넣어요.</li><li>뺄셈과 나눗셈은 교환법칙이 없어서 pop 순서를 뒤집으면 결과가 달라져요.</li><li>이 예제는 일반 수식 파서가 아니에요. 공백 건너뛰기와 여러 자리 수 토큰화가 없으므로 입력 계약을 벗어난 식을 정상 계산하지 않아요.</li></ol><p class="answer">정답: [8]→[8,2]→[4]→[4,3]→[1], 결과 1. 먼저 꺼낸 값은 오른쪽 피연산자다. 코드는 숫자 여러 자리를 묶지 않고 공백도 숫자로 취급하므로 &quot;12 3+&quot;는 지원하지 않는다.</p><p>표시된 switch는 뺄셈·나눗셈 부분만 발췌했어요. 강의 전체에는 +와 * 처리도 있어요.</p></details>
+</article>
+</section>
+<section id="partRestored"><h2>C. 복구한 기출 원문</h2>
+<article class="card" id="p10" data-source="2017-mid-c050-q6">
+<h3>P10. 후위식 스택 상태</h3>
+<div class="problem"><p>6. 다음 postfix 형태의 수식을 stack을 사용하여 계산하는 과정을 아래의 테이블 형태를 이용하여 보이시오.  [10 points]</p>
+<p>postfix 수식:    7  6  2  /  –  5  4  *  +</p><div class="table-wrap"><table><thead><tr><th>Token</th><th>Stack[0]</th><th>Stack[1]</th><th>Stack[2]</th><th>Stack[3]</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table></div></div>
+<details class="original"><summary>기출 원문 보기</summary><p>2017 중간 6번 · 10점 · 출제자 미상</p><blockquote><p>6. 다음 postfix 형태의 수식을 stack을 사용하여 계산하는 과정을 아래의 테이블 형태를 이용하여 보이시오.  [10 points]</p>
+<p>postfix 수식:    7  6  2  /  –  5  4  *  +</p><div class="table-wrap"><table><thead><tr><th>Token</th><th>Stack[0]</th><th>Stack[1]</th><th>Stack[2]</th><th>Stack[3]</th></tr></thead><tbody><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table></div></blockquote></details>
+<details class="hint"><summary>힌트 보기</summary><p>숫자는 쌓고, 연산자가 나오면 오른쪽 피연산자부터 꺼내요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>토큰 <code>7 6 2 / – 5 4 * +</code>를 차례로 읽어요.</li><li><code>6 / 2 = 3</code>을 쌓은 뒤 <code>7 - 3 = 4</code>를 쌓아요.</li><li><code>5 * 4 = 20</code>을 쌓고 <code>4 + 20 = 24</code>를 쌓아요.</li><li>토큰별 스택 상태는 다음 표와 같아요.<div class="table-wrap"><table><thead><tr><th>토큰</th><th>스택 상태</th></tr></thead><tbody><tr><td>7</td><td>[7]</td></tr><tr><td>6</td><td>[7,6]</td></tr><tr><td>2</td><td>[7,6,2]</td></tr><tr><td>/</td><td>[7,3]</td></tr><tr><td>−</td><td>[4]</td></tr><tr><td>5</td><td>[4,5]</td></tr><tr><td>4</td><td>[4,5,4]</td></tr><tr><td>*</td><td>[4,20]</td></tr><tr><td>+</td><td>[24]</td></tr></tbody></table></div></li><li>수업과의 연결: 1012 수업의 후위식 계산에서 <code>pop</code> 두 번의 순서를 지키는 사례예요.</li></ol><p class="answer">정답: 토큰별 스택: 7→[7], 6→[7,6], 2→[7,6,2], /→[7,3], −→[4], 5→[4,5], 4→[4,5,4], *→[4,20], +→[24]</p></details>
+</article>
+<article class="card" id="p11" data-source="2017-mid-c050-q1">
+<h3>P11. 후위식 계산의 도구</h3>
+<div class="problem"><p>1. 후위 표기식의 계산을 위해 적합한 자료구조는 (          )이다. [2 points]</p></div>
+<details class="original"><summary>기출 원문 보기</summary><p>2017 중간 1번 · 2점 · 출제자 미상</p><blockquote><p>1. 후위 표기식의 계산을 위해 적합한 자료구조는 (          )이다. [2 points]</p></blockquote></details>
+<details class="hint"><summary>힌트 보기</summary><p>계산 중 아직 연산하지 않은 피연산자를 쌓아 두어요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>후위식의 숫자를 읽을 때마다 쌓아요.</li><li>연산자를 읽으면 가장 최근 숫자 둘을 꺼내 계산하고 결과를 다시 쌓아요. 따라서 스택이에요.</li><li>수업과의 연결: 1012 수업의 후위 표기식 계산 절차예요.</li></ol><p class="answer">정답: 스택</p></details>
+</article>
+<article class="card" id="p12" data-source="2017-mid-c050-q2">
+<h3>P12. 은행 대기열의 도구</h3>
+<div class="problem"><p>2. 은행창구에서 고객들이 서비스를 받기 위해 들어오고 나가는 상황을 시뮬레이션하기 위해 적합한 자료구조는 (          )이다. [2 points]</p></div>
+<details class="original"><summary>기출 원문 보기</summary><p>2017 중간 2번 · 2점 · 출제자 미상</p><blockquote><p>2. 은행창구에서 고객들이 서비스를 받기 위해 들어오고 나가는 상황을 시뮬레이션하기 위해 적합한 자료구조는 (          )이다. [2 points]</p></blockquote></details>
+<details class="hint"><summary>힌트 보기</summary><p>먼저 온 고객이 먼저 서비스를 받는 순서에 주목해요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>고객은 뒤에 줄을 서고, 서비스는 앞에 선 고객부터 받아요.</li><li>이 순서를 유지하는 자료구조가 큐예요.</li><li>수업과의 연결: 1012 수업의 은행 대기열과 생산자·소비자 사이 버퍼 사례예요.</li></ol><p class="answer">정답: 큐</p></details>
+</article>
+<article class="card" id="p13" data-source="2019-mid-q4">
+<h3>P13. 스택과 큐의 순서</h3>
+<div class="problem"><p>선입선출 (First-In First-Out)의 특징을 가지는 스택(Stack)은 괄호 검사에 이용될 수 있다. (   ) (2점)</p></div>
+<details class="original"><summary>기출 원문 보기</summary><p>2019 중간 4번 · 2점 · 출제자 미상</p><blockquote><p>선입선출 (First-In First-Out)의 특징을 가지는 스택(Stack)은 괄호 검사에 이용될 수 있다. (   ) (2점)</p></blockquote></details>
+<details class="hint"><summary>힌트 보기</summary><p>문장의 선입선출 설명이 스택의 순서와 맞는지 살펴보세요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>스택은 마지막에 들어온 값을 먼저 꺼내는 후입선출이에요.</li><li>문장은 스택에 선입선출 특징이 있다고 했으므로 전체 문장은 X예요.</li><li>수업과의 연결: 1012 수업에서 스택의 후입선출과 큐의 선입선출을 비교했어요.</li></ol><p class="answer">정답: X</p></details>
 </article>
 </section>
 </main>

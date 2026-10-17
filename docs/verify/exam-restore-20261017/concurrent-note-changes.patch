@@ -1,0 +1,83 @@
+diff --git "a/\353\263\265\354\212\265\353\205\270\355\212\270/1005/.pack/\354\240\225\353\246\254\353\205\270\355\212\270_1005_List.md" "b/\353\263\265\354\212\265\353\205\270\355\212\270/1005/.pack/\354\240\225\353\246\254\353\205\270\355\212\270_1005_List.md"
+index c32f2dc..4c755b2 100644
+--- "a/\353\263\265\354\212\265\353\205\270\355\212\270/1005/.pack/\354\240\225\353\246\254\353\205\270\355\212\270_1005_List.md"
++++ "b/\353\263\265\354\212\265\353\205\270\355\212\270/1005/.pack/\354\240\225\353\246\254\353\205\270\355\212\270_1005_List.md"
+@@ -260,6 +260,39 @@ p1->link = p2;
+ 
+ **정확히 말하면**
+ 
++**보충 예제 · 먼저 호출하는 쪽을 봐요**
++
++**함수를 호출하는 쪽에 `head` 변수가 따로 있어요.** `head`는 리스트의 첫 노드 주소를 저장해요. 처음에는 빈 리스트이므로 `NULL`로 시작해요.
++
++```c
++// ListNode와 insert_node는 이미 정의되어 있다고 가정해요.
++int main(void)
++{
++    ListNode *head = NULL;
++
++    ListNode a = {10, NULL};
++    ListNode b = {20, NULL};
++
++    insert_node(&head, NULL, &a);
++    // head → [10] → NULL
++
++    insert_node(&head, NULL, &b);
++    // head → [20] → [10] → NULL
++
++    return 0;
++}
++```
++
++두 번째 호출 `insert_node(&head, NULL, &b);`의 인자를 함수가 받는 이름과 대응하면 다음과 같아요.
++
++| 호출하는 쪽 | 함수가 받는 이름 | 의미 |
++|---|---|---|
++| `&head` | `phead` | 바깥에 있는 head 변수의 주소 |
++| `NULL` | `p` | 맨 앞에 삽입 |
++| `&b` | `new_node` | 삽입할 노드 b의 주소 |
++
++바깥에서는 `phead`를 따로 선언하지 않아요. `phead`는 함수가 전달받은 `&head`를 저장하는 매개변수예요. 이 호출에서 `*phead`로 접근하는 대상은 바깥의 `head` 변수예요. 그래서 호출 후에는 같은 `head` 변수가 새 첫 노드 b를 가리켜요.
++
+ 함수 프로토타입(prototype)은 함수 이름, 리턴 타입, 매개변수 목록이에요. 이것만 봐도 함수가 하는 일을 가늠할 수 있어요.
+ 
+ ```c
+diff --git "a/\353\263\265\354\212\265\353\205\270\355\212\270/1005/\354\240\225\353\246\254\353\205\270\355\212\270_1005_List.html" "b/\353\263\265\354\212\265\353\205\270\355\212\270/1005/\354\240\225\353\246\254\353\205\270\355\212\270_1005_List.html"
+index 4d2c29c..8a253dd 100644
+--- "a/\353\263\265\354\212\265\353\205\270\355\212\270/1005/\354\240\225\353\246\254\353\205\270\355\212\270_1005_List.html"
++++ "b/\353\263\265\354\212\265\353\205\270\355\212\270/1005/\354\240\225\353\246\254\353\205\270\355\212\270_1005_List.html"
+@@ -486,6 +486,34 @@ p1-&gt;link = p2;</code></pre>
+     <figure class="figure"><svg id="fig-insert-front" viewBox="0 0 360 110" role="img" aria-label="시작 표지가 새 친구 5를 가리키고 5가 10, 10이 20을 가리키며, 시작에서 10으로 가던 예전 연결은 점선으로 남은 그림"><text x="4" y="72" class="fig-text" font-size="13">시작</text><path d="M38 67 L73 67 M66 61 L73 67 L66 73" class="fig-accent" fill="none"/><text x="50" y="96" class="fig-muted" font-size="12">2</text><rect x="80" y="50" width="56" height="34" class="fig-accent" fill="none"/><text x="103" y="73" class="fig-text" font-size="14">5</text><path d="M136 67 L173 67 M166 61 L173 67 L166 73" class="fig-accent" fill="none"/><text x="150" y="96" class="fig-muted" font-size="12">1</text><rect x="180" y="50" width="56" height="34" class="fig-ink" fill="none"/><text x="199" y="73" class="fig-text" font-size="14">10</text><path d="M236 67 L273 67 M266 61 L273 67 L266 73" class="fig-ink" fill="none"/><rect x="280" y="50" width="56" height="34" class="fig-ink" fill="none"/><text x="299" y="73" class="fig-text" font-size="14">20</text><path d="M24 54 Q110 0 200 48" class="fig-danger" fill="none" stroke-dasharray="5 4"/></svg><figcaption>새 친구가 먼저 맨 앞 친구 손을 잡고, 그다음에 시작 표지를 돌려요.</figcaption></figure>
+   </div>
+   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
++    <p><strong>보충 예제 · 먼저 호출하는 쪽을 봐요</strong></p>
++    <p><strong>함수를 호출하는 쪽에 <code>head</code> 변수가 따로 있어요.</strong> <code>head</code>는 리스트의 첫 노드 주소를 저장해요. 처음에는 빈 리스트이므로 <code>NULL</code>로 시작해요.</p>
++<pre><code class="language-c">// ListNode와 insert_node는 이미 정의되어 있다고 가정해요.
++int main(void)
++{
++    ListNode *head = NULL;
++
++    ListNode a = {10, NULL};
++    ListNode b = {20, NULL};
++
++    insert_node(&amp;head, NULL, &amp;a);
++    // head → [10] → NULL
++
++    insert_node(&amp;head, NULL, &amp;b);
++    // head → [20] → [10] → NULL
++
++    return 0;
++}</code></pre>
++    <p>두 번째 호출 <code>insert_node(&amp;head, NULL, &amp;b);</code>의 인자를 함수가 받는 이름과 대응하면 다음과 같아요.</p>
++    <div class="table-wrap"><table>
++      <thead><tr><th scope="col">호출하는 쪽</th><th scope="col">함수가 받는 이름</th><th scope="col">의미</th></tr></thead>
++      <tbody>
++        <tr><td><code>&amp;head</code></td><td><code>phead</code></td><td>바깥에 있는 head 변수의 주소</td></tr>
++        <tr><td><code>NULL</code></td><td><code>p</code></td><td>맨 앞에 삽입</td></tr>
++        <tr><td><code>&amp;b</code></td><td><code>new_node</code></td><td>삽입할 노드 b의 주소</td></tr>
++      </tbody>
++    </table></div>
++    <p>바깥에서는 <code>phead</code>를 따로 선언하지 않아요. <code>phead</code>는 함수가 전달받은 <code>&amp;head</code>를 저장하는 매개변수예요. 이 호출에서 <code>*phead</code>로 접근하는 대상은 바깥의 <code>head</code> 변수예요. 그래서 호출 후에는 같은 <code>head</code> 변수가 새 첫 노드 b를 가리켜요.</p>
+     <p>함수 프로토타입(prototype)은 함수 이름, 리턴 타입, 매개변수 목록이에요. 이것만 봐도 함수가 하는 일을 가늠할 수 있어요.</p>
+ <pre><code class="language-c">void insert_node(ListNode **phead, ListNode *p, ListNode *new_node)</code></pre>
+     <ul>

@@ -65,7 +65,7 @@ def test_historical_record_survives_valid_replacement(delivery):
 
 def test_real_delivery():
  if current_revision_report() is not None:
-  assert sum(len(p["problem_ids"]) for p in current_revision_report()["packs"])==62
+  assert sum(len(p["problem_ids"]) for p in current_revision_report()["packs"])==(71 if (REPO/'docs/verify/2026-10-17-exam-restore.json').exists() else 62)
   return
  # This immutable predecessor is the one bound by main's code-block replacement chain.
  report=REPO/'docs/verify/2026-10-12-ds-review-pack-explain.json';assert report.exists()
@@ -175,7 +175,7 @@ def test_replay_uses_published_inputs_without_original_run(tmp_path):
  result=subprocess.run([sys.executable,str(runner),'--repo',str(REPO),'--kind','independent','--output',str(tmp_path/'replay')],text=True,capture_output=True)
  assert result.returncode==0,result.stdout+result.stderr
  summary=json.loads((tmp_path/'replay/summary.json').read_text())
- assert summary['question_count']==(62 if 'review-overhaul' in runner.name else 64)
+ assert summary['question_count']==(sum(len(p['problem_ids']) for p in current_revision_report()['packs']) if current_revision_report() else 64)
  assert summary['pack_count']==(10 if 'review-overhaul' in runner.name else 9)
  assert summary['input_location']=='published sources and fragments'
 
@@ -199,7 +199,8 @@ def test_replay_rejects_empty_published_question_set(tmp_path):
  assert not (tmp_path/'output/summary.json').exists()
 
 def current_revision_report():
- path=REPO/'docs/verify/2026-10-17-review-question-overhaul.json'
+ latest=REPO/'docs/verify/2026-10-17-exam-restore.json'
+ path=latest if latest.exists() else REPO/'docs/verify/2026-10-17-review-question-overhaul.json'
  if not path.exists():return None
  report=json.loads(path.read_text(encoding='utf-8'))
  assert report['policy_version']=='review-questions-2026-10-17'

@@ -26,6 +26,8 @@ class DeliveryTests(unittest.TestCase):
     self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),ev['sha256'])
    if q.get('source_kind')=='lecture-code':self.assertEqual(validate_lecture_source(ROOT,q,m['sessions']),[])
   for name,sha in v['preserved']['files'].items():
+   latest=ROOT/'docs/verify/2026-10-17-exam-restore.json'
+   if latest.exists():sha=json.loads(latest.read_text(encoding='utf-8'))['protected_files'].get(name.replace('\\','/'),sha)
    self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),sha)
 
  def selections(self):

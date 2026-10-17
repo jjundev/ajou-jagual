@@ -1,8 +1,8 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>T(n)=7n+10이 무엇을 세는지 고르는 문제예요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“시간 복잡도 함수”는 기준 기본 연산(operation)의 실행 횟수를 입력 크기 n의 함수로 표현한 것이에요. 같은 연산을 같은 비용으로 세는 모형이며 실제 초 단위 실행 시간과 같지는 않아요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>n=3일 때 T(3)=31회라고 적어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>정답은 (1) 연산의 횟수예요. 입력 개수 n에 비례하는 7n회와 입력에 무관한 10회를 더한 식이에요. 메모리 사용량이면 공간 복잡도이고 입력 개수 자체는 n이에요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>n=0→10회, n=1→17회, n=2→24회로 입력 1개 증가마다 7회 늘어요. 함수의 단위가 “연산 회수”인지 확인해요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>7n+10을 7n+10초라고 말하려면 각 연산의 시간에 대한 별도 가정이 필요해요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>n=3일 때 T(3)=31회라고 적어요.</li><li>시간 복잡도는 연산 횟수</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>n=3일 때 T(3)=31회라고 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>시간 복잡도는 연산 횟수</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>p가 등장하지만 실제로 바뀌는 변수는 j예요. k=1에서 29번 대입해요.</p></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>for문의 변수 이름보다 조건과 증감식을 읽어요. j≤i 동안 j++하므로 각 i에서 j=1..i를 한 번 훑어요. 바깥 j 루프는 그 뒤 j=i+2에서 계속되지만 j≤i가 거짓이라 대입을 추가하지 않아요.</p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>i=1일 때 안쪽 j=1에서 한 번 진입한다고 적어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>i=1..n−1의 안쪽 실행 횟수는 1+2+…+(n−1)예요. 각 실행에 k는 1..29라 29번이므로 T(n)=29n(n−1)/2, O(n²)예요. p는 1에서 변하지 않아도 j가 증가하므로 이 루프의 종료를 막지 않아요.</p></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>n=4에서 i별 대입 횟수는 29,58,87, 합 174이에요. n=1은 0번이에요. 별도 제어흐름 시뮬레이션과 공식이 일치해요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>네 겹이라고 n⁴이 아니에요. k=1이므로 k&lt;30는 29번이에요. 원문의 대입값 1과 설명의 0 차이는 횟수를 바꾸지 않아요.</p></div>
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>i=1일 때 안쪽 j=1에서 한 번 진입한다고 적어요.</li><li>j 증감 추적, (k끝−1)×삼각수</li><li>조건·끝 상태와 검산 근거를 직접 다시 확인해요.</li></ol></div>
+<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>i=1일 때 안쪽 j=1에서 한 번 진입한다고 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>j 증감 추적, (k끝−1)×삼각수</p></div><div class="summary-group"><h4>검산</h4><p>본문의 조건과 독립 추적을 함께 확인해요.</p></div></div>

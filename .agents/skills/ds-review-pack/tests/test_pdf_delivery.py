@@ -18,6 +18,7 @@ class DeliveryTests(unittest.TestCase):
      self.assertEqual(len(doc),len(r['probes']['problems' if name.endswith('-문제.pdf') else 'answers']['page_ids']))
      for p in doc:self.assertAlmostEqual(p.rect.width,1440,delta=.5);self.assertAlmostEqual(p.rect.height,810,delta=.5)
  def test_original_reviews_notes_and_figures_unchanged(self):
-  path=REPO/'docs/verify/2026-10-17-review-question-overhaul.json';self.assertTrue(path.exists())
+  latest=REPO/'docs/verify/2026-10-17-exam-restore.json'
+  path=latest if latest.exists() else REPO/'docs/verify/2026-10-17-review-question-overhaul.json';self.assertTrue(path.exists())
   report=json.loads(path.read_text())
   for name,sha in report['protected_files'].items():self.assertEqual(digest(current_path(REPO/name)),current_digest(REPO/name,sha),name)

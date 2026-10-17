@@ -8,7 +8,7 @@
 
 수업별 핵심 개념·연산·경계 조건·실제 예제 코드의 coverage를 먼저 만든다. 보통 8~12개를 목표로 하되 적합한 문제가 적으면 적게, 핵심 범위가 넓으면 초과한다. 숫자만 바꾼 문제로 개수를 채우지 않는다. 후보 부족은 남은 목표와 이유를 기록하며 강의 예제를 근거로 직접 출제한다. 원문이 없는 예제를 만들고 강의 원문이라고 부르지 않는다.
 
-전체 날짜의 실제 질문·코드·보기·그림을 비교한다. 기출 `duplicate_of`를 따라 대표 출처로 정규화하고 같은 원문과 상수 변형의 재사용은 차단한다. 원문 보기·힌트·풀이만 같다는 이유로 중복 판정하지 않는다. 평가 능력이 다르면 같은 개념도 허용하지만 같은 예제의 추적·빈칸·완성은 한 카드의 소문항으로 묶는다. 대표 날짜는 실제 학습 시점과 문제 품질로 고른다.
+전체 날짜의 실제 질문·코드·보기·그림을 비교한다. 기출 `duplicate_of`는 원문 동일성을 확인한 재수록에만 사용하고 대표 출처로 정규화한다. 같은 기출의 반복 수록과 실제 동일 원문 재수록만 차단한다. 서로 다른 기출은 풀이 목표·코드 구조·상수 패턴이 같거나 비슷해도 전부 유지한다. 자체 제작 변형의 중복과 원래부터 다른 기출을 구분한다. 원문 보기·힌트·풀이만 같다는 이유로 중복 판정하지 않는다. 평가 능력이 다르면 같은 개념도 허용하며, 같은 강의 예제의 추적·빈칸·완성은 한 카드의 소문항으로 묶는다. 이 통합 규칙으로 서로 다른 기출을 합치지 않는다. 대표 날짜는 실제 학습 시점과 문제 품질로 고른다.
 
 ## 강의 예제 근거
 
@@ -22,15 +22,15 @@ PDF의 실제 페이지를 열고 STT와 대조한다. 다룸·일부·예고·�
 
 ## Stage와 전역 검사
 
-먼저 고유 RUN에 변경 전 팩 전체와 보호 대상 해시를 백업한다. 정리노트 HTML/MD·기존 그림, STT, 강의록, 기출·교과서 원본은 보존한다. stage는 팩별 HTML과 `.pack/자료_복습팩/manifest.json`을 갖는다. `update_review.build_revision`으로 허용 영역만 교체하고 `publish_update`로 백업·변경 감지·복구를 수행한다. 기존 교과서 추가는 계속 `build_update`를 쓴다.
+먼저 고유 RUN에 변경 전 팩 전체와 보호 대상 해시를 백업한다. 정리노트 HTML/MD·기존 그림, STT, 강의록, 기출·교과서 원본은 보존한다. 변경 전에 `collect_reviews(REPO)` 결과 전체를 RUN/baseline.json으로 고정한다. 기존 기출의 고유 source 목록을 별도 대조하며 이번처럼 과거 누락을 복구할 때는 required-exams.json에 복구할 전체 기출 ID 배열을 둔다. stage는 팩별 HTML과 `.pack/자료_복습팩/manifest.json`을 갖는다. `update_review.build_revision`으로 허용 영역만 교체하고 `publish_update`로 백업·변경 감지·복구를 수행한다. 기존 교과서 추가는 계속 `build_update`를 쓴다.
 
 문제 번호 변경은 내용 버전별 `od-review-solved:<range>:<revision>` 상태 키로 구분한다. 옛 p1의 완료 상태를 새 p1에 이식하지 않는다. 테마·패널·노트 읽음 키는 보존한다. PDF 작성용 표는 pN이 아니라 source ID로 지정한다.
 
 ```sh
-python3 "$SKILL/scripts/review_audit.py" --repo "$REPO" --overlay "$RUN/overlay.json" --decisions "$RUN/decisions.json" --out "$RUN/audit.json"
+python3 "$SKILL/scripts/review_audit.py" --repo "$REPO" --overlay "$RUN/overlay.json" --decisions "$RUN/decisions.json" --baseline "$RUN/baseline.json" --out "$RUN/audit.json"
 ```
 
-overlay는 range→stage HTML 절대 경로 객체다. 바꾸지 않은 날짜도 실제 파일로 함께 검사한다. `decisions.json`은 처음에는 빈 목록이다. 같은 코드 구조·변수명·상수 차이는 검토 후보이며 자동 삭제하지 않는다. 후보 판정은 `left/right={range,id,content_sha256}`, `decision=duplicate|distinct`, `reason`, `evidence`를 기록한다. 내용이 바뀌면 과거 판정은 무효다. 동일 출처 재사용·동일 질문은 distinct 판정으로 우회하지 못한다. 최종 `blocking=[]`, 미판정 `candidates=[]`, `status=pass`가 필요하다.
+overlay는 range→stage HTML 절대 경로 객체다. 바꾸지 않은 날짜도 실제 파일로 함께 검사한다. `decisions.json`은 처음에는 빈 목록이다. 서로 다른 은행 기출의 코드 구조·변수명·상수 차이는 `retained_similar_exams`에 보존 기록을 남기며 삭제·통합 후보로 다루지 않는다. 그 외 유사 문항은 검토 후보이며 자동 삭제하지 않는다. 후보 판정은 `left/right={range,id,content_sha256}`, `decision=duplicate|distinct`, `reason`, `evidence`를 기록한다. 내용이 바뀌면 과거 판정은 무효다. 동일 출처 재사용·동일 질문은 distinct 판정으로 우회하지 못한다. 기존 팩 변경은 반드시 `--baseline`을 전달한다. 복구 작업은 추가로 `--required-exams "$RUN/required-exams.json"`을 전달한다. baseline의 서로 다른 기출이 누락되면 실패하며, 동일 원문 재수록은 canonical source로 한 번 존재하면 된다. 최종 selection에는 전체 보존 기출 ID 배열 `required_exam_sources`를 기록한다. audit는 이 저장 목록도 자동으로 읽어 별도 옵션 없는 후속 검사에서도 누락을 검출한다. 최종 `blocking=[]`, 미판정 `candidates=[]`, `status=pass`가 필요하다.
 
 ## 발행·파생 산출물
 
