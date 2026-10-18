@@ -1,0 +1,1637 @@
+{
+  "method": "independent Python C-semantics table (bind/declare/allocate/write order, free aliasing, diagnostics, final cells)",
+  "topic": "array-stack",
+  "compiler_unavailable": true,
+  "compiler_note": "gcc/clang/cl/cc not on PATH; WSL has no gcc; Docker engine not running. UB paths are never executed.",
+  "total": 79,
+  "cases": [
+    {
+      "case": "default",
+      "input": {
+        "item": 4,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "correct",
+      "input": {
+        "n": 2,
+        "item": 4,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "wrong",
+      "input": {
+        "n": 2,
+        "item": 4,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "empty",
+      "input": {
+        "n": 0,
+        "item": 4,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "empty-wrong",
+      "input": {
+        "n": 0,
+        "item": 4,
+        "mode": "wrong"
+      },
+      "writes_checked": 3,
+      "diagnostic": "OUT_OF_BOUNDS",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "full",
+      "input": {
+        "n": 5,
+        "item": 4,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "boundary",
+      "input": {
+        "n": 4,
+        "item": -99,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 3,
+      "diagnostic": "OUT_OF_BOUNDS",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 0
+        },
+        "x": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 4,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 4,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 4
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 5,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 5,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 3,
+      "diagnostic": "OUT_OF_BOUNDS",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 0
+        },
+        "x": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 4,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 4,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 4
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 5,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 5,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 3,
+      "diagnostic": "OUT_OF_BOUNDS",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 0
+        },
+        "x": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 4,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 4,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 4
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 5,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 5,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 3,
+      "diagnostic": "OUT_OF_BOUNDS",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 0
+        },
+        "x": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 4,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 4,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 4
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 5,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 4,
+        "n": 5,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "int",
+          "value": 9
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 3,
+      "diagnostic": "OUT_OF_BOUNDS",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 0
+        },
+        "x": {
+          "kind": "int",
+          "value": 9
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "int",
+          "value": 9
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "int",
+          "value": 9
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 4,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 9
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 4,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 4
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 5,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 9,
+        "n": 5,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 3,
+      "diagnostic": "OUT_OF_BOUNDS",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": -1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 0
+        },
+        "x": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 1
+        },
+        "x": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 2
+        },
+        "x": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 4,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 4,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": "UNINITIALIZED_READ",
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 4
+        },
+        "x": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 5,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 5,
+        "mode": "wrong"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "s.top": {
+          "kind": "int",
+          "value": 3
+        },
+        "x": {
+          "kind": "int",
+          "value": 6
+        }
+      },
+      "status": "pass"
+    }
+  ],
+  "status": "pass"
+}

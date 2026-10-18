@@ -7,7 +7,7 @@ Scenario 필드: `version:1,id,title,kind:'c-memory',sources,inputs,presets,init
 | 형식 | 필드 |
 |---|---|
 | Source | id,label,language c/pseudocode,text,provenance |
-| provenance | path,sha256,section?,page?,supplement:boolean,adjustments |
+| provenance | path,sha256,section?,page?,supplement:boolean,adjustments,note?(코드 아래 한 줄 안내. 없으면 0928 기본 문구) |
 | Input | key,label,type integer/enum,default,min/max 또는 options:[{value,label}] |
 | Preset | id,label,input (모든 key 포함) |
 | Value | {kind:'int',value:정수}, {kind:'pointer',target:Cell ID 또는 null}, {kind:'uninitialized'}, {kind:'indeterminate'} |

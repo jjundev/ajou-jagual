@@ -1,0 +1,407 @@
+=== default {"item":4,"n":2,"mode":"correct"}
+initial L39 [push(&s, 4);] 호출 전 · 초기 상태 | R: | W:
+    s.top은 맨 위 원소의 인덱스입니다(빈 스택은 -1). push는 top을 언제 올리고, pop은 top을 언제 내릴까요? 같은 구조체 s를 push와 pop이 주소로 함께 바꿉니다.
+step-1 L39 [push(&s, 4);] push 호출 | R: | W:
+    push(&s, 4)를 호출합니다.
+step-2 L18 [void push(StackType *s, element item)] &s → 매개변수 s | R: | W:p.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다. 배열 다섯 칸과 top을 복제하지 않습니다.
+step-3 L18 [void push(StackType *s, element item)] 4 → item | R: | W:p.item=4
+    정수 4를 매개변수 item에 복사합니다.
+step-4 L19 [{] push 진입 | R: | W:
+    push 본문으로 들어갑니다.
+step-5 L20 [if( is_full(s) ) {] is_full 호출 | R: | W:
+    is_full(s)를 호출합니다.
+step-6 L13 [int is_full(StackType *s)] s의 값 → is_full의 s | R:p.s | W:fu.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-7 L14 [{] is_full 진입 | R: | W:
+    is_full 본문으로 들어갑니다.
+step-8 L15 [return (s->top == (MAX_STACK_SIZE-1));] s 읽기 | R:fu.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-9 L15 [return (s->top == (MAX_STACK_SIZE-1));] s->top 읽기 | R:s.top | W:
+    s.top이 1이므로 4가 아닙니다. 포화가 아닙니다.
+step-10 L16 [}] is_full 반환 0 | R: | W:
+    is_full이 0을 돌려주고 끝납니다.
+step-11 L24 [else s->stack[++(s->top)] = item;] s 읽기 | R:p.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-12 L24 [else s->stack[++(s->top)] = item;] s->top 읽기 | R:s.top | W:
+    현재 s.top 1을 읽습니다.
+step-13 L24 [else s->stack[++(s->top)] = item;] ++(s->top) → 2 | R: | W:s.top=2
+    전위 ++: s.top을 2로 올리고, 증가한 값 2가 저장할 인덱스가 됩니다. 수업의 "증가부터 하고 써라"입니다.
+step-14 L24 [else s->stack[++(s->top)] = item;] item 읽기 | R:p.item | W:
+    저장할 item 4를 읽습니다.
+step-15 L24 [else s->stack[++(s->top)] = item;] s->stack[2] = 4 | R: | W:s.stack[2]=4
+    증가한 인덱스의 빈 칸 s.stack[2]에 4를 씁니다. 기존 원소는 그대로입니다.
+step-16 L25 [}] push 반환 | R: | W:
+    push가 끝나 매개변수 s, item의 수명이 끝납니다. main의 s는 남습니다.
+step-17 L40 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다.
+step-18 L27 [element pop(StackType *s)] &s → 매개변수 s | R: | W:q.s=&s
+    &s라는 주소 값을 pop의 매개변수 s에 복사합니다.
+step-19 L28 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-20 L29 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다.
+step-21 L9 [int is_empty(StackType *s)] s의 값 → is_empty의 s | R:q.s | W:em.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-22 L10 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-23 L11 [return (s->top == -1);] s 읽기 | R:em.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-24 L11 [return (s->top == -1);] s->top 읽기 | R:s.top | W:
+    s.top이 2이므로 -1이 아닙니다. 비어 있지 않습니다.
+step-25 L12 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-26 L33 [else return s->stack[(s->top)--];] s 읽기 | R:q.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-27 L33 [else return s->stack[(s->top)--];] s->top 읽기 (2) | R:s.top | W:
+    후위 --의 식 값은 감소 전 s.top 2입니다. 이 값이 꺼낼 인덱스입니다.
+step-28 L33 [else return s->stack[(s->top)--];] s->stack[2] 읽기 | R:s.stack[2] | W:
+    s.stack[2]의 4를 반환값으로 정합니다.
+step-29 L33 [else return s->stack[(s->top)--];] (s->top)-- → 1 | R: | W:s.top=1
+    s.top을 1로 내립니다. 원소를 고르는 데는 감소 전 값을 썼고, 감소는 pop이 돌아가기 전에 끝납니다(같은 식 안의 읽기와 감소 순서는 C가 정하지 않습니다). 배열 칸의 4는 지우지 않지만 이제 유효 범위 밖입니다.
+step-30 L33 [else return s->stack[(s->top)--];] pop 반환 → x = 4 | R: | W:x=4
+    4를 x에 돌려주고 pop의 매개변수 수명이 끝납니다.
+step-31 L41 [return 0;] 호출 후 확인 | R: | W:
+    x = 4, s.top = 1입니다. push한 값을 바로 pop했으므로 유효 원소는 처음 2개와 같습니다.
+=== correct {"n":2,"item":4,"mode":"correct"}
+initial L39 [push(&s, 4);] 호출 전 · 초기 상태 | R: | W:
+    s.top은 맨 위 원소의 인덱스입니다(빈 스택은 -1). push는 top을 언제 올리고, pop은 top을 언제 내릴까요? 같은 구조체 s를 push와 pop이 주소로 함께 바꿉니다.
+step-1 L39 [push(&s, 4);] push 호출 | R: | W:
+    push(&s, 4)를 호출합니다.
+step-2 L18 [void push(StackType *s, element item)] &s → 매개변수 s | R: | W:p.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다. 배열 다섯 칸과 top을 복제하지 않습니다.
+step-3 L18 [void push(StackType *s, element item)] 4 → item | R: | W:p.item=4
+    정수 4를 매개변수 item에 복사합니다.
+step-4 L19 [{] push 진입 | R: | W:
+    push 본문으로 들어갑니다.
+step-5 L20 [if( is_full(s) ) {] is_full 호출 | R: | W:
+    is_full(s)를 호출합니다.
+step-6 L13 [int is_full(StackType *s)] s의 값 → is_full의 s | R:p.s | W:fu.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-7 L14 [{] is_full 진입 | R: | W:
+    is_full 본문으로 들어갑니다.
+step-8 L15 [return (s->top == (MAX_STACK_SIZE-1));] s 읽기 | R:fu.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-9 L15 [return (s->top == (MAX_STACK_SIZE-1));] s->top 읽기 | R:s.top | W:
+    s.top이 1이므로 4가 아닙니다. 포화가 아닙니다.
+step-10 L16 [}] is_full 반환 0 | R: | W:
+    is_full이 0을 돌려주고 끝납니다.
+step-11 L24 [else s->stack[++(s->top)] = item;] s 읽기 | R:p.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-12 L24 [else s->stack[++(s->top)] = item;] s->top 읽기 | R:s.top | W:
+    현재 s.top 1을 읽습니다.
+step-13 L24 [else s->stack[++(s->top)] = item;] ++(s->top) → 2 | R: | W:s.top=2
+    전위 ++: s.top을 2로 올리고, 증가한 값 2가 저장할 인덱스가 됩니다. 수업의 "증가부터 하고 써라"입니다.
+step-14 L24 [else s->stack[++(s->top)] = item;] item 읽기 | R:p.item | W:
+    저장할 item 4를 읽습니다.
+step-15 L24 [else s->stack[++(s->top)] = item;] s->stack[2] = 4 | R: | W:s.stack[2]=4
+    증가한 인덱스의 빈 칸 s.stack[2]에 4를 씁니다. 기존 원소는 그대로입니다.
+step-16 L25 [}] push 반환 | R: | W:
+    push가 끝나 매개변수 s, item의 수명이 끝납니다. main의 s는 남습니다.
+step-17 L40 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다.
+step-18 L27 [element pop(StackType *s)] &s → 매개변수 s | R: | W:q.s=&s
+    &s라는 주소 값을 pop의 매개변수 s에 복사합니다.
+step-19 L28 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-20 L29 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다.
+step-21 L9 [int is_empty(StackType *s)] s의 값 → is_empty의 s | R:q.s | W:em.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-22 L10 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-23 L11 [return (s->top == -1);] s 읽기 | R:em.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-24 L11 [return (s->top == -1);] s->top 읽기 | R:s.top | W:
+    s.top이 2이므로 -1이 아닙니다. 비어 있지 않습니다.
+step-25 L12 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-26 L33 [else return s->stack[(s->top)--];] s 읽기 | R:q.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-27 L33 [else return s->stack[(s->top)--];] s->top 읽기 (2) | R:s.top | W:
+    후위 --의 식 값은 감소 전 s.top 2입니다. 이 값이 꺼낼 인덱스입니다.
+step-28 L33 [else return s->stack[(s->top)--];] s->stack[2] 읽기 | R:s.stack[2] | W:
+    s.stack[2]의 4를 반환값으로 정합니다.
+step-29 L33 [else return s->stack[(s->top)--];] (s->top)-- → 1 | R: | W:s.top=1
+    s.top을 1로 내립니다. 원소를 고르는 데는 감소 전 값을 썼고, 감소는 pop이 돌아가기 전에 끝납니다(같은 식 안의 읽기와 감소 순서는 C가 정하지 않습니다). 배열 칸의 4는 지우지 않지만 이제 유효 범위 밖입니다.
+step-30 L33 [else return s->stack[(s->top)--];] pop 반환 → x = 4 | R: | W:x=4
+    4를 x에 돌려주고 pop의 매개변수 수명이 끝납니다.
+step-31 L41 [return 0;] 호출 후 확인 | R: | W:
+    x = 4, s.top = 1입니다. push한 값을 바로 pop했으므로 유효 원소는 처음 2개와 같습니다.
+=== wrong {"n":2,"item":4,"mode":"wrong"}
+initial L39 [push(&s, 4);] 호출 전 · 초기 상태 | R: | W:
+    s.top은 맨 위 원소의 인덱스입니다(빈 스택은 -1). push는 top을 언제 올리고, pop은 top을 언제 내릴까요? 같은 구조체 s를 push와 pop이 주소로 함께 바꿉니다.
+step-1 L39 [push(&s, 4);] push 호출 | R: | W:
+    push(&s, 4)를 호출합니다.
+step-2 L18 [void push(StackType *s, element item)] &s → 매개변수 s | R: | W:p.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다. 배열 다섯 칸과 top을 복제하지 않습니다.
+step-3 L18 [void push(StackType *s, element item)] 4 → item | R: | W:p.item=4
+    정수 4를 매개변수 item에 복사합니다.
+step-4 L19 [{] push 진입 | R: | W:
+    push 본문으로 들어갑니다.
+step-5 L20 [if( is_full(s) ) {] is_full 호출 | R: | W:
+    is_full(s)를 호출합니다.
+step-6 L13 [int is_full(StackType *s)] s의 값 → is_full의 s | R:p.s | W:fu.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-7 L14 [{] is_full 진입 | R: | W:
+    is_full 본문으로 들어갑니다.
+step-8 L15 [return (s->top == (MAX_STACK_SIZE-1));] s 읽기 | R:fu.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-9 L15 [return (s->top == (MAX_STACK_SIZE-1));] s->top 읽기 | R:s.top | W:
+    s.top이 1이므로 4가 아닙니다. 포화가 아닙니다.
+step-10 L16 [}] is_full 반환 0 | R: | W:
+    is_full이 0을 돌려주고 끝납니다.
+step-11 L24 [else s->stack[(s->top)++] = item;   /* 오류 예 */] s 읽기 | R:p.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-12 L24 [else s->stack[(s->top)++] = item;   /* 오류 예 */] s->top 읽기 | R:s.top | W:
+    현재 s.top 1을 읽습니다.
+step-13 L24 [else s->stack[(s->top)++] = item;   /* 오류 예 */] item 읽기 | R:p.item | W:
+    저장할 item 4를 읽습니다.
+step-14 L24 [else s->stack[(s->top)++] = item;   /* 오류 예 */] s->stack[1] = 4 · 덮어쓰기 | R: | W:s.stack[1]=4
+    후위 ++의 식 값은 증가 전 1입니다. 맨 위 원소 s.stack[1]의 9를 4로 덮어씁니다.
+step-15 L24 [else s->stack[(s->top)++] = item;   /* 오류 예 */] (s->top)++ → 2 | R: | W:s.top=2
+    s.top도 2가 됩니다. 같은 식 안의 두 변경 순서는 C가 정하지 않지만, 저장 위치는 증가 전 값이었습니다. 이제 top은 아직 아무것도 쓰지 않은 칸 s.stack[2]의 인덱스입니다.
+step-16 L25 [}] push 반환 | R: | W:
+    push가 끝나 매개변수 s, item의 수명이 끝납니다. main의 s는 남습니다.
+step-17 L40 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다.
+step-18 L27 [element pop(StackType *s)] &s → 매개변수 s | R: | W:q.s=&s
+    &s라는 주소 값을 pop의 매개변수 s에 복사합니다.
+step-19 L28 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-20 L29 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다.
+step-21 L9 [int is_empty(StackType *s)] s의 값 → is_empty의 s | R:q.s | W:em.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-22 L10 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-23 L11 [return (s->top == -1);] s 읽기 | R:em.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-24 L11 [return (s->top == -1);] s->top 읽기 | R:s.top | W:
+    s.top이 2이므로 -1이 아닙니다. 비어 있지 않습니다.
+step-25 L12 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-26 L33 [else return s->stack[(s->top)--];] s 읽기 | R:q.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-27 L33 [else return s->stack[(s->top)--];] s->top 읽기 (2) | R:s.top | W:
+    후위 --의 식 값은 감소 전 s.top 2입니다. 이 값이 꺼낼 인덱스입니다.
+step-28 L33 [else return s->stack[(s->top)--];] s->stack[2] 읽기 | R: | W: | DIAG UNINITIALIZED_READ
+    s.stack[2]는 한 번도 쓰지 않은 칸입니다. 초기화되지 않은 값을 읽으므로 여기서 멈춥니다. 후위 ++가 한 칸 어긋나게 만든 결과입니다.
+=== empty {"n":0,"item":4,"mode":"correct"}
+initial L39 [push(&s, 4);] 호출 전 · 초기 상태 | R: | W:
+    s.top은 맨 위 원소의 인덱스입니다(빈 스택은 -1). push는 top을 언제 올리고, pop은 top을 언제 내릴까요? 같은 구조체 s를 push와 pop이 주소로 함께 바꿉니다.
+step-1 L39 [push(&s, 4);] push 호출 | R: | W:
+    push(&s, 4)를 호출합니다.
+step-2 L18 [void push(StackType *s, element item)] &s → 매개변수 s | R: | W:p.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다. 배열 다섯 칸과 top을 복제하지 않습니다.
+step-3 L18 [void push(StackType *s, element item)] 4 → item | R: | W:p.item=4
+    정수 4를 매개변수 item에 복사합니다.
+step-4 L19 [{] push 진입 | R: | W:
+    push 본문으로 들어갑니다.
+step-5 L20 [if( is_full(s) ) {] is_full 호출 | R: | W:
+    is_full(s)를 호출합니다.
+step-6 L13 [int is_full(StackType *s)] s의 값 → is_full의 s | R:p.s | W:fu.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-7 L14 [{] is_full 진입 | R: | W:
+    is_full 본문으로 들어갑니다.
+step-8 L15 [return (s->top == (MAX_STACK_SIZE-1));] s 읽기 | R:fu.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-9 L15 [return (s->top == (MAX_STACK_SIZE-1));] s->top 읽기 | R:s.top | W:
+    s.top이 -1이므로 4가 아닙니다. 포화가 아닙니다.
+step-10 L16 [}] is_full 반환 0 | R: | W:
+    is_full이 0을 돌려주고 끝납니다.
+step-11 L24 [else s->stack[++(s->top)] = item;] s 읽기 | R:p.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-12 L24 [else s->stack[++(s->top)] = item;] s->top 읽기 | R:s.top | W:
+    현재 s.top -1을 읽습니다.
+step-13 L24 [else s->stack[++(s->top)] = item;] ++(s->top) → 0 | R: | W:s.top=0
+    전위 ++: s.top을 0으로 올리고, 증가한 값 0이 저장할 인덱스가 됩니다. 수업의 "증가부터 하고 써라"입니다.
+step-14 L24 [else s->stack[++(s->top)] = item;] item 읽기 | R:p.item | W:
+    저장할 item 4를 읽습니다.
+step-15 L24 [else s->stack[++(s->top)] = item;] s->stack[0] = 4 | R: | W:s=4
+    증가한 인덱스의 빈 칸 s.stack[0]에 4를 씁니다. 기존 원소는 그대로입니다.
+step-16 L25 [}] push 반환 | R: | W:
+    push가 끝나 매개변수 s, item의 수명이 끝납니다. main의 s는 남습니다.
+step-17 L40 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다.
+step-18 L27 [element pop(StackType *s)] &s → 매개변수 s | R: | W:q.s=&s
+    &s라는 주소 값을 pop의 매개변수 s에 복사합니다.
+step-19 L28 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-20 L29 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다.
+step-21 L9 [int is_empty(StackType *s)] s의 값 → is_empty의 s | R:q.s | W:em.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-22 L10 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-23 L11 [return (s->top == -1);] s 읽기 | R:em.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-24 L11 [return (s->top == -1);] s->top 읽기 | R:s.top | W:
+    s.top이 0이므로 -1이 아닙니다. 비어 있지 않습니다.
+step-25 L12 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-26 L33 [else return s->stack[(s->top)--];] s 읽기 | R:q.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-27 L33 [else return s->stack[(s->top)--];] s->top 읽기 (0) | R:s.top | W:
+    후위 --의 식 값은 감소 전 s.top 0입니다. 이 값이 꺼낼 인덱스입니다.
+step-28 L33 [else return s->stack[(s->top)--];] s->stack[0] 읽기 | R:s | W:
+    s.stack[0]의 4를 반환값으로 정합니다.
+step-29 L33 [else return s->stack[(s->top)--];] (s->top)-- → -1 | R: | W:s.top=-1
+    s.top을 -1로 내립니다. 원소를 고르는 데는 감소 전 값을 썼고, 감소는 pop이 돌아가기 전에 끝납니다(같은 식 안의 읽기와 감소 순서는 C가 정하지 않습니다). 배열 칸의 4는 지우지 않지만 이제 유효 범위 밖입니다.
+step-30 L33 [else return s->stack[(s->top)--];] pop 반환 → x = 4 | R: | W:x=4
+    4를 x에 돌려주고 pop의 매개변수 수명이 끝납니다.
+step-31 L41 [return 0;] 호출 후 확인 | R: | W:
+    x = 4, s.top = -1입니다. push한 값을 바로 pop했으므로 유효 원소는 처음 0개와 같습니다.
+=== empty-wrong {"n":0,"item":4,"mode":"wrong"}
+initial L39 [push(&s, 4);] 호출 전 · 초기 상태 | R: | W:
+    s.top은 맨 위 원소의 인덱스입니다(빈 스택은 -1). push는 top을 언제 올리고, pop은 top을 언제 내릴까요? 같은 구조체 s를 push와 pop이 주소로 함께 바꿉니다.
+step-1 L39 [push(&s, 4);] push 호출 | R: | W:
+    push(&s, 4)를 호출합니다.
+step-2 L18 [void push(StackType *s, element item)] &s → 매개변수 s | R: | W:p.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다. 배열 다섯 칸과 top을 복제하지 않습니다.
+step-3 L18 [void push(StackType *s, element item)] 4 → item | R: | W:p.item=4
+    정수 4를 매개변수 item에 복사합니다.
+step-4 L19 [{] push 진입 | R: | W:
+    push 본문으로 들어갑니다.
+step-5 L20 [if( is_full(s) ) {] is_full 호출 | R: | W:
+    is_full(s)를 호출합니다.
+step-6 L13 [int is_full(StackType *s)] s의 값 → is_full의 s | R:p.s | W:fu.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-7 L14 [{] is_full 진입 | R: | W:
+    is_full 본문으로 들어갑니다.
+step-8 L15 [return (s->top == (MAX_STACK_SIZE-1));] s 읽기 | R:fu.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-9 L15 [return (s->top == (MAX_STACK_SIZE-1));] s->top 읽기 | R:s.top | W:
+    s.top이 -1이므로 4가 아닙니다. 포화가 아닙니다.
+step-10 L16 [}] is_full 반환 0 | R: | W:
+    is_full이 0을 돌려주고 끝납니다.
+step-11 L24 [else s->stack[(s->top)++] = item;   /* 오류 예 */] s 읽기 | R:p.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-12 L24 [else s->stack[(s->top)++] = item;   /* 오류 예 */] s->top 읽기 | R:s.top | W:
+    현재 s.top -1을 읽습니다.
+step-13 L24 [else s->stack[(s->top)++] = item;   /* 오류 예 */] item 읽기 | R:p.item | W:
+    저장할 item 4를 읽습니다.
+step-14 L24 [else s->stack[(s->top)++] = item;   /* 오류 예 */] s->stack[-1] = item · 범위 밖 | R: | W: | DIAG OUT_OF_BOUNDS
+    후위 ++의 식 값은 증가 전 -1입니다. s.stack[-1]은 배열 밖이라 쓰면 정의되지 않은 동작입니다. 여기서 멈춥니다.
+=== full {"n":5,"item":4,"mode":"correct"}
+initial L39 [push(&s, 4);] 호출 전 · 초기 상태 | R: | W:
+    s.top은 맨 위 원소의 인덱스입니다(빈 스택은 -1). push는 top을 언제 올리고, pop은 top을 언제 내릴까요? 같은 구조체 s를 push와 pop이 주소로 함께 바꿉니다.
+step-1 L39 [push(&s, 4);] push 호출 | R: | W:
+    push(&s, 4)를 호출합니다.
+step-2 L18 [void push(StackType *s, element item)] &s → 매개변수 s | R: | W:p.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다. 배열 다섯 칸과 top을 복제하지 않습니다.
+step-3 L18 [void push(StackType *s, element item)] 4 → item | R: | W:p.item=4
+    정수 4를 매개변수 item에 복사합니다.
+step-4 L19 [{] push 진입 | R: | W:
+    push 본문으로 들어갑니다.
+step-5 L20 [if( is_full(s) ) {] is_full 호출 | R: | W:
+    is_full(s)를 호출합니다.
+step-6 L13 [int is_full(StackType *s)] s의 값 → is_full의 s | R:p.s | W:fu.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-7 L14 [{] is_full 진입 | R: | W:
+    is_full 본문으로 들어갑니다.
+step-8 L15 [return (s->top == (MAX_STACK_SIZE-1));] s 읽기 | R:fu.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-9 L15 [return (s->top == (MAX_STACK_SIZE-1));] s->top 읽기 | R:s.top | W:
+    s.top이 4 = MAX_STACK_SIZE-1이므로 포화입니다.
+step-10 L16 [}] is_full 반환 1 | R: | W:
+    is_full이 1을 돌려주고 끝납니다.
+step-11 L21 [fprintf(stderr,"스택 포화 에러\n");] 포화 에러 출력 | R: | W:
+    포화이므로 오류 메시지를 출력합니다. 배열 밖에 쓰지 않고 바로 돌아갑니다.
+step-12 L22 [return;] push 반환 (저장 없음) | R: | W:
+    push가 아무 칸도 바꾸지 않고 끝납니다.
+step-13 L40 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다.
+step-14 L27 [element pop(StackType *s)] &s → 매개변수 s | R: | W:q.s=&s
+    &s라는 주소 값을 pop의 매개변수 s에 복사합니다.
+step-15 L28 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-16 L29 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다.
+step-17 L9 [int is_empty(StackType *s)] s의 값 → is_empty의 s | R:q.s | W:em.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-18 L10 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-19 L11 [return (s->top == -1);] s 읽기 | R:em.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-20 L11 [return (s->top == -1);] s->top 읽기 | R:s.top | W:
+    s.top이 4이므로 -1이 아닙니다. 비어 있지 않습니다.
+step-21 L12 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-22 L33 [else return s->stack[(s->top)--];] s 읽기 | R:q.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-23 L33 [else return s->stack[(s->top)--];] s->top 읽기 (4) | R:s.top | W:
+    후위 --의 식 값은 감소 전 s.top 4입니다. 이 값이 꺼낼 인덱스입니다.
+step-24 L33 [else return s->stack[(s->top)--];] s->stack[4] 읽기 | R:s.stack[4] | W:
+    s.stack[4]의 6을 반환값으로 정합니다.
+step-25 L33 [else return s->stack[(s->top)--];] (s->top)-- → 3 | R: | W:s.top=3
+    s.top을 3으로 내립니다. 원소를 고르는 데는 감소 전 값을 썼고, 감소는 pop이 돌아가기 전에 끝납니다(같은 식 안의 읽기와 감소 순서는 C가 정하지 않습니다). 배열 칸의 6은 지우지 않지만 이제 유효 범위 밖입니다.
+step-26 L33 [else return s->stack[(s->top)--];] pop 반환 → x = 6 | R: | W:x=6
+    6을 x에 돌려주고 pop의 매개변수 수명이 끝납니다.
+step-27 L41 [return 0;] 호출 후 확인 | R: | W:
+    push가 포화로 거절되어 x는 원래 맨 위 값 6입니다. s.top은 3입니다.
+=== boundary {"n":4,"item":-99,"mode":"correct"}
+initial L39 [push(&s, -99);] 호출 전 · 초기 상태 | R: | W:
+    s.top은 맨 위 원소의 인덱스입니다(빈 스택은 -1). push는 top을 언제 올리고, pop은 top을 언제 내릴까요? 같은 구조체 s를 push와 pop이 주소로 함께 바꿉니다.
+step-1 L39 [push(&s, -99);] push 호출 | R: | W:
+    push(&s, -99)를 호출합니다.
+step-2 L18 [void push(StackType *s, element item)] &s → 매개변수 s | R: | W:p.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다. 배열 다섯 칸과 top을 복제하지 않습니다.
+step-3 L18 [void push(StackType *s, element item)] -99 → item | R: | W:p.item=-99
+    정수 -99를 매개변수 item에 복사합니다.
+step-4 L19 [{] push 진입 | R: | W:
+    push 본문으로 들어갑니다.
+step-5 L20 [if( is_full(s) ) {] is_full 호출 | R: | W:
+    is_full(s)를 호출합니다.
+step-6 L13 [int is_full(StackType *s)] s의 값 → is_full의 s | R:p.s | W:fu.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-7 L14 [{] is_full 진입 | R: | W:
+    is_full 본문으로 들어갑니다.
+step-8 L15 [return (s->top == (MAX_STACK_SIZE-1));] s 읽기 | R:fu.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-9 L15 [return (s->top == (MAX_STACK_SIZE-1));] s->top 읽기 | R:s.top | W:
+    s.top이 3이므로 4가 아닙니다. 포화가 아닙니다.
+step-10 L16 [}] is_full 반환 0 | R: | W:
+    is_full이 0을 돌려주고 끝납니다.
+step-11 L24 [else s->stack[++(s->top)] = item;] s 읽기 | R:p.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-12 L24 [else s->stack[++(s->top)] = item;] s->top 읽기 | R:s.top | W:
+    현재 s.top 3을 읽습니다.
+step-13 L24 [else s->stack[++(s->top)] = item;] ++(s->top) → 4 | R: | W:s.top=4
+    전위 ++: s.top을 4로 올리고, 증가한 값 4가 저장할 인덱스가 됩니다. 수업의 "증가부터 하고 써라"입니다.
+step-14 L24 [else s->stack[++(s->top)] = item;] item 읽기 | R:p.item | W:
+    저장할 item -99를 읽습니다.
+step-15 L24 [else s->stack[++(s->top)] = item;] s->stack[4] = -99 | R: | W:s.stack[4]=-99
+    증가한 인덱스의 빈 칸 s.stack[4]에 -99를 씁니다. 기존 원소는 그대로입니다.
+step-16 L25 [}] push 반환 | R: | W:
+    push가 끝나 매개변수 s, item의 수명이 끝납니다. main의 s는 남습니다.
+step-17 L40 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다.
+step-18 L27 [element pop(StackType *s)] &s → 매개변수 s | R: | W:q.s=&s
+    &s라는 주소 값을 pop의 매개변수 s에 복사합니다.
+step-19 L28 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-20 L29 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다.
+step-21 L9 [int is_empty(StackType *s)] s의 값 → is_empty의 s | R:q.s | W:em.s=&s
+    호출한 함수의 s에 담긴 &s를 읽어 새 매개변수 s에 복사합니다.
+step-22 L10 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-23 L11 [return (s->top == -1);] s 읽기 | R:em.s | W:
+    매개변수 s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-24 L11 [return (s->top == -1);] s->top 읽기 | R:s.top | W:
+    s.top이 4이므로 -1이 아닙니다. 비어 있지 않습니다.
+step-25 L12 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-26 L33 [else return s->stack[(s->top)--];] s 읽기 | R:q.s | W:
+    s에 담긴 &s를 읽어 구조체 s를 찾습니다.
+step-27 L33 [else return s->stack[(s->top)--];] s->top 읽기 (4) | R:s.top | W:
+    후위 --의 식 값은 감소 전 s.top 4입니다. 이 값이 꺼낼 인덱스입니다.
+step-28 L33 [else return s->stack[(s->top)--];] s->stack[4] 읽기 | R:s.stack[4] | W:
+    s.stack[4]의 -99를 반환값으로 정합니다.
+step-29 L33 [else return s->stack[(s->top)--];] (s->top)-- → 3 | R: | W:s.top=3
+    s.top을 3으로 내립니다. 원소를 고르는 데는 감소 전 값을 썼고, 감소는 pop이 돌아가기 전에 끝납니다(같은 식 안의 읽기와 감소 순서는 C가 정하지 않습니다). 배열 칸의 -99는 지우지 않지만 이제 유효 범위 밖입니다.
+step-30 L33 [else return s->stack[(s->top)--];] pop 반환 → x = -99 | R: | W:x=-99
+    -99를 x에 돌려주고 pop의 매개변수 수명이 끝납니다.
+step-31 L41 [return 0;] 호출 후 확인 | R: | W:
+    x = -99, s.top = 3입니다. push한 값을 바로 pop했으므로 유효 원소는 처음 4개와 같습니다.

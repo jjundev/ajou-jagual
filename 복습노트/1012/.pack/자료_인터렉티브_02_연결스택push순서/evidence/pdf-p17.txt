@@ -1,0 +1,29 @@
+ < Data Structure & Algorithms>                                  AJOU University
+
+  push 
+
+top        C       B  A NULL
+
+      (2)     (1)
+temp
+           D
+
+//                                                               
+void push(LinkedStackType *s, element item)
+{
+
+     StackNode *temp=(StackNode *)malloc(sizeof(StackNode));
+     if( temp == NULL ){
+
+          fprintf(stderr, " \n");
+          return;
+     }
+     else{
+          temp->item = item;
+          temp->link = s->top;
+          s->top = temp;
+     }
+}
+
+                                                           -17-
+
