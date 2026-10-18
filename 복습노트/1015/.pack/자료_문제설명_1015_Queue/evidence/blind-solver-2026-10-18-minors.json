@@ -1,0 +1,6 @@
+{
+ "p4": {
+  "answer": "enqueue — 빈 경우(front==NULL): front = N; rear = N;  나머지 경우: rear->link = N; rear = N;  (N->link는 이미 NULL).\ndequeue(참고): temp=front; item=temp->data; front=front->link; if(front==NULL) rear=NULL; free(temp);\n유일한 노드를 dequeue하면 front는 그 노드의 link(NULL)가 되지만 rear는 여전히 방금 해제한 노드를 가리킨다. rear를 NULL로 만들지 않으면 front=NULL·rear≠NULL인 불일치 상태가 되어 빈 큐 표현(front=rear=NULL)이 깨지고, 빈 판정을 rear로 하는 코드나 다음 enqueue에서 해제된 노드에 rear->link=N을 쓰는 댕글링 포인터 접근이 일어나며 새 노드가 front에 연결되지 않아 큐가 망가진다.",
+  "missing": ""
+ }
+}

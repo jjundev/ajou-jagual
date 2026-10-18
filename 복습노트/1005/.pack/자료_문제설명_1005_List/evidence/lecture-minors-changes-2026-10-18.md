@@ -1,0 +1,1 @@
+- p10: insert_node/remove_node 계약 요약에 p==NULL(맨 앞 삽입/삭제) 경우 추가 (S4 p22,25,26,28 원문 기준)
