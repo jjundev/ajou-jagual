@@ -1,7 +1,7 @@
 {
   "version": 1,
   "source": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1001\\복습문제_1001_List.html",
-  "source_sha256": "7788e6a73396e8059eb7cfb62953b06abdf696c084b84fbf73651dd2d56f1f7d",
+  "source_sha256": "92d5faf1d76e4d325772157ca10ddbe3b1569ff2d509836f536534f210e38d60",
   "dest": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1001",
   "range": "1001",
   "slug": "List",
@@ -132,24 +132,24 @@
   "browser": {
     "status": "pass",
     "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-    "evidence": "review_pdf check PASS. Every new page was compared with the previously published, reviewed PDF (rendered with PyMuPDF at 960px, header strip excluded): pages whose body pixels match an old page are unchanged; the remaining pages (problems 3; answers 3) contain the rewritten lecture-code cards and were opened and inspected for conditions/asks split, code section, continuation pages, hint band, answers and bottom margin.",
-    "report_sha256": "d82718cbf48ed40ccc5068312d0f3bfaf4be57715af6399413feec90f95dbcb0",
+    "evidence": "review_pdf check PASS. Every new page was compared with the previously published, reviewed PDF (rendered with PyMuPDF at 960px, header strip excluded): pages whose body pixels match an old page are unchanged; the remaining pages (problems 5; answers 5) contain the rewritten lecture-code cards and were opened and inspected for conditions/asks split, code section, continuation pages, hint band, answers and bottom margin.",
+    "report_sha256": "e4040519a804148b0132bbb056bb9b0beca8a837b94faffefc09d9b54b4a9db2",
     "artifact_hashes": {
-      "answers.json": "8ad66171d18267dcbdf01d243fcfa7c5f94399f6a51628149a3896bda5cbfc33",
+      "answers.json": "e6c3d546c4e69df1bcee8cb1b6999ab937bb069d7ca3a3b84406f8cfdf826d8b",
       "pages/answers/001.png": "6b10cb3d2d9df1db162f5d143b83bd2603ca4d26e40f3b938b1f3a43251aea22",
       "pages/answers/002.png": "88b79c74b031943fa93717529f2faeb62002b04d68c67e3fe9c73ec4927e39f2",
       "pages/answers/003.png": "585cd1eb8b563e2f749f0e1400f82c8be212e24c2ba767e9a3559a1afd9bc231",
       "pages/answers/004.png": "8cab281c7c593e644db1e2ba0526b0b33706ba5e83a0e45ea91d72f7df166d4a",
-      "pages/answers/005.png": "4c3f4881ef68271ddc8f81a17b9db0a131057ecbe676cb2ca046623461737541",
+      "pages/answers/005.png": "2c27d4ea4b333a497476157c5994735001f34a57be2b380e548075df21521b09",
       "pages/answers/006.png": "454e09c11910650d7c87574ce85dfacbca0dc74cb68a054c331591b62ae7ed64",
       "pages/problems/001.png": "9d9995a64522d85493826387b39576b605b3932ea23c118fc67cb7a8ec431ba6",
       "pages/problems/002.png": "602bd60a8c6274ccba2c6a0e0c4f9c6025df138d19e7ad57518c0830ebb3fa52",
       "pages/problems/003.png": "9fce3e083be8bc513e3b4a39ee94ebb02034f86af93331b7fb20e39222c9fe72",
       "pages/problems/004.png": "a931ff792d504514709f734c3d6a1a846d56d0c1817c7d874ca784e049a0aaaf",
-      "pages/problems/005.png": "bd1dc36b6a6cc8a7dbef56abe42024f26b382f0da0f8c5e071eba3f528d4dd1a",
-      "problems.json": "674fb6adb4162ddd132deee8cbd05ad7ababb389b00ece46fce10dca1d2e52f1",
-      "복습문제_1001_List-답안.pdf": "0f96c89b0099d710222b3b446abf97a8b03ec436bf306dfdb75b4a6b89fcd4f1",
-      "복습문제_1001_List-문제.pdf": "e49115fe03f6e778a9e5558c60748230ebbddc400e5efca896324f7c43b5197a"
+      "pages/problems/005.png": "0e38a95b3bfe227f163c8c1885c6a9da4552f8d3e397c9be71fe059ea846cb7a",
+      "problems.json": "7bb94303099bb822b803613d6120aec68c828e589580bce28bba526e021390fb",
+      "복습문제_1001_List-답안.pdf": "946d2b903dbc25913e1c4db3a77106860b10e30d3fb7d4849f0ac99a840fbf1a",
+      "복습문제_1001_List-문제.pdf": "2f4817046edb46c1cb84f01a8574adb9a03d7b3a0069e51c9c2a686e67f404fc"
     }
   },
   "status": "published",
@@ -1935,8 +1935,8 @@
         },
         {
           "kind": "prose",
-          "html": "<p>노드 A는 주소300에 data=10,link=100, B는 주소100에 data=20,link=500, C는 주소500에 data=30,link=NULL을 저장하고 head=300이에요(주소는 설명용 표식이며 실제 C 주소가 아닙니다). 논리적 원소 순서와 마지막 링크를 쓰고, head·data·link의 역할을 구별하세요. 원형 리스트라면 C의 link가 무엇인지, 이중 연결 리스트라면 어떤 링크가 추가되는지도 쓰세요. 배열과 달리 물리적 주소순 정렬이나 연속 배치가 필요 없는 이유와, 선행 노드 위치를 이미 알 때 연결 삽입 비용과 그 위치를 처음부터 찾는 비용을 구분하세요. 마지막으로 별도 임시 포인터 없이 N.link=A.link와 A.link=N 두 대입만 사용해 A→C→NULL 사이에 독립된 새 노드 N을 넣을 때, N의 link와 A의 link 중 어느 것을 먼저 연결해야 하는지 쓰고 순서를 뒤집었을 때 C로 가는 길이 어떻게 되는지 설명하세요(그림의 링크 변경만 묻습니다). 배열의 고정 용량과 연결 노드의 동적 증가를 비교하고, 연결 리스트도 메모리 할당 실패로 더 늘릴 수 없는 경우가 있는지 설명하세요.</p>",
-          "text": "노드 A는 주소300에 data=10,link=100, B는 주소100에 data=20,link=500, C는 주소500에 data=30,link=NULL을 저장하고 head=300이에요(주소는 설명용 표식이며 실제 C 주소가 아닙니다). 논리적 원소 순서와 마지막 링크를 쓰고, head·data·link의 역할을 구별하세요. 원형 리스트라면 C의 link가 무엇인지, 이중 연결 리스트라면 어떤 링크가 추가되는지도 쓰세요. 배열과 달리 물리적 주소순 정렬이나 연속 배치가 필요 없는 이유와, 선행 노드 위치를 이미 알 때 연결 삽입 비용과 그 위치를 처음부터 찾는 비용을 구분하세요. 마지막으로 별도 임시 포인터 없이 N.link=A.link와 A.link=N 두 대입만 사용해 A→C→NULL 사이에 독립된 새 노드 N을 넣을 때, N의 link와 A의 link 중 어느 것을 먼저 연결해야 하는지 쓰고 순서를 뒤집었을 때 C로 가는 길이 어떻게 되는지 설명하세요(그림의 링크 변경만 묻습니다). 배열의 고정 용량과 연결 노드의 동적 증가를 비교하고, 연결 리스트도 메모리 할당 실패로 더 늘릴 수 없는 경우가 있는지 설명하세요."
+          "html": "<p>노드 A는 주소300에 data=10,link=100, B는 주소100에 data=20,link=500, C는 주소500에 data=30,link=NULL을 저장하고 head=300이에요(주소는 설명용 표식이며 실제 C 주소가 아닙니다). 논리적 원소 순서와 마지막 링크를 쓰고, head·data·link의 역할을 구별하세요. 원형 리스트라면 C의 link가 무엇인지, 이중 연결 리스트라면 어떤 링크가 추가되는지도 쓰세요. 배열과 달리 물리적 주소순 정렬이나 연속 배치가 필요 없는 이유와, 선행 노드 위치를 이미 알 때 연결 삽입 비용과 그 위치를 처음부터 찾는 비용을 구분하세요. 마지막으로 별도 임시 포인터 없이 N.link=A.link와 A.link=N 두 대입만 사용해 A→C→NULL 사이에 독립된 새 노드 N을 넣을 때, N의 link와 A의 link 중 어느 것을 먼저 연결해야 하는지 쓰고 순서를 뒤집었을 때 C로 가는 길이 어떻게 되는지 설명하세요(두 링크 대입의 순서만 묻습니다). 배열의 고정 용량과 연결 노드의 동적 증가를 비교하고, 연결 리스트도 메모리 할당 실패로 더 늘릴 수 없는 경우가 있는지 설명하세요.</p>",
+          "text": "노드 A는 주소300에 data=10,link=100, B는 주소100에 data=20,link=500, C는 주소500에 data=30,link=NULL을 저장하고 head=300이에요(주소는 설명용 표식이며 실제 C 주소가 아닙니다). 논리적 원소 순서와 마지막 링크를 쓰고, head·data·link의 역할을 구별하세요. 원형 리스트라면 C의 link가 무엇인지, 이중 연결 리스트라면 어떤 링크가 추가되는지도 쓰세요. 배열과 달리 물리적 주소순 정렬이나 연속 배치가 필요 없는 이유와, 선행 노드 위치를 이미 알 때 연결 삽입 비용과 그 위치를 처음부터 찾는 비용을 구분하세요. 마지막으로 별도 임시 포인터 없이 N.link=A.link와 A.link=N 두 대입만 사용해 A→C→NULL 사이에 독립된 새 노드 N을 넣을 때, N의 link와 A의 link 중 어느 것을 먼저 연결해야 하는지 쓰고 순서를 뒤집었을 때 C로 가는 길이 어떻게 되는지 설명하세요(두 링크 대입의 순서만 묻습니다). 배열의 고정 용량과 연결 노드의 동적 증가를 비교하고, 연결 리스트도 메모리 할당 실패로 더 늘릴 수 없는 경우가 있는지 설명하세요."
         }
       ],
       "solution": [
@@ -1967,8 +1967,8 @@
         },
         {
           "kind": "prose",
-          "html": "별도 그림 A→C에서 먼저 N이 C를 가리키게 한 다음 A가 N을 가리키게 해요. 반대로 바꾸면 기존 A.link의 C 주소가 사라져 N의 링크를 채울 근거를 잃어요.",
-          "text": "별도 그림 A→C에서 먼저 N이 C를 가리키게 한 다음 A가 N을 가리키게 해요. 반대로 바꾸면 기존 A.link의 C 주소가 사라져 N의 링크를 채울 근거를 잃어요."
+          "html": "A와 C 사이에 넣을 때는 먼저 N이 C를 가리키게 한 다음 A가 N을 가리키게 해요. 반대로 바꾸면 기존 A.link의 C 주소가 사라져 N의 링크를 채울 근거를 잃어요.",
+          "text": "A와 C 사이에 넣을 때는 먼저 N이 C를 가리키게 한 다음 A가 N을 가리키게 해요. 반대로 바꾸면 기존 A.link의 C 주소가 사라져 N의 링크를 채울 근거를 잃어요."
         },
         {
           "kind": "prose",
@@ -1989,21 +1989,21 @@
     "복습문제_1001_List-답안.pdf"
   ],
   "artifact_hashes": {
-    "answers.json": "8ad66171d18267dcbdf01d243fcfa7c5f94399f6a51628149a3896bda5cbfc33",
+    "answers.json": "e6c3d546c4e69df1bcee8cb1b6999ab937bb069d7ca3a3b84406f8cfdf826d8b",
     "pages/answers/001.png": "6b10cb3d2d9df1db162f5d143b83bd2603ca4d26e40f3b938b1f3a43251aea22",
     "pages/answers/002.png": "88b79c74b031943fa93717529f2faeb62002b04d68c67e3fe9c73ec4927e39f2",
     "pages/answers/003.png": "585cd1eb8b563e2f749f0e1400f82c8be212e24c2ba767e9a3559a1afd9bc231",
     "pages/answers/004.png": "8cab281c7c593e644db1e2ba0526b0b33706ba5e83a0e45ea91d72f7df166d4a",
-    "pages/answers/005.png": "4c3f4881ef68271ddc8f81a17b9db0a131057ecbe676cb2ca046623461737541",
+    "pages/answers/005.png": "2c27d4ea4b333a497476157c5994735001f34a57be2b380e548075df21521b09",
     "pages/answers/006.png": "454e09c11910650d7c87574ce85dfacbca0dc74cb68a054c331591b62ae7ed64",
     "pages/problems/001.png": "9d9995a64522d85493826387b39576b605b3932ea23c118fc67cb7a8ec431ba6",
     "pages/problems/002.png": "602bd60a8c6274ccba2c6a0e0c4f9c6025df138d19e7ad57518c0830ebb3fa52",
     "pages/problems/003.png": "9fce3e083be8bc513e3b4a39ee94ebb02034f86af93331b7fb20e39222c9fe72",
     "pages/problems/004.png": "a931ff792d504514709f734c3d6a1a846d56d0c1817c7d874ca784e049a0aaaf",
-    "pages/problems/005.png": "bd1dc36b6a6cc8a7dbef56abe42024f26b382f0da0f8c5e071eba3f528d4dd1a",
-    "problems.json": "674fb6adb4162ddd132deee8cbd05ad7ababb389b00ece46fce10dca1d2e52f1",
-    "복습문제_1001_List-답안.pdf": "0f96c89b0099d710222b3b446abf97a8b03ec436bf306dfdb75b4a6b89fcd4f1",
-    "복습문제_1001_List-문제.pdf": "e49115fe03f6e778a9e5558c60748230ebbddc400e5efca896324f7c43b5197a"
+    "pages/problems/005.png": "0e38a95b3bfe227f163c8c1885c6a9da4552f8d3e397c9be71fe059ea846cb7a",
+    "problems.json": "7bb94303099bb822b803613d6120aec68c828e589580bce28bba526e021390fb",
+    "복습문제_1001_List-답안.pdf": "946d2b903dbc25913e1c4db3a77106860b10e30d3fb7d4849f0ac99a840fbf1a",
+    "복습문제_1001_List-문제.pdf": "2f4817046edb46c1cb84f01a8574adb9a03d7b3a0069e51c9c2a686e67f404fc"
   },
   "checks": {
     "status": "pass",

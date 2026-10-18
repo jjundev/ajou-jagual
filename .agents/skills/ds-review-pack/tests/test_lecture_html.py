@@ -52,3 +52,7 @@ def test_repo_lecture_cards_are_standalone():
         html = next(rng.glob('복습문제_*.html')).read_text(encoding='utf-8')
         bad += [(rng.name, e.where, e.detail) for e in check_review(parse_html(html), json.loads(m.read_text(encoding='utf-8'))) if e.code == 'lecture-standalone']
     assert bad == []
+
+def test_lecture_standalone_allows_pointer_variable_prose():
+    assert codes(card('<p>p1의 link를 p2에 복사하고 변수 p2에서 읽어요. 노드 P1을 배열 P3에 넣어요.</p>')) == []
+    assert [c for c,_ in codes(card('<p>p28의 remove_node를 쓰세요.</p>'))] == ['lecture-standalone']
