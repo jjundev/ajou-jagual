@@ -4,6 +4,8 @@ from pdf_types import Block, PdfError
 
 ASK = re.compile(r'(?:세요|시오|하라|보라)[.)]?$|\?$')
 TRAILING_NOTE = re.compile(r'\s*\([^()]*\)(?=[.?!]?$)')
+CITATION = re.compile(r'S\d+ p\d+(?: · 추가 근거 p\d+(?:,\d+)*)?')
+BADGE = re.compile(r'<span class="badge">.*?</span>')
 
 def text(s: str) -> str:
     return html.unescape(re.sub(r'<[^>]+>', '', s)).strip()
@@ -34,8 +36,19 @@ def is_ask(sentence: str) -> bool:
 def inner_p(block_html: str) -> str:
     return re.sub(r'</p>\s*$', '', re.sub(r'^\s*<p\b[^>]*>', '', block_html)).strip()
 
+def assert_lossless(source_html: str, out_html: str) -> None:
+    if sorted(squash(out_html)) != sorted(squash(source_html)):
+        raise PdfError(f'lecture split lost text: {text(source_html)[:40]}')
+
+def is_badge(block: Block) -> bool:
+    if 'class="badge"' not in block.html:
+        return False
+    if not CITATION.fullmatch(text(BADGE.sub('', inner_p(block.html)))):
+        raise PdfError(f'badge paragraph has more than a citation: {text(block.html)[:40]}')
+    return True
+
 def split_lecture_problem(blocks: tuple[Block, ...]) -> tuple[str, str]:
-    kept = [b for b in blocks if 'class="badge"' not in b.html]
+    kept = [b for b in blocks if not is_badge(b)]
     notes = [b for b in kept if text(b.html).startswith('후속 수업 보충')]
     body = [b for b in kept if b not in notes]
     caption = ''.join(f'<p class="ds-source">{inner_p(b.html)}</p>' for b in notes)
@@ -48,7 +61,5 @@ def split_lecture_problem(blocks: tuple[Block, ...]) -> tuple[str, str]:
         return caption, original
     cond = caption + ''.join(f'<p>{s}</p>' for s in parts if not is_ask(s))
     ask = '<ol class="ds-asks">' + ''.join(f'<li>{s}</li>' for s in asks) + '</ol>'
-    if squash(''.join(parts)) != squash(original) or squash(cond + ask) != squash(caption) + ''.join(
-            squash(s) for s in parts if not is_ask(s)) + ''.join(squash(s) for s in asks):
-        raise PdfError(f'lecture split lost text: {text(original)[:40]}')
+    assert_lossless(''.join(b.html for b in kept), cond + ask)
     return cond, ask
