@@ -251,7 +251,6 @@ Expected: 10팩 모두 교체, 백업은 `$PDF_RUN/backups`. 실패 팩은 이�
 Run: `python .agents/skills/ds-review-pack/scripts/pack_layout.py check --repo "$REPO"` → pass.
 
 ```bash
-# PDF 자체는 git 추적 대상이 아니다(검증 JSON 10개만 추적됨).
-git add 복습노트/*/.pack/자료_PDF/pdf-validation.json
+git add 복습노트/*/복습문제_*-문제.pdf 복습노트/*/복습문제_*-답안.pdf 복습노트/*/.pack/자료_PDF/pdf-validation.json
 git commit -m "chore(review-pdf): regenerate PDFs with split lecture-code problems"
 ```
