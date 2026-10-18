@@ -1,8 +1,9 @@
-import html, re
+import html, json, re, tempfile
+from pathlib import Path
 from _util import REPO
-from pdf_cards import read_pack
+from pdf_cards import read_pack, to_payload
 from pdf_lecture import split_lecture_problem
-from pdf_types import Block
+from pdf_types import Block, PageSlice
 
 def strip(s): return html.unescape(re.sub(r'<[^>]+>', '', s)).strip()
 def squash(s): return re.sub(r'\s+', '', strip(s))
@@ -52,3 +53,48 @@ def test_all_lecture_cards_lossless_and_badge_free():
             assert '강의 예제 기반' not in cond + ask
             n += 1
     assert n == 47
+
+def payload(range_, mode='problems'):
+    pack = read_pack(next((REPO / '복습노트' / range_).glob('복습문제_*.html')))
+    pages = tuple(PageSlice(c.id, c.id, 1, c.problem, c.solution, True, True) for c in pack.cards)
+    return pack, to_payload(pack, mode, pages, Path(tempfile.mkdtemp()) / 'assets')
+
+def test_lecture_payload_uses_conditions():
+    pack, data = payload('1015')
+    p5 = next(p for p in data['problems'] if p['id'] == 'p5')
+    assert p5['html']['conditions'].count('<p>') == 4 and '<ol class="ds-asks">' in p5['html']['ask']
+    assert 'service_time--' in p5['html']['code']
+
+def test_lecture_answers_mode_split():
+    _, data = payload('1015', 'answers')
+    assert all('강의 예제 기반' not in json.dumps(p['html'], ensure_ascii=False) for p in data['problems'])
+    p5 = next(p for p in data['problems'] if p['id'] == 'p5')
+    assert '<ol class="ds-asks">' in p5['html']['ask'] and p5['solution']['steps']
+
+def test_non_lecture_payload_unchanged():
+    _, data = payload('1015')
+    p1 = next(p for p in data['problems'] if p['id'] == 'p1')
+    assert p1['html']['conditions'] == '' and 'ds-asks' not in p1['html']['ask']
+
+def test_lecture_figure_still_extracted(tmp_path):
+    src = tmp_path / '복습문제_0907_Test.html'
+    src.write_text('<article class="card" id="p1" data-source="lecture-s01-p1-x" data-source-kind="lecture-code"><h3>P1. Fig</h3>'
+                   '<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p1</p><p>상황이에요. 값을 쓰세요.</p>'
+                   '<svg viewBox="0 0 80 40"><path d="M0 0 L80 40"/></svg></div>'
+                   '<details class="solution"><summary>S</summary><p class="answer">A</p></details></article>', encoding='utf-8')
+    pack = read_pack(src); c = pack.cards[0]
+    p = to_payload(pack, 'problems', (PageSlice(c.id, c.id, 1, c.problem, c.solution, True, True),), tmp_path / 'assets')['problems'][0]
+    assert len(p['figures']) == 1 and '<svg' not in p['html']['ask'] and '<li>' in p['html']['ask']
+    assert p['html']['conditions'] == '<p>상황이에요.</p>' and '강의 예제 기반' not in json.dumps(p, ensure_ascii=False)
+
+def test_lecture_long_card_renders(tmp_path):
+    import pdf_render
+    from pdf_layout import plan_pages, check_coverage
+    pack = read_pack(next((REPO / '복습노트/1001').glob('복습문제_*.html')))
+    pack = pack.__class__(pack.source, pack.source_sha256, pack.range, pack.slug, tuple(c for c in pack.cards if c.id == 'p5'))
+    with pdf_render.render_session():
+        pages = plan_pages(pack, tmp_path / 'layout')
+        assert check_coverage(pack, pages) == []
+        for mode in ('problems', 'answers'):
+            r = pdf_render.render(to_payload(pack, mode, pages, tmp_path / 'assets'), mode, tmp_path / mode, tmp_path / (mode + '.pdf'))
+            assert r.errors == () and r.overflow == ()
