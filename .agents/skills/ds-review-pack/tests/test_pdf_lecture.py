@@ -110,3 +110,21 @@ def test_lecture_asks_show_number_only(tmp_path):
         page.wait_for_function('document.documentElement.dataset.ready', timeout=120000)
         marks = page.evaluate("[...document.querySelectorAll('.ds-asks li')].map(li => [getComputedStyle(li, '::before').display, getComputedStyle(li).display])")
     assert marks == [['none', 'list-item']] * 2
+
+def test_badge_with_extra_text_raises():
+    import pytest
+    from pdf_types import PdfError
+    bad = P('<p><span class="badge">강의 예제 기반 자체 출제</span> S4 p5. 위 코드에서 x의 최종값을 쓰세요.</p>')
+    with pytest.raises(PdfError, match='badge'):
+        split_lecture_problem((bad, P('<p>상황이에요. 값을 쓰세요.</p>')))
+    ok = P('<p><span class="badge">강의 예제 기반 자체 출제</span> S4 p37 · 추가 근거 p33,34</p>')
+    assert split_lecture_problem((ok, P('<p>값을 쓰세요.</p>')))[1] == '<ol class="ds-asks"><li>값을 쓰세요.</li></ol>'
+
+def test_assert_lossless_rejects_missing_and_duplicate():
+    import pytest
+    from pdf_lecture import assert_lossless
+    from pdf_types import PdfError
+    assert_lossless('<p>A다. B를 쓰세요.</p>', '<p>B를 쓰세요.</p><ol><li>A다.</li></ol>')
+    for out in ('<p>A다.</p>', '<p>A다. A다. B를 쓰세요.</p>'):
+        with pytest.raises(PdfError, match='lost text'):
+            assert_lossless('<p>A다. B를 쓰세요.</p>', out)
