@@ -1,0 +1,138 @@
+{
+  "1001": {
+    "taught": "S4 p1–18",
+    "stt": [
+      "1001 Part02–04 lines125–263 ADT·사용예",
+      "1001 Part05–06 배열표현·삽입삭제",
+      "1001 Part07 lines454–526 연결표현과종류",
+      "1001 Part08 lines529–551 p18삽입순서"
+    ],
+    "core": [
+      {
+        "goal": "객체·연산·ADT구현분리와 순서",
+        "assessed_by": "new:list-adt-contract"
+      },
+      {
+        "goal": "상태표현·init·empty/full",
+        "assessed_by": "new:array-list-state"
+      },
+      {
+        "goal": "배열삽입·삭제·경계·이동·비용",
+        "assessed_by": [
+          "existing:p1",
+          "existing:p2"
+        ]
+      },
+      {
+        "goal": "연결표현·head·node·types·물리순서와논리순서",
+        "assessed_by": "new:linked-representation"
+      },
+      {
+        "goal": "p18삽입링크순서",
+        "assessed_by": "new:linked-representation, diagram-only order;1005P5 C三分岐distinct"
+      }
+    ],
+    "excluded": [
+      {
+        "topic": "S4 p19이후삭제구현·구체C",
+        "reason": "1001말미 다음동영상으로예고;1005실제학습"
+      }
+    ]
+  },
+  "1005": {
+    "taught": "S4 p18–48 video; STT title4.List1848p",
+    "stt": [
+      "Part03–04 lines175–224 방문·탐색",
+      "Part05–07 원형·이중·헤드노드",
+      "Part07–08 lines441–486 연결다항식",
+      "Part08–09 lines488–549 ADT 래퍼·ListType·add/delete"
+    ],
+    "core": [
+      {
+        "goal": "자체참조노드·동적생성·이중포인터·삽입3경우·삭제해제",
+        "assessed_by": [
+          "existing:p5",
+          "existing:p6"
+        ],
+        "cross_date": "self-reference malloc details earlier0921P8/0928P6"
+      },
+      {
+        "goal": "방문·노드수·순환종료·탐색성공/실패주소",
+        "assessed_by": [
+          "existing:p1",
+          "existing:p2",
+          "new:visit-search-contract"
+        ]
+      },
+      {
+        "goal": "concat·reverse",
+        "assessed_by": [
+          "existing:p3",
+          "existing:p4"
+        ]
+      },
+      {
+        "goal": "원형first/last·꼬리head·이중삽입삭제",
+        "assessed_by": [
+          "existing:p7",
+          "existing:p8"
+        ]
+      },
+      {
+        "goal": "공백표현·센티널·head/length·조회",
+        "assessed_by": "new:sentinel-empty-model"
+      },
+      {
+        "goal": "연결다항식 세비교·상쇄·꼬리·비용",
+        "assessed_by": "new:linked-polynomial-merge"
+      },
+      {
+        "goal": "位置ADT·노드포인터인터페이스·함수재사용계약",
+        "assessed_by": "new:sentinel-empty-model; 개념·계약만평가하며1008의具体위치변환실행추적과구분"
+      }
+    ],
+    "excluded": []
+  },
+  "1008": {
+    "taught": "S4p44·47–48일부재강조; S5p1–12; TA실습과제별도",
+    "stt": [
+      "1008 Part01 lines33–49 reuse",
+      "Part02 lines111–125 addadapter",
+      "Part03 stackADT",
+      "Part04 lines263–307 undo·시스템스택",
+      "Part05 lines321–347 배열검사·pushpop; p13이후다음시간"
+    ],
+    "core": [
+      {
+        "goal": "位置→선행노드와재사용",
+        "assessed_by": "new:list-position-adapter"
+      },
+      {
+        "goal": "delete래퍼첫노드누수",
+        "assessed_by": "existing:p2"
+      },
+      {
+        "goal": "LIFO·pushpoppeek·top·emptyfull·접근전검사",
+        "assessed_by": [
+          "existing:p1",
+          "existing:p3",
+          "new:activation-record-return"
+        ]
+      },
+      {
+        "goal": "undo·시스템복귀주소/지역상태",
+        "assessed_by": "new:activation-record-return"
+      }
+    ],
+    "excluded": [
+      {
+        "topic": "S5p13이후구조체C·linkedstack·괄호·postfix",
+        "reason": "STT347명시다음시간;1012별도학습문항"
+      },
+      {
+        "topic": "TA 실습삽입정렬·FirstFit과제",
+        "reason": "수업노트의교수강의와구분된별도실습/과제;학습범위별도,시험복습핵심강의커버리지와혼합하지않으며과제정답대체생성안함"
+      }
+    ]
+  }
+}

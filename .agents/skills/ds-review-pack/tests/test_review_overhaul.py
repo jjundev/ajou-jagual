@@ -27,3 +27,22 @@ def test_revision_preserves_svg_title_without_overlapping_main_edits():
     assert build_revision(revised,manifest=m,cards=cards)==revised
     assert revised.count('</main>')==1
     assert '</main>\n  <footer>' in revised
+
+
+def test_revision_omits_empty_sections_and_their_navigation_links():
+    m=json.loads((MINI_RUN/'manifest.json').read_text(encoding='utf-8'))
+    old=build_review(m,MINI_RUN)
+    cards={c['id']:c['raw'] for c in extract_cards(old)}
+    m['parts'].insert(0,dict(id='empty',title='Empty section',short='Empty'))
+    revised=build_revision(old,manifest=m,cards=cards)
+    assert '<section id="empty">' not in revised
+    assert 'href="#empty"' not in revised
+    assert [c['raw'] for c in extract_cards(revised)]==list(cards.values())
+
+
+def test_new_review_omits_empty_sections_and_navigation_links():
+    m=json.loads((MINI_RUN/'manifest.json').read_text(encoding='utf-8'))
+    m['parts'].insert(0,dict(id='empty',title='Empty section',short='Empty'))
+    rendered=build_review(m,MINI_RUN)
+    assert '<section id="empty">' not in rendered
+    assert 'href="#empty"' not in rendered

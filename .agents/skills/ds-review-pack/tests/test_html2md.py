@@ -25,6 +25,15 @@ def small_pack(directory, note_body, review_body, nfd=False):
     return note, review
 
 
+def test_literal_array_state_does_not_become_markdown_link(tmp_path):
+    note, review=small_pack(tmp_path,'<p>Note</p>',
+                           '<article class="card" id="p1"><h3>P1</h3><p>[A](1), [A,B](2)</p></article>')
+    outputs,_=html2md.convert_pack(note,review)
+    md=Path(outputs[1]).read_text(encoding='utf-8')
+    assert r'\[A\](1)' in md
+    assert html2md.check_md(review,outputs[1])==[]
+
+
 class TestHtml2Md(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())

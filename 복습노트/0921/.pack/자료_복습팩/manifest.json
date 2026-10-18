@@ -4,8 +4,8 @@
   "slug": "ArrayStructureList",
   "note_title": "하노이 탑 · 배열 · 구조체 — 5살도 이해하는 정리노트",
   "note_subtitle": "기존 노트 보존",
-  "review_title": "복습문제 8선 — 0921 수업 범위",
-  "review_intro": "핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
+  "review_title": "복습문제 11선 — 0921 수업 범위",
+  "review_intro": "강의노트의 핵심 개념과 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
   "footer_note": "기존 노트 보존",
   "footer_review": "기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.",
   "sessions": [
@@ -292,8 +292,8 @@
     },
     {
       "id": "partB",
-      "title": "B. 강의 예제 코드",
-      "short": "B 강의 코드"
+      "title": "B. 강의노트 기반 생성문제",
+      "short": "강의 생성문제"
     }
   ],
   "problems": [
@@ -472,6 +472,99 @@
         "self-reference"
       ],
       "task_family": "self-reference"
+    },
+    {
+      "id": "p9",
+      "part": "partB",
+      "source": "lecture-s03-p3-array-adt-address",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-array-adt",
+      "level": 3,
+      "date": "0921",
+      "terms": [
+        "배열 ADT와 행 우선 주소 계산"
+      ],
+      "answer": "객체는 인덱스와 요소 쌍의 집합이에요. create(6)은 6개 요소의 배열 생성, store는 2번 위치에 7 저장, retrieve는 그 위치의 7 반환이에요. C 행 우선 배열 A[2][1]의 앞에는 2×4+1=9개 원소가 있어 주소는 1000+9×4=1036이에요. 0≤2<3, 0≤1<4로 유효해요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 3,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "array-adt-address",
+        "taught_on": "0921",
+        "extra_pages": [
+          4,
+          5
+        ]
+      },
+      "objectives": [
+        "배열 ADT의 객체와 create/retrieve/store 의미",
+        "행 우선 메모리 배치와 바이트 주소 계산",
+        "배열 인덱스 경계 확인"
+      ],
+      "task_family": "array-adt-address"
+    },
+    {
+      "id": "p10",
+      "part": "partB",
+      "source": "lecture-s03-p11-polynomial-add-merge",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-poly-add2",
+      "level": 3,
+      "date": "0921",
+      "terms": [
+        "두 표현의 다항식 덧셈과 남은 항 처리"
+      ],
+      "answer": "결과는 18x^3+3x^2+7x+2, 내림차순 계수 [18,3,7,2], 쌍 [(18,3),(3,2),(7,1),(2,0)]이에요. >에서는 A만, =에서는 양쪽, <에서는 B만 전진해요. 높은 차수만 출력한 경우 다른 입력의 현재 항은 아직 처리하지 않았기 때문이에요. 한쪽 종료 뒤 다른 쪽 남은 항을 복사해요. 희소 방식은 합이 0인 항을 저장하지 않아요. 모든 차수 배열은 O(D+1), 희소 병합은 O(m+n)이에요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 11,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "polynomial-add-merge",
+        "taught_on": "0921",
+        "extra_pages": [
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "objectives": [
+        "모든 차수 배열의 차수 정렬과 덧셈",
+        "희소 다항식 병합 세 분기와 인덱스 진행",
+        "입력 조기 소진 및 계수 상쇄 경계",
+        "차수 기반 비용과 항 수 기반 비용 비교"
+      ],
+      "task_family": "polynomial-add-merge"
+    },
+    {
+      "id": "p11",
+      "part": "partB",
+      "source": "lecture-s03-p17-struct-assignment-comparison",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s4-struct-assign",
+      "level": 3,
+      "date": "0921",
+      "terms": [
+        "구조체 대입과 비교 연산"
+      ],
+      "answer": "같은 person 타입의 b=a는 가능하고 멤버 값이 복사되어 name 배열의 내용도 복사돼요. b와 a는 별도 객체이므로 b.age만 바꾸면 a.age는 유지돼요. 구조체 전체의 a>b는 C에서 허용되지 않으며 a.age>b.age로 나이를 비교해요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 17,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "struct-assignment-comparison",
+        "taught_on": "0921",
+        "extra_pages": []
+      },
+      "objectives": [
+        "구조체 값 대입과 배열 멤버 복사",
+        "구조체 전체 비교 불가와 멤버별 비교",
+        "복사된 별도 객체의 독립 수정"
+      ],
+      "task_family": "struct-assignment-comparison"
     }
   ],
   "links": [],

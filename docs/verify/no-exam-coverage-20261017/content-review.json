@@ -1,0 +1,74 @@
+{
+  "status": "pass",
+  "reviewed_new_count": 17,
+  "read": [
+    "early-additions.json",
+    "list-additions.json",
+    "new.json",
+    "independent.json",
+    "all17 authored fragments",
+    "actual six stage review HTML questions/solutions",
+    "scope-early.json",
+    "scope-lists.json",
+    "lecture_sources.py"
+  ],
+  "nonblocking_notes": [
+    "그 외17개 새문항의 계산·포인터·자료구조결과는독립검산답과일치합니다.",
+    "0907finite정의는steps에서종료조건을언급하므로별도blocking으로추가하지않습니다.",
+    "자료구조/알고리즘 brick 첫줄은수정되어 데이터자체와조직구조를구별합니다.",
+    "0921희소다항식은배열결과append,1005연결다항식은꼬리O(1)추가조건을명시해선형병합비용가정이충족됩니다.",
+    "sourcevalidator supplement 예외도PDF파일해시·페이지·sourceID·objectives검사를계속수행합니다. 현재0907p4의taught_on0914와명시evidence가구체적이어서현재자료에서차단이슈없습니다.",
+    "과제/실습제외와S5p13이후예고제외는STT에서별도구분되어타당합니다."
+  ],
+  "stage_sha256": {
+    ".superpowers\\sdd\\2026-10-17-no-exam-coverage\\stage\\0907\\복습문제_0907_Intro_DS_Algorithms.html": "61ce50014f0ee3ea65e7e28189e10583376423aa5ca83e1fa369f873f2776543",
+    ".superpowers\\sdd\\2026-10-17-no-exam-coverage\\stage\\0921\\복습문제_0921_ArrayStructureList.html": "261248fb54ad2e659ef30cd5f97f282516d59dc81b73b68308e6da6bd83e082b",
+    ".superpowers\\sdd\\2026-10-17-no-exam-coverage\\stage\\0928\\복습문제_0928_ArrayStructureList.html": "c89e83c7c2c98a3464c5454000359a3ac6803b7cb66e7fb677baa53a879129f7",
+    ".superpowers\\sdd\\2026-10-17-no-exam-coverage\\stage\\1001\\복습문제_1001_List.html": "58316c0a82d02acdef13d1ee9a5757755ad07b8a54c1b66d0335e3402f60b0b5",
+    ".superpowers\\sdd\\2026-10-17-no-exam-coverage\\stage\\1005\\복습문제_1005_List.html": "91713549619426016775898258df4168a354c28b0de53827a295ce2e45538a6b",
+    ".superpowers\\sdd\\2026-10-17-no-exam-coverage\\stage\\1008\\복습문제_1008_Stack.html": "c424cae906b9947d670a6107bce90bbdf9b3199227447c6ce5a96ff2d6f7f010"
+  },
+  "resolved_issues": [
+    {
+      "id": "stack-overflow-assessment",
+      "severity": "important",
+      "blocking": true,
+      "range": "1008",
+      "where": "existing p1/p3 + new list-position-adapter/activation-record-return",
+      "problem": "포화 조건은 교과서P1에서 묻지만 포화 상태 push의 검사와 쓰기 순서는 어떤 실제 질문에서도 평가하지 않습니다. P3 정상 추적은 top=1까지만 도달하며 빈 상태의 잘못된 읽기만 묻습니다. 코드에 is_full이 보인다는 사실은 평가 coverage가 아닙니다.",
+      "minimal_fix": "기존 카드 보존. 새 스택 개념 카드에 용량3,top2인 push와 top−1인 pop에서 어떤 검사가 top/배열 변경보다 먼저인지, 실패 시 상태가 유지되어야 하는 이유를 묻는 소문항을 추가하고 풀이·독립검산에 명시합니다.",
+      "evidence": "S5p10–12; STT1008Part05 lines331–343"
+    },
+    {
+      "id": "array-linked-capacity",
+      "severity": "important",
+      "blocking": true,
+      "range": "1001",
+      "where": "new linked-representation",
+      "problem": "1001 핵심 비교의 탐색/수정 비용과 비연속 배치는 평가되지만 고정 배열 용량 제한과 노드별 동적 확장의 조건은 질문에서 빠집니다. 해당 날짜의 자체 문제만으로 핵심 비교를 완결한다는 기준에 부족합니다.",
+      "minimal_fix": "같은 연결 표현 카드에 배열 용량을 이미 다 쓴 경우와 연결 노드를 늘리는 경우를 비교하고, 동적 할당도 실패할 수 있어 무한 크기를 보장하지 않는다는 조건을 묻는 짧은 문장을 추가합니다.",
+      "evidence": "S4p7–8,14–16; STT1001lines271ff,454–466"
+    },
+    {
+      "id": "active-callee-context",
+      "severity": "important",
+      "blocking": true,
+      "range": "1008",
+      "where": "activation-record-return answer/start/steps and fragment",
+      "problem": "질문은 sub2 실행 중 호출 정보의 순서를 넓게 묻고 독립 답은 main/sub1/sub2의3문맥을 구분하지만 저작 답과 첫 줄은 중단된 main/sub1만 적고 현재 sub2의 b=5를 빠뜨립니다. 현재 활성문맥과 복귀 대기 기록을 구분하면 모호성이 해소됩니다.",
+      "minimal_fix": "답과첫줄에 바닥main(i3),그위sub1(a3,j5),현재실행sub2(b5)라고 전체관계를 밝히고 저장된두호출복귀정보와현재실행문맥의역할을구별합니다. 프레임의 실제ABI세부구조까지단정하지않습니다.",
+      "evidence": "S5p8; independent.json activation-record-return"
+    }
+  ],
+  "issues": [],
+  "resolution_review": {
+    "checked": [
+      "list-additions.json current linked-representation and activation-record-return rows",
+      "stage/1001 review p5",
+      "stage/1008 review p5"
+    ],
+    "result": "고정용량·할당실패,현재sub2문맥,overflow/underflow검사순서와상태보존이실제질문과정답및verify에추가되어이전3개차단이슈해소.설명fragments는root가현재row로일괄재생성예정이므로재생성전내용동등성은별도검사필요.",
+    "remaining_metadata_note": "activation-record-return의새guard소문항출처추적을위해extra_pages=[10,11,12]를추가권고.단현재sourcePDF는이미동일S5이고실제내용은검증됨.",
+    "current_row_sha256": "bc0d2c02d54c6e252557c67daaa7d4593d2db246f3478abb2f39d8a574e6bfd4"
+  }
+}

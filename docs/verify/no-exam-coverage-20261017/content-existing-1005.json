@@ -1,0 +1,151 @@
+{
+  "status": "pass",
+  "kind": "fresh content review of actual current1005questions+all11fragments against currentnote and lecture PDF; not stalehashapproval reuse",
+  "reviewed_problem_count": 11,
+  "existing_count": 8,
+  "new_count": 3,
+  "items": [
+    {
+      "id": "p1",
+      "source": "textbook-ch06-q07",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "비어있지않은A→B→C→D그림에서p->link조건을검사하여D에서멈춤.해설은빈head에서UB전제를명시.현재note의방문설명과일치.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p1.html",
+      "fragment_sha256": "c17a407f497d63497e84fd9631512ca7a14622d606ae63462c22c8da9bacdba7"
+    },
+    {
+      "id": "p2",
+      "source": "textbook-ch06-q10",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "원문은n을받아노드를구축하고실제연결노드수를세는전체프로그램요구.해설은malloc검사·입력실패/할당실패정리·count_nodes·전체free를구현.3개샘플count3,빈입력0.추가입력상한은검산프로그램선택으로표시.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p2.html",
+      "fragment_sha256": "c0e6f718109549ae281984381de06a9c016c0b165b9f2dca33513c891b8e7c3c"
+    },
+    {
+      "id": "p3",
+      "source": "lecture-s04-p31-concat",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "S4p31코드와비교.서로노드를공유하지않는유한리스트에서B.link=C와반환A.빈head1반환head2.잘못된p!=NULL조건은이후NULL역참조.첫리스트탐색비용O(m).모든소질문답있음.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p3.html",
+      "fragment_sha256": "9436a77a7e1831a79c9ab54f63acdd8e6b6eb23cdc134fec96de81032686e545"
+    },
+    {
+      "id": "p4",
+      "source": "lecture-s04-p32-reverse",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "S4p32네문장순서를직접대조.반복끝(p,q,r)=(B,A,NULL),(C,B,A),(NULL,C,B).p전진전링크뒤집으면원래다음경로손실.빈입력q=NULL반환.반환값을받아야head가바뀐다는주의도정확.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p4.html",
+      "fragment_sha256": "b04ae9235f94fc489d0b2af925ad1ddf6e2637099e9312acf2300af51d9d04a1"
+    },
+    {
+      "id": "p5",
+      "source": "lecture-s04-p25-insert-node",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "S4p25와현재note s0-insert-nodecaller보충을함께대조.실제phead=&head,*phead는호출자head변수라는설명일치.빈리스트N,pNULL이면맨앞N,pA이면A→N→B.마지막두대입역순은N.link=N.현재note의자동노드a,b예시는순수삽입만하므로문제의malloc새노드전제와충돌하지않음.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p5.html",
+      "fragment_sha256": "62e310908e378db0c8b347507abd9b47a38c2f7f7ed1f70ffb6f8b352303f0cf"
+    },
+    {
+      "id": "p6",
+      "source": "lecture-s04-p28-remove-node",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "S4p28에서p는선행,removed는삭제노드.독립B삭제pA/removedB,독립A삭제pNULL/removedA,단일A삭제headNULL.해설은free전링크읽기·유효입력전제를밝힘.현재note의callerhead주소설명과같은phead역할.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p6.html",
+      "fragment_sha256": "c40e82a2173bd64ae2206573be03dc544b31e951a7f18b1a4951feee6c50229c"
+    },
+    {
+      "id": "p7",
+      "source": "lecture-s04-p35-circular-last",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "S4p35에서꼬리head규약대조.결과headN/첫A,AlinkB,BlinkN,NlinkA.마지막head갱신생략시headB,첫N으로논리적앞삽입.모든link와조건질문답있음.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p7.html",
+      "fragment_sha256": "e6da9f89868251c8ae439f10bdc92be2c27bbdcdd91defa3b8a7023628f99bb7"
+    },
+    {
+      "id": "p8",
+      "source": "lecture-s04-p38-dlist",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "S4p38–39와네링크/두삭제대입대조.삽입후NleftA,NrightB,BleftN,ArightN.끝두줄역순은NleftN과Bleft미갱신.삭제는양옆을연결한후free,센티널삭제배제.추가caller보충으로의미변경없음.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p8.html",
+      "fragment_sha256": "3e5d2c5d6e03a908f3a795441167676801c6a67bc7ec242c631e6ff77600aa63"
+    },
+    {
+      "id": "p9",
+      "source": "lecture-s04-p29-visit-search-contract",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "S4p29–30에서출력후재귀호출·search의returnp대조.출력10,20,30/성공B주소/실패NULL/빈결과/구조보존/남은노드수감소종료를해설모두다룸.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p9.html",
+      "fragment_sha256": "ff90afbde0dc8eb421e4a635b6b40e000d32608b6a717a309b0f1ac0603f9575"
+    },
+    {
+      "id": "p10",
+      "source": "lecture-s04-p37-sentinel-empty-model",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "S4p33–37,44–48대조.헤드노드없는공백headNULL과센티널H자기쌍링크구별.별도ListTypehead/length불변식·상수조회·위치vs노드인자·재사용계약도질문과해설모두포함.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p10.html",
+      "fragment_sha256": "433d0e0403cd2bd2b310cb4841f28e6572ea477a26cc3983bf873ff142179fa7"
+    },
+    {
+      "id": "p11",
+      "source": "lecture-s04-p41-linked-polynomial-merge",
+      "status": "pass",
+      "issues": [],
+      "semantic_review": "S4p40–43연결다항식세분기대조.12같음양쪽,8<10q,8>6p,0<6q와나머지A상수처리.지수별결과11,−3,2,10,1일치.합0시양쪽전진,꼬리추가O(1)조건으로선형비용정당.",
+      "fragment_path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\explanations\\p11.html",
+      "fragment_sha256": "8750d5e2f475bed9ff19fc9ef2c34b60ae2d95c685373be8533a512fe9724e2c"
+    }
+  ],
+  "references": [
+    {
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1005\\정리노트_1005_List.html",
+      "sha256": "aedf87b1c0026c0e0747d1755b212394cb85fcd1223acb5d40db0b31fdbd406e",
+      "pages": []
+    },
+    {
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\자료구조_강의록_2026\\Software_4_List.pdf",
+      "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+      "pages": [
+        25,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48
+      ]
+    },
+    {
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.superpowers\\sdd\\2026-10-17-no-exam-coverage\\explain\\1005\\review-1005-List\\source.json",
+      "sha256": "cbea941003282e4e7d4528dab0b6bb2279451ed64cd4f385a19c801a57aedbd1",
+      "pages": []
+    }
+  ],
+  "caller_context_change_assessment": "현재 노트에 추가된 호출자 예시는 head와 phead의 혼동을 풀기 위한 보충이며, 기존 P1–P8의 전제·연산·답을 바꾸지 않습니다. P5 해설에서 *phead가 호출자의 head 변수를 나타낸다는 설명과 일치합니다.",
+  "independent_review": "별도blindagent의현재독립검산은이보고서와구별되며여기서는content의미검토만pass",
+  "unresolved": []
+}

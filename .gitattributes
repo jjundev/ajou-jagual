@@ -21,3 +21,11 @@ docs/verify/exam-restore-20261017/*.patch -whitespace
 복습노트/**/evidence/*.py text eol=lf
 docs/verify/exam-restore-20261017/*.c text eol=lf
 docs/verify/exam-restore-20261017/*.py text eol=lf
+docs/verify/no-exam-coverage-20261017/*.c text eol=lf
+docs/verify/no-exam-coverage-20261017/*.py text eol=lf
+
+# Published explanation assets/evidence are hash-bound verbatim copies.
+# Preserve their existing bytes rather than rewriting mixed historical EOLs.
+복습노트/**/자료_문제설명_*/vendor/** -text
+복습노트/**/자료_문제설명_*/evidence/** -text -whitespace
+복습노트/**/자료_문제설명_*/template-provenance.json -text

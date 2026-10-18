@@ -4,8 +4,8 @@
   "slug": "ArrayStructureList",
   "note_title": "포인터와 동적 메모리 할당 — 5살도 이해하는 정리노트",
   "note_subtitle": "기존 노트 보존",
-  "review_title": "복습문제 6선 — 0928 수업 범위",
-  "review_intro": "핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
+  "review_title": "복습문제 9선 — 0928 수업 범위",
+  "review_intro": "강의노트의 핵심 개념과 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
   "footer_note": "기존 노트 보존",
   "footer_review": "기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.",
   "sessions": [
@@ -285,8 +285,8 @@
     },
     {
       "id": "partB",
-      "title": "B. 강의 예제 코드",
-      "short": "B 강의 코드"
+      "title": "B. 강의노트 기반 생성문제",
+      "short": "강의 생성문제"
     }
   ],
   "problems": [
@@ -413,6 +413,101 @@
         "malloc-record"
       ],
       "task_family": "malloc-record"
+    },
+    {
+      "id": "p7",
+      "part": "partB",
+      "source": "lecture-s03-p20-pointer-expression-double",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-pointer-ops",
+      "level": 3,
+      "date": "0928",
+      "terms": [
+        "역참조·후위 증가·이중 포인터 추적"
+      ],
+      "answer": "x=10,y=20이에요. x 대입 뒤 p는 a[1], 배열 [10,20,30]; y 대입 뒤 p는 계속 a[1], 배열 [10,21,30]; **pp=40 뒤 배열 [10,40,30]이에요. pp는 p의 주소, *pp는 p의 값(현재 a[1]의 주소), **pp는 그 원소예요. 간격은4바이트예요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 20,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "pointer-expression-double",
+        "taught_on": "0928",
+        "extra_pages": [
+          19,
+          23,
+          25,
+          26
+        ]
+      },
+      "objectives": [
+        "주소·포인터 객체·역참조 값 구별",
+        "*p++와 (*p)++의 상태 변화 구별",
+        "이중 포인터를 통한 원소 수정",
+        "배열 이름과 타입 단위 포인터 간격"
+      ],
+      "task_family": "pointer-expression-double"
+    },
+    {
+      "id": "p8",
+      "part": "partB",
+      "source": "lecture-s03-p27-pointer-safety-allocation",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-null-init",
+      "level": 3,
+      "date": "0928",
+      "terms": [
+        "포인터 초기화·void 포인터와 할당 방식"
+      ],
+      "answer": "초기화되지 않은 pc를 역참조하면 미정의 동작이에요. NULL도 가리킬 객체가 없으므로 역참조할 수 없어요. char c; char *pc=&c; *pc='E';로 유효한 저장소를 연결할 수 있어요. char *q=(char *)v;로 원래 char 객체에 접근해요. 고정 배열은 정해진 용량의 부족·낭비 가능성이 있고 동적 할당은 실행 중 크기를 정해요. malloc 결과가 NULL인지 확인하고 사용 뒤 최초 할당 주소를 한 번 free하며 이후 접근하지 않아요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 27,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "pointer-safety-allocation",
+        "taught_on": "0928",
+        "extra_pages": [
+          21,
+          28,
+          29
+        ]
+      },
+      "objectives": [
+        "미초기화·NULL 역참조의 위험",
+        "void 포인터 타입과 NULL 상태 구별",
+        "유효한 저장소 연결로 포인터 코드 수정",
+        "고정 용량과 동적 할당 비교 및 실패·수명 관리"
+      ],
+      "task_family": "pointer-safety-allocation"
+    },
+    {
+      "id": "p9",
+      "part": "partB",
+      "source": "lecture-s03-p30-sizeof-alignment-count",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s3-sizeof-align",
+      "level": 3,
+      "date": "0928",
+      "terms": [
+        "sizeof·패딩과 배열 원소 수"
+      ],
+      "answer": "c 다음 오프셋1~3에3바이트 패딩이 있어 i가4의 배수 오프셋에서 시작해요. 따라서 전체8바이트예요. array 전체20바이트, 원소 하나4바이트, 비20/4=5개예요. int 및 구조체 크기는 환경에 따라 달라 고정할 수 없고 sizeof(char)는 C에서 항상1이에요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 30,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "sizeof-alignment-count",
+        "taught_on": "0928",
+        "extra_pages": []
+      },
+      "objectives": [
+        "메모리 정렬과 패딩을 포함한 sizeof",
+        "배열 바이트 크기와 원소 수 구별",
+        "환경 가정과 C 보장 구별"
+      ],
+      "task_family": "sizeof-alignment-count"
     }
   ],
   "links": [],

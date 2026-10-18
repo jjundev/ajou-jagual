@@ -14,7 +14,10 @@ def validate_lecture_source(repo: Path, problem: dict, sessions: list[dict]) -> 
     if not isinstance(problem.get('task_family'),str) or not problem['task_family']: errors.append('task_family required')
     dates=[s.get('date','').replace('-','')[-4:] for s in sessions]
     taught=str(ref.get('taught_on','')).replace('-','')[-4:]
-    if not dates or not taught or taught>max(dates): errors.append('lecture example not taught by these sessions')
+    supplement=problem.get('scope')=='retained-supplement'
+    if supplement and not str(problem.get('scope_evidence','')).strip():
+        errors.append('retained supplement requires scope evidence and core coverage exclusion')
+    if not dates or not taught or (taught>max(dates) and not supplement): errors.append('lecture example not taught by these sessions')
     chapter=re.match(r'lecture-s(\d+)-',problem.get('source',''))
     if chapter:
         ch=int(chapter[1]);scopes=[]
@@ -22,7 +25,7 @@ def validate_lecture_source(repo: Path, problem: dict, sessions: list[dict]) -> 
             for match in re.finditer(r'S(\d+)\s*p(\d+)(?:\s*[–—-]\s*(\d+))?',session.get('slides','')):
                 if int(match[1])==ch:scopes.append((int(match[2]),int(match[3] or match[2])))
         page=ref.get('pdf_page')
-        if scopes and type(page)==int and taught==max(dates) and not any(a<=page<=b for a,b in scopes):
+        if not supplement and scopes and type(page)==int and taught==max(dates) and not any(a<=page<=b for a,b in scopes):
             errors.append('lecture page outside taught session scope')
     if errors:return errors
     root=Path(repo).resolve(); path=(root/ref['path']).resolve()

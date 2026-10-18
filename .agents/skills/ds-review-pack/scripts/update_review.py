@@ -20,7 +20,9 @@ def build_revision(existing_html, *, manifest, cards):
         parsed=extract_cards(cards[q['id']])
         if len(parsed)!=1 or parsed[0]['id']!=q['id'] or parsed[0]['source']!=q['source']:raise ValueError('revision fragment identity mismatch')
     sections=[]
-    for part in manifest['parts']:
+    populated={q['part'] for q in manifest['problems']}
+    parts=[part for part in manifest['parts'] if part['id'] in populated]
+    for part in parts:
         content='\n'.join(cards[q['id']] for q in manifest['problems'] if q['part']==part['id'])
         sections.append(f'<section id="{part["id"]}"><h2>{escape(part["title"])}</h2>\n{content}\n</section>')
     main='<main>\n<div class="hero"><h1>'+escape(manifest['review_title'])+'</h1><p>'+manifest['review_intro']+'</p></div>\n'+'\n'.join(sections)+'\n</main>'
@@ -30,7 +32,7 @@ def build_revision(existing_html, *, manifest, cards):
         if main_span[2]<start<main_span[3]:continue
         if tag=='main':edits.append((start,end,main))
         elif tag=='nav' and 'toc' in attrs.get('class','').split():
-            toc=''.join(f'<a href="#{p["id"]}">{escape(p["short"])}</a>' for p in manifest['parts'])
+            toc=''.join(f'<a href="#{p["id"]}">{escape(p["short"])}</a>' for p in parts)
             edits.append((start,end,'<nav class="toc" aria-label="목차">'+toc+'</nav>'))
         elif tag=='title':edits.append((start,end,'<title>'+escape(manifest['review_title'])+'</title>'))
         elif tag=='footer':edits.append((start,end,'<footer>'+manifest['footer_review']+'</footer>'))

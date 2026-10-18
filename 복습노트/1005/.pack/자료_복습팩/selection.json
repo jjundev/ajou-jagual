@@ -512,6 +512,289 @@
           "locator": "1005/p8"
         }
       ]
+    },
+    {
+      "id": "p9",
+      "part": "partB",
+      "source": "lecture-s04-p29-visit-search-contract",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-search",
+      "level": 3,
+      "date": "1005",
+      "terms": [
+        "방문 순서와 탐색의 반환값"
+      ],
+      "answer": "출력은 10->20->30->이며 search(head,20)은 노드 B의 주소, search(head,99)는 NULL을 반환합니다. 원래 head와 모든 link는 유지됩니다. 빈 리스트는 출력이 없고 탐색은 NULL을 반환합니다. 각 순환 호출은 다음 노드에서 시작해 남은 노드 수가 줄고 NULL에서 멈춥니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 29,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "visit-search-contract",
+        "taught_on": "1005",
+        "extra_pages": [
+          30
+        ]
+      },
+      "objectives": [
+        "순환 방문의 출력·종료 조건",
+        "탐색 성공 주소·실패NULL 계약",
+        "지역 포인터 이동과 원 구조 보존"
+      ],
+      "task_family": "visit-search-contract",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "1005",
+        "ch": 4,
+        "page": 29,
+        "name": "visit-search-contract",
+        "anchor": "s1-search",
+        "title": "방문 순서와 탐색의 반환값",
+        "prompt": "유한한 단순 리스트 A(data10)→B(data=20)→C(data30)→NULL에 아래 두 함수를 적용하세요. display_recur(head)가 출력하는 순서, search(head,20)과 search(head,99)의 반환값, 호출 후 원래 head와 링크가 바뀌는지를 쓰세요. 빈 리스트에서 두 함수의 결과와 재귀 호출로 방문하는 함수가 종료하는 이유도 설명하세요. search가 반환하는 것은 값20인가요, 노드 주소인가요?",
+        "answer": "출력은 10->20->30->이며 search(head,20)은 노드 B의 주소, search(head,99)는 NULL을 반환합니다. 원래 head와 모든 link는 유지됩니다. 빈 리스트는 출력이 없고 탐색은 NULL을 반환합니다. 각 순환 호출은 다음 노드에서 시작해 남은 노드 수가 줄고 NULL에서 멈춥니다.",
+        "steps": [
+          "방문 함수는 현재 data를 출력한 다음 다음 노드로 호출하므로 10, 20, 30 순서예요.",
+          "search는 A에서 불일치, B에서 일치하므로 B를 가리키는 p를 반환해요.",
+          "99는 끝까지 불일치하므로 마지막 p=NULL을 반환해요.",
+          "포인터 매개변수와 지역 p만 움직이고 노드 link에 쓰지 않으므로 원 리스트가 유지돼요.",
+          "빈 입력은 조건이 처음부터 거짓이므로 방문 출력 없이 끝나고 탐색은 NULL을 반환해요."
+        ],
+        "recall": "‘출력’과 ‘반환 포인터’를 따로 묻는 것이 단서예요. 방문(traversal)은 순서대로 처리하고 탐색(search)은 일치한 노드의 주소를 반환해요. 순환은 NULL이라는 종료 조건과 남은 노드 수 감소를 모두 확인해요.",
+        "start": "첫 호출: p=A, p!=NULL이므로 data10을 출력.",
+        "verify": "출력 노드 수는 3이며 search(head,20)의 비교는 2번, search(head,99)는 3번이에요. 성공 반환 주소를 역참조하면 data=20이고 실패 NULL은 역참조하면 안 돼요. 노드에 쓰는 문장이 없으므로 링크와 시작 주소가 보존돼요.",
+        "pitfall": "search 반환 타입은 ListNode*이므로 정수20이 아닙니다. 다음 호출 인자를 p로 두면 같은 노드에서 멈추지 않아요.",
+        "objectives": [
+          "순환 방문의 출력·종료 조건",
+          "탐색 성공 주소·실패NULL 계약",
+          "지역 포인터 이동과 원 구조 보존"
+        ],
+        "code": "void display_recur(ListNode *head)\n{\n    ListNode *p=head;\n    if(p!=NULL) {\n        printf(\"%d->\",p->data);\n        display_recur(p->link);\n    }\n}\nListNode *search(ListNode *head,int x)\n{\n    ListNode *p=head;\n    while(p!=NULL) {\n        if(p->data==x) return p;\n        p=p->link;\n    }\n    return p;\n}",
+        "extra_pages": [
+          30
+        ],
+        "adaptation": "강의 예제의 해당 코드를 발췌했습니다. 질문과 입력 조건은 자체 출제이며 주변 선언·입출력은 생략했습니다."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "be0798ede8425124e7498820d5a941a4f10bd10a8026f1e9d4f808ea2e94a0e8",
+        "independent_answer": "출력은 10->20->30->다. search(head,20)은 B의 노드 주소,search(head,99)는 NULL을 반환한다. head 인자는 값으로 전달되고 p만 이동하므로 원래 head와 링크는 바뀌지 않는다. 빈 리스트는 출력 없음,탐색 반환 NULL이다. 유한한 비순환 단순 리스트이므로 방문할 때마다 다음 노드로 가서 마지막 NULL에 도달하고 재귀는 종료한다.",
+        "reasoning": "printf가 재귀 호출 앞에 있어 정방향 출력이다. 데이터 비교 성공 시 return p이므로 반환은 int20이 아니라 ListNode 포인터다. 종료 증명은 남은 노드 수가 매 호출1 감소하고 음수가 되지 않는다는 감소량에 근거한다. 순환 연결 리스트를 주면 이 종료 증명은 성립하지 않는다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "visit-search-contract"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "visit-search-contract"
+        }
+      ]
+    },
+    {
+      "id": "p10",
+      "part": "partB",
+      "source": "lecture-s04-p37-sentinel-empty-model",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s3-dlist",
+      "level": 3,
+      "date": "1005",
+      "terms": [
+        "헤드 포인터와 헤드 노드의 공백 표현"
+      ],
+      "answer": "앞 두 구현은 head=NULL입니다. 헤드 노드가 있는 공백 이중 원형 리스트는 H.llink=H,H.rlink=H입니다. 헤드 포인터는 주소 변수이고 헤드 노드는 구조를 단순화하는 별도 노드입니다. H는 데이터항목이 아니므로 길이에 세거나 일반 데이터 삭제 대상으로 삼지 않습니다. 비어 있지 않으면 H.rlink는 첫 데이터,H.llink는 마지막 데이터이며 공백이면 둘 다H입니다. 헤드 노드 없는 빈 ListType은 head=NULL,length=0입니다. get_length는 저장된 length를 바로 반환하므로 O(1)이며, 삽입·삭제 성공 때 실제 노드 수와 맞도록 length를 늘리거나 줄여야 합니다. ADT 연산은 항목 위치를 받고 하위 연결 함수는 선행·대상 노드 주소를 받습니다. 위치를 필요한 노드 포인터로 변환한 뒤 검증된 삽입·삭제 함수를 호출하고 길이를 갱신하여 재사용합니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 37,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "sentinel-empty-model",
+        "taught_on": "1005",
+        "extra_pages": [
+          33,
+          34,
+          35,
+          36,
+          45,
+          46,
+          44,
+          47,
+          48
+        ]
+      },
+      "objectives": [
+        "헤드 포인터와 센티널 노드 구별",
+        "세 연결 구조의 공백 불변식",
+        "헤드 노드의 데이터 수 제외와 양끝 접근",
+        "ListType의 head·length 일관성과 O(1)길이 조회",
+        "ListType의 위치 기반 ADT 계약과 하위 노드 포인터 인터페이스·함수 재사용의 개념"
+      ],
+      "task_family": "sentinel-empty-model",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "1005",
+        "ch": 4,
+        "page": 37,
+        "name": "sentinel-empty-model",
+        "anchor": "s3-dlist",
+        "title": "헤드 포인터와 헤드 노드의 공백 표현",
+        "prompt": "데이터 노드가 하나도 없는 세 구현을 비교하세요: 헤드 노드 없는 단순 리스트, 헤드 노드 없는 원형 단순 리스트(꼬리를 head로 둠), 헤드 노드 H가 있는 원형 이중 리스트. 각 구현에서 head 또는 H의 두 링크가 가져야 할 값을 쓰고, 헤드 포인터와 헤드 노드의 차이를 설명하세요. H를 데이터로 세거나 삭제하면 안 되는 이유와, H의 왼쪽·오른쪽 링크로 각각 무엇에 즉시 접근하는지도 설명하세요. 추가로 강의 ListType은 헤드 노드 없이 head와 length를 보관합니다. 빈 ListType의 head·length, 노드가 세 개일 때 get_length가 링크를 순회해야 하는지와 그 비용, 삽입·삭제 때 length도 함께 갱신해야 하는 이유를 쓰세요. 끝으로 리스트 ADT의 add/delete가 받는 위치 정수와 insert_node/remove_node가 받는 노드 포인터를 구별하고, 새 함수를 처음부터 다시 짜지 않고 두 인터페이스를 연결하는 방법을 한 문장으로 설명하세요(구체 호출 추적은 묻지 않습니다).",
+        "answer": "앞 두 구현은 head=NULL입니다. 헤드 노드가 있는 공백 이중 원형 리스트는 H.llink=H,H.rlink=H입니다. 헤드 포인터는 주소 변수이고 헤드 노드는 구조를 단순화하는 별도 노드입니다. H는 데이터항목이 아니므로 길이에 세거나 일반 데이터 삭제 대상으로 삼지 않습니다. 비어 있지 않으면 H.rlink는 첫 데이터,H.llink는 마지막 데이터이며 공백이면 둘 다H입니다. 헤드 노드 없는 빈 ListType은 head=NULL,length=0입니다. get_length는 저장된 length를 바로 반환하므로 O(1)이며, 삽입·삭제 성공 때 실제 노드 수와 맞도록 length를 늘리거나 줄여야 합니다. ADT 연산은 항목 위치를 받고 하위 연결 함수는 선행·대상 노드 주소를 받습니다. 위치를 필요한 노드 포인터로 변환한 뒤 검증된 삽입·삭제 함수를 호출하고 길이를 갱신하여 재사용합니다.",
+        "steps": [
+          "헤드 노드가 없는 구조는 데이터가 없으면 가리킬 노드가 없어 head=NULL이에요.",
+          "헤드 노드가 있는 구조는 데이터가 없어도 H가 남아 양방향으로 자신을 가리켜요.",
+          "H의 두 링크는 빈 경우에도 유효하므로 삽입·삭제의 경계 처리에 도움이 돼요.",
+          "H는 실제 데이터가 아니므로 데이터 수가 0인 상태에 노드 H가 존재해도 모순이 아니에요.",
+          "ListType은 센티널 노드가 아니라 head와 length를 묶은 구조체예요. 헤드 노드 없는 빈 구조에서는 head=NULL, length=0이며 실제 노드 수와 length가 항상 같아야 해요.",
+          "위치는 사용자 관점이고 노드 주소는 연결 구현 관점이에요. 위치를 주소로 변환하는 경계를 두면 기존 연결 함수를 다시 작성하지 않아도 돼요."
+        ],
+        "recall": "‘헤드 노드 H가 있다’는 조건이 가장 중요한 단서예요. 센티널(sentinel) 노드는 실제 항목이 아니라 경계를 연결하는 역할이에요. 포인터 변수와 동적 노드 객체를 구분하면 공백일 때 NULL인지 자기 자신인지 결정할 수 있어요.",
+        "start": "단순(헤드 노드 없음): head=NULL. 이중 원형(헤드 노드 있음): H↔H.",
+        "verify": "H.rlink.llink=H와 H.llink.rlink=H에 자기 링크를 대입하면 모두 성립해요. 데이터 노드가 0개여도 경계 불변식을 만족해요. H를 데이터로 읽거나 해제하면 경계 역할을 잃어요. ListType에 노드가 세 개 있다면 length=3을 바로 읽으며 세 번 순회하지 않아요. 한 노드를 삽입했다면 length=4여야 같은 상태를 표현해요. 사용자에게는 위치를 받고 하위 연결 함수에는 유효한 노드 주소를 전달한다는 두 계약을 함께 만족해야 해요.",
+        "pitfall": "모든 공백 리스트의 head가 NULL이라는 일반화를 하지 않아요. 헤드 노드 유무가 전제예요.",
+        "objectives": [
+          "헤드 포인터와 센티널 노드 구별",
+          "세 연결 구조의 공백 불변식",
+          "헤드 노드의 데이터 수 제외와 양끝 접근",
+          "ListType의 head·length 일관성과 O(1)길이 조회",
+          "ListType의 위치 기반 ADT 계약과 하위 노드 포인터 인터페이스·함수 재사용의 개념"
+        ],
+        "code": "",
+        "extra_pages": [
+          33,
+          34,
+          35,
+          36,
+          45,
+          46,
+          44,
+          47,
+          48
+        ],
+        "adaptation": "강의 개념·그림을 근거로 질문을 직접 작성했습니다. 강의 원문 코드의 전사가 아닙니다."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "2457e70d2404fbfcccfd40a62be83920c106589993d9b1908b87fc3fd2b2ed55",
+        "independent_answer": "헤드 노드 없는 빈 단순 리스트의 head=NULL,꼬리를 head로 둔 빈 원형 단순 리스트도 head=NULL이다. 헤드 노드H를 둔 빈 원형 이중 리스트는 H.llink=H,H.rlink=H다. 헤드 포인터는 노드 주소를 담는 변수이며 헤드 노드는 경계 처리를 통일하는 실제 보조 노드다. H는 사용자 데이터가 아니라 구조의 기준이므로 데이터 개수에 세거나 일반 데이터 삭제로 제거하지 않는다. H.llink는 마지막 데이터 노드,H.rlink는 첫 데이터 노드에 즉시 접근하며 빈 경우 둘 다 H다. 빈 ListType은 head=NULL,length=0이다. 노드3개이면 get_length는 저장된3을 반환하여 Θ(1)이며 순회하지 않는다. 삽입·삭제 시 실제 노드 수와 length를 함께 갱신해야 일관성이 유지된다. add/delete의 위치 정수를 탐색으로 적절한 노드 포인터로 변환한 뒤 기존 insert_node/remove_node를 호출하는 래퍼로 연결한다.",
+        "reasoning": "S4 p44~47에 ListType의 저장 length와 위치→포인터 변환이 명시돼 있다. 헤드 포인터와 헤드 노드는 서로 다른 표현 수준이다. 길이 조회는 입력 길이와 독립인 한 필드 접근이므로 상수 비용이다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "sentinel-empty-model"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "sentinel-empty-model"
+        }
+      ]
+    },
+    {
+      "id": "p11",
+      "part": "partB",
+      "source": "lecture-s04-p41-linked-polynomial-merge",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s4-poly",
+      "level": 3,
+      "date": "1005",
+      "terms": [
+        "연결 다항식의 지수 비교와 포인터 이동"
+      ],
+      "answer": "같은 지수 12에서는 (11,12)를 붙이고 p, q를 모두 이동합니다. 8<10에서는 (-3,10)을 붙이고 q만, 8>6에서는 (2,8)을 붙이고 p만, 0<6에서는 (10,6)을 붙이고 q만 이동합니다. B가 끝나면 A의 (1,0)을 복사합니다. 결과는 11x^12−3x^10+2x^8+10x^6+1입니다. 같은 지수의 계수 합이 0이면 결과에 붙이지 않되 p, q를 모두 이동합니다. 각 항을 한 번씩 소비하므로 O(m+n)입니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 41,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "linked-polynomial-merge",
+        "taught_on": "1005",
+        "extra_pages": [
+          40,
+          42,
+          43
+        ]
+      },
+      "objectives": [
+        "연결 다항식 표현과 세 지수 비교 분기",
+        "계수 상쇄와 남은 꼬리 처리",
+        "두 입력 포인터의 단조 전진과 병합 비용"
+      ],
+      "task_family": "linked-polynomial-merge",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "1005",
+        "ch": 4,
+        "page": 41,
+        "name": "linked-polynomial-merge",
+        "anchor": "s4-poly",
+        "title": "연결 다항식의 지수 비교와 포인터 이동",
+        "prompt": "지수 내림차순 리스트 A=(3,12)→(2,8)→(1,0), B=(8,12)→(-3,10)→(10,6)을 더하세요. 쌍은 (계수,지수)이며 입력은 서로 다른 유한 리스트입니다. 각 비교에서 결과에 붙이는 항과 이동하는 포인터 p·q, 한쪽이 끝난 뒤 처리, 최종 다항식을 쓰세요. 지수가 같을 때 계수 합이0이면 어떻게 처리해야 하는지와 결과의 꼬리 포인터를 유지하여 항 추가가 O(1)일 때 두 리스트 길이 m,n에 대한 선형 병합 비용도 설명하세요.",
+        "answer": "같은 지수 12에서는 (11,12)를 붙이고 p, q를 모두 이동합니다. 8<10에서는 (-3,10)을 붙이고 q만, 8>6에서는 (2,8)을 붙이고 p만, 0<6에서는 (10,6)을 붙이고 q만 이동합니다. B가 끝나면 A의 (1,0)을 복사합니다. 결과는 11x^12−3x^10+2x^8+10x^6+1입니다. 같은 지수의 계수 합이 0이면 결과에 붙이지 않되 p, q를 모두 이동합니다. 각 항을 한 번씩 소비하므로 O(m+n)입니다.",
+        "steps": [
+          "지수가 같은 12에서는 계수 3+8=11이며 두 입력 항을 모두 소비해요.",
+          "지수 8과 10에서는 높은 지수 10의 B 항을 먼저 붙이고 q만 옮겨요.",
+          "지수 8과 6에서는 높은 지수 8의 A 항을 붙이고 p만 옮겨요.",
+          "지수 0과 6에서는 B의 지수 6 항을 붙여 B가 끝나요. A의 상수항을 결과에 붙여요.",
+          "같은 지수에서 계수가 상쇄돼도 두 입력 항을 처리한 것이므로 두 포인터를 모두 옮겨요."
+        ],
+        "recall": "‘지수 내림차순의 두 리스트’는 병합(merge) 규칙을 떠올리는 단서예요. 높은 지수부터 처리하며 같은 지수일 때만 계수를 더해요. 각 포인터가 뒤로 돌아가지 않고 입력 항을 한 번씩 소비하므로 선형 비용이에요.",
+        "start": "p=(3,12), q=(8,12): 같은 지수 → (11,12), p와q모두 다음.",
+        "verify": "지수별로 독립 합산하면 12:3+8=11, 10:0−3=−3, 8:2, 6:10, 0:1이에요. 결과 지수는 12>10>8>6>0이며 입력 항 6개를 중복·누락 없이 소비해요. 계수 합이 0이어도 두 포인터를 옮기므로 같은 항을 반복 처리하지 않아요.",
+        "pitfall": "계수가 큰 쪽을 선택하지 않아요. 비교하는 것은 지수예요. 한쪽이 끝났다고 다른 쪽의 남은 항을 버리지 않아요.",
+        "objectives": [
+          "연결 다항식 표현과 세 지수 비교 분기",
+          "계수 상쇄와 남은 꼬리 처리",
+          "두 입력 포인터의 단조 전진과 병합 비용"
+        ],
+        "code": "",
+        "extra_pages": [
+          40,
+          42,
+          43
+        ],
+        "adaptation": "S4 p40–43의 연결 리스트 그림과 덧셈 규칙을 문제로 옮겼습니다. 계수·지수는 강의 예제를 따르며 C 원문 코드가 없는 그림 기반 자체 출제입니다."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "ba1618795cec02ccd2525fa2e00e0d102c2800728b48d287fd88e16840c1d667",
+        "independent_answer": "지수12=12에서 (11,12)를 붙이고 p,q 모두 이동한다. 8<10에서 (-3,10)을 붙이고 q만 이동한다. 8>6에서 (2,8)을 붙이고 p만 이동한다. 0<6에서 (10,6)을 붙이고 q만 이동하여 B가 끝난다. A의 남은 (1,0)을 붙인다. 결과는 11x^12-3x^10+2x^8+10x^6+1이다. 같은 지수의 합0이면 출력 항을 생략하고 두 포인터는 모두 이동한다. 꼬리에 Θ(1)로 붙이는 병합이면 최악 Θ(m+n)이다.",
+        "reasoning": "매 비교에서 더 높은 지수는 다른 입력 뒤에 같은 지수가 없으므로 확정할 수 있다. 같으면 합쳐 두 항을 모두 소비한다. 각 입력 노드를 최대 한 번 소비하므로 O(m+n),서로 겹치지 않는 모든 항을 결과에 옮겨야 하는 경우 Ω(m+n)이다. 최종 질문은 출력 꼬리 포인터를 유지해 항 추가가 O(1)임을 명시했으므로 최악 Θ(m+n)이 보장된다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "linked-polynomial-merge"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "linked-polynomial-merge"
+        }
+      ]
     }
   ],
   "excluded": [
@@ -554,102 +837,112 @@
   ],
   "coverage": [
     {
-      "objective": "retained-textbook-ch06-q07",
+      "objective": "자체참조노드·동적생성·이중포인터·삽입3경우·삭제해제",
       "questions": [
-        "p1"
-      ],
-      "evidence": {}
-    },
-    {
-      "objective": "retained-textbook-ch06-q10",
-      "questions": [
-        "p2"
-      ],
-      "evidence": {}
-    },
-    {
-      "objective": "concat",
-      "questions": [
-        "p3"
-      ],
-      "evidence": {
-        "path": "자료구조_강의록_2026/Software_4_List.pdf",
-        "pdf_page": 31,
-        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
-        "example": "concat",
-        "taught_on": "1005",
-        "extra_pages": []
-      }
-    },
-    {
-      "objective": "reverse",
-      "questions": [
-        "p4"
-      ],
-      "evidence": {
-        "path": "자료구조_강의록_2026/Software_4_List.pdf",
-        "pdf_page": 32,
-        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
-        "example": "reverse",
-        "taught_on": "1005",
-        "extra_pages": []
-      }
-    },
-    {
-      "objective": "insert-node",
-      "questions": [
-        "p5"
-      ],
-      "evidence": {
-        "path": "자료구조_강의록_2026/Software_4_List.pdf",
-        "pdf_page": 25,
-        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
-        "example": "insert-node",
-        "taught_on": "1005",
-        "extra_pages": []
-      }
-    },
-    {
-      "objective": "remove-node",
-      "questions": [
+        "p5",
         "p6"
       ],
       "evidence": {
-        "path": "자료구조_강의록_2026/Software_4_List.pdf",
-        "pdf_page": 28,
-        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
-        "example": "remove-node",
-        "taught_on": "1005",
-        "extra_pages": []
+        "slides": "S4 p18–48 video; STT title4.List1848p",
+        "stt": [
+          "Part03–04 lines175–224 방문·탐색",
+          "Part05–07 원형·이중·헤드노드",
+          "Part07–08 lines441–486 연결다항식",
+          "Part08–09 lines488–549 ADT 래퍼·ListType·add/delete"
+        ]
       }
     },
     {
-      "objective": "circular-last",
+      "objective": "방문·노드수·순환종료·탐색성공/실패주소",
       "questions": [
-        "p7"
+        "p1",
+        "p2",
+        "p9"
       ],
       "evidence": {
-        "path": "자료구조_강의록_2026/Software_4_List.pdf",
-        "pdf_page": 35,
-        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
-        "example": "circular-last",
-        "taught_on": "1005",
-        "extra_pages": []
+        "slides": "S4 p18–48 video; STT title4.List1848p",
+        "stt": [
+          "Part03–04 lines175–224 방문·탐색",
+          "Part05–07 원형·이중·헤드노드",
+          "Part07–08 lines441–486 연결다항식",
+          "Part08–09 lines488–549 ADT 래퍼·ListType·add/delete"
+        ]
       }
     },
     {
-      "objective": "dlist",
+      "objective": "concat·reverse",
       "questions": [
+        "p3",
+        "p4"
+      ],
+      "evidence": {
+        "slides": "S4 p18–48 video; STT title4.List1848p",
+        "stt": [
+          "Part03–04 lines175–224 방문·탐색",
+          "Part05–07 원형·이중·헤드노드",
+          "Part07–08 lines441–486 연결다항식",
+          "Part08–09 lines488–549 ADT 래퍼·ListType·add/delete"
+        ]
+      }
+    },
+    {
+      "objective": "원형first/last·꼬리head·이중삽입삭제",
+      "questions": [
+        "p7",
         "p8"
       ],
       "evidence": {
-        "path": "자료구조_강의록_2026/Software_4_List.pdf",
-        "pdf_page": 38,
-        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
-        "example": "dlist",
-        "taught_on": "1005",
-        "extra_pages": [
-          39
+        "slides": "S4 p18–48 video; STT title4.List1848p",
+        "stt": [
+          "Part03–04 lines175–224 방문·탐색",
+          "Part05–07 원형·이중·헤드노드",
+          "Part07–08 lines441–486 연결다항식",
+          "Part08–09 lines488–549 ADT 래퍼·ListType·add/delete"
+        ]
+      }
+    },
+    {
+      "objective": "공백표현·센티널·head/length·조회",
+      "questions": [
+        "p10"
+      ],
+      "evidence": {
+        "slides": "S4 p18–48 video; STT title4.List1848p",
+        "stt": [
+          "Part03–04 lines175–224 방문·탐색",
+          "Part05–07 원형·이중·헤드노드",
+          "Part07–08 lines441–486 연결다항식",
+          "Part08–09 lines488–549 ADT 래퍼·ListType·add/delete"
+        ]
+      }
+    },
+    {
+      "objective": "연결다항식 세비교·상쇄·꼬리·비용",
+      "questions": [
+        "p11"
+      ],
+      "evidence": {
+        "slides": "S4 p18–48 video; STT title4.List1848p",
+        "stt": [
+          "Part03–04 lines175–224 방문·탐색",
+          "Part05–07 원형·이중·헤드노드",
+          "Part07–08 lines441–486 연결다항식",
+          "Part08–09 lines488–549 ADT 래퍼·ListType·add/delete"
+        ]
+      }
+    },
+    {
+      "objective": "位置ADT·노드포인터인터페이스·함수재사용계약",
+      "questions": [
+        "p10"
+      ],
+      "evidence": {
+        "slides": "S4 p18–48 video; STT title4.List1848p",
+        "stt": [
+          "Part03–04 lines175–224 방문·탐색",
+          "Part05–07 원형·이중·헤드노드",
+          "Part07–08 lines441–486 연결다항식",
+          "Part08–09 lines488–549 ADT 래퍼·ListType·add/delete"
         ]
       }
     }
@@ -749,5 +1042,12 @@
     "2019-mid-q9",
     "unk-final-ltk-q1"
   ],
-  "exam_retention_policy": "same-exam-reuse-only"
+  "exam_retention_policy": "same-exam-reuse-only",
+  "coverage_review": {
+    "status": "pass",
+    "method": "core goals extracted before selection, actual question prompts mapped; solution-only mentions and later-only questions excluded",
+    "evidence": "docs/verify/no-exam-coverage-20261017/scope-lists.json",
+    "supplementary_excluded": [],
+    "excluded": []
+  }
 }

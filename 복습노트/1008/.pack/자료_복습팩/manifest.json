@@ -4,8 +4,8 @@
   "slug": "Stack",
   "note_title": "리스트 재사용과 스택 — 5살도 이해하는 정리노트",
   "note_subtitle": "기존 노트 보존",
-  "review_title": "복습문제 3선 — 1008 수업 범위",
-  "review_intro": "핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
+  "review_title": "복습문제 5선 — 1008 수업 범위",
+  "review_intro": "강의노트의 핵심 개념과 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
   "footer_note": "기존 노트 보존",
   "footer_review": "기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.",
   "sessions": [
@@ -267,8 +267,8 @@
     },
     {
       "id": "partB",
-      "title": "B. 강의 예제 코드",
-      "short": "B 강의 코드"
+      "title": "B. 강의노트 기반 생성문제",
+      "short": "강의 생성문제"
     }
   ],
   "problems": [
@@ -346,6 +346,71 @@
         "stack-adt"
       ],
       "task_family": "stack-adt"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "lecture-s04-p47-list-position-adapter",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-adapter",
+      "level": 3,
+      "date": "1008",
+      "terms": [
+        "위치 인자를 선행 노드로 바꾸기"
+      ],
+      "answer": "위치 2의 선행 노드는 B이며 insert_node(&(list->head),B,N)을 호출합니다. 결과는 A→B→N→C, length=4입니다. 위치 0에서는 get_node_at(-1)=NULL이므로 N이 새 head가 됩니다. position을 그대로 쓰면 C 뒤에 넣어 한 칸 늦어집니다. length를 저장하므로 길이 조회는 O(1)입니다. 위치 변환을 위한 탐색은 최악 O(n)이고 삽입의 링크 변경 자체는 O(1)입니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 47,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "list-position-adapter",
+        "taught_on": "1008",
+        "extra_pages": [
+          44,
+          45,
+          46,
+          25
+        ]
+      },
+      "objectives": [
+        "위치 기반 ADT와 노드 기반 함수 인터페이스 변환",
+        "ListType head와 length 불변식 및 함수 재사용",
+        "길이조회·위치탐색·링크 변경 비용 분리"
+      ],
+      "task_family": "list-position-adapter"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "lecture-s05-p8-activation-record-return",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-call",
+      "level": 3,
+      "date": "1008",
+      "terms": [
+        "함수 호출과 복귀 순서의 스택"
+      ],
+      "answer": "호출 정보는 아래부터 main의 복귀 위치·i=3, 그 위에 sub1의 복귀 위치·a=3,j=5를 기억합니다. sub2가 끝나면 sub1의 호출 다음으로, sub1이 끝나면 main의 호출 다음으로 돌아갑니다. 지역 변수만으로는 다음 실행 위치를 알 수 없습니다. 가장 최근에 중단한 호출부터 복귀하는 LIFO이며 undo도 마지막 변경부터 되돌립니다. 현재 실행 중인 sub2의 문맥에는 b=5도 있어요. main·sub1은 복귀를 기다리는 호출자이며 sub2가 현재 활성 문맥이에요. top=2인 push는 is_full을 먼저 검사하여 증가·저장을 거부하고, top=-1인 pop은 is_empty를 먼저 검사하여 읽기·감소를 거부해요. 실패한 연산은 유효 범위 밖에 접근하거나 상태를 바꾸지 않아야 해요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 8,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "activation-record-return",
+        "taught_on": "1008",
+        "extra_pages": [
+          10,
+          11,
+          12
+        ]
+      },
+      "objectives": [
+        "시스템 스택의 복귀 정보와 지역 상태",
+        "호출·반환의 LIFO와 undo 적용",
+        "스택 overflow·underflow의 검사 순서와 실패 상태 보존"
+      ],
+      "task_family": "activation-record-return"
     }
   ],
   "links": [],

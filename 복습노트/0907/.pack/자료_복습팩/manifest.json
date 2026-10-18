@@ -4,8 +4,8 @@
   "slug": "Intro_DS_Algorithms",
   "note_title": "자료구조와 알고리즘, 왜 배울까 — 5살도 이해하는 정리노트",
   "note_subtitle": "기존 노트 보존",
-  "review_title": "복습문제 4선 — 0907 수업 범위",
-  "review_intro": "핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
+  "review_title": "복습문제 7선 — 0907 수업 범위",
+  "review_intro": "강의노트의 핵심 개념과 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
   "footer_note": "기존 노트 보존",
   "footer_review": "기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.",
   "sessions": [
@@ -13,7 +13,7 @@
       "date": "0907",
       "stt": "STT/0907 자구알.md",
       "summary": "selection.json",
-      "slides": "S1 p2–21"
+      "slides": "S1 p2–14; S1 p21 최대값 예제는 후속 수업 보충"
     }
   ],
   "sections": [
@@ -298,8 +298,13 @@
     },
     {
       "id": "partB",
-      "title": "B. 강의 예제 코드",
-      "short": "B 강의 코드"
+      "title": "B. 강의노트 기반 생성문제",
+      "short": "강의 생성문제"
+    },
+    {
+      "id": "partSupplement",
+      "title": "보충. 후속 수업의 최대값 예제",
+      "short": "후속 보충"
     }
   ],
   "problems": [
@@ -358,8 +363,102 @@
       "task_family": "textbook-ch05-q01"
     },
     {
-      "id": "p4",
+      "id": "p5",
       "part": "partB",
+      "source": "lecture-s01-p6-design-analysis-contract",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-design-analysis",
+      "level": 3,
+      "date": "0907",
+      "terms": [
+        "자료구조·알고리즘과 설계·분석 구별"
+      ],
+      "answer": "벽돌 자체는 데이터, 벽돌을 조직한 벽의 구조는 자료구조, 쌓는 절차는 알고리즘이에요. 알고리즘은 계산·데이터 처리를 위한 유한한 명령의 순서예요. 새 해결 방법을 고르면 설계, 주어진 방법의 계산 비용을 평가하면 분석이에요. 시간·공간 비용을 줄이고 재사용성과 가독성을 높여 수정·협업 비용도 줄여요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
+        "pdf_page": 6,
+        "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba",
+        "example": "design-analysis-contract",
+        "taught_on": "0907",
+        "extra_pages": [
+          2,
+          5,
+          7
+        ]
+      },
+      "objectives": [
+        "자료구조와 알고리즘의 역할 구별",
+        "유한한 명령과 순서의 의미",
+        "설계와 분석 구별",
+        "시간·공간·가독성·재사용성의 평가 기준"
+      ],
+      "task_family": "design-analysis-contract"
+    },
+    {
+      "id": "p6",
+      "part": "partB",
+      "source": "lecture-s01-p7-resource-scope-sharing",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-pointer",
+      "level": 3,
+      "date": "0907",
+      "terms": [
+        "지역 변수·함수 분리와 자원 공유"
+      ],
+      "answer": "임시 배열은 필요한 범위에 지역화하면 접근 범위와 수명을 제한할 수 있어요. 전역 객체는 프로그램 실행 동안 존재해요. 지역 변수라고 항상 메모리가 줄지는 않으며 동시에 활성인 재귀 호출마다 별도 배열이 있으면 공간이 늘어요. 함수 분리는 역할을 읽고 재사용하기 좋게 하고 주소 공유는 원본 복사 비용을 줄이지만 다른 사용자가 보는 값도 바뀔 수 있어요. unsigned int와 int의 크기는 같아서 부호 없는 타입으로 바꾸는 것만으로 공간이 줄지 않아요. 필요한 10칸 대신 100칸을 잡으면 90칸이 남아요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
+        "pdf_page": 7,
+        "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba",
+        "example": "resource-scope-sharing",
+        "taught_on": "0907",
+        "extra_pages": [
+          6
+        ]
+      },
+      "objectives": [
+        "지역·전역 객체의 범위와 수명 비교",
+        "함수 분리의 가독성과 재사용성",
+        "주소 공유의 복사 비용과 변경 전파",
+        "메모리 절감 절대 명제의 조건 확인",
+        "필요 용량과 타입 크기를 구별하고 unsigned 크기 오개념 교정"
+      ],
+      "task_family": "resource-scope-sharing"
+    },
+    {
+      "id": "p7",
+      "part": "partB",
+      "source": "lecture-s01-p13-everyday-structure-selection",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s3-graph-tree",
+      "level": 3,
+      "date": "0907",
+      "terms": [
+        "일상 예제로 고르는 자료구조"
+      ],
+      "answer": "할 일은 순서가 있는 리스트, 도시·도로는 연결 관계인 그래프, 조직도는 계층인 트리, 책더미는 후입선출 스택, 단어→뜻은 사전이에요. 책은 마지막에 쌓은 C가 먼저 나오고, 큐인 매표소 줄은 먼저 들어온 사람이 먼저 나가요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
+        "pdf_page": 13,
+        "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba",
+        "example": "everyday-structure-selection",
+        "taught_on": "0907",
+        "extra_pages": [
+          14
+        ]
+      },
+      "objectives": [
+        "리스트·그래프·트리·사전의 관계에 따른 선택",
+        "스택 후입선출과 큐 선입선출 구별"
+      ],
+      "task_family": "everyday-structure-selection"
+    },
+    {
+      "id": "p4",
+      "part": "partSupplement",
       "source": "lecture-s01-p21-find-max",
       "source_kind": "lecture-code",
       "variant": false,
@@ -375,13 +474,15 @@
         "pdf_page": 21,
         "sha256": "5b00fe0bc1a1180b1dadcbb3bd8b02f49f3a60cf70239d180e02f912ed8059ba",
         "example": "find-max",
-        "taught_on": "0907",
+        "taught_on": "0914",
         "extra_pages": []
       },
       "objectives": [
         "find-max"
       ],
-      "task_family": "find-max"
+      "task_family": "find-max",
+      "scope": "retained-supplement",
+      "scope_evidence": "0907 정리노트 s4-next/STT66:28은 S1 p14에서 종료·이후 예고. 0914 STT30:37–32:13에서 최대값 알고리즘을 분석함. 최초 설명 시점 확정이 아니라 0914에 다룬 사실을 기록하며 0907 핵심 coverage에서 제외."
     }
   ],
   "links": [],

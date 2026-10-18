@@ -197,6 +197,188 @@
           "locator": "1008/p3"
         }
       ]
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "lecture-s04-p47-list-position-adapter",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-adapter",
+      "level": 3,
+      "date": "1008",
+      "terms": [
+        "위치 인자를 선행 노드로 바꾸기"
+      ],
+      "answer": "위치 2의 선행 노드는 B이며 insert_node(&(list->head),B,N)을 호출합니다. 결과는 A→B→N→C, length=4입니다. 위치 0에서는 get_node_at(-1)=NULL이므로 N이 새 head가 됩니다. position을 그대로 쓰면 C 뒤에 넣어 한 칸 늦어집니다. length를 저장하므로 길이 조회는 O(1)입니다. 위치 변환을 위한 탐색은 최악 O(n)이고 삽입의 링크 변경 자체는 O(1)입니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 47,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "list-position-adapter",
+        "taught_on": "1008",
+        "extra_pages": [
+          44,
+          45,
+          46,
+          25
+        ]
+      },
+      "objectives": [
+        "위치 기반 ADT와 노드 기반 함수 인터페이스 변환",
+        "ListType head와 length 불변식 및 함수 재사용",
+        "길이조회·위치탐색·링크 변경 비용 분리"
+      ],
+      "task_family": "list-position-adapter",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "1008",
+        "ch": 4,
+        "page": 47,
+        "name": "list-position-adapter",
+        "anchor": "s0-adapter",
+        "title": "위치 인자를 선행 노드로 바꾸기",
+        "prompt": "ListType은 head와 length를 함께 보관해요. A→B→C→NULL,length=3인 리스트에서 위치2에 N을 넣는 add가 get_node_at(list,position-1)를 호출한 뒤 기존 insert_node를 재사용합니다. 반환되는 선행 노드, 함수에 넘기는 세 인자와 결과를 쓰세요. 위치0 삽입에서는 선행 노드와 head가 어떻게 되는지, position을 그대로 get_node_at에 넘기면 생기는 위치 오류, length를 따로 저장하는 이점과 탐색을 포함한 최악 비용도 설명하세요.",
+        "answer": "위치 2의 선행 노드는 B이며 insert_node(&(list->head),B,N)을 호출합니다. 결과는 A→B→N→C, length=4입니다. 위치 0에서는 get_node_at(-1)=NULL이므로 N이 새 head가 됩니다. position을 그대로 쓰면 C 뒤에 넣어 한 칸 늦어집니다. length를 저장하므로 길이 조회는 O(1)입니다. 위치 변환을 위한 탐색은 최악 O(n)이고 삽입의 링크 변경 자체는 O(1)입니다.",
+        "steps": [
+          "위치 2는 현재 C의 자리이므로 바로 앞의 인덱스 1에 있는 B를 찾아야 해요.",
+          "기존 insert_node가 요구하는 것은 위치 정수가 아닌 선행 노드의 주소예요.",
+          "호출자의 head를 바꿀 가능성이 있으므로 head 필드의 주소와 B, N을 전달해요.",
+          "위치 0에서는 음수 −1에 대해 NULL을 반환하는 약속으로 맨 앞 삽입을 표현해요.",
+          "래퍼는 삽입 성공 후 length를 1 늘려요. 길이 조회와 선행 노드 탐색은 서로 다른 연산이에요."
+        ],
+        "recall": "‘기존 함수를 재사용’한다는 단서는 인터페이스 어댑터(adapter)를 뜻해요. 사용자는 위치를 주고 insert_node는 선행 노드 주소를 원하므로 그 사이를 position−1의 탐색으로 연결해요. 이 문제는 원 삽입 코드의 대입 순서가 아니라 호출 경계의 변환을 묻고 있어요.",
+        "start": "position=2 → position−1=1 → 선행 노드B.",
+        "verify": "결과의 인덱스를 다시 세면 A:0, B:1, N:2, C:3이므로 요청 위치 2와 맞아요. 잘못된 선행 노드 C를 쓰면 N은 인덱스 3이 돼요. 위치 0은 NULL 선행 노드 규약으로 N:0, A:1, B:2, C:3이 되며 length와 실제 노드 수가 4로 같아요.",
+        "pitfall": "position번째 노드를 선행 노드라고 혼동하지 않아요. head 필드의 주소와 head가 가리키는 첫 노드의 주소도 구분해요.",
+        "objectives": [
+          "위치 기반 ADT와 노드 기반 함수 인터페이스 변환",
+          "ListType head와 length 불변식 및 함수 재사용",
+          "길이조회·위치탐색·링크 변경 비용 분리"
+        ],
+        "code": "",
+        "extra_pages": [
+          44,
+          45,
+          46,
+          25
+        ],
+        "adaptation": "1008에 재강조한 S4 p44·47의 함수 재사용 설명과 코드 흐름을 문장형 질문으로 직접 작성했습니다. insert_node 자체의 세 경우는 기존1005 문제와 구별하여 호출 인자 변환을 평가합니다."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "0eccaa39ab096a31ad9c660ee666b84af2afabf0e9b26e2b3256dadd3e7f40bb",
+        "independent_answer": "position2의 get_node_at(list,1)은 B를 반환한다. 새 node의 data=N을 설정하고 insert_node(&(list->head),p,node),즉 세 인자 &(list->head),B의 포인터,새 N노드 포인터를 넘긴다. 결과 A→B→N→C→NULL,length=4다. position0은 get_node_at(list,-1)=NULL이므로 p=NULL이고 N을 첫 노드로 붙여 head가 N으로 바뀐다. position을 그대로 넘기면 C를 선행 노드로 골라 위치3에 삽입하는 오류가 난다. 저장 length 덕분에 길이 조회와 삽입 위치 범위 검사는 Θ(1),탐색 포함 삽입 최악은 Θ(n)이다.",
+        "reasoning": "S4 p47의 실제 시그니처와 호출 확인. 새 노드 자체의 포인터가 세 번째 인자이며 단순 원소값 N이 아니다. position의 유효 범위는0<=position<=length이고 삽입 뒤 length++가 필요하다. 꼬리 위치의 선행 노드까지 탐색하면 n에 비례하는 링크 방문이 필요하다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "list-position-adapter"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "list-position-adapter"
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "lecture-s05-p8-activation-record-return",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-call",
+      "level": 3,
+      "date": "1008",
+      "terms": [
+        "함수 호출과 복귀 순서의 스택"
+      ],
+      "answer": "호출 정보는 아래부터 main의 복귀 위치·i=3, 그 위에 sub1의 복귀 위치·a=3,j=5를 기억합니다. sub2가 끝나면 sub1의 호출 다음으로, sub1이 끝나면 main의 호출 다음으로 돌아갑니다. 지역 변수만으로는 다음 실행 위치를 알 수 없습니다. 가장 최근에 중단한 호출부터 복귀하는 LIFO이며 undo도 마지막 변경부터 되돌립니다. 현재 실행 중인 sub2의 문맥에는 b=5도 있어요. main·sub1은 복귀를 기다리는 호출자이며 sub2가 현재 활성 문맥이에요. top=2인 push는 is_full을 먼저 검사하여 증가·저장을 거부하고, top=-1인 pop은 is_empty를 먼저 검사하여 읽기·감소를 거부해요. 실패한 연산은 유효 범위 밖에 접근하거나 상태를 바꾸지 않아야 해요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "pdf_page": 8,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "example": "activation-record-return",
+        "taught_on": "1008",
+        "extra_pages": [
+          10,
+          11,
+          12
+        ]
+      },
+      "objectives": [
+        "시스템 스택의 복귀 정보와 지역 상태",
+        "호출·반환의 LIFO와 undo 적용",
+        "스택 overflow·underflow의 검사 순서와 실패 상태 보존"
+      ],
+      "task_family": "activation-record-return",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "1008",
+        "ch": 5,
+        "page": 8,
+        "name": "activation-record-return",
+        "anchor": "s2-call",
+        "title": "함수 호출과 복귀 순서의 스택",
+        "prompt": "강의 예처럼 main의 i=3에서 sub1(i)를 호출하고 sub1의 a=3,j=5에서 sub2(j)를 호출했어요. sub2 실행 중 기억해야 할 호출 정보의 순서와, sub2와 sub1이 차례로 return할 때 복귀하는 함수 순서를 쓰세요. 지역 변수만 저장하고 돌아올 위치를 버리면 왜 부족한지, 가장 오래된 호출로 먼저 돌아가면 안 되는 이유, 되돌리기(undo)와의 공통 규칙도 설명하세요. PC 숫자는 실제 C 주소가 아닌 강의 그림의 복귀 위치 표시로만 다루세요. 이어 용량 M=3인 배열 스택에서 top=2일 때 push, top=-1일 때 pop을 요청했어요(두 상황은 독립적이에요). 각 경우 어떤 검사가 top 변경과 배열 접근보다 먼저여야 하며, 거부된 연산 뒤 상태가 유지돼야 하는 이유를 쓰세요.",
+        "answer": "호출 정보는 아래부터 main의 복귀 위치·i=3, 그 위에 sub1의 복귀 위치·a=3,j=5를 기억합니다. sub2가 끝나면 sub1의 호출 다음으로, sub1이 끝나면 main의 호출 다음으로 돌아갑니다. 지역 변수만으로는 다음 실행 위치를 알 수 없습니다. 가장 최근에 중단한 호출부터 복귀하는 LIFO이며 undo도 마지막 변경부터 되돌립니다. 현재 실행 중인 sub2의 문맥에는 b=5도 있어요. main·sub1은 복귀를 기다리는 호출자이며 sub2가 현재 활성 문맥이에요. top=2인 push는 is_full을 먼저 검사하여 증가·저장을 거부하고, top=-1인 pop은 is_empty를 먼저 검사하여 읽기·감소를 거부해요. 실패한 연산은 유효 범위 밖에 접근하거나 상태를 바꾸지 않아야 해요.",
+        "steps": [
+          "main은 sub1을 호출하며 실행을 잠시 멈추므로 돌아올 위치와 현재 지역 상태를 남겨요.",
+          "sub1이 sub2를 호출할 때도 같은 정보를 그 위에 쌓아요.",
+          "sub2의 return은 맨 위의 sub1 정보를 사용해 sub1의 호출 다음으로 돌아가요.",
+          "그 뒤 sub1이 끝나면 아래에 남은 main 정보로 돌아가요.",
+          "가장 최근 정보를 먼저 사용한다는 점에서 undo의 최근 변경 취소와 같은 LIFO예요."
+        ],
+        "recall": "‘호출했다가 돌아온다’는 말에서 시스템 스택(system stack)의 활성 레코드(activation record)를 떠올려요. 강의 모형에서는 PC(program counter, 실행 위치)와 지역 상태를 함께 기억해요. 실제 ABI의 스택 프레임 세부 배치는 이 문제의 범위가 아니에요.",
+        "start": "바닥: main의 복귀 위치와 i=3 / 그 위: sub1의 복귀 위치와 a=3, j=5.",
+        "verify": "호출 순서는 main→sub1→sub2이고 복귀 순서는 sub2→sub1→main으로 정확히 역순이에요. sub2가 바로 main으로 돌아간다면 sub1의 미완료 문장을 건너뛰므로 호출 관계와 맞지 않아요. 저장된 변수 값과 복귀 위치는 서로 다른 질문에 답하므로 둘 다 필요해요. 용량 3의 유효 인덱스는 0~2예요. 포화에서 먼저 증가하면 3번, 공백에서 읽으면 -1번이 되어 범위 밖이므로 먼저 검사하고 상태를 보존해요.",
+        "pitfall": "PC 값을 배열 인덱스나 실제 기계 주소로 계산하지 않아요. 이 문제는 개념 모형의 복귀 관계를 물어요.",
+        "objectives": [
+          "시스템 스택의 복귀 정보와 지역 상태",
+          "호출·반환의 LIFO와 undo 적용",
+          "스택 overflow·underflow의 검사 순서와 실패 상태 보존"
+        ],
+        "code": "",
+        "extra_pages": [
+          10,
+          11,
+          12
+        ],
+        "adaptation": "강의 개념·그림을 근거로 질문을 직접 작성했습니다. 강의 원문 코드의 전사가 아닙니다."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "1823d6b5ec548a6b86e17dc6d1f7291644d6596b8bd5d06ce26176e03897f1be",
+        "independent_answer": "sub2 실행 시 현재 활성 실행 문맥은 sub2(b=5)이며, 복귀를 기다리는 호출자는 오래된 순서로 main(i=3),sub1(a=3,j=5)이다. 호출 계층 전체를 아래부터 나타내면 main→sub1→sub2이고, 복귀는 sub2→sub1→main이다. 지역 변수뿐 아니라 어느 호출 지점 다음 명령부터 계속할지도 알아야 한다. 가장 오래된 main으로 먼저 복귀하면 아직 끝나지 않은 sub1의 이어질 계산을 건너뛰게 된다. undo도 가장 최근 작업부터 되돌리는 LIFO 규칙을 쓴다. 강의 PC 숫자는 실행·복귀 위치 표식이며 실제 C주소가 아니다. 용량 M=3,top=2의 push는 top==M-1이라는 포화 검사를 top 증가와 배열 쓰기 전에 수행하고 거부한다. 독립적인 top=-1의 pop은 top==-1이라는 공백 검사를 배열 읽기와 top 감소 전에 수행하고 거부한다. 거부 후 각각 top=2와 top=-1이 유지되고 배열 및 논리 내용도 바뀌지 않아야 한다. 실패한 연산이 정상 스택을 손상시키거나 범위 밖에 접근해서는 안 되기 때문이다.",
+        "reasoning": "S5 p8 확인. 복귀 시 호출 깊이가1 줄고 바로 아래 호출이 재개된다. main과 sub1 각각의 정지된 실행 문맥을 복원해야 하므로 변수값만으로 다음 명령 위치를 결정할 수 없다. 실제 ABI의 프레임 구성과 복귀주소 저장 위치까지 특정하는 문제는 아니다. 현재 실행 중인 sub2(b=5)와 복귀 대기 중인 main/sub1을 구분한다. 배열 스택의 유효 표현은 -1<=top<=M-1이다. 가득 찬 상태에서 먼저 ++top하면 M번 인덱스에 쓰게 되고, 빈 상태에서 먼저 읽거나 --top하면 유효 원소가 없는 인덱스 접근 또는 top=-2가 된다. 따라서 오류 검사를 부수 효과보다 앞에 두어 실패 시 상태 불변을 보장한다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "activation-record-return"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "activation-record-return"
+        }
+      ]
     }
   ],
   "excluded": [
@@ -257,42 +439,68 @@
   ],
   "coverage": [
     {
-      "objective": "retained-textbook-ch04-q05",
+      "objective": "位置→선행노드와재사용",
       "questions": [
-        "p1"
-      ],
-      "evidence": {}
-    },
-    {
-      "objective": "list-delete-leak",
-      "questions": [
-        "p2"
+        "p4"
       ],
       "evidence": {
-        "path": "자료구조_강의록_2026/Software_4_List.pdf",
-        "pdf_page": 48,
-        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
-        "example": "list-delete-leak",
-        "taught_on": "1008",
-        "extra_pages": [
-          28,
-          47
+        "slides": "S4p44·47–48일부재강조; S5p1–12; TA실습과제별도",
+        "stt": [
+          "1008 Part01 lines33–49 reuse",
+          "Part02 lines111–125 addadapter",
+          "Part03 stackADT",
+          "Part04 lines263–307 undo·시스템스택",
+          "Part05 lines321–347 배열검사·pushpop; p13이후다음시간"
         ]
       }
     },
     {
-      "objective": "stack-adt",
+      "objective": "delete래퍼첫노드누수",
       "questions": [
-        "p3"
+        "p2"
       ],
       "evidence": {
-        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
-        "pdf_page": 11,
-        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
-        "example": "stack-adt",
-        "taught_on": "1008",
-        "extra_pages": [
-          12
+        "slides": "S4p44·47–48일부재강조; S5p1–12; TA실습과제별도",
+        "stt": [
+          "1008 Part01 lines33–49 reuse",
+          "Part02 lines111–125 addadapter",
+          "Part03 stackADT",
+          "Part04 lines263–307 undo·시스템스택",
+          "Part05 lines321–347 배열검사·pushpop; p13이후다음시간"
+        ]
+      }
+    },
+    {
+      "objective": "LIFO·pushpoppeek·top·emptyfull·접근전검사",
+      "questions": [
+        "p1",
+        "p3",
+        "p5"
+      ],
+      "evidence": {
+        "slides": "S4p44·47–48일부재강조; S5p1–12; TA실습과제별도",
+        "stt": [
+          "1008 Part01 lines33–49 reuse",
+          "Part02 lines111–125 addadapter",
+          "Part03 stackADT",
+          "Part04 lines263–307 undo·시스템스택",
+          "Part05 lines321–347 배열검사·pushpop; p13이후다음시간"
+        ]
+      }
+    },
+    {
+      "objective": "undo·시스템복귀주소/지역상태",
+      "questions": [
+        "p5"
+      ],
+      "evidence": {
+        "slides": "S4p44·47–48일부재강조; S5p1–12; TA실습과제별도",
+        "stt": [
+          "1008 Part01 lines33–49 reuse",
+          "Part02 lines111–125 addadapter",
+          "Part03 stackADT",
+          "Part04 lines263–307 undo·시스템스택",
+          "Part05 lines321–347 배열검사·pushpop; p13이후다음시간"
         ]
       }
     }
@@ -392,5 +600,21 @@
     "2019-mid-q9",
     "unk-final-ltk-q1"
   ],
-  "exam_retention_policy": "same-exam-reuse-only"
+  "exam_retention_policy": "same-exam-reuse-only",
+  "coverage_review": {
+    "status": "pass",
+    "method": "core goals extracted before selection, actual question prompts mapped; solution-only mentions and later-only questions excluded",
+    "evidence": "docs/verify/no-exam-coverage-20261017/scope-lists.json",
+    "supplementary_excluded": [],
+    "excluded": [
+      {
+        "topic": "S5p13이후구조체C·linkedstack·괄호·postfix",
+        "reason": "STT347명시다음시간;1012별도학습문항"
+      },
+      {
+        "topic": "TA 실습삽입정렬·FirstFit과제",
+        "reason": "수업노트의교수강의와구분된별도실습/과제;학습범위별도,시험복습핵심강의커버리지와혼합하지않으며과제정답대체생성안함"
+      }
+    ]
+  }
 }

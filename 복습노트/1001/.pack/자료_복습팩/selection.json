@@ -142,6 +142,284 @@
           "locator": "1001/p2"
         }
       ]
+    },
+    {
+      "id": "p3",
+      "part": "partB",
+      "source": "lecture-s04-p5-list-adt-contract",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-example",
+      "level": 3,
+      "date": "1001",
+      "terms": [
+        "리스트 ADT의 연산 계약과 순서"
+      ],
+      "answer": "[A](1), [A,B](2), [A,B,C](3), [A,D,B,C](4), [A,D,C](3), [A,E,C](3). get_entry(1)=E, get_length()=3. add는 기존 항목을 보존하며 길이를 1 늘리고 replace는 값만 바꿔 길이를 유지합니다. 위치별 순서가 다르면 다른 리스트이며 ADT 계약만으로 결과를 정할 수 있습니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 5,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "list-adt-contract",
+        "taught_on": "1001",
+        "extra_pages": [
+          2,
+          3,
+          4,
+          6
+        ]
+      },
+      "objectives": [
+        "리스트 ADT 객체와 구현 분리",
+        "삽입·삭제·대치·조회 계약과 길이 불변식"
+      ],
+      "task_family": "list-adt-contract",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "1001",
+        "ch": 4,
+        "page": 5,
+        "name": "list-adt-contract",
+        "anchor": "s0-example",
+        "title": "리스트 ADT의 연산 계약과 순서",
+        "prompt": "빈 리스트에 강의 사용 예의 add_tail(A), add_tail(B), add(2,C), add(1,D), delete(2), replace(1,E)를 차례로 적용하세요(위치는 0부터 셉니다). 각 단계의 리스트와 길이, 마지막 get_entry(1)과 get_length()의 값을 쓰세요. add와 replace가 길이에 미치는 차이, [A,E,C]와 [E,A,C]가 서로 다른 리스트인 이유, 이 결과를 구하는 데 배열·연결 구현을 알아야 하는지도 설명하세요.",
+        "answer": "[A](1), [A,B](2), [A,B,C](3), [A,D,B,C](4), [A,D,C](3), [A,E,C](3). get_entry(1)=E, get_length()=3. add는 기존 항목을 보존하며 길이를 1 늘리고 replace는 값만 바꿔 길이를 유지합니다. 위치별 순서가 다르면 다른 리스트이며 ADT 계약만으로 결과를 정할 수 있습니다.",
+        "steps": [
+          "처음 상태를 빈 리스트와 길이 0으로 적어요.",
+          "끝 추가 두 번 뒤 [A,B]가 돼요. 위치2에 C를 넣으면 [A,B,C]예요.",
+          "위치1 삽입은 B를 덮지 않으므로 [A,D,B,C], 길이 4예요.",
+          "위치2의 B를 삭제해 [A,D,C], 위치1만 E로 바꿔 [A,E,C]예요.",
+          "객체는 순서 있는 모임, 연산은 그 객체를 바꾸거나 조회하는 계약이므로 저장 구현 없이 판단해요."
+        ],
+        "recall": "‘리스트 ADT’와 연산 이름이 단서예요. 추상 자료형(abstract data type)은 객체와 허용 연산의 뜻을 정해요. add는 끼워 넣기, replace는 기존 자리의 값 바꾸기이며 구현의 대입문을 추측할 필요가 없어요.",
+        "start": "초기 상태: L=[], 길이=0.",
+        "verify": "삽입4번, 삭제1번이므로 마지막 길이는0+4−1=3이에요. replace와 조회는 길이를 바꾸지 않아요. 마지막 인덱스1은 E이며 나머지A,C의 상대 순서가 보존돼요.",
+        "pitfall": "add(1,D)를 기존 B를 없애는 대치로 읽지 않아요. 원소가 같아도 순서가 다르면 같은 리스트가 아니에요.",
+        "objectives": [
+          "리스트 ADT 객체와 구현 분리",
+          "삽입·삭제·대치·조회 계약과 길이 불변식"
+        ],
+        "code": "",
+        "extra_pages": [
+          2,
+          3,
+          4,
+          6
+        ],
+        "adaptation": "강의 개념·그림을 근거로 질문을 직접 작성했습니다. 강의 원문 코드의 전사가 아닙니다."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "9562e651623eb53ca58a8f99e6e52e4b8d6a424b5ddc09c77abf7a92bcafddb4",
+        "independent_answer": "[A](1)→[A,B](2)→[A,B,C](3)→[A,D,B,C](4)→[A,D,C](3)→[A,E,C](3)다. get_entry(1)=E,get_length()=3이다. add는 원소를 새로 넣어 길이+1,replace는 기존 원소를 바꿔 길이 불변이다. 리스트는 순서가 있어 [A,E,C]와 [E,A,C]는 다르다. ADT 계약만으로 결과를 정할 수 있어 배열·연결 구현은 필요 없다.",
+        "reasoning": "0 기반 삽입은 해당 위치의 기존 항목과 뒤 항목들을 한 칸 뒤로 보낸다. delete(2)는 당시 B를 제거한다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "list-adt-contract"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "list-adt-contract"
+        }
+      ]
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "lecture-s04-p9-array-list-state",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-struct",
+      "level": 3,
+      "date": "1001",
+      "terms": [
+        "초기화와 논리적 길이"
+      ],
+      "answer": "초기화 직후 length=0, is_empty=1, is_full=0, 논리적 리스트=[]. {7,8,9}는 길이 밖의 이전 값이므로 원소가 아닙니다. length=3이면 is_empty=0,is_full=1입니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 9,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "array-list-state",
+        "taught_on": "1001",
+        "extra_pages": [
+          10
+        ]
+      },
+      "objectives": [
+        "ArrayListType 초기화와 유효 원소 영역",
+        "공백·포화 상태 검사"
+      ],
+      "task_family": "array-list-state",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "1001",
+        "ch": 4,
+        "page": 9,
+        "name": "array-list-state",
+        "anchor": "s1-struct",
+        "title": "초기화와 논리적 길이",
+        "prompt": "MAX_LIST_SIZE=3이며 배열 세 칸에 이전 값 {7,8,9}가 남아 있어요. 아래 init을 호출한 직후 length, is_empty, is_full의 반환값과 논리적인 리스트를 쓰세요. 모든 칸을 0으로 지우지 않아도 되는 이유를 설명하고, 별도로 length=3인 유효 상태에서 is_empty와 is_full도 구하세요.",
+        "answer": "초기화 직후 length=0, is_empty=1, is_full=0, 논리적 리스트=[]. {7,8,9}는 길이 밖의 이전 값이므로 원소가 아닙니다. length=3이면 is_empty=0,is_full=1입니다.",
+        "steps": [
+          "init은 length에0만 저장해요. 배열의 이전 값은 그대로예요.",
+          "유효 범위는0부터length−1까지이므로 length=0이면 원소가 없어요.",
+          "0==0은 참이고 0==3은 거짓이므로 공백1·포화0이에요.",
+          "별도 유효 상태 length=3에서는 공백0·포화1이에요."
+        ],
+        "recall": "‘이전 값이 남아 있다’는 조건에서는 물리적 저장과 논리적 원소 수를 구분해요. length는 유효 원소 개수이며 비교 연산은 참1·거짓0을 반환해요. 용량M인 유효 상태는0≤length≤M이에요.",
+        "start": "init 뒤 length=0; 유효 인덱스는 없음.",
+        "verify": "용량3에 대해 길이0,1,2,3을 별도로 대입하면 공백은0에서만 참이고 포화는3에서만 참이에요. 초기화 코드는 배열 칸에 쓰는 문장이 없으므로 이전 값은 바뀌지 않아요.",
+        "pitfall": "배열에 값이 남아 있다는 이유로 리스트가 비어 있지 않다고 판단하지 않아요.",
+        "objectives": [
+          "ArrayListType 초기화와 유효 원소 영역",
+          "공백·포화 상태 검사"
+        ],
+        "code": "void init(ArrayListType *L)\n{\n    L->length = 0;\n}\nint is_empty(ArrayListType *L)\n{\n    return L->length == 0;\n}\nint is_full(ArrayListType *L)\n{\n    return L->length == MAX_LIST_SIZE;\n}",
+        "extra_pages": [
+          10
+        ],
+        "adaptation": "강의 예제의 해당 코드를 발췌했습니다. 질문과 입력 조건은 자체 출제이며 주변 선언·입출력은 생략했습니다."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "d3f83cbf4b61e31a3a169b0153b8ee4389108949924921ced0314190bccc9e80",
+        "independent_answer": "init 직후 length=0,is_empty=1,is_full=0,논리 리스트=[]다. 물리 배열의 {7,8,9}는 남아 있어도 유효 원소 구간 [0,length)에 포함되지 않아 리스트 항목이 아니다. 별도의 유효 length=3 상태에서는 is_empty=0,is_full=1이다.",
+        "reasoning": "주어진 세 함수는 length만 읽거나 쓴다. 따라서 배열 칸의 값은 검사 결과에 영향을 주지 않는다. 일반적인 논리 초기화가 민감 데이터 소거까지 수행한다는 뜻은 아니다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "array-list-state"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "array-list-state"
+        }
+      ]
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "lecture-s04-p18-linked-representation",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-node",
+      "level": 3,
+      "date": "1001",
+      "terms": [
+        "주소로 읽는 연결 리스트의 순서"
+      ],
+      "answer": "논리 순서는10→20→30이며 마지막 link=NULL입니다. head는 첫 노드의 주소를 담는 별도 포인터, data는 값,link는 다음 노드 주소입니다. 첫 노드를 head로 두는 원형 구조에서 C.link=300입니다. 이중 연결은 선행 노드 링크가 추가됩니다. 연결은 주소를 따라가므로 주소의 크기·연속성은 순서를 결정하지 않습니다. 유효 선행 노드를 알면 링크 변경 O(1), 일반적인 위치 탐색은 최악 O(n)입니다. 삽입은 N.link를 기존 A.link(C)에 먼저 연결한 뒤 A.link를 N으로 바꿉니다. 반대 순서 뒤 N.link=A.link를 적용하면 N이 자신을 가리키고 C로 가는 기존 연결을 잃습니다. 고정 배열은 정해진 용량에 제한되며 연결 노드는 필요할 때 할당해 늘릴 수 있지만, 사용 가능한 메모리와 할당 성공에 제한돼요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 18,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "linked-representation",
+        "taught_on": "1001",
+        "extra_pages": [
+          7,
+          8,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
+      },
+      "objectives": [
+        "연결 표현의 물리 주소와 논리 순서",
+        "헤드 포인터·데이터·링크 구분",
+        "단순·원형·이중 연결의 구조",
+        "탐색 비용과 링크 변경 비용 구분",
+        "그림에서 삽입 링크 보존 순서 설명(1005의 C 세 분기·이중포인터 평가와 구별)",
+        "고정 배열 용량과 연결 노드의 할당 한계"
+      ],
+      "task_family": "linked-representation",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "1001",
+        "ch": 4,
+        "page": 18,
+        "name": "linked-representation",
+        "anchor": "s2-node",
+        "title": "주소로 읽는 연결 리스트의 순서",
+        "prompt": "노드 A는 주소300에 data=10,link=100, B는 주소100에 data=20,link=500, C는 주소500에 data=30,link=NULL을 저장하고 head=300이에요(주소는 설명용 표식이며 실제 C 주소가 아닙니다). 논리적 원소 순서와 마지막 링크를 쓰고, head·data·link의 역할을 구별하세요. 원형 리스트라면 C의 link가 무엇인지, 이중 연결 리스트라면 어떤 링크가 추가되는지도 쓰세요. 배열과 달리 물리적 주소순 정렬이나 연속 배치가 필요 없는 이유와, 선행 노드 위치를 이미 알 때 연결 삽입 비용과 그 위치를 처음부터 찾는 비용을 구분하세요. 마지막으로 별도 임시 포인터 없이 N.link=A.link와 A.link=N 두 대입만 사용해 A→C→NULL 사이에 독립된 새 노드 N을 넣을 때, N의 link와 A의 link 중 어느 것을 먼저 연결해야 하는지 쓰고 순서를 뒤집었을 때 C로 가는 길이 어떻게 되는지 설명하세요(그림의 링크 변경만 묻습니다). 배열의 고정 용량과 연결 노드의 동적 증가를 비교하고, 연결 리스트도 메모리 할당 실패로 더 늘릴 수 없는 경우가 있는지 설명하세요.",
+        "answer": "논리 순서는10→20→30이며 마지막 link=NULL입니다. head는 첫 노드의 주소를 담는 별도 포인터, data는 값,link는 다음 노드 주소입니다. 첫 노드를 head로 두는 원형 구조에서 C.link=300입니다. 이중 연결은 선행 노드 링크가 추가됩니다. 연결은 주소를 따라가므로 주소의 크기·연속성은 순서를 결정하지 않습니다. 유효 선행 노드를 알면 링크 변경 O(1), 일반적인 위치 탐색은 최악 O(n)입니다. 삽입은 N.link를 기존 A.link(C)에 먼저 연결한 뒤 A.link를 N으로 바꿉니다. 반대 순서 뒤 N.link=A.link를 적용하면 N이 자신을 가리키고 C로 가는 기존 연결을 잃습니다. 고정 배열은 정해진 용량에 제한되며 연결 노드는 필요할 때 할당해 늘릴 수 있지만, 사용 가능한 메모리와 할당 성공에 제한돼요.",
+        "steps": [
+          "head의 300에서 A를 읽고 link 100으로 B, link 500으로 C를 찾아가요.",
+          "주소를 오름차순으로 정렬하는 것이 아니라 link 값을 따라 순서를 읽어요.",
+          "단순 리스트는 마지막 link가 NULL이고 원형은 첫 노드의 주소 300을 저장해요.",
+          "헤드 포인터는 노드 전체가 아니라 시작 주소를 담는 변수예요. 이중 연결은 앞뒤 링크를 두어요.",
+          "알고 있는 위치에서 연결을 바꾸는 일과 그 위치까지 이동하는 일을 나누어 비용을 말해요.",
+          "별도 그림 A→C에서 먼저 N이 C를 가리키게 한 다음 A가 N을 가리키게 해요. 반대로 바꾸면 기존 A.link의 C 주소가 사라져 N의 링크를 채울 근거를 잃어요."
+        ],
+        "recall": "‘주소와 link가 따로 주어짐’은 연결 표현(linked representation)의 단서예요. 노드는 데이터와 주소의 쌍이며 link가 논리적 다음 원소를 정해요. 상수 시간 삽입은 선행 노드를 이미 알고 있다는 조건이 필요해요.",
+        "start": "head=300 → A(data10) → link100.",
+        "verify": "방문 주소는 300, 100, 500, NULL이에요. 주어진 노드를 정확히 한 번씩 방문하며 얻는 값은 10, 20, 30이에요. 주소 크기순으로 읽으면 20, 10, 30이 되어 link 관계와 모순돼요. 올바른 삽입 순서는 A→N→C→NULL이고, 같은 대입의 역순은 A→N→N…이므로 원래 C에 도달하지 못해요. 동적 연결이라고 무한히 늘어나는 것은 아니며 할당 실패 경로가 필요해요.",
+        "pitfall": "마지막 data가 NULL이라고 쓰지 않아요. NULL인 것은 link예요. 탐색까지 포함한 임의 위치 삽입을 항상 O(1)이라 하지 않아요.",
+        "objectives": [
+          "연결 표현의 물리 주소와 논리 순서",
+          "헤드 포인터·데이터·링크 구분",
+          "단순·원형·이중 연결의 구조",
+          "탐색 비용과 링크 변경 비용 구분",
+          "그림에서 삽입 링크 보존 순서 설명(1005의 C 세 분기·이중포인터 평가와 구별)",
+          "고정 배열 용량과 연결 노드의 할당 한계"
+        ],
+        "code": "",
+        "extra_pages": [
+          7,
+          8,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "adaptation": "강의 개념·그림을 근거로 질문을 직접 작성했습니다. 강의 원문 코드의 전사가 아닙니다."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "78d738c09b84dcc1f3e2a410dfcf606217fc2ee8a2b4c6d4ee79d4f76600a1be",
+        "independent_answer": "head300에서 링크를 따라 A(data10)→B(data20)→C(data30)→NULL이다. head는 첫 노드 주소, data는 저장 원소,link는 다음 노드 주소다. 같은 첫 노드 A를 기준으로 원형이면 C.link=300이며 이중 리스트에는 이전 노드를 가리키는 링크가 추가된다. 순서는 주소의 대소가 아니라 링크로 정하므로 연속 배치가 필요 없다. 유효한 선행 노드와 새 노드가 이미 주어지면 연결 변경은 Θ(1),처음부터 위치를 찾으면 최악 Θ(n)이다. A→C 사이 삽입의 통상 두 문장은 N.link=A.link를 먼저, A.link=N을 나중에 한다. 그대로 순서를 뒤집으면 N.link=N이 되어 자기 순환을 만들고 A에서 C로 가는 경로를 잃는다. 고정 배열은 정해진 용량을 넘겨 원소를 저장할 수 없고, 연결 리스트는 필요할 때 노드를 할당해 늘릴 수 있다. 다만 무한히 늘어나는 것은 아니며 malloc이 NULL을 반환하는 할당 실패가 나면 삽입을 완료할 수 없다. 새 노드를 성공적으로 확보하기 전에 기존 링크나 길이를 바꾸면 안 된다.",
+        "reasoning": "노드 탐색은 목표까지 각 링크를 따라야 해 선형 최악 하한·상한이 일치한다. 연결 변경은 일정한 포인터 대입 수다. 최종 질문은 별도 임시 포인터 없이 N.link=A.link와 A.link=N 두 대입을 사용한다고 명시했다. 따라서 첫 대입으로 C를 보존한 뒤 A.link를 N으로 바꿔야 한다. 정확히 두 대입을 역순 실행하면 N.link=N이 되어 자기 순환이며 A에서 C로 가는 경로가 사라진다. 이전 모호성은 최종 문구로 해결되었다. 동적 할당은 사전 고정 용량의 제약을 완화하지만 사용 가능한 메모리와 할당 성공 여부의 제약을 없애지 않는다. 유효한 새 노드가 이미 주어진 링크 변경의 Θ(1) 비용과 할당 가능성은 별개의 조건이다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "linked-representation"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "linked-representation"
+        }
+      ]
     }
   ],
   "excluded": [
@@ -220,31 +498,79 @@
   ],
   "coverage": [
     {
-      "objective": "array-insert",
+      "objective": "객체·연산·ADT구현분리와 순서",
       "questions": [
-        "p1"
+        "p3"
       ],
       "evidence": {
-        "path": "자료구조_강의록_2026/Software_4_List.pdf",
-        "pdf_page": 11,
-        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
-        "example": "array-insert",
-        "taught_on": "1001",
-        "extra_pages": []
+        "slides": "S4 p1–18",
+        "stt": [
+          "1001 Part02–04 lines125–263 ADT·사용예",
+          "1001 Part05–06 배열표현·삽입삭제",
+          "1001 Part07 lines454–526 연결표현과종류",
+          "1001 Part08 lines529–551 p18삽입순서"
+        ]
       }
     },
     {
-      "objective": "array-delete",
+      "objective": "상태표현·init·empty/full",
       "questions": [
+        "p4"
+      ],
+      "evidence": {
+        "slides": "S4 p1–18",
+        "stt": [
+          "1001 Part02–04 lines125–263 ADT·사용예",
+          "1001 Part05–06 배열표현·삽입삭제",
+          "1001 Part07 lines454–526 연결표현과종류",
+          "1001 Part08 lines529–551 p18삽입순서"
+        ]
+      }
+    },
+    {
+      "objective": "배열삽입·삭제·경계·이동·비용",
+      "questions": [
+        "p1",
         "p2"
       ],
       "evidence": {
-        "path": "자료구조_강의록_2026/Software_4_List.pdf",
-        "pdf_page": 12,
-        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
-        "example": "array-delete",
-        "taught_on": "1001",
-        "extra_pages": []
+        "slides": "S4 p1–18",
+        "stt": [
+          "1001 Part02–04 lines125–263 ADT·사용예",
+          "1001 Part05–06 배열표현·삽입삭제",
+          "1001 Part07 lines454–526 연결표현과종류",
+          "1001 Part08 lines529–551 p18삽입순서"
+        ]
+      }
+    },
+    {
+      "objective": "연결표현·head·node·types·물리순서와논리순서",
+      "questions": [
+        "p5"
+      ],
+      "evidence": {
+        "slides": "S4 p1–18",
+        "stt": [
+          "1001 Part02–04 lines125–263 ADT·사용예",
+          "1001 Part05–06 배열표현·삽입삭제",
+          "1001 Part07 lines454–526 연결표현과종류",
+          "1001 Part08 lines529–551 p18삽입순서"
+        ]
+      }
+    },
+    {
+      "objective": "p18삽입링크순서",
+      "questions": [
+        "p5"
+      ],
+      "evidence": {
+        "slides": "S4 p1–18",
+        "stt": [
+          "1001 Part02–04 lines125–263 ADT·사용예",
+          "1001 Part05–06 배열표현·삽입삭제",
+          "1001 Part07 lines454–526 연결표현과종류",
+          "1001 Part08 lines529–551 p18삽입순서"
+        ]
       }
     }
   ],
@@ -343,5 +669,17 @@
     "2019-mid-q9",
     "unk-final-ltk-q1"
   ],
-  "exam_retention_policy": "same-exam-reuse-only"
+  "exam_retention_policy": "same-exam-reuse-only",
+  "coverage_review": {
+    "status": "pass",
+    "method": "core goals extracted before selection, actual question prompts mapped; solution-only mentions and later-only questions excluded",
+    "evidence": "docs/verify/no-exam-coverage-20261017/scope-lists.json",
+    "supplementary_excluded": [],
+    "excluded": [
+      {
+        "topic": "S4 p19이후삭제구현·구체C",
+        "reason": "1001말미 다음동영상으로예고;1005실제학습"
+      }
+    ]
+  }
 }

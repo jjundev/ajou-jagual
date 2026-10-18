@@ -4,8 +4,8 @@
   "slug": "List",
   "note_title": "리스트 ADT와 두 구현 — 5살도 이해하는 정리노트",
   "note_subtitle": "기존 노트 보존",
-  "review_title": "복습문제 2선 — 1001 수업 범위",
-  "review_intro": "핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
+  "review_title": "복습문제 5선 — 1001 수업 범위",
+  "review_intro": "강의노트의 핵심 개념과 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
   "footer_note": "기존 노트 보존",
   "footer_review": "기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.",
   "sessions": [
@@ -207,14 +207,9 @@
   "forbidden_outside_preview": [],
   "parts": [
     {
-      "id": "partA",
-      "title": "A. 검토한 기출·교과서 문제",
-      "short": "A 기존 문제"
-    },
-    {
       "id": "partB",
-      "title": "B. 강의 예제 코드",
-      "short": "B 강의 코드"
+      "title": "강의노트 기반 생성문제",
+      "short": "강의 생성문제"
     }
   ],
   "problems": [
@@ -269,6 +264,106 @@
         "array-delete"
       ],
       "task_family": "array-delete"
+    },
+    {
+      "id": "p3",
+      "part": "partB",
+      "source": "lecture-s04-p5-list-adt-contract",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-example",
+      "level": 3,
+      "date": "1001",
+      "terms": [
+        "리스트 ADT의 연산 계약과 순서"
+      ],
+      "answer": "[A](1), [A,B](2), [A,B,C](3), [A,D,B,C](4), [A,D,C](3), [A,E,C](3). get_entry(1)=E, get_length()=3. add는 기존 항목을 보존하며 길이를 1 늘리고 replace는 값만 바꿔 길이를 유지합니다. 위치별 순서가 다르면 다른 리스트이며 ADT 계약만으로 결과를 정할 수 있습니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 5,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "list-adt-contract",
+        "taught_on": "1001",
+        "extra_pages": [
+          2,
+          3,
+          4,
+          6
+        ]
+      },
+      "objectives": [
+        "리스트 ADT 객체와 구현 분리",
+        "삽입·삭제·대치·조회 계약과 길이 불변식"
+      ],
+      "task_family": "list-adt-contract"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "lecture-s04-p9-array-list-state",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-struct",
+      "level": 3,
+      "date": "1001",
+      "terms": [
+        "초기화와 논리적 길이"
+      ],
+      "answer": "초기화 직후 length=0, is_empty=1, is_full=0, 논리적 리스트=[]. {7,8,9}는 길이 밖의 이전 값이므로 원소가 아닙니다. length=3이면 is_empty=0,is_full=1입니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 9,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "array-list-state",
+        "taught_on": "1001",
+        "extra_pages": [
+          10
+        ]
+      },
+      "objectives": [
+        "ArrayListType 초기화와 유효 원소 영역",
+        "공백·포화 상태 검사"
+      ],
+      "task_family": "array-list-state"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "lecture-s04-p18-linked-representation",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-node",
+      "level": 3,
+      "date": "1001",
+      "terms": [
+        "주소로 읽는 연결 리스트의 순서"
+      ],
+      "answer": "논리 순서는10→20→30이며 마지막 link=NULL입니다. head는 첫 노드의 주소를 담는 별도 포인터, data는 값,link는 다음 노드 주소입니다. 첫 노드를 head로 두는 원형 구조에서 C.link=300입니다. 이중 연결은 선행 노드 링크가 추가됩니다. 연결은 주소를 따라가므로 주소의 크기·연속성은 순서를 결정하지 않습니다. 유효 선행 노드를 알면 링크 변경 O(1), 일반적인 위치 탐색은 최악 O(n)입니다. 삽입은 N.link를 기존 A.link(C)에 먼저 연결한 뒤 A.link를 N으로 바꿉니다. 반대 순서 뒤 N.link=A.link를 적용하면 N이 자신을 가리키고 C로 가는 기존 연결을 잃습니다. 고정 배열은 정해진 용량에 제한되며 연결 노드는 필요할 때 할당해 늘릴 수 있지만, 사용 가능한 메모리와 할당 성공에 제한돼요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 18,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "linked-representation",
+        "taught_on": "1001",
+        "extra_pages": [
+          7,
+          8,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
+      },
+      "objectives": [
+        "연결 표현의 물리 주소와 논리 순서",
+        "헤드 포인터·데이터·링크 구분",
+        "단순·원형·이중 연결의 구조",
+        "탐색 비용과 링크 변경 비용 구분",
+        "그림에서 삽입 링크 보존 순서 설명(1005의 C 세 분기·이중포인터 평가와 구별)",
+        "고정 배열 용량과 연결 노드의 할당 한계"
+      ],
+      "task_family": "linked-representation"
     }
   ],
   "links": [],

@@ -18,3 +18,19 @@ def test_lecture_reference_valid_and_bad_boundaries(tmp_path):
 
 def test_missing_contract_rejected(tmp_path):
     assert validate_lecture_source(tmp_path,{},[])
+
+
+def test_retained_supplement_needs_explicit_scope_evidence(tmp_path):
+    pdf=tmp_path/'lecture.pdf'
+    doc=fitz.open();doc.new_page();doc.save(pdf);doc.close()
+    q={'source':'lecture-s01-p1-maximum','objectives':['maximum'],
+       'task_family':'maximum','scope':'retained-supplement',
+       'lecture_ref':{'path':'lecture.pdf','pdf_page':1,
+                     'sha256':hashlib.sha256(pdf.read_bytes()).hexdigest(),
+                     'example':'maximum','taught_on':'0914'}}
+    sessions=[{'date':'0907','slides':'S1 p2–14'}]
+    assert validate_lecture_source(tmp_path,q,sessions)
+    q['scope_evidence']='Existing question retained; 0907 preview and 0914 STT 30:37 confirm later treatment; excluded from 0907 core coverage.'
+    assert validate_lecture_source(tmp_path,q,sessions)==[]
+    q.pop('scope')
+    assert validate_lecture_source(tmp_path,q,sessions)

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>복습문제 4선 — 0907 수업 범위</title>
-  <meta name="description" content="복습문제 4선 — 0907 수업 범위">
+  <title>복습문제 7선 — 0907 수업 범위</title>
+  <meta name="description" content="복습문제 7선 — 0907 수업 범위">
   <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="e74c8877405f596e2cf8" data-screens="article.card" data-panels="review" data-range="0907">
+<body data-revision="0d426ec3f34c5d89c5a4" data-screens="article.card" data-panels="review" data-range="0907">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -369,21 +369,44 @@
         </div>
         <p class="panel-meta">푼 문제 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
         <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
-        <nav class="toc" aria-label="목차"><a href="#partA">A 기존 문제</a><a href="#partB">B 강의 코드</a></nav>
+        <nav class="toc" aria-label="목차"><a href="#partA">A 기존 문제</a><a href="#partB">강의 생성문제</a><a href="#partSupplement">후속 보충</a></nav>
       </div>
     </aside>
     <div class="content">
   <main>
-<div class="hero"><h1>복습문제 4선 — 0907 수업 범위</h1><p>핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.</p></div>
+<div class="hero"><h1>복습문제 7선 — 0907 수업 범위</h1><p>강의노트의 핵심 개념과 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.</p></div>
 <section id="partA"><h2>A. 검토한 기출·교과서 문제</h2>
 <article class="card" id="p1" data-source="textbook-ch01-q01" data-source-kind="textbook"><h3>P1. 두 정수 바꾸기</h3><div class="problem"><p>2개의 정수를 서로 교환하는 알고리즘을 의사 코드로 작성해보자.</p><div class="options"></div></div><details class="original"><summary>교과서 원문 보기</summary><p>1장 자료구조와 알고리즘 · 01번 · 책 36쪽</p><p>2개의 정수를 서로 교환하는 알고리즘을 의사 코드로 작성해보자.</p><div class="options"></div></details><details class="hint"><summary>힌트 보기</summary><p>첫 값을 덮어쓰기 전에 어디에 보관할지 생각해 보세요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>a=3, b=7에서 a를 바로 b로 바꾸면 3을 잃어요.</li><li>temp에 3을 보관하고 a에 7, b에 temp의 3을 넣어요.</li><li>대입 순서가 결과를 결정해요. 서로 같은 수여도 그대로 동작해요.</li><li>수업과의 연결: 0907 수업 정리노트의 “알고리즘의 정의” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><p class="answer">정답: temp ← a; a ← b; b ← temp</p></details></article>
 <article class="card" id="p2" data-source="textbook-ch01-q03" data-source-kind="textbook"><h3>P2. 1부터 n까지 더하기</h3><div class="problem"><p>1부터 n까지의 합을 계산하는 알고리즘을 의사 코드로 작성해보자.</p><div class="options"></div></div><details class="original"><summary>교과서 원문 보기</summary><p>1장 자료구조와 알고리즘 · 03번 · 책 36쪽</p><p>1부터 n까지의 합을 계산하는 알고리즘을 의사 코드로 작성해보자.</p><div class="options"></div></details><details class="hint"><summary>힌트 보기</summary><p>덧셈 결과를 보관할 변수를 0으로 시작해 보세요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>양의 정수 n을 입력받아요. sum을 0으로 두어요.</li><li>n=4이면 0 → 1 → 3 → 6 → 10으로 누적돼요.</li><li>i가 n을 넘으면 종료하고 sum을 출력해요.</li><li>수업과의 연결: 0907 수업 정리노트의 “알고리즘의 정의” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><p class="answer">정답: sum ← 0; i=1..n에 대해 sum ← sum+i; sum 출력</p></details></article>
 <article class="card" id="p3" data-source="textbook-ch05-q01" data-source-kind="textbook"><h3>P3. 큐에서 꺼내는 순서</h3><div class="problem"><p>문자 A, B, C, D, E를 큐에 넣었다가 다시 꺼내어 출력하면 어떻게 되는가?</p><div class="options"><div class="option"><p>(a)</p><p>A, B, C, D, E</p></div><div class="option"><p>(b)</p><p>E, D, C, B, A</p></div><div class="option"><p>(c)</p><p>A, B, C, E, D</p></div><div class="option"><p>(d)</p><p>B, A, C, D, E</p></div></div></div><details class="original"><summary>교과서 원문 보기</summary><p>5장 큐 · 01번 · 책 171쪽</p><p>문자 A, B, C, D, E를 큐에 넣었다가 다시 꺼내어 출력하면 어떻게 되는가?</p><div class="options"><div class="option"><p>(a)</p><p>A, B, C, D, E</p></div><div class="option"><p>(b)</p><p>E, D, C, B, A</p></div><div class="option"><p>(c)</p><p>A, B, C, E, D</p></div><div class="option"><p>(d)</p><p>B, A, C, D, E</p></div></div></details><details class="hint"><summary>힌트 보기</summary><p>매표소 줄에서 누가 먼저 나가는지 떠올려 보세요.</p></details><details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>A가 먼저 들어왔으니 먼저 나가요.</li><li>그 다음 B, C, D, E가 입력 순서대로 나가요.</li><li>큐는 먼저 들어온 것을 먼저 꺼내는 FIFO예요.</li><li>수업과의 연결: 0907 수업 정리노트의 “매표소 줄은 큐, 책더미는 스택” 토픽과 강의록에서 다룬 연산·표현을 적용해요.</li></ol><p class="answer">정답: (a) A, B, C, D, E</p></details></article>
 </section>
-<section id="partB"><h2>B. 강의 예제 코드</h2>
+<section id="partB"><h2>B. 강의노트 기반 생성문제</h2>
+<article class="card" id="p5" data-source="lecture-s01-p6-design-analysis-contract" data-source-kind="lecture-code">
+<h3>P5. 자료구조·알고리즘과 설계·분석 구별</h3>
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p6 · 추가 근거 p2,5,7</p><p>벽돌 자체, 벽돌을 조직한 벽의 구조, 벽을 쌓는 절차는 각각 데이터·자료구조·알고리즘 중 무엇에 대응하나요? 알고리즘 정의에서 유한한 명령과 순서가 필요한 이유를 쓰세요. 문제를 풀 새 방법을 고르는 일과 주어진 방법의 비용을 계산하는 일은 각각 설계·분석 중 무엇인가요? 빠르기·메모리·재사용성·가독성을 고려해야 하는 이유도 설명하세요.</p></div>
+<details class="original"><summary>강의 예제 보기</summary><p>S1 p6 · 추가 근거 p2,5,7 · Software_1_자료구조및알고리즘.pdf. 강의의 개념·그림·코드 연산을 바탕으로 조건과 질문을 새로 작성한 자체 출제예요. 제시 코드는 있는 경우 학습 확인용 자체 코드이며 강의 원문 발췌가 아니에요. 질문·입력 조건·검산은 자체 작성했어요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>벽돌 자체 → 데이터, 조직한 벽의 구조 → 자료구조, 쌓는 절차 → 알고리즘.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>데이터를 담는 재료와 그 재료에 수행할 순서를 분리해요.</li><li>순서가 바뀌면 같은 명령도 결과가 바뀌며, 유한한 절차가 끝나는 조건도 필요해요.</li><li>새 해결 절차의 선택은 설계, 이미 주어진 절차의 비용 평가는 분석이에요.</li><li>성능은 빠르기와 공간을 함께 평가하고, 읽기 쉬운 함수는 이해와 재사용에 도움이 돼요.</li></ol><p class="answer">정답: 벽돌 자체는 데이터, 벽돌을 조직한 벽의 구조는 자료구조, 쌓는 절차는 알고리즘이에요. 알고리즘은 계산·데이터 처리를 위한 유한한 명령의 순서예요. 새 해결 방법을 고르면 설계, 주어진 방법의 계산 비용을 평가하면 분석이에요. 시간·공간 비용을 줄이고 재사용성과 가독성을 높여 수정·협업 비용도 줄여요.</p><p>코드가 짧다는 사실만으로 실행이 빠르다고 결론내리지 않아요. 가독성과 실행 비용은 별도로 판단해요.</p></details>
+</article>
+<article class="card" id="p6" data-source="lecture-s01-p7-resource-scope-sharing" data-source-kind="lecture-code">
+<h3>P6. 지역 변수·함수 분리와 자원 공유</h3>
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p7 · 추가 근거 p6</p><p>한 함수 안에서만 필요한 큰 임시 배열을 전역 변수로 두는 설계와 그 함수의 지역 변수로 두는 설계를 비교하세요. 모든 지역 변수가 언제나 전역 변수보다 메모리를 적게 쓰는지, 재귀 호출에서도 그런지 설명하세요. 읽기 쉬운 함수로 작업을 나누고 큰 원본을 복사하지 않고 주소로 공유할 때의 장점과 공유값 변경의 주의점도 쓰세요. 재귀 부분은 메모리 판단을 위한 보충 조건이에요. 추가로, int를 unsigned int로 바꾸면 바이트 크기가 줄어드나요? 원소 10개만 필요한데 100칸 배열을 잡으면 사용하지 않는 칸이 몇 개인지도 쓰세요.</p></div>
+<details class="original"><summary>강의 예제 보기</summary><p>S1 p7 · 추가 근거 p6 · Software_1_자료구조및알고리즘.pdf. 강의의 개념·그림·코드 연산을 바탕으로 조건과 질문을 새로 작성한 자체 출제예요. 제시 코드는 있는 경우 학습 확인용 자체 코드이며 강의 원문 발췌가 아니에요. 질문·입력 조건·검산은 자체 작성했어요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>누가 쓰는가·언제까지 필요한가·동시에 몇 개가 존재하는가의 세 칸을 적어요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>한 함수에서만 쓰는 임시 자원의 필요 범위부터 정해요.</li><li>전역 객체의 수명은 전체 실행이고 자동 지역 객체는 블록 진입·종료에 따라 존재해요.</li><li>여러 호출이 동시에 활성인 경우 각 호출의 자동 객체가 별도로 필요해요.</li><li>역할별 함수 이름은 흐름을 드러내고 주소 공유는 한 원본을 함께 보게 해요. 공유 변경이 다른 사용자에게 전파되는지도 확인해요.</li><li>타입의 값 범위와 크기는 구별해요. int와 unsigned int는 같은 크기이며, 100칸 중 실제 필요한 10칸을 빼면 90칸이 남아요.</li></ol><p class="answer">정답: 임시 배열은 필요한 범위에 지역화하면 접근 범위와 수명을 제한할 수 있어요. 전역 객체는 프로그램 실행 동안 존재해요. 지역 변수라고 항상 메모리가 줄지는 않으며 동시에 활성인 재귀 호출마다 별도 배열이 있으면 공간이 늘어요. 함수 분리는 역할을 읽고 재사용하기 좋게 하고 주소 공유는 원본 복사 비용을 줄이지만 다른 사용자가 보는 값도 바뀔 수 있어요. unsigned int와 int의 크기는 같아서 부호 없는 타입으로 바꾸는 것만으로 공간이 줄지 않아요. 필요한 10칸 대신 100칸을 잡으면 90칸이 남아요.</p><p>지역 변수가 언제나 공간을 절감한다는 절대 명제는 틀려요. 주소로 넘긴다고 호출자 객체의 복사본이 새로 생기는 것도 아니에요.</p></details>
+</article>
+<article class="card" id="p7" data-source="lecture-s01-p13-everyday-structure-selection" data-source-kind="lecture-code">
+<h3>P7. 일상 예제로 고르는 자료구조</h3>
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p13 · 추가 근거 p14</p><p>할 일의 순서, 도시와 도로의 연결, 상하 관계가 있는 조직도, 위에 쌓아 맨 위부터 꺼내는 책더미, 단어로 뜻을 찾는 사전을 각각 리스트·그래프·트리·스택·사전 중 알맞은 구조와 연결하고 이유를 쓰세요. 책 A,B,C를 차례로 쌓은 뒤 한 권 꺼내면 무엇이 나오며, 먼저 온 사람이 먼저 나가는 매표소 줄과 어떤 점이 다른가요?</p></div>
+<details class="original"><summary>강의 예제 보기</summary><p>S1 p13 · 추가 근거 p14 · Software_1_자료구조및알고리즘.pdf. 강의의 개념·그림·코드 연산을 바탕으로 조건과 질문을 새로 작성한 자체 출제예요. 제시 코드는 있는 경우 학습 확인용 자체 코드이며 강의 원문 발췌가 아니에요. 질문·입력 조건·검산은 자체 작성했어요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>할 일: 순서 → 리스트라고 첫 행을 적어요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>이름을 외우기 전에 보존할 관계를 정해요: 순서·연결·계층·최근 원소·키 조회예요.</li><li>할 일의 순서는 리스트, 일반 연결은 그래프, 계층은 트리에 대응해요.</li><li>책더미는 맨 위가 마지막에 들어온 책이므로 C부터 나와요.</li><li>사전은 단어라는 키로 뜻을 찾고, 큐는 도착 순서를 지켜요.</li></ol><p class="answer">정답: 할 일은 순서가 있는 리스트, 도시·도로는 연결 관계인 그래프, 조직도는 계층인 트리, 책더미는 후입선출 스택, 단어→뜻은 사전이에요. 책은 마지막에 쌓은 C가 먼저 나오고, 큐인 매표소 줄은 먼저 들어온 사람이 먼저 나가요.</p><p>연결이 있다는 이유만으로 모두 트리라고 하지 않아요. 계층 관계인지 확인해요. 스택의 마지막 원소 우선과 큐의 첫 원소 우선을 바꾸지 않아요.</p></details>
+</article>
+</section>
+<section id="partSupplement"><h2>보충. 후속 수업의 최대값 예제</h2>
 <article class="card" id="p4" data-source="lecture-s01-p21-find-max" data-source-kind="lecture-code">
 <h3>P4. 최대값 탐색의 초기값과 종료 조건</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p21</p><p>강의 코드에서 score의 앞 n개가 입력이에요. score={-8,-3,-10,-1}, n=4일 때 tmp의 변화와 반환값을 적으세요. tmp를 0으로 초기화하면 생기는 오류, n에 필요한 조건, 이 반복이 유한한 이유도 설명하세요.</p><pre><code class="language-c">int find_max_score(int n)
+<div class="problem"><p><strong>후속 수업 보충:</strong> S1 p21의 최대값 알고리즘은 0914 수업에서 분석했어요. 이 문항은 보존하되 0907 핵심 범위의 평가 문항으로 세지 않아요.</p><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p21</p><p>강의 코드에서 score의 앞 n개가 입력이에요. score={-8,-3,-10,-1}, n=4일 때 tmp의 변화와 반환값을 적으세요. tmp를 0으로 초기화하면 생기는 오류, n에 필요한 조건, 이 반복이 유한한 이유도 설명하세요.</p><pre><code class="language-c">int find_max_score(int n)
 {
     int i, tmp;
     tmp = score[0];

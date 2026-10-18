@@ -459,6 +459,269 @@
           "locator": "0921/p8"
         }
       ]
+    },
+    {
+      "id": "p9",
+      "part": "partB",
+      "source": "lecture-s03-p3-array-adt-address",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-array-adt",
+      "level": 3,
+      "date": "0921",
+      "terms": [
+        "배열 ADT와 행 우선 주소 계산"
+      ],
+      "answer": "객체는 인덱스와 요소 쌍의 집합이에요. create(6)은 6개 요소의 배열 생성, store는 2번 위치에 7 저장, retrieve는 그 위치의 7 반환이에요. C 행 우선 배열 A[2][1]의 앞에는 2×4+1=9개 원소가 있어 주소는 1000+9×4=1036이에요. 0≤2<3, 0≤1<4로 유효해요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 3,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "array-adt-address",
+        "taught_on": "0921",
+        "extra_pages": [
+          4,
+          5
+        ]
+      },
+      "objectives": [
+        "배열 ADT의 객체와 create/retrieve/store 의미",
+        "행 우선 메모리 배치와 바이트 주소 계산",
+        "배열 인덱스 경계 확인"
+      ],
+      "task_family": "array-adt-address",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "0921",
+        "ch": 3,
+        "page": 3,
+        "name": "array-adt-address",
+        "anchor": "s1-array-adt",
+        "title": "배열 ADT와 행 우선 주소 계산",
+        "prompt": "배열 ADT의 객체를 설명하고 create(6), store(A,2,7), retrieve(A,2)가 하는 일을 쓰세요. 이어 int A[3][4]의 시작 주소를 1000, int 크기를 4바이트로 가정할 때 A[2][1]의 주소를 구하고 인덱스 범위가 유효한지 확인하세요.",
+        "answer": "객체는 인덱스와 요소 쌍의 집합이에요. create(6)은 6개 요소의 배열 생성, store는 2번 위치에 7 저장, retrieve는 그 위치의 7 반환이에요. C 행 우선 배열 A[2][1]의 앞에는 2×4+1=9개 원소가 있어 주소는 1000+9×4=1036이에요. 0≤2<3, 0≤1<4로 유효해요.",
+        "steps": [
+          "ADT는 가능한 객체와 연산의 의미를 먼저 정하고 물리 주소 계산과 구별해요.",
+          "store 뒤 같은 인덱스 retrieve 결과는 저장한 7이에요.",
+          "앞선 두 행에 8개, 현재 행 앞에 1개가 있으므로 총 9개 원소를 건너뛰어요.",
+          "9개에 원소 크기 4바이트를 곱해 시작 주소에 더해요."
+        ],
+        "pitfall": "행 번호에 행 수 3을 곱하지 않아요. 한 행의 열 수 4를 곱해요. 범위를 벗어난 인덱스에 주소 공식을 적용해 유효한 접근이라고 하지 않아요.",
+        "start": "A[2][1] 앞의 원소 수 = 2×4+1이라고 적어요.",
+        "recall": "‘객체와 연산’은 추상 자료형(ADT)의 단서예요. ADT는 무엇을 저장하고 어떤 작업을 할지 정의해요. ‘C의 2차원 배열’은 행 우선(row-major) 연속 배치의 단서예요. 열 수가 C일 때 A[r][c] 앞에는 rC+c개 원소가 있고 원소 크기를 곱하면 바이트 간격이 돼요.",
+        "verify": "A[0][0]=1000, 다음 행 A[1][0]=1016, A[2][0]=1032에서 한 원소 더 가면 1036이에요. 행 단위 계산과 원소 단위 계산이 일치해요.",
+        "objectives": [
+          "배열 ADT의 객체와 create/retrieve/store 의미",
+          "행 우선 메모리 배치와 바이트 주소 계산",
+          "배열 인덱스 경계 확인"
+        ],
+        "code": "",
+        "extra_pages": [
+          4,
+          5
+        ],
+        "adaptation": "강의의 개념·그림·코드 연산을 바탕으로 조건과 질문을 새로 작성한 자체 출제예요. 제시 코드는 있는 경우 학습 확인용 자체 코드이며 강의 원문 발췌가 아니에요."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "fb7dc139a6ac301cc3f64ec9f612c96c1eaf1df3ca3d2d5a0bafce7e3c1b0366",
+        "independent_answer": "배열 ADT 객체는 <인덱스,요소> 쌍의 집합이다. create(6)은 6개 요소 배열 생성, store(A,2,7)은 인덱스2에 7 저장, retrieve(A,2)는 7 반환이다. C의 0 기반 행 우선 배열에서 A[2][1] 주소는 1000+(2*4+1)*4=1036이다. 0<=2<3 및 0<=1<4이므로 유효하다.",
+        "reasoning": "S3 p3의 ADT 계약을 확인했다. 행 하나에 원소4개, 인덱스2 행 앞에 원소8개, 해당 행에서 한 칸 추가하므로 9*sizeof(int)만큼 이동한다. 숫자 주소는 문제의 가정이며 실제 C 포인터를 정수처럼 가산한 실행 증명이 아니다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "array-adt-address"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "array-adt-address"
+        }
+      ]
+    },
+    {
+      "id": "p10",
+      "part": "partB",
+      "source": "lecture-s03-p11-polynomial-add-merge",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-poly-add2",
+      "level": 3,
+      "date": "0921",
+      "terms": [
+        "두 표현의 다항식 덧셈과 남은 항 처리"
+      ],
+      "answer": "결과는 18x^3+3x^2+7x+2, 내림차순 계수 [18,3,7,2], 쌍 [(18,3),(3,2),(7,1),(2,0)]이에요. >에서는 A만, =에서는 양쪽, <에서는 B만 전진해요. 높은 차수만 출력한 경우 다른 입력의 현재 항은 아직 처리하지 않았기 때문이에요. 한쪽 종료 뒤 다른 쪽 남은 항을 복사해요. 희소 방식은 합이 0인 항을 저장하지 않아요. 모든 차수 배열은 O(D+1), 희소 병합은 O(m+n)이에요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 11,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "polynomial-add-merge",
+        "taught_on": "0921",
+        "extra_pages": [
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "objectives": [
+        "모든 차수 배열의 차수 정렬과 덧셈",
+        "희소 다항식 병합 세 분기와 인덱스 진행",
+        "입력 조기 소진 및 계수 상쇄 경계",
+        "차수 기반 비용과 항 수 기반 비용 비교"
+      ],
+      "task_family": "polynomial-add-merge",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "0921",
+        "ch": 3,
+        "page": 11,
+        "name": "polynomial-add-merge",
+        "anchor": "s2-poly-add2",
+        "title": "두 표현의 다항식 덧셈과 남은 항 처리",
+        "prompt": "A=8x^3+7x+1, B=10x^3+3x^2+1을 강의의 두 저장 방식으로 더하세요. 모든 차수 배열의 내림차순 결과 계수를 쓰고 S3 p8에서 높은 차수 쪽만 읽을 때 왜 다른 쪽 인덱스는 그대로인지 설명하세요. 0이 아닌 (계수,차수) 쌍을 합치는 S3 p11의 >,=,< 분기에서 어느 입력 인덱스를 전진시키는지와 출력 쌍을 쓰세요. 한쪽이 먼저 끝날 때, 같은 차수의 계수 합이 0일 때 처리와 두 방식의 시간복잡도를 차수 D 및 항 수 m,n으로 설명하세요.",
+        "answer": "결과는 18x^3+3x^2+7x+2, 내림차순 계수 [18,3,7,2], 쌍 [(18,3),(3,2),(7,1),(2,0)]이에요. >에서는 A만, =에서는 양쪽, <에서는 B만 전진해요. 높은 차수만 출력한 경우 다른 입력의 현재 항은 아직 처리하지 않았기 때문이에요. 한쪽 종료 뒤 다른 쪽 남은 항을 복사해요. 희소 방식은 합이 0인 항을 저장하지 않아요. 모든 차수 배열은 O(D+1), 희소 병합은 O(m+n)이에요.",
+        "steps": [
+          "계수 배열은 같은 차수끼리 맞추므로 [8,0,7,1]+[10,3,0,1]을 써요.",
+          "각 자리 합으로 [18,3,7,2]를 얻어요. 차수가 높은 입력만 처리했다면 다른 쪽 항은 아직 기다려요.",
+          "희소 방식은 현재 차수를 비교해 큰 쪽을 복사하고, 같으면 계수를 합쳐 양쪽을 전진해요.",
+          "차수3은 18, 차수2는 B의3, 차수1은 A의7, 차수0은 합2를 저장해요.",
+          "while이 끝나면 남은 입력을 복사해 누락을 막고, 같은 차수 합이0이면 저장만 건너뛰되 양쪽 입력은 전진해요.",
+          "각 입력 위치가 한 번씩 전진하므로 길이에 비례해요. 배열 길이는 D+1, 희소 입력 길이는 m+n이에요."
+        ],
+        "pitfall": "코드 줄 수가 길다고 더 높은 차수의 시간복잡도라고 판단하지 않아요. 두 표현의 D와 m,n은 서로 다른 입력 크기예요.",
+        "start": "A의 계수 [8,0,7,1], B의 계수 [10,3,0,1]이라고 적어요.",
+        "recall": "‘정렬된 차수 두 묶음’은 병합(merge)의 단서예요. 차수가 큰 항부터 확정하면 뒤에서 같은 차수보다 큰 항이 새로 나타나지 않아요. 같을 때 양쪽을 소비하고 나머지 분기에서는 한쪽만 소비해요. 입력 포인터가 후퇴하지 않아 총 전진 수로 시간복잡도를 셀 수 있어요.",
+        "verify": "x=1을 대입하면 A=16, B=14, 결과=30으로 일치해요. 계수별 직접 덧셈이 희소 병합 출력과도 같아요. 별도 경계로 A=x, B=-x이면 출력 항이 없고, A=x^2+x+1, B=x^2이면 마지막 x와1을 나머지 복사해야 해요.",
+        "objectives": [
+          "모든 차수 배열의 차수 정렬과 덧셈",
+          "희소 다항식 병합 세 분기와 인덱스 진행",
+          "입력 조기 소진 및 계수 상쇄 경계",
+          "차수 기반 비용과 항 수 기반 비용 비교"
+        ],
+        "code": "",
+        "extra_pages": [
+          7,
+          8,
+          9,
+          10
+        ],
+        "adaptation": "강의의 개념·그림·코드 연산을 바탕으로 조건과 질문을 새로 작성한 자체 출제예요. 제시 코드는 있는 경우 학습 확인용 자체 코드이며 강의 원문 발췌가 아니에요."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "46c0c06a91d6681990ebdb37b62c1fe65296e535944c18096c623766b0408c27",
+        "independent_answer": "A=[8,0,7,1], B=[10,3,0,1], 결과=[18,3,7,2]이며 18x^3+3x^2+7x+2다. 높은 차수 입력의 항만 읽을 때 다른 입력은 아직 해당 차수를 소비하지 않았으므로 인덱스를 유지한다. 희소 병합에서 >는 A만, =는 A와 B 모두, <는 B만 전진한다. 출력은 (18,3),(3,2),(7,1),(2,0)이다. 한쪽 종료 후 나머지 항을 복사한다. 합0인 차수는 밀집 배열에0으로 남기고, 0이 아닌 항만 저장하는 희소 표현에서는 생략한다. 최대 차수D인 밀집 덧셈은 Θ(D+1), 항 수m,n의 희소 병합은 최악 Θ(m+n)이다.",
+        "reasoning": "S3 p8,p11 확인. 각 밀집 차수 칸을 한번 처리하며 희소 병합의 매 비교는 적어도 입력 인덱스 하나를 전진시킨다. 나머지 복사까지 각 입력 항을 한번 소비하므로 선형 상한이며, 모든 항이 결과에 남는 경우 전체 항을 읽고 써야 하므로 최악 선형 하한이다. D=0도 포함하려면 Θ(D+1)이 엄밀하다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "polynomial-add-merge"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "polynomial-add-merge"
+        }
+      ]
+    },
+    {
+      "id": "p11",
+      "part": "partB",
+      "source": "lecture-s03-p17-struct-assignment-comparison",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s4-struct-assign",
+      "level": 3,
+      "date": "0921",
+      "terms": [
+        "구조체 대입과 비교 연산"
+      ],
+      "answer": "같은 person 타입의 b=a는 가능하고 멤버 값이 복사되어 name 배열의 내용도 복사돼요. b와 a는 별도 객체이므로 b.age만 바꾸면 a.age는 유지돼요. 구조체 전체의 a>b는 C에서 허용되지 않으며 a.age>b.age로 나이를 비교해요.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "pdf_page": 17,
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "example": "struct-assignment-comparison",
+        "taught_on": "0921",
+        "extra_pages": []
+      },
+      "objectives": [
+        "구조체 값 대입과 배열 멤버 복사",
+        "구조체 전체 비교 불가와 멤버별 비교",
+        "복사된 별도 객체의 독립 수정"
+      ],
+      "task_family": "struct-assignment-comparison",
+      "origin": "coverage-supplement",
+      "authoring": {
+        "date": "0921",
+        "ch": 3,
+        "page": 17,
+        "name": "struct-assignment-comparison",
+        "anchor": "s4-struct-assign",
+        "title": "구조체 대입과 비교 연산",
+        "prompt": "강의의 person이 char name[10], int age, float height 멤버를 가진다고 해요. a와 b가 유효하게 초기화된 person일 때 b=a;와 if(a>b)는 각각 가능한가요? b=a; 뒤 b.age를 바꾸면 a.age도 바뀌나요? 나이가 더 많은지를 비교하는 올바른 조건을 쓰고 배열 멤버도 대입 때 복사되는지 설명하세요.",
+        "answer": "같은 person 타입의 b=a는 가능하고 멤버 값이 복사되어 name 배열의 내용도 복사돼요. b와 a는 별도 객체이므로 b.age만 바꾸면 a.age는 유지돼요. 구조체 전체의 a>b는 C에서 허용되지 않으며 a.age>b.age로 나이를 비교해요.",
+        "steps": [
+          "b=a는 같은 구조체 타입의 값을 별도 객체로 대입해요.",
+          "구조체 안의 배열 멤버도 이 구조체 대입에 포함돼요. 배열만 단독으로 b.name=a.name이라고 대입하는 것과 달라요.",
+          "두 객체는 같은 주소가 아니므로 b.age 수정은 a.age를 바꾸지 않아요.",
+          "비교 기준이 나이이면 정수 멤버 a.age와 b.age를 비교해요."
+        ],
+        "pitfall": "구조체 대입 가능을 구조체 > 비교 가능으로 확대하지 않아요. 배열 멤버가 있다는 이유로 구조체 대입 전체가 금지된다고 하지 않아요.",
+        "start": "b=a: 같은 타입의 구조체 값 복사라고 적어요.",
+        "recall": "‘대입’은 값 복사, ‘나이가 많음’은 비교할 특정 멤버의 선택을 요구해요. C는 같은 구조체 타입의 대입을 지원하지만 구조체 전체에 순서 관계 >를 정의하지 않아요. 자료가 포인터 멤버를 가지면 가리키는 객체 복사와 구별해야 하지만 이 문제의 멤버는 문자 배열과 수 값이에요.",
+        "verify": "a.age=20, b=a 뒤 b.age=21이라고 손으로 추적하면 a.age는20, b.age는21이에요. 따라서 a.age>b.age는 거짓이에요. 구조체 통째 비교는 값을 계산할 문제가 아니라 컴파일 단계에서 허용되지 않는 표현이에요.",
+        "objectives": [
+          "구조체 값 대입과 배열 멤버 복사",
+          "구조체 전체 비교 불가와 멤버별 비교",
+          "복사된 별도 객체의 독립 수정"
+        ],
+        "code": "",
+        "extra_pages": [],
+        "adaptation": "강의의 개념·그림·코드 연산을 바탕으로 조건과 질문을 새로 작성한 자체 출제예요. 제시 코드는 있는 경우 학습 확인용 자체 코드이며 강의 원문 발췌가 아니에요."
+      },
+      "verification": {
+        "result": "pass",
+        "method": "blind independent reasoning, separate simulation and source-page comparison",
+        "content_sha256": "02731bf39e3750575ac3cc0bf564592d2ac8343d510dd28ebeffd7f278463e4b",
+        "independent_answer": "같은 person 형의 b=a 대입은 가능하며 name 배열 멤버도 복사된다. 독립 객체 b.age 수정은 a.age를 바꾸지 않는다. 구조체 전체의 a>b 비교는 C에서 허용되지 않는다. 나이 비교는 a.age>b.age다.",
+        "reasoning": "구조체 대입은 구조체 값의 복사다. 배열 자체의 독립 대입문은 허용하지 않아도 구조체 값에 포함된 배열 멤버는 구조체 대입으로 복사된다. 여기에는 포인터 멤버가 없어 간접 참조 공유 문제가 없다.",
+        "evidence": [
+          "docs/verify/no-exam-coverage-20261017/independent.json",
+          "docs/verify/no-exam-coverage-20261017/trace-result.txt"
+        ]
+      },
+      "prerequisites": [],
+      "evidence": [
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/independent.json",
+          "sha256": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
+          "locator": "struct-assignment-comparison"
+        },
+        {
+          "path": "docs/verify/no-exam-coverage-20261017/trace-result.txt",
+          "sha256": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
+          "locator": "struct-assignment-comparison"
+        }
+      ]
     }
   ],
   "excluded": [
@@ -529,87 +792,301 @@
   ],
   "coverage": [
     {
-      "objective": "retained-textbook-ch03-q01",
+      "objective": "배열 메모리 양·초기화",
       "questions": [
-        "p1"
-      ],
-      "evidence": {}
-    },
-    {
-      "objective": "retained-textbook-ch03-q04",
-      "questions": [
+        "p1",
         "p2"
       ],
-      "evidence": {}
+      "evidence": [
+        "STT24:54 배열ADT 인덱스·요소와 연산",
+        "STT28:19 base+index*sizeof 주소",
+        "STT39:44~42:06 모든차수 다항식 덧셈",
+        "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+        "STT58:56~59:28 구조체 대입·비교",
+        "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+      ]
     },
     {
-      "objective": "retained-textbook-ch03-q05",
+      "objective": "구조체·typedef 선언",
       "questions": [
-        "p3"
-      ],
-      "evidence": {}
-    },
-    {
-      "objective": "retained-textbook-ch03-q06",
-      "questions": [
+        "p3",
         "p4"
       ],
-      "evidence": {}
+      "evidence": [
+        "STT24:54 배열ADT 인덱스·요소와 연산",
+        "STT28:19 base+index*sizeof 주소",
+        "STT39:44~42:06 모든차수 다항식 덧셈",
+        "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+        "STT58:56~59:28 구조체 대입·비교",
+        "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+      ]
     },
     {
-      "objective": "sparse-triples",
+      "objective": "희소행렬 표현과 공간 비교",
       "questions": [
         "p5"
       ],
-      "evidence": {
-        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
-        "pdf_page": 14,
-        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
-        "example": "sparse-triples",
-        "taught_on": "0921",
-        "extra_pages": []
-      }
+      "evidence": [
+        "STT24:54 배열ADT 인덱스·요소와 연산",
+        "STT28:19 base+index*sizeof 주소",
+        "STT39:44~42:06 모든차수 다항식 덧셈",
+        "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+        "STT58:56~59:28 구조체 대입·비교",
+        "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+      ]
     },
     {
-      "objective": "hanoi",
+      "objective": "하노이 호출·점화식",
       "questions": [
         "p6"
       ],
-      "evidence": {
-        "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
-        "pdf_page": 19,
-        "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe",
-        "example": "hanoi",
-        "taught_on": "0921",
-        "extra_pages": []
-      }
+      "evidence": [
+        "STT24:54 배열ADT 인덱스·요소와 연산",
+        "STT28:19 base+index*sizeof 주소",
+        "STT39:44~42:06 모든차수 다항식 덧셈",
+        "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+        "STT58:56~59:28 구조체 대입·비교",
+        "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+      ]
     },
     {
-      "objective": "polynomial",
+      "objective": "다항식 계수 순서·공간 비교",
       "questions": [
         "p7"
       ],
-      "evidence": {
-        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
-        "pdf_page": 7,
-        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
-        "example": "polynomial",
-        "taught_on": "0921",
-        "extra_pages": []
-      }
+      "evidence": [
+        "STT24:54 배열ADT 인덱스·요소와 연산",
+        "STT28:19 base+index*sizeof 주소",
+        "STT39:44~42:06 모든차수 다항식 덧셈",
+        "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+        "STT58:56~59:28 구조체 대입·비교",
+        "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+      ]
     },
     {
-      "objective": "self-reference",
+      "objective": "자체 참조 구조체",
       "questions": [
         "p8"
       ],
+      "evidence": [
+        "STT24:54 배열ADT 인덱스·요소와 연산",
+        "STT28:19 base+index*sizeof 주소",
+        "STT39:44~42:06 모든차수 다항식 덧셈",
+        "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+        "STT58:56~59:28 구조체 대입·비교",
+        "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+      ]
+    },
+    {
+      "objective": "배열 ADT의 객체와 create/retrieve/store 의미",
+      "questions": [
+        "p9"
+      ],
       "evidence": {
-        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
-        "pdf_page": 18,
-        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
-        "example": "self-reference",
-        "taught_on": "0921",
-        "extra_pages": []
+        "slides": [
+          3,
+          4,
+          5
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
+      }
+    },
+    {
+      "objective": "행 우선 메모리 배치와 바이트 주소 계산",
+      "questions": [
+        "p9"
+      ],
+      "evidence": {
+        "slides": [
+          3,
+          4,
+          5
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
+      }
+    },
+    {
+      "objective": "배열 인덱스 경계 확인",
+      "questions": [
+        "p9"
+      ],
+      "evidence": {
+        "slides": [
+          3,
+          4,
+          5
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
+      }
+    },
+    {
+      "objective": "모든 차수 배열의 차수 정렬과 덧셈",
+      "questions": [
+        "p10"
+      ],
+      "evidence": {
+        "slides": [
+          11,
+          7,
+          8,
+          9,
+          10
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
+      }
+    },
+    {
+      "objective": "희소 다항식 병합 세 분기와 인덱스 진행",
+      "questions": [
+        "p10"
+      ],
+      "evidence": {
+        "slides": [
+          11,
+          7,
+          8,
+          9,
+          10
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
+      }
+    },
+    {
+      "objective": "입력 조기 소진 및 계수 상쇄 경계",
+      "questions": [
+        "p10"
+      ],
+      "evidence": {
+        "slides": [
+          11,
+          7,
+          8,
+          9,
+          10
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
+      }
+    },
+    {
+      "objective": "차수 기반 비용과 항 수 기반 비용 비교",
+      "questions": [
+        "p10"
+      ],
+      "evidence": {
+        "slides": [
+          11,
+          7,
+          8,
+          9,
+          10
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
+      }
+    },
+    {
+      "objective": "구조체 값 대입과 배열 멤버 복사",
+      "questions": [
+        "p11"
+      ],
+      "evidence": {
+        "slides": [
+          17
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
+      }
+    },
+    {
+      "objective": "구조체 전체 비교 불가와 멤버별 비교",
+      "questions": [
+        "p11"
+      ],
+      "evidence": {
+        "slides": [
+          17
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
+      }
+    },
+    {
+      "objective": "복사된 별도 객체의 독립 수정",
+      "questions": [
+        "p11"
+      ],
+      "evidence": {
+        "slides": [
+          17
+        ],
+        "stt": [
+          "STT24:54 배열ADT 인덱스·요소와 연산",
+          "STT28:19 base+index*sizeof 주소",
+          "STT39:44~42:06 모든차수 다항식 덧셈",
+          "STT43:xx~47:44 희소 덧셈/두 코드복잡도",
+          "STT58:56~59:28 구조체 대입·비교",
+          "STT68:22 포인터는 다음 시간. S3p19 이후를0921 핵심에 포함하지 않음"
+        ]
       }
     }
   ],
@@ -772,5 +1249,12 @@
     "2019-mid-q9",
     "unk-final-ltk-q1"
   ],
-  "exam_retention_policy": "same-exam-reuse-only"
+  "exam_retention_policy": "same-exam-reuse-only",
+  "coverage_review": {
+    "status": "pass",
+    "method": "core goals extracted before selection, actual question prompts mapped; solution-only mentions and later-only questions excluded",
+    "evidence": "docs/verify/no-exam-coverage-20261017/scope-early.json",
+    "supplementary_excluded": [],
+    "excluded": []
+  }
 }

@@ -1,0 +1,13 @@
+array_adt: {"length": 6, "retrieve_2": 7}
+row_major_address: 1036
+polynomial_dense_sparse: {"dense": [18, 3, 7, 2], "sparse": [[18, 3], [3, 2], [7, 1], [2, 0]], "trace": [{"term": [18, 3], "moved": "p,q", "i": 1, "j": 1}, {"term": [3, 2], "moved": "q", "i": 1, "j": 2}, {"term": [7, 1], "moved": "p", "i": 2, "j": 2}, {"term": [2, 0], "moved": "p,q", "i": 3, "j": 3}]}
+double_pointer_logical_model: [{"p_index": 1, "a": [10, 20, 30], "x": 10}, {"p_index": 1, "a": [10, 21, 30], "y": 20}, {"p_index": 1, "a": [10, 40, 30]}]
+list_adt: [{"list": ["A"], "length": 1}, {"list": ["A", "B"], "length": 2}, {"list": ["A", "B", "C"], "length": 3}, {"list": ["A", "D", "B", "C"], "length": 4}, {"list": ["A", "D", "C"], "length": 3}, {"list": ["A", "E", "C"], "length": 3}]
+array_list_initialization: {"raw": [7, 8, 9], "logical": [], "length": 0, "empty": 1, "full": 0}
+linked_address_order: [10, 20, 30]
+splice_order: {"correct": {"A": "N", "C": null, "N": "C"}, "reversed_same_statements": {"A": "N", "C": null, "N": "N"}}
+linked_polynomial: {"out": [[11, 12], [-3, 10], [2, 8], [10, 6], [1, 0]], "trace": [{"term": [11, 12], "moved": "p,q", "i": 1, "j": 1}, {"term": [-3, 10], "moved": "q", "i": 1, "j": 2}, {"term": [2, 8], "moved": "p", "i": 2, "j": 2}, {"term": [10, 6], "moved": "q", "i": 2, "j": 3}], "remaining_A": [[1, 0]]}
+position_adapter: {"pos2": {"predecessor": "B", "args": ["&(list->head)", "B", "node(N)"], "result": ["A", "B", "N", "C"], "length": 4}, "pos0": {"predecessor": null, "args": ["&(list->head)", null, "node(N)"], "result": ["N", "A", "B", "C"], "length": 4}}
+activation_record_order: {"popped": ["sub2(b=5)", "sub1(a=3,j=5)"], "return_to": ["sub1", "main"]}
+stack_guards_before_mutation: {"full_push": {"top": 2, "storage": ["A", "B", "C"], "accepted": false}, "empty_pop": {"top": -1, "storage": [7, 8, 9], "accepted": false}}
+ALL INDEPENDENT LOGICAL ASSERTIONS PASSED

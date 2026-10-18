@@ -7,6 +7,12 @@ import subprocess
 import sys
 
 def verify(repo):
+    if (repo/'docs/verify/2026-10-17-no-exam-coverage.json').exists():
+        spec=importlib.util.spec_from_file_location('current_coverage',repo/'docs/verify/rerun-no-exam-coverage.py')
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        result=module.verify(repo)
+        subprocess.run([sys.executable,str(repo/'docs/verify/exam-restore-20261017/verify_restored.py')],check=True)
+        return result
     if not list((repo/'복습노트').glob('*/복습문제_*.html')):
         raise ValueError('zero question inputs')
     sys.path.insert(0,str(repo/'.agents/skills/ds-review-pack/scripts'))

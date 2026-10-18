@@ -75,7 +75,9 @@ def build_note(m: dict, run_dir: Path) -> str:
 
 def build_review(m: dict, run_dir: Path) -> str:
     parts, scripts = [], []
-    for part in m["parts"]:
+    populated={q['part'] for q in m['problems']}
+    visible_parts=[part for part in m['parts'] if part['id'] in populated]
+    for part in visible_parts:
         cards = []
         for q in (q for q in m["problems"] if q["part"] == part["id"]):
             body, found = split_scripts(read_fragment(run_dir / "cards" / f"{q['id']}.html", m))
@@ -85,7 +87,7 @@ def build_review(m: dict, run_dir: Path) -> str:
     result = fill((ASSETS / "review-template.html").read_text(encoding="utf-8"), {
         "PAGE_TITLE": esc(f"{m['course']} 복습문제 {m['range']}"),
         "DESCRIPTION": esc(m["review_title"]),
-        "TOC": "".join(f'<a href="#{p["id"]}">{esc(p["short"])}</a>' for p in m["parts"]),
+        "TOC": "".join(f'<a href="#{p["id"]}">{esc(p["short"])}</a>' for p in visible_parts),
         "NOTE_HREF": manifest_mod.note_name(m),
         "TITLE": esc(m["review_title"]),
         "INTRO": m["review_intro"],

@@ -4,8 +4,8 @@
   "slug": "List",
   "note_title": "연결 리스트 — 5살도 이해하는 정리노트",
   "note_subtitle": "기존 노트 보존",
-  "review_title": "복습문제 8선 — 1005 수업 범위",
-  "review_intro": "핵심 개념과 강의 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
+  "review_title": "복습문제 11선 — 1005 수업 범위",
+  "review_intro": "강의노트의 핵심 개념과 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.",
   "footer_note": "기존 노트 보존",
   "footer_review": "기출·교과서 원문과 강의 예제 기반 자체 출제. 강의 코드는 발췌 여부를 표시했으며 질문·풀이·실행 검산은 별도로 작성했습니다.",
   "sessions": [
@@ -331,8 +331,8 @@
     },
     {
       "id": "partB",
-      "title": "B. 강의 예제 코드",
-      "short": "B 강의 코드"
+      "title": "B. 강의노트 기반 생성문제",
+      "short": "강의 생성문제"
     }
   ],
   "problems": [
@@ -529,6 +529,108 @@
         "dlist"
       ],
       "task_family": "dlist"
+    },
+    {
+      "id": "p9",
+      "part": "partB",
+      "source": "lecture-s04-p29-visit-search-contract",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-search",
+      "level": 3,
+      "date": "1005",
+      "terms": [
+        "방문 순서와 탐색의 반환값"
+      ],
+      "answer": "출력은 10->20->30->이며 search(head,20)은 노드 B의 주소, search(head,99)는 NULL을 반환합니다. 원래 head와 모든 link는 유지됩니다. 빈 리스트는 출력이 없고 탐색은 NULL을 반환합니다. 각 순환 호출은 다음 노드에서 시작해 남은 노드 수가 줄고 NULL에서 멈춥니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 29,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "visit-search-contract",
+        "taught_on": "1005",
+        "extra_pages": [
+          30
+        ]
+      },
+      "objectives": [
+        "순환 방문의 출력·종료 조건",
+        "탐색 성공 주소·실패NULL 계약",
+        "지역 포인터 이동과 원 구조 보존"
+      ],
+      "task_family": "visit-search-contract"
+    },
+    {
+      "id": "p10",
+      "part": "partB",
+      "source": "lecture-s04-p37-sentinel-empty-model",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s3-dlist",
+      "level": 3,
+      "date": "1005",
+      "terms": [
+        "헤드 포인터와 헤드 노드의 공백 표현"
+      ],
+      "answer": "앞 두 구현은 head=NULL입니다. 헤드 노드가 있는 공백 이중 원형 리스트는 H.llink=H,H.rlink=H입니다. 헤드 포인터는 주소 변수이고 헤드 노드는 구조를 단순화하는 별도 노드입니다. H는 데이터항목이 아니므로 길이에 세거나 일반 데이터 삭제 대상으로 삼지 않습니다. 비어 있지 않으면 H.rlink는 첫 데이터,H.llink는 마지막 데이터이며 공백이면 둘 다H입니다. 헤드 노드 없는 빈 ListType은 head=NULL,length=0입니다. get_length는 저장된 length를 바로 반환하므로 O(1)이며, 삽입·삭제 성공 때 실제 노드 수와 맞도록 length를 늘리거나 줄여야 합니다. ADT 연산은 항목 위치를 받고 하위 연결 함수는 선행·대상 노드 주소를 받습니다. 위치를 필요한 노드 포인터로 변환한 뒤 검증된 삽입·삭제 함수를 호출하고 길이를 갱신하여 재사용합니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 37,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "sentinel-empty-model",
+        "taught_on": "1005",
+        "extra_pages": [
+          33,
+          34,
+          35,
+          36,
+          45,
+          46,
+          44,
+          47,
+          48
+        ]
+      },
+      "objectives": [
+        "헤드 포인터와 센티널 노드 구별",
+        "세 연결 구조의 공백 불변식",
+        "헤드 노드의 데이터 수 제외와 양끝 접근",
+        "ListType의 head·length 일관성과 O(1)길이 조회",
+        "ListType의 위치 기반 ADT 계약과 하위 노드 포인터 인터페이스·함수 재사용의 개념"
+      ],
+      "task_family": "sentinel-empty-model"
+    },
+    {
+      "id": "p11",
+      "part": "partB",
+      "source": "lecture-s04-p41-linked-polynomial-merge",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s4-poly",
+      "level": 3,
+      "date": "1005",
+      "terms": [
+        "연결 다항식의 지수 비교와 포인터 이동"
+      ],
+      "answer": "같은 지수 12에서는 (11,12)를 붙이고 p, q를 모두 이동합니다. 8<10에서는 (-3,10)을 붙이고 q만, 8>6에서는 (2,8)을 붙이고 p만, 0<6에서는 (10,6)을 붙이고 q만 이동합니다. B가 끝나면 A의 (1,0)을 복사합니다. 결과는 11x^12−3x^10+2x^8+10x^6+1입니다. 같은 지수의 계수 합이 0이면 결과에 붙이지 않되 p, q를 모두 이동합니다. 각 항을 한 번씩 소비하므로 O(m+n)입니다.",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "pdf_page": 41,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "example": "linked-polynomial-merge",
+        "taught_on": "1005",
+        "extra_pages": [
+          40,
+          42,
+          43
+        ]
+      },
+      "objectives": [
+        "연결 다항식 표현과 세 지수 비교 분기",
+        "계수 상쇄와 남은 꼬리 처리",
+        "두 입력 포인터의 단조 전진과 병합 비용"
+      ],
+      "task_family": "linked-polynomial-merge"
     }
   ],
   "links": [],
