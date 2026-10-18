@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from mpe_choices import with_choices
 from mpe_types import ExplainError, Problem, SourcePack
-from mpe_shared import HOMEWORK, REVIEW, Node, ReviewPdfError, read_cards, normalize_cards, parse
+from mpe_shared import HOMEWORK, REVIEW, Node, ReviewPdfError, read_cards, normalize_cards, outer, parse
 
 def nfc(value):
     return unicodedata.normalize('NFC', str(value))
@@ -167,15 +167,27 @@ def subparts(ask: str, original: str) -> tuple[str, ...]:
     if labels and len(labels)!=len(set(labels)): raise ExplainError('중복 소문항 표지')
     return tuple(labels) or ('main',)
 
+def split_lecture_statement(statement_html: str, source: str) -> tuple[str, str]:
+    if not source.startswith('lecture-'):
+        return statement_html, ''
+    root = parse(statement_html)
+    blocks = [c for c in root.children if isinstance(c, Node)]
+    if len(blocks) >= 2 and blocks[-1].tag in ('ol', 'ul') and not choice_container(blocks[-1], root):
+        return ''.join(outer(b) for b in blocks[:-1]), outer(blocks[-1])
+    return statement_html, ''
+
 def load_source(path: Path, repo: Path) -> SourcePack:
     path = inside(existing_path(Path(path)), Path(repo))
     if not re.fullmatch(REVIEW.filename_re,nfc(path.name)):
         raise ExplainError('복습문제 HTML만 지원해요: '+str(path))
     try:
         pack = read_cards(path, REVIEW)
-        problems = tuple(Problem(c.id,int(c.id[1:]),c.title,c.source,c.original_html,
-                                 c.statement_html,'',(),c.steps,c.answer_html,
-                                 subparts(c.statement_html,c.original_html)) for c in pack.cards)
+        problems = tuple(
+            Problem(c.id, int(c.id[1:]), c.title, c.source, c.original_html,
+                    *split_lecture_statement(c.statement_html, c.source), (), c.steps, c.answer_html,
+                    subparts(c.statement_html, c.original_html))
+            for c in pack.cards
+        )
         return SourcePack('review',pack.range,pack.slug,path,sha256(path),with_choices(path,problems))
     except (ReviewPdfError,OSError) as exc:
         if 'no review cards' in str(exc):
