@@ -54,7 +54,14 @@ def split_lecture_problem(blocks: tuple[Block, ...]) -> tuple[str, str]:
     caption = ''.join(f'<p class="ds-source">{inner_p(b.html)}</p>' for b in notes)
     original = ''.join(b.html for b in body)
     if any(re.match(r'\s*<[ou]l\b', b.html) for b in body):
-        return caption, original
+        pre = [b for b in body if not re.match(r'\s*<[ou]l\b', b.html)]
+        lists = [b for b in body if re.match(r'\s*<[ou]l\b', b.html)]
+        if not pre:
+            return caption, original
+        cond = caption + ''.join(b.html for b in pre)
+        ask = ''.join(re.sub(r'^\s*<[ou]l\b[^>]*>', '<ol class="ds-asks">', re.sub(r'</[ou]l>\s*$', '</ol>', b.html)) for b in lists)
+        assert_lossless(''.join(b.html for b in kept), cond + ask)
+        return cond, ask
     parts = [s for b in body for s in sentences(inner_p(b.html))]
     asks = [s for s in parts if is_ask(s)]
     if not asks:

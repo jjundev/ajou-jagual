@@ -40,6 +40,14 @@ def test_fallback_existing_list_and_no_question():
     plain = P('<p>상황만 있어요. 끝이에요.</p>')
     assert split_lecture_problem((badge, plain)) == ('', plain.html)
 
+def test_structured_lecture_ol_split():
+    badge = P('<p><span class="badge">강의 예제 기반 자체 출제</span> S4 p18</p>')
+    cond_p = P('<p>단순 연결 리스트에서 <code>head = 300</code>이에요.</p>')
+    asks_ol = P('<ol><li>(a) 방문 순서를 쓰세요.</li><li>(b) 삽입 후 링크를 쓰세요.</li></ol>')
+    cond, ask = split_lecture_problem((badge, cond_p, asks_ol))
+    assert cond == '<p>단순 연결 리스트에서 <code>head = 300</code>이에요.</p>'
+    assert ask == '<ol class="ds-asks"><li>(a) 방문 순서를 쓰세요.</li><li>(b) 삽입 후 링크를 쓰세요.</li></ol>'
+
 def test_all_lecture_cards_lossless_and_badge_free():
     n = 0
     for src in sorted((REPO / '복습노트').glob('*/복습문제_*.html')):
