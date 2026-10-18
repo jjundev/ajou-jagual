@@ -1,0 +1,21 @@
+< Data Structure & Algorithms>        AJOU University
+
+delete  
+
+  ·    
+  ·       get_node_at 
+
+        //    .
+        void delete(ListType *list, int pos)
+        {
+
+                          if (!is_empty(list) && (pos >= 0) && (pos < list->length)){
+                            ListNode *p = get_node_at(list, pos-1);
+                            remove_node(&(list->head),p,(p!=NULL)?p->link:NULL);
+                            list->length--;
+
+                          }
+        }
+
+                                -48-                                                   
+

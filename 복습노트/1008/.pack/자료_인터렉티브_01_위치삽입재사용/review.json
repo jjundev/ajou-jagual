@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "hashes": {
+    "brief.md": "6b9b3918e9fb57528b014abba203a05bc470948b21808257c883954ab745019e",
+    "evidence/browser/add-empty-1440.png": "142bb8e78e9fdb18ee7828eee6e66f8a7528f33afefa05fe02efe50142c1a7be",
+    "evidence/browser/add-front-1440.png": "0946d375c1447e1960078997f29886fee4cd63f81fe3a83c9a0b8940b66f7a6d",
+    "evidence/browser/list-add-1024-dark.png": "1112e1ba28cef50b4b09e62207dfa9649d082ff4e9fdf86172908402e59d3e3c",
+    "evidence/browser/list-add-1024-light.png": "4bf14b07a5e43e44a495073fcfdd518a162479e1fb6ed90b9b5118f39e7a8762",
+    "evidence/browser/list-add-1440-dark.png": "02a2590d2647a1c4a932096715a3395f0fecc61b214aed527a0dbec4eb8c9daf",
+    "evidence/browser/list-add-1440-light.png": "ab0759f0809b76aff23fa9bbf4b95490e24968ca682467cf0a064f8f20a5c251",
+    "evidence/browser/list-add-375-dark.png": "fcea3b777ede94d536d477e90b542ece311d238cd0b0abad9849981a64949c15",
+    "evidence/browser/list-add-375-light.png": "a0ce46705d85161846706812b8e6bfcc736cfd790e55272f3bcd2d337519e2ef",
+    "evidence/browser-runs.log": "b0bce6c30b946ea20feed6e2f8020dd90f50ce6f1dd3cd5b23753ca0b06cffb8",
+    "evidence/browser.json": "12b63f58b5b6135d7fb094f09956c928cf62e6f24b105c2d2da677dcb1675760",
+    "evidence/content-review.md": "0279069a952707681f0c6137c32fd9090075ea36b93c11e41a75430f63a865e1",
+    "evidence/independent-oracle.py": "a3b1ccc3add7afc25bf99057e49f398d1907d6b6bb82c71dcde8996a354dc86c",
+    "evidence/independent.json": "71ec9e5bb887f9d2892af0077c9f550e2c826942daad17574a31335b5d6e6402",
+    "evidence/pdf-s4-p25.txt": "5ec3bb086ce1008e4f1340a1a02700b55eea7c6ac02cae9426a90438aadfc746",
+    "evidence/pdf-s4-p45.txt": "a15516df79dc171a0bdc964b6640bd8616afe1109bfc082729aafdb4809951c0",
+    "evidence/pdf-s4-p47.txt": "5e38cb8acdab1105b0b55be61c3e9116d6f52dd9fd9764e3929880db157d205a",
+    "evidence/schema.json": "f80d7615f6bd1d4ddd07ccbd05f7027cb50077f1e6faf9d1c0c4948c90fc670f",
+    "evidence/ui/list-add-1024-dark.png": "b9fb430b13dcaddaf3cb35991296ecf35ab8346666550eb99559a54eb685facb",
+    "evidence/ui/list-add-1024-light.png": "17eef097837a91e5e3575d8285a9077077971320492e8c03f4ec26e88339e3d5",
+    "evidence/ui/list-add-1440-dark.png": "3bbec001b47bb416b7198d871750f1a18936880f7d5f0022fa3aa6e231bbdaa8",
+    "evidence/ui/list-add-1440-light.png": "abe8217a440ffaf8b8d1c17161bca416ad11d4e0196f7966d34cb04320933a3f",
+    "evidence/ui/list-add-375-dark.png": "a7c55d9ab4d52e143d6e22941facbb4eade8b6488856980fd18560c73213aee4",
+    "evidence/ui/list-add-375-light.png": "d8a43059761cfc31283df24401f547ba21e8bbd7ac3946884ff86a6fae4f3d58",
+    "evidence/ui-review.md": "f9a7c80ec4cd8d41ceb82ffee0d61e4f5e0e27731d0a239e0eda394be5f23fef",
+    "evidence/ui.json": "f6a91b7f23f0c11a2c64ded739ff46023eb8f18af2e88fb19b1d51524e12cecf",
+    "preview.html": "5dd75b94f38b5c069327969d162dd909d2e40899db4fb08947e4ec73a6e5bafb",
+    "scenario.cjs": "2a13108ddffccf6548afe86cb4cb8fa605832e049c5f3d7c29554933a6b81f15",
+    "source.c": "f7b92f18381567c7eb0d07462fd4dbab5cc8582b4c1b43bdcd61edee58033716",
+    "source.json": "2243f93646fe5eb54f0c4b7079787a257dfb8ee8b9ac527ccb497bf0c6df9f21",
+    "trace.json": "5c0844bcdbd5b25672a1a94ee4fd27cb33bf9c295556f633dfa081354779f765"
+  },
+  "checks": {
+    "schema": {
+      "status": "pass",
+      "evidence": "evidence/schema.json",
+      "notes": "기본값과 preset 6개(middle/front/tail/empty/over/negative) checkScenario 통과, expected 일치. trace.json은 steps.cjs 출력."
+    },
+    "content": {
+      "status": "pass",
+      "evidence": "evidence/content-review.md",
+      "notes": "PDF 원문 렌더링과 코드 줄 대조, 각 줄의 값 복사·읽기·쓰기·수명 변화를 C 의미로 검토. 보충·단순화는 화면과 brief에 표시."
+    },
+    "independent": {
+      "status": "pass",
+      "evidence": "evidence/independent.json",
+      "notes": "Python 표 103사례 1021건 bind/declare/allocate/write와 최종 리스트·length 일치, 변조 검출. 컴파일러 없음(compiler_unavailable), UB 미실행."
+    },
+    "browser": {
+      "status": "pass",
+      "evidence": "evidence/browser.json",
+      "notes": "현재 preview SHA와 browser.json SHA 일치(ui.json은 같은 빌드에서 실행). 6조합×7사례 1326 Snapshot 전체 대조, 공통 UI 6조합, 회귀 통과. 콘솔 오류·외부 요청 0. 캡처 직접 확인."
+    }
+  }
+}
