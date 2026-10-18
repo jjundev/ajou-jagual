@@ -15,7 +15,7 @@ def lecture(range_, pid):
 
 def test_1015_p5_split():
     cond, ask = split_lecture_problem(lecture('1015', 'p5'))
-    assert cond.count('<p>') == 4 and ask.count('<li>') == 2
+    assert cond.count('<p>') == 5 and ask.count('<li>') == 2
     assert strip(ask).startswith('clock=1,2,3에서')
     assert '강의 예제 기반' not in cond + ask and 'S6 p22' not in cond + ask
 
@@ -62,7 +62,7 @@ def payload(range_, mode='problems'):
 def test_lecture_payload_uses_conditions():
     pack, data = payload('1015')
     p5 = next(p for p in data['problems'] if p['id'] == 'p5')
-    assert p5['html']['conditions'].count('<p>') == 4 and '<ol class="ds-asks">' in p5['html']['ask']
+    assert p5['html']['conditions'].count('<p>') == 5 and '<ol class="ds-asks">' in p5['html']['ask']
     assert 'service_time--' in p5['html']['code']
 
 def test_lecture_answers_mode_split():

@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "bef3a8f5680c3dc31f3a664dd2b58174f8be7f408104ea9eddc18bf26e09a885",
+  "input_hash": "c9656ff3411efa0d6b11d1dcbb2635d312f6108f4980dd6f0b531a37cd3cf624",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\docs\\verify\\exam-restore-20261017\\baseline.json",
@@ -89,138 +89,142 @@
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\자료구조_강의록_2026\\Software_6_Queue.pdf",
       "sha256": "becab810ebc2b538a4d4ecbd173aaca50756911413cb0c0e397dd83d0805cc4f"
+    },
+    {
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1015\\복습문제_1015_Queue.html",
+      "sha256": "5b51112814221042819309b0f8a04605b18b54486c642d027f39bed8840f6e47"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Codex native executor",
-    "evidence": "Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly."
+    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "evidence": "Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Codex native executor",
-    "evidence": "Fresh Chrome stage check: all40 questions at1280/1024/375 light/dark (240 checks); restored9 additional solve/verify scrolling at1280/375 light/dark (36 configurations,108 screenshots). Actual screenshot inspection recorded in execution report. No console/math/image/document-overflow errors."
+    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "evidence": "Fresh stage checked with Playwright Chrome at 1280x900, 1024x900 and 375x812 in light/dark: 60 problem views, 0 console/KaTeX/resource errors, no document overflow, seven sections each, summary panel at >=1024px, next/prev navigation. For every changed item one viewport screenshot (1280 dark or 375 light, evidence/browser-2026-10-18/) was opened and inspected; the remaining variants rely on the machine metrics. evidence/browser-2026-10-18.json"
   },
   "content": {
     "status": "pass",
-    "reviewer": "Codex native executor",
-    "evidence": "Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
+    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "evidence": "2 changed lecture-code item(s) ['p4', 'p5'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
     "items": {
       "p1:main": {
         "status": "pass",
         "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Count the forward cyclic index distance from the slot before the first item (front) to the last item (rear). If rear>=front the distance is their difference; otherwise it wraps across M and equals M-front+rear. The reserved slot makes front==rear uniquely empty and maximum count M-1. The branch version avoids an unnecessarily large intermediate sum in the modulo expression. O(1) time and auxiliary space."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Count the forward cyclic index distance from the slot before the first item (front) to the last item (rear). If rear>=front the distance is their difference; otherwise it wraps across M and equals M-front+rear. The reserved slot makes front==rear uniquely empty and maximum count M-1. The branch version avoids an unnecessarily large intermediate sum in the modulo expression. O(1) time and auxiliary space."
       },
       "p2:main": {
         "status": "pass",
         "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Reversing in makes its oldest item the top of out. Existing out items must be consumed before transferring later in arrivals, preserving FIFO. Each item is pushed/popped at most once per stack, so enqueue O(1), dequeue worst O(n), amortized O(1)."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Reversing in makes its oldest item the top of out. Existing out items must be consumed before transferring later in arrivals, preserving FIFO. Each item is pushed/popped at most once per stack, so enqueue O(1), dequeue worst O(n), amortized O(1)."
       },
       "p3:main": {
         "status": "pass",
         "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Append normalized alphanumeric characters at one end, then repeatedly remove and compare the two ends. Punctuation and spaces never enter the deque; case folding makes A and a equal. An empty or one-character normalized deque is a palindrome. radar compares r/r then a/a and leaves d."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Append normalized alphanumeric characters at one end, then repeatedly remove and compare the two ends. Punctuation and spaces never enter the deque; case folding makes A and a equal. An empty or one-character normalized deque is a palindrome. radar compares r/r then a/a and leaves d."
       },
       "p4:main": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Both front and rear identify the unique node after an enqueue into empty. Removing the unique node leaves neither valid endpoint. Resetting rear prevents a dangling pointer to freed storage and restores the empty-queue invariant front==rear==NULL."
+        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+        "evidence": "Card p4 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_6_Queue.pdf (PyMuPDF extraction)."
       },
       "p5:main": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: The original else is skipped whenever service_time was positive at the preceding if test, even if decrement makes it zero. The independent second if re-tests the updated value, allowing a waiting customer to start in the same clock iteration that completes the prior service. B requires two later decrements after being loaded with service_time=2."
+        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+        "evidence": "Card p5 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_6_Queue.pdf (PyMuPDF extraction)."
       },
       "p6:main": {
         "status": "pass",
         "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Advancing front consumes index4. Enqueues next fill indices2 and3. One physical slot stays unused to distinguish front==rear empty from full; final (3+1)%5=4 equals front."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Advancing front consumes index4. Enqueues next fill indices2 and3. One physical slot stays unused to distinguish front==rear empty from full; final (3+1)%5=4 equals front."
       },
       "p7:main": {
         "status": "pass",
         "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: An empty deque has no previous tail to patch and must establish both endpoint pointers. On the next insertion, the old tail links right to the new node and tail advances; new node already links left to the old tail and right to NULL."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: An empty deque has no previous tail to patch and must establish both endpoint pointers. On the next insertion, the old tail links right to the new node and tail advances; new node already links left to the old tail and right to NULL."
       },
       "p8:main": {
         "status": "pass",
         "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: If new head is NULL, tail must also become NULL so empty endpoints agree and no dangling tail remains. Otherwise the new head left link must become NULL so it does not reference the removed node. Omitting the test and unconditionally dereferencing head crashes/causes UB on the final deletion; omitting updates leaves stale tail or dangling llink."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: If new head is NULL, tail must also become NULL so empty endpoints agree and no dangling tail remains. Otherwise the new head left link must become NULL so it does not reference the removed node. Omitting the test and unconditionally dereferencing head crashes/causes UB on the final deletion; omitting updates leaves stale tail or dangling llink."
       },
       "p9:main": {
         "status": "pass",
         "reviewer": "Codex native executor",
-        "evidence": "Final restored source and fragment read in full; original code and conditional correction distinguished; 6회 삽입으로 rear=6, 4회 삭제로 front=4, 이어 4회 삽입으로 rear=(6+4)%8=2. 통상 관례의 유효 항목은 index5=50,6=60,7=70,0=80,1=90,2=100."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final restored source and fragment read in full; original code and conditional correction distinguished; 6회 삽입으로 rear=6, 4회 삭제로 front=4, 이어 4회 삽입으로 rear=(6+4)%8=2. 통상 관례의 유효 항목은 index5=50,6=60,7=70,0=80,1=90,2=100."
       },
       "p10:a": {
         "status": "pass",
         "reviewer": "Codex native executor",
-        "evidence": "Final restored source and fragment read in full; original code and conditional correction distinguished; 한 칸을 비워 두고 front는 첫 원소의 바로 앞, rear는 마지막 원소를 가리키는 관례를 적용한다. enqueue는 rear=(rear+1)%8 뒤 저장, dequeue는 front=(front+1)%8 뒤 읽기. 처음 5개 삽입 후 rear=5, 3개 삭제 후 front=3. 추가 4개 삽입 후 rear=(5+4)%8=1. 유효 순서는 40,50,60,70,80,90이다."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final restored source and fragment read in full; original code and conditional correction distinguished; 한 칸을 비워 두고 front는 첫 원소의 바로 앞, rear는 마지막 원소를 가리키는 관례를 적용한다. enqueue는 rear=(rear+1)%8 뒤 저장, dequeue는 front=(front+1)%8 뒤 읽기. 처음 5개 삽입 후 rear=5, 3개 삭제 후 front=3. 추가 4개 삽입 후 rear=(5+4)%8=1. 유효 순서는 40,50,60,70,80,90이다."
       },
       "p10:b": {
         "status": "pass",
         "reviewer": "Codex native executor",
-        "evidence": "Final restored source and fragment read in full; original code and conditional correction distinguished; 한 칸을 비워 두고 front는 첫 원소의 바로 앞, rear는 마지막 원소를 가리키는 관례를 적용한다. enqueue는 rear=(rear+1)%8 뒤 저장, dequeue는 front=(front+1)%8 뒤 읽기. 처음 5개 삽입 후 rear=5, 3개 삭제 후 front=3. 추가 4개 삽입 후 rear=(5+4)%8=1. 유효 순서는 40,50,60,70,80,90이다."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final restored source and fragment read in full; original code and conditional correction distinguished; 한 칸을 비워 두고 front는 첫 원소의 바로 앞, rear는 마지막 원소를 가리키는 관례를 적용한다. enqueue는 rear=(rear+1)%8 뒤 저장, dequeue는 front=(front+1)%8 뒤 읽기. 처음 5개 삽입 후 rear=5, 3개 삭제 후 front=3. 추가 4개 삽입 후 rear=(5+4)%8=1. 유효 순서는 40,50,60,70,80,90이다."
       }
     }
   },
   "independent": {
     "status": "pass",
-    "reviewer": "blind restored-answer reviewer and preserved previous independent evidence",
-    "evidence": "Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
+    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "evidence": "2 changed lecture-code item(s) ['p4', 'p5'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
     "items": {
       "p1:main": {
         "status": "pass",
         "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Count the forward cyclic index distance from the slot before the first item (front) to the last item (rear). If rear>=front the distance is their difference; otherwise it wraps across M and equals M-front+rear. The reserved slot makes front==rear uniquely empty and maximum count M-1. The branch version avoids an unnecessarily large intermediate sum in the modulo expression. O(1) time and auxiliary space.",
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Count the forward cyclic index distance from the slot before the first item (front) to the last item (rear). If rear>=front the distance is their difference; otherwise it wraps across M and equals M-front+rear. The reserved slot makes front==rear uniquely empty and maximum count M-1. The branch version avoids an unnecessarily large intermediate sum in the modulo expression. O(1) time and auxiliary space.",
         "method": "qualitative",
         "conclusion": "int get_count(const QueueType *q){ if(q->rear>=q->front) return q->rear-q->front; return MAX_QUEUE_SIZE-q->front+q->rear; }\nEquivalently, for ordinary small capacities: (q->rear-q->front+MAX_QUEUE_SIZE)%MAX_QUEUE_SIZE."
       },
       "p2:main": {
         "status": "pass",
         "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Reversing in makes its oldest item the top of out. Existing out items must be consumed before transferring later in arrivals, preserving FIFO. Each item is pushed/popped at most once per stack, so enqueue O(1), dequeue worst O(n), amortized O(1).",
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Reversing in makes its oldest item the top of out. Existing out items must be consumed before transferring later in arrivals, preserving FIFO. Each item is pushed/popped at most once per stack, so enqueue O(1), dequeue worst O(n), amortized O(1).",
         "method": "qualitative",
         "conclusion": "#include <stdio.h>\n#include <stdlib.h>\n#define M 100\ntypedef struct {int in[M],out[M];int ni,no;} Queue;\nvoid enqueue(Queue *q,int x){if(q->ni+q->no==M){fputs(\"overflow\\n\",stderr);exit(EXIT_FAILURE);}q->in[q->ni++]=x;}\nint dequeue(Queue *q){if(q->no==0)while(q->ni>0)q->out[q->no++]=q->in[--q->ni];if(q->no==0){fputs(\"underflow\\n\",stderr);exit(EXIT_FAILURE);}return q->out[--q->no];}\nint main(void){Queue q={0};enqueue(&q,10);enqueue(&q,20);printf(\"%d\\n\",dequeue(&q));enqueue(&q,30);printf(\"%d\\n\",dequeue(&q));printf(\"%d\\n\",dequeue(&q));return 0;}\nOutput: 10,20,30 on separate lines. Stack in receives arrivals, out supplies removals; transfer only when out is empty."
       },
       "p3:main": {
         "status": "pass",
         "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Append normalized alphanumeric characters at one end, then repeatedly remove and compare the two ends. Punctuation and spaces never enter the deque; case folding makes A and a equal. An empty or one-character normalized deque is a palindrome. radar compares r/r then a/a and leaves d.",
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Append normalized alphanumeric characters at one end, then repeatedly remove and compare the two ends. Punctuation and spaces never enter the deque; case folding makes A and a equal. An empty or one-character normalized deque is a palindrome. radar compares r/r then a/a and leaves d.",
         "method": "qualitative",
         "conclusion": "#include <stdio.h>\n#include <ctype.h>\nint main(void){unsigned char deque[4096];size_t front=0,rear=0;int c;while((c=getchar())!=EOF&&c!='\\n'){if(isalnum((unsigned char)c)){if(rear==sizeof deque)return 1;deque[rear++]=(unsigned char)tolower((unsigned char)c);}}while(rear-front>1){int left=deque[front++];int right=deque[--rear];if(left!=right){puts(\"회문 아님\");return 0;}}puts(\"회문\");return 0;}"
       },
       "p4:main": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Both front and rear identify the unique node after an enqueue into empty. Removing the unique node leaves neither valid endpoint. Resetting rear prevents a dangling pointer to freed storage and restores the empty-queue invariant front==rear==NULL.",
+        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
+        "evidence": "evidence/blind-solver-2026-10-18.json[p4] solved from the new statement alone with missing=\"\" and matched the reference answer.",
         "method": "qualitative",
-        "conclusion": "if(q->front==NULL){q->front=N;q->rear=N;}else{q->rear->link=N;q->rear=N;} Dequeue: save old=q->front and its data; q->front=old->link; if(q->front==NULL)q->rear=NULL; free(old); return saved data."
+        "conclusion": "Blind answer equals the published answer: enqueue 빈 경우(front==NULL): front=N; rear=N; 나머지 경우: rear->link=N; rear=N; dequeue: temp=front; item=temp->data; front=front->link; (free(temp); return item). 유일한 노드를 꺼내면 front가 NULL이 되지만 rear는 해제된 노드를 가리키는 dangling 포인터로 남는다. 큐가 비었음을 일관되게 하고(front=rear=NULL) 다음 enqueue가 빈 경우로 처리되어 해제된 노드에 rear->link를"
       },
       "p5:main": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. The original else is skipped whenever service_time was positive at the preceding if test, even if decrement makes it zero. The independent second if re-tests the updated value, allowing a waiting customer to start in the same clock iteration that completes the prior service. B requires two later decrements after being loaded with service_time=2.",
+        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
+        "evidence": "evidence/blind-solver-2026-10-18.json[p5] solved from the new statement alone with missing=\"\" and matched the reference answer.",
         "method": "qualitative",
-        "conclusion": "Original if/else: clock1 1->0, B still waiting; clock2 0->2, B starts at clock2 with waiting time 1; clock3 2->1.\nAfter replacing else with an independent if(service_time==0): clock1 1->0->2, B starts at clock1 with waiting time 0; clock2 2->1; clock3 1->0->0, since remove_customer sees an empty queue and returns 0."
+        "conclusion": "Blind answer equals the published answer: clock=1: 도착 B를 큐에 넣고, service_time=1>0이므로 0으로 감소(else 안 탐). clock=2: 도착 없음, service_time==0이므로 else로 remove_customer 호출, B를 꺼내 service_time=2, B는 clock=2에 서비스 시작(대기시간 기록). clock=3: service_time 2→1. else 대신 별도의 if(service_time==0)로 바꾸면 clock=1에서 감소해 0이 된 직후 같은 clock에서 바로 remove_customer가 실행되어 B가 clo"
       },
       "p6:main": {
         "status": "pass",
         "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Advancing front consumes index4. Enqueues next fill indices2 and3. One physical slot stays unused to distinguish front==rear empty from full; final (3+1)%5=4 equals front.",
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Advancing front consumes index4. Enqueues next fill indices2 and3. One physical slot stays unused to distinguish front==rear empty from full; final (3+1)%5=4 equals front.",
         "method": "qualitative",
         "conclusion": "dequeue returns A: front=4,rear=1, logical [B,C]. enqueue(D): no return value, front=4,rear=2, [B,C,D]. enqueue(E): no return, front=4,rear=3, [B,C,D,E], full. Usable capacity=M-1=4; full iff (rear+1)%M==front."
       },
       "p7:main": {
         "status": "pass",
         "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. An empty deque has no previous tail to patch and must establish both endpoint pointers. On the next insertion, the old tail links right to the new node and tail advances; new node already links left to the old tail and right to NULL.",
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. An empty deque has no previous tail to patch and must establish both endpoint pointers. On the next insertion, the old tail links right to the new node and tail advances; new node already links left to the old tail and right to NULL.",
         "method": "qualitative",
         "conclusion": "After A: head=tail=A, A.llink=NULL,A.rlink=NULL. After B: head=A,tail=B; A.llink=NULL,A.rlink=B; B.llink=A,B.rlink=NULL. create_node fields: node->llink=left;node->data=item;node->rlink=right; return node."
       },
       "p8:main": {
         "status": "pass",
         "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. If new head is NULL, tail must also become NULL so empty endpoints agree and no dangling tail remains. Otherwise the new head left link must become NULL so it does not reference the removed node. Omitting the test and unconditionally dereferencing head crashes/causes UB on the final deletion; omitting updates leaves stale tail or dangling llink.",
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. If new head is NULL, tail must also become NULL so empty endpoints agree and no dangling tail remains. Otherwise the new head left link must become NULL so it does not reference the removed node. Omitting the test and unconditionally dereferencing head crashes/causes UB on the final deletion; omitting updates leaves stale tail or dangling llink.",
         "method": "qualitative",
         "conclusion": "First delete_front returns A: head=tail=B; B.llink=NULL,B.rlink=NULL; A freed. Second returns B: head=tail=NULL; B freed."
       },
@@ -229,29 +233,43 @@
         "reviewer": "restore_answers (blind to bank/reference answers)",
         "method": "qualitative",
         "conclusion": "front=4, rear=2.",
-        "evidence": "evidence/independent-restored.json; docs/verify/exam-restore-20261017/verify_restored.py and trace-result.txt; compiled C11 defined cases. 6회 삽입으로 rear=6, 4회 삭제로 front=4, 이어 4회 삽입으로 rear=(6+4)%8=2. 통상 관례의 유효 항목은 index5=50,6=60,7=70,0=80,1=90,2=100."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent-restored.json; docs/verify/exam-restore-20261017/verify_restored.py and trace-result.txt; compiled C11 defined cases. 6회 삽입으로 rear=6, 4회 삭제로 front=4, 이어 4회 삽입으로 rear=(6+4)%8=2. 통상 관례의 유효 항목은 index5=50,6=60,7=70,0=80,1=90,2=100."
       },
       "p10:a": {
         "status": "pass",
         "reviewer": "restore_answers (blind to bank/reference answers)",
         "method": "qualitative",
         "conclusion": "(a) front=3, rear=5; 유효 항목 index4=40, index5=50. (b) front=3, rear=1; 유효 항목 index4=40, index5=50, index6=60, index7=70, index0=80, index1=90.",
-        "evidence": "evidence/independent-restored.json; docs/verify/exam-restore-20261017/verify_restored.py and trace-result.txt; compiled C11 defined cases. 한 칸을 비워 두고 front는 첫 원소의 바로 앞, rear는 마지막 원소를 가리키는 관례를 적용한다. enqueue는 rear=(rear+1)%8 뒤 저장, dequeue는 front=(front+1)%8 뒤 읽기. 처음 5개 삽입 후 rear=5, 3개 삭제 후 front=3. 추가 4개 삽입 후 rear=(5+4)%8=1. 유효 순서는 40,50,60,70,80,90이다."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent-restored.json; docs/verify/exam-restore-20261017/verify_restored.py and trace-result.txt; compiled C11 defined cases. 한 칸을 비워 두고 front는 첫 원소의 바로 앞, rear는 마지막 원소를 가리키는 관례를 적용한다. enqueue는 rear=(rear+1)%8 뒤 저장, dequeue는 front=(front+1)%8 뒤 읽기. 처음 5개 삽입 후 rear=5, 3개 삭제 후 front=3. 추가 4개 삽입 후 rear=(5+4)%8=1. 유효 순서는 40,50,60,70,80,90이다."
       },
       "p10:b": {
         "status": "pass",
         "reviewer": "restore_answers (blind to bank/reference answers)",
         "method": "qualitative",
         "conclusion": "(a) front=3, rear=5; 유효 항목 index4=40, index5=50. (b) front=3, rear=1; 유효 항목 index4=40, index5=50, index6=60, index7=70, index0=80, index1=90.",
-        "evidence": "evidence/independent-restored.json; docs/verify/exam-restore-20261017/verify_restored.py and trace-result.txt; compiled C11 defined cases. 한 칸을 비워 두고 front는 첫 원소의 바로 앞, rear는 마지막 원소를 가리키는 관례를 적용한다. enqueue는 rear=(rear+1)%8 뒤 저장, dequeue는 front=(front+1)%8 뒤 읽기. 처음 5개 삽입 후 rear=5, 3개 삭제 후 front=3. 추가 4개 삽입 후 rear=(5+4)%8=1. 유효 순서는 40,50,60,70,80,90이다."
+        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent-restored.json; docs/verify/exam-restore-20261017/verify_restored.py and trace-result.txt; compiled C11 defined cases. 한 칸을 비워 두고 front는 첫 원소의 바로 앞, rear는 마지막 원소를 가리키는 관례를 적용한다. enqueue는 rear=(rear+1)%8 뒤 저장, dequeue는 front=(front+1)%8 뒤 읽기. 처음 5개 삽입 후 rear=5, 3개 삭제 후 front=3. 추가 4개 삽입 후 rear=(5+4)%8=1. 유효 순서는 40,50,60,70,80,90이다."
       }
     }
   },
   "artifact_hashes": {
     ".pack/figures_문제설명_1015_Queue/explain-fig-1.svg": "323f758f78172c91c40a7e4e97a32bb3b65474184ff4ffa9a6296c7c7a91f725",
     ".pack/figures_문제설명_1015_Queue/explain-fig-2.svg": "323f758f78172c91c40a7e4e97a32bb3b65474184ff4ffa9a6296c7c7a91f725",
-    ".pack/문제설명_1015_Queue.md": "046fbaa5397a813e28a2b90bdbc131b760f8b9785b9a21e62bc0bd5d0539207f",
+    ".pack/문제설명_1015_Queue.md": "8698c990d1773a1e6f75f1f8f0c12891c473163122794c74dfee82ff82d738b2",
     ".pack/자료_문제설명_1015_Queue/evidence/baseline.json": "55686a6e40d0a2701eeaba64992b2200abd47ec307b5b5e15eb07162df8aca04",
+    ".pack/자료_문제설명_1015_Queue/evidence/blind-solver-2026-10-18.json": "e3483567e6c8f1a2d53b26d1dd7053140864b732a754d3e1eaf8ebaac968c33a",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/1024-dark/p4-viewport.png": "7330798de4be5cad4464139323ed1d603dfaadf5be9a11966e132885a5e82524",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/1024-dark/p5-viewport.png": "3f21d149aeff6a080aa9233cbc085ba0ae3f04cbd1a2fdcec9dc775676976e2b",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/1024-light/p4-viewport.png": "1e0a46ba0fd8d1bc0d76015ef455df92c9eee0c479c80b49101f0801c0c60589",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/1024-light/p5-viewport.png": "f4c54e5dacfa8e949e5c9ddbb8fd99b847da805e8308ac8f6cdc2182fbf0b1a6",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/1280-dark/p4-viewport.png": "37380a083e29e3cec22474b35cdb89afcdda9dcac26efaeb5482bff2dd4b064a",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/1280-dark/p5-viewport.png": "acee4cbc1fa8a323e37a7d9a028ea8c6e2e7712640cff70ab12e010dac0f7c07",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/1280-light/p4-viewport.png": "4218df67d4beb1f1350b7ca18de80f97c799edb970f3dd8c3c415a4ed4a41f96",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/1280-light/p5-viewport.png": "7d0ff73ecd0ad7c271dda5348e7b0a06420f2a37674e2aa764ea60a2f55f554d",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/375-dark/p4-viewport.png": "982afa7bc96ba0be949d94e835bfadb3cf8427f9751b3182382f39254f0c4e67",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/375-dark/p5-viewport.png": "536cc5aff6636f4c45f2d225bcfaf1987e0818923d3dabfb25a0d1098dbd55eb",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/375-light/p4-viewport.png": "1985cb4c441da15b72afa8f906bdfb1741f2f8c21efee386ed56f8e4aed56a69",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18/375-light/p5-viewport.png": "4617879889165b57c806d2d24dd37ecee27e6511f8680a0b08dafca4beae42f9",
+    ".pack/자료_문제설명_1015_Queue/evidence/browser-2026-10-18.json": "4a629753060fbbdb39b4228e0b70190eed8500c6d54a9bc97c2c80ae99049afa",
     ".pack/자료_문제설명_1015_Queue/evidence/c11-result.txt": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
     ".pack/자료_문제설명_1015_Queue/evidence/exam2017-p1.png": "0fd071f4d09bab884fd3e848b5c7110231a188fd9908bce15d0dc388d8d92ab8",
     ".pack/자료_문제설명_1015_Queue/evidence/exam2017-p2.png": "eb8a7b65e36c3bb0d5b08464a471078184aa72b670fffda94661ab56d704998f",
@@ -260,12 +278,15 @@
     ".pack/자료_문제설명_1015_Queue/evidence/independent-restored.json": "69b6dd17c79f4b807ad78f76df4f34d371185d7aa8e764029ff0c266ea9ea323",
     ".pack/자료_문제설명_1015_Queue/evidence/independent_p1_p4.py": "fba4fce08e8662a41074e8e6447500bec625cdba940f752747a8e360890cc6ea",
     ".pack/자료_문제설명_1015_Queue/evidence/independent_p1_p4.txt": "d5a50193bf786bf73dac6242f202d8486eff0eb3b50b13838a52142ae43e95ce",
+    ".pack/자료_문제설명_1015_Queue/evidence/lecture-standalone-2026-10-18.json": "4ce457cd2c13632d26d9c76596690f25d2c95f569beb1846842b81ff2ad0d1d2",
+    ".pack/자료_문제설명_1015_Queue/evidence/lecture-standalone-changes-2026-10-18.md": "0b4f1737046607040f4e9f46337da0ef7009452cfbe9edbb444e011fa45d7e0b",
     ".pack/자료_문제설명_1015_Queue/evidence/p7-exact-card": "473a4cfbccc2f52f37e9392d7573a624e883cdffca21f954ab70339beab4dd40",
     ".pack/자료_문제설명_1015_Queue/evidence/p7-exact-card.c": "f7a1eea7889c5975cc37748661a1d88f98aafadf4d29c08f3f8d3e4ee1ae5617",
     ".pack/자료_문제설명_1015_Queue/evidence/p7-run.txt": "e7fbfc6b2c87204bd719756dbc210d2692e62b7d19b7eaddacf1fc9ec6414115",
     ".pack/자료_문제설명_1015_Queue/evidence/p8-exact-card": "50cd938f0e05d12b7db7cfd0c123d3fa888d8505a7a48cc73397e4fad2dad505",
     ".pack/자료_문제설명_1015_Queue/evidence/p8-exact-card.c": "0796242b537a62b361565f330c8008b4fa371915e697dd6f16975b933153e9f6",
     ".pack/자료_문제설명_1015_Queue/evidence/p8-run.txt": "bf5f6e679bc6d621683c1a32329eb684f32638f2c0e467cf40db1ae51d6d3088",
+    ".pack/자료_문제설명_1015_Queue/evidence/previous-validation-2026-10-18.json": "c53efeff5fcae6ac37267bfb9cf39636ebc8cff782ed15bd326e3fe1e2fe23ff",
     ".pack/자료_문제설명_1015_Queue/evidence/previous-validation.json": "39433880f4a1b1c5b76b6a432c4a8e1a9a0d9c75362554de305bfde5ec09bdf0",
     ".pack/자료_문제설명_1015_Queue/evidence/source-check.txt": "32b19f82b90f2c110910b2edacf61c797e6dd86d72ae469e90a0c4177a22f0a4",
     ".pack/자료_문제설명_1015_Queue/evidence/source_p1_p4.txt": "2e322d696cebfa071d277257729c3bbbfd09c05b551803ebb354e3cdde528c02",
@@ -285,8 +306,8 @@
     ".pack/자료_문제설명_1015_Queue/fragments/p10.html": "9bc710f2aa4900f6dcb8e7dee27212f246c08b6cca7581ec2a98a3a4a2eb7689",
     ".pack/자료_문제설명_1015_Queue/fragments/p2.html": "116d1c03faf980b1d45dad00737dd3e5d13fc35efcdef5f453007008e0cffd7b",
     ".pack/자료_문제설명_1015_Queue/fragments/p3.html": "8cec029b053009178d8b2dca31e8f077392f0707c1b1a8b22120c64438be0ca9",
-    ".pack/자료_문제설명_1015_Queue/fragments/p4.html": "f27ff4ffe1986cd8536ec71555160e4646c7703f4dc859ff4f863f6173f526d6",
-    ".pack/자료_문제설명_1015_Queue/fragments/p5.html": "e0cd08917d97e4a3714215e72f8f1ae4df25fa1075702ced29f796de685c46ac",
+    ".pack/자료_문제설명_1015_Queue/fragments/p4.html": "91fa488425b81e72214272d20930f15562609fbdeb64ed8cf33037ae642e5bae",
+    ".pack/자료_문제설명_1015_Queue/fragments/p5.html": "9c161405e6e6f3351d43d86e854e90a91abab72acf169f777ed01ccd596402ea",
     ".pack/자료_문제설명_1015_Queue/fragments/p6.html": "dbf0d18fc5853578bc76230563a97d1c4a7d02901d67366320d57796c5374657",
     ".pack/자료_문제설명_1015_Queue/fragments/p7.html": "296d789875ce270ace162f229a2977119305e0e025303cb3f253d4b0a9f5376a",
     ".pack/자료_문제설명_1015_Queue/fragments/p8.html": "d75695045766c56beb3aa15ec749c68e8aa87ae35777a554674111dbe81f9e04",
@@ -377,7 +398,7 @@
     ".pack/자료_문제설명_1015_Queue/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     ".pack/자료_문제설명_1015_Queue/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     ".pack/자료_문제설명_1015_Queue/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "문제설명_1015_Queue.html": "a3db251084358fb41455158fb400a3bb6ec974c95b5143727490f83900a68b8c",
-    ".pack/자료_문제설명_1015_Queue/manifest.json": "1c0ecb97e1bcbfa97c2a963807325a4419465fa33dd4a183c80c1dff08f37490"
+    "문제설명_1015_Queue.html": "a8003cd22fc53de720a9b5bda5e899844a9c9ca0b6591bb6e6847b01ad85f26d",
+    ".pack/자료_문제설명_1015_Queue/manifest.json": "57db3d42f8a0fad8676bf6a78818f3b81ba58b4d82a4a82aa5575136a7c8c251"
   }
 }

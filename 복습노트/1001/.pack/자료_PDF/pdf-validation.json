@@ -1,7 +1,7 @@
 {
   "version": 1,
   "source": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1001\\복습문제_1001_List.html",
-  "source_sha256": "58316c0a82d02acdef13d1ee9a5757755ad07b8a54c1b66d0335e3402f60b0b5",
+  "source_sha256": "7788e6a73396e8059eb7cfb62953b06abdf696c084b84fbf73651dd2d56f1f7d",
   "dest": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1001",
   "range": "1001",
   "slug": "List",
@@ -131,25 +131,25 @@
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Claude (claude-opus-5-5), full-page visual review of every stage PNG",
-    "evidence": "Viewed all 5 problem and 6 answer page PNGs. 1001 problems 1-5 / answers 1-6: all lecture; p1 1 cond+3 asks+add code; p2 1 cond+3 asks+delete code; p3 3 asks; p4 1 cond+2 asks+init code; p5 (longest) 1 cond+5 asks fits one page; answers steps/정답 intact, hint appendix all 5; no badge/dots/overflow | Lecture-code badge paragraph absent on all pages; asks numbered without template dot.",
-    "report_sha256": "9d75bc2f63bda99649eb2b43acd2243fba693e12365543f070eb1a825cd0065f",
+    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "evidence": "review_pdf check PASS. Every new page was compared with the previously published, reviewed PDF (rendered with PyMuPDF at 960px, header strip excluded): pages whose body pixels match an old page are unchanged; the remaining pages (problems 3; answers 3) contain the rewritten lecture-code cards and were opened and inspected for conditions/asks split, code section, continuation pages, hint band, answers and bottom margin.",
+    "report_sha256": "d82718cbf48ed40ccc5068312d0f3bfaf4be57715af6399413feec90f95dbcb0",
     "artifact_hashes": {
-      "answers.json": "b8343b9059a3ad192afa0ba3f4bb633f77b37c91d2933ebd83cba5ceb7a48eb9",
+      "answers.json": "8ad66171d18267dcbdf01d243fcfa7c5f94399f6a51628149a3896bda5cbfc33",
       "pages/answers/001.png": "6b10cb3d2d9df1db162f5d143b83bd2603ca4d26e40f3b938b1f3a43251aea22",
       "pages/answers/002.png": "88b79c74b031943fa93717529f2faeb62002b04d68c67e3fe9c73ec4927e39f2",
-      "pages/answers/003.png": "d34edbdc2d0524d67e0182d766202905c0850332cb324e924282545547af10ed",
+      "pages/answers/003.png": "585cd1eb8b563e2f749f0e1400f82c8be212e24c2ba767e9a3559a1afd9bc231",
       "pages/answers/004.png": "8cab281c7c593e644db1e2ba0526b0b33706ba5e83a0e45ea91d72f7df166d4a",
       "pages/answers/005.png": "4c3f4881ef68271ddc8f81a17b9db0a131057ecbe676cb2ca046623461737541",
       "pages/answers/006.png": "454e09c11910650d7c87574ce85dfacbca0dc74cb68a054c331591b62ae7ed64",
       "pages/problems/001.png": "9d9995a64522d85493826387b39576b605b3932ea23c118fc67cb7a8ec431ba6",
       "pages/problems/002.png": "602bd60a8c6274ccba2c6a0e0c4f9c6025df138d19e7ad57518c0830ebb3fa52",
-      "pages/problems/003.png": "3d22487445a21c17dca76af6ab30b7275d41037853a15c6563f312a39864bdb7",
+      "pages/problems/003.png": "9fce3e083be8bc513e3b4a39ee94ebb02034f86af93331b7fb20e39222c9fe72",
       "pages/problems/004.png": "a931ff792d504514709f734c3d6a1a846d56d0c1817c7d874ca784e049a0aaaf",
       "pages/problems/005.png": "bd1dc36b6a6cc8a7dbef56abe42024f26b382f0da0f8c5e071eba3f528d4dd1a",
-      "problems.json": "13c8c8b27ed97d306e74208b12d90f4a3bb0af35d07b5860ee87c1bcf5aa3224",
-      "복습문제_1001_List-답안.pdf": "c75ad0a203a52a4e7c7199ba8dbe5e0410a7d800755bb47ab69ac4bc7b2aa259",
-      "복습문제_1001_List-문제.pdf": "87b9ec0299cdab3646799fb1d88f163e1cc54c46a1f12efb47f7b8721949742d"
+      "problems.json": "674fb6adb4162ddd132deee8cbd05ad7ababb389b00ece46fce10dca1d2e52f1",
+      "복습문제_1001_List-답안.pdf": "0f96c89b0099d710222b3b446abf97a8b03ec436bf306dfdb75b4a6b89fcd4f1",
+      "복습문제_1001_List-문제.pdf": "e49115fe03f6e778a9e5558c60748230ebbddc400e5efca896324f7c43b5197a"
     }
   },
   "status": "published",
@@ -626,6 +626,7 @@
           ],
           "code": [],
           "labels": [
+            "조건",
             "구할 것"
           ]
         },
@@ -1401,6 +1402,7 @@
           ],
           "code": [],
           "labels": [
+            "조건",
             "구할 것"
           ]
         },
@@ -1826,8 +1828,13 @@
         },
         {
           "kind": "prose",
-          "html": "<p>빈 리스트에 강의 사용 예의 add_tail(A), add_tail(B), add(2,C), add(1,D), delete(2), replace(1,E)를 차례로 적용하세요(위치는 0부터 셉니다). 각 단계의 리스트와 길이, 마지막 get_entry(1)과 get_length()의 값을 쓰세요. add와 replace가 길이에 미치는 차이, [A,E,C]와 [E,A,C]가 서로 다른 리스트인 이유, 이 결과를 구하는 데 배열·연결 구현을 알아야 하는지도 설명하세요.</p>",
-          "text": "빈 리스트에 강의 사용 예의 add_tail(A), add_tail(B), add(2,C), add(1,D), delete(2), replace(1,E)를 차례로 적용하세요(위치는 0부터 셉니다). 각 단계의 리스트와 길이, 마지막 get_entry(1)과 get_length()의 값을 쓰세요. add와 replace가 길이에 미치는 차이, [A,E,C]와 [E,A,C]가 서로 다른 리스트인 이유, 이 결과를 구하는 데 배열·연결 구현을 알아야 하는지도 설명하세요."
+          "html": "<p>리스트 ADT의 연산은 다음과 같아요. 위치는 0부터 셉니다. add_tail(x)는 리스트 끝에 x를 추가해요. add(pos,x)는 0≤pos≤길이인 pos 위치에 x를 넣고 원래 그 위치부터 있던 항목을 한 칸씩 뒤로 밀어요(pos가 길이와 같으면 끝에 추가돼요). delete(pos)는 pos 위치의 항목을 지우고 뒤 항목을 한 칸씩 당겨요. replace(pos,x)는 pos 위치의 항목을 x로 바꿔요. get_entry(pos)는 pos 위치의 항목을, get_length()는 항목 수를 돌려줘요.</p>",
+          "text": "리스트 ADT의 연산은 다음과 같아요. 위치는 0부터 셉니다. add_tail(x)는 리스트 끝에 x를 추가해요. add(pos,x)는 0≤pos≤길이인 pos 위치에 x를 넣고 원래 그 위치부터 있던 항목을 한 칸씩 뒤로 밀어요(pos가 길이와 같으면 끝에 추가돼요). delete(pos)는 pos 위치의 항목을 지우고 뒤 항목을 한 칸씩 당겨요. replace(pos,x)는 pos 위치의 항목을 x로 바꿔요. get_entry(pos)는 pos 위치의 항목을, get_length()는 항목 수를 돌려줘요."
+        },
+        {
+          "kind": "prose",
+          "html": "<p>빈 리스트에 add_tail(A), add_tail(B), add(2,C), add(1,D), delete(2), replace(1,E)를 차례로 적용하세요. 각 단계의 리스트와 길이, 마지막 get_entry(1)과 get_length()의 값을 쓰세요. add와 replace가 길이에 미치는 차이, [A,E,C]와 [E,A,C]가 서로 다른 리스트인 이유, 이 결과를 구하는 데 배열·연결 구현을 알아야 하는지도 설명하세요.</p>",
+          "text": "빈 리스트에 add_tail(A), add_tail(B), add(2,C), add(1,D), delete(2), replace(1,E)를 차례로 적용하세요. 각 단계의 리스트와 길이, 마지막 get_entry(1)과 get_length()의 값을 쓰세요. add와 replace가 길이에 미치는 차이, [A,E,C]와 [E,A,C]가 서로 다른 리스트인 이유, 이 결과를 구하는 데 배열·연결 구현을 알아야 하는지도 설명하세요."
         }
       ],
       "solution": [
@@ -1982,21 +1989,21 @@
     "복습문제_1001_List-답안.pdf"
   ],
   "artifact_hashes": {
-    "answers.json": "b8343b9059a3ad192afa0ba3f4bb633f77b37c91d2933ebd83cba5ceb7a48eb9",
+    "answers.json": "8ad66171d18267dcbdf01d243fcfa7c5f94399f6a51628149a3896bda5cbfc33",
     "pages/answers/001.png": "6b10cb3d2d9df1db162f5d143b83bd2603ca4d26e40f3b938b1f3a43251aea22",
     "pages/answers/002.png": "88b79c74b031943fa93717529f2faeb62002b04d68c67e3fe9c73ec4927e39f2",
-    "pages/answers/003.png": "d34edbdc2d0524d67e0182d766202905c0850332cb324e924282545547af10ed",
+    "pages/answers/003.png": "585cd1eb8b563e2f749f0e1400f82c8be212e24c2ba767e9a3559a1afd9bc231",
     "pages/answers/004.png": "8cab281c7c593e644db1e2ba0526b0b33706ba5e83a0e45ea91d72f7df166d4a",
     "pages/answers/005.png": "4c3f4881ef68271ddc8f81a17b9db0a131057ecbe676cb2ca046623461737541",
     "pages/answers/006.png": "454e09c11910650d7c87574ce85dfacbca0dc74cb68a054c331591b62ae7ed64",
     "pages/problems/001.png": "9d9995a64522d85493826387b39576b605b3932ea23c118fc67cb7a8ec431ba6",
     "pages/problems/002.png": "602bd60a8c6274ccba2c6a0e0c4f9c6025df138d19e7ad57518c0830ebb3fa52",
-    "pages/problems/003.png": "3d22487445a21c17dca76af6ab30b7275d41037853a15c6563f312a39864bdb7",
+    "pages/problems/003.png": "9fce3e083be8bc513e3b4a39ee94ebb02034f86af93331b7fb20e39222c9fe72",
     "pages/problems/004.png": "a931ff792d504514709f734c3d6a1a846d56d0c1817c7d874ca784e049a0aaaf",
     "pages/problems/005.png": "bd1dc36b6a6cc8a7dbef56abe42024f26b382f0da0f8c5e071eba3f528d4dd1a",
-    "problems.json": "13c8c8b27ed97d306e74208b12d90f4a3bb0af35d07b5860ee87c1bcf5aa3224",
-    "복습문제_1001_List-답안.pdf": "c75ad0a203a52a4e7c7199ba8dbe5e0410a7d800755bb47ab69ac4bc7b2aa259",
-    "복습문제_1001_List-문제.pdf": "87b9ec0299cdab3646799fb1d88f163e1cc54c46a1f12efb47f7b8721949742d"
+    "problems.json": "674fb6adb4162ddd132deee8cbd05ad7ababb389b00ece46fce10dca1d2e52f1",
+    "복습문제_1001_List-답안.pdf": "0f96c89b0099d710222b3b446abf97a8b03ec436bf306dfdb75b4a6b89fcd4f1",
+    "복습문제_1001_List-문제.pdf": "e49115fe03f6e778a9e5558c60748230ebbddc400e5efca896324f7c43b5197a"
   },
   "checks": {
     "status": "pass",

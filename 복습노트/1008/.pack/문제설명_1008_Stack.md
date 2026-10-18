@@ -119,7 +119,19 @@ lecture-s04-p48-list-delete-leak · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB
 
 **강의 예제 기반 자체 출제** S4 p48 · 추가 근거 p28,47
 
-강의 p47에서 get_node_at의 음수 위치 반환은 NULL이고 p28의 remove_node는 p==NULL이면 head를 다음으로 옮긴 뒤 free(removed)를 실행해요. 길이 1인 리스트에서 pos=0을 삭제하면 head와 length는 바뀌지만 어떤 메모리 문제가 남나요? removed 인자를 고치세요.
+ListType은 첫 노드를 가리키는 head와 노드 개수 length를 보관해요. get_node_at(list,pos)는 pos&lt;0이면 NULL을 돌려주고, 그 밖에는 head에서 link를 pos번 따라간 노드를 돌려줘요. remove_node는 다음과 같아요.
+
+`// p: 삭제될 노드의 선행 노드, removed: 삭제될 노드
+void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
+{
+    if( p == NULL )
+        *phead = (*phead)->link;
+    else
+        p->link = removed->link;
+    free(removed);
+}`
+
+아래는 비어 있지 않은 리스트에서 유효한 위치 pos(0≤pos&lt;length)의 노드를 삭제하는 래퍼의 본문이에요. 노드 A 하나뿐인 길이 1 리스트에서 pos=0을 삭제하면 head와 length는 바뀌지만 어떤 메모리 문제가 남나요? removed 인자를 고치세요.
 
 `ListNode *p=get_node_at(list,pos-1);
 remove_node(&(list->head),p,(p!=NULL)?p->link:NULL);
@@ -137,7 +149,7 @@ list->length--;`
 
 #### 문제를 내 말로 읽어요
 
-강의 p47에서 get_node_at의 음수 위치 반환은 NULL이고 p28의 remove_node는 p==NULL이면 head를 다음으로 옮긴 뒤 free(removed)를 실행해요. 길이 1인 리스트에서 pos=0을 삭제하면 head와 length는 바뀌지만 어떤 메모리 문제가 남나요? removed 인자를 고치세요.
+get_node_at(list,pos)는 pos&lt;0이면 NULL을 돌려줘요. 주어진 remove_node는 p==NULL이면 head를 다음 노드로 옮기고, 아니면 p-&gt;link를 건너뛰게 한 뒤 free(removed)를 실행해요. 길이 1인 리스트에서 pos=0을 삭제하면 head와 length는 바뀌지만 어떤 메모리 문제가 남나요? removed 인자를 고치세요.
 
 #### 이 문제를 봤을 때 떠올릴 개념과 공식
 
@@ -163,7 +175,7 @@ p=NULL,removed=NULL로 전달되어 head=NULL,length=0이지만 실제 첫 노�
 
 #### 이 문제에서 조심할 점
 
-이 예제는 강의 원문의 결함을 찾는 문제예요. 원문을 몰래 수정하거나 누수를 정상 동작으로 승인하지 않아요.
+이 문제는 래퍼 코드의 결함을 찾는 문제예요. 코드를 몰래 고쳐 쓰거나 누수를 정상 동작으로 승인하지 않아요.
 
 #### 설명을 닫고 다시 해 봐요
 
@@ -286,7 +298,7 @@ lecture-s04-p47-list-position-adapter · [원 문제 보기](../%EB%B3%B5%EC%8A%
 
 **강의 예제 기반 자체 출제** S4 p47 · 추가 근거 p44,45,46,25
 
-ListType은 head와 length를 함께 보관해요. A→B→C→NULL,length=3인 리스트에서 위치2에 N을 넣는 add가 get_node_at(list,position-1)를 호출한 뒤 기존 insert_node를 재사용합니다. 반환되는 선행 노드, 함수에 넘기는 세 인자와 결과를 쓰세요. 위치0 삽입에서는 선행 노드와 head가 어떻게 되는지, position을 그대로 get_node_at에 넘기면 생기는 위치 오류, length를 따로 저장하는 이점과 탐색을 포함한 최악 비용도 설명하세요.
+ListType은 첫 노드를 가리키는 head와 노드 개수 length를 함께 보관해요. 위치는 0부터 셉니다. get_node_at(list,pos)는 pos&lt;0이면 NULL을 돌려주고, 그 밖에는 head에서 link를 pos번 따라간 노드를 돌려줘요. insert_node(phead,p,new_node)는 리스트가 비어 있으면 new_node를 유일한 노드로 만들고, p==NULL이면 new_node를 맨 앞에 넣어 \*phead를 바꾸며, 그 밖에는 new_node를 p 바로 뒤에 넣어요. A→B→C→NULL,length=3인 리스트에서 위치2에 N을 넣는 add가 get_node_at(list,position-1)를 호출한 뒤 그 결과로 insert_node를 호출합니다. 반환되는 선행 노드, 함수에 넘기는 세 인자와 결과를 쓰세요. 위치0 삽입에서는 선행 노드와 head가 어떻게 되는지, position을 그대로 get_node_at에 넘기면 생기는 위치 오류, length를 따로 저장하는 이점과 탐색을 포함한 최악 비용도 설명하세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -296,11 +308,11 @@ S4 p47 · 추가 근거 p44,45,46,25 · Software_4_List.pdf. 1008에 재강조�
 
 #### 문제를 내 말로 읽어요
 
-ListType은 head와 length를 함께 보관해요. A→B→C→NULL,length=3인 리스트에서 위치2에 N을 넣는 add가 get_node_at(list,position-1)를 호출한 뒤 기존 insert_node를 재사용합니다. 반환되는 선행 노드, 함수에 넘기는 세 인자와 결과를 쓰세요. 위치0 삽입에서는 선행 노드와 head가 어떻게 되는지, position을 그대로 get_node_at에 넘기면 생기는 위치 오류, length를 따로 저장하는 이점과 탐색을 포함한 최악 비용도 설명하세요.
+ListType은 head와 length를 함께 보관해요. A→B→C→NULL,length=3인 리스트에서 위치2에 N을 넣는 add가 get_node_at(list,position-1)로 선행 노드를 구한 뒤 insert_node를 호출합니다. get_node_at은 pos&lt;0이면 NULL, 그 밖에는 head에서 link를 pos번 따라간 노드를 돌려주고, insert_node는 p==NULL이면 맨 앞에, 그 밖에는 p 바로 뒤에 넣어요. 반환되는 선행 노드, 함수에 넘기는 세 인자와 결과를 쓰세요. 위치0 삽입에서는 선행 노드와 head가 어떻게 되는지, position을 그대로 get_node_at에 넘기면 생기는 위치 오류, length를 따로 저장하는 이점과 탐색을 포함한 최악 비용도 설명하세요.
 
 #### 이 문제를 봤을 때 떠올릴 개념과 공식
 
-‘기존 함수를 재사용’한다는 단서는 인터페이스 어댑터(adapter)를 뜻해요. 사용자는 위치를 주고 insert_node는 선행 노드 주소를 원하므로 그 사이를 position−1의 탐색으로 연결해요. 이 문제는 원 삽입 코드의 대입 순서가 아니라 호출 경계의 변환을 묻고 있어요.
+‘get_node_at으로 구한 선행 노드로 insert_node를 호출한다’는 단서는 인터페이스 어댑터(adapter)를 뜻해요. 사용자는 위치를 주고 insert_node는 선행 노드 주소를 원하므로 그 사이를 position−1의 탐색으로 연결해요. 이 문제는 insert_node 내부의 대입 순서가 아니라 호출 경계의 변환을 묻고 있어요.
 
 #### 종이에 쓰는 첫 줄
 
@@ -310,7 +322,7 @@ position=2 → position−1=1 → 선행 노드B.
 
 위치 2는 현재 C의 자리이므로 바로 앞의 인덱스 1에 있는 B를 찾아야 해요.
 
-기존 insert_node가 요구하는 것은 위치 정수가 아닌 선행 노드의 주소예요.
+insert_node가 요구하는 것은 위치 정수가 아닌 선행 노드의 주소예요.
 
 호출자의 head를 바꿀 가능성이 있으므로 head 필드의 주소와 B, N을 전달해요.
 
@@ -340,7 +352,7 @@ position번째 노드를 선행 노드라고 혼동하지 않아요. head 필드
 
 #### 떠올릴 개념·공식
 
-‘기존 함수를 재사용’한다는 단서는 인터페이스 어댑터(adapter)를 뜻해요. 사용자는 위치를 주고 insert_node는 선행 노드 주소를 원하므로 그 사이를 position−1의 탐색으로 연결해요. 이 문제는 원 삽입 코드의 대입 순서가 아니라 호출 경계의 변환을 묻고 있어요.
+‘get_node_at으로 구한 선행 노드로 insert_node를 호출한다’는 단서는 인터페이스 어댑터(adapter)를 뜻해요. 사용자는 위치를 주고 insert_node는 선행 노드 주소를 원하므로 그 사이를 position−1의 탐색으로 연결해요. 이 문제는 insert_node 내부의 대입 순서가 아니라 호출 경계의 변환을 묻고 있어요.
 
 #### 첫 줄
 
@@ -360,7 +372,7 @@ lecture-s05-p8-activation-record-return · [원 문제 보기](../%EB%B3%B5%EC%8
 
 **강의 예제 기반 자체 출제** S5 p8 · 추가 근거 p10,11,12
 
-강의 예처럼 main의 i=3에서 sub1(i)를 호출하고 sub1의 a=3,j=5에서 sub2(j)를 호출했어요. sub2 실행 중 기억해야 할 호출 정보의 순서와, sub2와 sub1이 차례로 return할 때 복귀하는 함수 순서를 쓰세요. 지역 변수만 저장하고 돌아올 위치를 버리면 왜 부족한지, 가장 오래된 호출로 먼저 돌아가면 안 되는 이유, 되돌리기(undo)와의 공통 규칙도 설명하세요. PC 숫자는 실제 C 주소가 아닌 강의 그림의 복귀 위치 표시로만 다루세요. 이어 용량 M=3인 배열 스택에서 top=2일 때 push, top=-1일 때 pop을 요청했어요(두 상황은 독립적이에요). 각 경우 어떤 검사가 top 변경과 배열 접근보다 먼저여야 하며, 거부된 연산 뒤 상태가 유지돼야 하는 이유를 쓰세요.
+main의 i=3에서 sub1(i)를 호출하고 sub1의 a=3,j=5에서 sub2(j)를 호출했어요. sub2 실행 중 기억해야 할 호출 정보의 순서와, sub2와 sub1이 차례로 return할 때 복귀하는 함수 순서를 쓰세요. 지역 변수만 저장하고 돌아올 위치를 버리면 왜 부족한지, 가장 오래된 호출로 먼저 돌아가면 안 되는 이유, 되돌리기(undo)와의 공통 규칙도 설명하세요. 복귀 위치는 실제 C 주소가 아니라 "호출문 바로 다음"이라는 개념으로만 다뤄요. 이어 용량 M=3인 배열 스택에서 top=2일 때 push, top=-1일 때 pop을 요청했어요(두 상황은 독립적이에요). 각 경우 어떤 검사가 top 변경과 배열 접근보다 먼저여야 하며, 거부된 연산 뒤 상태가 유지돼야 하는 이유를 쓰세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -370,11 +382,11 @@ S5 p8 · 추가 근거 p10,11,12 · Software_5_Stack.pdf. 강의 개념·그림�
 
 #### 문제를 내 말로 읽어요
 
-강의 예처럼 main의 i=3에서 sub1(i)를 호출하고 sub1의 a=3,j=5에서 sub2(j)를 호출했어요. sub2 실행 중 기억해야 할 호출 정보의 순서와, sub2와 sub1이 차례로 return할 때 복귀하는 함수 순서를 쓰세요. 지역 변수만 저장하고 돌아올 위치를 버리면 왜 부족한지, 가장 오래된 호출로 먼저 돌아가면 안 되는 이유, 되돌리기(undo)와의 공통 규칙도 설명하세요. PC 숫자는 실제 C 주소가 아닌 강의 그림의 복귀 위치 표시로만 다루세요. 이어 용량 M=3인 배열 스택에서 top=2일 때 push, top=-1일 때 pop을 요청했어요(두 상황은 독립적이에요). 각 경우 어떤 검사가 top 변경과 배열 접근보다 먼저여야 하며, 거부된 연산 뒤 상태가 유지돼야 하는 이유를 쓰세요.
+main의 i=3에서 sub1(i)를 호출하고 sub1의 a=3,j=5에서 sub2(j)를 호출했어요. sub2 실행 중 기억해야 할 호출 정보의 순서와, sub2와 sub1이 차례로 return할 때 복귀하는 함수 순서를 쓰세요. 지역 변수만 저장하고 돌아올 위치를 버리면 왜 부족한지, 가장 오래된 호출로 먼저 돌아가면 안 되는 이유, 되돌리기(undo)와의 공통 규칙도 설명하세요. 복귀 위치는 실제 C 주소가 아니라 "호출문 바로 다음"이라는 개념으로만 다뤄요. 이어 용량 M=3인 배열 스택에서 top=2일 때 push, top=-1일 때 pop을 요청했어요(두 상황은 독립적이에요). 각 경우 어떤 검사가 top 변경과 배열 접근보다 먼저여야 하며, 거부된 연산 뒤 상태가 유지돼야 하는 이유를 쓰세요.
 
 #### 이 문제를 봤을 때 떠올릴 개념과 공식
 
-‘호출했다가 돌아온다’는 말에서 시스템 스택(system stack)의 활성 레코드(activation record)를 떠올려요. 강의 모형에서는 PC(program counter, 실행 위치)와 지역 상태를 함께 기억해요. 실제 ABI의 스택 프레임 세부 배치는 이 문제의 범위가 아니에요.
+‘호출했다가 돌아온다’는 말에서 시스템 스택(system stack)의 활성 레코드(activation record)를 떠올려요. 이 모형에서는 돌아올 실행 위치와 지역 상태를 함께 기억해요. 실제 ABI의 스택 프레임 세부 배치는 이 문제의 범위가 아니에요.
 
 #### 종이에 쓰는 첫 줄
 
@@ -402,7 +414,7 @@ sub2의 return은 맨 위의 sub1 정보를 사용해 sub1의 호출 다음으�
 
 #### 이 문제에서 조심할 점
 
-PC 값을 배열 인덱스나 실제 기계 주소로 계산하지 않아요. 이 문제는 개념 모형의 복귀 관계를 물어요.
+복귀 위치를 배열 인덱스나 실제 기계 주소로 계산하지 않아요. 이 문제는 개념 모형의 복귀 관계를 물어요.
 
 #### 설명을 닫고 다시 해 봐요
 
@@ -414,7 +426,7 @@ PC 값을 배열 인덱스나 실제 기계 주소로 계산하지 않아요. �
 
 #### 떠올릴 개념·공식
 
-‘호출했다가 돌아온다’는 말에서 시스템 스택(system stack)의 활성 레코드(activation record)를 떠올려요. 강의 모형에서는 PC(program counter, 실행 위치)와 지역 상태를 함께 기억해요. 실제 ABI의 스택 프레임 세부 배치는 이 문제의 범위가 아니에요.
+‘호출했다가 돌아온다’는 말에서 시스템 스택(system stack)의 활성 레코드(activation record)를 떠올려요. 이 모형에서는 돌아올 실행 위치와 지역 상태를 함께 기억해요. 실제 ABI의 스택 프레임 세부 배치는 이 문제의 범위가 아니에요.
 
 #### 첫 줄
 

@@ -1,0 +1,14 @@
+{
+ "p6": {
+  "answer": "객체 범위: 0 이상 INT_MAX 이하의 정수(자연수). sub(3,5)=0 (x<y), sub(5,3)=2, add(INT_MAX,1)=INT_MAX (상한 포화). 사용자는 zero/add/sub 연산의 의미(인터페이스)만 알면 되고 내부 표현(비트, 배열 등)은 추상화로 감춰지므로 몰라도 된다. signed int 코드로 그대로 옮기면 x+y가 INT_MAX를 넘을 때 오버플로(정의되지 않은 동작/음수로 래핑)가 발생해 (x+y)<=INT_MAX가 항상 참이 되므로, 더하기 전에 x > INT_MAX - y 로 검사해야 한다.",
+  "missing": ""
+ },
+ "p7": {
+  "answer": "A: 곱셈1+대입1=2회, O(1). B: sum<-0 1회 + 루프 n회 x (덧셈1+대입1) = 2n+1회, O(n). C: 1 + n*n*2 = 2n^2+1회, O(n^2). 같은 결과를 구한다고 실행 시간이 같다고 할 수 없다: 연산 수가 입력 크기 n에 따라 다르게 증가하므로 시간은 달라진다.",
+  "missing": ""
+ },
+ "p8": {
+  "answer": "호출 순서: factorial(3) → factorial(2) → factorial(1). 반환 순서: factorial(1)=1 → factorial(2)=2*1=2 → factorial(3)=3*2=6. factorial(0)=1. 종료 조건은 n<=1, 문제 크기가 줄어드는 부분은 factorial(n-1) 호출(n이 1씩 감소).",
+  "missing": ""
+ }
+}

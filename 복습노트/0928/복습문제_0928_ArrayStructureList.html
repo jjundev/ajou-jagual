@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="dbe4f686cbc9dfe2f0aa" data-screens="article.card" data-panels="review" data-range="0928">
+<body data-revision="93067ada7cf80bfa312b" data-screens="article.card" data-panels="review" data-range="0928">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -450,7 +450,7 @@ free(p);</code></pre></details>
 </article>
 <article class="card" id="p7" data-source="lecture-s03-p20-pointer-expression-double" data-source-kind="lecture-code">
 <h3>P7. 역참조·후위 증가·이중 포인터 추적</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S3 p20 · 추가 근거 p19,23,25,26</p><p>다음 코드를 보세요. 각 문장 뒤 p가 가리키는 원소와 배열 값을 추적하고 x,y의 최종값을 쓰세요. *p++와 (*p)++가 바꾸는 대상이 어떻게 다른지, pp와 *pp와 **pp가 각각 무엇인지 설명하세요. int 크기가4바이트일 때 p=a+1과 a의 바이트 간격도 쓰세요.</p><pre><code class="language-c">int a[] = {10,20,30};
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S3 p20 · 추가 근거 p19,23,25,26</p><p>아래는 배열 포인터와 이중 포인터를 다루는 코드예요. 각 문장 뒤 p가 가리키는 원소와 배열 값을 추적하고 x,y의 최종값을 쓰세요. *p++와 (*p)++가 바꾸는 대상이 어떻게 다른지, pp와 *pp와 **pp가 각각 무엇인지 설명하세요. int 크기가4바이트일 때 p=a+1과 a의 바이트 간격도 쓰세요.</p><pre><code class="language-c">int a[] = {10,20,30};
 int *p = a;
 int **pp = &amp;p;
 int x = *p++;
