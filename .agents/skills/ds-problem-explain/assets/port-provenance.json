@@ -1690,6 +1690,54 @@
           "new": "def test_lettered_operation_list_is_single_question():\n    assert subparts('<p>다음 연산을 실행한다.</p><ol><li>(a) push(1)</li><li>(b) pop()</li></ol><p>최종 상태를 구하라.</p>', '') == ('main',)\n\nfrom mpe_source import split_lecture_statement\n\ndef test_split_lecture_statement_with_subparts():\n    stmt = (\n        '<p><span class=\"badge\">강의 예제 기반 자체 출제</span> S4 p18</p>'\n        '<p>단순 연결 리스트에서 <code>head = 300</code>이에요.</p>'\n        '<pre><code class=\"language-c\">300: [10 | 100] -&gt; 100: [20 | NULL]</code></pre>'\n        '<ol><li>(a) 순회 순서를 쓰세요.</li><li>(b) 삽입 후 링크를 쓰세요.</li></ol>'\n    )\n    cond, ask = split_lecture_statement(stmt, 'lecture-s04-p18-linked-representation')\n    assert cond == (\n        '<p><span class=\"badge\">강의 예제 기반 자체 출제</span> S4 p18</p>'\n        '<p>단순 연결 리스트에서 <code>head = 300</code>이에요.</p>'\n        '<pre><code class=\"language-c\">300: [10 | 100] -&gt; 100: [20 | NULL]</code></pre>'\n    )\n    assert ask == '<ol><li>(a) 순회 순서를 쓰세요.</li><li>(b) 삽입 후 링크를 쓰세요.</li></ol>'\n    assert subparts(ask, '') == ('a', 'b')\n\ndef test_non_lecture_ol_stays_in_conditions():\n    stmt = '<p>다음 연산을 수행한다.</p><ol><li>(a) 첫째</li><li>(b) 둘째</li></ol>'\n    cond, ask = split_lecture_statement(stmt, '2022-mid-q1')\n    assert cond == stmt and ask == ''\n"
         }
       ]
+    },
+    {
+      "destination": "scripts/mpe_render.py",
+      "base_sha256": "a00296eaee015ae2b61b133a586d5b935ea15e06c56ef7e06d979d7c4808d344",
+      "current_sha256": "4a7fd5020953a882b9d5063d59148c146fe5a27dab7edc5c29b93889cb9173cc",
+      "reason": "2026-10-19 lecture-code labeled asks: hide list numbers when every ask item starts with an (a)-style label.",
+      "replacements": [
+        {
+          "old": "                   + ('<h4>구할 것</h4><div data-source-field=\"ask\">' + p.ask_html + '</div>' if p.ask_html else '')\n",
+          "new": "                   + ('<h4>구할 것</h4><div data-source-field=\"ask\"' + (' data-labeled' if labeled_asks(p.ask_html) else '') + '>'\n                      + p.ask_html + '</div>' if p.ask_html else '')\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/mpe_render.py",
+      "base_sha256": "4a7fd5020953a882b9d5063d59148c146fe5a27dab7edc5c29b93889cb9173cc",
+      "current_sha256": "f75d77b4de5892e66febe1a6b05bdf1dc4300c258690014a1d568bb06b6f8022",
+      "reason": "2026-10-19 lecture-code labeled asks: hide list numbers when every ask item starts with an (a)-style label.",
+      "replacements": [
+        {
+          "old": "ASSETS = Path(__file__).resolve().parents[1] / 'assets'\n",
+          "new": "ASSETS = Path(__file__).resolve().parents[1] / 'assets'\nASK_LABEL = re.compile(r'\\s*\\([a-z]\\)')\n\ndef labeled_asks(ask_html):\n    items = list(parse(ask_html).find_all(lambda n: n.tag == 'li'))\n    return bool(items) and all(ASK_LABEL.match(n.text()) for n in items)\n\n"
+        }
+      ]
+    },
+    {
+      "destination": "assets/note-template.html",
+      "base_sha256": "6264a4e6a9e88487bf284ceea70bafef200e73aa72e52bcd97656f5051682f84",
+      "current_sha256": "605811cea3df793de31f01d87231b12ce93a64025a765accf0b12e88bb7bb46e",
+      "reason": "2026-10-19 lecture-code labeled asks: hide list numbers when every ask item starts with an (a)-style label.",
+      "replacements": [
+        {
+          "old": "    .problem-pane [data-source-field=\"ask\"] li + li { margin-top: var(--s2); }\n",
+          "new": "    .problem-pane [data-source-field=\"ask\"] li + li { margin-top: var(--s2); }\n    .problem-pane [data-source-field=\"ask\"][data-labeled] ol { list-style: none; padding-left: 0; }\n"
+        }
+      ]
+    },
+    {
+      "destination": "tests/test_source.py",
+      "base_sha256": "c3595d4a6bbc47955204cef637afac675a528306bcfb740359ca131f204168bd",
+      "current_sha256": "3cf256a885f220224aed2503ef296ddb169216079ed24e89b3d28542b6e653e5",
+      "reason": "2026-10-19 lecture-code labeled asks: hide list numbers when every ask item starts with an (a)-style label.",
+      "replacements": [
+        {
+          "old": "    assert cond == stmt and ask == ''\n",
+          "new": "    assert cond == stmt and ask == ''\n\ndef test_labeled_asks_only_when_every_item_has_label():\n    from mpe_render import labeled_asks\n    assert labeled_asks('<ol><li>(a) 첫째</li><li>(b) <code>p</code> 둘째</li></ol>')\n    assert not labeled_asks('<ol><li>(a) 첫째</li><li>둘째</li></ol>')\n    assert not labeled_asks('')\n"
+        }
+      ]
     }
   ],
   "common_sync": {

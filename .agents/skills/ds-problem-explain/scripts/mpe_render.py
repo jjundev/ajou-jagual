@@ -16,6 +16,12 @@ from mpe_source import sha256, inside, existing_path
 from mpe_types import ExplainError, Artifacts
 
 ASSETS = Path(__file__).resolve().parents[1] / 'assets'
+ASK_LABEL = re.compile(r'\s*\([a-z]\)')
+
+def labeled_asks(ask_html):
+    items = list(parse(ask_html).find_all(lambda n: n.tag == 'li'))
+    return bool(items) and all(ASK_LABEL.match(n.text()) for n in items)
+
 # 날짜 폴더 루트에는 HTML·PDF만 둔다. md·그림·자료 폴더는 이 안에 들어간다(ds-review-pack pack_layout.PACK_DIR 과 같아야 함).
 PACK_DIR = '.pack'
 
@@ -167,7 +173,8 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
     for p in pack.problems:
         reading = (f'<div class="layer formal" data-source-problem="{p.id}">'
                    + '<div data-source-field="conditions">' + p.conditions_html + '</div>'
-                   + ('<h4>구할 것</h4><div data-source-field="ask">' + p.ask_html + '</div>' if p.ask_html else '')
+                   + ('<h4>구할 것</h4><div data-source-field="ask"' + (' data-labeled' if labeled_asks(p.ask_html) else '') + '>'
+                      + p.ask_html + '</div>' if p.ask_html else '')
                    + ''.join(p.figures_html) + '</div>')
         # Validate each block separately: details wraps the original only after its content passed.
         reading = resources(reading, p, pack, repo, stage, fig_rel, pack.path.parent, 'source')

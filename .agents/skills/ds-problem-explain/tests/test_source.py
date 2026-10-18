@@ -94,3 +94,9 @@ def test_non_lecture_ol_stays_in_conditions():
     stmt = '<p>다음 연산을 수행한다.</p><ol><li>(a) 첫째</li><li>(b) 둘째</li></ol>'
     cond, ask = split_lecture_statement(stmt, '2022-mid-q1')
     assert cond == stmt and ask == ''
+
+def test_labeled_asks_only_when_every_item_has_label():
+    from mpe_render import labeled_asks
+    assert labeled_asks('<ol><li>(a) 첫째</li><li>(b) <code>p</code> 둘째</li></ol>')
+    assert not labeled_asks('<ol><li>(a) 첫째</li><li>둘째</li></ol>')
+    assert not labeled_asks('')
