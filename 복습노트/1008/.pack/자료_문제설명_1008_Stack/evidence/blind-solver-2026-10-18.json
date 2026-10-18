@@ -1,0 +1,18 @@
+{
+ "p2": {
+  "answer": "pos=0이면 p=get_node_at(list,-1)=NULL이라 removed 인자가 NULL이 되고, remove_node는 head=head->link(=NULL), free(NULL)만 수행한다. head=NULL, length=0으로 바뀌지만 실제 노드 A는 free되지 않고 어디서도 가리키지 않으므로 메모리 누수가 남는다. 수정: remove_node(&(list->head),p,(p!=NULL)?p->link:list->head); (p==NULL이면 삭제 대상은 head 노드).",
+  "missing": ""
+ },
+ "p3": {
+  "answer": "push(5): 반환 없음, top=0. push(8): 반환 없음, top=1. peek(): 8 반환, top=1 그대로. pop(): 8 반환, top=0. push(2): top=1, stack[1]=2. pop(): 2 반환, top=0. peek는 맨 위 값을 읽기만 하고 top을 바꾸지 않는 반면 pop은 값을 꺼내며 top을 줄여 원소를 제거한다. 빈 스택(top=-1)에서 먼저 top을 줄이면 top=-2가 되어 상태가 망가지고 stack[-1]/stack[-2] 같은 범위 밖 접근이 일어나므로, 반드시 is_empty 검사를 먼저 하고 읽은 뒤 줄여야 한다.",
+  "missing": ""
+ },
+ "p4": {
+  "answer": "get_node_at(list,1)=B가 선행 노드. insert_node(&(list->head), B, N) 호출 후 A→B→N→C→NULL, N이 위치2, length=4(add에서 증가). 위치0 삽입: get_node_at(list,-1)=NULL이므로 p==NULL, N이 맨 앞에 들어가 N->link=기존 head, *phead=N으로 head가 바뀐다. position을 그대로 넘기면 위치2 노드 C가 선행 노드가 되어 C 뒤(위치3)에 삽입되는 off-by-one 오류가 난다. length를 저장하면 유효 범위(0≤pos≤length) 검사와 길이 조회가 O(1)이고 끝까지 세지 않아도 된다. 최악 비용은 선행 노드를 찾는 탐색 O(n)(링크 length-1회 이동) + 삽입 O(1) = O(n).",
+  "missing": ""
+ },
+ "p5": {
+  "answer": "sub2 실행 중 기억할 호출 정보(아래→위): main(i=3, 복귀지점=sub1 호출문 다음), sub1(a=3, j=5, 복귀지점=sub2 호출문 다음), sub2(매개변수/지역변수). sub2 return 시 sub1으로, 이어 sub1 return 시 main으로 복귀(sub2→sub1→main). 지역 변수만 저장하고 복귀 위치를 버리면 return 후 어디서 계속할지 모르므로 부족하다. 가장 오래된 호출(main)로 먼저 돌아가면 아직 끝나지 않은 sub1/sub2가 중단되어 호출 관계가 깨지므로 안 되며, 가장 나중에 호출된 것이 먼저 끝나야 한다. undo와도 가장 나중에 한 것을 가장 먼저 되돌리는 LIFO 규칙이 공통이다. 배열 스택 M=3, top=2에서 push: 가득 찼는지(is_full, top==M-1) 검사가 top 증가와 stack[3] 접근보다 먼저여야 한다(overflow). top=-1에서 pop: 비었는지(is_empty, top==-1) 검사가 stack[top] 읽기/top 감소보다 먼저여야 한다(underflow). 거부된 연산 뒤에는 top과 배열 내용이 그대로 유지돼야 이후 연산이 올바른 상태에서 이어지고 범위 밖 접근/데이터 손상이 없다.",
+  "missing": ""
+ }
+}

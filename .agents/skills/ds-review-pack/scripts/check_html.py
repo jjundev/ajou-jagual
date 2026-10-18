@@ -56,6 +56,7 @@ class Container:
     text: str = ""
     hrefs: list[str] = field(default_factory=list)
     child_classes: set[str] = field(default_factory=set)
+    part_text: dict[str, str] = field(default_factory=lambda: defaultdict(str))
 
 
 @dataclass
@@ -77,20 +78,24 @@ class _Parser(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
         self.doc = Doc()
-        # (tag, section_id, container_id, widget_id)
-        self.stack: list[tuple[str, str | None, str | None, str | None]] = []
+        # (tag, section_id, container_id, widget_id, card_part)
+        self.stack: list[tuple[str, str | None, str | None, str | None, str | None]] = []
         self.raw_tag: str | None = None
         self.script_id: str | None = None
 
     def _context(self) -> tuple[str | None, str | None, str | None]:
         if not self.stack:
             return None, None, None
-        _, sec, con, wid = self.stack[-1]
+        _, sec, con, wid, _ = self.stack[-1]
         return sec, con, wid
+
+    def _part(self) -> str | None:
+        return self.stack[-1][4] if self.stack else None
 
     def handle_starttag(self, tag, attrs):
         a = {k: (v or "") for k, v in attrs}
         sec, con, wid = self._context()
+        part = self._part()
         classes = set(a.get("class", "").split())
         if tag == "html":
             self.doc.lang = a.get("lang")
@@ -110,6 +115,9 @@ class _Parser(HTMLParser):
         if el_id and classes & CONTAINER_CLASSES:
             self.doc.containers[el_id] = Container(el_id, classes, a, sec)
             con = el_id
+            part = None
+        if con is not None and classes & CARD_PARTS:
+            part = sorted(classes & CARD_PARTS)[0]
         if el_id and "widget" in classes:
             self.doc.widgets[el_id] = set()
             wid = el_id
@@ -130,7 +138,7 @@ class _Parser(HTMLParser):
         if tag in BLOCK_TAGS:
             self._emit("\n")
         if tag not in VOID_TAGS:
-            self.stack.append((tag, sec, con, wid))
+            self.stack.append((tag, sec, con, wid, part))
 
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
@@ -170,6 +178,9 @@ class _Parser(HTMLParser):
             self.doc.section_text[sec] += data
         if con:
             self.doc.containers[con].text += data
+            part = self._part()
+            if part:
+                self.doc.containers[con].part_text[part] += data
 
 
 def parse_html(source: str) -> Doc:
@@ -282,6 +293,23 @@ def check_note(doc: Doc, m: dict) -> list[Problem]:
     return out
 
 
+# lecture-code 카드 본문은 standalone이어야 한다: 출처는 배지 인용과 '강의 예제 보기'에만 둔다.
+BADGE_LEAD_RE = re.compile(r'강의 예제 기반 자체 출제\s*(?:S\d+ p\d+(?: · 추가 근거 p\d+(?:,\d+)*)?)?')
+LECTURE_REF_RE = re.compile(
+    r'강의|정리노트|슬라이드|S\d+ p\d+'
+    # 페이지 참조(p28의)는 두 자리 이상만 본다. p1·p2 같은 포인터 변수 이름과 구별한다.
+    r'|(?<![A-Za-z0-9_>*&])p\d{2,}(?=의|에서)'
+    # 다른 문항 참조(P3의, P3번, P3 문제)만 본다. '노드 P1을' 같은 이름은 허용한다.
+    r'|(?<![A-Za-z0-9_])P\d+(?=의|에서|번|\s*문제)'
+    r'|(?:앞|위|이전|다른) 문제')
+
+
+def lecture_ref_hits(card: Container) -> list[str]:
+    texts = [BADGE_LEAD_RE.sub("", card.part_text.get("problem", ""), count=1)]
+    texts += [card.part_text.get(part, "") for part in ("hint", "solution", "answer")]
+    return [m.group(0) for text in texts for m in LECTURE_REF_RE.finditer(text)]
+
+
 def check_review(doc: Doc, m: dict) -> list[Problem]:
     out: list[Problem] = []
     expected={q['id'] for q in m['problems']}
@@ -299,6 +327,8 @@ def check_review(doc: Doc, m: dict) -> list[Problem]:
             out.append(Problem("card-source-kind", q["id"], "출처 종류 불일치"))
         if kind=='lecture-code' and ('강의 예제 보기' not in card.text or '강의 예제 기반 자체 출제' not in card.text):
             out.append(Problem('lecture-label',q['id'],'강의 예제·자체 출제 표기 필요'))
+        if kind=='lecture-code' and (hits:=lecture_ref_hits(card)):
+            out.append(Problem('lecture-standalone',q['id'],', '.join(hits)))
         if card.attrs.get("data-source") != q["source"]:
             out.append(Problem("card-source", q["id"], f"data-source={card.attrs.get('data-source')!r}"))
         missing = CARD_PARTS - card.child_classes

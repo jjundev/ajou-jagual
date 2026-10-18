@@ -1,4 +1,4 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>강의 규칙처럼 루프 제어는 제외하고 대입·덧셈·곱셈을 각 1회로 세세요. n≥1일 때 각 알고리즘의 전체 연산 수와 빅오를 구하고, 같은 결과를 구한다는 사실만으로 실행 시간이 같다고 할 수 있는지 설명하세요.</p></div>
+<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>for 문의 초기화·비교·증가 같은 루프 제어는 세지 않고, 대입·덧셈·곱셈만 각 1회로 세세요. n≥1일 때 각 알고리즘의 전체 연산 수와 빅오를 구하고, 같은 결과를 구한다는 사실만으로 실행 시간이 같다고 할 수 있는지 설명하세요.</p></div>
 <div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>문제의 단서는 “같은 n²를 계산하는 세 알고리즘”예요. A는 곱셈 1회와 대입 1회예요. C는 본문이 n²번 실행되므로 1+2n²이에요. 상수 계수와 낮은 차수 항을 제외해 증가율을 비교해요.</p></div>
 <div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p>A의 곱셈 1회 + 대입 1회 = 2회부터 적어요.</p></div>
 <div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>A는 곱셈 1회와 대입 1회예요.</li><li>B는 초기 대입 1회, n번 반복에서 덧셈과 대입을 각각 1회씩 하므로 1+2n이에요.</li><li>C는 본문이 n²번 실행되므로 1+2n²이에요. 상수 계수와 낮은 차수 항을 제외해 증가율을 비교해요.</li></ol><p>A:2회,O(1). B:2n+1회,O(n). C:2n²+1회,O(n²). 반환 결과가 같아도 연산 횟수는 다르다.</p></div></div>

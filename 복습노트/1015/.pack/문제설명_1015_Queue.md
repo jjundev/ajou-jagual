@@ -302,9 +302,9 @@ lecture-s06-p11-linked-queue · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%
 
 **강의 예제 기반 자체 출제** S6 p11
 
-강의 그림을 바탕으로 직접 코드를 작성하는 문제예요. 단순 연결 큐의 노드는 data,link를 가지며 빈 큐 front=rear=NULL이에요. 이미 할당·초기화한 새 노드 N의 link=NULL일 때 enqueue의 빈 경우·나머지 경우 대입문을 쓰세요. 유일한 노드를 dequeue한 뒤 rear도 NULL로 만들어야 하는 이유를 설명하세요.
+단순 연결 큐의 노드는 data,link를 가지며 빈 큐 front=rear=NULL이에요. 이미 할당·초기화한 새 노드 N의 link=NULL일 때 enqueue의 빈 경우·나머지 경우 대입문을 쓰세요. 유일한 노드를 dequeue한 뒤 rear도 NULL로 만들어야 하는 이유를 설명하세요.
 
-`/* 강의 연결 큐 그림을 바탕으로 작성할 의사코드 */
+`/* 대입문으로 옮길 연산의 의사코드 */
 enqueue: 새 노드를 rear 뒤에 연결하고 rear를 갱신
 dequeue: front 노드의 값을 보관하고 front를 다음으로 이동`
 
@@ -320,11 +320,11 @@ dequeue: front 노드의 값을 보관하고 front를 다음으로 이동`
 
 #### 문제를 내 말로 읽어요
 
-강의 그림을 바탕으로 직접 코드를 작성하는 문제예요. 단순 연결 큐의 노드는 data,link를 가지며 빈 큐 front=rear=NULL이에요. 이미 할당·초기화한 새 노드 N의 link=NULL일 때 enqueue의 빈 경우·나머지 경우 대입문을 쓰세요. 유일한 노드를 dequeue한 뒤 rear도 NULL로 만들어야 하는 이유를 설명하세요.
+단순 연결 큐의 노드는 data,link를 가지며 빈 큐 front=rear=NULL이에요. 이미 할당·초기화한 새 노드 N의 link=NULL일 때 enqueue의 빈 경우·나머지 경우 대입문을 쓰세요. 유일한 노드를 dequeue한 뒤 rear도 NULL로 만들어야 하는 이유를 설명하세요.
 
 #### 이 문제를 봤을 때 떠올릴 개념과 공식
 
-문제의 단서는 “연결 큐 그림에서 갱신 코드 만들기”예요. 첫 노드를 넣을 때는 기존 rear가 없으므로 rear-&gt;link에 접근하지 않아요. front부터 N으로 정한 뒤 공통으로 rear=N을 실행해요. 삭제는 값을 보관하고 front를 이동한 다음 old를 해제해요. front가 NULL이면 마지막 노드였으므로 rear도 NULL로 바꿔 해제된 주소가 남지 않게 해요.
+문제의 단서는 “의사코드를 연결 큐의 대입문으로 옮기기”예요. 첫 노드를 넣을 때는 기존 rear가 없으므로 rear-&gt;link에 접근하지 않아요. front부터 N으로 정한 뒤 공통으로 rear=N을 실행해요. 삭제는 값을 보관하고 front를 이동한 다음 old를 해제해요. front가 NULL이면 마지막 노드였으므로 rear도 NULL로 바꿔 해제된 주소가 남지 않게 해요.
 
 #### 종이에 적을 첫 줄
 
@@ -346,7 +346,7 @@ enqueue: if(front==NULL) front=N; else rear-&gt;link=N; rear=N;. dequeue는 old=
 
 #### 이 문제에서 조심할 점
 
-이 카드는 슬라이드의 연결 그림으로부터 코드를 작성하는 자체 출제예요. 원문에 없던 C 코드를 원문이라고 제시하지 않아요.
+의사코드의 각 단계를 빠짐없이 대입문으로 옮기세요. 빈 큐와 노드가 하나뿐인 경우를 따로 확인해요.
 
 #### 설명을 닫고 다시 해 봐요
 
@@ -378,7 +378,7 @@ lecture-s06-p22-simulation · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8
 
 **강의 예제 기반 자체 출제** S6 p22
 
-강의 루프의 일부예요. clock=1에서 처리 직전 service_time=1이고 B가 방금 도착해 기다려요. clock=2,3에는 새 도착이 없고 B의 서비스 시간은 2예요. remove_customer는 큐가 비면 0을 반환하고 꺼낼 때 대기시간을 기록한다고 가정해요. clock=1,2,3에서 service_time이 어떻게 바뀌고 B는 언제 시작하나요? else를 별도의 if(service_time==0)로 바꾸면 어떤 차이가 생기나요?
+은행 대기열 시뮬레이션에서 clock이 1씩 늘 때마다 실행되는 루프 본문의 일부예요. is_customer_arrived()가 참이면 insert_customer(clock)가 새 고객을 대기 큐에 넣어요. clock=1에서 처리 직전 service_time=1이고 B가 방금 도착해 기다려요. clock=2,3에는 새 도착이 없고 B의 서비스 시간은 2예요. remove_customer는 큐가 비면 0을 반환하고 꺼낼 때 대기시간을 기록한다고 가정해요. clock=1,2,3에서 service_time이 어떻게 바뀌고 B는 언제 시작하나요? else를 별도의 if(service_time==0)로 바꾸면 어떤 차이가 생기나요?
 
 `if(is_customer_arrived()) insert_customer(clock);
 if(service_time>0) service_time--;
@@ -396,7 +396,7 @@ else service_time=remove_customer();`
 
 #### 문제를 내 말로 읽어요
 
-강의 루프의 일부예요. clock=1에서 처리 직전 service_time=1이고 B가 방금 도착해 기다려요. clock=2,3에는 새 도착이 없고 B의 서비스 시간은 2예요. remove_customer는 큐가 비면 0을 반환하고 꺼낼 때 대기시간을 기록한다고 가정해요. clock=1,2,3에서 service_time이 어떻게 바뀌고 B는 언제 시작하나요? else를 별도의 if(service_time==0)로 바꾸면 어떤 차이가 생기나요?
+은행 대기열 시뮬레이션에서 clock마다 실행되는 루프 본문의 일부예요. 도착한 고객은 insert_customer(clock)로 대기 큐에 들어가요. clock=1에서 처리 직전 service_time=1이고 B가 방금 도착해 기다려요. clock=2,3에는 새 도착이 없고 B의 서비스 시간은 2예요. remove_customer는 큐가 비면 0을 반환하고 꺼낼 때 대기시간을 기록한다고 가정해요. clock=1,2,3에서 service_time이 어떻게 바뀌고 B는 언제 시작하나요? else를 별도의 if(service_time==0)로 바꾸면 어떤 차이가 생기나요?
 
 #### 이 문제를 봤을 때 떠올릴 개념과 공식
 
@@ -422,7 +422,7 @@ clock1:1→0, 같은 틱에 else는 실행하지 않음. clock2:0→2이며 B �
 
 #### 이 문제에서 조심할 점
 
-강의 문장 설명과 실제 if/else 순서를 구별하세요. 서비스가 0이 된 직후 즉시 다음 고객을 꺼내는 코드가 아니에요.
+말로 된 설명과 실제 if/else 순서를 구별하세요. 서비스가 0이 된 직후 즉시 다음 고객을 꺼내는 코드가 아니에요.
 
 #### 설명을 닫고 다시 해 봐요
 

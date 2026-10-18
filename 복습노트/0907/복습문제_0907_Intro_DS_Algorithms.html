@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="0d426ec3f34c5d89c5a4" data-screens="article.card" data-panels="review" data-range="0907">
+<body data-revision="b139ce29933997440de6" data-screens="article.card" data-panels="review" data-range="0907">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -406,7 +406,7 @@
 <section id="partSupplement"><h2>보충. 후속 수업의 최대값 예제</h2>
 <article class="card" id="p4" data-source="lecture-s01-p21-find-max" data-source-kind="lecture-code">
 <h3>P4. 최대값 탐색의 초기값과 종료 조건</h3>
-<div class="problem"><p><strong>후속 수업 보충:</strong> S1 p21의 최대값 알고리즘은 0914 수업에서 분석했어요. 이 문항은 보존하되 0907 핵심 범위의 평가 문항으로 세지 않아요.</p><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p21</p><p>강의 코드에서 score의 앞 n개가 입력이에요. score={-8,-3,-10,-1}, n=4일 때 tmp의 변화와 반환값을 적으세요. tmp를 0으로 초기화하면 생기는 오류, n에 필요한 조건, 이 반복이 유한한 이유도 설명하세요.</p><pre><code class="language-c">int find_max_score(int n)
+<div class="problem"><p><strong>후속 수업 보충:</strong> 이 최대값 알고리즘의 분석은 0914 수업에서 다뤘어요. 이 문항은 보존하되 0907 핵심 범위의 평가 문항으로 세지 않아요.</p><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p21</p><p>아래 함수는 전역 배열 <code>int score[MAX];</code>(MAX는 n 이상인 상수)의 앞 n개를 입력으로 받아요. score={-8,-3,-10,-1}, n=4일 때 tmp의 변화와 반환값을 적으세요. tmp를 0으로 초기화하면 생기는 오류, n에 필요한 조건, 이 반복이 유한한 이유도 설명하세요.</p><pre><code class="language-c">int find_max_score(int n)
 {
     int i, tmp;
     tmp = score[0];

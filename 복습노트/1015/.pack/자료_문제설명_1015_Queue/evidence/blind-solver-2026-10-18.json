@@ -1,0 +1,22 @@
+{
+ "p4": {
+  "answer": "enqueue 빈 경우(front==NULL): front=N; rear=N; 나머지 경우: rear->link=N; rear=N; dequeue: temp=front; item=temp->data; front=front->link; (free(temp); return item). 유일한 노드를 꺼내면 front가 NULL이 되지만 rear는 해제된 노드를 가리키는 dangling 포인터로 남는다. 큐가 비었음을 일관되게 하고(front=rear=NULL) 다음 enqueue가 빈 경우로 처리되어 해제된 노드에 rear->link를 쓰는 것을 막기 위해 rear도 NULL로 만들어야 한다.",
+  "missing": ""
+ },
+ "p5": {
+  "answer": "clock=1: 도착 B를 큐에 넣고, service_time=1>0이므로 0으로 감소(else 안 탐). clock=2: 도착 없음, service_time==0이므로 else로 remove_customer 호출, B를 꺼내 service_time=2, B는 clock=2에 서비스 시작(대기시간 기록). clock=3: service_time 2→1. else 대신 별도의 if(service_time==0)로 바꾸면 clock=1에서 감소해 0이 된 직후 같은 clock에서 바로 remove_customer가 실행되어 B가 clock=1에 시작(service_time=2)한다. 즉 서비스 종료와 다음 시작이 같은 tick에서 일어나 한 tick 빨라지고, 이후 B의 service_time은 clock=2에 1, clock=3에 0이 되어 같은 clock=3에 다시 remove_customer(큐 비어 0 반환)가 호출된다. else 버전은 한 tick에 감소 또는 새 고객 시작 중 하나만 한다.",
+  "missing": ""
+ },
+ "p6": {
+  "answer": "dequeue: front=(3+1)%5=4, A 반환, rear=1, 원소 B,C(queue[0],[1]). enqueue(D): rear=2, queue[2]=D, front=4, 원소 B,C,D. enqueue(E): rear=3, queue[3]=E, front=4, 원소 B,C,D,E. 마지막 포화 여부: (rear+1)%5=4==front이므로 포화. 순환 큐는 front 위치 칸을 비워 두어 공백(front==rear)과 포화를 구별하므로 유효 용량은 M-1=4이고 포화식은 (rear+1)%M==front.",
+  "missing": ""
+ },
+ "p7": {
+  "answer": "A 삽입: create_node(NULL,A,NULL), 비어 있으므로 head=A노드, tail=A노드. B 삽입: create_node(tail=A,B,NULL), 비어있지 않으므로 A.rlink=B, tail=B. 최종: head=A, tail=B, A.llink=NULL, A.rlink=B, B.llink=A, B.rlink=NULL. 비어 있을 때는 tail->rlink로 연결할 기존 노드가 없고 새 노드가 첫 노드이기도 하므로 head도 새 노드로 바꿔야 한다(안 바꾸면 head=NULL로 남아 덱이 빈 것으로 보임). create_node: new_node->llink=left; new_node->data=item; new_node->rlink=right;",
+  "missing": ""
+ },
+ "p8": {
+  "answer": "1회: item=A, head=B, A 해제, head!=NULL이므로 B->llink=NULL, A 반환; head=B, tail=B(B.llink=NULL, B.rlink=NULL). 2회: item=B, head=NULL, B 해제, head==NULL이므로 tail=NULL, B 반환; head=tail=NULL(빈 덱). if 분기는 삭제로 덱이 비면 head와 tail이 모두 NULL이어야 한다는 불변식을, else 분기는 새 맨 앞 노드의 llink가 NULL이어야 한다는 불변식을 지킨다. 생략하면 마지막 원소 삭제 후 tail이 해제된 노드를 가리키는 dangling이 되고(이후 add_rear가 해제 메모리를 사용), 새 head->llink가 해제된 노드를 가리켜 역방향 순회/삭제에서 오류가 난다.",
+  "missing": ""
+ }
+}
