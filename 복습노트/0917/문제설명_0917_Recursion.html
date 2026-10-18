@@ -329,6 +329,7 @@
     .problem-pane [data-source-field="conditions"] p + p, .problem-pane [data-source-field="conditions"] p + pre, .problem-pane [data-source-field="conditions"] pre + p { margin-top: var(--s3); }
     .problem-pane [data-source-field="ask"] ol, .problem-pane [data-source-field="ask"] ul { margin: 0; padding-left: 1.4em; }
     .problem-pane [data-source-field="ask"] li + li { margin-top: var(--s2); }
+    .problem-pane [data-source-field="ask"][data-labeled] ol { list-style: none; padding-left: 0; }
     .problem-pane details.original { margin-top: var(--s4); padding-top: var(--s2); border-top: 1px solid var(--line); }
     .problem-pane details.original > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; color: var(--ink-2); }
     .problem-pane img { max-width: 100%; height: auto; }
@@ -682,7 +683,7 @@ void dec_to_bin(int n){
     if(n==0) return 1;
     else if((n%2)==0) return power(x*x,n/2);
     else return /* 빈칸 */;
-}</code></pre></div><h4>구할 것</h4><div data-source-field="ask"><ol><li>(a) 홀수 분기의 <code>/* 빈칸 */</code>에 들어갈 반환식을 쓰고, <code>power(2, 5)</code>의 <code>(x, n)</code> 호출 순서와 각 단계 반환값을 구하세요.</li><li>(b) 한 번에 <code>x</code>를 한 번씩 곱하는 <code>slow_power(x, n)</code>과 <code>power(x, n)</code>의 시간복잡도를 빅오 표기로 비교하고 이유를 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p5"><summary>강의 예제 보기</summary><p>S2 p10 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">double power(double x, int n)
+}</code></pre></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 홀수 분기의 <code>/* 빈칸 */</code>에 들어갈 반환식을 쓰고, <code>power(2, 5)</code>의 <code>(x, n)</code> 호출 순서와 각 단계 반환값을 구하세요.</li><li>(b) 한 번에 <code>x</code>를 한 번씩 곱하는 <code>slow_power(x, n)</code>과 <code>power(x, n)</code>의 시간복잡도를 빅오 표기로 비교하고 이유를 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p5"><summary>강의 예제 보기</summary><p>S2 p10 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">double power(double x, int n)
 {
     if(n==0) return 1;
     else if((n%2)==0) return power(x*x,n/2);
@@ -698,7 +699,7 @@ void dec_to_bin(int n){
     if(n==0) return 0;
     if(n==1) return 1;
     return fib(n-1)+fib(n-2);
-}</code></pre></div><h4>구할 것</h4><div data-source-field="ask"><ol><li>(a) <code>fib(6)</code>의 반환값과 실행 중 <code>fib(3)</code>이 호출되는 횟수를 구하고, 순환 구현에서 같은 부분 문제가 중복 호출되는 이유를 설명하세요.</li><li>(b) 반복 구현에서 <code>last = F(i - 2)</code>, <code>current = F(i - 1)</code>인 상태를 다음 단계로 갱신할 때 임시 변수 <code>tmp</code>를 사용한 세 대입문을 순서대로 쓰세요.</li></ol></div></div><details class="original" data-original-problem="p6"><summary>강의 예제 보기</summary><p>S2 p12 · 추가 근거 p13,14 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">int fib(int n)
+}</code></pre></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) <code>fib(6)</code>의 반환값과 실행 중 <code>fib(3)</code>이 호출되는 횟수를 구하고, 순환 구현에서 같은 부분 문제가 중복 호출되는 이유를 설명하세요.</li><li>(b) 반복 구현에서 <code>last = F(i - 2)</code>, <code>current = F(i - 1)</code>인 상태를 다음 단계로 갱신할 때 임시 변수 <code>tmp</code>를 사용한 세 대입문을 순서대로 쓰세요.</li></ol></div></div><details class="original" data-original-problem="p6"><summary>강의 예제 보기</summary><p>S2 p12 · 추가 근거 p13,14 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">int fib(int n)
 {
     if(n==0) return 0;
     if(n==1) return 1;

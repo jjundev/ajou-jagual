@@ -329,6 +329,7 @@
     .problem-pane [data-source-field="conditions"] p + p, .problem-pane [data-source-field="conditions"] p + pre, .problem-pane [data-source-field="conditions"] pre + p { margin-top: var(--s3); }
     .problem-pane [data-source-field="ask"] ol, .problem-pane [data-source-field="ask"] ul { margin: 0; padding-left: 1.4em; }
     .problem-pane [data-source-field="ask"] li + li { margin-top: var(--s2); }
+    .problem-pane [data-source-field="ask"][data-labeled] ol { list-style: none; padding-left: 0; }
     .problem-pane details.original { margin-top: var(--s4); padding-top: var(--s2); border-top: 1px solid var(--line); }
     .problem-pane details.original > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; color: var(--ink-2); }
     .problem-pane img { max-width: 100%; height: auto; }
@@ -632,7 +633,7 @@ zero() ::= return 0;
 sub(x,y) ::= if(x&lt;y) return 0;
              else return x-y;
 add(x,y) ::= if((x+y)&lt;=INT_MAX) return x+y;
-             else return INT_MAX;</code></pre></div><h4>구할 것</h4><div data-source-field="ask"><ol><li>(a) <code>Nat_No</code>의 객체 범위를 쓰고, <code>sub(3, 5)</code>, <code>sub(5, 3)</code>, <code>add(INT_MAX, 1)</code>의 반환 결과를 각각 구하세요.</li><li>(b) ADT 사용자가 내부 표현을 몰라도 되는 이유와, <code>add(x, y)</code>를 C의 <code>signed int</code> 코드로 옮길 때 <code>x + y</code>를 바로 계산하지 않고 먼저 검사해야 하는 이유·조건식을 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p6"><summary>강의 예제 보기</summary><p>S1 p24 · Software_1_자료구조및알고리즘.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">Nat_No
+             else return INT_MAX;</code></pre></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) <code>Nat_No</code>의 객체 범위를 쓰고, <code>sub(3, 5)</code>, <code>sub(5, 3)</code>, <code>add(INT_MAX, 1)</code>의 반환 결과를 각각 구하세요.</li><li>(b) ADT 사용자가 내부 표현을 몰라도 되는 이유와, <code>add(x, y)</code>를 C의 <code>signed int</code> 코드로 옮길 때 <code>x + y</code>를 바로 계산하지 않고 먼저 검사해야 하는 이유·조건식을 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p6"><summary>강의 예제 보기</summary><p>S1 p24 · Software_1_자료구조및알고리즘.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">Nat_No
 zero() ::= return 0;
 sub(x,y) ::= if(x&lt;y) return 0;
              else return x-y;
@@ -648,7 +649,7 @@ B: sum &lt;- 0
    for i &lt;- 1 to n do sum &lt;- sum+n
 C: sum &lt;- 0
    for i &lt;- 1 to n do
-       for j &lt;- 1 to n do sum &lt;- sum+1</code></pre></div><h4>구할 것</h4><div data-source-field="ask"><ol><li>(a) 알고리즘 <code>A</code>, <code>B</code>, <code>C</code>의 전체 연산 횟수 $T(n)$과 빅오 표기법을 각각 구하세요.</li><li>(b) 세 알고리즘이 같은 결과를 반환한다는 사실만으로 실행 시간이 같다고 할 수 있는지 연산 횟수의 증가율로 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p7"><summary>강의 예제 보기</summary><p>S1 p29 · Software_1_자료구조및알고리즘.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">A: sum &lt;- n*n
+       for j &lt;- 1 to n do sum &lt;- sum+1</code></pre></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 알고리즘 <code>A</code>, <code>B</code>, <code>C</code>의 전체 연산 횟수 $T(n)$과 빅오 표기법을 각각 구하세요.</li><li>(b) 세 알고리즘이 같은 결과를 반환한다는 사실만으로 실행 시간이 같다고 할 수 있는지 연산 횟수의 증가율로 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p7"><summary>강의 예제 보기</summary><p>S1 p29 · Software_1_자료구조및알고리즘.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">A: sum &lt;- n*n
 B: sum &lt;- 0
    for i &lt;- 1 to n do sum &lt;- sum+n
 C: sum &lt;- 0
@@ -663,7 +664,7 @@ C: sum &lt;- 0
 {
     if(n &lt;= 1) return 1;
     else return n * factorial(n-1);
-}</code></pre></div><h4>구할 것</h4><div data-source-field="ask"><ol><li>(a) <code>factorial(3)</code>을 실행할 때 호출 순서와 반환값 순서를 차례로 쓰고, <code>factorial(0)</code>의 반환값도 구하세요.</li><li>(b) 이 함수에서 순환을 멈추는 종료 조건과 호출마다 문제 크기가 줄어드는 부분을 찾아 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p8"><summary>강의 예제 보기</summary><p>S2 p4 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">int factorial(int n)
+}</code></pre></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) <code>factorial(3)</code>을 실행할 때 호출 순서와 반환값 순서를 차례로 쓰고, <code>factorial(0)</code>의 반환값도 구하세요.</li><li>(b) 이 함수에서 순환을 멈추는 종료 조건과 호출마다 문제 크기가 줄어드는 부분을 찾아 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p8"><summary>강의 예제 보기</summary><p>S2 p4 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">int factorial(int n)
 {
     if(n &lt;= 1) return 1;
     else return n * factorial(n-1);

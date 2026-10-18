@@ -329,6 +329,7 @@
     .problem-pane [data-source-field="conditions"] p + p, .problem-pane [data-source-field="conditions"] p + pre, .problem-pane [data-source-field="conditions"] pre + p { margin-top: var(--s3); }
     .problem-pane [data-source-field="ask"] ol, .problem-pane [data-source-field="ask"] ul { margin: 0; padding-left: 1.4em; }
     .problem-pane [data-source-field="ask"] li + li { margin-top: var(--s2); }
+    .problem-pane [data-source-field="ask"][data-labeled] ol { list-style: none; padding-left: 0; }
     .problem-pane details.original { margin-top: var(--s4); padding-top: var(--s2); border-top: 1px solid var(--line); }
     .problem-pane details.original > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; color: var(--ink-2); }
     .problem-pane img { max-width: 100%; height: auto; }
@@ -720,7 +721,7 @@ s-&gt;stack[++(s-&gt;top)] = item;
 /* pop의 정상 경로 */
 return s-&gt;stack[(s-&gt;top)--];
 /* peek의 정상 경로 */
-return s-&gt;stack[s-&gt;top];</code></pre></div><h4>구할 것</h4><div data-source-field="ask"><ol><li>(a) 초기 공백 상태가 <code>s-&gt;top = -1</code>일 때, <code>push</code>에서는 전위 증가 연산자 <code>++(s-&gt;top)</code>을 쓰고 <code>pop</code>에서는 후위 감소 연산자 <code>(s-&gt;top)--</code>를 쓰는 이유를 설명하세요.</li><li>(b) 만약 두 식을 각각 <code>s-&gt;stack[(s-&gt;top)++] = item;</code>과 <code>return s-&gt;stack[--(s-&gt;top)];</code>으로 잘못 바꾸면, 초기 <code>s-&gt;top = -1</code>에서의 첫 <code>push</code>와 원소 <code>1</code>개인 <code>s-&gt;top = 0</code>에서의 첫 <code>pop</code>이 각각 접근하는 배열 인덱스와 발생하는 문제를 쓰세요(오류 동작을 정상 출력값으로 계산하지 마세요).</li></ol></div></div><details class="original" data-original-problem="p7"><summary>강의 예제 보기</summary><p>S5 p14 · Software_5_Stack.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">/* push의 정상 경로 */
+return s-&gt;stack[s-&gt;top];</code></pre></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 초기 공백 상태가 <code>s-&gt;top = -1</code>일 때, <code>push</code>에서는 전위 증가 연산자 <code>++(s-&gt;top)</code>을 쓰고 <code>pop</code>에서는 후위 감소 연산자 <code>(s-&gt;top)--</code>를 쓰는 이유를 설명하세요.</li><li>(b) 만약 두 식을 각각 <code>s-&gt;stack[(s-&gt;top)++] = item;</code>과 <code>return s-&gt;stack[--(s-&gt;top)];</code>으로 잘못 바꾸면, 초기 <code>s-&gt;top = -1</code>에서의 첫 <code>push</code>와 원소 <code>1</code>개인 <code>s-&gt;top = 0</code>에서의 첫 <code>pop</code>이 각각 접근하는 배열 인덱스와 발생하는 문제를 쓰세요(오류 동작을 정상 출력값으로 계산하지 마세요).</li></ol></div></div><details class="original" data-original-problem="p7"><summary>강의 예제 보기</summary><p>S5 p14 · Software_5_Stack.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">/* push의 정상 경로 */
 s-&gt;stack[++(s-&gt;top)] = item;
 /* pop의 정상 경로 */
 return s-&gt;stack[(s-&gt;top)--];
@@ -741,7 +742,7 @@ StackNode *temp = s-&gt;top;
 int item = temp-&gt;item;
 s-&gt;top = s-&gt;top-&gt;link;
 free(temp);
-return item;</code></pre></div><h4>구할 것</h4><div data-source-field="ask"><ol><li>(a) 초기 <code>s-&gt;top</code>이 <code>A -&gt; B -&gt; NULL</code>을 가리킬 때 새 노드 <code>N</code>을 <code>push</code>한 직후의 연결 상태와, 이어서 바로 <code>pop</code>을 실행한 뒤 <code>s-&gt;top</code>이 가리키는 노드 및 해제되는 노드를 쓰세요.</li><li>(b) <code>push</code>에서 <code>temp-&gt;link = s-&gt;top;</code>과 <code>s-&gt;top = temp;</code>의 순서를 뒤집었을 때 생기는 문제와, <code>pop</code>에서 <code>free(temp);</code>를 <code>item</code> 복사 및 <code>s-&gt;top</code> 갱신보다 먼저 실행했을 때 생기는 문제를 각각 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p8"><summary>강의 예제 보기</summary><p>S5 p17 · 추가 근거 p18 · Software_5_Stack.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">/* push: 할당 성공 뒤 */
+return item;</code></pre></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 초기 <code>s-&gt;top</code>이 <code>A -&gt; B -&gt; NULL</code>을 가리킬 때 새 노드 <code>N</code>을 <code>push</code>한 직후의 연결 상태와, 이어서 바로 <code>pop</code>을 실행한 뒤 <code>s-&gt;top</code>이 가리키는 노드 및 해제되는 노드를 쓰세요.</li><li>(b) <code>push</code>에서 <code>temp-&gt;link = s-&gt;top;</code>과 <code>s-&gt;top = temp;</code>의 순서를 뒤집었을 때 생기는 문제와, <code>pop</code>에서 <code>free(temp);</code>를 <code>item</code> 복사 및 <code>s-&gt;top</code> 갱신보다 먼저 실행했을 때 생기는 문제를 각각 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p8"><summary>강의 예제 보기</summary><p>S5 p17 · 추가 근거 p18 · Software_5_Stack.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">/* push: 할당 성공 뒤 */
 temp-&gt;item=item;
 temp-&gt;link=s-&gt;top;
 s-&gt;top=temp;
@@ -767,7 +768,7 @@ if(ch != '+' &amp;&amp; ch != '-' &amp;&amp; ch != '*' &amp;&amp; ch != '/') {
     case '-': push(&amp;s, op1 - op2); break;
     case '/': push(&amp;s, op1 / op2); break;
     }
-}</code></pre></div><h4>구할 것</h4><div data-source-field="ask"><ol><li>(a) 입력 식 <code>exp = "82/3-"</code>를 왼쪽부터 한 문자씩 읽을 때 문자별 스택 상태 변화와 최종 계산 결과를 쓰세요.</li><li>(b) 연산자를 만났을 때 <code>op2 = pop(&amp;s); op1 = pop(&amp;s);</code> 순서로 꺼내는 이유(두 변수를 바꾸면 틀리는 이유)와, 위 코드가 <code>"12 3+"</code>를 정상 처리할 수 없는 이유를 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p9"><summary>강의 예제 보기</summary><p>S5 p27 · Software_5_Stack.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">ch=exp[i];
+}</code></pre></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 입력 식 <code>exp = "82/3-"</code>를 왼쪽부터 한 문자씩 읽을 때 문자별 스택 상태 변화와 최종 계산 결과를 쓰세요.</li><li>(b) 연산자를 만났을 때 <code>op2 = pop(&amp;s); op1 = pop(&amp;s);</code> 순서로 꺼내는 이유(두 변수를 바꾸면 틀리는 이유)와, 위 코드가 <code>"12 3+"</code>를 정상 처리할 수 없는 이유를 설명하세요.</li></ol></div></div><details class="original" data-original-problem="p9"><summary>강의 예제 보기</summary><p>S5 p27 · Software_5_Stack.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">ch=exp[i];
 if(ch!='+' &amp;&amp; ch!='-' &amp;&amp; ch!='*' &amp;&amp; ch!='/') {
     value=ch-'0';
     push(&amp;s,value);
