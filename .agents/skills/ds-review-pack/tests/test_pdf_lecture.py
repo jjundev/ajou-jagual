@@ -98,3 +98,15 @@ def test_lecture_long_card_renders(tmp_path):
         for mode in ('problems', 'answers'):
             r = pdf_render.render(to_payload(pack, mode, pages, tmp_path / 'assets'), mode, tmp_path / mode, tmp_path / (mode + '.pdf'))
             assert r.errors == () and r.overflow == ()
+
+def test_lecture_asks_show_number_only(tmp_path):
+    from pdf_render import probe, render_session
+    _, data = payload('1015')
+    data = {'meta': data['meta'], 'problems': [p for p in data['problems'] if p['id'] == 'p5']}
+    assert not probe(data, 'problems', 'video-16x9', tmp_path).errors
+    with render_session() as browser:
+        page = browser.new_page()
+        page.goto((tmp_path / 'problems-video-16x9.html').resolve().as_uri())
+        page.wait_for_function('document.documentElement.dataset.ready', timeout=120000)
+        marks = page.evaluate("[...document.querySelectorAll('.ds-asks li')].map(li => [getComputedStyle(li, '::before').display, getComputedStyle(li).display])")
+    assert marks == [['none', 'list-item']] * 2
