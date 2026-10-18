@@ -393,6 +393,8 @@
     <p>순환으로 짜서 오히려 나빠지는 경우도 있어요. 피보나치 수열에서 <code>fib(6)</code>을 부르면 <code>fib(3)</code>이 3번이나 중복해서 계산되고, n이 커질수록 더 심해져요(S2 p13).</p>
     <p>이럴 때는 다이내믹 프로그래밍(dynamic programming)으로 풀어요. 한 번 계산한 값을 기억해 두었다가 다시 꺼내 쓰는 방법이에요. 슬라이드(S2 p14)에는 반복문으로 바꾼 <code>fib_iter</code>만 있고, 다이내믹 프로그래밍이라는 이름은 수업에서 말로만 나왔어요.</p>
   </div>
+<p class="interactive-note" data-ds-interactive="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_01_%ED%8C%A9%ED%86%A0%EB%A6%AC%EC%96%BC%ED%98%B8%EC%B6%9C%ED%94%84%EB%A0%88%EC%9E%84.html">호출마다 따로 생기는 n과 바닥에서 돌아오는 값을 <a href="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_01_%ED%8C%A9%ED%86%A0%EB%A6%AC%EC%96%BC%ED%98%B8%EC%B6%9C%ED%94%84%EB%A0%88%EC%9E%84.html" target="_self">factorial 호출 프레임</a>에서 한 단계씩 확인해 보세요.</p>
+
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>바닥 조건은 그냥 멈추는 곳이 아니라, 답을 바로 제시할 수 있는 곳이어야 한다고 짚으셨어요.</p>
     <blockquote>"그 바닥이 답이 뭐다라고 제시할 수 있는 조건이어야 되는 거거든요." (0921 00:14)</blockquote>
@@ -1061,6 +1063,8 @@ polynomial a = { 5, {10, 0, 0, 0, 6, 3} };</code></pre>
     </ul>
     <p>슬라이드는 "두 다항식의 길이가 다르다면?"이라고 물어요. 교수님은 한 다항식이 먼저 끝나면 다른 쪽에 꼬리가 남으니, 루프 뒤에 남은 항을 옮기는 후처리가 필요하다고 했어요. 다만 이 루프는 차수 카운터가 같아진 뒤 함께 줄어서, 두 다항식이 상수항에서 함께 끝나요. 그래서 방법 #1에서는 후처리에 옮길 항이 남지 않고, 후처리는 안전장치 역할을 해요.</p>
   </div>
+<p class="interactive-note" data-ds-interactive="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_02_%EB%8B%A4%ED%95%AD%EC%8B%9D%EB%8D%A7%EC%85%88%EC%9D%B8%EB%8D%B1%EC%8A%A4.html">Apos·Bpos·Cpos가 바뀌는 순간과 C에 쓰이는 칸을 <a href="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_02_%EB%8B%A4%ED%95%AD%EC%8B%9D%EB%8D%A7%EC%85%88%EC%9D%B8%EB%8D%B1%EC%8A%A4.html" target="_self">다항식 덧셈의 세 위치</a>에서 한 단계씩 확인해 보세요.</p>
+
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>책 버전마다 프로그램 이름은 조금 다를 수 있지만, 이 코드를 직접 실습해 보라는 뜻이에요.</p>
     <blockquote>"실습하면 좋겠다는 뜻이에요." (0921 39:20)</blockquote>
@@ -1761,6 +1765,8 @@ main()
       </tbody>
     </table></div>
   </div>
+<p class="interactive-note" data-ds-interactive="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_03_%EA%B5%AC%EC%A1%B0%EC%B2%B4%EB%8C%80%EC%9E%85%EB%B3%B5%EC%82%AC.html">필드마다 복사되는 값과 복사 뒤 따로 바뀌는 a, b를 <a href="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_03_%EA%B5%AC%EC%A1%B0%EC%B2%B4%EB%8C%80%EC%9E%85%EB%B3%B5%EC%82%AC.html" target="_self">구조체 대입 b = a</a>에서 한 단계씩 확인해 보세요.</p>
+
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>대입은 철가방의 규격과 사이즈가 같으니, 안의 음식을 모자람도 넘침도 없이 옮길 수 있다고 설명했어요(0921 59:10–59:26).</p>
     <blockquote>1층에 있는 걸 비교해야 돼, 2층에 있는 걸 비교해야 돼? (0921 59:39)</blockquote>
@@ -1829,6 +1835,8 @@ main()
     </svg><figcaption>link 필드는 같은 ListNode 모양의 구조체만 가리켜요.</figcaption></figure>
     <p>포인터 문법은 다음 수업에서 다뤄요. 이 모양이 다음 장 연결 리스트(linked list)의 노드(node)가 돼요.</p>
   </div>
+<p class="interactive-note" data-ds-interactive="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_03_%EA%B5%AC%EC%A1%B0%EC%B2%B4%EB%8C%80%EC%9E%85%EB%B3%B5%EC%82%AC.html">c = n1 뒤에 n1.link와 c.link가 같은 노드를 가리키는 모습을 <a href="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_03_%EA%B5%AC%EC%A1%B0%EC%B2%B4%EB%8C%80%EC%9E%85%EB%B3%B5%EC%82%AC.html" target="_self">구조체 대입: 포인터 필드 복사</a>의 “포인터 필드” 예제에서 확인해 보세요.</p>
+
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <blockquote>제가 왼팔이 있는데 이 왼팔은 나랑 똑같이 생긴 사람만 가리킬 수 있다 (0921 60:59)</blockquote>
     <p>에어컨이나 TV 같은 것은 못 가리킨다고 덧붙였어요(0921 61:13). 리스트 노드도 자기와 똑같이 생긴 리스트 노드만 가리킨다는 뜻이에요.</p>

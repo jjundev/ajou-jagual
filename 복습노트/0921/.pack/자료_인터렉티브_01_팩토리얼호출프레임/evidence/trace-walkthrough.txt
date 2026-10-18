@@ -1,0 +1,1280 @@
+
+=== default {"n":4,"mode":"lecture"} (35 snapshots)
+initial  L9 [int r = factorial(4);] 호출 전 · 초기 상태
+         main이 factorial을 부르기 직전입니다. 호출할 때마다 새 n이 생기고, 바닥에 닿으면 값이 한 칸씩 위로 돌아옵니다.
+step-1   L9 [int r = factorial(4);] factorial(4) 호출
+         main이 factorial(4)를 부릅니다. factorial 호출 하나를 위한 저장 공간을 새로 만듭니다.
+step-2   L2 [int factorial(int n)] 4 → n 복사 W(f1.n:—→4)
+         인자 4를 이 호출의 매개변수 n에 복사합니다.
+step-3   L3 [{] 함수 진입
+         factorial(4) 본문으로 들어갑니다. 지금 실행 중인 호출은 1번째 factorial입니다.
+step-4   L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f1.n)
+         n은 4이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-5   L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f1.ret:—→uninitialized)
+         factorial(3)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-6   L5 [else return n * factorial(n-1);] n-1 계산 R(f1.n)
+         인자 n-1을 계산하려고 지금 호출의 n(4)를 읽습니다.
+step-7   L5 [else return n * factorial(n-1);] factorial(3) 호출
+         factorial(3)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-8   L2 [int factorial(int n)] 3 → 새 n 복사 W(f2.n:—→3)
+         n-1의 값 3을 새 매개변수 n에 복사합니다. 부른 쪽의 n(4)와는 다른 변수입니다.
+step-9   L3 [{] 함수 진입
+         factorial(3) 본문으로 들어갑니다. 지금 실행 중인 호출은 2번째 factorial입니다.
+step-10  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f2.n)
+         n은 3이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-11  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f2.ret:—→uninitialized)
+         factorial(2)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-12  L5 [else return n * factorial(n-1);] n-1 계산 R(f2.n)
+         인자 n-1을 계산하려고 지금 호출의 n(3)을 읽습니다.
+step-13  L5 [else return n * factorial(n-1);] factorial(2) 호출
+         factorial(2)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-14  L2 [int factorial(int n)] 2 → 새 n 복사 W(f3.n:—→2)
+         n-1의 값 2를 새 매개변수 n에 복사합니다. 부른 쪽의 n(3)과는 다른 변수입니다.
+step-15  L3 [{] 함수 진입
+         factorial(2) 본문으로 들어갑니다. 지금 실행 중인 호출은 3번째 factorial입니다.
+step-16  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f3.n)
+         n은 2이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-17  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f3.ret:—→uninitialized)
+         factorial(1)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-18  L5 [else return n * factorial(n-1);] n-1 계산 R(f3.n)
+         인자 n-1을 계산하려고 지금 호출의 n(2)를 읽습니다.
+step-19  L5 [else return n * factorial(n-1);] factorial(1) 호출
+         factorial(1)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-20  L2 [int factorial(int n)] 1 → 새 n 복사 W(f4.n:—→1)
+         n-1의 값 1을 새 매개변수 n에 복사합니다. 부른 쪽의 n(2)와는 다른 변수입니다.
+step-21  L3 [{] 함수 진입
+         factorial(1) 본문으로 들어갑니다. 지금 실행 중인 호출은 4번째 factorial입니다.
+step-22  L4 [if( n <= 1 )  return 1;] n <= 1 참 R(f4.n)
+         n은 1이고 n <= 1이 참입니다. 순환을 멈추는 부분입니다.
+step-23  L4 [if( n <= 1 )  return 1;] 1 반환 W(f3.ret:uninitialized→1)
+         바닥에서는 더 부르지 않고 1을 바로 돌려줍니다. 기다리던 factorial(2)가 1을 받고, 이 호출의 n은 수명이 끝납니다.
+step-24  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f3.ret)
+         돌아온 factorial(1)의 값 1을 읽습니다.
+step-25  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f3.n)
+         곱할 자기 n(2)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-26  L5 [else return n * factorial(n-1);] 2 반환 W(f2.ret:uninitialized→2)
+         2 × 1 = 2를 돌려줍니다. factorial(3)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-27  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f2.ret)
+         돌아온 factorial(2)의 값 2를 읽습니다.
+step-28  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f2.n)
+         곱할 자기 n(3)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-29  L5 [else return n * factorial(n-1);] 6 반환 W(f1.ret:uninitialized→6)
+         3 × 2 = 6을 돌려줍니다. factorial(4)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-30  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f1.ret)
+         돌아온 factorial(3)의 값 6을 읽습니다.
+step-31  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f1.n)
+         곱할 자기 n(4)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-32  L5 [else return n * factorial(n-1);] 24 반환 W(r:uninitialized→24)
+         4 × 6 = 24를 돌려줍니다. main의 r이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-33  L10 [printf("%d\n", r);] r 출력 R(r)
+         main으로 돌아왔습니다. r에 담긴 24를 읽어 출력합니다.
+step-34  L11 [return 0;] 결과 확인
+         factorial(4) = 24. 호출 4개가 차례로 쌓였다가 거꾸로 하나씩 끝났습니다.
+
+=== four {"n":4,"mode":"lecture"} (35 snapshots)
+initial  L9 [int r = factorial(4);] 호출 전 · 초기 상태
+         main이 factorial을 부르기 직전입니다. 호출할 때마다 새 n이 생기고, 바닥에 닿으면 값이 한 칸씩 위로 돌아옵니다.
+step-1   L9 [int r = factorial(4);] factorial(4) 호출
+         main이 factorial(4)를 부릅니다. factorial 호출 하나를 위한 저장 공간을 새로 만듭니다.
+step-2   L2 [int factorial(int n)] 4 → n 복사 W(f1.n:—→4)
+         인자 4를 이 호출의 매개변수 n에 복사합니다.
+step-3   L3 [{] 함수 진입
+         factorial(4) 본문으로 들어갑니다. 지금 실행 중인 호출은 1번째 factorial입니다.
+step-4   L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f1.n)
+         n은 4이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-5   L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f1.ret:—→uninitialized)
+         factorial(3)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-6   L5 [else return n * factorial(n-1);] n-1 계산 R(f1.n)
+         인자 n-1을 계산하려고 지금 호출의 n(4)를 읽습니다.
+step-7   L5 [else return n * factorial(n-1);] factorial(3) 호출
+         factorial(3)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-8   L2 [int factorial(int n)] 3 → 새 n 복사 W(f2.n:—→3)
+         n-1의 값 3을 새 매개변수 n에 복사합니다. 부른 쪽의 n(4)와는 다른 변수입니다.
+step-9   L3 [{] 함수 진입
+         factorial(3) 본문으로 들어갑니다. 지금 실행 중인 호출은 2번째 factorial입니다.
+step-10  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f2.n)
+         n은 3이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-11  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f2.ret:—→uninitialized)
+         factorial(2)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-12  L5 [else return n * factorial(n-1);] n-1 계산 R(f2.n)
+         인자 n-1을 계산하려고 지금 호출의 n(3)을 읽습니다.
+step-13  L5 [else return n * factorial(n-1);] factorial(2) 호출
+         factorial(2)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-14  L2 [int factorial(int n)] 2 → 새 n 복사 W(f3.n:—→2)
+         n-1의 값 2를 새 매개변수 n에 복사합니다. 부른 쪽의 n(3)과는 다른 변수입니다.
+step-15  L3 [{] 함수 진입
+         factorial(2) 본문으로 들어갑니다. 지금 실행 중인 호출은 3번째 factorial입니다.
+step-16  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f3.n)
+         n은 2이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-17  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f3.ret:—→uninitialized)
+         factorial(1)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-18  L5 [else return n * factorial(n-1);] n-1 계산 R(f3.n)
+         인자 n-1을 계산하려고 지금 호출의 n(2)를 읽습니다.
+step-19  L5 [else return n * factorial(n-1);] factorial(1) 호출
+         factorial(1)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-20  L2 [int factorial(int n)] 1 → 새 n 복사 W(f4.n:—→1)
+         n-1의 값 1을 새 매개변수 n에 복사합니다. 부른 쪽의 n(2)와는 다른 변수입니다.
+step-21  L3 [{] 함수 진입
+         factorial(1) 본문으로 들어갑니다. 지금 실행 중인 호출은 4번째 factorial입니다.
+step-22  L4 [if( n <= 1 )  return 1;] n <= 1 참 R(f4.n)
+         n은 1이고 n <= 1이 참입니다. 순환을 멈추는 부분입니다.
+step-23  L4 [if( n <= 1 )  return 1;] 1 반환 W(f3.ret:uninitialized→1)
+         바닥에서는 더 부르지 않고 1을 바로 돌려줍니다. 기다리던 factorial(2)가 1을 받고, 이 호출의 n은 수명이 끝납니다.
+step-24  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f3.ret)
+         돌아온 factorial(1)의 값 1을 읽습니다.
+step-25  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f3.n)
+         곱할 자기 n(2)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-26  L5 [else return n * factorial(n-1);] 2 반환 W(f2.ret:uninitialized→2)
+         2 × 1 = 2를 돌려줍니다. factorial(3)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-27  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f2.ret)
+         돌아온 factorial(2)의 값 2를 읽습니다.
+step-28  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f2.n)
+         곱할 자기 n(3)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-29  L5 [else return n * factorial(n-1);] 6 반환 W(f1.ret:uninitialized→6)
+         3 × 2 = 6을 돌려줍니다. factorial(4)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-30  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f1.ret)
+         돌아온 factorial(3)의 값 6을 읽습니다.
+step-31  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f1.n)
+         곱할 자기 n(4)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-32  L5 [else return n * factorial(n-1);] 24 반환 W(r:uninitialized→24)
+         4 × 6 = 24를 돌려줍니다. main의 r이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-33  L10 [printf("%d\n", r);] r 출력 R(r)
+         main으로 돌아왔습니다. r에 담긴 24를 읽어 출력합니다.
+step-34  L11 [return 0;] 결과 확인
+         factorial(4) = 24. 호출 4개가 차례로 쌓였다가 거꾸로 하나씩 끝났습니다.
+
+=== one {"n":1,"mode":"lecture"} (8 snapshots)
+initial  L9 [int r = factorial(1);] 호출 전 · 초기 상태
+         main이 factorial을 부르기 직전입니다. 호출할 때마다 새 n이 생기고, 바닥에 닿으면 값이 한 칸씩 위로 돌아옵니다.
+step-1   L9 [int r = factorial(1);] factorial(1) 호출
+         main이 factorial(1)을 부릅니다. factorial 호출 하나를 위한 저장 공간을 새로 만듭니다.
+step-2   L2 [int factorial(int n)] 1 → n 복사 W(f1.n:—→1)
+         인자 1을 이 호출의 매개변수 n에 복사합니다.
+step-3   L3 [{] 함수 진입
+         factorial(1) 본문으로 들어갑니다. 지금 실행 중인 호출은 1번째 factorial입니다.
+step-4   L4 [if( n <= 1 )  return 1;] n <= 1 참 R(f1.n)
+         n은 1이고 n <= 1이 참입니다. 순환을 멈추는 부분입니다.
+step-5   L4 [if( n <= 1 )  return 1;] 1 반환 W(r:uninitialized→1)
+         바닥에서는 더 부르지 않고 1을 바로 돌려줍니다. main의 r이 1을 받고, 이 호출의 n은 수명이 끝납니다.
+step-6   L10 [printf("%d\n", r);] r 출력 R(r)
+         main으로 돌아왔습니다. r에 담긴 1을 읽어 출력합니다.
+step-7   L11 [return 0;] 결과 확인
+         factorial(1) = 1. 호출 1개가 바로 바닥에서 끝났습니다.
+
+=== zero {"n":0,"mode":"lecture"} (8 snapshots)
+initial  L9 [int r = factorial(0);] 호출 전 · 초기 상태
+         main이 factorial을 부르기 직전입니다. 호출할 때마다 새 n이 생기고, 바닥에 닿으면 값이 한 칸씩 위로 돌아옵니다.
+step-1   L9 [int r = factorial(0);] factorial(0) 호출
+         main이 factorial(0)을 부릅니다. factorial 호출 하나를 위한 저장 공간을 새로 만듭니다.
+step-2   L2 [int factorial(int n)] 0 → n 복사 W(f1.n:—→0)
+         인자 0을 이 호출의 매개변수 n에 복사합니다.
+step-3   L3 [{] 함수 진입
+         factorial(0) 본문으로 들어갑니다. 지금 실행 중인 호출은 1번째 factorial입니다.
+step-4   L4 [if( n <= 1 )  return 1;] n <= 1 참 R(f1.n)
+         n은 0이고 n <= 1이 참입니다. 순환을 멈추는 부분입니다.
+step-5   L4 [if( n <= 1 )  return 1;] 1 반환 W(r:uninitialized→1)
+         바닥에서는 더 부르지 않고 1을 바로 돌려줍니다. main의 r이 1을 받고, 이 호출의 n은 수명이 끝납니다.
+step-6   L10 [printf("%d\n", r);] r 출력 R(r)
+         main으로 돌아왔습니다. r에 담긴 1을 읽어 출력합니다.
+step-7   L11 [return 0;] 결과 확인
+         factorial(0) = 1. 호출 1개가 바로 바닥에서 끝났습니다.
+
+=== negative {"n":-3,"mode":"lecture"} (8 snapshots)
+initial  L9 [int r = factorial(-3);] 호출 전 · 초기 상태
+         main이 factorial을 부르기 직전입니다. 호출할 때마다 새 n이 생기고, 바닥에 닿으면 값이 한 칸씩 위로 돌아옵니다.
+step-1   L9 [int r = factorial(-3);] factorial(-3) 호출
+         main이 factorial(-3)을 부릅니다. factorial 호출 하나를 위한 저장 공간을 새로 만듭니다.
+step-2   L2 [int factorial(int n)] -3 → n 복사 W(f1.n:—→-3)
+         인자 -3을 이 호출의 매개변수 n에 복사합니다.
+step-3   L3 [{] 함수 진입
+         factorial(-3) 본문으로 들어갑니다. 지금 실행 중인 호출은 1번째 factorial입니다.
+step-4   L4 [if( n <= 1 )  return 1;] n <= 1 참 R(f1.n)
+         n은 -3이고 n <= 1이 참입니다. 순환을 멈추는 부분입니다. 수학의 팩토리얼은 음수에 정의되지 않지만, 이 코드는 n <= 1이면 모두 1을 돌려줍니다.
+step-5   L4 [if( n <= 1 )  return 1;] 1 반환 W(r:uninitialized→1)
+         바닥에서는 더 부르지 않고 1을 바로 돌려줍니다. main의 r이 1을 받고, 이 호출의 n은 수명이 끝납니다.
+step-6   L10 [printf("%d\n", r);] r 출력 R(r)
+         main으로 돌아왔습니다. r에 담긴 1을 읽어 출력합니다.
+step-7   L11 [return 0;] 결과 확인
+         factorial(-3) = 1. 호출 1개가 바로 바닥에서 끝났습니다.
+
+=== twelve {"n":12,"mode":"lecture"} (107 snapshots)
+initial  L9 [int r = factorial(12);] 호출 전 · 초기 상태
+         main이 factorial을 부르기 직전입니다. 호출할 때마다 새 n이 생기고, 바닥에 닿으면 값이 한 칸씩 위로 돌아옵니다.
+step-1   L9 [int r = factorial(12);] factorial(12) 호출
+         main이 factorial(12)를 부릅니다. factorial 호출 하나를 위한 저장 공간을 새로 만듭니다.
+step-2   L2 [int factorial(int n)] 12 → n 복사 W(f1.n:—→12)
+         인자 12를 이 호출의 매개변수 n에 복사합니다.
+step-3   L3 [{] 함수 진입
+         factorial(12) 본문으로 들어갑니다. 지금 실행 중인 호출은 1번째 factorial입니다.
+step-4   L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f1.n)
+         n은 12이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-5   L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f1.ret:—→uninitialized)
+         factorial(11)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-6   L5 [else return n * factorial(n-1);] n-1 계산 R(f1.n)
+         인자 n-1을 계산하려고 지금 호출의 n(12)를 읽습니다.
+step-7   L5 [else return n * factorial(n-1);] factorial(11) 호출
+         factorial(11)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-8   L2 [int factorial(int n)] 11 → 새 n 복사 W(f2.n:—→11)
+         n-1의 값 11을 새 매개변수 n에 복사합니다. 부른 쪽의 n(12)와는 다른 변수입니다.
+step-9   L3 [{] 함수 진입
+         factorial(11) 본문으로 들어갑니다. 지금 실행 중인 호출은 2번째 factorial입니다.
+step-10  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f2.n)
+         n은 11이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-11  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f2.ret:—→uninitialized)
+         factorial(10)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-12  L5 [else return n * factorial(n-1);] n-1 계산 R(f2.n)
+         인자 n-1을 계산하려고 지금 호출의 n(11)을 읽습니다.
+step-13  L5 [else return n * factorial(n-1);] factorial(10) 호출
+         factorial(10)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-14  L2 [int factorial(int n)] 10 → 새 n 복사 W(f3.n:—→10)
+         n-1의 값 10을 새 매개변수 n에 복사합니다. 부른 쪽의 n(11)과는 다른 변수입니다.
+step-15  L3 [{] 함수 진입
+         factorial(10) 본문으로 들어갑니다. 지금 실행 중인 호출은 3번째 factorial입니다.
+step-16  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f3.n)
+         n은 10이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-17  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f3.ret:—→uninitialized)
+         factorial(9)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-18  L5 [else return n * factorial(n-1);] n-1 계산 R(f3.n)
+         인자 n-1을 계산하려고 지금 호출의 n(10)을 읽습니다.
+step-19  L5 [else return n * factorial(n-1);] factorial(9) 호출
+         factorial(9)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-20  L2 [int factorial(int n)] 9 → 새 n 복사 W(f4.n:—→9)
+         n-1의 값 9를 새 매개변수 n에 복사합니다. 부른 쪽의 n(10)과는 다른 변수입니다.
+step-21  L3 [{] 함수 진입
+         factorial(9) 본문으로 들어갑니다. 지금 실행 중인 호출은 4번째 factorial입니다.
+step-22  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f4.n)
+         n은 9이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-23  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f4.ret:—→uninitialized)
+         factorial(8)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-24  L5 [else return n * factorial(n-1);] n-1 계산 R(f4.n)
+         인자 n-1을 계산하려고 지금 호출의 n(9)를 읽습니다.
+step-25  L5 [else return n * factorial(n-1);] factorial(8) 호출
+         factorial(8)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-26  L2 [int factorial(int n)] 8 → 새 n 복사 W(f5.n:—→8)
+         n-1의 값 8을 새 매개변수 n에 복사합니다. 부른 쪽의 n(9)와는 다른 변수입니다.
+step-27  L3 [{] 함수 진입
+         factorial(8) 본문으로 들어갑니다. 지금 실행 중인 호출은 5번째 factorial입니다.
+step-28  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f5.n)
+         n은 8이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-29  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f5.ret:—→uninitialized)
+         factorial(7)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-30  L5 [else return n * factorial(n-1);] n-1 계산 R(f5.n)
+         인자 n-1을 계산하려고 지금 호출의 n(8)을 읽습니다.
+step-31  L5 [else return n * factorial(n-1);] factorial(7) 호출
+         factorial(7)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-32  L2 [int factorial(int n)] 7 → 새 n 복사 W(f6.n:—→7)
+         n-1의 값 7을 새 매개변수 n에 복사합니다. 부른 쪽의 n(8)과는 다른 변수입니다.
+step-33  L3 [{] 함수 진입
+         factorial(7) 본문으로 들어갑니다. 지금 실행 중인 호출은 6번째 factorial입니다.
+step-34  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f6.n)
+         n은 7이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-35  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f6.ret:—→uninitialized)
+         factorial(6)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-36  L5 [else return n * factorial(n-1);] n-1 계산 R(f6.n)
+         인자 n-1을 계산하려고 지금 호출의 n(7)을 읽습니다.
+step-37  L5 [else return n * factorial(n-1);] factorial(6) 호출
+         factorial(6)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-38  L2 [int factorial(int n)] 6 → 새 n 복사 W(f7.n:—→6)
+         n-1의 값 6을 새 매개변수 n에 복사합니다. 부른 쪽의 n(7)과는 다른 변수입니다.
+step-39  L3 [{] 함수 진입
+         factorial(6) 본문으로 들어갑니다. 지금 실행 중인 호출은 7번째 factorial입니다.
+step-40  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f7.n)
+         n은 6이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-41  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f7.ret:—→uninitialized)
+         factorial(5)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-42  L5 [else return n * factorial(n-1);] n-1 계산 R(f7.n)
+         인자 n-1을 계산하려고 지금 호출의 n(6)을 읽습니다.
+step-43  L5 [else return n * factorial(n-1);] factorial(5) 호출
+         factorial(5)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-44  L2 [int factorial(int n)] 5 → 새 n 복사 W(f8.n:—→5)
+         n-1의 값 5를 새 매개변수 n에 복사합니다. 부른 쪽의 n(6)과는 다른 변수입니다.
+step-45  L3 [{] 함수 진입
+         factorial(5) 본문으로 들어갑니다. 지금 실행 중인 호출은 8번째 factorial입니다.
+step-46  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f8.n)
+         n은 5이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-47  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f8.ret:—→uninitialized)
+         factorial(4)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-48  L5 [else return n * factorial(n-1);] n-1 계산 R(f8.n)
+         인자 n-1을 계산하려고 지금 호출의 n(5)를 읽습니다.
+step-49  L5 [else return n * factorial(n-1);] factorial(4) 호출
+         factorial(4)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-50  L2 [int factorial(int n)] 4 → 새 n 복사 W(f9.n:—→4)
+         n-1의 값 4를 새 매개변수 n에 복사합니다. 부른 쪽의 n(5)와는 다른 변수입니다.
+step-51  L3 [{] 함수 진입
+         factorial(4) 본문으로 들어갑니다. 지금 실행 중인 호출은 9번째 factorial입니다.
+step-52  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f9.n)
+         n은 4이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-53  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f9.ret:—→uninitialized)
+         factorial(3)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-54  L5 [else return n * factorial(n-1);] n-1 계산 R(f9.n)
+         인자 n-1을 계산하려고 지금 호출의 n(4)를 읽습니다.
+step-55  L5 [else return n * factorial(n-1);] factorial(3) 호출
+         factorial(3)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-56  L2 [int factorial(int n)] 3 → 새 n 복사 W(f10.n:—→3)
+         n-1의 값 3을 새 매개변수 n에 복사합니다. 부른 쪽의 n(4)와는 다른 변수입니다.
+step-57  L3 [{] 함수 진입
+         factorial(3) 본문으로 들어갑니다. 지금 실행 중인 호출은 10번째 factorial입니다.
+step-58  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f10.n)
+         n은 3이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-59  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f10.ret:—→uninitialized)
+         factorial(2)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-60  L5 [else return n * factorial(n-1);] n-1 계산 R(f10.n)
+         인자 n-1을 계산하려고 지금 호출의 n(3)을 읽습니다.
+step-61  L5 [else return n * factorial(n-1);] factorial(2) 호출
+         factorial(2)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-62  L2 [int factorial(int n)] 2 → 새 n 복사 W(f11.n:—→2)
+         n-1의 값 2를 새 매개변수 n에 복사합니다. 부른 쪽의 n(3)과는 다른 변수입니다.
+step-63  L3 [{] 함수 진입
+         factorial(2) 본문으로 들어갑니다. 지금 실행 중인 호출은 11번째 factorial입니다.
+step-64  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f11.n)
+         n은 2이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-65  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f11.ret:—→uninitialized)
+         factorial(1)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-66  L5 [else return n * factorial(n-1);] n-1 계산 R(f11.n)
+         인자 n-1을 계산하려고 지금 호출의 n(2)를 읽습니다.
+step-67  L5 [else return n * factorial(n-1);] factorial(1) 호출
+         factorial(1)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-68  L2 [int factorial(int n)] 1 → 새 n 복사 W(f12.n:—→1)
+         n-1의 값 1을 새 매개변수 n에 복사합니다. 부른 쪽의 n(2)와는 다른 변수입니다.
+step-69  L3 [{] 함수 진입
+         factorial(1) 본문으로 들어갑니다. 지금 실행 중인 호출은 12번째 factorial입니다.
+step-70  L4 [if( n <= 1 )  return 1;] n <= 1 참 R(f12.n)
+         n은 1이고 n <= 1이 참입니다. 순환을 멈추는 부분입니다.
+step-71  L4 [if( n <= 1 )  return 1;] 1 반환 W(f11.ret:uninitialized→1)
+         바닥에서는 더 부르지 않고 1을 바로 돌려줍니다. 기다리던 factorial(2)가 1을 받고, 이 호출의 n은 수명이 끝납니다.
+step-72  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f11.ret)
+         돌아온 factorial(1)의 값 1을 읽습니다.
+step-73  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f11.n)
+         곱할 자기 n(2)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-74  L5 [else return n * factorial(n-1);] 2 반환 W(f10.ret:uninitialized→2)
+         2 × 1 = 2를 돌려줍니다. factorial(3)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-75  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f10.ret)
+         돌아온 factorial(2)의 값 2를 읽습니다.
+step-76  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f10.n)
+         곱할 자기 n(3)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-77  L5 [else return n * factorial(n-1);] 6 반환 W(f9.ret:uninitialized→6)
+         3 × 2 = 6을 돌려줍니다. factorial(4)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-78  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f9.ret)
+         돌아온 factorial(3)의 값 6을 읽습니다.
+step-79  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f9.n)
+         곱할 자기 n(4)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-80  L5 [else return n * factorial(n-1);] 24 반환 W(f8.ret:uninitialized→24)
+         4 × 6 = 24를 돌려줍니다. factorial(5)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-81  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f8.ret)
+         돌아온 factorial(4)의 값 24를 읽습니다.
+step-82  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f8.n)
+         곱할 자기 n(5)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-83  L5 [else return n * factorial(n-1);] 120 반환 W(f7.ret:uninitialized→120)
+         5 × 24 = 120을 돌려줍니다. factorial(6)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-84  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f7.ret)
+         돌아온 factorial(5)의 값 120을 읽습니다.
+step-85  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f7.n)
+         곱할 자기 n(6)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-86  L5 [else return n * factorial(n-1);] 720 반환 W(f6.ret:uninitialized→720)
+         6 × 120 = 720을 돌려줍니다. factorial(7)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-87  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f6.ret)
+         돌아온 factorial(6)의 값 720을 읽습니다.
+step-88  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f6.n)
+         곱할 자기 n(7)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-89  L5 [else return n * factorial(n-1);] 5040 반환 W(f5.ret:uninitialized→5040)
+         7 × 720 = 5040을 돌려줍니다. factorial(8)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-90  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f5.ret)
+         돌아온 factorial(7)의 값 5040을 읽습니다.
+step-91  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f5.n)
+         곱할 자기 n(8)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-92  L5 [else return n * factorial(n-1);] 40320 반환 W(f4.ret:uninitialized→40320)
+         8 × 5040 = 40320을 돌려줍니다. factorial(9)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-93  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f4.ret)
+         돌아온 factorial(8)의 값 40320을 읽습니다.
+step-94  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f4.n)
+         곱할 자기 n(9)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-95  L5 [else return n * factorial(n-1);] 362880 반환 W(f3.ret:uninitialized→362880)
+         9 × 40320 = 362880을 돌려줍니다. factorial(10)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-96  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f3.ret)
+         돌아온 factorial(9)의 값 362880을 읽습니다.
+step-97  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f3.n)
+         곱할 자기 n(10)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-98  L5 [else return n * factorial(n-1);] 3628800 반환 W(f2.ret:uninitialized→3628800)
+         10 × 362880 = 3628800을 돌려줍니다. factorial(11)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-99  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f2.ret)
+         돌아온 factorial(10)의 값 3628800을 읽습니다.
+step-100 L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f2.n)
+         곱할 자기 n(11)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-101 L5 [else return n * factorial(n-1);] 39916800 반환 W(f1.ret:uninitialized→39916800)
+         11 × 3628800 = 39916800을 돌려줍니다. factorial(12)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-102 L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f1.ret)
+         돌아온 factorial(11)의 값 39916800을 읽습니다.
+step-103 L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f1.n)
+         곱할 자기 n(12)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-104 L5 [else return n * factorial(n-1);] 479001600 반환 W(r:uninitialized→479001600)
+         12 × 39916800 = 479001600을 돌려줍니다. main의 r이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-105 L10 [printf("%d\n", r);] r 출력 R(r)
+         main으로 돌아왔습니다. r에 담긴 479001600을 읽어 출력합니다.
+step-106 L11 [return 0;] 결과 확인
+         factorial(12) = 479001600. 호출 12개가 차례로 쌓였다가 거꾸로 하나씩 끝났습니다.
+
+=== overflow {"n":13,"mode":"lecture"} (114 snapshots)
+initial  L9 [int r = factorial(13);] 호출 전 · 초기 상태
+         main이 factorial을 부르기 직전입니다. 호출할 때마다 새 n이 생기고, 바닥에 닿으면 값이 한 칸씩 위로 돌아옵니다.
+step-1   L9 [int r = factorial(13);] factorial(13) 호출
+         main이 factorial(13)을 부릅니다. factorial 호출 하나를 위한 저장 공간을 새로 만듭니다.
+step-2   L2 [int factorial(int n)] 13 → n 복사 W(f1.n:—→13)
+         인자 13을 이 호출의 매개변수 n에 복사합니다.
+step-3   L3 [{] 함수 진입
+         factorial(13) 본문으로 들어갑니다. 지금 실행 중인 호출은 1번째 factorial입니다.
+step-4   L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f1.n)
+         n은 13이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-5   L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f1.ret:—→uninitialized)
+         factorial(12)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-6   L5 [else return n * factorial(n-1);] n-1 계산 R(f1.n)
+         인자 n-1을 계산하려고 지금 호출의 n(13)을 읽습니다.
+step-7   L5 [else return n * factorial(n-1);] factorial(12) 호출
+         factorial(12)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-8   L2 [int factorial(int n)] 12 → 새 n 복사 W(f2.n:—→12)
+         n-1의 값 12를 새 매개변수 n에 복사합니다. 부른 쪽의 n(13)과는 다른 변수입니다.
+step-9   L3 [{] 함수 진입
+         factorial(12) 본문으로 들어갑니다. 지금 실행 중인 호출은 2번째 factorial입니다.
+step-10  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f2.n)
+         n은 12이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-11  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f2.ret:—→uninitialized)
+         factorial(11)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-12  L5 [else return n * factorial(n-1);] n-1 계산 R(f2.n)
+         인자 n-1을 계산하려고 지금 호출의 n(12)를 읽습니다.
+step-13  L5 [else return n * factorial(n-1);] factorial(11) 호출
+         factorial(11)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-14  L2 [int factorial(int n)] 11 → 새 n 복사 W(f3.n:—→11)
+         n-1의 값 11을 새 매개변수 n에 복사합니다. 부른 쪽의 n(12)와는 다른 변수입니다.
+step-15  L3 [{] 함수 진입
+         factorial(11) 본문으로 들어갑니다. 지금 실행 중인 호출은 3번째 factorial입니다.
+step-16  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f3.n)
+         n은 11이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-17  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f3.ret:—→uninitialized)
+         factorial(10)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-18  L5 [else return n * factorial(n-1);] n-1 계산 R(f3.n)
+         인자 n-1을 계산하려고 지금 호출의 n(11)을 읽습니다.
+step-19  L5 [else return n * factorial(n-1);] factorial(10) 호출
+         factorial(10)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-20  L2 [int factorial(int n)] 10 → 새 n 복사 W(f4.n:—→10)
+         n-1의 값 10을 새 매개변수 n에 복사합니다. 부른 쪽의 n(11)과는 다른 변수입니다.
+step-21  L3 [{] 함수 진입
+         factorial(10) 본문으로 들어갑니다. 지금 실행 중인 호출은 4번째 factorial입니다.
+step-22  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f4.n)
+         n은 10이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-23  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f4.ret:—→uninitialized)
+         factorial(9)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-24  L5 [else return n * factorial(n-1);] n-1 계산 R(f4.n)
+         인자 n-1을 계산하려고 지금 호출의 n(10)을 읽습니다.
+step-25  L5 [else return n * factorial(n-1);] factorial(9) 호출
+         factorial(9)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-26  L2 [int factorial(int n)] 9 → 새 n 복사 W(f5.n:—→9)
+         n-1의 값 9를 새 매개변수 n에 복사합니다. 부른 쪽의 n(10)과는 다른 변수입니다.
+step-27  L3 [{] 함수 진입
+         factorial(9) 본문으로 들어갑니다. 지금 실행 중인 호출은 5번째 factorial입니다.
+step-28  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f5.n)
+         n은 9이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-29  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f5.ret:—→uninitialized)
+         factorial(8)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-30  L5 [else return n * factorial(n-1);] n-1 계산 R(f5.n)
+         인자 n-1을 계산하려고 지금 호출의 n(9)를 읽습니다.
+step-31  L5 [else return n * factorial(n-1);] factorial(8) 호출
+         factorial(8)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-32  L2 [int factorial(int n)] 8 → 새 n 복사 W(f6.n:—→8)
+         n-1의 값 8을 새 매개변수 n에 복사합니다. 부른 쪽의 n(9)와는 다른 변수입니다.
+step-33  L3 [{] 함수 진입
+         factorial(8) 본문으로 들어갑니다. 지금 실행 중인 호출은 6번째 factorial입니다.
+step-34  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f6.n)
+         n은 8이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-35  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f6.ret:—→uninitialized)
+         factorial(7)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-36  L5 [else return n * factorial(n-1);] n-1 계산 R(f6.n)
+         인자 n-1을 계산하려고 지금 호출의 n(8)을 읽습니다.
+step-37  L5 [else return n * factorial(n-1);] factorial(7) 호출
+         factorial(7)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-38  L2 [int factorial(int n)] 7 → 새 n 복사 W(f7.n:—→7)
+         n-1의 값 7을 새 매개변수 n에 복사합니다. 부른 쪽의 n(8)과는 다른 변수입니다.
+step-39  L3 [{] 함수 진입
+         factorial(7) 본문으로 들어갑니다. 지금 실행 중인 호출은 7번째 factorial입니다.
+step-40  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f7.n)
+         n은 7이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-41  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f7.ret:—→uninitialized)
+         factorial(6)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-42  L5 [else return n * factorial(n-1);] n-1 계산 R(f7.n)
+         인자 n-1을 계산하려고 지금 호출의 n(7)을 읽습니다.
+step-43  L5 [else return n * factorial(n-1);] factorial(6) 호출
+         factorial(6)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-44  L2 [int factorial(int n)] 6 → 새 n 복사 W(f8.n:—→6)
+         n-1의 값 6을 새 매개변수 n에 복사합니다. 부른 쪽의 n(7)과는 다른 변수입니다.
+step-45  L3 [{] 함수 진입
+         factorial(6) 본문으로 들어갑니다. 지금 실행 중인 호출은 8번째 factorial입니다.
+step-46  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f8.n)
+         n은 6이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-47  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f8.ret:—→uninitialized)
+         factorial(5)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-48  L5 [else return n * factorial(n-1);] n-1 계산 R(f8.n)
+         인자 n-1을 계산하려고 지금 호출의 n(6)을 읽습니다.
+step-49  L5 [else return n * factorial(n-1);] factorial(5) 호출
+         factorial(5)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-50  L2 [int factorial(int n)] 5 → 새 n 복사 W(f9.n:—→5)
+         n-1의 값 5를 새 매개변수 n에 복사합니다. 부른 쪽의 n(6)과는 다른 변수입니다.
+step-51  L3 [{] 함수 진입
+         factorial(5) 본문으로 들어갑니다. 지금 실행 중인 호출은 9번째 factorial입니다.
+step-52  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f9.n)
+         n은 5이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-53  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f9.ret:—→uninitialized)
+         factorial(4)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-54  L5 [else return n * factorial(n-1);] n-1 계산 R(f9.n)
+         인자 n-1을 계산하려고 지금 호출의 n(5)를 읽습니다.
+step-55  L5 [else return n * factorial(n-1);] factorial(4) 호출
+         factorial(4)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-56  L2 [int factorial(int n)] 4 → 새 n 복사 W(f10.n:—→4)
+         n-1의 값 4를 새 매개변수 n에 복사합니다. 부른 쪽의 n(5)와는 다른 변수입니다.
+step-57  L3 [{] 함수 진입
+         factorial(4) 본문으로 들어갑니다. 지금 실행 중인 호출은 10번째 factorial입니다.
+step-58  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f10.n)
+         n은 4이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-59  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f10.ret:—→uninitialized)
+         factorial(3)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-60  L5 [else return n * factorial(n-1);] n-1 계산 R(f10.n)
+         인자 n-1을 계산하려고 지금 호출의 n(4)를 읽습니다.
+step-61  L5 [else return n * factorial(n-1);] factorial(3) 호출
+         factorial(3)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-62  L2 [int factorial(int n)] 3 → 새 n 복사 W(f11.n:—→3)
+         n-1의 값 3을 새 매개변수 n에 복사합니다. 부른 쪽의 n(4)와는 다른 변수입니다.
+step-63  L3 [{] 함수 진입
+         factorial(3) 본문으로 들어갑니다. 지금 실행 중인 호출은 11번째 factorial입니다.
+step-64  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f11.n)
+         n은 3이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-65  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f11.ret:—→uninitialized)
+         factorial(2)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-66  L5 [else return n * factorial(n-1);] n-1 계산 R(f11.n)
+         인자 n-1을 계산하려고 지금 호출의 n(3)을 읽습니다.
+step-67  L5 [else return n * factorial(n-1);] factorial(2) 호출
+         factorial(2)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-68  L2 [int factorial(int n)] 2 → 새 n 복사 W(f12.n:—→2)
+         n-1의 값 2를 새 매개변수 n에 복사합니다. 부른 쪽의 n(3)과는 다른 변수입니다.
+step-69  L3 [{] 함수 진입
+         factorial(2) 본문으로 들어갑니다. 지금 실행 중인 호출은 12번째 factorial입니다.
+step-70  L4 [if( n <= 1 )  return 1;] n <= 1 거짓 R(f12.n)
+         n은 2이고 n <= 1이 거짓입니다. else로 가서 더 작은 문제를 맡깁니다.
+step-71  L5 [else return n * factorial(n-1);] 반환값 받을 자리 W(f12.ret:—→uninitialized)
+         factorial(1)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-72  L5 [else return n * factorial(n-1);] n-1 계산 R(f12.n)
+         인자 n-1을 계산하려고 지금 호출의 n(2)를 읽습니다.
+step-73  L5 [else return n * factorial(n-1);] factorial(1) 호출
+         factorial(1)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-74  L2 [int factorial(int n)] 1 → 새 n 복사 W(f13.n:—→1)
+         n-1의 값 1을 새 매개변수 n에 복사합니다. 부른 쪽의 n(2)와는 다른 변수입니다.
+step-75  L3 [{] 함수 진입
+         factorial(1) 본문으로 들어갑니다. 지금 실행 중인 호출은 13번째 factorial입니다.
+step-76  L4 [if( n <= 1 )  return 1;] n <= 1 참 R(f13.n)
+         n은 1이고 n <= 1이 참입니다. 순환을 멈추는 부분입니다.
+step-77  L4 [if( n <= 1 )  return 1;] 1 반환 W(f12.ret:uninitialized→1)
+         바닥에서는 더 부르지 않고 1을 바로 돌려줍니다. 기다리던 factorial(2)가 1을 받고, 이 호출의 n은 수명이 끝납니다.
+step-78  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f12.ret)
+         돌아온 factorial(1)의 값 1을 읽습니다.
+step-79  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f12.n)
+         곱할 자기 n(2)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-80  L5 [else return n * factorial(n-1);] 2 반환 W(f11.ret:uninitialized→2)
+         2 × 1 = 2를 돌려줍니다. factorial(3)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-81  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f11.ret)
+         돌아온 factorial(2)의 값 2를 읽습니다.
+step-82  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f11.n)
+         곱할 자기 n(3)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-83  L5 [else return n * factorial(n-1);] 6 반환 W(f10.ret:uninitialized→6)
+         3 × 2 = 6을 돌려줍니다. factorial(4)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-84  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f10.ret)
+         돌아온 factorial(3)의 값 6을 읽습니다.
+step-85  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f10.n)
+         곱할 자기 n(4)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-86  L5 [else return n * factorial(n-1);] 24 반환 W(f9.ret:uninitialized→24)
+         4 × 6 = 24를 돌려줍니다. factorial(5)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-87  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f9.ret)
+         돌아온 factorial(4)의 값 24를 읽습니다.
+step-88  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f9.n)
+         곱할 자기 n(5)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-89  L5 [else return n * factorial(n-1);] 120 반환 W(f8.ret:uninitialized→120)
+         5 × 24 = 120을 돌려줍니다. factorial(6)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-90  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f8.ret)
+         돌아온 factorial(5)의 값 120을 읽습니다.
+step-91  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f8.n)
+         곱할 자기 n(6)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-92  L5 [else return n * factorial(n-1);] 720 반환 W(f7.ret:uninitialized→720)
+         6 × 120 = 720을 돌려줍니다. factorial(7)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-93  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f7.ret)
+         돌아온 factorial(6)의 값 720을 읽습니다.
+step-94  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f7.n)
+         곱할 자기 n(7)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-95  L5 [else return n * factorial(n-1);] 5040 반환 W(f6.ret:uninitialized→5040)
+         7 × 720 = 5040을 돌려줍니다. factorial(8)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-96  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f6.ret)
+         돌아온 factorial(7)의 값 5040을 읽습니다.
+step-97  L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f6.n)
+         곱할 자기 n(8)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-98  L5 [else return n * factorial(n-1);] 40320 반환 W(f5.ret:uninitialized→40320)
+         8 × 5040 = 40320을 돌려줍니다. factorial(9)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-99  L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f5.ret)
+         돌아온 factorial(8)의 값 40320을 읽습니다.
+step-100 L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f5.n)
+         곱할 자기 n(9)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-101 L5 [else return n * factorial(n-1);] 362880 반환 W(f4.ret:uninitialized→362880)
+         9 × 40320 = 362880을 돌려줍니다. factorial(10)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-102 L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f4.ret)
+         돌아온 factorial(9)의 값 362880을 읽습니다.
+step-103 L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f4.n)
+         곱할 자기 n(10)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-104 L5 [else return n * factorial(n-1);] 3628800 반환 W(f3.ret:uninitialized→3628800)
+         10 × 362880 = 3628800을 돌려줍니다. factorial(11)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-105 L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f3.ret)
+         돌아온 factorial(10)의 값 3628800을 읽습니다.
+step-106 L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f3.n)
+         곱할 자기 n(11)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-107 L5 [else return n * factorial(n-1);] 39916800 반환 W(f2.ret:uninitialized→39916800)
+         11 × 3628800 = 39916800을 돌려줍니다. factorial(12)가 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-108 L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f2.ret)
+         돌아온 factorial(11)의 값 39916800을 읽습니다.
+step-109 L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f2.n)
+         곱할 자기 n(12)를 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-110 L5 [else return n * factorial(n-1);] 479001600 반환 W(f1.ret:uninitialized→479001600)
+         12 × 39916800 = 479001600을 돌려줍니다. factorial(13)이 이 값을 받고, 이 호출의 저장 공간은 수명이 끝납니다.
+step-111 L5 [else return n * factorial(n-1);] 돌아온 값 읽기 R(f1.ret)
+         돌아온 factorial(12)의 값 479001600을 읽습니다.
+step-112 L5 [else return n * factorial(n-1);] 자기 n 읽기 R(f1.n)
+         곱할 자기 n(13)을 읽습니다. 곱셈의 두 피연산자를 읽는 순서는 C가 정하지 않지만 결과는 같습니다.
+step-113 L5 [else return n * factorial(n-1);] int 범위 초과 DIAG SIGNED_OVERFLOW
+         13 × 479001600 = 6227020800은 int가 32비트일 때(강의 기준) 범위 -2147483648 ~ 2147483647을 넘습니다. 부호 있는 정수 오버플로는 정의되지 않은 동작이라 여기서 멈춥니다.
+
+=== nobase {"n":4,"mode":"nobase"} (317 snapshots)
+initial  L9 [int r = factorial(4);] 호출 전 · 초기 상태
+         main이 factorial을 부르기 직전입니다. 호출할 때마다 새 n이 생기고, 바닥에 닿으면 값이 한 칸씩 위로 돌아옵니다.
+step-1   L9 [int r = factorial(4);] factorial(4) 호출
+         main이 factorial(4)를 부릅니다. factorial 호출 하나를 위한 저장 공간을 새로 만듭니다.
+step-2   L2 [int factorial(int n)] 4 → n 복사 W(f1.n:—→4)
+         인자 4를 이 호출의 매개변수 n에 복사합니다.
+step-3   L3 [{] 함수 진입
+         factorial(4) 본문으로 들어갑니다. 지금 실행 중인 호출은 1번째 factorial입니다.
+step-4   L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f1.ret:—→uninitialized)
+         factorial(3)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-5   L5 [return n * factorial(n-1);] n-1 계산 R(f1.n)
+         인자 n-1을 계산하려고 지금 호출의 n(4)를 읽습니다.
+step-6   L5 [return n * factorial(n-1);] factorial(3) 호출
+         factorial(3)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-7   L2 [int factorial(int n)] 3 → 새 n 복사 W(f2.n:—→3)
+         n-1의 값 3을 새 매개변수 n에 복사합니다. 부른 쪽의 n(4)와는 다른 변수입니다.
+step-8   L3 [{] 함수 진입
+         factorial(3) 본문으로 들어갑니다. 지금 실행 중인 호출은 2번째 factorial입니다.
+step-9   L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f2.ret:—→uninitialized)
+         factorial(2)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-10  L5 [return n * factorial(n-1);] n-1 계산 R(f2.n)
+         인자 n-1을 계산하려고 지금 호출의 n(3)을 읽습니다.
+step-11  L5 [return n * factorial(n-1);] factorial(2) 호출
+         factorial(2)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-12  L2 [int factorial(int n)] 2 → 새 n 복사 W(f3.n:—→2)
+         n-1의 값 2를 새 매개변수 n에 복사합니다. 부른 쪽의 n(3)과는 다른 변수입니다.
+step-13  L3 [{] 함수 진입
+         factorial(2) 본문으로 들어갑니다. 지금 실행 중인 호출은 3번째 factorial입니다.
+step-14  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f3.ret:—→uninitialized)
+         factorial(1)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-15  L5 [return n * factorial(n-1);] n-1 계산 R(f3.n)
+         인자 n-1을 계산하려고 지금 호출의 n(2)를 읽습니다.
+step-16  L5 [return n * factorial(n-1);] factorial(1) 호출
+         factorial(1)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-17  L2 [int factorial(int n)] 1 → 새 n 복사 W(f4.n:—→1)
+         n-1의 값 1을 새 매개변수 n에 복사합니다. 부른 쪽의 n(2)와는 다른 변수입니다.
+step-18  L3 [{] 함수 진입
+         factorial(1) 본문으로 들어갑니다. 지금 실행 중인 호출은 4번째 factorial입니다.
+step-19  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f4.ret:—→uninitialized)
+         factorial(0)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-20  L5 [return n * factorial(n-1);] n-1 계산 R(f4.n)
+         인자 n-1을 계산하려고 지금 호출의 n(1)을 읽습니다.
+step-21  L5 [return n * factorial(n-1);] factorial(0) 호출
+         factorial(0)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-22  L2 [int factorial(int n)] 0 → 새 n 복사 W(f5.n:—→0)
+         n-1의 값 0을 새 매개변수 n에 복사합니다. 부른 쪽의 n(1)과는 다른 변수입니다.
+step-23  L3 [{] 함수 진입
+         factorial(0) 본문으로 들어갑니다. 지금 실행 중인 호출은 5번째 factorial입니다.
+step-24  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f5.ret:—→uninitialized)
+         factorial(-1)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-25  L5 [return n * factorial(n-1);] n-1 계산 R(f5.n)
+         인자 n-1을 계산하려고 지금 호출의 n(0)을 읽습니다.
+step-26  L5 [return n * factorial(n-1);] factorial(-1) 호출
+         factorial(-1)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-27  L2 [int factorial(int n)] -1 → 새 n 복사 W(f6.n:—→-1)
+         n-1의 값 -1을 새 매개변수 n에 복사합니다. 부른 쪽의 n(0)과는 다른 변수입니다.
+step-28  L3 [{] 함수 진입
+         factorial(-1) 본문으로 들어갑니다. 지금 실행 중인 호출은 6번째 factorial입니다.
+step-29  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f6.ret:—→uninitialized)
+         factorial(-2)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-30  L5 [return n * factorial(n-1);] n-1 계산 R(f6.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-1)을 읽습니다.
+step-31  L5 [return n * factorial(n-1);] factorial(-2) 호출
+         factorial(-2)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-32  L2 [int factorial(int n)] -2 → 새 n 복사 W(f7.n:—→-2)
+         n-1의 값 -2를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-1)과는 다른 변수입니다.
+step-33  L3 [{] 함수 진입
+         factorial(-2) 본문으로 들어갑니다. 지금 실행 중인 호출은 7번째 factorial입니다.
+step-34  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f7.ret:—→uninitialized)
+         factorial(-3)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-35  L5 [return n * factorial(n-1);] n-1 계산 R(f7.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-2)를 읽습니다.
+step-36  L5 [return n * factorial(n-1);] factorial(-3) 호출
+         factorial(-3)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-37  L2 [int factorial(int n)] -3 → 새 n 복사 W(f8.n:—→-3)
+         n-1의 값 -3을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-2)와는 다른 변수입니다.
+step-38  L3 [{] 함수 진입
+         factorial(-3) 본문으로 들어갑니다. 지금 실행 중인 호출은 8번째 factorial입니다.
+step-39  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f8.ret:—→uninitialized)
+         factorial(-4)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-40  L5 [return n * factorial(n-1);] n-1 계산 R(f8.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-3)을 읽습니다.
+step-41  L5 [return n * factorial(n-1);] factorial(-4) 호출
+         factorial(-4)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-42  L2 [int factorial(int n)] -4 → 새 n 복사 W(f9.n:—→-4)
+         n-1의 값 -4를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-3)과는 다른 변수입니다.
+step-43  L3 [{] 함수 진입
+         factorial(-4) 본문으로 들어갑니다. 지금 실행 중인 호출은 9번째 factorial입니다.
+step-44  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f9.ret:—→uninitialized)
+         factorial(-5)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-45  L5 [return n * factorial(n-1);] n-1 계산 R(f9.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-4)를 읽습니다.
+step-46  L5 [return n * factorial(n-1);] factorial(-5) 호출
+         factorial(-5)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-47  L2 [int factorial(int n)] -5 → 새 n 복사 W(f10.n:—→-5)
+         n-1의 값 -5를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-4)와는 다른 변수입니다.
+step-48  L3 [{] 함수 진입
+         factorial(-5) 본문으로 들어갑니다. 지금 실행 중인 호출은 10번째 factorial입니다.
+step-49  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f10.ret:—→uninitialized)
+         factorial(-6)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-50  L5 [return n * factorial(n-1);] n-1 계산 R(f10.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-5)를 읽습니다.
+step-51  L5 [return n * factorial(n-1);] factorial(-6) 호출
+         factorial(-6)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-52  L2 [int factorial(int n)] -6 → 새 n 복사 W(f11.n:—→-6)
+         n-1의 값 -6을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-5)와는 다른 변수입니다.
+step-53  L3 [{] 함수 진입
+         factorial(-6) 본문으로 들어갑니다. 지금 실행 중인 호출은 11번째 factorial입니다.
+step-54  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f11.ret:—→uninitialized)
+         factorial(-7)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-55  L5 [return n * factorial(n-1);] n-1 계산 R(f11.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-6)을 읽습니다.
+step-56  L5 [return n * factorial(n-1);] factorial(-7) 호출
+         factorial(-7)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-57  L2 [int factorial(int n)] -7 → 새 n 복사 W(f12.n:—→-7)
+         n-1의 값 -7을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-6)과는 다른 변수입니다.
+step-58  L3 [{] 함수 진입
+         factorial(-7) 본문으로 들어갑니다. 지금 실행 중인 호출은 12번째 factorial입니다.
+step-59  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f12.ret:—→uninitialized)
+         factorial(-8)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-60  L5 [return n * factorial(n-1);] n-1 계산 R(f12.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-7)을 읽습니다.
+step-61  L5 [return n * factorial(n-1);] factorial(-8) 호출
+         factorial(-8)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-62  L2 [int factorial(int n)] -8 → 새 n 복사 W(f13.n:—→-8)
+         n-1의 값 -8을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-7)과는 다른 변수입니다.
+step-63  L3 [{] 함수 진입
+         factorial(-8) 본문으로 들어갑니다. 지금 실행 중인 호출은 13번째 factorial입니다.
+step-64  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f13.ret:—→uninitialized)
+         factorial(-9)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-65  L5 [return n * factorial(n-1);] n-1 계산 R(f13.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-8)을 읽습니다.
+step-66  L5 [return n * factorial(n-1);] factorial(-9) 호출
+         factorial(-9)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-67  L2 [int factorial(int n)] -9 → 새 n 복사 W(f14.n:—→-9)
+         n-1의 값 -9를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-8)과는 다른 변수입니다.
+step-68  L3 [{] 함수 진입
+         factorial(-9) 본문으로 들어갑니다. 지금 실행 중인 호출은 14번째 factorial입니다.
+step-69  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f14.ret:—→uninitialized)
+         factorial(-10)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-70  L5 [return n * factorial(n-1);] n-1 계산 R(f14.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-9)를 읽습니다.
+step-71  L5 [return n * factorial(n-1);] factorial(-10) 호출
+         factorial(-10)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-72  L2 [int factorial(int n)] -10 → 새 n 복사 W(f15.n:—→-10)
+         n-1의 값 -10을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-9)와는 다른 변수입니다.
+step-73  L3 [{] 함수 진입
+         factorial(-10) 본문으로 들어갑니다. 지금 실행 중인 호출은 15번째 factorial입니다.
+step-74  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f15.ret:—→uninitialized)
+         factorial(-11)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-75  L5 [return n * factorial(n-1);] n-1 계산 R(f15.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-10)을 읽습니다.
+step-76  L5 [return n * factorial(n-1);] factorial(-11) 호출
+         factorial(-11)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-77  L2 [int factorial(int n)] -11 → 새 n 복사 W(f16.n:—→-11)
+         n-1의 값 -11을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-10)과는 다른 변수입니다.
+step-78  L3 [{] 함수 진입
+         factorial(-11) 본문으로 들어갑니다. 지금 실행 중인 호출은 16번째 factorial입니다.
+step-79  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f16.ret:—→uninitialized)
+         factorial(-12)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-80  L5 [return n * factorial(n-1);] n-1 계산 R(f16.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-11)을 읽습니다.
+step-81  L5 [return n * factorial(n-1);] factorial(-12) 호출
+         factorial(-12)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-82  L2 [int factorial(int n)] -12 → 새 n 복사 W(f17.n:—→-12)
+         n-1의 값 -12를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-11)과는 다른 변수입니다.
+step-83  L3 [{] 함수 진입
+         factorial(-12) 본문으로 들어갑니다. 지금 실행 중인 호출은 17번째 factorial입니다.
+step-84  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f17.ret:—→uninitialized)
+         factorial(-13)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-85  L5 [return n * factorial(n-1);] n-1 계산 R(f17.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-12)를 읽습니다.
+step-86  L5 [return n * factorial(n-1);] factorial(-13) 호출
+         factorial(-13)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-87  L2 [int factorial(int n)] -13 → 새 n 복사 W(f18.n:—→-13)
+         n-1의 값 -13을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-12)와는 다른 변수입니다.
+step-88  L3 [{] 함수 진입
+         factorial(-13) 본문으로 들어갑니다. 지금 실행 중인 호출은 18번째 factorial입니다.
+step-89  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f18.ret:—→uninitialized)
+         factorial(-14)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-90  L5 [return n * factorial(n-1);] n-1 계산 R(f18.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-13)을 읽습니다.
+step-91  L5 [return n * factorial(n-1);] factorial(-14) 호출
+         factorial(-14)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-92  L2 [int factorial(int n)] -14 → 새 n 복사 W(f19.n:—→-14)
+         n-1의 값 -14를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-13)과는 다른 변수입니다.
+step-93  L3 [{] 함수 진입
+         factorial(-14) 본문으로 들어갑니다. 지금 실행 중인 호출은 19번째 factorial입니다.
+step-94  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f19.ret:—→uninitialized)
+         factorial(-15)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-95  L5 [return n * factorial(n-1);] n-1 계산 R(f19.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-14)를 읽습니다.
+step-96  L5 [return n * factorial(n-1);] factorial(-15) 호출
+         factorial(-15)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-97  L2 [int factorial(int n)] -15 → 새 n 복사 W(f20.n:—→-15)
+         n-1의 값 -15를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-14)와는 다른 변수입니다.
+step-98  L3 [{] 함수 진입
+         factorial(-15) 본문으로 들어갑니다. 지금 실행 중인 호출은 20번째 factorial입니다.
+step-99  L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f20.ret:—→uninitialized)
+         factorial(-16)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-100 L5 [return n * factorial(n-1);] n-1 계산 R(f20.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-15)를 읽습니다.
+step-101 L5 [return n * factorial(n-1);] factorial(-16) 호출
+         factorial(-16)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-102 L2 [int factorial(int n)] -16 → 새 n 복사 W(f21.n:—→-16)
+         n-1의 값 -16을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-15)와는 다른 변수입니다.
+step-103 L3 [{] 함수 진입
+         factorial(-16) 본문으로 들어갑니다. 지금 실행 중인 호출은 21번째 factorial입니다.
+step-104 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f21.ret:—→uninitialized)
+         factorial(-17)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-105 L5 [return n * factorial(n-1);] n-1 계산 R(f21.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-16)을 읽습니다.
+step-106 L5 [return n * factorial(n-1);] factorial(-17) 호출
+         factorial(-17)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-107 L2 [int factorial(int n)] -17 → 새 n 복사 W(f22.n:—→-17)
+         n-1의 값 -17을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-16)과는 다른 변수입니다.
+step-108 L3 [{] 함수 진입
+         factorial(-17) 본문으로 들어갑니다. 지금 실행 중인 호출은 22번째 factorial입니다.
+step-109 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f22.ret:—→uninitialized)
+         factorial(-18)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-110 L5 [return n * factorial(n-1);] n-1 계산 R(f22.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-17)을 읽습니다.
+step-111 L5 [return n * factorial(n-1);] factorial(-18) 호출
+         factorial(-18)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-112 L2 [int factorial(int n)] -18 → 새 n 복사 W(f23.n:—→-18)
+         n-1의 값 -18을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-17)과는 다른 변수입니다.
+step-113 L3 [{] 함수 진입
+         factorial(-18) 본문으로 들어갑니다. 지금 실행 중인 호출은 23번째 factorial입니다.
+step-114 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f23.ret:—→uninitialized)
+         factorial(-19)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-115 L5 [return n * factorial(n-1);] n-1 계산 R(f23.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-18)을 읽습니다.
+step-116 L5 [return n * factorial(n-1);] factorial(-19) 호출
+         factorial(-19)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-117 L2 [int factorial(int n)] -19 → 새 n 복사 W(f24.n:—→-19)
+         n-1의 값 -19를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-18)과는 다른 변수입니다.
+step-118 L3 [{] 함수 진입
+         factorial(-19) 본문으로 들어갑니다. 지금 실행 중인 호출은 24번째 factorial입니다.
+step-119 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f24.ret:—→uninitialized)
+         factorial(-20)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-120 L5 [return n * factorial(n-1);] n-1 계산 R(f24.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-19)를 읽습니다.
+step-121 L5 [return n * factorial(n-1);] factorial(-20) 호출
+         factorial(-20)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-122 L2 [int factorial(int n)] -20 → 새 n 복사 W(f25.n:—→-20)
+         n-1의 값 -20을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-19)와는 다른 변수입니다.
+step-123 L3 [{] 함수 진입
+         factorial(-20) 본문으로 들어갑니다. 지금 실행 중인 호출은 25번째 factorial입니다.
+step-124 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f25.ret:—→uninitialized)
+         factorial(-21)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-125 L5 [return n * factorial(n-1);] n-1 계산 R(f25.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-20)을 읽습니다.
+step-126 L5 [return n * factorial(n-1);] factorial(-21) 호출
+         factorial(-21)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-127 L2 [int factorial(int n)] -21 → 새 n 복사 W(f26.n:—→-21)
+         n-1의 값 -21을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-20)과는 다른 변수입니다.
+step-128 L3 [{] 함수 진입
+         factorial(-21) 본문으로 들어갑니다. 지금 실행 중인 호출은 26번째 factorial입니다.
+step-129 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f26.ret:—→uninitialized)
+         factorial(-22)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-130 L5 [return n * factorial(n-1);] n-1 계산 R(f26.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-21)을 읽습니다.
+step-131 L5 [return n * factorial(n-1);] factorial(-22) 호출
+         factorial(-22)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-132 L2 [int factorial(int n)] -22 → 새 n 복사 W(f27.n:—→-22)
+         n-1의 값 -22를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-21)과는 다른 변수입니다.
+step-133 L3 [{] 함수 진입
+         factorial(-22) 본문으로 들어갑니다. 지금 실행 중인 호출은 27번째 factorial입니다.
+step-134 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f27.ret:—→uninitialized)
+         factorial(-23)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-135 L5 [return n * factorial(n-1);] n-1 계산 R(f27.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-22)를 읽습니다.
+step-136 L5 [return n * factorial(n-1);] factorial(-23) 호출
+         factorial(-23)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-137 L2 [int factorial(int n)] -23 → 새 n 복사 W(f28.n:—→-23)
+         n-1의 값 -23을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-22)와는 다른 변수입니다.
+step-138 L3 [{] 함수 진입
+         factorial(-23) 본문으로 들어갑니다. 지금 실행 중인 호출은 28번째 factorial입니다.
+step-139 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f28.ret:—→uninitialized)
+         factorial(-24)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-140 L5 [return n * factorial(n-1);] n-1 계산 R(f28.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-23)을 읽습니다.
+step-141 L5 [return n * factorial(n-1);] factorial(-24) 호출
+         factorial(-24)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-142 L2 [int factorial(int n)] -24 → 새 n 복사 W(f29.n:—→-24)
+         n-1의 값 -24를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-23)과는 다른 변수입니다.
+step-143 L3 [{] 함수 진입
+         factorial(-24) 본문으로 들어갑니다. 지금 실행 중인 호출은 29번째 factorial입니다.
+step-144 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f29.ret:—→uninitialized)
+         factorial(-25)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-145 L5 [return n * factorial(n-1);] n-1 계산 R(f29.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-24)를 읽습니다.
+step-146 L5 [return n * factorial(n-1);] factorial(-25) 호출
+         factorial(-25)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-147 L2 [int factorial(int n)] -25 → 새 n 복사 W(f30.n:—→-25)
+         n-1의 값 -25를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-24)와는 다른 변수입니다.
+step-148 L3 [{] 함수 진입
+         factorial(-25) 본문으로 들어갑니다. 지금 실행 중인 호출은 30번째 factorial입니다.
+step-149 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f30.ret:—→uninitialized)
+         factorial(-26)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-150 L5 [return n * factorial(n-1);] n-1 계산 R(f30.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-25)를 읽습니다.
+step-151 L5 [return n * factorial(n-1);] factorial(-26) 호출
+         factorial(-26)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-152 L2 [int factorial(int n)] -26 → 새 n 복사 W(f31.n:—→-26)
+         n-1의 값 -26을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-25)와는 다른 변수입니다.
+step-153 L3 [{] 함수 진입
+         factorial(-26) 본문으로 들어갑니다. 지금 실행 중인 호출은 31번째 factorial입니다.
+step-154 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f31.ret:—→uninitialized)
+         factorial(-27)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-155 L5 [return n * factorial(n-1);] n-1 계산 R(f31.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-26)을 읽습니다.
+step-156 L5 [return n * factorial(n-1);] factorial(-27) 호출
+         factorial(-27)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-157 L2 [int factorial(int n)] -27 → 새 n 복사 W(f32.n:—→-27)
+         n-1의 값 -27을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-26)과는 다른 변수입니다.
+step-158 L3 [{] 함수 진입
+         factorial(-27) 본문으로 들어갑니다. 지금 실행 중인 호출은 32번째 factorial입니다.
+step-159 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f32.ret:—→uninitialized)
+         factorial(-28)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-160 L5 [return n * factorial(n-1);] n-1 계산 R(f32.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-27)을 읽습니다.
+step-161 L5 [return n * factorial(n-1);] factorial(-28) 호출
+         factorial(-28)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-162 L2 [int factorial(int n)] -28 → 새 n 복사 W(f33.n:—→-28)
+         n-1의 값 -28을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-27)과는 다른 변수입니다.
+step-163 L3 [{] 함수 진입
+         factorial(-28) 본문으로 들어갑니다. 지금 실행 중인 호출은 33번째 factorial입니다.
+step-164 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f33.ret:—→uninitialized)
+         factorial(-29)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-165 L5 [return n * factorial(n-1);] n-1 계산 R(f33.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-28)을 읽습니다.
+step-166 L5 [return n * factorial(n-1);] factorial(-29) 호출
+         factorial(-29)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-167 L2 [int factorial(int n)] -29 → 새 n 복사 W(f34.n:—→-29)
+         n-1의 값 -29를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-28)과는 다른 변수입니다.
+step-168 L3 [{] 함수 진입
+         factorial(-29) 본문으로 들어갑니다. 지금 실행 중인 호출은 34번째 factorial입니다.
+step-169 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f34.ret:—→uninitialized)
+         factorial(-30)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-170 L5 [return n * factorial(n-1);] n-1 계산 R(f34.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-29)를 읽습니다.
+step-171 L5 [return n * factorial(n-1);] factorial(-30) 호출
+         factorial(-30)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-172 L2 [int factorial(int n)] -30 → 새 n 복사 W(f35.n:—→-30)
+         n-1의 값 -30을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-29)와는 다른 변수입니다.
+step-173 L3 [{] 함수 진입
+         factorial(-30) 본문으로 들어갑니다. 지금 실행 중인 호출은 35번째 factorial입니다.
+step-174 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f35.ret:—→uninitialized)
+         factorial(-31)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-175 L5 [return n * factorial(n-1);] n-1 계산 R(f35.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-30)을 읽습니다.
+step-176 L5 [return n * factorial(n-1);] factorial(-31) 호출
+         factorial(-31)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-177 L2 [int factorial(int n)] -31 → 새 n 복사 W(f36.n:—→-31)
+         n-1의 값 -31을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-30)과는 다른 변수입니다.
+step-178 L3 [{] 함수 진입
+         factorial(-31) 본문으로 들어갑니다. 지금 실행 중인 호출은 36번째 factorial입니다.
+step-179 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f36.ret:—→uninitialized)
+         factorial(-32)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-180 L5 [return n * factorial(n-1);] n-1 계산 R(f36.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-31)을 읽습니다.
+step-181 L5 [return n * factorial(n-1);] factorial(-32) 호출
+         factorial(-32)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-182 L2 [int factorial(int n)] -32 → 새 n 복사 W(f37.n:—→-32)
+         n-1의 값 -32를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-31)과는 다른 변수입니다.
+step-183 L3 [{] 함수 진입
+         factorial(-32) 본문으로 들어갑니다. 지금 실행 중인 호출은 37번째 factorial입니다.
+step-184 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f37.ret:—→uninitialized)
+         factorial(-33)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-185 L5 [return n * factorial(n-1);] n-1 계산 R(f37.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-32)를 읽습니다.
+step-186 L5 [return n * factorial(n-1);] factorial(-33) 호출
+         factorial(-33)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-187 L2 [int factorial(int n)] -33 → 새 n 복사 W(f38.n:—→-33)
+         n-1의 값 -33을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-32)와는 다른 변수입니다.
+step-188 L3 [{] 함수 진입
+         factorial(-33) 본문으로 들어갑니다. 지금 실행 중인 호출은 38번째 factorial입니다.
+step-189 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f38.ret:—→uninitialized)
+         factorial(-34)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-190 L5 [return n * factorial(n-1);] n-1 계산 R(f38.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-33)을 읽습니다.
+step-191 L5 [return n * factorial(n-1);] factorial(-34) 호출
+         factorial(-34)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-192 L2 [int factorial(int n)] -34 → 새 n 복사 W(f39.n:—→-34)
+         n-1의 값 -34를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-33)과는 다른 변수입니다.
+step-193 L3 [{] 함수 진입
+         factorial(-34) 본문으로 들어갑니다. 지금 실행 중인 호출은 39번째 factorial입니다.
+step-194 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f39.ret:—→uninitialized)
+         factorial(-35)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-195 L5 [return n * factorial(n-1);] n-1 계산 R(f39.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-34)를 읽습니다.
+step-196 L5 [return n * factorial(n-1);] factorial(-35) 호출
+         factorial(-35)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-197 L2 [int factorial(int n)] -35 → 새 n 복사 W(f40.n:—→-35)
+         n-1의 값 -35를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-34)와는 다른 변수입니다.
+step-198 L3 [{] 함수 진입
+         factorial(-35) 본문으로 들어갑니다. 지금 실행 중인 호출은 40번째 factorial입니다.
+step-199 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f40.ret:—→uninitialized)
+         factorial(-36)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-200 L5 [return n * factorial(n-1);] n-1 계산 R(f40.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-35)를 읽습니다.
+step-201 L5 [return n * factorial(n-1);] factorial(-36) 호출
+         factorial(-36)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-202 L2 [int factorial(int n)] -36 → 새 n 복사 W(f41.n:—→-36)
+         n-1의 값 -36을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-35)와는 다른 변수입니다.
+step-203 L3 [{] 함수 진입
+         factorial(-36) 본문으로 들어갑니다. 지금 실행 중인 호출은 41번째 factorial입니다.
+step-204 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f41.ret:—→uninitialized)
+         factorial(-37)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-205 L5 [return n * factorial(n-1);] n-1 계산 R(f41.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-36)을 읽습니다.
+step-206 L5 [return n * factorial(n-1);] factorial(-37) 호출
+         factorial(-37)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-207 L2 [int factorial(int n)] -37 → 새 n 복사 W(f42.n:—→-37)
+         n-1의 값 -37을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-36)과는 다른 변수입니다.
+step-208 L3 [{] 함수 진입
+         factorial(-37) 본문으로 들어갑니다. 지금 실행 중인 호출은 42번째 factorial입니다.
+step-209 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f42.ret:—→uninitialized)
+         factorial(-38)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-210 L5 [return n * factorial(n-1);] n-1 계산 R(f42.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-37)을 읽습니다.
+step-211 L5 [return n * factorial(n-1);] factorial(-38) 호출
+         factorial(-38)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-212 L2 [int factorial(int n)] -38 → 새 n 복사 W(f43.n:—→-38)
+         n-1의 값 -38을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-37)과는 다른 변수입니다.
+step-213 L3 [{] 함수 진입
+         factorial(-38) 본문으로 들어갑니다. 지금 실행 중인 호출은 43번째 factorial입니다.
+step-214 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f43.ret:—→uninitialized)
+         factorial(-39)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-215 L5 [return n * factorial(n-1);] n-1 계산 R(f43.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-38)을 읽습니다.
+step-216 L5 [return n * factorial(n-1);] factorial(-39) 호출
+         factorial(-39)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-217 L2 [int factorial(int n)] -39 → 새 n 복사 W(f44.n:—→-39)
+         n-1의 값 -39를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-38)과는 다른 변수입니다.
+step-218 L3 [{] 함수 진입
+         factorial(-39) 본문으로 들어갑니다. 지금 실행 중인 호출은 44번째 factorial입니다.
+step-219 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f44.ret:—→uninitialized)
+         factorial(-40)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-220 L5 [return n * factorial(n-1);] n-1 계산 R(f44.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-39)를 읽습니다.
+step-221 L5 [return n * factorial(n-1);] factorial(-40) 호출
+         factorial(-40)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-222 L2 [int factorial(int n)] -40 → 새 n 복사 W(f45.n:—→-40)
+         n-1의 값 -40을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-39)와는 다른 변수입니다.
+step-223 L3 [{] 함수 진입
+         factorial(-40) 본문으로 들어갑니다. 지금 실행 중인 호출은 45번째 factorial입니다.
+step-224 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f45.ret:—→uninitialized)
+         factorial(-41)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-225 L5 [return n * factorial(n-1);] n-1 계산 R(f45.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-40)을 읽습니다.
+step-226 L5 [return n * factorial(n-1);] factorial(-41) 호출
+         factorial(-41)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-227 L2 [int factorial(int n)] -41 → 새 n 복사 W(f46.n:—→-41)
+         n-1의 값 -41을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-40)과는 다른 변수입니다.
+step-228 L3 [{] 함수 진입
+         factorial(-41) 본문으로 들어갑니다. 지금 실행 중인 호출은 46번째 factorial입니다.
+step-229 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f46.ret:—→uninitialized)
+         factorial(-42)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-230 L5 [return n * factorial(n-1);] n-1 계산 R(f46.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-41)을 읽습니다.
+step-231 L5 [return n * factorial(n-1);] factorial(-42) 호출
+         factorial(-42)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-232 L2 [int factorial(int n)] -42 → 새 n 복사 W(f47.n:—→-42)
+         n-1의 값 -42를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-41)과는 다른 변수입니다.
+step-233 L3 [{] 함수 진입
+         factorial(-42) 본문으로 들어갑니다. 지금 실행 중인 호출은 47번째 factorial입니다.
+step-234 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f47.ret:—→uninitialized)
+         factorial(-43)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-235 L5 [return n * factorial(n-1);] n-1 계산 R(f47.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-42)를 읽습니다.
+step-236 L5 [return n * factorial(n-1);] factorial(-43) 호출
+         factorial(-43)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-237 L2 [int factorial(int n)] -43 → 새 n 복사 W(f48.n:—→-43)
+         n-1의 값 -43을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-42)와는 다른 변수입니다.
+step-238 L3 [{] 함수 진입
+         factorial(-43) 본문으로 들어갑니다. 지금 실행 중인 호출은 48번째 factorial입니다.
+step-239 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f48.ret:—→uninitialized)
+         factorial(-44)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-240 L5 [return n * factorial(n-1);] n-1 계산 R(f48.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-43)을 읽습니다.
+step-241 L5 [return n * factorial(n-1);] factorial(-44) 호출
+         factorial(-44)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-242 L2 [int factorial(int n)] -44 → 새 n 복사 W(f49.n:—→-44)
+         n-1의 값 -44를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-43)과는 다른 변수입니다.
+step-243 L3 [{] 함수 진입
+         factorial(-44) 본문으로 들어갑니다. 지금 실행 중인 호출은 49번째 factorial입니다.
+step-244 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f49.ret:—→uninitialized)
+         factorial(-45)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-245 L5 [return n * factorial(n-1);] n-1 계산 R(f49.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-44)를 읽습니다.
+step-246 L5 [return n * factorial(n-1);] factorial(-45) 호출
+         factorial(-45)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-247 L2 [int factorial(int n)] -45 → 새 n 복사 W(f50.n:—→-45)
+         n-1의 값 -45를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-44)와는 다른 변수입니다.
+step-248 L3 [{] 함수 진입
+         factorial(-45) 본문으로 들어갑니다. 지금 실행 중인 호출은 50번째 factorial입니다.
+step-249 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f50.ret:—→uninitialized)
+         factorial(-46)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-250 L5 [return n * factorial(n-1);] n-1 계산 R(f50.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-45)를 읽습니다.
+step-251 L5 [return n * factorial(n-1);] factorial(-46) 호출
+         factorial(-46)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-252 L2 [int factorial(int n)] -46 → 새 n 복사 W(f51.n:—→-46)
+         n-1의 값 -46을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-45)와는 다른 변수입니다.
+step-253 L3 [{] 함수 진입
+         factorial(-46) 본문으로 들어갑니다. 지금 실행 중인 호출은 51번째 factorial입니다.
+step-254 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f51.ret:—→uninitialized)
+         factorial(-47)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-255 L5 [return n * factorial(n-1);] n-1 계산 R(f51.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-46)을 읽습니다.
+step-256 L5 [return n * factorial(n-1);] factorial(-47) 호출
+         factorial(-47)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-257 L2 [int factorial(int n)] -47 → 새 n 복사 W(f52.n:—→-47)
+         n-1의 값 -47을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-46)과는 다른 변수입니다.
+step-258 L3 [{] 함수 진입
+         factorial(-47) 본문으로 들어갑니다. 지금 실행 중인 호출은 52번째 factorial입니다.
+step-259 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f52.ret:—→uninitialized)
+         factorial(-48)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-260 L5 [return n * factorial(n-1);] n-1 계산 R(f52.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-47)을 읽습니다.
+step-261 L5 [return n * factorial(n-1);] factorial(-48) 호출
+         factorial(-48)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-262 L2 [int factorial(int n)] -48 → 새 n 복사 W(f53.n:—→-48)
+         n-1의 값 -48을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-47)과는 다른 변수입니다.
+step-263 L3 [{] 함수 진입
+         factorial(-48) 본문으로 들어갑니다. 지금 실행 중인 호출은 53번째 factorial입니다.
+step-264 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f53.ret:—→uninitialized)
+         factorial(-49)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-265 L5 [return n * factorial(n-1);] n-1 계산 R(f53.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-48)을 읽습니다.
+step-266 L5 [return n * factorial(n-1);] factorial(-49) 호출
+         factorial(-49)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-267 L2 [int factorial(int n)] -49 → 새 n 복사 W(f54.n:—→-49)
+         n-1의 값 -49를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-48)과는 다른 변수입니다.
+step-268 L3 [{] 함수 진입
+         factorial(-49) 본문으로 들어갑니다. 지금 실행 중인 호출은 54번째 factorial입니다.
+step-269 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f54.ret:—→uninitialized)
+         factorial(-50)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-270 L5 [return n * factorial(n-1);] n-1 계산 R(f54.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-49)를 읽습니다.
+step-271 L5 [return n * factorial(n-1);] factorial(-50) 호출
+         factorial(-50)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-272 L2 [int factorial(int n)] -50 → 새 n 복사 W(f55.n:—→-50)
+         n-1의 값 -50을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-49)와는 다른 변수입니다.
+step-273 L3 [{] 함수 진입
+         factorial(-50) 본문으로 들어갑니다. 지금 실행 중인 호출은 55번째 factorial입니다.
+step-274 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f55.ret:—→uninitialized)
+         factorial(-51)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-275 L5 [return n * factorial(n-1);] n-1 계산 R(f55.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-50)을 읽습니다.
+step-276 L5 [return n * factorial(n-1);] factorial(-51) 호출
+         factorial(-51)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-277 L2 [int factorial(int n)] -51 → 새 n 복사 W(f56.n:—→-51)
+         n-1의 값 -51을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-50)과는 다른 변수입니다.
+step-278 L3 [{] 함수 진입
+         factorial(-51) 본문으로 들어갑니다. 지금 실행 중인 호출은 56번째 factorial입니다.
+step-279 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f56.ret:—→uninitialized)
+         factorial(-52)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-280 L5 [return n * factorial(n-1);] n-1 계산 R(f56.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-51)을 읽습니다.
+step-281 L5 [return n * factorial(n-1);] factorial(-52) 호출
+         factorial(-52)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-282 L2 [int factorial(int n)] -52 → 새 n 복사 W(f57.n:—→-52)
+         n-1의 값 -52를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-51)과는 다른 변수입니다.
+step-283 L3 [{] 함수 진입
+         factorial(-52) 본문으로 들어갑니다. 지금 실행 중인 호출은 57번째 factorial입니다.
+step-284 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f57.ret:—→uninitialized)
+         factorial(-53)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-285 L5 [return n * factorial(n-1);] n-1 계산 R(f57.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-52)를 읽습니다.
+step-286 L5 [return n * factorial(n-1);] factorial(-53) 호출
+         factorial(-53)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-287 L2 [int factorial(int n)] -53 → 새 n 복사 W(f58.n:—→-53)
+         n-1의 값 -53을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-52)와는 다른 변수입니다.
+step-288 L3 [{] 함수 진입
+         factorial(-53) 본문으로 들어갑니다. 지금 실행 중인 호출은 58번째 factorial입니다.
+step-289 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f58.ret:—→uninitialized)
+         factorial(-54)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-290 L5 [return n * factorial(n-1);] n-1 계산 R(f58.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-53)을 읽습니다.
+step-291 L5 [return n * factorial(n-1);] factorial(-54) 호출
+         factorial(-54)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-292 L2 [int factorial(int n)] -54 → 새 n 복사 W(f59.n:—→-54)
+         n-1의 값 -54를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-53)과는 다른 변수입니다.
+step-293 L3 [{] 함수 진입
+         factorial(-54) 본문으로 들어갑니다. 지금 실행 중인 호출은 59번째 factorial입니다.
+step-294 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f59.ret:—→uninitialized)
+         factorial(-55)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-295 L5 [return n * factorial(n-1);] n-1 계산 R(f59.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-54)를 읽습니다.
+step-296 L5 [return n * factorial(n-1);] factorial(-55) 호출
+         factorial(-55)를 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-297 L2 [int factorial(int n)] -55 → 새 n 복사 W(f60.n:—→-55)
+         n-1의 값 -55를 새 매개변수 n에 복사합니다. 부른 쪽의 n(-54)와는 다른 변수입니다.
+step-298 L3 [{] 함수 진입
+         factorial(-55) 본문으로 들어갑니다. 지금 실행 중인 호출은 60번째 factorial입니다.
+step-299 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f60.ret:—→uninitialized)
+         factorial(-56)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-300 L5 [return n * factorial(n-1);] n-1 계산 R(f60.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-55)를 읽습니다.
+step-301 L5 [return n * factorial(n-1);] factorial(-56) 호출
+         factorial(-56)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-302 L2 [int factorial(int n)] -56 → 새 n 복사 W(f61.n:—→-56)
+         n-1의 값 -56을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-55)와는 다른 변수입니다.
+step-303 L3 [{] 함수 진입
+         factorial(-56) 본문으로 들어갑니다. 지금 실행 중인 호출은 61번째 factorial입니다.
+step-304 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f61.ret:—→uninitialized)
+         factorial(-57)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-305 L5 [return n * factorial(n-1);] n-1 계산 R(f61.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-56)을 읽습니다.
+step-306 L5 [return n * factorial(n-1);] factorial(-57) 호출
+         factorial(-57)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-307 L2 [int factorial(int n)] -57 → 새 n 복사 W(f62.n:—→-57)
+         n-1의 값 -57을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-56)과는 다른 변수입니다.
+step-308 L3 [{] 함수 진입
+         factorial(-57) 본문으로 들어갑니다. 지금 실행 중인 호출은 62번째 factorial입니다.
+step-309 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f62.ret:—→uninitialized)
+         factorial(-58)이 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-310 L5 [return n * factorial(n-1);] n-1 계산 R(f62.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-57)을 읽습니다.
+step-311 L5 [return n * factorial(n-1);] factorial(-58) 호출
+         factorial(-58)을 부릅니다. 이름은 같아도 새 호출이라 저장 공간을 하나 더 만듭니다. 부른 쪽 호출은 끝나지 않고 기다립니다.
+step-312 L2 [int factorial(int n)] -58 → 새 n 복사 W(f63.n:—→-58)
+         n-1의 값 -58을 새 매개변수 n에 복사합니다. 부른 쪽의 n(-57)과는 다른 변수입니다.
+step-313 L3 [{] 함수 진입
+         factorial(-58) 본문으로 들어갑니다. 지금 실행 중인 호출은 63번째 factorial입니다.
+step-314 L5 [return n * factorial(n-1);] 반환값 받을 자리 W(f63.ret:—→uninitialized)
+         factorial(-59)가 돌려줄 값을 받을 자리입니다. C에서는 이름 없는 값이지만, 돌아오는 값을 보려고 화면에만 칸을 그립니다.
+step-315 L5 [return n * factorial(n-1);] n-1 계산 R(f63.n)
+         인자 n-1을 계산하려고 지금 호출의 n(-58)을 읽습니다.
+step-316 L5 [return n * factorial(n-1);] factorial(-59) 호출 DIAG LIMIT_REACHED
+         멈추는 부분이 없어 factorial(-59)를 또 부릅니다. 호출이 이미 63개 쌓였습니다. 실제 프로그램은 스택 공간이 바닥날 때까지 부르다가 비정상 종료(시스템 오류)되고, 이 화면은 호출 깊이 64에서 멈춥니다.

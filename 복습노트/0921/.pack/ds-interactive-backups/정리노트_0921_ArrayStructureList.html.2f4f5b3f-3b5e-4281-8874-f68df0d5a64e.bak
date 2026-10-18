@@ -1,0 +1,2546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>자료구조및알고리즘이해 정리노트 0921</title>
+  <meta name="description" content="이정원 교수님 자료구조및알고리즘이해 · 0921 수업 (Software_2 Recursion · Software_3 ArrayStructureList)">
+  <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']})"></script>
+  <style>
+    /* ---------- 토큰 ---------- */
+    :root {
+      color-scheme: light;
+      --bg: #ffffff; --surface: #f7f8fa; --ink: #111111; --ink-2: #6b7280; --line: #d9dee7;
+      --accent: #1677ff; --accent-ink: #1b64da; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #b54708; --prof: #6941c6; --supp: #067647; --danger: #d92d20;
+      --font: 'Pretendard', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --fs-title: clamp(28px, 6vw, 36px); --fs-h3: clamp(26px, 5.4vw, 32px); --fs-layer: 19px; --fs-lead: 22px; --fs-body: 17px; --fs-sub: 15px; --fs-small: 14px; --fs-label: 13px; --fs-fig: 12px;
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+      --radius: 8px; --measure: 680px; --tap: 48px; --btn-min: 160px;
+      --dur: 220ms; --dur-exit: 150ms; --ease-out: cubic-bezier(.2, .8, .2, 1);
+      /* 예전 조각이 참조할 수 있는 이름 */
+      --surface-2: var(--surface); --accent-soft: var(--surface); --warn-soft: var(--surface);
+      --prof-soft: var(--surface); --supp-soft: var(--surface); --eli5: var(--accent-ink); --eli5-soft: var(--surface);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+        --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+        --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+      --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+    }
+
+    /* ---------- 기본 ---------- */
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+      background: var(--bg); color: var(--ink); font-family: var(--font); font-size: var(--fs-body); line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+    a { color: var(--accent-ink); text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    [hidden] { display: none !important; }
+
+    /* ---------- 상단 바 ---------- */
+    .topbar { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s2) var(--s4); display: flex; align-items: center; gap: var(--s3); min-height: 56px; }
+    .brand { flex: 1 1 auto; min-width: 0; font-size: var(--fs-body); font-weight: 700; white-space: nowrap; }
+    .text-btn { flex: none; min-height: 44px; min-width: 44px; padding: 0 var(--s3); border: 0; border-radius: var(--radius);
+      background: transparent; color: var(--ink); font: 600 var(--fs-small)/1 var(--font); cursor: pointer; }
+    .bar { height: 2px; background: var(--line); overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+
+    /* ---------- 본문 ---------- */
+    main { flex: 1 0 auto; width: 100%; max-width: var(--measure); margin: 0 auto; padding: var(--s6) var(--s5) var(--s7); }
+    .hero h1 { font-size: var(--fs-title); line-height: 1.3; margin: 0 0 var(--s3); letter-spacing: -0.02em; }
+    .hero p { color: var(--ink-2); margin: 0; }
+    section { margin-top: var(--s7); }
+    section > h2 { font-size: 22px; line-height: 1.4; margin: 0 0 var(--s4); }
+    .topic { padding: var(--s6) 0; border-top: 1px solid var(--line); }
+    .topic h3 { margin: 0 0 var(--s2); font-size: var(--fs-h3); font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; }
+    .tags { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); }
+    .tag { font-size: var(--fs-label); line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); white-space: nowrap; }
+
+    /* 레이어: 배경 없이 라벨과 구분선으로 나눈다 */
+    .layer { margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); }
+    .layer.eli5 { margin-top: 0; padding-top: 0; border-top: 0; }
+    .layer > :first-child { margin-top: 0; }
+    .layer > :last-child { margin-bottom: 0; }
+    .layer-title { display: block; font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; color: var(--ink); margin-bottom: var(--s3); }
+    .layer.eli5 .layer-title { color: var(--accent-ink); }
+    .layer.eli5 .lead { font-size: var(--fs-lead); font-weight: 700; line-height: 1.5; letter-spacing: -0.01em; margin: 0 0 var(--s4); }
+    /* 정확히 말하면: 본문 크기 그대로, 굵은 첫머리만 진하게 */
+    .layer.formal b { font-weight: 700; color: var(--ink); }
+    /* 교수님 말씀 · 주의: 보조 정보는 한 단계 작게 */
+    .layer.prof, .layer.warn { font-size: var(--fs-sub); line-height: 1.7; }
+    .layer.prof blockquote { font-size: var(--fs-sub); }
+    .layer.prof .layer-title { color: var(--prof); }
+    .layer.warn { background: var(--surface); border-top: 0; border-radius: var(--radius); padding: var(--s4); }
+    .layer.warn .layer-title { color: var(--warn); font-size: var(--fs-body); }
+    .layer.supp .badge.supp { margin-bottom: var(--s2); }
+    .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
+    .badge.supp { color: var(--supp); }
+    blockquote { margin: var(--s3) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
+    pre { margin: var(--s3) 0; padding: var(--s3) var(--s4); overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      font: var(--fs-small)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; white-space: pre; word-break: normal; overflow-wrap: normal; tab-size: 4; }
+    code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: .92em; }
+    pre code { font-size: inherit; }
+    ol.steps { padding-left: 1.4em; }
+    ol.steps li { margin: var(--s2) 0; }
+
+    /* 그림 · 수식 · 표 */
+    .figure { margin: var(--s4) 0; text-align: center; }
+    .figure svg { width: 100%; height: auto; max-width: 560px; color: var(--ink); }
+    .figure figcaption { font-size: var(--fs-small); color: var(--ink-2); margin-top: var(--s1); }
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: var(--s1) 0; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
+    th, td { border-bottom: 1px solid var(--line); padding: var(--s2); text-align: left; vertical-align: top; }
+    th { color: var(--ink-2); font-weight: 600; }
+    td:first-child, th:first-child { min-width: 6em; }
+
+    /* 위젯 */
+    .widget { background: var(--surface); border-radius: var(--radius); padding: var(--s4); margin: var(--s5) 0; }
+    .widget h4 { margin: 0 0 var(--s1); font-size: var(--fs-layer); line-height: 1.4; }
+    .widget-help { font-size: var(--fs-small); color: var(--ink-2); margin: 0 0 var(--s3); }
+    .controls { display: grid; gap: var(--s2); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: var(--s2); font-size: var(--fs-small); }
+    .controls label { display: flex; align-items: center; gap: var(--s2); min-height: 44px; }
+    .controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+    .widget svg { width: 100%; height: auto; background: var(--bg); border-radius: var(--radius); }
+    .readout { font-size: var(--fs-small); margin-top: var(--s2); }
+    .legend { font-size: var(--fs-label); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: var(--s3); }
+    .sw { display: inline-block; width: 14px; height: 4px; vertical-align: middle; margin-right: var(--s1); border-radius: 2px; }
+    .sw.truth { background: var(--ink-2); } .sw.fit { background: var(--accent); } .sw.train { background: var(--accent); height: 10px; width: 10px; border-radius: 50%; }
+    .sw.test { background: var(--warn); height: 10px; width: 10px; border-radius: 50%; } .sw.like { background: var(--accent); } .sw.prior { background: var(--prof); } .sw.post { background: var(--supp); }
+    .axis { stroke: var(--line); stroke-width: 1.5; }
+    .tick { fill: var(--ink-2); font-size: 11px; }
+    .plot-truth { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .plot-fit { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+    .pt-train { fill: var(--accent); }
+    .pt-test { fill: var(--warn); }
+    .plot-like { fill: none; stroke: var(--accent); stroke-width: 2; }
+    .plot-prior { fill: none; stroke: var(--prof); stroke-width: 2; stroke-dasharray: 6 4; }
+    .plot-post { fill: none; stroke: var(--supp); stroke-width: 3; }
+    .mark-ml { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .mark-map { stroke: var(--supp); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .fig-ink { stroke: currentColor; fill: none; stroke-width: 2; }
+    .fig-accent { stroke: var(--accent); fill: none; stroke-width: 2.5; }
+    .fig-danger { stroke: var(--danger); fill: none; stroke-width: 2.5; }
+    .fig-dot { fill: var(--accent); }
+    .fig-text { fill: currentColor; font-size: 13px; font-family: inherit; }
+    .fig-muted { fill: var(--ink-2); font-size: var(--fs-fig); font-family: inherit; }
+
+    footer { width: 100%; max-width: var(--measure); margin: 0 auto; padding: 0 var(--s5) var(--s6); color: var(--ink-2); font-size: var(--fs-small); }
+
+    /* ---------- 하단 이동 바 ---------- */
+    .pager { position: sticky; bottom: 0; z-index: 10; background: var(--bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+    .pager-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s3) var(--s4); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--s3); }
+    .pager-count { font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; min-width: 4em; }
+    .btn { min-height: var(--tap); min-width: var(--btn-min); padding: 0 var(--s6); border-radius: var(--radius); border: 0; font: 700 var(--fs-body)/1 var(--font); cursor: pointer; white-space: nowrap;
+      transition: background-color 150ms ease-out, opacity 150ms ease-out; }
+    .btn-ghost { justify-self: start; background: var(--surface); color: var(--ink); }
+    .btn-primary { justify-self: end; background: var(--btn-bg); color: var(--on-btn); }
+    .btn:disabled { opacity: .4; cursor: default; }
+    @media (hover: hover) {
+      .text-btn:hover, .btn-ghost:not(:disabled):hover { background: var(--line); }
+      .btn-primary:not(:disabled):hover { box-shadow: inset 0 0 0 100px rgba(0, 0, 0, .14); }
+    }
+
+    /* ---------- 목차 시트 ---------- */
+    .sheet { width: min(100%, var(--measure)); max-width: 100%; max-height: 80dvh; margin: auto auto 0; padding: 0; border: 0;
+      border-radius: 16px 16px 0 0; background: var(--bg); color: var(--ink); }
+    .sheet::backdrop { background: rgba(0, 0, 0, .4); }
+    .sheet-inner { padding: var(--s4) var(--s5) calc(var(--s5) + env(safe-area-inset-bottom)); }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    .sheet-head h2 { margin: 0; font-size: var(--fs-lead); }
+    .toc { display: flex; flex-direction: column; }
+    .toc > a, .toc-group > a { display: block; padding: var(--s3) 0 var(--s1); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); text-decoration: none; }
+    .toc-list { list-style: none; margin: 0 0 var(--s2); padding: 0; }
+    .toc-list a { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); padding: var(--s2) var(--s3); margin: 0 calc(-1 * var(--s3));
+      border-radius: var(--radius); color: var(--ink); text-decoration: none; line-height: 1.4; }
+    .toc-list a[aria-current="true"] { background: var(--surface); font-weight: 700; color: var(--accent-ink); }
+    .toc-list .toc-title { flex: 1 1 0; min-width: 0; }
+    @media (hover: hover) { .toc-list a:hover { background: var(--surface); } }
+
+    /* ---------- 한 화면에 하나씩 (JS가 켤 때만) ---------- */
+    html:not(.js) .pager, html:not(.js) #toc-open { display: none; }
+    html:not(.js) .sheet { display: block; position: static; width: 100%; max-height: none; margin: 0 auto; border-radius: 0; border-bottom: 1px solid var(--line); }
+    html:not(.js) .sheet-close { display: none; }
+    .js main > .hero:not(.is-current), .js main > section:not(.is-on), .js .screen:not(.is-current) { display: none; }
+    .js main > section { margin-top: 0; }
+    .js main > section > h2 { font-size: var(--fs-small); font-weight: 600; color: var(--accent-ink); margin: 0 0 var(--s2); }
+    .js .topic { padding: 0; border-top: 0; }
+    .js .hero { padding-top: 12vh; }
+    .js footer { display: none; }
+    .js body.at-end footer { display: block; }
+    .screen.enter-next { animation: enter-next var(--dur) var(--ease-out); }
+    .screen.enter-prev { animation: enter-prev var(--dur) var(--ease-out); }
+    @keyframes enter-next { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    @keyframes enter-prev { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .screen.enter-next, .screen.enter-prev { animation: none; }
+      .bar > span, .btn { transition: none; }
+    }
+    @media (max-width: 480px) {
+      main { padding: var(--s5) var(--s4) var(--s6); }
+      footer { padding: 0 var(--s4) var(--s5); }
+      .btn { min-width: 120px; padding: 0 var(--s5); }
+    }
+    @media print {
+      .topbar, .pager, .sheet { display: none !important; }
+      .js main > .hero, .js main > section, .js .screen, .js footer { display: block !important; }
+    }
+
+    /* ---------- 좌우 패널 (drawer) ---------- */
+    :root { --panel-l: clamp(240px, 18vw, 320px); --panel-r-min: 320px; --panel-r-max: 720px; --scrollbar: 16px; --drawer-l: 304px; --drawer-r: 360px; --fs-panel: 16px; --scrim: rgba(0, 0, 0, .4); }
+    body { height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+    .topbar-inner { max-width: none; padding: var(--s2) var(--s3); gap: var(--s2); }
+    .panel-toggle { display: inline-flex; align-items: center; gap: var(--s1); padding: 0 var(--s2); }
+    .panel-toggle svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .panel-toggle .strip { fill: transparent; stroke: none; transition: fill 150ms ease-out; }
+    .panel-toggle[aria-expanded="true"] { color: var(--accent-ink); }
+    .panel-toggle[aria-expanded="true"] .strip { fill: currentColor; }
+    .theme-toggle { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+    .theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .theme-toggle .i-sun { display: none; }
+    :root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+    :root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .i-sun { display: block; }
+      :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+    }
+
+    .layout { display: grid; grid-template-columns: auto minmax(320px, 1fr) auto; min-height: 0; }
+    .content { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding-top: var(--s4); }
+    .panel { position: relative; display: flex; flex-direction: column; min-height: 0; overflow: hidden; background: var(--bg); color: var(--ink); font-size: var(--fs-panel); line-height: 1.6; }
+    .panel-left { grid-column: 1; border-right: 1px solid var(--line); }
+    .content { grid-column: 2; }
+    .panel-right { grid-column: 3; border-left: 1px solid var(--line); }
+    .panel-inner { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s4) var(--s4) var(--s6); }
+    :root { --scroll: #c9d0db; --scroll-hover: #9aa3b2; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --scroll: #3f414b; --scroll-hover: #5b5e6a; } }
+    :root[data-theme="dark"] { --scroll: #3f414b; --scroll-hover: #5b5e6a; }
+    .content::-webkit-scrollbar, .panel-inner::-webkit-scrollbar { width: 8px; }
+    :is(pre, .table-wrap, .katex-display)::-webkit-scrollbar { height: 8px; }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display)::-webkit-scrollbar-track { background: transparent; }
+    :is(.content, .panel-inner, .table-wrap, .katex-display)::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--bg); }
+    pre::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--surface); }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display)::-webkit-scrollbar-thumb:hover { background: var(--scroll-hover); }
+    @supports (scrollbar-color: auto) { :is(.content, .panel-inner, pre, .table-wrap, .katex-display) { scrollbar-width: thin; scrollbar-color: var(--scroll) transparent; } }
+    .panel-resize { display: none; }
+    .panel-head { display: flex; align-items: center; gap: var(--s2); min-height: 44px; margin-bottom: var(--s2); }
+    .panel-head h2 { flex: 1 1 0; min-width: 0; margin: 0; font-size: var(--fs-lead); line-height: 1.4; }
+    .panel-sub { margin: 0 0 var(--s4); font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
+    .panel-empty { margin: 0; color: var(--ink-2); }
+    .panel-label { display: block; margin: var(--s5) 0 var(--s2); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+
+    /* 진행 상태 */
+    .panel-meta { margin: 0 0 var(--s2); font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+    .panel-meta b { color: var(--ink); }
+    .progress { height: 4px; margin-bottom: var(--s3); border-radius: 2px; background: var(--line); overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+    .panel .toc-list a { margin: 0 calc(-1 * var(--s2)); padding: var(--s2); font-size: var(--fs-panel); }
+    .toc-mark { flex: none; display: block; width: 20px; height: 20px; color: var(--ink-2); }
+    .toc-mark svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .toc-mark.is-done { color: var(--accent-ink); }
+
+    /* 복습문제: 원문 · 힌트 · 풀이 */
+    .aid details:last-of-type { border-bottom: 1px solid var(--line); }
+    .aid details.original > summary { font-size: var(--fs-panel); }
+    .solved-btn { display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%; min-height: var(--tap); margin-top: var(--s5); padding: 0 var(--s4);
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 700 var(--fs-panel)/1.2 var(--font); cursor: pointer; }
+    .solved-btn svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .solved-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); }
+
+    /* 정리노트: 페이지 요약 */
+    .sum-lead { margin: 0; font-size: var(--fs-body); font-weight: 700; line-height: 1.6; }
+    .eq-list { list-style: none; margin: 0; padding: 0; }
+    .eq-list li { padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+    .eq-list li:first-child { padding-top: 0; }
+    .eq-name { display: block; font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+    .eq-list .katex-display { margin: var(--s1) 0 0; text-align: left; }
+    .eq-list .katex-display > .katex { text-align: left; }
+    .terms { margin: 0; }
+    .terms dt { font-size: var(--fs-panel); font-weight: 700; margin-top: var(--s4); }
+    .terms dt:first-child { margin-top: 0; }
+    .terms dd { margin: var(--s1) 0 0; font-size: var(--fs-sub); line-height: 1.6; color: var(--ink-2); }
+    .flow { margin: 0; padding-left: 1.4em; font-size: var(--fs-sub); }
+    .flow li { margin: var(--s2) 0; }
+
+    @media (hover: hover) { .solved-btn:hover { background: var(--surface); } }
+
+    /* 넓은 화면: 본문 옆에 붙는 패널 */
+    @media (min-width: 1024px) {
+      .layout { --l: var(--panel-l-user, var(--panel-l)); }
+      .layout[data-left="closed"] { --l: 0px; }
+      .panel-left { width: var(--l); }
+      /* 기본값: 왼쪽 패널과 본문 폭을 뺀 나머지를 오른쪽 패널이 차지 → 본문 옆 빈 여백이 생기지 않는다 */
+      .panel-right { width: var(--panel-r-user, clamp(var(--panel-r-min), calc(100vw - var(--l) - var(--measure) - var(--scrollbar)), var(--panel-r-max))); }
+      .panel-resize { display: block; position: absolute; top: 0; bottom: 0; z-index: 2; width: 12px; padding: 0; border: 0; background: transparent; cursor: col-resize; touch-action: none; }
+      .panel-left .panel-resize { right: 0; }
+      .panel-right .panel-resize { left: 0; }
+      .panel-resize::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: 0; transition: opacity 150ms ease-out; }
+      .panel-left .panel-resize::after { right: 0; }
+      .panel-right .panel-resize::after { left: 0; }
+      .panel-resize:focus-visible { outline: none; }
+      .panel-resize:focus-visible::after, .is-resizing .panel-resize:active::after { opacity: 1; }
+      @media (hover: hover) { .panel-resize:hover::after { opacity: 1; } }
+      body.is-resizing { cursor: col-resize; user-select: none; }
+      .layout[data-left="closed"] .panel-left, .layout[data-right="closed"] .panel-right { display: none; }
+      .panel.is-shown { animation: panel-fade var(--dur) var(--ease-out); }
+      .scrim, .panel-close { display: none; }
+    }
+    @keyframes panel-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* 좁은 화면: 가장자리에서 밀려 나오는 drawer */
+    @media (max-width: 1023.98px) {
+      .panel { position: fixed; top: 0; bottom: 0; z-index: 40; visibility: hidden;
+        transition: transform var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .panel-left { left: 0; width: min(var(--drawer-l), 88vw); transform: translateX(-100%); }
+      .panel-right { right: 0; width: min(var(--drawer-r), 88vw); transform: translateX(100%); }
+      .panel.is-open { visibility: visible; transform: none; transition: transform var(--dur) var(--ease-out); }
+      .panel-inner { padding-top: calc(var(--s3) + env(safe-area-inset-top)); padding-bottom: calc(var(--s6) + env(safe-area-inset-bottom)); }
+      .scrim { position: fixed; inset: 0; z-index: 35; background: var(--scrim); opacity: 0; visibility: hidden;
+        transition: opacity var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .scrim.is-on { opacity: 1; visibility: visible; transition: opacity var(--dur) var(--ease-out); }
+      html:not(.js) .panel-left { display: none; }
+    }
+    @media (max-width: 480px) { .panel-toggle { padding: 0 var(--s1); } }
+    html:not(.js) .panel-toggle, html:not(.js) .panel-right, html:not(.js) .scrim { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .panel.is-open, .scrim, .scrim.is-on, .progress > span, .panel-toggle .strip { transition: none; }
+      .panel.is-shown { animation: none; }
+      .panel-resize::after { transition: none; }
+    }
+    @media print {
+      body { display: block; height: auto; overflow: visible; }
+      .layout { display: block; }
+      .content { overflow: visible; }
+      .panel, .scrim { display: none !important; }
+    }
+  </style>
+</head>
+<body data-screens="article.topic" data-panels="note" data-range="0921">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
+      <strong class="brand">정리노트</strong>
+      <button class="text-btn theme-toggle" id="theme-toggle" type="button" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="text-btn panel-toggle" id="toggle-right" type="button" aria-controls="panel-right" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="15" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span>요약</span></button>
+    </div>
+    <div class="bar" aria-hidden="true"><span id="pager-bar"></span></div>
+  </header>
+  <div class="layout" data-left="open" data-right="closed">
+    <aside class="panel panel-left" id="panel-left" aria-labelledby="panel-left-title">
+      <div class="panel-resize" data-side="left" role="separator" aria-orientation="vertical" aria-controls="panel-left" aria-label="왼쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-left-title">목차</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-meta">읽은 토픽 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+        <nav class="toc" aria-label="목차"><a href="#s0">1 하노이 탑</a><a href="#s1">2 배열</a><a href="#s2">3 다항식</a><a href="#s3">4 희소 행렬</a><a href="#s4">5 구조체</a><a href="#s5">6 요약·예고</a></nav>
+      </div>
+    </aside>
+    <div class="content">
+  <main>
+    <div class="hero">
+      <h1>하노이 탑 · 배열 · 구조체 — 5살도 이해하는 정리노트</h1>
+      <p>이정원 교수님 자료구조및알고리즘이해 · 0921 수업 (Software_2 Recursion · Software_3 ArrayStructureList)</p>
+    </div>
+    <section id="s0"><h2>1. 하노이 탑과 순환 로직</h2>
+<article class="topic" id="s0-recursion-rules"><h3>순환의 두 조건 다시 보기</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S2 p6</span><span class="tag slide">S2 p13–14</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">같은 일을 조금씩 작게 만들어 다시 맡기다가, 더 작아질 수 없는 바닥에 닿으면 멈춰요.</p>
+    <figure class="figure"><svg id="fig-recursion-floor" viewBox="0 0 560 220" role="img" aria-label="4, 3, 2, 1이 차례로 적힌 네 개의 테두리 상자가 계단처럼 아래로 이어지고, 마지막 1 상자 옆의 색칠된 점에 바닥에서 바로 답이라고 적혀 있다">
+      <rect class="fig-ink" x="30" y="15" width="80" height="30" rx="6"/><text class="fig-text" x="70" y="35" text-anchor="middle">4</text>
+      <rect class="fig-ink" x="130" y="65" width="80" height="30" rx="6"/><text class="fig-text" x="170" y="85" text-anchor="middle">3</text>
+      <rect class="fig-ink" x="230" y="115" width="80" height="30" rx="6"/><text class="fig-text" x="270" y="135" text-anchor="middle">2</text>
+      <rect class="fig-accent" x="330" y="165" width="80" height="30" rx="6"/><text class="fig-text" x="370" y="185" text-anchor="middle">1</text>
+      <path class="fig-ink" d="M70 45 V80 H128"/><path class="fig-ink" d="M120 75 L128 80 L120 85"/>
+      <path class="fig-ink" d="M170 95 V130 H228"/><path class="fig-ink" d="M220 125 L228 130 L220 135"/>
+      <path class="fig-ink" d="M270 145 V180 H328"/><path class="fig-ink" d="M320 175 L328 180 L320 185"/>
+      <text class="fig-muted" x="76" y="72">작게 맡기기</text>
+      <circle class="fig-dot" cx="432" cy="180" r="6"/><text class="fig-text" x="444" y="185">바닥: 바로 답</text>
+    </svg><figcaption>한 칸씩 작아지다가 바닥에 닿으면 더 맡기지 않고 거기서 답을 말해요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>0921 녹음은 순환 복습의 중간부터 시작해요. 수업 첫머리에서 순환 함수의 조건을 짧게 다시 짚었어요(S2 p6).</p>
+    <ol class="steps">
+      <li>호출할 때마다 문제가 줄어들어서 결국 바닥을 칠 수 있어야 해요(순환 호출을 하는 부분).</li>
+      <li>줄어드는 조건과 짝을 이루는 바닥 조건(base case)이 있어야 해요(순환 호출을 멈추는 부분). 바닥 조건에서는 더 순환 호출을 하지 않고 답을 바로 내놓아요.</li>
+    </ol>
+    <p>S2 p6의 팩토리얼 코드에서 두 부분은 이렇게 나뉘어요.</p>
+<pre><code class="language-c">int factorial(int n)
+{
+    if( n &lt;= 1 )  return 1;                /* 순환을 멈추는 부분 */
+    else return n * factorial(n-1);        /* 순환 호출을 하는 부분 */
+}</code></pre>
+    <p>멈추는 부분이 없으면 시스템 오류가 날 때까지 끝없이 호출해요(S2 p6).</p>
+    <p>팩토리얼·거듭제곱처럼 수학적 정의(점화식)가 있는 문제는 C로 옮기기 쉬웠어요(S2 p4–12 복습).</p>
+    <p>순환으로 짜서 오히려 나빠지는 경우도 있어요. 피보나치 수열에서 <code>fib(6)</code>을 부르면 <code>fib(3)</code>이 3번이나 중복해서 계산되고, n이 커질수록 더 심해져요(S2 p13).</p>
+    <p>이럴 때는 다이내믹 프로그래밍(dynamic programming)으로 풀어요. 한 번 계산한 값을 기억해 두었다가 다시 꺼내 쓰는 방법이에요. 슬라이드(S2 p14)에는 반복문으로 바꾼 <code>fib_iter</code>만 있고, 다이내믹 프로그래밍이라는 이름은 수업에서 말로만 나왔어요.</p>
+  </div>
+<p class="interactive-note" data-ds-interactive="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_01_%ED%8C%A9%ED%86%A0%EB%A6%AC%EC%96%BC%ED%98%B8%EC%B6%9C%ED%94%84%EB%A0%88%EC%9E%84.html">호출마다 따로 생기는 n과 바닥에서 돌아오는 값을 <a href="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_01_%ED%8C%A9%ED%86%A0%EB%A6%AC%EC%96%BC%ED%98%B8%EC%B6%9C%ED%94%84%EB%A0%88%EC%9E%84.html" target="_self">factorial 호출 프레임</a>에서 한 단계씩 확인해 보세요.</p>
+
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>바닥 조건은 그냥 멈추는 곳이 아니라, 답을 바로 제시할 수 있는 곳이어야 한다고 짚으셨어요.</p>
+    <blockquote>"그 바닥이 답이 뭐다라고 제시할 수 있는 조건이어야 되는 거거든요." (0921 00:14)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">순환은 호출마다 문제가 줄어들어야 하고, 바로 답을 내는 바닥 조건이 있어야 해요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>바닥 조건(base case)</dt><dd>더 순환 호출하지 않고 답을 바로 내놓는 조건</dd><dt>다이내믹 프로그래밍(dynamic programming)</dt><dd>한 번 계산한 값을 기억해 두었다가 다시 쓰는 방법</dd></dl>
+  </div>
+</article>
+
+<article class="topic" id="s0-hanoi-logic"><h3>쉬운 문제로 로직을 세우고 일반화하기</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S2 p15–18</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">원판이 아무리 많아도, 위쪽 묶음은 누가 옮겨 준다고 믿고 맨 아래 가장 큰 판 하나만 생각해요.</p>
+    <figure class="figure"><svg id="fig-hanoi-split" viewBox="0 0 560 220" role="img" aria-label="왼쪽 막대에 가장 큰 판 테두리 위로 위쪽 묶음 테두리가 얹혀 있다. 곡선 화살표 1은 묶음을 가운데 막대로, 화살표 2는 큰 판을 오른쪽 막대로, 화살표 3은 묶음을 가운데에서 오른쪽 막대로 옮긴다">
+      <line class="fig-ink" x1="20" y1="150" x2="540" y2="150"/>
+      <line class="fig-ink" x1="100" y1="70" x2="100" y2="84"/><line class="fig-ink" x1="280" y1="70" x2="280" y2="150"/><line class="fig-ink" x1="460" y1="70" x2="460" y2="150"/>
+      <rect class="fig-accent" x="55" y="84" width="90" height="40" rx="6"/><text class="fig-text" x="100" y="109" text-anchor="middle">위쪽 묶음</text>
+      <rect class="fig-ink" x="30" y="127" width="140" height="21" rx="5"/><text class="fig-text" x="100" y="142" text-anchor="middle">가장 큰 판</text>
+      <path class="fig-accent" d="M100 70 Q190 20 280 70"/><path class="fig-accent" d="M272.5 58.9 L280 70 L266.7 69.3"/>
+      <text class="fig-text" x="190" y="36" text-anchor="middle">1</text>
+      <path class="fig-ink" d="M100 160 Q280 215 460 160"/><path class="fig-ink" d="M450.2 169.2 L460 160 L446.7 157.8"/>
+      <text class="fig-text" x="280" y="206" text-anchor="middle">2</text>
+      <path class="fig-accent" d="M280 70 Q370 20 460 70"/><path class="fig-accent" d="M452.5 58.9 L460 70 L446.7 69.3"/>
+      <text class="fig-text" x="370" y="36" text-anchor="middle">3</text>
+    </svg><figcaption>묶음을 가운데로 비키고, 큰 판을 오른쪽에 놓고, 묶음을 그 위에 다시 올려요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>하노이 탑은 막대 A에 쌓인 원판 n개를 막대 C로 옮기는 문제예요(S2 p15). 조건은 네 가지예요.</p>
+    <ul>
+      <li>한 번에 원판 하나만 옮길 수 있어요.</li>
+      <li>맨 위에 있는 원판만 옮길 수 있어요.</li>
+      <li>작은 원판 위에 큰 원판을 쌓을 수 없어요.</li>
+      <li>가운데 막대를 임시로 쓸 수 있지만, 앞의 조건은 지켜야 해요.</li>
+    </ul>
+    <p>수학 계산이 아니라 논리적 절차가 있어야 원판 수가 늘어나도 감당할 수 있는 문제예요.</p>
+    <p><b>1단계: 쉬운 문제로 규정해요.</b> 처음에는 원반 세 개처럼 눈으로 따라갈 수 있는 문제로 로직을 세워요. n=3인 경우의 해답(S2 p16)은 7번 옮겨요.</p>
+    <ol class="steps">
+      <li>원판1 A→C</li>
+      <li>원판2 A→B</li>
+      <li>원판1 C→B</li>
+      <li>원판3 A→C</li>
+      <li>원판1 B→A</li>
+      <li>원판2 B→C</li>
+      <li>원판1 A→C</li>
+    </ol>
+    <p><b>2단계: n개로 일반화해요(S2 p17).</b> 맨 밑 1개만 남기고 위의 n−1개가 임시 막대에 다 올라갔다고 가정해요. 이 가정이 순환적인 생각이에요.</p>
+    <ol class="steps">
+      <li>C를 임시 버퍼(tmp)로 써서 A에 쌓인 n−1개를 B로 옮겨요.</li>
+      <li>A의 가장 큰 원판을 C로 옮겨요. 이 원판은 제자리를 잡았어요.</li>
+      <li>A를 임시 버퍼로 써서 B에 쌓인 n−1개를 C로 옮겨요.</li>
+    </ol>
+    <p><b>남은 문제(S2 p18):</b> n−1개는 어떻게 옮길까요? 원래 문제가 "n개를 A에서 C로 옮기기"였으니, 지금 짜는 함수를 파라미터만 n−1로 바꿔 순환 호출하면 돼요.</p>
+<pre><code class="language-c">// 막대 from에 쌓여 있는 n개의 원판을 막대 tmp를 사용하여 막대 to로
+// 옮긴다.
+void hanoi_tower(int n, char from, char tmp, char to)
+{
+    if (n==1){
+        from에서 to로 원판을 옮긴다.
+    }
+    else{
+        hanoi_tower(n-1, from, to, tmp);
+        from에 있는 한 개의 원판을 to로 옮긴다.
+        hanoi_tower(n-1, tmp, from, to);
+    }
+}</code></pre>
+    <ul>
+      <li>바닥 조건은 <code>n==1</code>이에요. 원판이 하나면 from에서 to로 옮기고 끝나요.</li>
+      <li>가운데 줄(원판 1개 옮기기)만 순환이 아니에요. 나머지 두 줄 때문에 n을 부르면 n−1을 두 번 부르는 모양이 돼요.</li>
+      <li>첫 번째 호출 <code>hanoi_tower(n-1, from, to, tmp);</code>는 to 자리를 임시 막대로 쓰고, n−1개를 tmp 막대로 보내요.</li>
+      <li>두 번째 호출 <code>hanoi_tower(n-1, tmp, from, to);</code>는 from 자리를 임시 막대로 쓰고, n−1개를 tmp 막대에서 to로 보내요.</li>
+      <li>최종 목표는 계속 C이고, 호출할 때마다 A와 B가 번갈아 임시 버퍼 역할을 해요.</li>
+    </ul>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>숙제 비유: 60명의 국어·영어·수학 평균을 구하는 프로그램도 처음부터 60명을 다 넣지 않아요. 손으로 계산할 수 있는 5명으로 합·평균·정렬을 확인한 뒤 10명, 60명으로 늘려요. 순환 로직도 똑같이 원판 3개로 먼저 세워요. (0921 01:01–01:47)</p>
+    <blockquote>"쉬운 문제로 규정을 하고요 … 원반 세 개만 가지고 로직을 세우는 거예요." (0921 01:47)</blockquote>
+    <blockquote>"아니 이거는 어떻게 다 옮겨요? 그게 바로 리커시브한 생각이에요." (0921 02:27)</blockquote>
+    <blockquote>"n의 원판을 옮기라고 했더니 n-1의 원판과 n-1의 원판을 두 번 불렀습니다." (0921 04:07)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">원반 세 개로 로직을 세운 뒤, 위의 n−1개를 옮겼다고 가정해 n개로 일반화해요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>일반화</dt><dd>쉬운 문제로 세운 로직을 n개로 넓히는 일</dd><dt>임시 버퍼(tmp)</dt><dd>n−1개를 잠시 올려 두는 막대</dd></dl>
+  </div>
+</article>
+
+<article class="topic" id="s0-hanoi-trace"><h3>최종 프로그램과 n=4 호출 추적</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S2 p19–20</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">컴퓨터는 가장 작은 일에 닿을 때까지 계속 내려간 다음, 처음으로 원판을 옮겨요.</p>
+    <figure class="figure"><svg id="fig-hanoi-descend" viewBox="0 0 560 220" role="img" aria-label="원판 4개, 3개, 2개, 1개라고 적힌 테두리 상자가 계단처럼 내려가는 선 화살표로 이어지고, 강조색 선 화살표가 한 칸씩 위로 돌아간다. 1개 상자 옆 색칠된 점에 처음 옮김이라고 적혀 있다">
+      <rect class="fig-ink" x="30" y="15" width="80" height="30" rx="6"/><text class="fig-text" x="70" y="35" text-anchor="middle">4개</text>
+      <rect class="fig-ink" x="130" y="65" width="80" height="30" rx="6"/><text class="fig-text" x="170" y="85" text-anchor="middle">3개</text>
+      <rect class="fig-ink" x="230" y="115" width="80" height="30" rx="6"/><text class="fig-text" x="270" y="135" text-anchor="middle">2개</text>
+      <rect class="fig-ink" x="330" y="165" width="80" height="30" rx="6"/><text class="fig-text" x="370" y="185" text-anchor="middle">1개</text>
+      <path class="fig-ink" d="M70 45 V80 H128"/><path class="fig-ink" d="M120 75 L128 80 L120 85"/>
+      <path class="fig-ink" d="M170 95 V130 H228"/><path class="fig-ink" d="M220 125 L228 130 L220 135"/>
+      <path class="fig-ink" d="M270 145 V180 H328"/><path class="fig-ink" d="M320 175 L328 180 L320 185"/>
+      <path class="fig-accent" d="M190 65 V30 H112"/><path class="fig-accent" d="M120 25 L112 30 L120 35"/>
+      <path class="fig-accent" d="M290 115 V80 H212"/><path class="fig-accent" d="M220 75 L212 80 L220 85"/>
+      <path class="fig-accent" d="M390 165 V130 H312"/><path class="fig-accent" d="M320 125 L312 130 L320 135"/>
+      <text class="fig-muted" x="76" y="72">내려가기</text><text class="fig-muted" x="198" y="52">돌아가기</text>
+      <circle class="fig-dot" cx="432" cy="180" r="6"/><text class="fig-text" x="444" y="185">처음 옮김</text>
+    </svg><figcaption>처음 옮긴 뒤에는 한 칸씩 돌아 올라가며 남은 일을 이어서 해요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>최종 프로그램(S2 p19)이에요. 인자 <code>(4, 'A', 'B', 'C')</code>는 from=A, tmp=B, to=C라는 뜻이에요.</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+void hanoi_tower(int n, char from, char tmp, char to)
+{
+    if( n==1 ) printf("원판 1을 %c 에서 %c으로 옮긴다.\n",from,to);
+    else {
+        hanoi_tower(n-1, from, to, tmp);
+        printf("원판 %d을 %c에서 %c으로 옮긴다.\n",n, from, to);
+        hanoi_tower(n-1, tmp, from, to);
+    }
+}
+main()
+{
+    hanoi_tower(4, 'A', 'B', 'C');
+}</code></pre>
+    <p>위 코드는 슬라이드 원문 그대로예요. 요즘 컴파일러에서는 <code>int main(void)</code>로 써야 실행돼요.</p>
+    <p>4를 100으로 바꿔도 같은 프로그램이 그대로 돌아요. 프로그래머는 로직(바닥 조건과 나머지)만 세우면 돼요.</p>
+    <p><b>호출 추적(S2 p20).</b> 정식 매개변수 <code>(from, tmp, to)</code> 자리에 실제 인자가 들어가면서 순서가 바뀌어요. 교수님은 출력문을 검은 박스, 순환으로 내려가는 호출을 흰 박스, 바닥(n=1)을 회색 박스로 그렸어요.</p>
+    <ol class="steps">
+      <li><code>(4,A,B,C)</code>의 첫 호출 <code>hanoi_tower(n-1, from, to, tmp)</code> → (3,A,C,B)</li>
+      <li><code>(4,A,B,C)</code>의 출력 → 원판4 A→C</li>
+      <li><code>(4,A,B,C)</code>의 두 번째 호출 <code>hanoi_tower(n-1, tmp, from, to)</code> → (3,B,A,C)</li>
+      <li><code>(3,A,C,B)</code>의 첫 호출 → (2,A,B,C)</li>
+      <li><code>(2,A,B,C)</code>의 첫 호출 → (1,A,C,B), 바닥이라 출력 → (1) 원판1 A→B</li>
+    </ol>
+    <p>전체 호출 트리와 출력 번호예요(원판 4개, 15번 이동).</p>
+<pre><code>hanoi_tower(4,A,B,C)
+├─ (3,A,C,B)
+│   ├─ (2,A,B,C)
+│   │   ├─ (1,A,C,B) → (1) 원판1 A→B
+│   │   ├─ (2) 원판2 A→C
+│   │   └─ (1,B,A,C) → (3) 원판1 B→C
+│   ├─ (4) 원판3 A→B
+│   └─ (2,C,A,B)
+│       ├─ (1,C,B,A) → (5) 원판1 C→A
+│       ├─ (6) 원판2 C→B
+│       └─ (1,A,C,B) → (7) 원판1 A→B
+├─ (8) 원판4 A→C
+└─ (3,B,A,C)
+    ├─ (2,B,C,A)
+    │   ├─ (1,B,A,C) → (9) 원판1 B→C
+    │   ├─ (10) 원판2 B→A
+    │   └─ (1,C,B,A) → (11) 원판1 C→A
+    ├─ (12) 원판3 B→C
+    └─ (2,A,B,C)
+        ├─ (1,A,C,B) → (13) 원판1 A→B
+        ├─ (14) 원판2 A→C
+        └─ (1,B,A,C) → (15) 원판1 B→C</code></pre>
+    <ul>
+      <li>출력은 트리의 가장 왼쪽 말단부터 시작해요: (1) 원판1 A→B, (2) 원판2 A→C, (3) 원판1 B→C, (4) 원판3 A→B …</li>
+      <li>바닥(n==1)을 치면 돌아서서 위로 올라가요.</li>
+      <li>이 내부 스택(stack)과 트리는 프로그래머가 만들지 않아도 컴퓨터가 알아서 만들어요. 원판 4개만으로도 상태가 이렇게 많지만, 100개여도 신경 쓸 필요가 없어요.</li>
+      <li>하노이 탑을 반복문으로 짜기는 로직 자체가 매우 어려워요. 순환은 이렇게 패턴을 발견하는 일에 많이 써요.</li>
+    </ul>
+    <div class="widget" id="widget-hanoi"><h4>직접 해 보기: hanoi_tower(4, A, B, C) 한 단계씩</h4>
+      <p class="widget-help">"다음"을 누를 때마다 지금 실행 중인 호출이 강조되고, 막대의 원판과 출력 줄이 한 단계씩 바뀌어요.</p>
+      <div class="controls" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <button class="btn btn-ghost" id="hanoi-reset" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">처음으로</button>
+        <button class="btn btn-ghost" id="hanoi-prev" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">이전</button>
+        <button class="btn btn-primary" id="hanoi-next" type="button" style="justify-self:auto;min-width:0;padding:0 16px">다음</button>
+      </div>
+      <svg id="hanoi-plot" viewBox="0 0 680 400" role="img" aria-label="하노이 탑 n=4 호출 트리와 막대 상태. 0/22단계. 지금 실행 중인 호출 없음은 강조색 테두리와 색칠된 점으로 표시. 아직 부르지 않은 호출은 점선 테두리. 막대(아래부터 원판 번호) A[4,3,2,1] B[] C[]."><line class="fig-ink" x1="340.5" y1="34" x2="174.5" y2="58" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="174.5" y1="82" x2="91.5" y2="106" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="91.5" y1="130" x2="50" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="91.5" y1="130" x2="133" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="174.5" y1="82" x2="257.5" y2="106" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="257.5" y1="130" x2="216" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="257.5" y1="130" x2="299" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="340.5" y1="34" x2="506.5" y2="58" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="506.5" y1="82" x2="423.5" y2="106" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="423.5" y1="130" x2="382" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="423.5" y1="130" x2="465" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="506.5" y1="82" x2="589.5" y2="106" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="589.5" y1="130" x2="548" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="589.5" y1="130" x2="631" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><rect class="fig-ink" x="303.5" y="10" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="340.5" y="26.5" text-anchor="middle" style="font-size:12px">(4,A,B,C)</text><rect class="fig-ink" x="137.5" y="58" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="174.5" y="74.5" text-anchor="middle" style="font-size:12px">(3,A,C,B)</text><rect class="fig-ink" x="54.5" y="106" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="91.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,A,B,C)</text><rect class="fig-ink" x="13" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="50" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><rect class="fig-ink" x="96" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="133" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><rect class="fig-ink" x="220.5" y="106" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="257.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,C,A,B)</text><rect class="fig-ink" x="179" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="216" y="170.5" text-anchor="middle" style="font-size:12px">(1,C,B,A)</text><rect class="fig-ink" x="262" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="299" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><rect class="fig-ink" x="469.5" y="58" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="506.5" y="74.5" text-anchor="middle" style="font-size:12px">(3,B,A,C)</text><rect class="fig-ink" x="386.5" y="106" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="423.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,B,C,A)</text><rect class="fig-ink" x="345" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="382" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><rect class="fig-ink" x="428" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="465" y="170.5" text-anchor="middle" style="font-size:12px">(1,C,B,A)</text><rect class="fig-ink" x="552.5" y="106" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="589.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,A,B,C)</text><rect class="fig-ink" x="511" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="548" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><rect class="fig-ink" x="594" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="631" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><line class="fig-ink" x1="20" y1="372" x2="660" y2="372"/><line class="fig-ink" x1="115" y1="236" x2="115" y2="372"/><text class="fig-text" x="115" y="392" text-anchor="middle">A</text><rect class="fig-ink" x="38" y="353" width="154" height="18" rx="4"/><text class="fig-text" x="50" y="367" text-anchor="middle" style="font-size:12px">4</text><rect class="fig-ink" x="51" y="333" width="128" height="18" rx="4"/><text class="fig-text" x="63" y="347" text-anchor="middle" style="font-size:12px">3</text><rect class="fig-ink" x="64" y="313" width="102" height="18" rx="4"/><text class="fig-text" x="76" y="327" text-anchor="middle" style="font-size:12px">2</text><rect class="fig-ink" x="77" y="293" width="76" height="18" rx="4"/><text class="fig-text" x="89" y="307" text-anchor="middle" style="font-size:12px">1</text><line class="fig-ink" x1="340" y1="236" x2="340" y2="372"/><text class="fig-text" x="340" y="392" text-anchor="middle">B</text><line class="fig-ink" x1="565" y1="236" x2="565" y2="372"/><text class="fig-text" x="565" y="392" text-anchor="middle">C</text></svg>
+      <p class="readout"><b id="hanoi-step">0/22단계</b> <span id="hanoi-out">아직 아무 호출도 하지 않았어요. main이 hanoi_tower(4, A, B, C)를 부르기 직전이에요.</span></p>
+      <p class="legend"><span><span class="sw fit"></span>강조색 테두리와 색칠된 점: 지금 실행 중인 호출</span><span>진한 테두리: 아직 끝나지 않고 기다리는 호출</span><span>흐린 테두리: 끝난 호출</span><span>점선 테두리: 아직 부르지 않은 호출</span><span>(k): k번째 출력 줄</span></p>
+      <pre id="hanoi-log"> 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ </pre>
+      <div class="widget-static" hidden>
+    <figure class="figure"><svg id="widget-hanoi-static-1" viewBox="0 0 680 400" role="img" aria-label="하노이 탑 n=4 호출 트리와 막대 상태. 4/22단계. 지금 실행 중인 호출 (1,A,C,B)은 강조색 테두리와 색칠된 점으로 표시. 아직 부르지 않은 호출은 점선 테두리. 막대(아래부터 원판 번호) A[4,3,2] B[1] C[]."><line class="fig-ink" x1="340.5" y1="34" x2="174.5" y2="58" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="174.5" y1="82" x2="91.5" y2="106" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="91.5" y1="130" x2="50" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="91.5" y1="130" x2="133" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="174.5" y1="82" x2="257.5" y2="106" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="257.5" y1="130" x2="216" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="257.5" y1="130" x2="299" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="340.5" y1="34" x2="506.5" y2="58" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="506.5" y1="82" x2="423.5" y2="106" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="423.5" y1="130" x2="382" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="423.5" y1="130" x2="465" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="506.5" y1="82" x2="589.5" y2="106" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="589.5" y1="130" x2="548" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="589.5" y1="130" x2="631" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><rect class="fig-ink" x="303.5" y="10" width="74" height="24" rx="5"/><text class="fig-text" x="340.5" y="26.5" text-anchor="middle" style="font-size:12px">(4,A,B,C)</text><rect class="fig-ink" x="137.5" y="58" width="74" height="24" rx="5"/><text class="fig-text" x="174.5" y="74.5" text-anchor="middle" style="font-size:12px">(3,A,C,B)</text><rect class="fig-ink" x="54.5" y="106" width="74" height="24" rx="5"/><text class="fig-text" x="91.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,A,B,C)</text><rect class="fig-accent" x="13" y="154" width="74" height="24" rx="5"/><circle class="fig-dot" cx="6" cy="166" r="4"/><text class="fig-text" x="50" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><text class="fig-text" x="50" y="193" text-anchor="middle" style="font-size:12px">(1)</text><rect class="fig-ink" x="96" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="133" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><rect class="fig-ink" x="220.5" y="106" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="257.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,C,A,B)</text><rect class="fig-ink" x="179" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="216" y="170.5" text-anchor="middle" style="font-size:12px">(1,C,B,A)</text><rect class="fig-ink" x="262" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="299" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><rect class="fig-ink" x="469.5" y="58" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="506.5" y="74.5" text-anchor="middle" style="font-size:12px">(3,B,A,C)</text><rect class="fig-ink" x="386.5" y="106" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="423.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,B,C,A)</text><rect class="fig-ink" x="345" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="382" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><rect class="fig-ink" x="428" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="465" y="170.5" text-anchor="middle" style="font-size:12px">(1,C,B,A)</text><rect class="fig-ink" x="552.5" y="106" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="589.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,A,B,C)</text><rect class="fig-ink" x="511" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="548" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><rect class="fig-ink" x="594" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="631" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><line class="fig-ink" x1="20" y1="372" x2="660" y2="372"/><line class="fig-ink" x1="115" y1="236" x2="115" y2="372"/><text class="fig-text" x="115" y="392" text-anchor="middle">A</text><rect class="fig-ink" x="38" y="353" width="154" height="18" rx="4"/><text class="fig-text" x="50" y="367" text-anchor="middle" style="font-size:12px">4</text><rect class="fig-ink" x="51" y="333" width="128" height="18" rx="4"/><text class="fig-text" x="63" y="347" text-anchor="middle" style="font-size:12px">3</text><rect class="fig-ink" x="64" y="313" width="102" height="18" rx="4"/><text class="fig-text" x="76" y="327" text-anchor="middle" style="font-size:12px">2</text><line class="fig-ink" x1="340" y1="236" x2="340" y2="372"/><text class="fig-text" x="340" y="392" text-anchor="middle">B</text><rect class="fig-accent" x="302" y="353" width="76" height="18" rx="4"/><text class="fig-text" x="314" y="367" text-anchor="middle" style="font-size:12px">1</text><line class="fig-ink" x1="565" y1="236" x2="565" y2="372"/><text class="fig-text" x="565" y="392" text-anchor="middle">C</text></svg><figcaption>4/22단계(첫 출력): (1,A,C,B)는 바닥 조건 n==1이에요. (1) 원판1 A→B 출력 후 돌아가요.</figcaption></figure>
+    <figure class="figure"><svg id="widget-hanoi-static-2" viewBox="0 0 680 400" role="img" aria-label="하노이 탑 n=4 호출 트리와 막대 상태. 12/22단계. 지금 실행 중인 호출 (4,A,B,C)은 강조색 테두리와 색칠된 점으로 표시. 아직 부르지 않은 호출은 점선 테두리. 막대(아래부터 원판 번호) A[] B[3,2,1] C[4]."><line class="fig-ink" x1="340.5" y1="34" x2="174.5" y2="58" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="174.5" y1="82" x2="91.5" y2="106" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="91.5" y1="130" x2="50" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="91.5" y1="130" x2="133" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="174.5" y1="82" x2="257.5" y2="106" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="257.5" y1="130" x2="216" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="257.5" y1="130" x2="299" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="340.5" y1="34" x2="506.5" y2="58" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="506.5" y1="82" x2="423.5" y2="106" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="423.5" y1="130" x2="382" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="423.5" y1="130" x2="465" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="506.5" y1="82" x2="589.5" y2="106" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="589.5" y1="130" x2="548" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><line class="fig-ink" x1="589.5" y1="130" x2="631" y2="154" style="stroke-width:1.2;opacity:0.3" stroke-dasharray="4 4"/><rect class="fig-accent" x="303.5" y="10" width="74" height="24" rx="5"/><circle class="fig-dot" cx="296.5" cy="22" r="4"/><text class="fig-text" x="340.5" y="26.5" text-anchor="middle" style="font-size:12px">(4,A,B,C)</text><text class="fig-text" x="382.5" y="26.5" text-anchor="start" style="font-size:12px">(8)</text><rect class="fig-ink" x="137.5" y="58" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="174.5" y="74.5" text-anchor="middle" style="font-size:12px">(3,A,C,B)</text><text class="fig-muted" x="216.5" y="74.5" text-anchor="start" style="font-size:12px">(4)</text><rect class="fig-ink" x="54.5" y="106" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="91.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,A,B,C)</text><text class="fig-muted" x="133.5" y="122.5" text-anchor="start" style="font-size:12px">(2)</text><rect class="fig-ink" x="13" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="50" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><text class="fig-muted" x="50" y="193" text-anchor="middle" style="font-size:12px">(1)</text><rect class="fig-ink" x="96" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="133" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><text class="fig-muted" x="133" y="193" text-anchor="middle" style="font-size:12px">(3)</text><rect class="fig-ink" x="220.5" y="106" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="257.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,C,A,B)</text><text class="fig-muted" x="299.5" y="122.5" text-anchor="start" style="font-size:12px">(6)</text><rect class="fig-ink" x="179" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="216" y="170.5" text-anchor="middle" style="font-size:12px">(1,C,B,A)</text><text class="fig-muted" x="216" y="193" text-anchor="middle" style="font-size:12px">(5)</text><rect class="fig-ink" x="262" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="299" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><text class="fig-muted" x="299" y="193" text-anchor="middle" style="font-size:12px">(7)</text><rect class="fig-ink" x="469.5" y="58" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="506.5" y="74.5" text-anchor="middle" style="font-size:12px">(3,B,A,C)</text><rect class="fig-ink" x="386.5" y="106" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="423.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,B,C,A)</text><rect class="fig-ink" x="345" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="382" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><rect class="fig-ink" x="428" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="465" y="170.5" text-anchor="middle" style="font-size:12px">(1,C,B,A)</text><rect class="fig-ink" x="552.5" y="106" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="589.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,A,B,C)</text><rect class="fig-ink" x="511" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="548" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><rect class="fig-ink" x="594" y="154" width="74" height="24" rx="5" stroke-dasharray="4 4" style="opacity:0.35"/><text class="fig-muted" x="631" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><line class="fig-ink" x1="20" y1="372" x2="660" y2="372"/><line class="fig-ink" x1="115" y1="236" x2="115" y2="372"/><text class="fig-text" x="115" y="392" text-anchor="middle">A</text><line class="fig-ink" x1="340" y1="236" x2="340" y2="372"/><text class="fig-text" x="340" y="392" text-anchor="middle">B</text><rect class="fig-ink" x="276" y="353" width="128" height="18" rx="4"/><text class="fig-text" x="288" y="367" text-anchor="middle" style="font-size:12px">3</text><rect class="fig-ink" x="289" y="333" width="102" height="18" rx="4"/><text class="fig-text" x="301" y="347" text-anchor="middle" style="font-size:12px">2</text><rect class="fig-ink" x="302" y="313" width="76" height="18" rx="4"/><text class="fig-text" x="314" y="327" text-anchor="middle" style="font-size:12px">1</text><line class="fig-ink" x1="565" y1="236" x2="565" y2="372"/><text class="fig-text" x="565" y="392" text-anchor="middle">C</text><rect class="fig-accent" x="488" y="353" width="154" height="18" rx="4"/><text class="fig-text" x="500" y="367" text-anchor="middle" style="font-size:12px">4</text></svg><figcaption>12/22단계(원판4 이동): (4,A,B,C)로 돌아와 (8) 원판4 A→C 출력. 다음은 (3,B,A,C)예요.</figcaption></figure>
+    <figure class="figure"><svg id="widget-hanoi-static-3" viewBox="0 0 680 400" role="img" aria-label="하노이 탑 n=4 호출 트리와 막대 상태. 22/22단계. 지금 실행 중인 호출 (1,B,A,C)은 강조색 테두리와 색칠된 점으로 표시. 아직 부르지 않은 호출은 점선 테두리. 막대(아래부터 원판 번호) A[] B[] C[4,3,2,1]."><line class="fig-ink" x1="340.5" y1="34" x2="174.5" y2="58" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="174.5" y1="82" x2="91.5" y2="106" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="91.5" y1="130" x2="50" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="91.5" y1="130" x2="133" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="174.5" y1="82" x2="257.5" y2="106" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="257.5" y1="130" x2="216" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="257.5" y1="130" x2="299" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="340.5" y1="34" x2="506.5" y2="58" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="506.5" y1="82" x2="423.5" y2="106" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="423.5" y1="130" x2="382" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="423.5" y1="130" x2="465" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="506.5" y1="82" x2="589.5" y2="106" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="589.5" y1="130" x2="548" y2="154" style="stroke-width:1.2;opacity:0.6"/><line class="fig-ink" x1="589.5" y1="130" x2="631" y2="154" style="stroke-width:1.2;opacity:0.6"/><rect class="fig-ink" x="303.5" y="10" width="74" height="24" rx="5"/><text class="fig-text" x="340.5" y="26.5" text-anchor="middle" style="font-size:12px">(4,A,B,C)</text><text class="fig-muted" x="382.5" y="26.5" text-anchor="start" style="font-size:12px">(8)</text><rect class="fig-ink" x="137.5" y="58" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="174.5" y="74.5" text-anchor="middle" style="font-size:12px">(3,A,C,B)</text><text class="fig-muted" x="216.5" y="74.5" text-anchor="start" style="font-size:12px">(4)</text><rect class="fig-ink" x="54.5" y="106" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="91.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,A,B,C)</text><text class="fig-muted" x="133.5" y="122.5" text-anchor="start" style="font-size:12px">(2)</text><rect class="fig-ink" x="13" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="50" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><text class="fig-muted" x="50" y="193" text-anchor="middle" style="font-size:12px">(1)</text><rect class="fig-ink" x="96" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="133" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><text class="fig-muted" x="133" y="193" text-anchor="middle" style="font-size:12px">(3)</text><rect class="fig-ink" x="220.5" y="106" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="257.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,C,A,B)</text><text class="fig-muted" x="299.5" y="122.5" text-anchor="start" style="font-size:12px">(6)</text><rect class="fig-ink" x="179" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="216" y="170.5" text-anchor="middle" style="font-size:12px">(1,C,B,A)</text><text class="fig-muted" x="216" y="193" text-anchor="middle" style="font-size:12px">(5)</text><rect class="fig-ink" x="262" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="299" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><text class="fig-muted" x="299" y="193" text-anchor="middle" style="font-size:12px">(7)</text><rect class="fig-ink" x="469.5" y="58" width="74" height="24" rx="5"/><text class="fig-text" x="506.5" y="74.5" text-anchor="middle" style="font-size:12px">(3,B,A,C)</text><text class="fig-muted" x="548.5" y="74.5" text-anchor="start" style="font-size:12px">(12)</text><rect class="fig-ink" x="386.5" y="106" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="423.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,B,C,A)</text><text class="fig-muted" x="465.5" y="122.5" text-anchor="start" style="font-size:12px">(10)</text><rect class="fig-ink" x="345" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="382" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><text class="fig-muted" x="382" y="193" text-anchor="middle" style="font-size:12px">(9)</text><rect class="fig-ink" x="428" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="465" y="170.5" text-anchor="middle" style="font-size:12px">(1,C,B,A)</text><text class="fig-muted" x="465" y="193" text-anchor="middle" style="font-size:12px">(11)</text><rect class="fig-ink" x="552.5" y="106" width="74" height="24" rx="5"/><text class="fig-text" x="589.5" y="122.5" text-anchor="middle" style="font-size:12px">(2,A,B,C)</text><text class="fig-muted" x="631.5" y="122.5" text-anchor="start" style="font-size:12px">(14)</text><rect class="fig-ink" x="511" y="154" width="74" height="24" rx="5" style="opacity:0.45"/><text class="fig-muted" x="548" y="170.5" text-anchor="middle" style="font-size:12px">(1,A,C,B)</text><text class="fig-muted" x="548" y="193" text-anchor="middle" style="font-size:12px">(13)</text><rect class="fig-accent" x="594" y="154" width="74" height="24" rx="5"/><circle class="fig-dot" cx="587" cy="166" r="4"/><text class="fig-text" x="631" y="170.5" text-anchor="middle" style="font-size:12px">(1,B,A,C)</text><text class="fig-text" x="631" y="193" text-anchor="middle" style="font-size:12px">(15)</text><line class="fig-ink" x1="20" y1="372" x2="660" y2="372"/><line class="fig-ink" x1="115" y1="236" x2="115" y2="372"/><text class="fig-text" x="115" y="392" text-anchor="middle">A</text><line class="fig-ink" x1="340" y1="236" x2="340" y2="372"/><text class="fig-text" x="340" y="392" text-anchor="middle">B</text><line class="fig-ink" x1="565" y1="236" x2="565" y2="372"/><text class="fig-text" x="565" y="392" text-anchor="middle">C</text><rect class="fig-ink" x="488" y="353" width="154" height="18" rx="4"/><text class="fig-text" x="500" y="367" text-anchor="middle" style="font-size:12px">4</text><rect class="fig-ink" x="501" y="333" width="128" height="18" rx="4"/><text class="fig-text" x="513" y="347" text-anchor="middle" style="font-size:12px">3</text><rect class="fig-ink" x="514" y="313" width="102" height="18" rx="4"/><text class="fig-text" x="526" y="327" text-anchor="middle" style="font-size:12px">2</text><rect class="fig-accent" x="527" y="293" width="76" height="18" rx="4"/><text class="fig-text" x="539" y="307" text-anchor="middle" style="font-size:12px">1</text></svg><figcaption>22/22단계(끝): (1,B,A,C)는 바닥 조건 n==1이에요. (15) 원판1 B→C 출력 후 돌아가요.</figcaption></figure>
+    <div class="table-wrap"><table><tr><th>설정</th><th>결과</th></tr><tr><td>4/22단계, 실행 중 (1,A,C,B)</td><td>출력 1줄, 마지막 줄 (1) 원판 1을 A 에서 B으로 옮긴다. / 막대 A[4,3,2] B[1] C[]</td></tr><tr><td>12/22단계, 실행 중 (4,A,B,C)</td><td>출력 8줄, 마지막 줄 (8) 원판 4을 A에서 C으로 옮긴다. / 막대 A[] B[3,2,1] C[4]</td></tr><tr><td>22/22단계, 실행 중 (1,B,A,C)</td><td>출력 15줄, 마지막 줄 (15) 원판 1을 B 에서 C으로 옮긴다. / 막대 A[] B[] C[4,3,2,1]</td></tr></table></div>
+      </div>
+    </div>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>림보 게임 비유: 바닥을 친다는 것은 림보를 계속 복제해 내려가다가 마지막 림보에 닿아 더 갈 데가 없어서 돌아서는 거예요. 그다음부터는 위로 올라가기 시작해요. (0921 09:46)</p>
+    <p>실행 결과를 보고 한 학생이 신나 하자 "얘 왜 이렇게 신나요?"라고 받으신 뒤, 원판 3개든 100개든 똑같은 프로그램이라는 점을 짚으셨어요. (0921 06:10–06:25)</p>
+    <blockquote>"요 로직만 한 번만 세워주면 돼요. 이 밑은 … 컴퓨터가 알아서 한다고요." (0921 09:08–09:18)</blockquote>
+    <blockquote>"하노이 타워 같은 문제를 … 반복으로 하겠다? 한번 해 보세요. 너무 어렵습니다." (0921 12:00)</blockquote>
+    <p><b>순환을 2장에서 배우는 이유.</b> 1장은 자료구조를 왜 배우는지 다뤘어요. 2장에서 자료구조가 아닌 순환을 다룬 까닭은, 앞으로 자료구조와 거기에 딸린 고급 알고리즘에서 순환 호출을 매우 많이 써야 하기 때문이에요. 이전 프로그래밍 과목에서는 반복문으로 충분해서 순환을 피할 수 있었지만, 이제는 순환을 즐기며 한 단계 올라서야 해요.</p>
+    <blockquote>"앞으로 자료구조를 … 배우면서 리커시브 콜을 엄청나게 많이 사용해야 된다는 뜻입니다." (0921 12:28)</blockquote>
+    <blockquote>"리커시브 콜을 쓰는 거를 좀 즐기셔야 돼요." (0921 13:04)</blockquote>
+  </div>
+  <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span>
+    <p>수업에서는 "왜 가장 왼쪽 말단부터 이 순서로 출력되는지"를 트리 단원으로 미뤘어요(0921 11:33). 호출 순서만으로 따라가 보면 이렇게 돼요.</p>
+    <ol class="steps">
+      <li>n이 1이 아닌 호출은 늘 "첫 번째 호출, 자기 줄 출력, 두 번째 호출" 순서로 일해요.</li>
+      <li>첫 번째 호출이 완전히 끝나야 자기 줄을 출력해요. 그래서 (4,A,B,C)는 출력하기 전에 (3,A,C,B)로, 그 호출은 (2,A,B,C)로, 다시 (1,A,C,B)로 내려가요.</li>
+      <li>늘 첫 번째 호출만 따라 내려가므로, 처음 출력하는 곳은 트리 그림의 가장 왼쪽 말단 (1,A,C,B)예요.</li>
+      <li>말단이 출력하고 돌아가면, 부모 (2,A,B,C)가 자기 줄 (2)를 출력하고 두 번째 호출 (1,B,A,C)로 내려가요.</li>
+      <li>두 번째 호출 안에서도 같은 규칙이라, 그 안에서 다시 가장 왼쪽 말단부터 출력해요.</li>
+    </ol>
+    <p>결과적으로 각 호출의 줄은 "첫 번째 호출이 낸 줄들 뒤, 두 번째 호출이 낸 줄들 앞"에 와요. (4,A,B,C)의 원판4 줄은 (3,A,C,B)가 낸 7줄 뒤, (3,B,A,C)가 낼 7줄 앞이라 (8)번째예요.</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">hanoi_tower(4, A, B, C)는 가장 왼쪽 말단부터 출력하며, 바닥을 치면 돌아서 위로 올라가요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>가장 왼쪽 말단</dt><dd>첫 번째 호출만 따라 내려가 처음 닿는 n==1 호출, 여기서 첫 출력이 나와요</dd><dt>내부 스택(stack)</dt><dd>컴퓨터가 호출을 기억하려고 알아서 만드는 것</dd></dl>
+  </div>
+</article>
+    </section>
+    <section id="s1"><h2>2. 배열을 자료구조로 보기</h2>
+<article class="topic" id="s1-array-why"><h3>배열과 데이터 타입을 보는 새 시각</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p1–2</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">같은 종류끼리 한 줄로 붙여 앉히고 번호를 매기면, 번호만 불러도 곧장 찾아갈 수 있어요.</p>
+    <figure class="figure">
+      <svg id="fig-array-row" viewBox="0 0 560 130" role="img" aria-label="테두리만 있는 칸 열 개가 한 줄로 붙어 있고 칸 아래에 0부터 9까지 번호가 있어요. 번호 4가 붙은 다섯째 칸은 강조색 테두리이고, 그 위에 색칠된 점이 있어요.">
+        <rect class="fig-ink" x="20" y="40" width="52" height="44"/>
+        <rect class="fig-ink" x="72" y="40" width="52" height="44"/>
+        <rect class="fig-ink" x="124" y="40" width="52" height="44"/>
+        <rect class="fig-ink" x="176" y="40" width="52" height="44"/>
+        <rect class="fig-ink" x="280" y="40" width="52" height="44"/>
+        <rect class="fig-ink" x="332" y="40" width="52" height="44"/>
+        <rect class="fig-ink" x="384" y="40" width="52" height="44"/>
+        <rect class="fig-ink" x="436" y="40" width="52" height="44"/>
+        <rect class="fig-ink" x="488" y="40" width="52" height="44"/>
+        <rect class="fig-accent" x="228" y="40" width="52" height="44"/>
+        <circle class="fig-dot" cx="254" cy="20" r="8"/>
+        <text class="fig-muted" x="46" y="106" text-anchor="middle">0</text>
+        <text class="fig-muted" x="98" y="106" text-anchor="middle">1</text>
+        <text class="fig-muted" x="150" y="106" text-anchor="middle">2</text>
+        <text class="fig-muted" x="202" y="106" text-anchor="middle">3</text>
+        <text class="fig-text" x="254" y="106" text-anchor="middle">4</text>
+        <text class="fig-muted" x="306" y="106" text-anchor="middle">5</text>
+        <text class="fig-muted" x="358" y="106" text-anchor="middle">6</text>
+        <text class="fig-muted" x="410" y="106" text-anchor="middle">7</text>
+        <text class="fig-muted" x="462" y="106" text-anchor="middle">8</text>
+        <text class="fig-muted" x="514" y="106" text-anchor="middle">9</text>
+        <text class="fig-text" x="274" y="25">다섯째 칸</text>
+      </svg>
+      <figcaption>번호표만 알면 앞에서부터 하나씩 뒤지지 않고 그 칸으로 바로 가요.</figcaption>
+    </figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>3장 "배열, 구조체, 포인터"(S3 p1)는 이전 프로그래밍 과목에서 이미 배운 내용이에요. 이번에는 데이터 타입이 아니라 자료구조 관점에서 다시 봐요.</p>
+    <p><strong>배열(array)</strong>은 같은 형의 변수가 여러 개 필요할 때 그 변수들이 함께 다니게 만드는 것이에요.</p>
+    <ul>
+      <li><code>int A0, A1, A2, A3, …, A9;</code>처럼 이름이 다 다르면 인덱스를 증감하는 for 루프를 돌릴 수 없어요.</li>
+      <li>그래서 <code>int A[10];</code>으로 한 번에 선언해요. 요소 10개가 인덱스(index) 0~9로 묶여요.</li>
+    </ul>
+    <p><strong>데이터 타입을 보는 시각.</strong> int, float, char를 이름으로만 외우지 말고 <strong>규격</strong>과 사이즈, 그리고 쓸 수 있는 <strong>연산자</strong>를 함께 떠올려요.</p>
+    <ul>
+      <li>규격·사이즈: int는 32비트예요(시스템에 따라 16비트, Visual Studio는 32비트). 맨 앞 1비트가 부호, 나머지 31비트가 값이에요.</li>
+      <li>그래서 범위는 $-2^{31} \sim 2^{31}-1$ 이고, 이 범위를 넘는 오버플로우(overflow)도 함께 생각하게 돼요.</li>
+      <li>연산자: 정수끼리의 덧셈, 뺄셈, 곱셈, 나눗셈이에요.</li>
+    </ul>
+    <p><strong>배열의 가장 큰 장점은 빠른 액세스(fast access)예요.</strong> 인덱스가 있어서 "다섯 번째", "일곱 번째"로 곧바로 가요. C는 0부터 세므로 다섯 번째 요소는 <code>A[4]</code>예요. 왜 빠른지는 <a href="#s1-array-memory">1차원·2차원 배열의 메모리 배치</a>에서 메모리 관점으로 설명해요.</p>
+    <p>반복 코드에서도 효율적이에요. 최댓값을 구하는 예(S3 p2)는 배열이 없으면 변수 이름마다 비교문을 따로 써야 해요.</p>
+<pre><code class="language-c">tmp=score[0];
+for(i=1;i&lt;n;i++){
+    if( score[i] &gt; tmp )
+        tmp = score[i];
+}</code></pre>
+    <ol class="steps">
+      <li><code>tmp</code>를 첫 요소 <code>score[0]</code>로 시작해요.</li>
+      <li><code>i</code>를 1부터 <code>n-1</code>까지 늘리며 <code>score[i]</code>와 비교해요.</li>
+      <li>더 큰 값을 만나면 <code>tmp</code>를 그 값으로 바꿔요.</li>
+      <li>루프가 끝나면 <code>tmp</code>가 최댓값이에요.</li>
+    </ol>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p><strong>아파트 비유.</strong> 1층이라고 하면 101호부터 110호까지 10집이 한꺼번에 같이 다녀요. 교실 분단도 한꺼번에 다녀요. 대신 그 자리에 강아지가 앉으면 안 되고 학생만 앉아야 해요. 즉 배열의 요소는 데이터 타입이 같아야 해요. (0921 13:45–14:16)</p>
+    <blockquote>"규격과 사이즈를 얘기해 주고 그게 사용할 수 있는 연산자까지 같이 얘기해 주는 거야." (0921 14:55)</blockquote>
+  </div>
+  <div class="layer warn"><span class="layer-title">꼭 기억해요</span>
+    <blockquote>"중간고사 전까지 자료구조에 대한 얘기를 스택하고 큐까지밖에 안 해요." (0921 13:17)</blockquote>
+    <p>중간고사 전 진도는 스택·큐까지예요.</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">배열은 같은 형의 변수를 함께 다니게 묶은 것이고, 가장 큰 장점은 인덱스로 곧장 가는 빠른 액세스예요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">32비트 int 범위</span>$$-2^{31} \sim 2^{31}-1$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>빠른 액세스(fast access)</dt><dd>인덱스로 원하는 요소에 곧바로 가는 것</dd>
+      <dt>데이터 타입</dt><dd>규격과 사이즈, 쓸 수 있는 연산자를 함께 떠올린다</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s1-array-adt"><h3>배열 ADT: 객체와 연산</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p3</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">칸 번호와 그 칸에 든 물건을 짝지어 두고, 할 수 있는 일은 만들기·꺼내기·넣기로 약속해요.</p>
+    <figure class="figure">
+      <svg id="fig-array-pairs" viewBox="0 0 520 250" role="img" aria-label="왼쪽 번호 칸 0, 1, 2가 오른쪽 물건 칸 사과, 연필, 공과 강조색 화살표로 하나씩 이어져 있어요. 아래에는 만들기, 꺼내기, 넣기라고 적힌 테두리 상자 세 개가 있어요.">
+        <text class="fig-muted" x="110" y="22" text-anchor="middle">번호</text>
+        <text class="fig-muted" x="350" y="22" text-anchor="middle">물건</text>
+        <rect class="fig-ink" x="80" y="34" width="60" height="36"/>
+        <rect class="fig-ink" x="80" y="84" width="60" height="36"/>
+        <rect class="fig-ink" x="80" y="134" width="60" height="36"/>
+        <text class="fig-text" x="110" y="57" text-anchor="middle">0</text>
+        <text class="fig-text" x="110" y="107" text-anchor="middle">1</text>
+        <text class="fig-text" x="110" y="157" text-anchor="middle">2</text>
+        <rect class="fig-ink" x="300" y="34" width="100" height="36"/>
+        <rect class="fig-ink" x="300" y="84" width="100" height="36"/>
+        <rect class="fig-ink" x="300" y="134" width="100" height="36"/>
+        <text class="fig-text" x="350" y="57" text-anchor="middle">사과</text>
+        <text class="fig-text" x="350" y="107" text-anchor="middle">연필</text>
+        <text class="fig-text" x="350" y="157" text-anchor="middle">공</text>
+        <path class="fig-accent" d="M146 52 H292 M292 52 l-9 -5 M292 52 l-9 5"/>
+        <path class="fig-accent" d="M146 102 H292 M292 102 l-9 -5 M292 102 l-9 5"/>
+        <path class="fig-accent" d="M146 152 H292 M292 152 l-9 -5 M292 152 l-9 5"/>
+        <rect class="fig-ink" x="40" y="200" width="120" height="36" rx="8"/>
+        <rect class="fig-ink" x="200" y="200" width="120" height="36" rx="8"/>
+        <rect class="fig-ink" x="360" y="200" width="120" height="36" rx="8"/>
+        <text class="fig-text" x="100" y="223" text-anchor="middle">만들기</text>
+        <text class="fig-text" x="260" y="223" text-anchor="middle">꺼내기</text>
+        <text class="fig-text" x="420" y="223" text-anchor="middle">넣기</text>
+      </svg>
+      <figcaption>무엇을 담고 무엇을 할지만 정하면, 속은 각자 알아서 만들어도 돼요.</figcaption>
+    </figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><strong>ADT(Abstract Data Type, 추상 데이터 타입)</strong>는 세상에 없는 데이터 타입이라도 어떤 데이터를 다루고 어떤 연산을 할지 추상적으로 선언해 보는 것이에요. ADT는 늘 <strong>객체(object)와 연산(operation)</strong>으로 정의해요.</p>
+    <ul>
+      <li>객체: 다룰 수 있는 데이터의 범위예요.</li>
+      <li>연산: 그 타입이 쓸 수 있는 연산자나 함수예요.</li>
+      <li>복습: 1장의 자연수 ADT <code>Nat_No</code>의 객체는 0에서 시작하여 <code>INT_MAX</code>까지의 순서화된 정수의 부분범위예요.</li>
+    </ul>
+    <p><strong>배열 ADT(S3 p3).</strong> 배열은 &lt;인덱스, 요소&gt; 쌍의 집합이에요. 인덱스가 주어지면 해당 요소가 대응되는 구조예요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>구분</th><th>정의</th></tr></thead>
+      <tbody>
+        <tr><td>객체</td><td>&lt;인덱스, 요소&gt; 쌍의 집합</td></tr>
+        <tr><td>연산</td><td><code>create(n)</code> ::= n개의 요소를 가진 배열의 생성</td></tr>
+        <tr><td>연산</td><td><code>retrieve(A, i)</code> ::= 배열 A의 i번째 요소 반환</td></tr>
+        <tr><td>연산</td><td><code>store(A, i, item)</code> ::= 배열 A의 i번째 위치에 item 저장</td></tr>
+      </tbody>
+    </table></div>
+    <p>객체 정의만 보여 줘도 "배열 얘기네"라는 답이 나와야 해요. 배열 ADT의 객체를 물으면 "인덱스와 요소의 쌍으로 표현하는 데이터 타입"이라고 답해요.</p>
+    <p><strong>왜 "추상적(abstract)"인가.</strong></p>
+    <ul>
+      <li>함수의 몸체(body)를 보지 않고 이름만으로 기능을 알 수 있어요. 몸체는 사람마다 다르게 짤 수 있어요.</li>
+      <li>연산은 정해진 개수나 정의가 없어요. 같은 인덱스끼리 더하는 연산, 전체 합을 돌려주는 연산처럼 프로그래머가 필요한 대로 만들어 넣을 수 있어요.</li>
+    </ul>
+    <p><strong>ADT를 강조하는 이유.</strong> 자료구조는 유명한 사람이 만든 것을 가져다 쓰는 것만이 아니에요. 문제를 풀다가 이런 자료구조가 있으면 좋겠다 싶으면 그 ADT를 만들면 돼요. 자료구조는 그렇게 탄생하고, 새 자료구조가 새 알고리즘을 부르기도 해요. 이 교재는 모든 자료구조를 ADT로 시작해요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p><strong>시조 작성 언어 일화.</strong> 교수님은 석사 때 프로그래밍 언어 연구실에 있었고 언어를 20개 넘게 배웠어요. 다른 학교의 프로그래밍 언어론 수업에서 "언어를 하나 설계해 보자"는 프로젝트를 냈는데, 가장 인상 깊은 기말 작품은 시조의 운율 규칙에 맞지 않으면 문법 에러를 내는 시조 작성 언어였어요. 언어도 자료구조도 내가 정의(define)할 수 있다는 것이 요지예요. (0921 20:49–24:16)</p>
+    <p><strong>자바 기원 일화.</strong> 교수님 일화로는 썬 마이크로시스템즈의 한 팀이 세탁기용 4비트 MCU 펌웨어를 만들다가 C가 너무 무거워 새 언어를 만들었다고 해요(일반적으로 알려진 기원과는 세부가 다를 수 있어요). 요지는 시조 일화와 같이 언어도 내가 정의할 수 있다는 것이에요. (0921 21:42–23:13)</p>
+    <blockquote>"그냥 제목만 정해놓고 프로그래머 마음대로 만드는 펑션이라는 뜻이에요." (0921 20:22)</blockquote>
+    <blockquote>"저는 이 책에서 계속 강조하는 게 ADT거든요." (0921 24:10)</blockquote>
+    <blockquote>"필요로 하는 자료구조가 이런 게 있으면 좋겠어, 라고 하면 그거에 대해서 ADT를 만들면 되는 겁니다." (0921 24:31)</blockquote>
+  </div>
+  <div class="layer warn"><span class="layer-title">꼭 기억해요</span>
+    <blockquote>"무조건 ADT는 객체와 연산으로 정의를 하는 겁니다." (0921 17:41)</blockquote>
+    <blockquote>"객체는 인덱스와 요소의 쌍으로 표현해 주는 데이터 타입입니다. 이렇게 대답을 하는 겁니다." (0921 18:26)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">ADT는 객체와 연산으로 정의하고, 배열 ADT의 객체는 &lt;인덱스, 요소&gt; 쌍의 집합이에요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>ADT(Abstract Data Type)</dt><dd>다룰 데이터와 연산을 추상적으로 선언한 데이터 타입</dd>
+      <dt>객체(object)</dt><dd>다룰 수 있는 데이터의 범위</dd>
+      <dt>연산(operation)</dt><dd>그 타입이 쓸 수 있는 연산자나 함수</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s1-array-memory"><h3>1차원·2차원 배열의 메모리 배치</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p4–5</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">친구들이 빈틈없이 나란히 앉아 있으면, 첫 친구 자리만 알아도 누구든 바로 찾아요.</p>
+    <figure class="figure">
+      <svg id="fig-array-seats" viewBox="0 0 480 140" role="img" aria-label="테두리만 있는 자리 여섯 개가 빈틈없이 붙어 있어요. 첫째 자리 아래에 색칠된 점이 있고, 강조색 선 화살표가 세 칸을 건너뛰어 강조색 테두리의 넷째 자리에 닿아요.">
+        <circle class="fig-dot" cx="60" cy="112" r="7"/>
+        <text class="fig-text" x="72" y="117">첫 자리</text>
+        <rect class="fig-ink" x="30" y="60" width="60" height="40"/>
+        <rect class="fig-ink" x="90" y="60" width="60" height="40"/>
+        <rect class="fig-ink" x="150" y="60" width="60" height="40"/>
+        <rect class="fig-accent" x="210" y="60" width="60" height="40"/>
+        <rect class="fig-ink" x="270" y="60" width="60" height="40"/>
+        <rect class="fig-ink" x="330" y="60" width="60" height="40"/>
+        <path class="fig-accent" d="M60 56 Q90 22 120 56 M120 56 Q150 22 180 56 M180 56 Q210 22 240 56"/>
+        <path class="fig-accent" d="M240 56 l-2 -10 M240 56 l-9 -5"/>
+        <text class="fig-text" x="240" y="130" text-anchor="middle">넷째 자리</text>
+      </svg>
+      <figcaption>첫 자리에서 세 칸만 건너뛰면 넷째 친구 자리예요.</figcaption>
+    </figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><strong>1차원 배열(S3 p4).</strong> <code>int A[6];</code>은 방이 6개라서 인덱스가 0부터 5까지예요. C에서는 항상 n−1까지 가요.</p>
+    <ul>
+      <li>첫 요소 <code>A[0]</code>의 주소가 곧 배열의 주소, 즉 <strong>base address</strong>(베이스 어드레스)예요.</li>
+      <li>다음 요소는 <code>base+sizeof(int)</code>, 그다음은 <code>base+2*sizeof(int)</code>, …, 마지막은 <code>base+5*sizeof(int)</code>에 놓여요.</li>
+      <li><code>sizeof</code>는 크기를 바이트 단위로 돌려주는 연산자(키워드)예요. 32비트 int라면 4예요.</li>
+    </ul>
+    <figure class="figure">
+      <svg id="fig-array-1d-addr" viewBox="0 0 600 130" role="img" aria-label="A[0]부터 A[5]까지 테두리 칸 여섯 개가 붙어 있고, 각 칸 아래에 주소 1000, 1004, 1008, 1012, 1016, 1020이 적혀 있어요. A[0] 칸은 강조색 테두리이고 base라고 표시돼 있어요.">
+        <rect class="fig-accent" x="30" y="30" width="90" height="40"/>
+        <rect class="fig-ink" x="120" y="30" width="90" height="40"/>
+        <rect class="fig-ink" x="210" y="30" width="90" height="40"/>
+        <rect class="fig-ink" x="300" y="30" width="90" height="40"/>
+        <rect class="fig-ink" x="390" y="30" width="90" height="40"/>
+        <rect class="fig-ink" x="480" y="30" width="90" height="40"/>
+        <text class="fig-text" x="75" y="55" text-anchor="middle">A[0]</text>
+        <text class="fig-text" x="165" y="55" text-anchor="middle">A[1]</text>
+        <text class="fig-text" x="255" y="55" text-anchor="middle">A[2]</text>
+        <text class="fig-text" x="345" y="55" text-anchor="middle">A[3]</text>
+        <text class="fig-text" x="435" y="55" text-anchor="middle">A[4]</text>
+        <text class="fig-text" x="525" y="55" text-anchor="middle">A[5]</text>
+        <text class="fig-muted" x="75" y="92" text-anchor="middle">1000</text>
+        <text class="fig-muted" x="165" y="92" text-anchor="middle">1004</text>
+        <text class="fig-muted" x="255" y="92" text-anchor="middle">1008</text>
+        <text class="fig-muted" x="345" y="92" text-anchor="middle">1012</text>
+        <text class="fig-muted" x="435" y="92" text-anchor="middle">1016</text>
+        <text class="fig-muted" x="525" y="92" text-anchor="middle">1020</text>
+        <text class="fig-text" x="75" y="20" text-anchor="middle">base</text>
+        <text class="fig-muted" x="300" y="118" text-anchor="middle">주소(10진), 칸마다 sizeof(int) = 4바이트</text>
+      </svg>
+      <figcaption>base가 1000이면 요소는 4바이트씩 붙어서 1000, 1004, 1008, 1012, 1016, 1020에 놓여요.</figcaption>
+    </figure>
+    <p><small>(수업 중 주소를 "1000, 1004, 1008, 100C, … 1020"처럼 16진과 10진을 섞어 불렀어요. 10진으로 정리하면 위와 같아요.)</small></p>
+    <p><strong>빠른 액세스가 가능한 이유</strong>는 요소들이 메모리에 붙어 있기 때문이에요. 메모리는 인덱스를 모르고, 곱하고 더하는 기본 연산으로만 주소를 찾아가요.</p>
+    <p>$$\text{addr}(A[i]) = \text{base} + i \times \text{sizeof(int)}$$</p>
+    <ol class="steps">
+      <li><code>A[3]</code> 요청, base = 1000</li>
+      <li>3 × 4 = 12</li>
+      <li>1000 + 12 = 1012</li>
+      <li>1012번지의 값을 곧바로 가져옴</li>
+    </ol>
+    <p><strong>연속 공간이 필요해요.</strong> <code>int A[6];</code>을 선언하면 운영체제에 $4 \times 6$, 즉 24바이트가 연속으로 들어갈 빈 공간을 요청해요. 그런 공간이 없으면 할당에 실패해요. 반면 <code>a1, a2, a3</code>처럼 따로 선언한 변수는 메모리 여기저기에 흩어져 있어도 돼요.</p>
+    <p><small>(수업 중 "4바이트 곱하기 6을 해서 20"이라고 했다가 곧바로 24바이트로 정정)</small></p>
+    <p>그래서 1장에서 변수를 함부로 쓰지 말라고 했어요. <code>a[100]</code>을 잡아 놓고 10개만 쓰면 남은 90칸은 비어 있어도 다른 데이터가 못 쓰니 메모리 사용량만 늘어요.</p>
+    <p><strong>2차원 배열(S3 p5).</strong> <code>int A[3][4];</code>는 머릿속에서는 3행 4열 표 모양이지만, 실제 메모리에는 한 줄로(linear) 들어가요. 순서는 행 우선(row-major)이에요.</p>
+    <figure class="figure">
+      <svg id="fig-array-2d" viewBox="0 0 680 250" role="img" aria-label="위쪽에 A[0][0]부터 A[2][3]까지 3행 4열 테두리 표가 있고, 아래쪽 선 화살표를 따라 같은 요소 12개가 0행, 1행, 2행 순서로 한 줄 테두리 칸에 이어 놓여 있어요. 1행 네 칸은 강조색 테두리예요.">
+        <text class="fig-muted" x="210" y="54" text-anchor="end">0행</text>
+        <text class="fig-muted" x="210" y="84" text-anchor="end">1행</text>
+        <text class="fig-muted" x="210" y="114" text-anchor="end">2행</text>
+        <rect class="fig-ink" x="220" y="34" width="60" height="30"/>
+        <rect class="fig-ink" x="280" y="34" width="60" height="30"/>
+        <rect class="fig-ink" x="340" y="34" width="60" height="30"/>
+        <rect class="fig-ink" x="400" y="34" width="60" height="30"/>
+        <rect class="fig-accent" x="220" y="64" width="60" height="30"/>
+        <rect class="fig-accent" x="280" y="64" width="60" height="30"/>
+        <rect class="fig-accent" x="340" y="64" width="60" height="30"/>
+        <rect class="fig-accent" x="400" y="64" width="60" height="30"/>
+        <rect class="fig-ink" x="220" y="94" width="60" height="30"/>
+        <rect class="fig-ink" x="280" y="94" width="60" height="30"/>
+        <rect class="fig-ink" x="340" y="94" width="60" height="30"/>
+        <rect class="fig-ink" x="400" y="94" width="60" height="30"/>
+        <text class="fig-text" x="250" y="54" text-anchor="middle">A[0][0]</text>
+        <text class="fig-text" x="310" y="54" text-anchor="middle">A[0][1]</text>
+        <text class="fig-text" x="370" y="54" text-anchor="middle">A[0][2]</text>
+        <text class="fig-text" x="430" y="54" text-anchor="middle">A[0][3]</text>
+        <text class="fig-text" x="250" y="84" text-anchor="middle">A[1][0]</text>
+        <text class="fig-text" x="310" y="84" text-anchor="middle">A[1][1]</text>
+        <text class="fig-text" x="370" y="84" text-anchor="middle">A[1][2]</text>
+        <text class="fig-text" x="430" y="84" text-anchor="middle">A[1][3]</text>
+        <text class="fig-text" x="250" y="114" text-anchor="middle">A[2][0]</text>
+        <text class="fig-text" x="310" y="114" text-anchor="middle">A[2][1]</text>
+        <text class="fig-text" x="370" y="114" text-anchor="middle">A[2][2]</text>
+        <text class="fig-text" x="430" y="114" text-anchor="middle">A[2][3]</text>
+        <text class="fig-muted" x="340" y="20" text-anchor="middle">머릿속 모양</text>
+        <path class="fig-ink" d="M340 132 V166 M340 166 l-5 -9 M340 166 l5 -9"/>
+        <text class="fig-muted" x="350" y="154">실제 메모리</text>
+        <rect class="fig-ink" x="10" y="176" width="55" height="30"/>
+        <rect class="fig-ink" x="65" y="176" width="55" height="30"/>
+        <rect class="fig-ink" x="120" y="176" width="55" height="30"/>
+        <rect class="fig-ink" x="175" y="176" width="55" height="30"/>
+        <rect class="fig-accent" x="230" y="176" width="55" height="30"/>
+        <rect class="fig-accent" x="285" y="176" width="55" height="30"/>
+        <rect class="fig-accent" x="340" y="176" width="55" height="30"/>
+        <rect class="fig-accent" x="395" y="176" width="55" height="30"/>
+        <rect class="fig-ink" x="450" y="176" width="55" height="30"/>
+        <rect class="fig-ink" x="505" y="176" width="55" height="30"/>
+        <rect class="fig-ink" x="560" y="176" width="55" height="30"/>
+        <rect class="fig-ink" x="615" y="176" width="55" height="30"/>
+        <text class="fig-muted" x="37" y="196" text-anchor="middle">A[0][0]</text>
+        <text class="fig-muted" x="92" y="196" text-anchor="middle">A[0][1]</text>
+        <text class="fig-muted" x="147" y="196" text-anchor="middle">A[0][2]</text>
+        <text class="fig-muted" x="202" y="196" text-anchor="middle">A[0][3]</text>
+        <text class="fig-muted" x="257" y="196" text-anchor="middle">A[1][0]</text>
+        <text class="fig-muted" x="312" y="196" text-anchor="middle">A[1][1]</text>
+        <text class="fig-muted" x="367" y="196" text-anchor="middle">A[1][2]</text>
+        <text class="fig-muted" x="422" y="196" text-anchor="middle">A[1][3]</text>
+        <text class="fig-muted" x="477" y="196" text-anchor="middle">A[2][0]</text>
+        <text class="fig-muted" x="532" y="196" text-anchor="middle">A[2][1]</text>
+        <text class="fig-muted" x="587" y="196" text-anchor="middle">A[2][2]</text>
+        <text class="fig-muted" x="642" y="196" text-anchor="middle">A[2][3]</text>
+        <text class="fig-muted" x="120" y="228" text-anchor="middle">0행</text>
+        <text class="fig-muted" x="340" y="228" text-anchor="middle">1행</text>
+        <text class="fig-muted" x="560" y="228" text-anchor="middle">2행</text>
+      </svg>
+      <figcaption>표 모양의 <code>int A[3][4];</code>도 메모리에서는 0행, 1행, 2행 순서로 한 줄로 이어져요.</figcaption>
+    </figure>
+    <ul>
+      <li>순서: <code>A[0][0], A[0][1], A[0][2], A[0][3], A[1][0], …, A[2][3]</code></li>
+      <li>요소가 12개이므로 운영체제가 $4 \times 12 = 48$ 바이트의 연속 공간을 찾아서 할당해요. 이 과정은 운영체제가 처리하므로 프로그래머는 신경 쓰지 않아도 돼요.</li>
+    </ul>
+    <p>앞으로 모든 자료구조를 <a href="#s1-array-adt">배열 ADT: 객체와 연산</a>처럼 ADT로 정의하고, 여기서처럼 메모리 관점에서도 볼 거예요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p><strong>나란히 앉을 자리.</strong> 학생 세 명을 데려와 나란히 앉을 수 있는 자리를 찾으면 한 곳밖에 없어요. 따로따로라면 여기저기 흩어 앉힐 수 있어요. 배열은 "너희는 같이 다녀야 돼"라고 선언한 것이에요. (0921 27:02–27:38)</p>
+    <blockquote>"빠른 엑세스가 장점이기 때문에 메모리에 다 붙어서 앉아 있구나, 어 이렇게 바라보셔야 됩니다." (0921 28:42)</blockquote>
+    <p>운영체제가 메모리를 할당하고 프로그램이 펌웨어에서 동작하는 과정은 4학년 2학기 "마이크로컴퓨터 설계"에서 가르치던 내용이라 이 수업에서는 다루지 않아요. (0921 29:45–30:41)</p>
+  </div>
+  <div class="layer warn"><span class="layer-title">꼭 기억해요</span>
+    <blockquote>"배열이 왜 빠른 엑세스를 할 수가 있냐면 … 얘를 붙여 놨기 때문이에요." (0921 26:36)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">배열 요소는 base address부터 빈틈없이 붙어 있어서, 곱하고 더하는 계산만으로 주소를 바로 찾아요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">요소 주소</span>$$\text{addr}(A[i]) = \text{base} + i \times \text{sizeof(int)}$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>base address</dt><dd>첫 요소 A[0]의 주소이자 배열의 주소</dd>
+      <dt>행 우선(row-major)</dt><dd>2차원 배열을 0행, 1행, … 순서로 한 줄로 놓는 방식</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s2"><h2>3. 배열로 다항식 표현하기</h2>
+<article class="topic" id="s2-poly-method1"><h3>방법 #1: 모든 차수의 계수 저장</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p6–7</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">숫자를 칸마다 차례로 넣고, 비어 있는 자리에도 0을 넣어 칸을 채워요.</p>
+    <figure class="figure"><svg id="fig-poly-all" viewBox="0 0 400 110" role="img" aria-label="여섯 칸이 한 줄로 놓인 선 테두리 상자에 10, 0, 0, 0, 6, 3이 차례로 들어 있고, 0이 든 가운데 세 칸은 강조색 테두리로 표시한 그림">
+      <text class="fig-muted" x="200" y="18" font-size="12" text-anchor="middle">큰 자리부터 작은 자리까지 한 칸씩</text>
+      <rect class="fig-ink" x="20" y="35" width="60" height="44" rx="4"/>
+      <rect class="fig-danger" x="80" y="35" width="60" height="44" rx="4"/>
+      <rect class="fig-danger" x="140" y="35" width="60" height="44" rx="4"/>
+      <rect class="fig-danger" x="200" y="35" width="60" height="44" rx="4"/>
+      <rect class="fig-ink" x="260" y="35" width="60" height="44" rx="4"/>
+      <rect class="fig-ink" x="320" y="35" width="60" height="44" rx="4"/>
+      <text class="fig-text" x="50" y="62" font-size="14" text-anchor="middle">10</text>
+      <text class="fig-text" x="110" y="62" font-size="14" text-anchor="middle">0</text>
+      <text class="fig-text" x="170" y="62" font-size="14" text-anchor="middle">0</text>
+      <text class="fig-text" x="230" y="62" font-size="14" text-anchor="middle">0</text>
+      <text class="fig-text" x="290" y="62" font-size="14" text-anchor="middle">6</text>
+      <text class="fig-text" x="350" y="62" font-size="14" text-anchor="middle">3</text>
+      <text class="fig-muted" x="170" y="100" font-size="12" text-anchor="middle">0이어도 칸을 차지해요</text>
+    </svg><figcaption>강조색 테두리 칸은 0인데도 자리를 차지해요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>다항식(polynomial)의 일반형은 다음과 같아요.</p>
+    <p>$p(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$</p>
+    <p>다항식을 쓰는 목적은 덧셈·뺄셈 같은 연산이에요. 그래서 "배열로 한다"에서 멈추지 않고, 배열에 <strong>어떻게</strong> 담을지까지 정해야 해요. 여기서는 두 방법을 봐요.</p>
+    <ol>
+      <li>다항식의 모든 항을 배열에 저장한다(방법 #1).</li>
+      <li>다항식의 0이 아닌 항만 배열에 저장한다(<a href="#s2-poly-method2">방법 #2: 0이 아닌 항만 (계수, 차수) 쌍으로</a>).</li>
+    </ol>
+    <p>방법 #1은 모든 차수의 계수(coefficient)를 배열 하나에 저장해요. 0인 항도 한 칸을 차지해요. 예를 들어 $10x^5 + 6x + 3$은 $10x^5 + 0x^4 + 0x^3 + 0x^2 + 6x^1 + 3x^0$이므로 <code>coef = {10, 0, 0, 0, 6, 3}</code>이 돼요.</p>
+    <p>차수는 따로 저장하지 않아요. 최고 차수 <code>degree</code>를 기억해 두고, 인덱스 $i$의 차수를 $\text{degree} - i$로 계산해요.</p>
+    <ul>
+      <li>인덱스 0: $5 - 0 = 5$ → $10x^5$</li>
+      <li>인덱스 1: $5 - 1 = 4$ → $0x^4$</li>
+      <li>인덱스 5: $5 - 5 = 0$ → $3x^0$</li>
+    </ul>
+    <p>지수 배열 <code>5,4,3,2,1,0</code>을 따로 두어도 되지만, 인덱스를 거꾸로 세면 얻을 수 있으니 메모리를 더 쓸 필요가 없어요.</p>
+<pre><code class="language-c">typedef struct {
+    int degree;
+    float coef[MAX_DEGREE];
+} polynomial;
+polynomial a = { 5, {10, 0, 0, 0, 6, 3} };</code></pre>
+    <ul>
+      <li><code>degree</code>: 최고 차수를 계수와 함께 들고 다니려고 둔 필드예요.</li>
+      <li><code>float coef[MAX_DEGREE];</code>: 계수 배열이에요. 몇 차까지 다룰지가 <code>MAX_DEGREE</code>예요. 예제 계수가 정수라서 <code>int</code>로 해도 돼요.</li>
+      <li><code>polynomial</code>은 원래 C에 없던 타입이에요. 사용자가 데이터 타입(자료구조)을 정의해서 만든 타입이고, 그 타입으로 변수 <code>a</code>를 선언했어요.</li>
+      <li>초기화 <code>{ 5, {10, 0, 0, 0, 6, 3} }</code>에서 맨 앞 <code>5</code>가 <code>degree</code>, 안쪽 중괄호가 <code>coef</code> 배열이에요.</li>
+      <li><code>typedef</code>는 타입에 별명을 붙이는 문법이에요. 여기서는 이름 없는 구조체(struct)에 <code>polynomial</code>이라는 별명을 붙였어요.</li>
+    </ul>
+    <p>0을 저장하지 않으면 공간은 아끼지만 다른 곳(연산)이 복잡해져요. 한쪽을 얻으면 다른 쪽을 내주는 이 관계를 트레이드오프(trade-off)라고 해요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>"배열로 하긴 했지만 이 배열을 어떻게 표현할지를 생각해야 돼요." (0921 31:58)</blockquote>
+    <p>구조체는 짜장면·짬뽕·탕수육처럼 서로 다른 것을 한 가방에 담는 철가방이에요. <code>polynomial</code>은 "내가 디자인한 철가방"이고, 이것도 하나의 자료구조예요. (0921 34:50, 37:13)</p>
+    <blockquote>"유저가 데이터 타입을 디파인한다 … 컨셉이 들어간 거예요." (0921 36:58)</blockquote>
+    <p>가상의 학생이 "지수 배열도 따로 만들래요"라고 하자, 교수님은 그것도 메모리를 차지하니 꼭 그럴 필요가 있냐고 되물었어요. (0921 33:35–33:57)</p>
+    <p>"0이 너무 많아서 낭비 아니에요?"라는 물음에는 노력 보존의 법칙으로 답했어요. 한 조직에서 이유 없이 갑자기 편해졌다면 누군가 대신 힘들어하고 있다는 뜻이에요. (0921 37:41–39:05)</p>
+    <blockquote>"세상은 트레이드오프가 있습니다, 항상." (0921 37:51)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">방법 #1은 0인 항까지 모든 차수의 계수를 배열 하나에 저장하고, 차수는 인덱스로 계산해요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">다항식 일반형</span>$$p(x) = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$$</li>
+      <li><span class="eq-name">인덱스 i의 차수</span>$$\text{degree} - i$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>typedef</dt><dd>타입에 별명을 붙이는 문법</dd>
+      <dt>트레이드오프(trade-off)</dt><dd>한쪽을 얻으면 다른 쪽을 내주는 관계</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s2-poly-add1"><h3>방법 #1의 덧셈 코드</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p8</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">자리를 맞춰 세로로 줄 세운 뒤, 같은 줄끼리 더하면 돼요.</p>
+    <figure class="figure"><svg id="fig-poly-add-cols" viewBox="0 0 320 170" role="img" aria-label="선 테두리 칸 네 개씩 세 줄이 세로로 맞춰 놓여 있고, 윗줄 8, 0, 7, 1과 가운데 줄 10, 3, 0, 1을 같은 세로줄끼리 더해 아랫줄 강조색 테두리 칸에 18, 3, 7, 2가 들어간 그림">
+      <rect class="fig-ink" x="60" y="10" width="60" height="36" rx="4"/>
+      <rect class="fig-ink" x="120" y="10" width="60" height="36" rx="4"/>
+      <rect class="fig-ink" x="180" y="10" width="60" height="36" rx="4"/>
+      <rect class="fig-ink" x="240" y="10" width="60" height="36" rx="4"/>
+      <text class="fig-text" x="90" y="33" font-size="14" text-anchor="middle">8</text>
+      <text class="fig-text" x="150" y="33" font-size="14" text-anchor="middle">0</text>
+      <text class="fig-text" x="210" y="33" font-size="14" text-anchor="middle">7</text>
+      <text class="fig-text" x="270" y="33" font-size="14" text-anchor="middle">1</text>
+      <rect class="fig-ink" x="60" y="56" width="60" height="36" rx="4"/>
+      <rect class="fig-ink" x="120" y="56" width="60" height="36" rx="4"/>
+      <rect class="fig-ink" x="180" y="56" width="60" height="36" rx="4"/>
+      <rect class="fig-ink" x="240" y="56" width="60" height="36" rx="4"/>
+      <text class="fig-text" x="90" y="79" font-size="14" text-anchor="middle">10</text>
+      <text class="fig-text" x="150" y="79" font-size="14" text-anchor="middle">3</text>
+      <text class="fig-text" x="210" y="79" font-size="14" text-anchor="middle">0</text>
+      <text class="fig-text" x="270" y="79" font-size="14" text-anchor="middle">1</text>
+      <text class="fig-text" x="30" y="79" font-size="14" text-anchor="middle">+</text>
+      <path class="fig-ink" d="M60 104 H300"/>
+      <rect class="fig-accent" x="60" y="116" width="60" height="36" rx="4"/>
+      <rect class="fig-accent" x="120" y="116" width="60" height="36" rx="4"/>
+      <rect class="fig-accent" x="180" y="116" width="60" height="36" rx="4"/>
+      <rect class="fig-accent" x="240" y="116" width="60" height="36" rx="4"/>
+      <text class="fig-text" x="90" y="139" font-size="14" text-anchor="middle">18</text>
+      <text class="fig-text" x="150" y="139" font-size="14" text-anchor="middle">3</text>
+      <text class="fig-text" x="210" y="139" font-size="14" text-anchor="middle">7</text>
+      <text class="fig-text" x="270" y="139" font-size="14" text-anchor="middle">2</text>
+    </svg><figcaption>같은 세로줄끼리 더한 값이 아랫줄 강조색 테두리 칸에 들어가요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>방법 #1은 자릿수(차수)를 모두 맞춰 놓아서 차수를 꺼내기 쉬워요.</p>
+    <ul>
+      <li>장점: 다항식의 각종 연산이 간단해요.</li>
+      <li>단점: 대부분 항의 계수가 0이면 공간 낭비가 심해요.</li>
+    </ul>
+    <p>덧셈 $A + B = C$의 핵심 루프(프로그램 3.2)예요. <code>degree_a</code>, <code>degree_b</code>는 처음에 <code>A.degree</code>, <code>B.degree</code>를 복사한 값이에요.</p>
+<pre><code class="language-c">while( Apos&lt;=A.degree &amp;&amp; Bpos&lt;=B.degree ){
+    if( degree_a &gt; degree_b ){ // A항 &gt; B항
+        C.coef[Cpos++]= A.coef[Apos++];
+        degree_a--;
+    }
+    else if( degree_a == degree_b ){ // A항 == B항
+        C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];
+        degree_a--; degree_b--;
+    }
+    else { // B항 &gt; A항
+        C.coef[Cpos++]= B.coef[Bpos++];
+        degree_b--;
+    }
+}</code></pre>
+    <ul>
+      <li>while 조건: 두 위치 <code>Apos</code>, <code>Bpos</code>가 모두 각자의 최고 차수 범위 안에 있을 때(AND)만 돌아요. 어느 한쪽이 범위를 넘으면 루프를 멈춰요.</li>
+      <li>A 차수가 크면: A 계수를 C에 그대로 복사해요. 쓴 C 자리와 다 쓴 A 항을 넘기려고 <code>Cpos++</code>, <code>Apos++</code>를 하고, 다음 차수로 내려가려고 <code>degree_a--;</code>를 해요(예: 5차 → 4차).</li>
+      <li>차수가 같으면: 두 계수를 더해 C에 넣고 <code>Apos++</code>, <code>Bpos++</code>, <code>degree_a--</code>, <code>degree_b--</code>를 모두 해요.</li>
+      <li>B 차수가 크면: B 계수를 C에 복사하고 <code>degree_b--</code>를 해요.</li>
+    </ul>
+    <p>슬라이드는 "두 다항식의 길이가 다르다면?"이라고 물어요. 교수님은 한 다항식이 먼저 끝나면 다른 쪽에 꼬리가 남으니, 루프 뒤에 남은 항을 옮기는 후처리가 필요하다고 했어요. 다만 이 루프는 차수 카운터가 같아진 뒤 함께 줄어서, 두 다항식이 상수항에서 함께 끝나요. 그래서 방법 #1에서는 후처리에 옮길 항이 남지 않고, 후처리는 안전장치 역할을 해요.</p>
+  </div>
+<p class="interactive-note" data-ds-interactive="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_02_%EB%8B%A4%ED%95%AD%EC%8B%9D%EB%8D%A7%EC%85%88%EC%9D%B8%EB%8D%B1%EC%8A%A4.html">Apos·Bpos·Cpos가 바뀌는 순간과 C에 쓰이는 칸을 <a href="%EC%9D%B8%ED%84%B0%EB%A0%89%ED%8B%B0%EB%B8%8C_02_%EB%8B%A4%ED%95%AD%EC%8B%9D%EB%8D%A7%EC%85%88%EC%9D%B8%EB%8D%B1%EC%8A%A4.html" target="_self">다항식 덧셈의 세 위치</a>에서 한 단계씩 확인해 보세요.</p>
+
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>책 버전마다 프로그램 이름은 조금 다를 수 있지만, 이 코드를 직접 실습해 보라는 뜻이에요.</p>
+    <blockquote>"실습하면 좋겠다는 뜻이에요." (0921 39:20)</blockquote>
+    <p>루프를 한 줄씩 짚는 설명은 생략하고, 예제 다항식 A와 B로 직접 해 보라고 했어요. (0921 40:44–40:56)</p>
+    <blockquote>"그래서 사실 이 뒤에 후처리도 필요합니다." (0921 42:30)</blockquote>
+  </div>
+  <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span>
+    <p>수업에서 보여 주지 않은 후처리 코드예요. while 루프 바로 뒤에 두어, 남은 A 또는 B의 계수를 C 끝으로 옮겨요.</p>
+<pre><code class="language-c">/* while 루프가 끝난 뒤: 후처리 */
+while( Apos&lt;=A.degree )
+    C.coef[Cpos++]= A.coef[Apos++];
+while( Bpos&lt;=B.degree )
+    C.coef[Cpos++]= B.coef[Bpos++];</code></pre>
+    <p>완성된 함수에서는 결과 차수도 정해야 해요. <code>C.degree</code>는 <code>A.degree</code>와 <code>B.degree</code> 중 큰 값이에요.</p>
+    <p>$A = 10x^5 + 6x + 3$ (<code>{ 5, {10, 0, 0, 0, 6, 3} }</code>), $B = 10x^3 + 3x^2 + 1$ (<code>{ 3, {10, 3, 0, 1} }</code>)로 추적하면 다음과 같아요.</p>
+    <ol class="steps">
+      <li><code>degree_a</code>=5 &gt; <code>degree_b</code>=3 → A 복사 → C: 10</li>
+      <li>4 &gt; 3 → A 복사 → C: 10, 0</li>
+      <li>3 == 3 → 0 + 10 → C: 10, 0, 10</li>
+      <li>2 == 2 → 0 + 3 → C: 10, 0, 10, 3</li>
+      <li>1 == 1 → 6 + 0 → C: 10, 0, 10, 3, 6</li>
+      <li>0 == 0 → 3 + 1 → C: 10, 0, 10, 3, 6, 4</li>
+      <li><code>Apos</code>=6, <code>Bpos</code>=4 → 두 위치 모두 범위를 넘어 루프 끝</li>
+    </ol>
+    <p>결과는 $C = 10x^5 + 10x^3 + 3x^2 + 6x + 4$예요. 위 코드를 붙인 덧셈 전체를 C로 컴파일해 실행하면 이 결과가 나오고, $A = 8x^3 + 7x + 1$과 $B$의 합도 $18x^3 + 3x^2 + 7x + 2$로 나와요.</p>
+    <p>실행해 보면 이 방법 #1 루프에서는 후처리 while이 한 번도 돌지 않아요. 두 차수 카운터가 큰 쪽부터 내려와 같아진 뒤 함께 줄어서, A와 B가 상수항에서 동시에 끝나기 때문이에요. 그래도 후처리를 두면 루프가 어떻게 끝나든 남은 항을 놓치지 않아요. 꼬리가 실제로 남는 경우는 0인 항을 빼고 저장하는 방법 #2예요(<a href="#s2-poly-add2">프로그램 3.3과 복잡도로 비교하기</a>).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">방법 #1 덧셈은 두 차수를 비교해 큰 쪽을 복사하거나 같으면 더해요. 교수님은 후처리가 필요하다고 했지만, 이 루프는 두 다항식이 상수항에서 함께 끝나서 후처리는 안전장치예요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>degree_a, degree_b</dt><dd>A.degree, B.degree를 복사해 한 차수씩 줄여 가는 값</dd>
+      <dt>후처리</dt><dd>루프가 끝난 뒤 남은 항을 C로 옮기는 일</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s2-poly-method2"><h3>방법 #2: 0이 아닌 항만 (계수, 차수) 쌍으로</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p9–10</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">0은 아예 적지 않고, 숫자와 그 자리 번호를 짝지어 적어요.</p>
+    <figure class="figure"><svg id="fig-poly-pairs" viewBox="0 0 440 150" role="img" aria-label="위아래 두 줄의 선 테두리 칸이 열 개씩 놓여 있고, 앞 여섯 칸에는 두 식의 숫자 짝이 이어서 들어 있으며, 뒤 네 칸에는 강조색 테두리로 결과 짝 18과 3, 3과 2, 7과 1, 2와 0이 들어간 그림">
+      <text class="fig-muted" x="90" y="16" font-size="12" text-anchor="middle">첫째 식</text>
+      <text class="fig-muted" x="210" y="16" font-size="12" text-anchor="middle">둘째 식</text>
+      <text class="fig-muted" x="360" y="16" font-size="12" text-anchor="middle">더한 결과</text>
+      <path class="fig-ink" d="M30 24 H150 M150 20 V28 M30 20 V28"/>
+      <path class="fig-ink" d="M150 24 H270 M270 20 V28"/>
+      <path class="fig-accent" d="M270 24 H430 M430 20 V28 M270 20 V28"/>
+      <rect class="fig-ink" x="30" y="36" width="40" height="36"/>
+      <rect class="fig-ink" x="70" y="36" width="40" height="36"/>
+      <rect class="fig-ink" x="110" y="36" width="40" height="36"/>
+      <rect class="fig-ink" x="150" y="36" width="40" height="36"/>
+      <rect class="fig-ink" x="190" y="36" width="40" height="36"/>
+      <rect class="fig-ink" x="230" y="36" width="40" height="36"/>
+      <rect class="fig-accent" x="270" y="36" width="40" height="36"/>
+      <rect class="fig-accent" x="310" y="36" width="40" height="36"/>
+      <rect class="fig-accent" x="350" y="36" width="40" height="36"/>
+      <rect class="fig-accent" x="390" y="36" width="40" height="36"/>
+      <rect class="fig-ink" x="30" y="72" width="40" height="36"/>
+      <rect class="fig-ink" x="70" y="72" width="40" height="36"/>
+      <rect class="fig-ink" x="110" y="72" width="40" height="36"/>
+      <rect class="fig-ink" x="150" y="72" width="40" height="36"/>
+      <rect class="fig-ink" x="190" y="72" width="40" height="36"/>
+      <rect class="fig-ink" x="230" y="72" width="40" height="36"/>
+      <rect class="fig-accent" x="270" y="72" width="40" height="36"/>
+      <rect class="fig-accent" x="310" y="72" width="40" height="36"/>
+      <rect class="fig-accent" x="350" y="72" width="40" height="36"/>
+      <rect class="fig-accent" x="390" y="72" width="40" height="36"/>
+      <text class="fig-text" x="50" y="59" font-size="14" text-anchor="middle">8</text>
+      <text class="fig-text" x="90" y="59" font-size="14" text-anchor="middle">7</text>
+      <text class="fig-text" x="130" y="59" font-size="14" text-anchor="middle">1</text>
+      <text class="fig-text" x="170" y="59" font-size="14" text-anchor="middle">10</text>
+      <text class="fig-text" x="210" y="59" font-size="14" text-anchor="middle">3</text>
+      <text class="fig-text" x="250" y="59" font-size="14" text-anchor="middle">1</text>
+      <text class="fig-text" x="290" y="59" font-size="14" text-anchor="middle">18</text>
+      <text class="fig-text" x="330" y="59" font-size="14" text-anchor="middle">3</text>
+      <text class="fig-text" x="370" y="59" font-size="14" text-anchor="middle">7</text>
+      <text class="fig-text" x="410" y="59" font-size="14" text-anchor="middle">2</text>
+      <text class="fig-text" x="50" y="95" font-size="14" text-anchor="middle">3</text>
+      <text class="fig-text" x="90" y="95" font-size="14" text-anchor="middle">1</text>
+      <text class="fig-text" x="130" y="95" font-size="14" text-anchor="middle">0</text>
+      <text class="fig-text" x="170" y="95" font-size="14" text-anchor="middle">3</text>
+      <text class="fig-text" x="210" y="95" font-size="14" text-anchor="middle">2</text>
+      <text class="fig-text" x="250" y="95" font-size="14" text-anchor="middle">0</text>
+      <text class="fig-text" x="290" y="95" font-size="14" text-anchor="middle">3</text>
+      <text class="fig-text" x="330" y="95" font-size="14" text-anchor="middle">2</text>
+      <text class="fig-text" x="370" y="95" font-size="14" text-anchor="middle">1</text>
+      <text class="fig-text" x="410" y="95" font-size="14" text-anchor="middle">0</text>
+      <text class="fig-muted" x="230" y="132" font-size="12" text-anchor="middle">위는 숫자, 아래는 자리 번호</text>
+    </svg><figcaption>한 줄짜리 칸에 여러 식을 이어서 넣고, 더한 결과는 강조색 테두리 칸에 붙여요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>사람도 덧셈할 때 0인 항을 일일이 쓰지 않아요. 최악의 경우 $x^{100} + 1$이면 99차부터 1차까지 모두 0이에요. 그래서 방법 #2는 다항식에서 0이 아닌 항만 배열에 저장해요.</p>
+    <ul>
+      <li>(계수, 차수) 형식으로 저장해요. 예: $10x^5 + 6x + 3$ → ((10,5), (6,1), (3,0))</li>
+      <li>이번에는 지수(exponent)를 함께 저장하므로 메모리를 더 써요. 그래서 0인 항은 두지 않고 최대한 줄여요.</li>
+      <li>배열 하나로 여러 다항식을 나타낼 수 있어요.</li>
+    </ul>
+<pre><code class="language-c">struct {
+    float coef;
+    int expon;
+} terms[MAX_TERMS]={ {10,5}, {6,1}, {3,0} };</code></pre>
+    <p><code>terms</code> 안에 다항식 A와 B가 이어서 들어 있어요. <code>avail</code>은 새 다항식(결과 C)이 쓰이기 시작할 다음 빈 자리의 인덱스예요.</p>
+    <ul>
+      <li>장점: 메모리 공간을 효율적으로 써요.</li>
+      <li>단점: 다항식 연산이 복잡해져요(<a href="#s2-poly-add2">프로그램 3.3과 복잡도로 비교하기</a>).</li>
+    </ul>
+    <p>덧셈 예: $A = 8x^3 + 7x + 1$, $B = 10x^3 + 3x^2 + 1$. 처음에 A는 <code>terms[0..2]</code>, B는 <code>terms[3..5]</code>에 있고 <code>avail</code>=6이에요. 두 다항식 모두 첫 항(최고 차항)에서 시작해 차수를 비교해요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>단계</th><th>A 항</th><th>B 항</th><th>비교</th><th>C에 추가</th><th>다음으로</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>(8,3)</td><td>(10,3)</td><td>차수 같음</td><td>(18,3)</td><td>A, B 둘 다</td></tr>
+        <tr><td>2</td><td>(7,1)</td><td>(3,2)</td><td>B 차수가 큼</td><td>(3,2)</td><td>B만</td></tr>
+        <tr><td>3</td><td>(7,1)</td><td>(1,0)</td><td>A 차수가 큼</td><td>(7,1)</td><td>A만</td></tr>
+        <tr><td>4</td><td>(1,0)</td><td>(1,0)</td><td>차수 같음</td><td>(2,0)</td><td>A, B 둘 다</td></tr>
+      </tbody>
+    </table></div>
+    <p>결과는 $C = 18x^3 + 3x^2 + 7x + 2$예요. C는 <code>avail</code> 위치(<code>terms[6]</code>)부터 <code>terms[9]</code>까지 저장되고, 끝나면 <code>avail</code>=10이에요. 사람이 덧셈하는 방식과 같고, <a href="#s2-poly-add1">방법 #1의 덧셈 코드</a>의 로직과도 같아요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>"다항식에서 0이 아닌 항만을 배열에 저장하기로 마음먹었습니다." (0921 43:04)</blockquote>
+    <p><code>avail</code>까지 두는 건 배열 하나를 여러 다항식이 나눠 써서 최대한 절약하려는 장치라고 했어요.</p>
+    <blockquote>"우리 인간이 덧셈하는 거랑 똑같은 거죠." (0921 45:17)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">방법 #2는 0이 아닌 항만 (계수, 차수) 쌍으로 배열 하나에 이어 저장하고, 결과는 avail 자리부터 붙여요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">덧셈 예 결과</span>$$C = 18x^3 + 3x^2 + 7x + 2$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>(계수, 차수) 형식</dt><dd>0이 아닌 항만 계수와 지수(exponent)를 짝지어 저장</dd>
+      <dt>avail</dt><dd>새 다항식이 쓰이기 시작할 다음 빈 자리의 인덱스</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s2-poly-add2"><h3>프로그램 3.3과 복잡도로 비교하기</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p11</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">일 세 개를 차례로 하면 세 배만 걸려요.</p>
+    <figure class="figure"><svg id="fig-poly-loops" viewBox="0 0 440 130" role="img" aria-label="왼쪽에는 선 테두리 상자 세 개가 화살표로 한 줄로 이어져 있고, 오른쪽에는 강조색 테두리 상자 세 개가 안쪽으로 겹겹이 들어 있는 그림">
+      <text class="fig-text" x="110" y="18" font-size="13" text-anchor="middle">차례로: 더해요</text>
+      <rect class="fig-ink" x="10" y="45" width="50" height="40" rx="4"/>
+      <rect class="fig-ink" x="85" y="45" width="50" height="40" rx="4"/>
+      <rect class="fig-ink" x="160" y="45" width="50" height="40" rx="4"/>
+      <text class="fig-text" x="35" y="70" font-size="13" text-anchor="middle">일 1</text>
+      <text class="fig-text" x="110" y="70" font-size="13" text-anchor="middle">일 2</text>
+      <text class="fig-text" x="185" y="70" font-size="13" text-anchor="middle">일 3</text>
+      <path class="fig-ink" d="M60 65 H83 M77 60 L83 65 L77 70"/>
+      <path class="fig-ink" d="M135 65 H158 M152 60 L158 65 L152 70"/>
+      <text class="fig-text" x="340" y="18" font-size="13" text-anchor="middle">겹겹이: 곱해요</text>
+      <rect class="fig-danger" x="260" y="28" width="160" height="92" rx="4"/>
+      <rect class="fig-danger" x="280" y="46" width="120" height="62" rx="4"/>
+      <rect class="fig-danger" x="300" y="64" width="80" height="32" rx="4"/>
+      <text class="fig-text" x="340" y="85" font-size="13" text-anchor="middle">일 3</text>
+    </svg><figcaption>글이 길어 보여도 왼쪽처럼 일을 차례로 하니, 시간은 세 배쯤만 늘어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>프로그램 3.3은 방법 #2의 덧셈 $C = A + B$예요.</p>
+<pre><code class="language-c">// C = A + B
+void poly_add2(int As, int Ae, int Bs, int Be, int *Cs, int *Ce)
+{
+    float tempcoef;
+    *Cs = avail;
+    while( As &lt;= Ae &amp;&amp; Bs &lt;= Be )
+    switch(compare(terms[As].expon,terms[Bs].expon)){
+        case '&gt;':   // A의 차수 &gt; B의 차수
+            attach(terms[As].coef, terms[As].expon);
+            As++;        break;
+        case '=':   // A의 차수 == B의 차수
+            tempcoef = terms[As].coef + terms[Bs].coef;
+            if( tempcoef )
+                attach(tempcoef,terms[As].expon);
+            As++; Bs++;  break;
+        case '&lt;':   // A의 차수 &lt; B의 차수
+            attach(terms[Bs].coef, terms[Bs].expon);
+            Bs++;        break;
+    }
+    // A의 나머지 항들을 이동함
+    for(;As&lt;=Ae;As++)
+        attach(terms[As].coef, terms[As].expon);
+    // B의 나머지 항들을 이동함
+    for(;Bs&lt;=Be;Bs++)
+        attach(terms[Bs].coef, terms[Bs].expon);
+    *Ce = avail -1;
+}</code></pre>
+    <ul>
+      <li>매개변수 <code>As</code>, <code>Ae</code>와 <code>Bs</code>, <code>Be</code>는 <code>terms</code> 안에서 A와 B가 시작·끝나는 인덱스예요. <code>Cs</code>, <code>Ce</code>는 결과 C의 시작·끝 위치를 돌려받는 매개변수예요.</li>
+      <li><code>*Cs = avail;</code>: C는 지금의 빈 자리 <code>avail</code>부터 시작해요.</li>
+      <li><code>compare</code>는 두 지수를 비교해 <code>'&gt;'</code>, <code>'='</code>, <code>'&lt;'</code> 문자를 돌려줘요. switch는 정수 값만 다룰 수 있어서 비교 결과를 문자(정수 코드)로 받아요.</li>
+      <li>case 로직은 <a href="#s2-poly-add1">방법 #1의 덧셈 코드</a>와 같아요. 큰 쪽 항을 붙이고, 같으면 계수를 더해 붙여요. 더한 계수가 0이면(<code>if( tempcoef )</code>가 거짓) 붙이지 않아서 0이 아닌 항만 남아요.</li>
+      <li>루프가 끝나면 두 for 문이 A나 B의 나머지 항을 <code>attach</code>로 C의 꼬리에 붙여요. 이것이 방법 #2의 후처리예요.</li>
+      <li><code>attach</code>는 처음 보는 함수지만, ADT 관점에서 연산일 테니 이름만으로 "항을 C 끝에 붙인다"고 추측할 수 있어야 해요.</li>
+      <li><code>*Ce = avail -1;</code>: 마지막으로 붙인 항의 인덱스가 C의 끝이에요. <a href="#s2-poly-method2">방법 #2: 0이 아닌 항만 (계수, 차수) 쌍으로</a>의 예에서는 <code>Cs</code>=6, <code>Ce</code>=9예요.</li>
+    </ul>
+    <p>switch 문은 if / else if / 중첩 if-else보다 경우마다 딱 끊어지는 구조라서 가독성(readability)이 좋아요. 단점은 정수만 처리할 수 있다는 거예요.</p>
+    <p><strong>복잡도 비교.</strong> 코드가 길어졌다고 "복잡해졌다"고 보면 안 돼요. 판단 기준은 두 가지예요.</p>
+    <ol>
+      <li>빠른가(fast)</li>
+      <li>메모리를 덜 쓰는가</li>
+    </ol>
+    <p>라인 수는 기준이 아니에요.</p>
+    <ul>
+      <li>방법 #1의 덧셈: while 하나라서 $O(n)$이에요.</li>
+      <li>방법 #2의 덧셈: while 하나(최악 $n$번)와 나머지 항 for 두 개(각각 최악 $n$번)가 중첩이 아니라 차례로 놓여 있어요. 그래서 $n + n + n = 3n$이고, 상수를 떼면 $O(n)$이에요. 곱 $n \times n \times n$이 아니에요.</li>
+    </ul>
+    <p>두 방법의 시간 오더는 같아요. 메모리는 상황에 따라 달라요. 예제에서는 두 방법 모두 6칸 정도라 비슷해요. 차수가 높고 중간에 0이 많은 다항식을 다루면 방법 #2가 맞고, 0이 거의 없는 3·4차식만 다루면 방법 #1이 맞아요. 정답은 없어요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>"패스트하고 메모리를 덜 쓰는 거 두 가지 조건을 기준으로 판단을 해야 돼요." (0921 46:26)</blockquote>
+    <blockquote>"프로그램의 라인 수가 길어졌을 때. 이제 절대 그렇게 봐선 안 됩니다." (0921 46:48–46:54)</blockquote>
+    <p>전구를 연결할 때처럼 루프들이 병렬로 놓여 있지 직렬이 아니라서 곱하지 않고 더한다고 했어요. 코드로 말하면 루프가 중첩되지 않고 차례로 이어져 있다는 뜻이에요. (0921 47:30)</p>
+    <blockquote>"얘도 복잡해 보이나 오더는 Order of n입니다." (0921 47:44)</blockquote>
+    <p>0이 드문드문 있는 고차 다항식을 다루는 방식은 "그래프를 만들 때 방식"이라고만 하고, 수학적인 얘기라며 넘어갔어요. (0921 48:38–48:54)</p>
+    <blockquote>"어떤 게 정답이다가 없어요." (0921 49:09)</blockquote>
+    <p>switch는 로직이 경우마다 끊어져서 읽기 좋고, 그것이 프로그램의 미덕을 높인다고 했어요.</p>
+    <blockquote>"몰라도 추측할 수 있어야 돼요. 왜? ADT 관점에서 얘는 오퍼레이션일 거거든요." (0921 50:48–50:53)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">프로그램 3.3은 코드가 길어도 루프가 차례로 놓여 있어서 방법 #1과 같은 오더로 돌아가요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">방법 #2 덧셈 반복 횟수</span>$$n + n + n = 3n$$</li>
+      <li><span class="eq-name">두 방법의 덧셈 시간복잡도</span>$$O(n)$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>attach</dt><dd>항을 결과 C의 끝에 붙이는 연산</dd>
+      <dt>switch</dt><dd>경우마다 끊어지는 분기문, 정수 값만 다룸</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s3"><h2>4. 희소 행렬</h2>
+<article class="topic" id="s3-sparse-full"><h3>방법 #1: 2차원 배열에 전부 저장</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p12–13</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">대부분 비어 있는 서랍장을 칸째로 다 들고 다니는 방법이에요.</p>
+<figure class="figure"><svg id="fig-sparse-full" viewBox="0 0 480 250" role="img" aria-label="왼쪽은 가로세로 세 칸인 작은 격자, 오른쪽은 가로세로 여섯 칸인 큰 격자예요. 값이 든 칸은 강조색 테두리로, 0이 든 칸은 가는 선 테두리에 흐린 글자로 그렸어요. 작은 격자는 아홉 칸 중 두 칸이, 큰 격자는 서른여섯 칸 중 스물아홉 칸이 0이에요.">
+<text class="fig-muted" x="55" y="54" font-size="12" text-anchor="middle">0</text>
+<text class="fig-muted" x="85" y="54" font-size="12" text-anchor="middle">1</text>
+<text class="fig-muted" x="115" y="54" font-size="12" text-anchor="middle">2</text>
+<text class="fig-muted" x="32" y="79" font-size="12" text-anchor="end">0</text>
+<text class="fig-muted" x="32" y="109" font-size="12" text-anchor="end">1</text>
+<text class="fig-muted" x="32" y="139" font-size="12" text-anchor="end">2</text>
+<rect class="fig-accent" x="42" y="62" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="55" y="80" font-size="13" text-anchor="middle" font-weight="700">2</text>
+<rect class="fig-accent" x="72" y="62" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="85" y="80" font-size="13" text-anchor="middle" font-weight="700">3</text>
+<rect class="fig-ink" x="100" y="60" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="115" y="80" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="42" y="92" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="55" y="110" font-size="13" text-anchor="middle" font-weight="700">8</text>
+<rect class="fig-accent" x="72" y="92" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="85" y="110" font-size="13" text-anchor="middle" font-weight="700">9</text>
+<rect class="fig-accent" x="102" y="92" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="115" y="110" font-size="13" text-anchor="middle" font-weight="700">1</text>
+<rect class="fig-accent" x="42" y="122" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="55" y="140" font-size="13" text-anchor="middle" font-weight="700">7</text>
+<rect class="fig-ink" x="70" y="120" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="85" y="140" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="102" y="122" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="115" y="140" font-size="13" text-anchor="middle" font-weight="700">5</text>
+<text class="fig-muted" x="85" y="175" font-size="12" text-anchor="middle">9칸 중 빈 칸 2개</text>
+<text class="fig-muted" x="265" y="34" font-size="12" text-anchor="middle">0</text>
+<text class="fig-muted" x="295" y="34" font-size="12" text-anchor="middle">1</text>
+<text class="fig-muted" x="325" y="34" font-size="12" text-anchor="middle">2</text>
+<text class="fig-muted" x="355" y="34" font-size="12" text-anchor="middle">3</text>
+<text class="fig-muted" x="385" y="34" font-size="12" text-anchor="middle">4</text>
+<text class="fig-muted" x="415" y="34" font-size="12" text-anchor="middle">5</text>
+<text class="fig-muted" x="242" y="59" font-size="12" text-anchor="end">0</text>
+<text class="fig-muted" x="242" y="89" font-size="12" text-anchor="end">1</text>
+<text class="fig-muted" x="242" y="119" font-size="12" text-anchor="end">2</text>
+<text class="fig-muted" x="242" y="149" font-size="12" text-anchor="end">3</text>
+<text class="fig-muted" x="242" y="179" font-size="12" text-anchor="end">4</text>
+<text class="fig-muted" x="242" y="209" font-size="12" text-anchor="end">5</text>
+<rect class="fig-ink" x="250" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="265" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="280" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="310" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="342" y="42" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="355" y="60" font-size="13" text-anchor="middle" font-weight="700">7</text>
+<rect class="fig-ink" x="370" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="400" y="40" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="415" y="60" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="252" y="72" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="265" y="90" font-size="13" text-anchor="middle" font-weight="700">9</text>
+<rect class="fig-ink" x="280" y="70" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="90" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="310" y="70" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="90" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="340" y="70" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="90" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="70" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="90" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="402" y="72" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="415" y="90" font-size="13" text-anchor="middle" font-weight="700">8</text>
+<rect class="fig-ink" x="250" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="265" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="280" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="310" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="340" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="400" y="100" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="415" y="120" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="252" y="132" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="265" y="150" font-size="13" text-anchor="middle" font-weight="700">6</text>
+<rect class="fig-accent" x="282" y="132" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="295" y="150" font-size="13" text-anchor="middle" font-weight="700">5</text>
+<rect class="fig-ink" x="310" y="130" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="150" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="340" y="130" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="150" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="130" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="150" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="400" y="130" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="415" y="150" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="250" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="265" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="280" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="310" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="325" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="340" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="160" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="180" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="402" y="162" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="415" y="180" font-size="13" text-anchor="middle" font-weight="700">1</text>
+<rect class="fig-ink" x="250" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="265" y="210" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="280" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="295" y="210" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="312" y="192" width="26" height="26" rx="3" stroke-width="2"/>
+<text class="fig-text" x="325" y="210" font-size="13" text-anchor="middle" font-weight="700">2</text>
+<rect class="fig-ink" x="340" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="355" y="210" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="370" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="385" y="210" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="400" y="190" width="30" height="30" stroke-width="1"/>
+<text class="fig-muted" x="415" y="210" font-size="13" text-anchor="middle">0</text>
+<text class="fig-muted" x="340" y="238" font-size="12" text-anchor="middle">36칸 중 빈 칸 29개</text>
+</svg><figcaption>큰 격자는 36칸 중 값이 든 칸이 7개뿐이라, 나머지 칸은 자리만 차지해요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>배열로 행렬(matrix)을 표현하는 방법은 두 가지를 봐요(S3 p12).</p>
+    <ol>
+      <li>2차원 배열을 써서 행렬의 전체 요소를 저장하는 방법</li>
+      <li>0이 아닌 요소만 저장하는 방법(<a href="#s3-sparse-triple">방법 #2: (행, 열, 값)으로 0이 아닌 요소만</a>)</li>
+    </ol>
+    <p><strong>희소 행렬(sparse matrix)</strong>은 대부분의 항이 0인 행렬이에요. 공학에서 많이 쓰여요.</p>
+    <p>예제 행렬은 두 개예요. A는 3×3이고 0이 두 개뿐이에요. B는 6×6이고 36개 항 중 29개가 0이에요.</p>
+    <div class="table-wrap"><table><caption>행렬 A (3×3)</caption><thead><tr><th>행\열</th><th>0열</th><th>1열</th><th>2열</th></tr></thead><tbody><tr><th>0행</th><td>2</td><td>3</td><td>0</td></tr><tr><th>1행</th><td>8</td><td>9</td><td>1</td></tr><tr><th>2행</th><td>7</td><td>0</td><td>5</td></tr></tbody></table></div>
+    <div class="table-wrap"><table><caption>행렬 B (6×6)</caption><thead><tr><th>행\열</th><th>0열</th><th>1열</th><th>2열</th><th>3열</th><th>4열</th><th>5열</th></tr></thead><tbody><tr><th>0행</th><td>0</td><td>0</td><td>0</td><td>7</td><td>0</td><td>0</td></tr><tr><th>1행</th><td>9</td><td>0</td><td>0</td><td>0</td><td>0</td><td>8</td></tr><tr><th>2행</th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>3행</th><td>6</td><td>5</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><th>4행</th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr><tr><th>5행</th><td>0</td><td>0</td><td>2</td><td>0</td><td>0</td><td>0</td></tr></tbody></table></div>
+    <p>방법 #1은 이 값을 2차원 배열에 그대로 다 저장해요(S3 p13). 슬라이드 그림에서는 값이 있는 항을 노란 칸으로, 0인 항을 주황 칸으로 구분해요.</p>
+    <ul>
+      <li>장점: 행렬 연산을 간단하게 구현할 수 있어요.</li>
+      <li>단점: 대부분의 항이 0인 희소 행렬이면 메모리 낭비가 커요.</li>
+    </ul>
+    <p>A는 9칸 중 2칸만 0이라 낭비가 적어요. B는 36칸 중 29칸이 0이라 낭비가 커요. 그래서 희소 행렬에는 방법 #2를 택해요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>두 가지만 보는 건 방법이 두 가지뿐이어서가 아니라 수업 시간 때문이라고 했어요.</p>
+    <blockquote>"아니요 그냥 수업 시간상 두 가지만 얘기하는 겁니다." (0921 51:35)</blockquote>
+    <p>B는 값을 가진 항을 찾는 게 오히려 더 쉬운 행렬이에요. 앞의 다항식처럼, 이 그림을 보는 순간 두 번째 방법으로 가라는 뜻임을 알아차리면 된다고 했어요(0921 51:56–52:09).</p>
+    <p>두 행렬을 방법 #1로 저장한 모습을 이렇게 비교했어요.</p>
+    <blockquote>"지금 9분의 2만 낭비가 됐다는 느낌이에요." (0921 52:36)</blockquote>
+    <blockquote>"근데 얘는 어우 너무 뭔가 메모리 낭비를 한 것 같은 느낌이" (0921 52:39)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">행렬을 2차원 배열에 전부 저장하면 연산은 간단하지만, 희소 행렬에서는 메모리 낭비가 커요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>희소 행렬(sparse matrix)</dt><dd>대부분의 항이 0인 행렬</dd><dt>메모리 낭비</dt><dd>0인 항까지 자리를 차지하는 것. B는 36칸 중 29칸이 0이에요.</dd></dl>
+  </div>
+</article>
+<article class="topic" id="s3-sparse-triple"><h3>방법 #2: (행, 열, 값)으로 0이 아닌 요소만</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p14</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">값이 든 칸만 골라 "몇째 줄, 몇째 칸, 무엇"을 쪽지에 적어 두는 방법이에요.</p>
+<figure class="figure"><svg id="fig-sparse-triple" viewBox="0 0 460 260" role="img" aria-label="왼쪽은 가로세로 여섯 칸인 격자이고, 값이 든 일곱 칸만 강조색 테두리로 그렸어요. 오른쪽은 줄, 칸, 값을 적는 세 칸짜리 쪽지 일곱 줄이고, 첫 줄만 강조색 테두리예요. 격자 맨 윗줄 넷째 칸의 7 위에서 강조색 점선 화살표가 쪽지 첫 줄 0, 3, 7로 이어져요.">
+<text class="fig-muted" x="42" y="54" font-size="12" text-anchor="middle">0</text>
+<text class="fig-muted" x="66" y="54" font-size="12" text-anchor="middle">1</text>
+<text class="fig-muted" x="90" y="54" font-size="12" text-anchor="middle">2</text>
+<text class="fig-muted" x="114" y="54" font-size="12" text-anchor="middle">3</text>
+<text class="fig-muted" x="138" y="54" font-size="12" text-anchor="middle">4</text>
+<text class="fig-muted" x="162" y="54" font-size="12" text-anchor="middle">5</text>
+<text class="fig-muted" x="22" y="76" font-size="12" text-anchor="end">0</text>
+<text class="fig-muted" x="22" y="100" font-size="12" text-anchor="end">1</text>
+<text class="fig-muted" x="22" y="124" font-size="12" text-anchor="end">2</text>
+<text class="fig-muted" x="22" y="148" font-size="12" text-anchor="end">3</text>
+<text class="fig-muted" x="22" y="172" font-size="12" text-anchor="end">4</text>
+<text class="fig-muted" x="22" y="196" font-size="12" text-anchor="end">5</text>
+<rect class="fig-ink" x="30" y="60" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="42" y="77" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="54" y="60" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="66" y="77" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="78" y="60" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="90" y="77" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-accent" x="104" y="62" width="20" height="20" rx="3" stroke-width="2"/>
+<text class="fig-text" x="114" y="77" font-size="12" text-anchor="middle" font-weight="700">7</text>
+<rect class="fig-ink" x="126" y="60" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="138" y="77" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="150" y="60" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="162" y="77" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-accent" x="32" y="86" width="20" height="20" rx="3" stroke-width="2"/>
+<text class="fig-text" x="42" y="101" font-size="12" text-anchor="middle" font-weight="700">9</text>
+<rect class="fig-ink" x="54" y="84" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="66" y="101" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="78" y="84" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="90" y="101" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="102" y="84" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="114" y="101" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="126" y="84" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="138" y="101" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-accent" x="152" y="86" width="20" height="20" rx="3" stroke-width="2"/>
+<text class="fig-text" x="162" y="101" font-size="12" text-anchor="middle" font-weight="700">8</text>
+<rect class="fig-ink" x="30" y="108" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="42" y="125" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="54" y="108" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="66" y="125" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="78" y="108" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="90" y="125" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="102" y="108" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="114" y="125" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="126" y="108" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="138" y="125" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="150" y="108" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="162" y="125" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-accent" x="32" y="134" width="20" height="20" rx="3" stroke-width="2"/>
+<text class="fig-text" x="42" y="149" font-size="12" text-anchor="middle" font-weight="700">6</text>
+<rect class="fig-accent" x="56" y="134" width="20" height="20" rx="3" stroke-width="2"/>
+<text class="fig-text" x="66" y="149" font-size="12" text-anchor="middle" font-weight="700">5</text>
+<rect class="fig-ink" x="78" y="132" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="90" y="149" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="102" y="132" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="114" y="149" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="126" y="132" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="138" y="149" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="150" y="132" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="162" y="149" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="30" y="156" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="42" y="173" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="54" y="156" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="66" y="173" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="78" y="156" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="90" y="173" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="102" y="156" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="114" y="173" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="126" y="156" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="138" y="173" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-accent" x="152" y="158" width="20" height="20" rx="3" stroke-width="2"/>
+<text class="fig-text" x="162" y="173" font-size="12" text-anchor="middle" font-weight="700">1</text>
+<rect class="fig-ink" x="30" y="180" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="42" y="197" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="54" y="180" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="66" y="197" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-accent" x="80" y="182" width="20" height="20" rx="3" stroke-width="2"/>
+<text class="fig-text" x="90" y="197" font-size="12" text-anchor="middle" font-weight="700">2</text>
+<rect class="fig-ink" x="102" y="180" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="114" y="197" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="126" y="180" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="138" y="197" font-size="12" text-anchor="middle">0</text>
+<rect class="fig-ink" x="150" y="180" width="24" height="24" stroke-width="1"/>
+<text class="fig-muted" x="162" y="197" font-size="12" text-anchor="middle">0</text>
+<text class="fig-text" x="347" y="52" font-size="13" text-anchor="middle" font-weight="700">줄</text><text class="fig-text" x="381" y="52" font-size="13" text-anchor="middle" font-weight="700">칸</text><text class="fig-text" x="415" y="52" font-size="13" text-anchor="middle" font-weight="700">값</text>
+<text class="fig-muted" x="322" y="77" font-size="12" text-anchor="end">0</text>
+<rect class="fig-accent" x="330" y="60" width="34" height="26" stroke-width="2"/>
+<text class="fig-text" x="347" y="78" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-accent" x="364" y="60" width="34" height="26" stroke-width="2"/>
+<text class="fig-text" x="381" y="78" font-size="13" text-anchor="middle">3</text>
+<rect class="fig-accent" x="398" y="60" width="34" height="26" stroke-width="2"/>
+<text class="fig-text" x="415" y="78" font-size="13" text-anchor="middle">7</text>
+<text class="fig-muted" x="322" y="103" font-size="12" text-anchor="end">1</text>
+<rect class="fig-ink" x="330" y="86" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="347" y="104" font-size="13" text-anchor="middle">1</text>
+<rect class="fig-ink" x="364" y="86" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="381" y="104" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="398" y="86" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="415" y="104" font-size="13" text-anchor="middle">9</text>
+<text class="fig-muted" x="322" y="129" font-size="12" text-anchor="end">2</text>
+<rect class="fig-ink" x="330" y="112" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="347" y="130" font-size="13" text-anchor="middle">1</text>
+<rect class="fig-ink" x="364" y="112" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="381" y="130" font-size="13" text-anchor="middle">5</text>
+<rect class="fig-ink" x="398" y="112" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="415" y="130" font-size="13" text-anchor="middle">8</text>
+<text class="fig-muted" x="322" y="155" font-size="12" text-anchor="end">3</text>
+<rect class="fig-ink" x="330" y="138" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="347" y="156" font-size="13" text-anchor="middle">3</text>
+<rect class="fig-ink" x="364" y="138" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="381" y="156" font-size="13" text-anchor="middle">0</text>
+<rect class="fig-ink" x="398" y="138" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="415" y="156" font-size="13" text-anchor="middle">6</text>
+<text class="fig-muted" x="322" y="181" font-size="12" text-anchor="end">4</text>
+<rect class="fig-ink" x="330" y="164" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="347" y="182" font-size="13" text-anchor="middle">3</text>
+<rect class="fig-ink" x="364" y="164" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="381" y="182" font-size="13" text-anchor="middle">1</text>
+<rect class="fig-ink" x="398" y="164" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="415" y="182" font-size="13" text-anchor="middle">5</text>
+<text class="fig-muted" x="322" y="207" font-size="12" text-anchor="end">5</text>
+<rect class="fig-ink" x="330" y="190" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="347" y="208" font-size="13" text-anchor="middle">4</text>
+<rect class="fig-ink" x="364" y="190" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="381" y="208" font-size="13" text-anchor="middle">5</text>
+<rect class="fig-ink" x="398" y="190" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="415" y="208" font-size="13" text-anchor="middle">1</text>
+<text class="fig-muted" x="322" y="233" font-size="12" text-anchor="end">6</text>
+<rect class="fig-ink" x="330" y="216" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="347" y="234" font-size="13" text-anchor="middle">5</text>
+<rect class="fig-ink" x="364" y="216" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="381" y="234" font-size="13" text-anchor="middle">2</text>
+<rect class="fig-ink" x="398" y="216" width="34" height="26" stroke-width="1"/>
+<text class="fig-text" x="415" y="234" font-size="13" text-anchor="middle">2</text>
+<path class="fig-accent" d="M114 40 C 160 0, 270 10, 328 58" fill="none" stroke-width="1.8" stroke-dasharray="5 4"/>
+<path class="fig-accent" d="M318.5 55.3 L328 58 L323.7 49.1" fill="none" stroke-width="1.8"/>
+</svg><figcaption>0이 든 칸은 적지 않으니, 쪽지 일곱 줄이면 큰 격자를 다 옮겨 적어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>2차원 배열의 각 요소는 행 인덱스 <code>i</code>와 열 인덱스 <code>j</code>로 자기 자리를 가져요. 방법 #2는 이 자리와 값을 묶어 <strong>(행, 열, 값)</strong> 세 개로 저장하고, 0인 요소는 표현하지 않아요(S3 p14).</p>
+    <p>삼중항 하나가 저장 배열의 한 행이 돼요. 그래서 저장 배열은 열이 3개(행, 열, 값)예요.</p>
+    <p>B를 행 순서대로 훑으며 삼중항을 만들어요.</p>
+    <ol class="steps">
+      <li>0행: 3열에 7 → (0,3,7)</li>
+      <li>1행: 0열에 9, 5열에 8 → (1,0,9), (1,5,8)</li>
+      <li>2행: 모두 0 → 추가 없음</li>
+      <li>3행: 0열에 6, 1열에 5 → (3,0,6), (3,1,5)</li>
+      <li>4행: 5열에 1 → (4,5,1)</li>
+      <li>5행: 2열에 2 → (5,2,2)</li>
+      <li>끝: 36개 항 중 7개 → 저장 배열 0~6번 행</li>
+    </ol>
+    <p>A도 같은 방법으로 9개 항 중 값이 있는 7개를 저장해요. 역시 0~6번 행이 만들어져요.</p>
+    <p>A: (0,0,2) (0,1,3) (1,0,8) (1,1,9) (1,2,1) (2,0,7) (2,2,5)</p>
+    <p>B: (0,3,7) (1,0,9) (1,5,8) (3,0,6) (3,1,5) (4,5,1) (5,2,2)</p>
+    <div class="table-wrap"><table><caption>A의 (행, 열, 값) 목록</caption><thead><tr><th>번호</th><th>행</th><th>열</th><th>값</th></tr></thead><tbody><tr><th>0</th><td>0</td><td>0</td><td>2</td></tr><tr><th>1</th><td>0</td><td>1</td><td>3</td></tr><tr><th>2</th><td>1</td><td>0</td><td>8</td></tr><tr><th>3</th><td>1</td><td>1</td><td>9</td></tr><tr><th>4</th><td>1</td><td>2</td><td>1</td></tr><tr><th>5</th><td>2</td><td>0</td><td>7</td></tr><tr><th>6</th><td>2</td><td>2</td><td>5</td></tr></tbody></table></div>
+    <div class="table-wrap"><table><caption>B의 (행, 열, 값) 목록</caption><thead><tr><th>번호</th><th>행</th><th>열</th><th>값</th></tr></thead><tbody><tr><th>0</th><td>0</td><td>3</td><td>7</td></tr><tr><th>1</th><td>1</td><td>0</td><td>9</td></tr><tr><th>2</th><td>1</td><td>5</td><td>8</td></tr><tr><th>3</th><td>3</td><td>0</td><td>6</td></tr><tr><th>4</th><td>3</td><td>1</td><td>5</td></tr><tr><th>5</th><td>4</td><td>5</td><td>1</td></tr><tr><th>6</th><td>5</td><td>2</td><td>2</td></tr></tbody></table></div>
+    <ul>
+      <li>장점: 희소 행렬이면 메모리 공간을 절약해요.</li>
+      <li>단점: 각종 행렬 연산의 구현이 복잡해져요.</li>
+    </ul>
+    <p>값 말고 행과 열도 기억하므로 조금 낭비처럼 보여요. 그래도 희소 행렬에서는 전체 크기가 줄어요. B는 36칸 대신 $7 \times 3 = 21$칸이면 돼요. 반대로 0이 두 개뿐인 A는 9칸이 21칸으로 늘어요. 슬라이드가 장점에 "희소 행렬의 경우"라는 조건을 단 이유예요.</p>
+    <p>행렬도 다항식도 0은 계산에 들어가지 않아요. 그래서 계산에 들어갈 요소에만 집중하는 이 방법은 메모리를 줄이면서 직관적이기도 해요. 다항식에서 0이 아닌 항만 저장한 <a href="#s2-poly-method2">방법 #2: 0이 아닌 항만 (계수, 차수) 쌍으로</a>와 같은 생각이에요.</p>
+    <p>이 장의 요지는 이래요. 문제가 주어지면 먼저 데이터 타입이나 자료구조(예: 배열)를 정해요. 거기서 끝내지 않고, 문제(다항식의 덧셈, 행렬의 덧셈 등)를 풀기 위해 그 데이터를 어떻게 표현할 것인가를 한 단계 더 고민해요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>행과 열까지 기억하니 오히려 낭비 같다는 의문을 먼저 짚고, 그래도 줄일 수 있는 방법이라고 했어요(0921 54:24–54:31).</p>
+    <blockquote>"0은 계산에 안 들어갑니다. 그러니까 계산에 들어갈 애들한테만 포커스 하겠다는 거예요." (0921 54:41–54:48)</blockquote>
+    <p>두 방법 가운데 어느 쪽이 좋고 나쁜지를 가리려는 게 아니라고 선을 그었어요.</p>
+    <blockquote>"뭐가 좋고 뭐가 나빠요, 이 얘기하려고 하는 거 절대 아니에요." (0921 55:00)</blockquote>
+    <blockquote>"내가 이걸 어떻게 표현할 것인가를 고민해야 된다는 얘기예요." (0921 55:31)</blockquote>
+    <p>배열 부분을 마치며, 배열 문법을 다시 가르친 게 아니라 이미 배운 데이터 타입을 자료구조 관점에서 해석하는 개념을 이야기한 것이라고 했어요.</p>
+    <blockquote>"어레이 문법 다시 가르치는 거 절대 아닙니다." (0921 55:40)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">0이 아닌 요소만 (행, 열, 값)으로 저장하면 희소 행렬의 메모리를 아끼지만, 행렬 연산 구현은 복잡해져요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">B의 저장 칸 수</span>$$7 \times 3 = 21$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms"><dt>(행, 열, 값)</dt><dd>0이 아닌 요소 하나의 자리와 값을 묶은 삼중항. B의 첫 항은 (0,3,7), 마지막 항은 (5,2,2)예요.</dd><dt>어떻게 표현할 것인가</dt><dd>자료구조를 정한 뒤, 문제를 풀기 위해 데이터를 어떤 모양으로 담을지 고민하는 단계</dd></dl>
+  </div>
+</article>
+    </section>
+    <section id="s4"><h2>5. 구조체</h2>
+<article class="topic" id="s4-struct"><h3>구조체와 typedef</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p15–16</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">모양이 서로 다른 물건도 가방 하나에 같이 담을 수 있어요.</p>
+    <figure class="figure"><svg id="fig-struct-bag" viewBox="0 0 520 220" role="img" aria-label="왼쪽은 같은 네모 테두리 두 개가 나란히 든 줄 상자, 오른쪽은 손잡이가 달린 가방 테두리 안에 네모, 동그라미, 세모 테두리가 함께 든 그림">
+      <text class="fig-text" x="120" y="28" text-anchor="middle">같은 모양만 담는 줄</text>
+      <rect class="fig-ink" x="20" y="45" width="200" height="120" rx="6" stroke-dasharray="6 5"/>
+      <rect class="fig-accent" x="45" y="75" width="60" height="60"/>
+      <rect class="fig-accent" x="135" y="75" width="60" height="60"/>
+      <text class="fig-muted" x="75" y="155" text-anchor="middle">첫째</text>
+      <text class="fig-muted" x="165" y="155" text-anchor="middle">둘째</text>
+      <text class="fig-text" x="395" y="28" text-anchor="middle">다른 모양도 담는 가방</text>
+      <path class="fig-ink" d="M365,60 L365,45 Q395,35 425,45 L425,60"/>
+      <rect class="fig-ink" x="290" y="60" width="210" height="120" rx="8"/>
+      <rect class="fig-accent" x="305" y="95" width="50" height="50"/>
+      <circle class="fig-ink" cx="395" cy="120" r="26"/>
+      <path class="fig-danger" d="M440,145 L465,95 L490,145 Z"/>
+      <text class="fig-muted" x="330" y="168" text-anchor="middle">네모</text>
+      <text class="fig-muted" x="395" y="168" text-anchor="middle">동그라미</text>
+      <text class="fig-muted" x="465" y="168" text-anchor="middle">세모</text>
+    </svg><figcaption>왼쪽 줄에는 같은 네모만 들어가고, 오른쪽 가방에는 네모와 동그라미와 세모가 함께 들어가요.</figcaption></figure>
+    <p>가방에 짧은 별명을 붙여 두면 부를 때 편해요.</p>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>구조체(structure)는 타입이 다른 데이터를 하나로 묶는 방법이에요. 배열(array)은 타입이 같은 데이터를 하나로 묶는 방법이에요. 구조체 안에 묶인 데이터 하나하나를 필드(field)라고 해요.</p>
+    <p>배열 <code>char carray[100];</code>은 char 100개가 같은 모양으로 줄지어 들어가요. 아래 구조체는 char, int, float, double처럼 타입이 모두 다른 필드를 한 덩어리로 묶어요(S3 p15).</p>
+    <pre><code class="language-c">struct example {
+    char cfield;
+    int ifield;
+    float ffield;
+    double dfield;
+};
+struct example s1;</code></pre>
+    <p>이 선언에는 typedef가 없어서 별명이 생기지 않아요. 그래서 변수를 만들 때마다 <code>struct example</code>이라는 이름을 그대로 써야 해요. <code>struct example s1;</code>은 이 구조체 타입의 변수 s1을 만드는 문장이에요.</p>
+    <p>수업에서 본 구조체 선언 방법은 두 가지예요(S3 p16). 첫째는 별명 없이 태그(tag) 이름으로 쓰는 방법이에요.</p>
+    <pre><code class="language-c">struct person {
+    char name[10];      // 문자배열로 된 이름
+    int age;            // 나이를 나타내는 정수값
+    float height;       // 키를 나타내는 실수값
+};
+struct person a;        // 구조체 변수 선언</code></pre>
+    <p>둘째는 typedef로 별명을 붙이는 방법이에요. 형식은 <code>typedef 타입 정의이름</code>이고, 기존 타입에 새 이름을 붙여요.</p>
+    <pre><code class="language-c">typedef struct person {
+    char name[10];      // 문자배열로 된 이름
+    int age;            // 나이를 나타내는 정수값
+    float height;       // 키를 나타내는 실수값
+} person;
+person a;               // 구조체 변수 선언</code></pre>
+    <div class="table-wrap"><table>
+      <thead><tr><th>방법</th><th>타입 이름</th><th>변수 선언</th></tr></thead>
+      <tbody>
+        <tr><td>태그만 쓰기</td><td><code>struct person</code></td><td><code>struct person a;</code></td></tr>
+        <tr><td>typedef로 별명 붙이기</td><td><code>person</code></td><td><code>person a;</code></td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>태그 <code>person</code>과 별명 <code>person</code>은 이름이 같아도 돼요.</li>
+      <li>typedef를 쓰면 앞에 <code>struct</code>를 붙이지 않고 <code>person</code>만으로 타입을 써요.</li>
+      <li>별명을 <code>generation</code>으로 지었다면, 앞으로 <code>generation</code>이라는 데이터 타입이 생긴 것처럼 쓸 수 있어요.</li>
+      <li>다항식에서 <code>polynomial</code>이라는 별명을 붙인 것도 같은 방법이에요(<a href="#s2-poly-method1">방법 #1: 모든 차수의 계수 저장</a>).</li>
+    </ul>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>구조체는 제가 쓰는 표현으로 철가방을 만드는 겁니다. (0921 56:04)</blockquote>
+    <p>철가방은 겉으로 보면 이 중국집이나 저 중국집이나 똑같아요. 그런데 열어 보면 3층인 것, 2층인 것, 칸막이가 있는 것, 단무지 칸이 따로 있는 것, 빨간색인 것까지 다양해요. 구조체도 타입이 다른 것들이 가방 하나에 들어가는 거라고 설명했어요(0921 56:22–57:06).</p>
+    <p>두 선언 방법 중에서는 typedef로 별명을 붙인 쪽이 사용하기 더 좋다고 했어요(0921 58:48).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">구조체는 타입이 다른 필드를 한 덩어리로 묶고, typedef로 별명을 붙이면 struct 없이 쓸 수 있어요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>구조체(structure)</dt><dd>타입이 다른 데이터를 하나로 묶는 방법</dd>
+      <dt>필드(field)</dt><dd>구조체 안에 묶인 데이터 하나</dd>
+      <dt>typedef</dt><dd>기존 타입에 별명을 붙이는 방법</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s4-struct-assign"><h3>구조체의 대입과 비교</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p17</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">똑같이 생긴 가방 두 개는 내용물을 통째로 옮겨 담을 수 있어요.</p>
+    <figure class="figure"><svg id="fig-struct-copy" viewBox="0 0 520 195" role="img" aria-label="층이 셋으로 나뉜 가방 테두리 두 개가 나란히 있고, 왼쪽 가방에서 오른쪽 가방으로 내용물을 옮기는 화살표 선과, 두 가방의 층 사이에 물음표가 붙은 점선이 그려진 그림">
+      <text class="fig-text" x="110" y="30" text-anchor="middle">왼쪽 가방</text>
+      <rect class="fig-ink" x="40" y="45" width="140" height="135" rx="6"/>
+      <line class="fig-ink" x1="40" y1="90" x2="180" y2="90"/>
+      <line class="fig-ink" x1="40" y1="135" x2="180" y2="135"/>
+      <text class="fig-muted" x="110" y="72" text-anchor="middle">3층</text>
+      <text class="fig-muted" x="110" y="117" text-anchor="middle">2층</text>
+      <text class="fig-muted" x="110" y="162" text-anchor="middle">1층</text>
+      <text class="fig-text" x="410" y="30" text-anchor="middle">오른쪽 가방</text>
+      <rect class="fig-ink" x="340" y="45" width="140" height="135" rx="6"/>
+      <line class="fig-ink" x1="340" y1="90" x2="480" y2="90"/>
+      <line class="fig-ink" x1="340" y1="135" x2="480" y2="135"/>
+      <text class="fig-muted" x="410" y="72" text-anchor="middle">3층</text>
+      <text class="fig-muted" x="410" y="117" text-anchor="middle">2층</text>
+      <text class="fig-muted" x="410" y="162" text-anchor="middle">1층</text>
+      <line class="fig-accent" x1="190" y1="68" x2="330" y2="68"/>
+      <path class="fig-accent" d="M320,60 L330,68 L320,76"/>
+      <text class="fig-text" x="260" y="56" text-anchor="middle">통째로 옮기기</text>
+      <line class="fig-danger" x1="190" y1="157" x2="330" y2="157" stroke-dasharray="6 5"/>
+      <text class="fig-text" x="260" y="147" text-anchor="middle">몇 층끼리?</text>
+    </svg><figcaption>하지만 어느 가방이 더 크냐고 물으면 몇 층끼리 비교할지 먼저 정해야 해요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>구조체 변수끼리의 대입은 가능해요. 같은 타입의 두 변수 a, b에서 <code>b = a;</code>라고 쓰면 a의 모든 필드가 b로 복사돼요(S3 p17).</p>
+    <pre><code class="language-c">typedef struct person {
+    char name[10];      // 문자배열로 된 이름
+    int age;            // 나이를 나타내는 정수값
+    float height;       // 키를 나타내는 실수값
+} person;
+main()
+{
+    person a, b;
+    b = a;              // 가능
+}</code></pre>
+    <p>a와 b는 같은 타입이라 규격과 크기가 같아요. 그래서 필드 하나하나가 모자라거나 넘치지 않고 그대로 옮겨져요.</p>
+    <p>구조체 변수끼리의 비교는 불가능해요.</p>
+    <pre><code class="language-c">main()
+{
+    if( a &gt; b )
+        printf("a가 b보다 나이가 많음");    // 불가능
+}</code></pre>
+    <p>요즘 컴파일러에서는 <code>int main(void)</code>로 써야 실행돼요.</p>
+    <p><code>if( a &gt; b )</code>만으로는 어느 필드(몇 층)를 비교할지 알 수 없어요. 구조체 전체를 한꺼번에 비교하는 연산은 없어요. 비교하려면 필드를 골라서 <code>a.age &gt; b.age</code>처럼 구체적으로 써야 해요. 구조체 변수 이름 뒤에 점(<code>.</code>)과 필드 이름을 붙이면 그 필드 하나를 가리켜요.</p>
+    <pre><code class="language-c">if( a.age &gt; b.age )
+    printf("a가 b보다 나이가 많음");</code></pre>
+    <div class="table-wrap"><table>
+      <thead><tr><th>연산</th><th>예</th><th>가능 여부</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td>대입</td><td><code>b = a;</code></td><td>가능</td><td>같은 타입이라 모든 필드를 그대로 복사해요</td></tr>
+        <tr><td>비교</td><td><code>if( a &gt; b )</code></td><td>불가능</td><td>어느 필드를 비교할지 정해지지 않아요</td></tr>
+        <tr><td>필드 비교</td><td><code>a.age &gt; b.age</code></td><td>가능</td><td>int 필드끼리 비교해요</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>대입은 철가방의 규격과 사이즈가 같으니, 안의 음식을 모자람도 넘침도 없이 옮길 수 있다고 설명했어요(0921 59:10–59:26).</p>
+    <blockquote>1층에 있는 걸 비교해야 돼, 2층에 있는 걸 비교해야 돼? (0921 59:39)</blockquote>
+    <p>비교하라고 하면 컴퓨터가 몇 층을 비교할지 되묻는다는 비유예요. 그건 사람이 알려 줘야 해요.</p>
+    <blockquote>철가방 전체 크기를 비교하는 거는 무의미하고요. (0921 60:00)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">같은 타입의 구조체는 b = a;로 통째로 대입할 수 있지만, 비교는 a.age &gt; b.age처럼 필드를 골라야 해요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>대입(b = a;)</dt><dd>가능: a의 모든 필드가 b로 복사돼요</dd>
+      <dt>비교(if( a &gt; b ))</dt><dd>불가능: 어느 필드를 비교할지 알 수 없어요</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s4-self-ref"><h3>자체 참조 구조체</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p18</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">내 왼팔은 나와 똑같이 생긴 사람만 가리킬 수 있어요.</p>
+    <figure class="figure"><svg id="fig-selfref-arm" viewBox="0 0 400 230" role="img" aria-label="나라고 적힌 상자 테두리에서 나와 같은 모양의 상자 테두리로 화살표 선이 이어지고, 텔레비전 테두리로 가는 점선에는 가위표가 그려진 그림">
+      <rect class="fig-ink" x="20" y="40" width="120" height="80" rx="10"/>
+      <text class="fig-text" x="80" y="85" text-anchor="middle">나</text>
+      <rect class="fig-ink" x="250" y="40" width="130" height="80" rx="10"/>
+      <text class="fig-text" x="315" y="85" text-anchor="middle">나와 같은 모양</text>
+      <line class="fig-accent" x1="140" y1="80" x2="248" y2="80"/>
+      <path class="fig-accent" d="M238,72 L248,80 L238,88"/>
+      <text class="fig-muted" x="194" y="68" text-anchor="middle">왼팔</text>
+      <rect class="fig-ink" x="255" y="155" width="110" height="60" rx="4"/>
+      <line class="fig-ink" x1="290" y1="155" x2="275" y2="138"/>
+      <line class="fig-ink" x1="330" y1="155" x2="345" y2="138"/>
+      <text class="fig-text" x="310" y="190" text-anchor="middle">텔레비전</text>
+      <line class="fig-danger" x1="120" y1="120" x2="252" y2="180" stroke-dasharray="6 5"/>
+      <line class="fig-danger" x1="176" y1="136" x2="196" y2="162"/>
+      <line class="fig-danger" x1="196" y1="136" x2="176" y2="162"/>
+    </svg><figcaption>텔레비전 같은 다른 물건은 가리킬 수 없어요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>자체 참조 구조체(self-referential structure)는 필드 중에 자기 자신과 같은 구조체를 가리키는 포인터가 한 개 이상 있는 구조체예요. 자기 참조 구조체라고도 불러요. 연결 리스트나 트리에 많이 나와요(S3 p18).</p>
+    <pre><code class="language-c">typedef struct ListNode {
+    char data[10];
+    struct ListNode *link;
+} ListNode;</code></pre>
+    <ul>
+      <li><code>data</code> 필드는 문자 10개짜리 배열이에요.</li>
+      <li><code>struct ListNode *link;</code>는 자기와 같은 모양의 구조체(<code>struct ListNode</code>)를 가리키는 포인터 필드예요.</li>
+      <li>구조체를 정의하는 안에서 <code>struct ListNode</code>를 또 부르지만, 순환 호출(recursive call)과는 개념이 달라요.</li>
+      <li>뜻은 "<code>link</code>는 앞으로 너와 똑같이 생긴 <code>ListNode</code>만 가리킬 수 있다"예요.</li>
+      <li>typedef로 <code>ListNode</code>라는 별명도 붙였어요.</li>
+    </ul>
+    <figure class="figure"><svg id="fig-selfref-node" viewBox="0 0 460 150" role="img" aria-label="data 칸과 link 칸으로 나뉜 ListNode 상자 테두리 두 개가 있고, 첫 상자의 link 칸에서 둘째 상자로 화살표 선이 이어진 그림">
+      <text class="fig-muted" x="95" y="28" text-anchor="middle">ListNode</text>
+      <rect class="fig-ink" x="20" y="40" width="150" height="60"/>
+      <line class="fig-ink" x1="110" y1="40" x2="110" y2="100"/>
+      <text class="fig-text" x="65" y="75" text-anchor="middle">data[10]</text>
+      <text class="fig-text" x="140" y="75" text-anchor="middle">link</text>
+      <text class="fig-muted" x="345" y="28" text-anchor="middle">ListNode</text>
+      <rect class="fig-ink" x="270" y="40" width="150" height="60"/>
+      <line class="fig-ink" x1="360" y1="40" x2="360" y2="100"/>
+      <text class="fig-text" x="315" y="75" text-anchor="middle">data[10]</text>
+      <text class="fig-text" x="390" y="75" text-anchor="middle">link</text>
+      <line class="fig-accent" x1="140" y1="85" x2="140" y2="125"/>
+      <line class="fig-accent" x1="140" y1="125" x2="240" y2="125"/>
+      <line class="fig-accent" x1="240" y1="125" x2="240" y2="70"/>
+      <line class="fig-accent" x1="240" y1="70" x2="266" y2="70"/>
+      <path class="fig-accent" d="M256,62 L266,70 L256,78"/>
+    </svg><figcaption>link 필드는 같은 ListNode 모양의 구조체만 가리켜요.</figcaption></figure>
+    <p>포인터 문법은 다음 수업에서 다뤄요. 이 모양이 다음 장 연결 리스트(linked list)의 노드(node)가 돼요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>제가 왼팔이 있는데 이 왼팔은 나랑 똑같이 생긴 사람만 가리킬 수 있다 (0921 60:59)</blockquote>
+    <p>에어컨이나 TV 같은 것은 못 가리킨다고 덧붙였어요(0921 61:13). 리스트 노드도 자기와 똑같이 생긴 리스트 노드만 가리킨다는 뜻이에요.</p>
+    <blockquote>recursive call이랑은 컨셉이 좀 다릅니다. (0921 60:56)</blockquote>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">자체 참조 구조체는 자기와 같은 모양의 구조체를 가리키는 포인터 필드를 가진 구조체예요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>자체 참조 구조체(self-referential structure)</dt><dd>필드 중에 자기 자신과 같은 구조체를 가리키는 포인터가 있는 구조체</dd>
+      <dt>link</dt><dd>같은 ListNode 모양의 구조체만 가리키는 포인터 필드</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s5"><h2>6. 요약 · 예고</h2>
+<article class="topic" id="s5-cheatsheet"><h3>한눈에 보는 0921</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S2 p15–20</span><span class="tag slide">S3 p1–18</span></div>
+  <p>이번 수업은 하노이 탑으로 순환을 마무리하고, 배열과 구조체를 자료구조 관점에서 다시 봤어요.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>주제</th><th>핵심</th><th>자세히</th></tr></thead>
+    <tbody>
+      <tr><td>순환의 두 조건</td><td>호출할 때마다 문제가 줄어서 바닥을 칠 수 있어야 해요. 바닥 조건에서는 더 부르지 않고 답을 바로 내놓아요.</td><td><a href="#s0-recursion-rules">순환의 두 조건 다시 보기</a></td></tr>
+      <tr><td>하노이 탑 순환 구조</td><td><code>hanoi_tower(n, from, tmp, to)</code>의 바닥 조건은 <code>n==1</code>이에요(원판 하나를 from에서 to로). 그 외에는 <code>hanoi_tower(n-1, from, to, tmp);</code>, 원판 n을 from에서 to로, <code>hanoi_tower(n-1, tmp, from, to);</code> 순서예요. n을 부르면 n−1을 두 번 불러요.</td><td><a href="#s0-hanoi-logic">쉬운 문제로 로직을 세우고 일반화하기</a>, <a href="#s0-hanoi-trace">최종 프로그램과 n=4 호출 추적</a></td></tr>
+      <tr><td>배열 ADT</td><td>객체는 &lt;인덱스, 요소&gt; 쌍의 집합이에요. 연산은 <code>create(n)</code>, <code>retrieve(A, i)</code>, <code>store(A, i, item)</code>이에요. ADT는 늘 객체와 연산으로 정의해요.</td><td><a href="#s1-array-adt">배열 ADT: 객체와 연산</a></td></tr>
+      <tr><td>배열의 주소 계산</td><td>요소가 메모리에 붙어 있어서 빠른 액세스가 돼요. <code>A[i]</code>의 주소는 $\text{base} + i \times \text{sizeof(int)}$예요. <code>int A[6];</code>은 $4 \times 6 = 24$바이트, <code>int A[3][4];</code>는 행 우선으로 $4 \times 12 = 48$바이트를 연속으로 잡아요.</td><td><a href="#s1-array-memory">1차원·2차원 배열의 메모리 배치</a></td></tr>
+      <tr><td>구조체</td><td>타입이 다른 데이터를 하나로 묶어요(배열은 같은 타입). <code>typedef</code>는 별명을 줘서 <code>person a;</code>처럼 <code>struct</code> 없이 써요.</td><td><a href="#s4-struct">구조체와 typedef</a></td></tr>
+      <tr><td>구조체 대입과 비교</td><td><code>b = a;</code>는 가능해요. <code>if( a &gt; b )</code>는 불가능하고 <code>a.age &gt; b.age</code>처럼 필드를 골라 비교해요.</td><td><a href="#s4-struct-assign">구조체의 대입과 비교</a></td></tr>
+      <tr><td>자체 참조 구조체</td><td><code>struct ListNode *link;</code>처럼 자기와 같은 타입만 가리키는 필드를 가진 구조체예요(self-referential structure). 연결 리스트·트리에 많이 나와요.</td><td><a href="#s4-self-ref">자체 참조 구조체</a></td></tr>
+    </tbody>
+  </table></div>
+  <p>다항식 표현 두 방법 비교 (예: $10x^5 + 6x + 3$)</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>방법 #1: 모든 차수의 계수</th><th>방법 #2: 0이 아닌 항만</th></tr></thead>
+    <tbody>
+      <tr><td>저장</td><td><code>coef = {10, 0, 0, 0, 6, 3}</code>, 차수는 최고 차수 − 인덱스로 계산해요.</td><td>(계수, 차수) 쌍 <code>{10,5}, {6,1}, {3,0}</code>을 하나의 배열 <code>terms</code>에 여러 다항식이 이어서 담고, <code>avail</code>이 다음 빈 자리예요.</td></tr>
+      <tr><td>공간</td><td>0인 항도 자리를 차지해서, 0이 많으면 공간 낭비가 심해요.</td><td>지수도 저장하지만 0을 두지 않아서, 0이 많으면 메모리를 아껴요.</td></tr>
+      <tr><td>연산</td><td>자릿수가 맞춰져 있어서 간단해요.</td><td>코드가 길어져요(<code>switch</code>, <code>compare</code>, <code>attach</code>).</td></tr>
+      <tr><td>덧셈 시간복잡도</td><td>while 하나라서 $O(n)$</td><td>while 하나와 for 두 개가 나란히 있어서 $n + n + n = 3n$, 곧 $O(n)$</td></tr>
+    </tbody>
+  </table></div>
+  <p>판단 기준은 빠른가와 메모리를 덜 쓰는가예요. 라인 수로 복잡도를 판단하지 않고, 어느 방법이 정답이라는 것도 없어요(트레이드오프). 자세히는 <a href="#s2-poly-method1">방법 #1: 모든 차수의 계수 저장</a>, <a href="#s2-poly-method2">방법 #2: 0이 아닌 항만 (계수, 차수) 쌍으로</a>, <a href="#s2-poly-add2">프로그램 3.3과 복잡도로 비교하기</a>에 있어요.</p>
+  <p>희소 행렬 두 방법 비교</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>방법 #1: 2차원 배열에 전부</th><th>방법 #2: 0이 아닌 요소만</th></tr></thead>
+    <tbody>
+      <tr><td>저장</td><td>모든 요소를 그대로 저장해요.</td><td>각 요소를 (행, 열, 값)으로 저장하고 0은 표현하지 않아요. 6×6 행렬 B는 36개 중 7개만 남아요.</td></tr>
+      <tr><td>장점</td><td>행렬 연산이 간단해요.</td><td>메모리를 절약해요.</td></tr>
+      <tr><td>단점</td><td>희소 행렬(sparse matrix)이면 메모리 낭비가 커요.</td><td>행렬 연산 구현이 복잡해져요.</td></tr>
+    </tbody>
+  </table></div>
+  <p>자세히는 <a href="#s3-sparse-full">방법 #1: 2차원 배열에 전부 저장</a>, <a href="#s3-sparse-triple">방법 #2: (행, 열, 값)으로 0이 아닌 요소만</a>에 있어요.</p>
+</article>
+<article class="topic" id="s5-next"><h3>다음 시간 예고</h3><div class="tags"><span class="tag date">0921 수업</span><span class="tag slide">S3 p19–31</span><span class="tag slide">S4</span></div>
+  <ul>
+    <li>S3 p19–31 포인터
+      <ul>
+        <li>포인터(pointer)</li>
+        <li>포인터와 관련된 연산자</li>
+        <li>다양한 포인터</li>
+        <li>함수의 파라미터로서의 포인터</li>
+        <li>배열과 포인터</li>
+        <li>구조체의 포인터</li>
+        <li>포인터의 포인터</li>
+        <li>포인터 연산</li>
+        <li>포인터 사용 시 주의할 점</li>
+        <li>동적 메모리 할당</li>
+        <li>동적 메모리 할당 라이브러리(malloc)</li>
+      </ul>
+    </li>
+    <li>S4 리스트: 연결 리스트</li>
+  </ul>
+</article>
+<article class="topic" id="s5-links"><h3>함께 보면 좋은 자료</h3><div class="tags"><span class="tag date">0921 수업</span></div>
+  <ul>
+    <li><a href="복습문제_0921_ArrayStructureList.html">기출 복습문제 4선 — 0921 수업 범위</a></li>
+    <li><a href="../../자료구조_강의록_2026/Software_2_Recursion.pdf">강의록 Software_2 Recursion (PDF)</a></li>
+    <li><a href="../../자료구조_강의록_2026/Software_3_ArrayStructureList.pdf">강의록 Software_3 ArrayStructureList (PDF)</a></li>
+  </ul>
+</article>
+    </section>
+  </main>
+  <footer>출처: 이정원 교수님 강의록(Software_2–3) · 수업 녹음 전사(0921).</footer>
+    </div>
+    <aside class="panel panel-right" id="panel-right" aria-labelledby="panel-right-title">
+      <div class="panel-resize" data-side="right" role="separator" aria-orientation="vertical" aria-controls="panel-right" aria-label="오른쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-right-title">페이지 요약</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-sub" id="sum-for">전체 흐름</p>
+        <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
+        <div class="sums"></div>
+      </div>
+    </aside>
+  </div>
+  <div class="scrim" id="panel-scrim" aria-hidden="true"></div>
+  <nav class="pager" aria-label="화면 이동">
+    <div class="pager-inner">
+      <button class="btn btn-ghost" id="pager-prev" type="button">이전</button>
+      <span class="pager-count" id="pager-count"></span>
+      <button class="btn btn-primary" id="pager-next" type="button">시작하기</button>
+    </div>
+  </nav>
+  <p class="sr-only" id="pager-status" aria-live="polite"></p>
+  <script id="widget-hanoi-ui">(function () {
+// 하노이 탑 호출 추적 위젯의 수학과 그리기. 브라우저(IIFE 안)와 node(정적 그림 생성)에서 같은 코드를 쓴다.
+// 문자열에 달러 기호를 쓰지 않는다(템플릿 리터럴 금지).
+var HANOI = (function () {
+    function build(n, from, tmp, to) {
+        var nodes = [];
+        var events = [];
+        var moves = 0;
+        function rec(n, from, tmp, to, parent, depth) {
+            var id = nodes.length;
+            var node = { id: id, n: n, from: from, tmp: tmp, to: to, parent: parent, depth: depth,
+                         children: [], move: 0, label: '(' + n + ',' + from + ',' + tmp + ',' + to + ')' };
+            nodes.push(node);
+            if (parent >= 0) nodes[parent].children.push(id);
+            if (n === 1) {
+                moves += 1;
+                node.move = moves;
+                events.push({ type: 'leaf', node: id, disk: 1, from: from, to: to, move: moves });
+            } else {
+                events.push({ type: 'enter', node: id });
+                rec(n - 1, from, to, tmp, id, depth + 1);
+                moves += 1;
+                node.move = moves;
+                events.push({ type: 'print', node: id, disk: n, from: from, to: to, move: moves });
+                rec(n - 1, tmp, from, to, id, depth + 1);
+            }
+        }
+        rec(n, from, tmp, to, -1, 0);
+        return { n: n, nodes: nodes, events: events };
+    }
+
+    function lineText(ev) {
+        if (ev.disk === 1) return '원판 1을 ' + ev.from + ' 에서 ' + ev.to + '으로 옮긴다.';
+        return '원판 ' + ev.disk + '을 ' + ev.from + '에서 ' + ev.to + '으로 옮긴다.';
+    }
+
+    // k = 지금까지 실행한 사건 수(0 ~ events.length)
+    function stateAt(h, k) {
+        var pegs = { A: [], B: [], C: [] };
+        for (var d = h.n; d >= 1; d--) pegs[h.nodes[0].from].push(d);
+        var called = {};
+        var log = [];
+        var lastDisk = 0;
+        for (var i = 0; i < k; i++) {
+            var ev = h.events[i];
+            called[ev.node] = true;
+            if (ev.type !== 'enter') {
+                pegs[ev.to].push(pegs[ev.from].pop());
+                log.push(ev);
+                lastDisk = ev.disk;
+            }
+        }
+        var current = k > 0 ? h.events[k - 1].node : -1;
+        var stack = [];
+        for (var c = current; c >= 0; c = h.nodes[c].parent) stack.unshift(c);
+        // 호출된 노드의 조상도 호출된 것이다
+        for (var s = 0; s < stack.length; s++) called[stack[s]] = true;
+        return { k: k, pegs: pegs, called: called, log: log, current: current, stack: stack,
+                 event: k > 0 ? h.events[k - 1] : null, lastDisk: lastDisk };
+    }
+
+    function message(h, st) {
+        if (!st.event) return '아직 아무 호출도 하지 않았어요. main이 hanoi_tower(4, A, B, C)를 부르기 직전이에요.';
+        var ev = st.event;
+        var nd = h.nodes[ev.node];
+        if (ev.type === 'enter') {
+            var first = h.nodes[nd.children[0]];
+            return nd.label + ' 호출: n이 1이 아니니 먼저 ' + first.label + '를 부르러 내려가요.';
+        }
+        if (ev.type === 'leaf') {
+            return nd.label + '는 바닥 조건 n==1이에요. (' + ev.move + ') 원판1 ' + ev.from + '→' + ev.to + ' 출력 후 돌아가요.';
+        }
+        var second = h.nodes[nd.children[1]];
+        return nd.label + '로 돌아와 (' + ev.move + ') 원판' + ev.disk + ' ' + ev.from + '→' + ev.to + ' 출력. 다음은 ' + second.label + '예요.';
+    }
+
+    // 그림 좌표
+    var W = 680, H = 400, BOX_W = 74, BOX_H = 24;
+    var LEVEL_Y = [22, 70, 118, 166];
+    var PEG_X = { A: 115, B: 340, C: 565 };
+    var BASE_Y = 372, PEG_TOP = 236, DISK_H = 20;
+
+    function layout(h) {
+        var pos = [];
+        var leafIndex = 0;
+        function place(id) {
+            var nd = h.nodes[id];
+            if (nd.children.length === 0) {
+                pos[id] = { x: 50 + leafIndex * 83, y: LEVEL_Y[nd.depth] };
+                leafIndex += 1;
+            } else {
+                place(nd.children[0]);
+                place(nd.children[1]);
+                var a = pos[nd.children[0]], b = pos[nd.children[1]];
+                pos[id] = { x: (a.x + b.x) / 2, y: LEVEL_Y[nd.depth] };
+            }
+        }
+        place(0);
+        return pos;
+    }
+
+    function r(v) { return Math.round(v * 10) / 10; }
+
+    function svg(h, st) {
+        var pos = layout(h);
+        var out = [];
+        var inStack = {};
+        st.stack.forEach(function (id) { inStack[id] = true; });
+        // 간선
+        h.nodes.forEach(function (nd) {
+            if (nd.parent < 0) return;
+            var p = pos[nd.parent], c = pos[nd.id];
+            var dash = st.called[nd.id] ? '' : ' stroke-dasharray="4 4"';
+            var op = st.called[nd.id] ? '0.6' : '0.3';
+            out.push('<line class="fig-ink" x1="' + r(p.x) + '" y1="' + r(p.y + BOX_H / 2) + '" x2="' + r(c.x) + '" y2="' + r(c.y - BOX_H / 2) + '" style="stroke-width:1.2;opacity:' + op + '"' + dash + '/>');
+        });
+        // 노드
+        h.nodes.forEach(function (nd) {
+            var p = pos[nd.id];
+            var x = r(p.x - BOX_W / 2), y = r(p.y - BOX_H / 2);
+            var cls, extra = '', txt = 'fig-text';
+            if (nd.id === st.current) { cls = 'fig-accent'; }
+            else if (inStack[nd.id]) { cls = 'fig-ink'; }
+            else if (st.called[nd.id]) { cls = 'fig-ink'; extra = ' style="opacity:0.45"'; txt = 'fig-muted'; }
+            else { cls = 'fig-ink'; extra = ' stroke-dasharray="4 4" style="opacity:0.35"'; txt = 'fig-muted'; }
+            out.push('<rect class="' + cls + '" x="' + x + '" y="' + y + '" width="' + BOX_W + '" height="' + BOX_H + '" rx="5"' + extra + '/>');
+            if (nd.id === st.current) {
+                out.push('<circle class="fig-dot" cx="' + r(p.x - BOX_W / 2 - 7) + '" cy="' + r(p.y) + '" r="4"/>');
+            }
+            out.push('<text class="' + txt + '" x="' + r(p.x) + '" y="' + r(p.y + 4.5) + '" text-anchor="middle" style="font-size:12px">' + nd.label + '</text>');
+            // 출력 번호: 이미 출력했으면 보인다
+            if (st.log.length >= nd.move) {
+                var lx, ly, anchor;
+                if (nd.children.length === 0) { lx = p.x; ly = p.y + BOX_H / 2 + 15; anchor = 'middle'; }
+                else { lx = p.x + BOX_W / 2 + 5; ly = p.y + 4.5; anchor = 'start'; }
+                var mcls = nd.move === (st.log.length ? st.log[st.log.length - 1].move : 0) && st.event && st.event.type !== 'enter' ? 'fig-text' : 'fig-muted';
+                out.push('<text class="' + mcls + '" x="' + r(lx) + '" y="' + r(ly) + '" text-anchor="' + anchor + '" style="font-size:12px">(' + nd.move + ')</text>');
+            }
+        });
+        // 막대
+        out.push('<line class="fig-ink" x1="20" y1="' + BASE_Y + '" x2="660" y2="' + BASE_Y + '"/>');
+        ['A', 'B', 'C'].forEach(function (peg) {
+            var px = PEG_X[peg];
+            out.push('<line class="fig-ink" x1="' + px + '" y1="' + PEG_TOP + '" x2="' + px + '" y2="' + BASE_Y + '"/>');
+            out.push('<text class="fig-text" x="' + px + '" y="' + (BASE_Y + 20) + '" text-anchor="middle">' + peg + '</text>');
+            st.pegs[peg].forEach(function (disk, i) {
+                var w = 50 + 26 * disk;
+                var y = BASE_Y - DISK_H * (i + 1);
+                var top = i === st.pegs[peg].length - 1;
+                var cls = (top && disk === st.lastDisk && st.event && st.event.type !== 'enter' && st.event.to === peg) ? 'fig-accent' : 'fig-ink';
+                out.push('<rect class="' + cls + '" x="' + (px - w / 2) + '" y="' + (y + 1) + '" width="' + w + '" height="' + (DISK_H - 2) + '" rx="4"/>');
+                out.push('<text class="fig-text" x="' + (px - w / 2 + 12) + '" y="' + (y + 15) + '" text-anchor="middle" style="font-size:12px">' + disk + '</text>');
+            });
+        });
+        return out.join('');
+    }
+
+    function logText(st, total) {
+        var lines = [];
+        for (var i = 0; i < total; i++) {
+            lines.push(i < st.log.length ? '(' + (i + 1) + ') ' + lineText(st.log[i]) : ' ');
+        }
+        return lines.join('\n');
+    }
+
+    function pegText(st) {
+        return ['A', 'B', 'C'].map(function (p) {
+            return p + '[' + st.pegs[p].join(',') + ']';
+        }).join(' ');
+    }
+
+    function aria(h, st) {
+        var cur = st.current >= 0 ? h.nodes[st.current].label : '없음';
+        return '하노이 탑 n=4 호출 트리와 막대 상태. ' + st.k + '/' + h.events.length + '단계. 지금 실행 중인 호출 ' + cur +
+            '은 강조색 테두리와 색칠된 점으로 표시. 아직 부르지 않은 호출은 점선 테두리. 막대(아래부터 원판 번호) ' + pegText(st) + '.';
+    }
+
+    return { build: build, stateAt: stateAt, message: message, svg: svg, logText: logText,
+             pegText: pegText, aria: aria, lineText: lineText, W: W, H: H };
+})();
+
+
+    var h = HANOI.build(4, 'A', 'B', 'C');
+    var total = h.events.length;
+    var k = 0;
+    var plot = document.getElementById('hanoi-plot');
+    var stepEl = document.getElementById('hanoi-step');
+    var outEl = document.getElementById('hanoi-out');
+    var logEl = document.getElementById('hanoi-log');
+    var prev = document.getElementById('hanoi-prev');
+    var next = document.getElementById('hanoi-next');
+    var reset = document.getElementById('hanoi-reset');
+    if (!plot) return;
+    function draw() {
+        var st = HANOI.stateAt(h, k);
+        plot.innerHTML = HANOI.svg(h, st);
+        plot.setAttribute('aria-label', HANOI.aria(h, st));
+        stepEl.textContent = k + '/' + total + '단계';
+        outEl.textContent = HANOI.message(h, st);
+        logEl.textContent = HANOI.logText(st, 15);
+        prev.disabled = k === 0;
+        reset.disabled = k === 0;
+        next.disabled = k === total;
+    }
+    prev.addEventListener('click', function () { if (k > 0) { k -= 1; draw(); } });
+    next.addEventListener('click', function () { if (k < total) { k += 1; draw(); } });
+    reset.addEventListener('click', function () { k = 0; draw(); });
+    draw();
+})();</script>
+  <script id="theme-ui">
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const sysDark = matchMedia('(prefers-color-scheme: dark)');
+      const KEY = 'od-theme';
+      const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : sysDark.matches;
+      function label() {
+        const next = isDark() ? '라이트 모드로 전환' : '다크 모드로 전환';
+        btn.setAttribute('aria-label', next);
+        btn.title = next;
+      }
+      btn.addEventListener('click', () => {
+        const t = isDark() ? 'light' : 'dark';
+        // 시스템 설정과 같아지면 저장을 지워 다시 시스템을 따른다
+        if ((t === 'dark') === sysDark.matches) { delete root.dataset.theme; try { localStorage.removeItem(KEY); } catch (e) {} }
+        else { root.dataset.theme = t; try { localStorage.setItem(KEY, t); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+        label();
+      });
+      sysDark.addEventListener('change', label);
+      window.addEventListener('storage', (e) => {
+        if (e.key !== KEY) return;
+        if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue; else delete root.dataset.theme;
+        label();
+      });
+      label();
+    })();
+  </script>
+  <script id="panels-ui">
+    (function () {
+      const body = document.body;
+      const layout = document.querySelector('.layout');
+      const kind = body.dataset.panels;
+      const panels = { left: document.getElementById('panel-left'), right: document.getElementById('panel-right') };
+      const toggles = { left: document.getElementById('toggle-left'), right: document.getElementById('toggle-right') };
+      const scrim = document.getElementById('panel-scrim');
+      const blockers = [document.querySelector('.topbar'), document.querySelector('.content'), document.querySelector('.pager')];
+      const wideMq = matchMedia('(min-width: 1024px)');
+      const roomyMq = matchMedia('(min-width: 1280px)');
+      const store = {
+        get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+      };
+      const PREF = 'od-panels:' + kind;
+      // 팩마다 문제·토픽 id가 p1, s1-…로 겹치므로 진행 기록은 기간별로 나눈다
+      const RANGE = body.dataset.range || '';
+      const ICON_TODO = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>';
+      const ICON_DONE = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 10"/></svg>';
+      let overlay = null;
+
+      // ---------- 열고 닫기 ----------
+      function docked() {
+        const pref = store.get(PREF, {});
+        return { left: pref.left ?? true, right: pref.right ?? roomyMq.matches };
+      }
+      function sync() {
+        const wide = wideMq.matches;
+        const d = docked();
+        ['left', 'right'].forEach((side) => {
+          const open = wide ? d[side] : overlay === side;
+          const p = panels[side];
+          layout.dataset[side] = open ? 'open' : 'closed';
+          p.classList.toggle('is-open', !wide && open);
+          p.inert = !open;
+          if (!wide && open) { p.setAttribute('role', 'dialog'); p.setAttribute('aria-modal', 'true'); }
+          else { p.removeAttribute('role'); p.removeAttribute('aria-modal'); }
+          toggles[side].setAttribute('aria-expanded', String(open));
+        });
+        const drawer = !wide && overlay !== null;
+        scrim.classList.toggle('is-on', drawer);
+        body.classList.toggle('drawer-open', drawer);
+        blockers.forEach((el) => { el.inert = drawer; });
+      }
+      function openDrawer(side) {
+        overlay = side;
+        sync();
+        requestAnimationFrame(() => panels[side].querySelector('[data-panel-close]').focus());
+      }
+      function closeDrawer(refocus) {
+        if (overlay === null) return;
+        const side = overlay;
+        overlay = null;
+        sync();
+        if (refocus) toggles[side].focus();
+      }
+      function toggle(side) {
+        if (wideMq.matches) {
+          const d = docked();
+          d[side] = !d[side];
+          store.set(PREF, d);
+          sync();
+          if (d[side]) { const p = panels[side]; p.classList.remove('is-shown'); void p.offsetWidth; p.classList.add('is-shown'); }
+        } else if (overlay === side) closeDrawer(true);
+        else openDrawer(side);
+      }
+
+      toggles.left.addEventListener('click', () => toggle('left'));
+      toggles.right.addEventListener('click', () => toggle('right'));
+      scrim.addEventListener('click', () => closeDrawer(true));
+      document.querySelectorAll('[data-panel-close]').forEach((b) => b.addEventListener('click', () => closeDrawer(true)));
+      panels.left.addEventListener('click', (e) => { if (e.target.closest('.toc a')) closeDrawer(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay !== null) { e.preventDefault(); closeDrawer(true); } });
+
+      // ---------- 패널 너비: 기본은 화면 폭에 맞춰 자동, 경계를 끌면 직접 조절 ----------
+      const WIDTH = { left: { min: 220, max: 480, prop: '--panel-l-user' }, right: { min: 280, max: 720, prop: '--panel-r-user' } };
+      function applyWidths() {
+        const w = store.get(PREF + ':w', {});
+        ['left', 'right'].forEach((side) => {
+          if (w[side]) layout.style.setProperty(WIDTH[side].prop, w[side] + 'px');
+          else layout.style.removeProperty(WIDTH[side].prop);
+        });
+      }
+      function maxFor(side) {
+        const other = side === 'left' ? panels.right : panels.left;
+        const otherW = layout.dataset[side === 'left' ? 'right' : 'left'] === 'open' ? other.getBoundingClientRect().width : 0;
+        return Math.max(WIDTH[side].min, Math.min(WIDTH[side].max, window.innerWidth - otherW - 400));
+      }
+      function setWidth(side, px, save) {
+        const v = Math.round(Math.min(Math.max(px, WIDTH[side].min), maxFor(side)));
+        layout.style.setProperty(WIDTH[side].prop, v + 'px');
+        panels[side].querySelector('.panel-resize').setAttribute('aria-valuenow', String(v));
+        if (save) { const w = store.get(PREF + ':w', {}); w[side] = v; store.set(PREF + ':w', w); }
+      }
+      function resetWidth(side) {
+        const w = store.get(PREF + ':w', {});
+        delete w[side];
+        store.set(PREF + ':w', w);
+        layout.style.removeProperty(WIDTH[side].prop);
+      }
+      document.querySelectorAll('.panel-resize').forEach((handle) => {
+        const side = handle.dataset.side;
+        const dir = side === 'left' ? 1 : -1;
+        handle.setAttribute('aria-valuemin', String(WIDTH[side].min));
+        handle.setAttribute('aria-valuemax', String(WIDTH[side].max));
+        handle.addEventListener('pointerdown', (e) => {
+          if (!wideMq.matches || e.button !== 0) return;
+          e.preventDefault();
+          const startX = e.clientX;
+          const startW = panels[side].getBoundingClientRect().width;
+          handle.setPointerCapture(e.pointerId);
+          body.classList.add('is-resizing');
+          const move = (ev) => setWidth(side, startW + dir * (ev.clientX - startX), false);
+          const up = () => {
+            handle.removeEventListener('pointermove', move);
+            handle.removeEventListener('pointerup', up);
+            handle.removeEventListener('pointercancel', up);
+            body.classList.remove('is-resizing');
+            setWidth(side, panels[side].getBoundingClientRect().width, true);
+          };
+          handle.addEventListener('pointermove', move);
+          handle.addEventListener('pointerup', up);
+          handle.addEventListener('pointercancel', up);
+        });
+        handle.addEventListener('dblclick', () => resetWidth(side));
+        handle.addEventListener('keydown', (e) => {
+          const step = e.shiftKey ? 64 : 16;
+          const cur = panels[side].getBoundingClientRect().width;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            e.stopPropagation();
+            setWidth(side, cur + (e.key === 'ArrowRight' ? step : -step) * dir, true);
+          } else if (e.key === 'Home') { e.preventDefault(); resetWidth(side); }
+        });
+      });
+      applyWidths();
+      const onMq = () => { overlay = null; sync(); };
+      wideMq.addEventListener('change', onMq);
+      roomyMq.addEventListener('change', onMq);
+
+      // ---------- 목차의 진행 표시 ----------
+      const progressN = document.getElementById('progress-n');
+      const progressBar = document.getElementById('progress-bar');
+      const progressTotal = document.getElementById('progress-total');
+      function markToc(done, total, doneLabel) {
+        panels.left.querySelectorAll('.toc-list a').forEach((a) => {
+          const id = decodeURIComponent(a.getAttribute('href').slice(1));
+          let mark = a.querySelector('.toc-mark');
+          if (!mark) {
+            mark = document.createElement('span');
+            mark.className = 'toc-mark';
+            mark.setAttribute('aria-hidden', 'true');
+            const state = document.createElement('span');
+            state.className = 'sr-only toc-state';
+            a.append(mark, state);
+          }
+          const isDone = done.has(id);
+          mark.classList.toggle('is-done', isDone);
+          mark.innerHTML = isDone ? ICON_DONE : ICON_TODO;
+          a.querySelector('.toc-state').textContent = isDone ? ' (' + doneLabel + ')' : '';
+        });
+        progressN.textContent = String(done.size);
+        progressTotal.textContent = String(total);
+        progressBar.style.transform = 'scaleX(' + (total ? done.size / total : 0) + ')';
+      }
+      function revealCurrent() {
+        const link = panels.left.querySelector('.toc-list a[aria-current="true"]');
+        if (link && layout.dataset.left === 'open') link.scrollIntoView({ block: 'nearest' });
+      }
+
+      // ---------- 복습문제: 오른쪽 = 원문 · 힌트 · 풀이 ----------
+      function setupReview() {
+        const KEY = 'od-review-solved:' + RANGE;
+        const cards = Array.from(document.querySelectorAll('main article.card'));
+        const aids = panels.right.querySelector('.aids');
+        const sub = document.getElementById('aid-for');
+        const empty = panels.right.querySelector('.panel-empty');
+        const btn = document.getElementById('solved-btn');
+        const groups = {};
+        const solved = new Set(store.get(KEY, []).filter((id) => cards.some((c) => c.id === id)));
+        cards.forEach((card) => {
+          const g = document.createElement('div');
+          g.className = 'aid';
+          g.hidden = true;
+          card.querySelectorAll(':scope > details').forEach((d) => g.appendChild(d));
+          aids.appendChild(g);
+          groups[card.id] = g;
+        });
+        let curId = null;
+        function paintBtn() {
+          const on = solved.has(curId);
+          btn.setAttribute('aria-pressed', String(on));
+          btn.innerHTML = (on ? ICON_DONE : ICON_TODO) + '<span>' + (on ? '푼 문제 · 표시 해제' : '푼 문제로 표시') + '</span>';
+        }
+        btn.addEventListener('click', () => {
+          if (!curId) return;
+          if (solved.has(curId)) solved.delete(curId); else solved.add(curId);
+          store.set(KEY, Array.from(solved));
+          paintBtn();
+          markToc(solved, cards.length, '푼 문제');
+        });
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          curId = s.matches('article.card') ? s.id : null;
+          Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
+          empty.hidden = Boolean(curId);
+          btn.hidden = !curId;
+          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';
+          sub.hidden = !curId;
+          if (curId) paintBtn();
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(solved, cards.length, '푼 문제');
+          revealCurrent();
+        });
+      }
+
+      // ---------- 정리노트: 오른쪽 = 페이지(토픽)별 요약 ----------
+      function setupNote() {
+        const KEY = 'od-note-read:' + RANGE;
+        const topics = Array.from(document.querySelectorAll('main article.topic'));
+        const read = new Set(store.get(KEY, []).filter((id) => topics.some((t) => t.id === id)));
+        // 조각의 <div class="sum" hidden> 을 오른쪽 패널로 옮긴다. 없으면 안내 문구만 보인다.
+        const box = panels.right.querySelector('.sums');
+        const sums = {};
+        topics.forEach((t) => {
+          const el = t.querySelector(':scope > .sum');
+          if (!el) return;
+          el.hidden = true;
+          box.appendChild(el);
+          sums[t.id] = el;
+        });
+        const sub = document.getElementById('sum-for');
+        const empty = document.getElementById('sum-empty');
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          const key = s.matches('article.topic') ? s.id : 'intro';
+          Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
+          empty.hidden = Boolean(sums[key]);
+          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
+          if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(read, topics.length, '읽음');
+          revealCurrent();
+        });
+      }
+
+      if (kind === 'review') setupReview();
+      if (kind === 'note') setupNote();
+      sync();
+    })();
+  </script>
+  <script id="pager-ui">
+    (function () {
+      const root = document.documentElement;
+      const main = document.querySelector('main');
+      const hero = main.querySelector('.hero');
+      const screens = [hero].concat(Array.from(main.querySelectorAll(document.body.dataset.screens)));
+      if (screens.length < 2) { root.classList.remove('js'); return; }
+      screens.forEach((s) => s.classList.add('screen'));
+
+      const last = screens.length - 1;
+      const prevBtn = document.getElementById('pager-prev');
+      const nextBtn = document.getElementById('pager-next');
+      const count = document.getElementById('pager-count');
+      const bar = document.getElementById('pager-bar');
+      const status = document.getElementById('pager-status');
+      const toc = document.querySelector('#panel-left .toc');
+      const scroller = document.querySelector('.content');
+      const titleOf = (s) => ((s.querySelector('h3') || s.querySelector('h1') || {}).textContent || '').trim();
+      let cur = -1;
+
+      // 목차: 섹션 링크 아래에 화면(토픽·카드) 목록을 붙인다
+      const tocLinks = [];
+      Array.from(toc.querySelectorAll(':scope > a')).forEach((a) => {
+        const sec = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+        const group = document.createElement('div');
+        group.className = 'toc-group';
+        a.replaceWith(group);
+        group.appendChild(a);
+        if (!sec) return;
+        const list = document.createElement('ol');
+        list.className = 'toc-list';
+        screens.forEach((s, i) => {
+          if (!sec.contains(s)) return;
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#' + s.id;
+          link.innerHTML = '<span class="toc-title"></span>';
+          link.firstChild.textContent = titleOf(s);
+          li.appendChild(link);
+          list.appendChild(li);
+          tocLinks[i] = link;
+        });
+        group.appendChild(list);
+      });
+
+      function indexFor(hash) {
+        const id = decodeURIComponent((hash || '').replace(/^#/, ''));
+        const el = id && document.getElementById(id);
+        if (!el || !main.contains(el)) return { i: 0 };
+        const i = screens.findIndex((s) => s.contains(el) || el.contains(s));
+        return { i: Math.max(i, 0), target: i >= 0 && screens[i].contains(el) && screens[i] !== el ? el : null };
+      }
+
+      function render(i, target) {
+        const dir = cur < 0 ? '' : i > cur ? 'enter-next' : 'enter-prev';
+        if (i !== cur) {
+          if (cur >= 0) screens[cur].classList.remove('is-current', 'enter-next', 'enter-prev');
+          main.querySelectorAll(':scope > section.is-on').forEach((sec) => sec.classList.remove('is-on'));
+          const s = screens[i];
+          const sec = s.closest('section');
+          if (sec) sec.classList.add('is-on');
+          s.classList.add('is-current');
+          if (dir) { s.classList.remove('enter-next', 'enter-prev'); void s.offsetWidth; s.classList.add(dir); }
+          cur = i;
+          document.body.classList.toggle('at-end', i === last);
+          prevBtn.disabled = i === 0;
+          nextBtn.textContent = i === 0 ? '시작하기' : i === last ? '처음으로' : '다음';
+          count.textContent = i === 0 ? '' : i + ' / ' + last;
+          bar.style.transform = 'scaleX(' + (i / last) + ')';
+          status.textContent = i === 0 ? titleOf(s) : i + ' / ' + last + ', ' + titleOf(s);
+          tocLinks.forEach((link, k) => link && link.setAttribute('aria-current', String(k === i)));
+          document.dispatchEvent(new CustomEvent('od:screen', { detail: { index: i, screen: s } }));
+        }
+        if (target) target.scrollIntoView({ block: 'start' });
+        else scroller.scrollTo(0, 0);
+      }
+
+      function go(i) {
+        i = Math.min(Math.max(i, 0), last);
+        if (i === cur) return;
+        const url = i === 0 ? location.pathname + location.search : '#' + screens[i].id;
+        history.pushState(null, '', url);
+        render(i);
+      }
+
+      prevBtn.addEventListener('click', () => go(cur - 1));
+      nextBtn.addEventListener('click', () => go(cur === last ? 0 : cur + 1));
+      const fromUrl = () => { const r = indexFor(location.hash); render(r.i, r.target); };
+      window.addEventListener('hashchange', fromUrl);
+      window.addEventListener('popstate', fromUrl);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || document.body.classList.contains('drawer-open')) return;
+        if (e.target.closest('input, select, textarea, [contenteditable="true"]')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+      });
+
+      // 좌우로 밀어서 넘기기 (가로로 스크롤되는 영역은 제외)
+      let sx = 0, sy = 0, skip = true;
+      main.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY;
+        skip = e.touches.length > 1 || Boolean(e.target.closest('.widget, .katex-display, .table-wrap, pre, svg, input, details'));
+      }, { passive: true });
+      main.addEventListener('touchend', (e) => {
+        if (skip) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        if (Math.abs(dx) > 64 && Math.abs(dx) > 2 * Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      fromUrl();
+    })();
+  </script>
+</body>
+</html>

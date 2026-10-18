@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "hashes": {
+    "brief.md": "34a33cf02347a6b6cc1ea5ad0449e88a63d17ecf741f57bdbcb9fd1ddb1fbeb4",
+    "evidence/browser/struct-assign-copy-1024-dark.png": "54a5daee8e79bc8fc9962107afba10ff8131c5d431c659b44e4e2c05ba54eea1",
+    "evidence/browser/struct-assign-copy-1024-light.png": "94d24cf34c8a8e890dd24901cee9cb33d0d93ed1311154760871b9b1c7f5e0ed",
+    "evidence/browser/struct-assign-copy-1440-dark.png": "08b12822cfec886f50304f51fe540d35352078704e624fa04bd13cceb10c545b",
+    "evidence/browser/struct-assign-copy-1440-light.png": "bafc0af4a7de74e9e967c13d1cf1f3cdbca2ea25385ad94247adb4ef3312df81",
+    "evidence/browser/struct-assign-copy-375-dark.png": "4d1e4de5d170710a3b9f42191456c8cf4b2ad89fe05f417e0de0a22f9859e851",
+    "evidence/browser/struct-assign-copy-375-light.png": "218d0b16666d19d2ba82206c371e1f2ba20e4cd612b413bc2c184ccefaee24bd",
+    "evidence/browser-run.log": "75dafc5faf6d6693ebaf1e92b3d541322b3e862ad140fd37f0044e297e349ef6",
+    "evidence/browser.json": "2198d4f34c1dfedae662dc7e739f8217f97fbc016c340dfd6d8bb0160f04f86b",
+    "evidence/content-review.md": "edd03ab2153ce49c24709c890a594d263567780e4dd2c157139dec5dbbb3fb01",
+    "evidence/independent.json": "1617f5180668ee09205f2488e98f38b8e4d63cf6ecde39264ee9b955067ccb0d",
+    "evidence/independent_0921.py": "2c9b6e263f30a88e0e51e65bbde2c983c41a9b938df3a99c6406bbb7abfcd8e7",
+    "evidence/s3-p17-17.png": "34fd1ba9914ed0b413c0b0c959c04cf6203f75ea0741e1ef392a105a2946847f",
+    "evidence/s3-p17.txt": "bd7ac3952b1ca2dea85327b7a222bf4f572dc257f37e0f54e431acf2e4b949dc",
+    "evidence/s3-p18-18.png": "d761bac3838049992aa2b25b13edd8b946cadabd6adf7e4a4a35d9f6b9cdae66",
+    "evidence/s3-p18.txt": "b791fc34f341d14fab482956319129aa294fbe5eecfb643b227fbb4ae7ccae46",
+    "evidence/schema.json": "4aef50c15fdef2b3ef6044001153be516a5eab9b6e880a7f833c396a7a87dcc0",
+    "evidence/trace-walkthrough.txt": "b7ac59d997b95a6f1aae0e37e6ae399d91610431b69b37c8e5514b0240dbd7a3",
+    "evidence/ui/struct-assign-copy-1024-dark.png": "223678624f98a1d10a4cc6837f2f7f5da6a4315437b39f121f343350d9db2ce0",
+    "evidence/ui/struct-assign-copy-1024-light.png": "5106b1c46a78af895fec8085bce596c84137c4c9c7a98cbcb6fcbd60343fa758",
+    "evidence/ui/struct-assign-copy-1440-dark.png": "52b1dca4693558c944c6e06c5fad94ed6f43d419a24f286641489cb2a7b70808",
+    "evidence/ui/struct-assign-copy-1440-light.png": "dd3d7a629f1bd43c32aacc607f723d3e1b6482154253f8ec28f5f0d98dc22ead",
+    "evidence/ui/struct-assign-copy-375-dark.png": "ee0d9c4f51b1dc62a202ef7976a56fa5b2244decec9a0a61278222a140dfcf83",
+    "evidence/ui/struct-assign-copy-375-light.png": "148fde3c3c88eef1e014b753bfd0050de2dee0ee57e791349fc659863a2c547f",
+    "evidence/ui-review.md": "bdb6a38a13beac65ea0d099f5919b7bbc8a5449668d326399eeeb39689305c2a",
+    "evidence/ui.json": "2e14c6ed4b37efa209936e630a6baf7b56b59ff3021ad19acfa36c94e1abd946",
+    "preview.html": "ee9e4edd514fed30057665c73e61573790a34deabadc944273526964e01bb5e2",
+    "scenario.cjs": "6640a7e32f24ed379d5f57fc50bbc9c0bd0aafeb34d00cc735eeab81ab2a8a66",
+    "source.c": "9f87a7a07119dd19417c64e2a77d18e33a3c21e9a1f62911274a35963441fa51",
+    "source.json": "91df44aa7536ab589af04b4be31ef92e01fb6dc681455a29dfa84606bc09e585",
+    "trace.json": "46c72efb4b2b6425862934a1cc04a4a3c8ecb1884d2f16c692847d5590a4270d"
+  },
+  "checks": {
+    "schema": {
+      "status": "pass",
+      "evidence": "evidence/schema.json",
+      "notes": "check.cjs: 기본값과 preset 6개 모두 ok, issues 0. schema.json의 trace/scenario sha256이 현재 파일과 일치."
+    },
+    "content": {
+      "status": "pass",
+      "evidence": "evidence/content-review.md",
+      "notes": "PDF p17·p18 렌더링·정리노트 s4-struct-assign/s4-self-ref·STT와 대조. 대입을 필드별 read→write로, 복사 후 독립 변경, 필드 비교, 미초기화 a 대입의 첫 읽기 중단(UB), 포인터 필드는 주소 값만 복사해 n2 공유(through 사슬로 쓰기·읽기)를 C 의미로 검토. name[10] 생략·int 단순화를 화면과 brief에 명시."
+    },
+    "independent": {
+      "status": "pass",
+      "evidence": "evidence/independent.json",
+      "notes": "엔진을 쓰지 않는 Python C-의미 표(independent_0921.py)로 514건(preset+입력 경계 격자)의 bind/declare/write 2400개 순서, 중단 지점, 최종 Cell 비교 통과. gcc/clang/cl/cc/tcc 없음·VS/MSYS2/MinGW 미설치·WSL은 docker-desktop뿐·Docker 미실행 → compiler_unavailable. UB 경로는 실행하지 않음."
+    },
+    "browser": {
+      "status": "pass",
+      "evidence": "evidence/browser.json",
+      "notes": "현재 preview sha 일치. file://·offline 6조합 474 Snapshot 전체 검사, browser_ui 6조합·browser_regressions 통과(browser-run.log), 외부요청·콘솔오류 0. 캡처를 직접 보고 겹침·화살표·진단 표시 확인(ui-review.md)."
+    }
+  }
+}

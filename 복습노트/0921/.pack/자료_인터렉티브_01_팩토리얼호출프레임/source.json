@@ -1,0 +1,57 @@
+{
+  "references": {
+    "복습노트/0921/정리노트_0921_ArrayStructureList.html": "31d46fadabbfb90bdc556322bc1b726115da1347d16b10d552b97f33686fa189",
+    "복습노트/0921/.pack/정리노트_0921_ArrayStructureList.md": "cf70aec94105a0fd38e8e1d96e1c5da64cd0f4113eae242e05760e38427a3fa0",
+    "STT/0921 자구알.md": "174610d261923edce3009b9df2e90402ead7e29ea13708e08ea53b44d1bdf523",
+    "자료구조_강의록_2026/Software_2_Recursion.pdf": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe"
+  },
+  "question": "factorial을 순환 호출하면 호출마다 n이 어떻게 따로 생기고, 바닥 조건에서 돌아온 값이 어떤 순서로 곱해져 main까지 오는가? 바닥 조건이 없으면?",
+  "pages": [
+    6
+  ],
+  "section": "s0-recursion-rules",
+  "sources": [
+    {
+      "id": "lecture",
+      "label": "바닥 조건 있음 · 강의 factorial",
+      "language": "c",
+      "text": "#include <stdio.h>\nint factorial(int n)\n{\n    if( n <= 1 )  return 1;\n    else return n * factorial(n-1);\n}\nint main(void)\n{\n    int r = factorial({{n}});\n    printf(\"%d\\n\", r);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
+        "page": 6,
+        "section": "s0-recursion-rules",
+        "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe",
+        "supplement": false,
+        "note": "강의 p6 factorial · 슬라이드에서 빠진 return 1 뒤 ;와 #include, main 호출자는 보충입니다.",
+        "adjustments": "p6 factorial 본문 보존. 슬라이드의 `return 1` 뒤에 빠진 세미콜론을 보충(그대로는 컴파일되지 않음). #include, int main(void) 호출자와 printf는 보충."
+      }
+    },
+    {
+      "id": "nobase",
+      "label": "바닥 조건 없음 · 보충",
+      "language": "c",
+      "text": "#include <stdio.h>\nint factorial(int n)\n{\n    /* 순환을 멈추는 부분을 지웠다 */\n    return n * factorial(n-1);\n}\nint main(void)\n{\n    int r = factorial({{n}});\n    printf(\"%d\\n\", r);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
+        "page": 6,
+        "section": "s0-recursion-rules",
+        "sha256": "e686ae970c836fbdd84eb967c22efb44473bb2258c9914715c96b7ff48cf4efe",
+        "supplement": true,
+        "note": "p6의 질문 “멈추는 부분이 없다면?”을 확인하려고 if 줄을 지운 보충 예제입니다.",
+        "adjustments": "강의 factorial에서 순환을 멈추는 if 줄을 지운 비교용 보충. 실제 실행은 스택이 넘칠 때까지 호출하므로 실행하지 않고 호출 깊이 한도에서 멈춘다."
+      }
+    }
+  ],
+  "source_c": {
+    "file": "source.c",
+    "sha256": "a03a6f4e08fa80f5659e2a07d4056082dca297f51c9dc932c162c0ce1df2a9f3",
+    "role": "검산용 완전 프로그램: 강의 factorial(빠진 ; 보충) + 보충 main. 컴파일러가 없어 실행 증거 대신 독립 Python 표 사용."
+  },
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "simplifications": "슬라이드 p6의 `return 1` 뒤 세미콜론 누락을 보충(원문 그대로는 컴파일 불가). #include와 int main(void) 호출자, printf는 보충. 곱셈의 반환값을 받는 칸(factorial(n-1))은 C에서 이름 없는 값이며 화면용 시각화 칸으로 표시(주소 없음). 곱셈 두 피연산자 평가 순서는 C가 정하지 않음을 설명에 명시. int는 강의 기준 32비트로 가정해 13!에서 부호 있는 오버플로(UB)로 중단. nobase는 p6 질문 '멈추는 부분이 없다면?'을 위한 보충이며 엔진 호출 깊이 64에서 중단(실제는 스택 오버플로).",
+  "verification": "PDF p6 렌더링(evidence/pdf-s2-p6.png)을 직접 읽어 코드와 세미콜론 누락 확인. 정리노트 s0-recursion-rules(HTML·.pack MD)와 STT 0921 첫머리(순환 조건 복습) 대조."
+}
