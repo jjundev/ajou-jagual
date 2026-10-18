@@ -1,0 +1,31 @@
+# 검토·저장 계약
+
+RUN은 고유한 작업 디렉터리다. scenario.cjs,source.json,brief.md,trace.json,preview.html과 evidence/를 준비한다. 파일을 바꾸면 그에 영향을 받는 판정을 다시 수행한다.
+
+`review.cjs` exports createReview/currentHashes/readReview/verifyReview. createReview(RUN)는 version1, 현재 SHA-256 맵, 네 개의 not_run을 반환한다. 자동 content/independent/browser 합격 기능은 없다. 실제 확인 후 JSON에 판정·증거·notes와 현재 해시를 함께 기록한다.
+
+각 check는 `{status:'not_run'|'pass'|'fail'|'disputed',evidence:'evidence/파일',notes:'실제 관측한 이유'}`다. schema: 구조·기본/모든 preset. content: 코드 줄·중간 복사/읽기/쓰기·설명 원문 대조. independent: 엔진을 호출하지 않는 계산표 또는 실제 C 관찰과 비교. browser: 실제 브라우저 상호작용·시각 검토. 모두 pass여야 저장한다. 증거는 RUN 안의 해시 대상 파일이며 비어 있을 수 없다.
+
+해시 대상은 scenario.cjs,source.json,source.c(있는 경우),brief.md,trace.json,preview.html,evidence/ 전체다. note-links.json은 발행 번호 치환용 매니페스트이므로 별도다. review.json 자신은 자기 해시를 갖지 않는다. evidence에 심볼릭 링크를 넣지 않는다. 공개 페이지와 preview 바이트가 다르면 완료가 아니다.
+
+브라우저 자동 검사:
+
+```
+python "S/tests/browser_acceptance.py" "REPO / 날짜폴더 / RUN / HTML파일" "빈 SCRATCH"
+```
+
+자료 한 개부터 여러 개까지 검사한다. REPO는 모든 날짜의 공개 자료를, 날짜폴더는 해당 공개 HTML을, RUN은 preview를 찾는다. 특정 범위만 검사하려면 해당 폴더/파일을 넘긴다. 최초 0928 세 자료의 수량·최종 링크 검사는 final_paths.py의 별도 프로젝트 수용 조건이다.
+
+실제 Chromium, file://, offline=True, 외부 HTTP 차단. 1440×900/1024×768/375×812 각각 light/dark, 기본·모든 preset·모든 Snapshot·입력 경계/빈 값·재생 중 입력·속도·자동 정지·선택·키보드·모바일 서랍을 검사한다. 콘솔·외부 요청·문서 가로 넘침은 0이어야 한다. 스크린샷을 직접 읽어 겹침·화살표·글씨 크기도 확인한다. HTTP 대체 시 미확인 범위를 적는다.
+
+save.cjs RUN DEST NAME: 이름과 현재 검토 해시 확인 → 번호와 디렉터리 exclusive 예약 → 근거와 검토 bytes 복사 → 다시 해시 검증. 충돌은 새 번호, 실패는 자신이 생성한 경로만 복구한다. 공개 파일 또는 자료 폴더 하나만 있어도 덮어쓰지 않는다. NN은 최소 두 자리다. 자동 커밋·푸시·외부 게시하지 않는다.
+
+## 공통 셸 UI 회귀
+
+`python "S/tests/browser_ui.py" "RUN / 날짜폴더 / HTML파일" "SCRATCH"`로 공통 UI를 검사한다. 토큰 배경색·패널 접기·너비 키보드 조절·서랍 포커스·Escape/닫기·전체 단계 선택·속도 선택·보기 옵션·2D 확대를 확인한다. 단계 실행의 의미와 독립인 보기 상태를 따로 검사한다. 기존 입력·셀 포커스 회귀는 `browser_regressions.py HTML`로 확인한다. 화면의 실제 경계가 뷰포트를 넘지 않아야 한다. overflow:hidden으로 잘림을 숨긴 결과를 합격시키지 않는다.
+
+## 명시적으로 요청받은 기존 자료 수정
+
+신규 생성은 save의 덮어쓰기 금지를 유지한다. 사용자가 기존 자료 수정을 요청한 경우에는 해당 HTML과 전체 pack을 별도 고유 작업 폴더에 먼저 백업한다. 복사한 pack의 scenario로 새 preview를 빌드하고, 변경된 UI의 브라우저·시각 증거와 현재 schema/독립 검산을 갱신한다. 내용이 그대로면 scenario/trace/source의 기존 해시 일치와 내용 검토 근거를 확인한다. 수정된 preview에 과거 browser 증거만 붙여 합격 처리하지 않는다.
+
+모든 증거를 확정한 뒤 review 해시를 다시 계산하고 check를 통과시킨다. 교체 직전 대상이 백업 시점과 같은지 확인하고, 같은 HTML 경로와 대응 pack을 갱신한다. 실패하면 이번 교체분만 백업으로 복원한다. 최종 HTML과 pack/preview는 바이트가 같아야 하며 review를 재검사한다. 정리노트와 관련 없는 pack은 바꾸지 않는다. 링크는 그대로 왕복 확인한다. 검증 보고서에 백업 위치·대상 해시·실제 확인 범위를 남긴다.

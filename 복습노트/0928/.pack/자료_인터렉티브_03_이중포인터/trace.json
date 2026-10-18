@@ -1,0 +1,4867 @@
+{
+  "default": {
+    "version": 1,
+    "id": "double-pointer",
+    "title": "이중 포인터로 q의 방향 바꾸기",
+    "kind": "c-memory",
+    "sources": [
+      {
+        "id": "double",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(&q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "single",
+        "label": "단일 포인터 · p만 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int *p, int *next)\n{\n    p = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "null",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(NULL, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      }
+    ],
+    "inputs": {
+      "a": 10,
+      "b": 20,
+      "mode": "double"
+    },
+    "presets": [
+      {
+        "id": "single",
+        "label": "q의 주소 값만 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "single"
+        }
+      },
+      {
+        "id": "double",
+        "label": "q 자체의 주소를 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "double"
+        }
+      },
+      {
+        "id": "null",
+        "label": "pp가 NULL이면?",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "null"
+        }
+      },
+      {
+        "id": "equal",
+        "label": "값이 같아도 주소는 다르다",
+        "input": {
+          "a": 20,
+          "b": 20,
+          "mode": "double"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "id": "initial",
+        "at": {
+          "sourceId": "double",
+          "line": 10
+        },
+        "phase": "before",
+        "title": "호출 전 · 초기 상태",
+        "explanation": "q는 a를 가리킵니다. q 자체를 바꾸려면 q의 값과 q의 주소 중 무엇을 넘길까요?",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-1",
+        "at": {
+          "sourceId": "double",
+          "line": 10
+        },
+        "phase": "after",
+        "title": "redirect 호출",
+        "explanation": "redirect를 호출하고 별도 함수 저장 공간을 만듭니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-2",
+        "at": {
+          "sourceId": "double",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "&q → pp 복사",
+        "explanation": "&q라는 주소 값을 pp에 복사합니다. pp의 대상은 정수가 아니라 포인터 변수 q입니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.pp",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": "main.q"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-3",
+        "at": {
+          "sourceId": "double",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "&b → next 복사",
+        "explanation": "둘째 인자 &b를 next에 복사합니다. b의 정수 값은 읽지 않습니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.next",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": "main.b"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-4",
+        "at": {
+          "sourceId": "double",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "함수 진입",
+        "explanation": "두 인자의 복사가 끝나 함수 본문으로 진입합니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-5",
+        "at": {
+          "sourceId": "double",
+          "line": 4
+        },
+        "phase": "after",
+        "title": "next 주소 값 읽기",
+        "explanation": "next에 담긴 &b를 읽습니다. b의 값에 쓰는 동작은 아닙니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [
+          "f.next"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-6",
+        "at": {
+          "sourceId": "double",
+          "line": 4
+        },
+        "phase": "after",
+        "title": "*pp · q 자체에 쓰기",
+        "explanation": "*pp는 pp가 가리키는 q입니다. q에 &b를 쓰므로 q의 화살표가 a에서 b로 바뀝니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [
+          "f.pp"
+        ],
+        "writes": [
+          {
+            "cellId": "main.q",
+            "before": {
+              "kind": "pointer",
+              "target": "main.a"
+            },
+            "after": {
+              "kind": "pointer",
+              "target": "main.b"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-7",
+        "at": {
+          "sourceId": "double",
+          "line": 5
+        },
+        "phase": "after",
+        "title": "redirect 반환",
+        "explanation": "함수의 매개변수 수명이 끝납니다. main의 q와 a, b는 유지됩니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "ended",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "ended"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-8",
+        "at": {
+          "sourceId": "double",
+          "line": 11
+        },
+        "phase": "after",
+        "title": "호출자 q 확인",
+        "explanation": "q는 b를 가리킵니다. 바뀐 것은 q의 주소 값이며 a, b의 정수는 그대로입니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "ended",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "ended"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      }
+    ],
+    "metadata": {
+      "supplement": "",
+      "addressModel": "기호 주소 · 실제 ABI 배치 아님"
+    }
+  },
+  "single": {
+    "version": 1,
+    "id": "double-pointer",
+    "title": "이중 포인터로 q의 방향 바꾸기",
+    "kind": "c-memory",
+    "sources": [
+      {
+        "id": "double",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(&q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "single",
+        "label": "단일 포인터 · p만 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int *p, int *next)\n{\n    p = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "null",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(NULL, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      }
+    ],
+    "inputs": {
+      "a": 10,
+      "b": 20,
+      "mode": "single"
+    },
+    "presets": [
+      {
+        "id": "single",
+        "label": "q의 주소 값만 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "single"
+        }
+      },
+      {
+        "id": "double",
+        "label": "q 자체의 주소를 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "double"
+        }
+      },
+      {
+        "id": "null",
+        "label": "pp가 NULL이면?",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "null"
+        }
+      },
+      {
+        "id": "equal",
+        "label": "값이 같아도 주소는 다르다",
+        "input": {
+          "a": 20,
+          "b": 20,
+          "mode": "double"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "id": "initial",
+        "at": {
+          "sourceId": "single",
+          "line": 10
+        },
+        "phase": "before",
+        "title": "호출 전 · 초기 상태",
+        "explanation": "q는 a를 가리킵니다. q 자체를 바꾸려면 q의 값과 q의 주소 중 무엇을 넘길까요?",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-1",
+        "at": {
+          "sourceId": "single",
+          "line": 10
+        },
+        "phase": "after",
+        "title": "redirect 호출",
+        "explanation": "redirect를 호출하고 별도 함수 저장 공간을 만듭니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "single",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-2",
+        "at": {
+          "sourceId": "single",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "q의 값 → p 복사",
+        "explanation": "q의 값인 &a를 p에 복사합니다. p와 q는 별도 저장 공간입니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.p"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "single",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.p": {
+              "id": "f.p",
+              "name": "p",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.p",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [
+          "main.q"
+        ],
+        "writes": [
+          {
+            "cellId": "f.p",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": "main.a"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-3",
+        "at": {
+          "sourceId": "single",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "&b → next 복사",
+        "explanation": "둘째 인자 &b를 next에 복사합니다. b의 정수 값은 읽지 않습니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.p",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "single",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.p": {
+              "id": "f.p",
+              "name": "p",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.p",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.next",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": "main.b"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-4",
+        "at": {
+          "sourceId": "single",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "함수 진입",
+        "explanation": "두 인자의 복사가 끝나 함수 본문으로 진입합니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.p",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "single",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.p": {
+              "id": "f.p",
+              "name": "p",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.p",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-5",
+        "at": {
+          "sourceId": "single",
+          "line": 4
+        },
+        "phase": "after",
+        "title": "next 주소 값 읽기",
+        "explanation": "next에 담긴 &b를 읽습니다. b의 값에 쓰는 동작은 아닙니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.p",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "single",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.p": {
+              "id": "f.p",
+              "name": "p",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.p",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [
+          "f.next"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-6",
+        "at": {
+          "sourceId": "single",
+          "line": 4
+        },
+        "phase": "after",
+        "title": "p · 복사본만 재대입",
+        "explanation": "p에 &b를 씁니다. 함수 안의 p만 바뀌고 호출자의 q에는 &a가 남습니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.p",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "single",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.p": {
+              "id": "f.p",
+              "name": "p",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.p",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.p",
+            "before": {
+              "kind": "pointer",
+              "target": "main.a"
+            },
+            "after": {
+              "kind": "pointer",
+              "target": "main.b"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-7",
+        "at": {
+          "sourceId": "single",
+          "line": 5
+        },
+        "phase": "after",
+        "title": "redirect 반환",
+        "explanation": "함수의 매개변수 수명이 끝납니다. main의 q와 a, b는 유지됩니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.p",
+                "f.next"
+              ],
+              "lifetime": "ended",
+              "callSite": {
+                "sourceId": "single",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.p": {
+              "id": "f.p",
+              "name": "p",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.p",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-8",
+        "at": {
+          "sourceId": "single",
+          "line": 11
+        },
+        "phase": "after",
+        "title": "호출자 q 확인",
+        "explanation": "q는 여전히 a를 가리킵니다. 다른 변수 p를 재대입해도 q는 바뀌지 않습니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.p",
+                "f.next"
+              ],
+              "lifetime": "ended",
+              "callSite": {
+                "sourceId": "single",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.p": {
+              "id": "f.p",
+              "name": "p",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.p",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      }
+    ],
+    "metadata": {
+      "supplement": "",
+      "addressModel": "기호 주소 · 실제 ABI 배치 아님"
+    }
+  },
+  "double": {
+    "version": 1,
+    "id": "double-pointer",
+    "title": "이중 포인터로 q의 방향 바꾸기",
+    "kind": "c-memory",
+    "sources": [
+      {
+        "id": "double",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(&q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "single",
+        "label": "단일 포인터 · p만 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int *p, int *next)\n{\n    p = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "null",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(NULL, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      }
+    ],
+    "inputs": {
+      "a": 10,
+      "b": 20,
+      "mode": "double"
+    },
+    "presets": [
+      {
+        "id": "single",
+        "label": "q의 주소 값만 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "single"
+        }
+      },
+      {
+        "id": "double",
+        "label": "q 자체의 주소를 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "double"
+        }
+      },
+      {
+        "id": "null",
+        "label": "pp가 NULL이면?",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "null"
+        }
+      },
+      {
+        "id": "equal",
+        "label": "값이 같아도 주소는 다르다",
+        "input": {
+          "a": 20,
+          "b": 20,
+          "mode": "double"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "id": "initial",
+        "at": {
+          "sourceId": "double",
+          "line": 10
+        },
+        "phase": "before",
+        "title": "호출 전 · 초기 상태",
+        "explanation": "q는 a를 가리킵니다. q 자체를 바꾸려면 q의 값과 q의 주소 중 무엇을 넘길까요?",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-1",
+        "at": {
+          "sourceId": "double",
+          "line": 10
+        },
+        "phase": "after",
+        "title": "redirect 호출",
+        "explanation": "redirect를 호출하고 별도 함수 저장 공간을 만듭니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-2",
+        "at": {
+          "sourceId": "double",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "&q → pp 복사",
+        "explanation": "&q라는 주소 값을 pp에 복사합니다. pp의 대상은 정수가 아니라 포인터 변수 q입니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.pp",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": "main.q"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-3",
+        "at": {
+          "sourceId": "double",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "&b → next 복사",
+        "explanation": "둘째 인자 &b를 next에 복사합니다. b의 정수 값은 읽지 않습니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.next",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": "main.b"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-4",
+        "at": {
+          "sourceId": "double",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "함수 진입",
+        "explanation": "두 인자의 복사가 끝나 함수 본문으로 진입합니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-5",
+        "at": {
+          "sourceId": "double",
+          "line": 4
+        },
+        "phase": "after",
+        "title": "next 주소 값 읽기",
+        "explanation": "next에 담긴 &b를 읽습니다. b의 값에 쓰는 동작은 아닙니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [
+          "f.next"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-6",
+        "at": {
+          "sourceId": "double",
+          "line": 4
+        },
+        "phase": "after",
+        "title": "*pp · q 자체에 쓰기",
+        "explanation": "*pp는 pp가 가리키는 q입니다. q에 &b를 쓰므로 q의 화살표가 a에서 b로 바뀝니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [
+          "f.pp"
+        ],
+        "writes": [
+          {
+            "cellId": "main.q",
+            "before": {
+              "kind": "pointer",
+              "target": "main.a"
+            },
+            "after": {
+              "kind": "pointer",
+              "target": "main.b"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-7",
+        "at": {
+          "sourceId": "double",
+          "line": 5
+        },
+        "phase": "after",
+        "title": "redirect 반환",
+        "explanation": "함수의 매개변수 수명이 끝납니다. main의 q와 a, b는 유지됩니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "ended",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "ended"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-8",
+        "at": {
+          "sourceId": "double",
+          "line": 11
+        },
+        "phase": "after",
+        "title": "호출자 q 확인",
+        "explanation": "q는 b를 가리킵니다. 바뀐 것은 q의 주소 값이며 a, b의 정수는 그대로입니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "ended",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "ended"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      }
+    ],
+    "metadata": {
+      "supplement": "",
+      "addressModel": "기호 주소 · 실제 ABI 배치 아님"
+    }
+  },
+  "null": {
+    "version": 1,
+    "id": "double-pointer",
+    "title": "이중 포인터로 q의 방향 바꾸기",
+    "kind": "c-memory",
+    "sources": [
+      {
+        "id": "double",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(&q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "single",
+        "label": "단일 포인터 · p만 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int *p, int *next)\n{\n    p = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "null",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 10, b = 20;\n    int *q = &a;\n    redirect(NULL, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      }
+    ],
+    "inputs": {
+      "a": 10,
+      "b": 20,
+      "mode": "null"
+    },
+    "presets": [
+      {
+        "id": "single",
+        "label": "q의 주소 값만 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "single"
+        }
+      },
+      {
+        "id": "double",
+        "label": "q 자체의 주소를 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "double"
+        }
+      },
+      {
+        "id": "null",
+        "label": "pp가 NULL이면?",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "null"
+        }
+      },
+      {
+        "id": "equal",
+        "label": "값이 같아도 주소는 다르다",
+        "input": {
+          "a": 20,
+          "b": 20,
+          "mode": "double"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "id": "initial",
+        "at": {
+          "sourceId": "null",
+          "line": 10
+        },
+        "phase": "before",
+        "title": "호출 전 · 초기 상태",
+        "explanation": "q는 a를 가리킵니다. q 자체를 바꾸려면 q의 값과 q의 주소 중 무엇을 넘길까요?",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-1",
+        "at": {
+          "sourceId": "null",
+          "line": 10
+        },
+        "phase": "after",
+        "title": "redirect 호출",
+        "explanation": "redirect를 호출하고 별도 함수 저장 공간을 만듭니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "null",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-2",
+        "at": {
+          "sourceId": "null",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "NULL → pp 복사",
+        "explanation": "NULL 포인터 값을 pp에 복사합니다. q의 주소를 넘긴 것이 아니므로 pp에 유효한 대상이 없습니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "null",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": null
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.pp",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": null
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-3",
+        "at": {
+          "sourceId": "null",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "&b → next 복사",
+        "explanation": "둘째 인자 &b를 next에 복사합니다. b의 정수 값은 읽지 않습니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "null",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": null
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.next",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": "main.b"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-4",
+        "at": {
+          "sourceId": "null",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "함수 진입",
+        "explanation": "두 인자의 복사가 끝나 함수 본문으로 진입합니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "null",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": null
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-5",
+        "at": {
+          "sourceId": "null",
+          "line": 4
+        },
+        "phase": "after",
+        "title": "next 주소 값 읽기",
+        "explanation": "next에 담긴 &b를 읽습니다. b의 값에 쓰는 동작은 아닙니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "null",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": null
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [
+          "f.next"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-6",
+        "at": {
+          "sourceId": "null",
+          "line": 4
+        },
+        "phase": "diagnostic",
+        "title": "*pp · q 자체에 쓰기",
+        "explanation": "pp는 NULL이므로 *pp가 가리키는 저장 공간이 없습니다. q에는 쓰지 않고 이 단계에서 중단합니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "null",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 10
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": null
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": {
+          "code": "NULL_DEREFERENCE",
+          "message": "f.pp는 NULL입니다. 역참조할 대상이 없습니다."
+        }
+      }
+    ],
+    "metadata": {
+      "supplement": "",
+      "addressModel": "기호 주소 · 실제 ABI 배치 아님"
+    }
+  },
+  "equal": {
+    "version": 1,
+    "id": "double-pointer",
+    "title": "이중 포인터로 q의 방향 바꾸기",
+    "kind": "c-memory",
+    "sources": [
+      {
+        "id": "double",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 20, b = 20;\n    int *q = &a;\n    redirect(&q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "single",
+        "label": "단일 포인터 · p만 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int *p, int *next)\n{\n    p = next;\n}\nint main(void)\n{\n    int a = 20, b = 20;\n    int *q = &a;\n    redirect(q, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      },
+      {
+        "id": "null",
+        "label": "이중 포인터 · 호출자의 q 변경",
+        "language": "c",
+        "text": "#include <stddef.h>\nvoid redirect(int **pp, int *next)\n{\n    *pp = next;\n}\nint main(void)\n{\n    int a = 20, b = 20;\n    int *q = &a;\n    redirect(NULL, &b);\n    return 0;\n}",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+          "page": 25,
+          "section": "s2-double-pointer",
+          "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+          "supplement": true,
+          "adjustments": "이중 포인터의 주소 사슬을 함수 호출로 확장한 보충 예제. NULL 역참조는 실제 실행하지 않음."
+        }
+      }
+    ],
+    "inputs": {
+      "a": 20,
+      "b": 20,
+      "mode": "double"
+    },
+    "presets": [
+      {
+        "id": "single",
+        "label": "q의 주소 값만 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "single"
+        }
+      },
+      {
+        "id": "double",
+        "label": "q 자체의 주소를 복사",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "double"
+        }
+      },
+      {
+        "id": "null",
+        "label": "pp가 NULL이면?",
+        "input": {
+          "a": 10,
+          "b": 20,
+          "mode": "null"
+        }
+      },
+      {
+        "id": "equal",
+        "label": "값이 같아도 주소는 다르다",
+        "input": {
+          "a": 20,
+          "b": 20,
+          "mode": "double"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "id": "initial",
+        "at": {
+          "sourceId": "double",
+          "line": 10
+        },
+        "phase": "before",
+        "title": "호출 전 · 초기 상태",
+        "explanation": "q는 a를 가리킵니다. q 자체를 바꾸려면 q의 값과 q의 주소 중 무엇을 넘길까요?",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-1",
+        "at": {
+          "sourceId": "double",
+          "line": 10
+        },
+        "phase": "after",
+        "title": "redirect 호출",
+        "explanation": "redirect를 호출하고 별도 함수 저장 공간을 만듭니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-2",
+        "at": {
+          "sourceId": "double",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "&q → pp 복사",
+        "explanation": "&q라는 주소 값을 pp에 복사합니다. pp의 대상은 정수가 아니라 포인터 변수 q입니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.pp",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": "main.q"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-3",
+        "at": {
+          "sourceId": "double",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "&b → next 복사",
+        "explanation": "둘째 인자 &b를 next에 복사합니다. b의 정수 값은 읽지 않습니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "f.next",
+            "before": null,
+            "after": {
+              "kind": "pointer",
+              "target": "main.b"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-4",
+        "at": {
+          "sourceId": "double",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "함수 진입",
+        "explanation": "두 인자의 복사가 끝나 함수 본문으로 진입합니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-5",
+        "at": {
+          "sourceId": "double",
+          "line": 4
+        },
+        "phase": "after",
+        "title": "next 주소 값 읽기",
+        "explanation": "next에 담긴 &b를 읽습니다. b의 값에 쓰는 동작은 아닙니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.a"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [
+          "f.next"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-6",
+        "at": {
+          "sourceId": "double",
+          "line": 4
+        },
+        "phase": "after",
+        "title": "*pp · q 자체에 쓰기",
+        "explanation": "*pp는 pp가 가리키는 q입니다. q에 &b를 쓰므로 q의 화살표가 a에서 b로 바뀝니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "live",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "live"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            }
+          },
+          "activeFrame": "f",
+          "stdout": []
+        },
+        "reads": [
+          "f.pp"
+        ],
+        "writes": [
+          {
+            "cellId": "main.q",
+            "before": {
+              "kind": "pointer",
+              "target": "main.a"
+            },
+            "after": {
+              "kind": "pointer",
+              "target": "main.b"
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-7",
+        "at": {
+          "sourceId": "double",
+          "line": 5
+        },
+        "phase": "after",
+        "title": "redirect 반환",
+        "explanation": "함수의 매개변수 수명이 끝납니다. main의 q와 a, b는 유지됩니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "ended",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "ended"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-8",
+        "at": {
+          "sourceId": "double",
+          "line": 11
+        },
+        "phase": "after",
+        "title": "호출자 q 확인",
+        "explanation": "q는 b를 가리킵니다. 바뀐 것은 q의 주소 값이며 a, b의 정수는 그대로입니다.",
+        "state": {
+          "frames": {
+            "main": {
+              "id": "main",
+              "functionId": "main",
+              "cellIds": [
+                "main.a",
+                "main.b",
+                "main.q"
+              ],
+              "lifetime": "live",
+              "caller": null
+            },
+            "f": {
+              "id": "f",
+              "functionId": "redirect",
+              "cellIds": [
+                "f.pp",
+                "f.next"
+              ],
+              "lifetime": "ended",
+              "callSite": {
+                "sourceId": "double",
+                "line": 10
+              },
+              "caller": "main"
+            }
+          },
+          "objects": {},
+          "cells": {
+            "main.a": {
+              "id": "main.a",
+              "name": "a",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.a",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.b": {
+              "id": "main.b",
+              "name": "b",
+              "type": "int",
+              "owner": "main",
+              "address": "&main.b",
+              "value": {
+                "kind": "int",
+                "value": 20
+              },
+              "lifetime": "live"
+            },
+            "main.q": {
+              "id": "main.q",
+              "name": "q",
+              "type": "int *",
+              "owner": "main",
+              "address": "&main.q",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "live"
+            },
+            "f.pp": {
+              "id": "f.pp",
+              "name": "pp",
+              "type": "int **",
+              "owner": "f",
+              "address": "&f.pp",
+              "value": {
+                "kind": "pointer",
+                "target": "main.q"
+              },
+              "lifetime": "ended"
+            },
+            "f.next": {
+              "id": "f.next",
+              "name": "next",
+              "type": "int *",
+              "owner": "f",
+              "address": "&f.next",
+              "value": {
+                "kind": "pointer",
+                "target": "main.b"
+              },
+              "lifetime": "ended"
+            }
+          },
+          "activeFrame": "main",
+          "stdout": []
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      }
+    ],
+    "metadata": {
+      "supplement": "",
+      "addressModel": "기호 주소 · 실제 ABI 배치 아님"
+    }
+  }
+}

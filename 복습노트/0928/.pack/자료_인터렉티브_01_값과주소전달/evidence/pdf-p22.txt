@@ -1,0 +1,21 @@
+-22-
+< Data Structure & Algorithms>
+AJOU University
+전자공학과
+함수의파라미터로서의포인터
+• 함수안에서파라미터로전달된포인터를이용하여
+외부변수의값변경가능
+void swap(int *px, int *py)
+{
+int tmp;
+tmp = *px;
+*px = *py;
+*py = tmp;
+}
+main()
+{
+int a=1,b=2;
+printf("swap을호출하기전: a=%d, b=%d\n", a,b);
+swap(&a, &b);
+printf("swap을호출한다음: a=%d, b=%d\n", a,b);
+}
