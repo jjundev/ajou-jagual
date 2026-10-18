@@ -53,15 +53,25 @@
 
 슬라이드 API의 위치는 0부터 세요. `position=0`은 첫 노드 앞에 넣는 뜻이고, `position=3`은 세 번째 노드 뒤에 넣는 뜻이에요. 그래서 구어체의 “세 번째 뒤”를 API 값 2로 읽으면 한 칸 어긋나요. 삽입 위치 `position`의 선행 노드는 `get_node_at(list, position-1)`로 찾아요.
 
-S4 p47 삽입 코드의 핵심 부분이에요. 아래는 원본의 나머지 줄을 생략한 발췌예요.
+S4 p47 삽입 코드의 핵심 부분이에요. 구조체 `ListType`(S4 p45)으로 헤드 포인터와 길이를 묶어 두고, `add` 안에서 기존 `insert_node`를 재사용해요.
 
 ```c
-/* … */
-p = get_node_at(list, position-1);
-insert_node(&(list->head), p, node);
-list->length++;
-/* … */
+// [S4 p45] 헤드 포인터와 노드 개수를 묶은 구조체
+typedef struct {
+    ListNode *head; // 헤드 포인터
+    int length;     // 노드 개수
+} ListType;
+
+// [S4 p47] 위치(position)를 받아 삽입하는 함수
+void add(ListType *list, int position, element data) {
+    /* ... node 생성 및 data 세팅 ... */
+    p = get_node_at(list, position - 1);
+    insert_node(&(list->head), p, node); // list 구조체 안 head 변수의 주소를 넘김
+    list->length++;
+}
 ```
+
+`insert_node`는 첫 번째 인자로 헤드 포인터 변수의 주소(`ListNode **`)를 요구해요. 여기서는 헤드 포인터 `head`가 `list` 구조체 안에 멤버로 들어가 있으므로, `list->head`의 주소인 `&(list->head)`를 넘겨 기존 함수를 그대로 재사용해요.
 
 `position-1`이 음수이면 S4 p47의 `get_node_at`은 `NULL`을 돌려요. S4 p25의 `insert_node`는 빈 리스트이거나 선행 노드 `p`가 `NULL`일 때 헤드 포인터를 바꿔 앞에 삽입해요. 이 두 계약 덕분에 첫 위치도 같은 `add` 경로로 처리할 수 있어요. `length`와 헤드 포인터의 구조는 S4 p45–46을 배경으로 확인한 것이며, 그 쪽의 세부 구현을 이날 다시 강의했는지는 불확실해요.
 

@@ -368,12 +368,21 @@
   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
     <p>리스트 추상 데이터 타입(ADT)의 <code>add</code>와 <code>delete</code>는 위치(position)를 받지만, 연결 리스트(linked list)의 <code>insert_node</code>와 <code>remove_node</code>는 선행 노드 포인터를 받아요(S4 p44). <code>get_node_at</code>은 위치로 노드를 찾아 두 인터페이스를 이어 줘요. 교수는 이 작은 변환 함수를 두고 기존 함수를 재사용하자고 설명했어요.</p>
     <p>슬라이드 API의 위치는 0부터 세요. <code>position=0</code>은 첫 노드 앞에 넣는 뜻이고, <code>position=3</code>은 세 번째 노드 뒤에 넣는 뜻이에요. 그래서 구어체의 “세 번째 뒤”를 API 값 2로 읽으면 한 칸 어긋나요. 삽입 위치 <code>position</code>의 선행 노드는 <code>get_node_at(list, position-1)</code>로 찾아요.</p>
-    <p>S4 p47 삽입 코드의 핵심 부분이에요. 아래는 원본의 나머지 줄을 생략한 발췌예요.</p>
-    <pre><code class="language-c">/* … */
-p = get_node_at(list, position-1);
-insert_node(&amp;(list-&gt;head), p, node);
-list-&gt;length++;
-/* … */</code></pre>
+    <p>S4 p47 삽입 코드의 핵심 부분이에요. 구조체 <code>ListType</code>(S4 p45)으로 헤드 포인터와 길이를 묶어 두고, <code>add</code> 안에서 기존 <code>insert_node</code>를 재사용해요.</p>
+    <pre><code class="language-c">// [S4 p45] 헤드 포인터와 노드 개수를 묶은 구조체
+typedef struct {
+    ListNode *head; // 헤드 포인터
+    int length;     // 노드 개수
+} ListType;
+
+// [S4 p47] 위치(position)를 받아 삽입하는 함수
+void add(ListType *list, int position, element data) {
+    /* ... node 생성 및 data 세팅 ... */
+    p = get_node_at(list, position - 1);
+    insert_node(&(list->head), p, node); // list 구조체 안 head 변수의 주소를 넘김
+    list->length++;
+}</code></pre>
+    <p><code>insert_node</code>는 첫 번째 인자로 헤드 포인터 변수의 주소(<code>ListNode **</code>)를 요구해요. 여기서는 헤드 포인터 <code>head</code>가 <code>list</code> 구조체 안에 멤버로 들어가 있으므로, <code>list-&gt;head</code>의 주소인 <code>&amp;(list-&gt;head)</code>를 넘겨 기존 함수를 그대로 재사용해요.</p>
     <p><code>position-1</code>이 음수이면 S4 p47의 <code>get_node_at</code>은 <code>NULL</code>을 돌려요. S4 p25의 <code>insert_node</code>는 빈 리스트이거나 선행 노드 <code>p</code>가 <code>NULL</code>일 때 헤드 포인터를 바꿔 앞에 삽입해요. 이 두 계약 덕분에 첫 위치도 같은 <code>add</code> 경로로 처리할 수 있어요. <code>length</code>와 헤드 포인터의 구조는 S4 p45–46을 배경으로 확인한 것이며, 그 쪽의 세부 구현을 이날 다시 강의했는지는 불확실해요.</p>
     <p>S4 p48의 삭제도 삭제 위치 <code>pos</code>보다 하나 앞의 노드를 구해 <code>remove_node</code>에 넘기려는 원리예요. 다만 원본 p48은 <code>pos=0</code>에서 <code>removed=NULL</code>을 넘기고, 원본 p28의 <code>remove_node</code>는 선행 노드가 <code>NULL</code>이면 첫 노드로 헤드를 옮긴 뒤 <code>free(removed)</code>를 해요. 이 조합은 첫 노드 메모리를 해제하지 못하므로 그대로 안전한 삭제 구현이라고 받아들이면 안 돼요. 개념상 첫 노드를 삭제할 때는 실제 첫 노드를 <code>removed</code>로 전달해야 해요. 이 경계 조건 설명은 두 슬라이드 코드를 대조한 구현 해설이며, 수업에서 수정 코드를 제시했다는 뜻은 아니에요.</p>
   </div>
