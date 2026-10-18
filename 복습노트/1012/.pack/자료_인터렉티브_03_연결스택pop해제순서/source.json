@@ -1,0 +1,73 @@
+{
+  "references": {
+    "복습노트\\1012\\정리노트_1012_Queue.html": "33bfad88f6599fec539407fdc9ea71a68e20d13e79c7e192d734f4a3b5659249",
+    "복습노트\\1012\\.pack\\정리노트_1012_Queue.md": "fd0cf1736d1be555f5c1e77fb7e2aa607a4b3694ff7aa41c3faec4768d3f7fed",
+    "STT\\1012 자구알.md": "f75b8de8ccdfd5fcea59946c83d8b23d1672d6a8e72d15e16b9f60895a37312f",
+    "자료구조_강의록_2026\\Software_5_Stack.pdf": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
+  },
+  "question": "pop에서 값 보관, top 이동, free의 순서를 바꾸면 어디서 무엇이 사용 불가가 되는가?",
+  "pages": [
+    16,
+    18
+  ],
+  "section": "s0-node / s0-linkedpop",
+  "sources": [
+    {
+      "id": "correct",
+      "label": "값 보관 → top 이동 → free · 강의 pop",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\ntypedef int element;\ntypedef struct StackNode {\n    element item;\n    struct StackNode *link;\n} StackNode;\ntypedef struct {\n    StackNode *top;\n} LinkedStackType;\nint is_empty(LinkedStackType *s)\n{\n    return (s->top == NULL);\n}\n// 삭제 함수\nelement pop(LinkedStackType *s)\n{\n    if( is_empty(s) ) {\n        fprintf(stderr, \"스택이 비어있음\\n\");\n        exit(1);\n    }\n    else{\n        StackNode *temp=s->top;\n        int item = temp->item;\n        s->top = s->top->link;\n        free(temp);\n        return item;\n    }\n}\nint main(void)\n{\n    LinkedStackType s = { NULL };\n    /* 앞선 push로 노드 {{n}}개가 쌓여 있다고 가정 */\n    int x = pop(&s);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 18,
+        "section": "s0-linkedpop",
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "supplement": false,
+        "note": "강의 p18 pop 본문 · is_empty, 헤더, main 호출자, 시작 노드는 보충입니다.",
+        "adjustments": "p18 pop 본문 보존. p16 타입 정의(StackeNode 오타를 StackNode로 고침), is_empty(top == NULL), #include, main 호출자, 시작 노드 가정은 보충."
+      }
+    },
+    {
+      "id": "late-read",
+      "label": "free 뒤에 temp->item 읽기 · 오류 예",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\ntypedef int element;\ntypedef struct StackNode {\n    element item;\n    struct StackNode *link;\n} StackNode;\ntypedef struct {\n    StackNode *top;\n} LinkedStackType;\nint is_empty(LinkedStackType *s)\n{\n    return (s->top == NULL);\n}\n// 삭제 함수\nelement pop(LinkedStackType *s)\n{\n    if( is_empty(s) ) {\n        fprintf(stderr, \"스택이 비어있음\\n\");\n        exit(1);\n    }\n    else{\n        StackNode *temp=s->top;\n        s->top = s->top->link;\n        free(temp);\n        return temp->item;    /* 오류 예: 해제 후 읽기 */\n        /* item을 미리 보관하지 않음 */\n    }\n}\nint main(void)\n{\n    LinkedStackType s = { NULL };\n    /* 앞선 push로 노드 {{n}}개가 쌓여 있다고 가정 */\n    int x = pop(&s);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 18,
+        "section": "s0-linkedpop",
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "supplement": true,
+        "note": "비교용 오류 예 · 강의 pop의 보관·이동·해제 순서를 바꿨습니다.",
+        "adjustments": "강의 pop의 보관·해제 순서를 바꾼 비교용 오류 예제. UB 지점은 실행하지 않고 해당 단계에서 중단."
+      }
+    },
+    {
+      "id": "free-first",
+      "label": "top 이동 전에 free · 오류 예",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\ntypedef int element;\ntypedef struct StackNode {\n    element item;\n    struct StackNode *link;\n} StackNode;\ntypedef struct {\n    StackNode *top;\n} LinkedStackType;\nint is_empty(LinkedStackType *s)\n{\n    return (s->top == NULL);\n}\n// 삭제 함수\nelement pop(LinkedStackType *s)\n{\n    if( is_empty(s) ) {\n        fprintf(stderr, \"스택이 비어있음\\n\");\n        exit(1);\n    }\n    else{\n        StackNode *temp=s->top;\n        int item = temp->item;\n        free(temp);           /* 오류 예: 먼저 해제 */\n        s->top = s->top->link;\n        return item;\n    }\n}\nint main(void)\n{\n    LinkedStackType s = { NULL };\n    /* 앞선 push로 노드 {{n}}개가 쌓여 있다고 가정 */\n    int x = pop(&s);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 18,
+        "section": "s0-linkedpop",
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "supplement": true,
+        "note": "비교용 오류 예 · 강의 pop의 보관·이동·해제 순서를 바꿨습니다.",
+        "adjustments": "강의 pop의 보관·해제 순서를 바꾼 비교용 오류 예제. UB 지점은 실행하지 않고 해당 단계에서 중단."
+      }
+    }
+  ],
+  "source_c": {
+    "file": "source.c",
+    "sha256": "9a0071f0f7d0ae2ee58830d5aeffb4733aff79f08c2faa423e8b0d510ee2568c",
+    "role": "검산용 완전 프로그램: 강의 코드 보존 + 시작 상태를 실제 호출로 만드는 보충 main"
+  },
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "simplifications": "is_empty(top == NULL)는 p18이 호출만 하고 싣지 않아 보충. 노드 A, B(10, 20)와 맨 위 노드 값(입력)은 앞선 push 결과로 가정. s->top->link는 s->top 읽기 + 노드 link Cell 읽기로 나눠 저작. exit(1)은 프로그램 종료 관찰 단계로 표시(진단 아님). 두 오류 예는 비교용 보충이며 해제 후 포인터 값을 읽는 지점에서 실행하지 않고 중단.",
+  "verification": "PDF p16, p18 rendered and visually read; pdftotext lost Korean glyphs so Korean string literals were read from the rendered image. Note HTML, .pack MD and STT Part 01-03 cross-checked."
+}

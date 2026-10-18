@@ -1,0 +1,58 @@
+{
+  "references": {
+    "복습노트\\1012\\정리노트_1012_Queue.html": "33bfad88f6599fec539407fdc9ea71a68e20d13e79c7e192d734f4a3b5659249",
+    "복습노트\\1012\\.pack\\정리노트_1012_Queue.md": "fd0cf1736d1be555f5c1e77fb7e2aa607a4b3694ff7aa41c3faec4768d3f7fed",
+    "STT\\1012 자구알.md": "f75b8de8ccdfd5fcea59946c83d8b23d1672d6a8e72d15e16b9f60895a37312f",
+    "자료구조_강의록_2026\\Software_5_Stack.pdf": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
+  },
+  "question": "새 노드를 맨 앞에 붙일 때 temp->link = s->top과 s->top = temp 중 무엇을 먼저 해야 기존 노드를 잃지 않는가?",
+  "pages": [
+    16,
+    17
+  ],
+  "section": "s0-node / s0-linkedpush",
+  "sources": [
+    {
+      "id": "correct",
+      "label": "link 먼저 · 강의 push",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\ntypedef int element;\ntypedef struct StackNode {\n    element item;\n    struct StackNode *link;\n} StackNode;\ntypedef struct {\n    StackNode *top;\n} LinkedStackType;\n// 삽입 함수\nvoid push(LinkedStackType *s, element item)\n{\n    StackNode *temp=(StackNode *)malloc(sizeof(StackNode));\n    if( temp == NULL ){\n        fprintf(stderr, \"메모리 할당에러\\n\");\n        return;\n    }\n    else{\n        temp->item = item;\n        temp->link = s->top;\n        s->top = temp;\n    }\n}\nint main(void)\n{\n    LinkedStackType s = { NULL };\n    /* 앞선 push로 노드 {{n}}개가 쌓여 있다고 가정 */\n    push(&s, {{item}});\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 17,
+        "section": "s0-linkedpush",
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "supplement": false,
+        "note": "강의 p17 push 본문 · 타입 정의는 p16, 헤더·main 호출자·시작 노드는 보충입니다.",
+        "adjustments": "p17 push 본문 보존. p16 타입 정의의 별칭 오타 StackeNode를 StackNode로 고침. #include, main 호출자, 시작 노드 가정은 보충. malloc 성공을 가정하고 실패 분기는 실행하지 않음."
+      }
+    },
+    {
+      "id": "wrong",
+      "label": "top 먼저 · 순서 오류 예",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\ntypedef int element;\ntypedef struct StackNode {\n    element item;\n    struct StackNode *link;\n} StackNode;\ntypedef struct {\n    StackNode *top;\n} LinkedStackType;\n// 삽입 함수\nvoid push(LinkedStackType *s, element item)\n{\n    StackNode *temp=(StackNode *)malloc(sizeof(StackNode));\n    if( temp == NULL ){\n        fprintf(stderr, \"메모리 할당에러\\n\");\n        return;\n    }\n    else{\n        temp->item = item;\n        s->top = temp;        /* 순서를 바꾼 오류 예 */\n        temp->link = s->top;\n    }\n}\nint main(void)\n{\n    LinkedStackType s = { NULL };\n    /* 앞선 push로 노드 {{n}}개가 쌓여 있다고 가정 */\n    push(&s, {{item}});\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 17,
+        "section": "s0-linkedpush",
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "supplement": true,
+        "note": "비교용 오류 예 · 강의 push의 21·22줄 순서만 바꿨습니다.",
+        "adjustments": "강의 push의 21·22줄 순서만 바꾼 비교용 오류 예제. 헤더·타입 정의(p16)·main 호출자는 보충."
+      }
+    }
+  ],
+  "source_c": {
+    "file": "source.c",
+    "sha256": "088ec092eaf9e3d437d8ab45bb0ffa86d9eba4b55ee31149af22e69c5e19a3dd",
+    "role": "검산용 완전 프로그램: 강의 코드 보존 + 시작 상태를 실제 호출로 만드는 보충 main"
+  },
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "simplifications": "노드 A~C(값 10, 20, 30)는 앞선 push 결과로 가정하고 시작 상태로 제공(source.c는 실제 push로 생성). 노드 이름표 A~D와 &A 같은 주소는 기호이며 C 식별자·실제 번지가 아님. malloc 성공을 가정해 실패 분기는 실행하지 않음. temp->link처럼 첫 멤버가 아닌 필드 쓰기는 temp 읽기와 link Cell 쓰기로 나눠 저작. top 먼저 모드는 비교용 오류 예이며 UB가 아니라 정의된 동작(누수·자기 순환)이라 진단 없이 끝까지 실행.",
+  "verification": "PDF p16, p17 rendered and visually read; pdftotext lost Korean glyphs so Korean string literals were read from the rendered image. Note HTML, .pack MD and STT Part 01-03 cross-checked."
+}

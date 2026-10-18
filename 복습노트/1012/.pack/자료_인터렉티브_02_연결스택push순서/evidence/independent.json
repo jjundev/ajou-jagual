@@ -1,0 +1,2019 @@
+{
+  "method": "independent Python C-semantics table (bind/declare/allocate/write order, free aliasing, diagnostics, final cells)",
+  "topic": "linked-push",
+  "compiler_unavailable": true,
+  "compiler_note": "gcc/clang/cl/cc not on PATH; WSL has no gcc; Docker engine not running. UB paths are never executed.",
+  "total": 63,
+  "cases": [
+    {
+      "case": "default",
+      "input": {
+        "item": 40,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": 40
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "correct",
+      "input": {
+        "n": 3,
+        "item": 40,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": 40
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "wrong",
+      "input": {
+        "n": 3,
+        "item": 40,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 40
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B",
+        "C"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "empty",
+      "input": {
+        "n": 0,
+        "item": 40,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": null
+        },
+        "D": {
+          "kind": "int",
+          "value": 40
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "empty-wrong",
+      "input": {
+        "n": 0,
+        "item": 40,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 40
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "same",
+      "input": {
+        "n": 3,
+        "item": 30,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": 30
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "boundary",
+      "input": {
+        "n": 1,
+        "item": -99,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "A"
+        },
+        "D": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": null
+        },
+        "D": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "A"
+        },
+        "D": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "B"
+        },
+        "D": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -99,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": -99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B",
+        "C"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": null
+        },
+        "D": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "A"
+        },
+        "D": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "B"
+        },
+        "D": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": -1,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": -1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B",
+        "C"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": null
+        },
+        "D": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "A"
+        },
+        "D": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "B"
+        },
+        "D": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 0,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B",
+        "C"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 1,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": null
+        },
+        "D": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 1,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 1,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "A"
+        },
+        "D": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 1,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 1,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "B"
+        },
+        "D": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 1,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 1,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 1,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B",
+        "C"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 10,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": null
+        },
+        "D": {
+          "kind": "int",
+          "value": 10
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 10,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 10
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 10,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "A"
+        },
+        "D": {
+          "kind": "int",
+          "value": 10
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 10,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 10
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 10,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "B"
+        },
+        "D": {
+          "kind": "int",
+          "value": 10
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 10,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 10
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 10,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": 10
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 10,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 10
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B",
+        "C"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 30,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": null
+        },
+        "D": {
+          "kind": "int",
+          "value": 30
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 30,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 30
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 30,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "A"
+        },
+        "D": {
+          "kind": "int",
+          "value": 30
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 30,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 30
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 30,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "B"
+        },
+        "D": {
+          "kind": "int",
+          "value": 30
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 30,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 30
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 30,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": 30
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 30,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 30
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B",
+        "C"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": null
+        },
+        "D": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 0,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "A"
+        },
+        "D": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 1,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "B"
+        },
+        "D": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 2,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B"
+      ],
+      "cycle": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "C"
+        },
+        "D": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "reachable_from_top": [
+        "D",
+        "C",
+        "B",
+        "A"
+      ],
+      "leaked": [],
+      "cycle": false,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "item": 99,
+        "n": 3,
+        "mode": "wrong"
+      },
+      "writes_checked": 9,
+      "diagnostic": null,
+      "final": {
+        "s": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D.link": {
+          "kind": "pointer",
+          "target": "D"
+        },
+        "D": {
+          "kind": "int",
+          "value": 99
+        }
+      },
+      "reachable_from_top": [
+        "D"
+      ],
+      "leaked": [
+        "A",
+        "B",
+        "C"
+      ],
+      "cycle": true,
+      "status": "pass"
+    }
+  ],
+  "status": "pass"
+}

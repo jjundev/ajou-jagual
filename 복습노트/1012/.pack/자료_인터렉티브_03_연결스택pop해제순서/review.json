@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "hashes": {
+    "brief.md": "41dd716fc37e569be7ebb6b66cab4dac5c443626f6235d70c487235e50ed4d7b",
+    "evidence/browser/linked-pop-1024-dark.png": "14d7bc4de3e591dacda8f5e3d5252c673dea3dd7477536a4efd4f526b7cecb96",
+    "evidence/browser/linked-pop-1024-light.png": "173c8f2b147288b30d673230771f7cab9e3d85fb0b5180cf551180f90bc67d99",
+    "evidence/browser/linked-pop-1440-dark.png": "fa5883011d42179237310378d86389ab0119aca722d892a6fe5fbaf10ea8f5fa",
+    "evidence/browser/linked-pop-1440-light.png": "d9edf88e254ad8f758fc33945bb2d093b24d712a75ff546fa6348a60f8f6552f",
+    "evidence/browser/linked-pop-375-dark.png": "b6d281f24a404ede79d895f0f2f2d75a0fc32273185d6d387bf063b580bcd4a0",
+    "evidence/browser/linked-pop-375-light.png": "0d2a12b3bce83693ae5c6959d2f65360261e50c087d3291ea8a8d0416c80df12",
+    "evidence/browser.json": "fe7be3941cd1706f2400bf0456d604189c881e8492105f014b31a8a7502a04e1",
+    "evidence/content-review.md": "2a0dbe923d1553a8da2b4a943f49c227749627b084c0645c04a5f6055b38979c",
+    "evidence/independent.json": "2505f923d41b77cf7565dbb47cc5d0d55181e7a8df35d2b45689606dcb30f42d",
+    "evidence/independent_1012.py": "35d8330495b7f4c34cb59f3c42bc4917b3654e09f70ddcba1ee4a9bfe9ed55c6",
+    "evidence/node-tests.log": "525fa951134279c96be547b9478da785f6395f48cba4676f28322708175ba386",
+    "evidence/pdf-p16.png": "ed5a3c0950195f820ff240a06a15113f22792998e0832985e2656ed3a1ad9adc",
+    "evidence/pdf-p16.txt": "b3e9c6bc6e5ebb5f8dbda5cbf3b0b048389aa41fa42a833f5dde0a7c278917ad",
+    "evidence/pdf-p18.png": "5fe308a7828e5cf80ae193bd3b7a0a692bd55c65e3b3f5b6a280ffac87866f6c",
+    "evidence/pdf-p18.txt": "e3ec5a93727e203e2fc37ad6db71df413e4ca4e28e33063448fcf1aabd20a848",
+    "evidence/schema.json": "9c8f7a3512a80b8fb7d38703093531e2b7d697350ca81c9e4972042056d99a59",
+    "evidence/trace-walkthrough.txt": "542d0d4ec6d502604c82fab9076a402f980ae745af7044e360234ef2d60e8ba4",
+    "evidence/ui/linked-pop-1024-dark.png": "8fb9d880cffc834e05dec333210fa7ab1de79a77d9841ab907cd752d43a4af51",
+    "evidence/ui/linked-pop-1024-light.png": "328fc1f5b5dc77034606ce51a061e931533e83d8e2333e3f58e0d47d25e730ca",
+    "evidence/ui/linked-pop-1440-dark.png": "caf3b8483186ef760ef3890c6a3cd1cbe457747b1422c6621c25f2bc1671b13f",
+    "evidence/ui/linked-pop-1440-light.png": "b68a26acfaf50883ce03f266a531ae25637ab3ad19d6210ba89c824be14deba7",
+    "evidence/ui/linked-pop-375-dark.png": "659080fa3ddfa15021bce372a6d21756d9d561070c446b5cc29056fb540bba1d",
+    "evidence/ui/linked-pop-375-light.png": "95351552237e9621b14cf46431ba8ead0a43ad389c44533393f226d5600e1cc6",
+    "evidence/ui-review.md": "3776c22aca7dec2aa9127b65e618cb5fd77a8e4b3f9adeceba328b9abdc74a04",
+    "evidence/ui.json": "62b0fb837a68bdae7f51ea98e9b46293f580a04eb37c724b90139d543ef94ea7",
+    "evidence/visual/linked-pop-correct-1440.png": "867330c3e3f17214fb4ce08dc7134e8d6e00236c128659a0a67fd8fbbec5bd09",
+    "evidence/visual/linked-pop-free-first-1440.png": "6a1c5a01ede5cf81d06151805fbcaf9309038445b4b2e61757214459f4b2ced8",
+    "preview.html": "284b669eb29dbac36e881444c7ede02f3cd883f77c52dfdd5aa9ed20f77b2316",
+    "scenario.cjs": "37b0e6f9286f09f3c318733ffb02c7d8dbd96ce622dd5347d18e81e0e838f2cf",
+    "source.c": "9a0071f0f7d0ae2ee58830d5aeffb4733aff79f08c2faa423e8b0d510ee2568c",
+    "source.json": "bd1e4b2bd29b5034b496100ff084c9dee091a1e64a8d8b04652c2f4f6c48b9a2",
+    "trace.json": "990384a8a1abd8752e6baca2444dd0a8f03e8b12701614430f78a394cc61e952"
+  },
+  "checks": {
+    "schema": {
+      "status": "pass",
+      "evidence": "evidence/schema.json",
+      "notes": "check.cjs: 기본값과 preset 6개 모두 ok, issues 0. schema.json의 trace/scenario sha256이 현재 파일과 일치."
+    },
+    "content": {
+      "status": "pass",
+      "evidence": "evidence/content-review.md",
+      "notes": "PDF 렌더링·정리노트·STT와 강의 코드 줄을 대조하고 trace-walkthrough.txt로 모든 preset의 줄별 bind/read/write·설명을 C 의미(주소 값 복사, 첫 멤버가 아닌 필드 분리, free 별칭 무효화, 같은 식 안 순서 미지정)와 검토. 조사·문구 수정 후 재검토."
+    },
+    "independent": {
+      "status": "pass",
+      "evidence": "evidence/independent.json",
+      "notes": "엔진을 쓰지 않는 Python C-의미 표로 79건(preset+경계 격자)의 bind/선언/할당/쓰기 순서, 진단 코드, 최종 Cell 비교 통과. gcc/clang/cl/cc 없음·WSL gcc 없음·Docker 미실행 → compiler_unavailable."
+    },
+    "browser": {
+      "status": "pass",
+      "evidence": "evidence/browser.json",
+      "notes": "현재 preview sha 일치. file://·offline 6조합 726 Snapshot 전체 검사, browser_ui 6조합·browser_regressions 통과, 외부요청·콘솔오류 0. 캡처를 직접 보고 겹침·화살표·진단 표시 확인(ui-review.md)."
+    }
+  }
+}

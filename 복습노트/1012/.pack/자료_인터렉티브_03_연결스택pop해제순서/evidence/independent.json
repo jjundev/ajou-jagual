@@ -1,0 +1,1612 @@
+{
+  "method": "independent Python C-semantics table (bind/declare/allocate/write order, free aliasing, diagnostics, final cells)",
+  "topic": "linked-pop",
+  "compiler_unavailable": true,
+  "compiler_note": "gcc/clang/cl/cc not on PATH; WSL has no gcc; Docker engine not running. UB paths are never executed.",
+  "total": 79,
+  "cases": [
+    {
+      "case": "default",
+      "input": {
+        "top": 30,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 30
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "correct",
+      "input": {
+        "top": 30,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 30
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "last",
+      "input": {
+        "top": 30,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 30
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "empty",
+      "input": {
+        "top": 30,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "late-read",
+      "input": {
+        "top": 30,
+        "n": 3,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "free-first",
+      "input": {
+        "top": 30,
+        "n": 3,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "boundary",
+      "input": {
+        "top": -99,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": -99
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 0,
+        "mode": "late-read"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 0,
+        "mode": "free-first"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": -99
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 1,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 1,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": -99
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 2,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 2,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": -99
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 3,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -99,
+        "n": 3,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 0,
+        "mode": "late-read"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 0,
+        "mode": "free-first"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": -1
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 1,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 1,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": -1
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 2,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 2,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": -1
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 3,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": -1,
+        "n": 3,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 0,
+        "mode": "late-read"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 0,
+        "mode": "free-first"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 0
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 1,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 1,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 0
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 2,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 2,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 0
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 3,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 0,
+        "n": 3,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 0,
+        "mode": "late-read"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 0,
+        "mode": "free-first"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 10
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 1,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 1,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 10
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 2,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 2,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 10
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 3,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 10,
+        "n": 3,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 0,
+        "mode": "late-read"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 0,
+        "mode": "free-first"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 30
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 1,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 1,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 30
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 2,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 2,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 30
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 3,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 30,
+        "n": 3,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 0,
+        "mode": "correct"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 0,
+        "mode": "late-read"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 0,
+        "mode": "free-first"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "exit": true,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 1,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 99
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 1,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": null
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 1,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 2,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 99
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 2,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "A"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 2,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 3,
+        "mode": "correct"
+      },
+      "writes_checked": 7,
+      "diagnostic": null,
+      "final": {
+        "x": {
+          "kind": "int",
+          "value": 99
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 3,
+        "mode": "late-read"
+      },
+      "writes_checked": 5,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "pointer",
+          "target": "B"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "top": 99,
+        "n": 3,
+        "mode": "free-first"
+      },
+      "writes_checked": 6,
+      "diagnostic": "INDETERMINATE_READ",
+      "final": {
+        "x": {
+          "kind": "uninitialized"
+        },
+        "s": {
+          "kind": "indeterminate"
+        }
+      },
+      "status": "pass"
+    }
+  ],
+  "status": "pass"
+}

@@ -1,0 +1,58 @@
+{
+  "references": {
+    "복습노트\\1012\\정리노트_1012_Queue.html": "33bfad88f6599fec539407fdc9ea71a68e20d13e79c7e192d734f4a3b5659249",
+    "복습노트\\1012\\.pack\\정리노트_1012_Queue.md": "fd0cf1736d1be555f5c1e77fb7e2aa607a4b3694ff7aa41c3faec4768d3f7fed",
+    "STT\\1012 자구알.md": "f75b8de8ccdfd5fcea59946c83d8b23d1672d6a8e72d15e16b9f60895a37312f",
+    "자료구조_강의록_2026\\Software_5_Stack.pdf": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
+  },
+  "question": "push의 ++(s->top)과 pop의 (s->top)--는 각각 어느 인덱스를 쓰고 top을 언제 바꾸는가?",
+  "pages": [
+    13,
+    14
+  ],
+  "section": "s0-array / s0-pushpop",
+  "sources": [
+    {
+      "id": "correct",
+      "label": "++top 후 저장 · 강의 push",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\n#define MAX_STACK_SIZE 5\ntypedef int element;\ntypedef struct {\n    element stack[MAX_STACK_SIZE];\n    int top;\n} StackType;\nint is_empty(StackType *s)\n{\n    return (s->top == -1);\n}\nint is_full(StackType *s)\n{\n    return (s->top == (MAX_STACK_SIZE-1));\n}\n// 삽입 함수\nvoid push(StackType *s, element item)\n{\n    if( is_full(s) ) {\n        fprintf(stderr,\"스택 포화 에러\\n\");\n        return;\n    }\n    else s->stack[++(s->top)] = item;\n}\n// 삭제 함수\nelement pop(StackType *s)\n{\n    if( is_empty(s) ) {\n        fprintf(stderr, \"스택 공백 에러\\n\");\n        exit(1);\n    }\n    else return s->stack[(s->top)--];\n}\nint main(void)\n{\n    StackType s;\n    /* 앞선 push로 원소 {{n}}개가 쌓여 있다고 가정 */\n    push(&s, {{item}});\n    int x = pop(&s);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 14,
+        "section": "s0-pushpop",
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "supplement": false,
+        "note": "강의 p13–14 코드 · 헤더, MAX_STACK_SIZE 5, main 호출자, 시작 원소는 보충입니다.",
+        "adjustments": "p13 StackType·is_empty·is_full과 p14 push·pop 본문 보존(init·peek 생략). #include, MAX_STACK_SIZE 5, main 호출자, 시작 원소 가정은 보충."
+      }
+    },
+    {
+      "id": "wrong",
+      "label": "저장 후 top++ · 오류 예",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\n#define MAX_STACK_SIZE 5\ntypedef int element;\ntypedef struct {\n    element stack[MAX_STACK_SIZE];\n    int top;\n} StackType;\nint is_empty(StackType *s)\n{\n    return (s->top == -1);\n}\nint is_full(StackType *s)\n{\n    return (s->top == (MAX_STACK_SIZE-1));\n}\n// 삽입 함수\nvoid push(StackType *s, element item)\n{\n    if( is_full(s) ) {\n        fprintf(stderr,\"스택 포화 에러\\n\");\n        return;\n    }\n    else s->stack[(s->top)++] = item;   /* 오류 예 */\n}\n// 삭제 함수\nelement pop(StackType *s)\n{\n    if( is_empty(s) ) {\n        fprintf(stderr, \"스택 공백 에러\\n\");\n        exit(1);\n    }\n    else return s->stack[(s->top)--];\n}\nint main(void)\n{\n    StackType s;\n    /* 앞선 push로 원소 {{n}}개가 쌓여 있다고 가정 */\n    push(&s, {{item}});\n    int x = pop(&s);\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 14,
+        "section": "s0-pushpop",
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "supplement": true,
+        "note": "비교용 오류 예 · push의 전위 ++만 후위 ++로 바꿨습니다.",
+        "adjustments": "강의 push의 전위 ++를 후위 ++로 바꾼 비교용 오류 예제. UB 지점은 실행하지 않고 해당 단계에서 중단."
+      }
+    }
+  ],
+  "source_c": {
+    "file": "source.c",
+    "sha256": "0c8bb878c5bb3bfe19ab99997408e94d54bbfc43ccf4073080095423ca357d1b",
+    "role": "검산용 완전 프로그램: 강의 코드 보존 + 시작 상태를 실제 호출로 만드는 보충 main"
+  },
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "simplifications": "init·peek는 시나리오 화면에서 생략(source.c에는 보존). MAX_STACK_SIZE 5, 시작 원소 [7, 9, 5, 1, 6] 중 앞 n개는 앞선 push 결과로 가정. 같은 식 안의 top 증가와 배열 저장/읽기의 상대 순서는 C가 정하지 않으므로 설명에서 그렇게 밝히고, 인덱스 값(증가 후/감소 전)만 확정 사실로 보여 준다. s->top처럼 첫 멤버가 아닌 필드 접근은 포인터 s 읽기와 필드 Cell 읽기/쓰기 두 이벤트로 나눠 저작했다(엔진 through는 정확히 가리키는 Cell만 허용). 오류 예(후위 ++)는 비교용 보충이며 n=0이면 s.stack[-1] 쓰기, n=1..4면 미초기화 칸 읽기에서 실행하지 않고 중단.",
+  "verification": "PDF p13, p14 rendered and visually read; pdftotext lost Korean glyphs so Korean string literals were read from the rendered image. Note HTML, .pack MD and STT Part 01-03 cross-checked."
+}

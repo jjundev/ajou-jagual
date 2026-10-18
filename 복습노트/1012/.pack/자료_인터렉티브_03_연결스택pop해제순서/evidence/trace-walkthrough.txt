@@ -1,0 +1,249 @@
+=== default {"top":30,"n":3,"mode":"correct"}
+initial L34 [int x = pop(&s);] 호출 전 · 초기 상태 | R: | W:
+    s.top이 맨 위 노드를 가리킵니다. 그 노드를 free하기 전에 무엇을 따로 보관해야 할까요? A~C는 그림의 노드 이름표이고, &C는 C 노드(구조체 전체)의 시작 주소를 뜻하는 기호입니다.
+step-1 L34 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다. pop만의 저장 공간을 만듭니다.
+step-2 L16 [element pop(LinkedStackType *s)] &s → 매개변수 s | R: | W:f.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다.
+step-3 L17 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-4 L18 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다. is_empty도 자기 매개변수 s를 따로 가집니다.
+step-5 L11 [int is_empty(LinkedStackType *s)] s의 값 → is_empty의 s | R:f.s | W:e.s=&s
+    pop의 s에 담긴 &s를 읽어 is_empty의 s에 복사합니다. 두 매개변수는 서로 다른 변수입니다.
+step-6 L12 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-7 L13 [return (s->top == NULL);] s->top == NULL? | R:e.s,s | W:
+    s->top은 &C이므로 NULL이 아닙니다. 결과는 0입니다.
+step-8 L14 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-9 L23 [StackNode *temp=s->top;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &C를 읽습니다.
+step-10 L23 [StackNode *temp=s->top;] temp = &C | R: | W:f.temp=&C
+    temp에 &C를 저장합니다. 이제 temp와 s.top이 같은 C 노드를 가리킵니다.
+step-11 L24 [int item = temp->item;] temp->item 읽기 | R:f.temp,C | W:
+    temp를 따라가 C 노드의 item 30을 읽습니다.
+step-12 L24 [int item = temp->item;] item = 30 | R: | W:f.item=30
+    item 변수에 30을 복사해 둡니다. 노드를 해제해도 이 값은 남습니다.
+step-13 L25 [s->top = s->top->link;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &C를 읽습니다.
+step-14 L25 [s->top = s->top->link;] s->top->link 읽기 | R:C.link | W:
+    s->top이 가리키는 C 노드의 link를 읽습니다. 값은 &B입니다.
+step-15 L25 [s->top = s->top->link;] s->top = &B | R:f.s | W:s=&B
+    s.top에 &B를 씁니다. 이제 맨 위는 B이고, C는 temp만 가리킵니다.
+step-16 L26 [free(temp);] free(temp) | R:f.temp | W:f.temp=indet
+    free(temp)로 C 노드를 반납합니다. temp가 담던 주소 값은 이제 사용할 수 없는 값이 되며, 노드의 item과 link도 수명이 끝납니다.
+step-17 L27 [return item;] item 읽기 | R:f.item | W:
+    보관해 둔 item 30을 읽습니다. 해제된 노드를 읽지 않습니다.
+step-18 L27 [return item;] pop 반환 → x = 30 | R: | W:x=30
+    30을 x에 돌려주고 pop의 s, temp, item 수명이 끝납니다.
+step-19 L35 [return 0;] 호출 후 확인 | R: | W:
+    x = 30, s.top = &B입니다. C 노드는 반납되었고 나머지 연결은 그대로입니다.
+=== correct {"top":30,"n":3,"mode":"correct"}
+initial L34 [int x = pop(&s);] 호출 전 · 초기 상태 | R: | W:
+    s.top이 맨 위 노드를 가리킵니다. 그 노드를 free하기 전에 무엇을 따로 보관해야 할까요? A~C는 그림의 노드 이름표이고, &C는 C 노드(구조체 전체)의 시작 주소를 뜻하는 기호입니다.
+step-1 L34 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다. pop만의 저장 공간을 만듭니다.
+step-2 L16 [element pop(LinkedStackType *s)] &s → 매개변수 s | R: | W:f.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다.
+step-3 L17 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-4 L18 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다. is_empty도 자기 매개변수 s를 따로 가집니다.
+step-5 L11 [int is_empty(LinkedStackType *s)] s의 값 → is_empty의 s | R:f.s | W:e.s=&s
+    pop의 s에 담긴 &s를 읽어 is_empty의 s에 복사합니다. 두 매개변수는 서로 다른 변수입니다.
+step-6 L12 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-7 L13 [return (s->top == NULL);] s->top == NULL? | R:e.s,s | W:
+    s->top은 &C이므로 NULL이 아닙니다. 결과는 0입니다.
+step-8 L14 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-9 L23 [StackNode *temp=s->top;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &C를 읽습니다.
+step-10 L23 [StackNode *temp=s->top;] temp = &C | R: | W:f.temp=&C
+    temp에 &C를 저장합니다. 이제 temp와 s.top이 같은 C 노드를 가리킵니다.
+step-11 L24 [int item = temp->item;] temp->item 읽기 | R:f.temp,C | W:
+    temp를 따라가 C 노드의 item 30을 읽습니다.
+step-12 L24 [int item = temp->item;] item = 30 | R: | W:f.item=30
+    item 변수에 30을 복사해 둡니다. 노드를 해제해도 이 값은 남습니다.
+step-13 L25 [s->top = s->top->link;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &C를 읽습니다.
+step-14 L25 [s->top = s->top->link;] s->top->link 읽기 | R:C.link | W:
+    s->top이 가리키는 C 노드의 link를 읽습니다. 값은 &B입니다.
+step-15 L25 [s->top = s->top->link;] s->top = &B | R:f.s | W:s=&B
+    s.top에 &B를 씁니다. 이제 맨 위는 B이고, C는 temp만 가리킵니다.
+step-16 L26 [free(temp);] free(temp) | R:f.temp | W:f.temp=indet
+    free(temp)로 C 노드를 반납합니다. temp가 담던 주소 값은 이제 사용할 수 없는 값이 되며, 노드의 item과 link도 수명이 끝납니다.
+step-17 L27 [return item;] item 읽기 | R:f.item | W:
+    보관해 둔 item 30을 읽습니다. 해제된 노드를 읽지 않습니다.
+step-18 L27 [return item;] pop 반환 → x = 30 | R: | W:x=30
+    30을 x에 돌려주고 pop의 s, temp, item 수명이 끝납니다.
+step-19 L35 [return 0;] 호출 후 확인 | R: | W:
+    x = 30, s.top = &B입니다. C 노드는 반납되었고 나머지 연결은 그대로입니다.
+=== last {"top":30,"n":1,"mode":"correct"}
+initial L34 [int x = pop(&s);] 호출 전 · 초기 상태 | R: | W:
+    s.top이 맨 위 노드를 가리킵니다. 그 노드를 free하기 전에 무엇을 따로 보관해야 할까요? A~C는 그림의 노드 이름표이고, &C는 C 노드(구조체 전체)의 시작 주소를 뜻하는 기호입니다.
+step-1 L34 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다. pop만의 저장 공간을 만듭니다.
+step-2 L16 [element pop(LinkedStackType *s)] &s → 매개변수 s | R: | W:f.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다.
+step-3 L17 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-4 L18 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다. is_empty도 자기 매개변수 s를 따로 가집니다.
+step-5 L11 [int is_empty(LinkedStackType *s)] s의 값 → is_empty의 s | R:f.s | W:e.s=&s
+    pop의 s에 담긴 &s를 읽어 is_empty의 s에 복사합니다. 두 매개변수는 서로 다른 변수입니다.
+step-6 L12 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-7 L13 [return (s->top == NULL);] s->top == NULL? | R:e.s,s | W:
+    s->top은 &A이므로 NULL이 아닙니다. 결과는 0입니다.
+step-8 L14 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-9 L23 [StackNode *temp=s->top;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &A를 읽습니다.
+step-10 L23 [StackNode *temp=s->top;] temp = &A | R: | W:f.temp=&A
+    temp에 &A를 저장합니다. 이제 temp와 s.top이 같은 A 노드를 가리킵니다.
+step-11 L24 [int item = temp->item;] temp->item 읽기 | R:f.temp,A | W:
+    temp를 따라가 A 노드의 item 30을 읽습니다.
+step-12 L24 [int item = temp->item;] item = 30 | R: | W:f.item=30
+    item 변수에 30을 복사해 둡니다. 노드를 해제해도 이 값은 남습니다.
+step-13 L25 [s->top = s->top->link;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &A를 읽습니다.
+step-14 L25 [s->top = s->top->link;] s->top->link 읽기 | R:A.link | W:
+    s->top이 가리키는 A 노드의 link를 읽습니다. 값은 NULL입니다.
+step-15 L25 [s->top = s->top->link;] s->top = NULL | R:f.s | W:s=NULL
+    s.top에 NULL을 씁니다. 스택이 비었고, A는 temp만 가리킵니다.
+step-16 L26 [free(temp);] free(temp) | R:f.temp | W:f.temp=indet
+    free(temp)로 A 노드를 반납합니다. temp가 담던 주소 값은 이제 사용할 수 없는 값이 되며, 노드의 item과 link도 수명이 끝납니다.
+step-17 L27 [return item;] item 읽기 | R:f.item | W:
+    보관해 둔 item 30을 읽습니다. 해제된 노드를 읽지 않습니다.
+step-18 L27 [return item;] pop 반환 → x = 30 | R: | W:x=30
+    30을 x에 돌려주고 pop의 s, temp, item 수명이 끝납니다.
+step-19 L35 [return 0;] 호출 후 확인 | R: | W:
+    x = 30, s.top = NULL입니다. A 노드는 반납되었고 나머지 연결은 그대로입니다.
+=== empty {"top":30,"n":0,"mode":"correct"}
+initial L34 [int x = pop(&s);] 호출 전 · 초기 상태 | R: | W:
+    s.top이 맨 위 노드를 가리킵니다. 그 노드를 free하기 전에 무엇을 따로 보관해야 할까요? A~C는 그림의 노드 이름표이고, &C는 C 노드(구조체 전체)의 시작 주소를 뜻하는 기호입니다.
+step-1 L34 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다. pop만의 저장 공간을 만듭니다.
+step-2 L16 [element pop(LinkedStackType *s)] &s → 매개변수 s | R: | W:f.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다.
+step-3 L17 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-4 L18 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다. is_empty도 자기 매개변수 s를 따로 가집니다.
+step-5 L11 [int is_empty(LinkedStackType *s)] s의 값 → is_empty의 s | R:f.s | W:e.s=&s
+    pop의 s에 담긴 &s를 읽어 is_empty의 s에 복사합니다. 두 매개변수는 서로 다른 변수입니다.
+step-6 L12 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-7 L13 [return (s->top == NULL);] s->top == NULL? | R:e.s,s | W:
+    s->top이 NULL이므로 결과는 1(비어 있음)입니다.
+step-8 L14 [}] is_empty 반환 1 | R: | W:
+    is_empty가 1을 돌려주고 끝납니다.
+step-9 L20 [exit(1);] exit(1) · 프로그램 종료 | R: | W:
+    빈 스택이므로 오류 메시지를 출력하고 exit(1)을 호출합니다. exit은 반복문만 빠져나가는 것이 아니라 프로그램 전체를 끝냅니다. 그래서 pop은 값을 돌려주지 않고 x도 초기화되지 않습니다.
+=== late-read {"top":30,"n":3,"mode":"late-read"}
+initial L34 [int x = pop(&s);] 호출 전 · 초기 상태 | R: | W:
+    s.top이 맨 위 노드를 가리킵니다. 그 노드를 free하기 전에 무엇을 따로 보관해야 할까요? A~C는 그림의 노드 이름표이고, &C는 C 노드(구조체 전체)의 시작 주소를 뜻하는 기호입니다.
+step-1 L34 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다. pop만의 저장 공간을 만듭니다.
+step-2 L16 [element pop(LinkedStackType *s)] &s → 매개변수 s | R: | W:f.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다.
+step-3 L17 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-4 L18 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다. is_empty도 자기 매개변수 s를 따로 가집니다.
+step-5 L11 [int is_empty(LinkedStackType *s)] s의 값 → is_empty의 s | R:f.s | W:e.s=&s
+    pop의 s에 담긴 &s를 읽어 is_empty의 s에 복사합니다. 두 매개변수는 서로 다른 변수입니다.
+step-6 L12 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-7 L13 [return (s->top == NULL);] s->top == NULL? | R:e.s,s | W:
+    s->top은 &C이므로 NULL이 아닙니다. 결과는 0입니다.
+step-8 L14 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-9 L23 [StackNode *temp=s->top;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &C를 읽습니다.
+step-10 L23 [StackNode *temp=s->top;] temp = &C | R: | W:f.temp=&C
+    temp에 &C를 저장합니다. 이제 temp와 s.top이 같은 C 노드를 가리킵니다.
+step-11 L24 [s->top = s->top->link;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &C를 읽습니다.
+step-12 L24 [s->top = s->top->link;] s->top->link 읽기 | R:C.link | W:
+    s->top이 가리키는 C 노드의 link를 읽습니다. 값은 &B입니다.
+step-13 L24 [s->top = s->top->link;] s->top = &B | R:f.s | W:s=&B
+    s.top에 &B를 씁니다. 이제 맨 위는 B이고, C는 temp만 가리킵니다.
+step-14 L25 [free(temp);] free(temp) | R:f.temp | W:f.temp=indet
+    free(temp)로 C 노드를 반납합니다. 값을 따로 보관하지 않았습니다.
+step-15 L26 [return temp->item;    /* 오류 예: 해제 후 읽기 */] temp->item 읽기 · 해제 후 | R: | W: | DIAG INDETERMINATE_READ
+    temp->item을 읽으려면 temp를 따라가야 하지만, temp는 해제된 노드를 가리키던 값이라 사용할 수 없습니다. 정의되지 않은 동작이므로 여기서 멈춥니다.
+=== free-first {"top":30,"n":3,"mode":"free-first"}
+initial L34 [int x = pop(&s);] 호출 전 · 초기 상태 | R: | W:
+    s.top이 맨 위 노드를 가리킵니다. 그 노드를 free하기 전에 무엇을 따로 보관해야 할까요? A~C는 그림의 노드 이름표이고, &C는 C 노드(구조체 전체)의 시작 주소를 뜻하는 기호입니다.
+step-1 L34 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다. pop만의 저장 공간을 만듭니다.
+step-2 L16 [element pop(LinkedStackType *s)] &s → 매개변수 s | R: | W:f.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다.
+step-3 L17 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-4 L18 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다. is_empty도 자기 매개변수 s를 따로 가집니다.
+step-5 L11 [int is_empty(LinkedStackType *s)] s의 값 → is_empty의 s | R:f.s | W:e.s=&s
+    pop의 s에 담긴 &s를 읽어 is_empty의 s에 복사합니다. 두 매개변수는 서로 다른 변수입니다.
+step-6 L12 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-7 L13 [return (s->top == NULL);] s->top == NULL? | R:e.s,s | W:
+    s->top은 &C이므로 NULL이 아닙니다. 결과는 0입니다.
+step-8 L14 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-9 L23 [StackNode *temp=s->top;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &C를 읽습니다.
+step-10 L23 [StackNode *temp=s->top;] temp = &C | R: | W:f.temp=&C
+    temp에 &C를 저장합니다. 이제 temp와 s.top이 같은 C 노드를 가리킵니다.
+step-11 L24 [int item = temp->item;] temp->item 읽기 | R:f.temp,C | W:
+    temp를 따라가 C 노드의 item 30을 읽습니다.
+step-12 L24 [int item = temp->item;] item = 30 | R: | W:f.item=30
+    item 변수에 30을 복사해 둡니다. 노드를 해제해도 이 값은 남습니다.
+step-13 L25 [free(temp);           /* 오류 예: 먼저 해제 */] free(temp) · 먼저 | R:f.temp | W:s=indet,f.temp=indet
+    top을 옮기기 전에 free(temp)를 호출합니다. C 노드가 반납되어 temp뿐 아니라 같은 노드를 가리키던 s.top도 사용할 수 없는 값이 됩니다.
+step-14 L26 [s->top = s->top->link;] s->top 읽기 · 해제 후 | R: | W: | DIAG INDETERMINATE_READ
+    s->top->link를 구하려면 s.top을 읽어야 하지만 s.top은 해제된 노드를 가리키던 값입니다. C 노드의 link는 이미 사라졌으므로 여기서 멈춥니다.
+=== boundary {"top":-99,"n":2,"mode":"correct"}
+initial L34 [int x = pop(&s);] 호출 전 · 초기 상태 | R: | W:
+    s.top이 맨 위 노드를 가리킵니다. 그 노드를 free하기 전에 무엇을 따로 보관해야 할까요? A~C는 그림의 노드 이름표이고, &C는 C 노드(구조체 전체)의 시작 주소를 뜻하는 기호입니다.
+step-1 L34 [int x = pop(&s);] pop 호출 | R: | W:
+    pop(&s)를 호출합니다. pop만의 저장 공간을 만듭니다.
+step-2 L16 [element pop(LinkedStackType *s)] &s → 매개변수 s | R: | W:f.s=&s
+    &s라는 주소 값을 매개변수 s에 복사합니다.
+step-3 L17 [{] pop 진입 | R: | W:
+    pop 본문으로 들어갑니다.
+step-4 L18 [if( is_empty(s) ) {] is_empty 호출 | R: | W:
+    is_empty(s)를 호출합니다. is_empty도 자기 매개변수 s를 따로 가집니다.
+step-5 L11 [int is_empty(LinkedStackType *s)] s의 값 → is_empty의 s | R:f.s | W:e.s=&s
+    pop의 s에 담긴 &s를 읽어 is_empty의 s에 복사합니다. 두 매개변수는 서로 다른 변수입니다.
+step-6 L12 [{] is_empty 진입 | R: | W:
+    is_empty 본문으로 들어갑니다.
+step-7 L13 [return (s->top == NULL);] s->top == NULL? | R:e.s,s | W:
+    s->top은 &B이므로 NULL이 아닙니다. 결과는 0입니다.
+step-8 L14 [}] is_empty 반환 0 | R: | W:
+    is_empty가 0을 돌려주고 끝납니다.
+step-9 L23 [StackNode *temp=s->top;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &B를 읽습니다.
+step-10 L23 [StackNode *temp=s->top;] temp = &B | R: | W:f.temp=&B
+    temp에 &B를 저장합니다. 이제 temp와 s.top이 같은 B 노드를 가리킵니다.
+step-11 L24 [int item = temp->item;] temp->item 읽기 | R:f.temp,B | W:
+    temp를 따라가 B 노드의 item -99를 읽습니다.
+step-12 L24 [int item = temp->item;] item = -99 | R: | W:f.item=-99
+    item 변수에 -99를 복사해 둡니다. 노드를 해제해도 이 값은 남습니다.
+step-13 L25 [s->top = s->top->link;] s->top 읽기 | R:f.s,s | W:
+    s를 따라가 s.top의 값 &B를 읽습니다.
+step-14 L25 [s->top = s->top->link;] s->top->link 읽기 | R:B.link | W:
+    s->top이 가리키는 B 노드의 link를 읽습니다. 값은 &A입니다.
+step-15 L25 [s->top = s->top->link;] s->top = &A | R:f.s | W:s=&A
+    s.top에 &A를 씁니다. 이제 맨 위는 A이고, B는 temp만 가리킵니다.
+step-16 L26 [free(temp);] free(temp) | R:f.temp | W:f.temp=indet
+    free(temp)로 B 노드를 반납합니다. temp가 담던 주소 값은 이제 사용할 수 없는 값이 되며, 노드의 item과 link도 수명이 끝납니다.
+step-17 L27 [return item;] item 읽기 | R:f.item | W:
+    보관해 둔 item -99를 읽습니다. 해제된 노드를 읽지 않습니다.
+step-18 L27 [return item;] pop 반환 → x = -99 | R: | W:x=-99
+    -99를 x에 돌려주고 pop의 s, temp, item 수명이 끝납니다.
+step-19 L35 [return 0;] 호출 후 확인 | R: | W:
+    x = -99, s.top = &A입니다. B 노드는 반납되었고 나머지 연결은 그대로입니다.
