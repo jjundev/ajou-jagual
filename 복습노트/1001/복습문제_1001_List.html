@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="2a8de02712cfc22a9770" data-screens="article.card" data-panels="review" data-range="1001">
+<body data-revision="d5caa823c2817fcbf83c" data-screens="article.card" data-panels="review" data-range="1001">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -378,7 +378,7 @@
 <section id="partB"><h2>강의노트 기반 생성문제</h2>
 <article class="card" id="p1" data-source="lecture-s04-p11-array-insert" data-source-kind="lecture-code">
 <h3>P1. 배열 리스트 삽입의 이동 방향</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p11</p><p>용량은 충분하고 list={10,20,30,40}, length=4예요. add(L,1,99)의 배열 이동 순서와 최종 유효 원소·length를 쓰세요. 반복 방향을 앞에서 뒤로 바꾸면 왜 원소가 손실되는지, 맨 끝 삽입의 position 범위도 설명하세요. 길이 n에서 position=k일 때 이동 횟수와 최선·최악 시간복잡도도 구하세요.</p><pre><code class="language-c">void add(ArrayListType *L, int position, element item)
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p11</p><p>배열 용량은 충분하고 초기 상태는 <code>L.list = {10, 20, 30, 40}</code>, <code>L.length = 4</code>예요.</p><pre><code class="language-c">void add(ArrayListType *L, int position, element item)
 {
     if(!is_full(L) &amp;&amp; position&gt;=0 &amp;&amp; position&lt;=L-&gt;length) {
         int i;
@@ -387,7 +387,7 @@
         L-&gt;list[position]=item;
         L-&gt;length++;
     }
-}</code></pre></div>
+}</code></pre><ol><li>(a) <code>add(&amp;L, 1, 25)</code>를 실행할 때 루프 변수 <code>i</code>의 변화 순서와 원소 이동 대입식(<code>L-&gt;list[i+1] = L-&gt;list[i]</code>), 실행 후 유효 원소 <code>L.list[0..4]</code>와 <code>L.length</code>를 쓰세요. 또한 반복 방향을 앞에서 뒤(<code>i++</code>)로 바꾸면 왜 원소가 손실되는지 설명하세요.</li><li>(b) 길이 <code>n</code>인 배열 리스트의 <code>position = k</code>(<code>0 &lt;= k &lt;= n</code>)에 삽입할 때 원소 이동 횟수를 쓰고, 최선(맨 끝 삽입, <code>position = n</code>)과 최악(맨 앞 삽입, <code>position = 0</code>)의 이동 횟수 및 시간 복잡도를 구하세요.</li></ol></div>
 <details class="original"><summary>강의 예제 보기</summary><p>S4 p11 · Software_4_List.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">void add(ArrayListType *L, int position, element item)
 {
     if(!is_full(L) &amp;&amp; position&gt;=0 &amp;&amp; position&lt;=L-&gt;length) {
@@ -398,12 +398,12 @@
         L-&gt;length++;
     }
 }</code></pre></details>
-<details class="hint"><summary>힌트 보기</summary><p>삽입 위치 1부터 기존 끝 3까지 세 원소를 오른쪽으로 옮겨야 해요.</p></details>
-<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>삽입 위치 1부터 기존 끝 3까지 세 원소를 오른쪽으로 옮겨야 해요.</li><li>i=3,2,1 순으로 복사하면 원래 값이 읽히기 전에 덮이지 않아요. 복사를 끝낸 뒤 1번에 99를 저장해요.</li><li>반대로 i=1부터 시작하면 2번의 30을 20으로 덮고 다음 복사에서도 20이 전파돼요.</li><li>삽입 위치는 0부터 length까지예요. length 자리에 추가할 때는 기존 원소 이동이 없어요.</li><li>반복 인덱스의 처음과 끝을 세면 이동 횟수가 나와요. 위치가 끝이면 이동이 없고 처음이면 길이에 비례해요.</li></ol><p class="answer">정답: 40을 4번,30을 3번,20을 2번 위치로 이동. 결과 {10,99,20,30,40}, length=5. 앞에서 뒤로 복사하면 아직 읽지 않은 원소를 덮어쓴다. 맨 끝 삽입 position=length도 유효하다. 이동 횟수 n-k, 맨 끝 삽입은 O(1), 맨 앞 삽입은 O(n).</p><p>length를 먼저 늘린 뒤 이동 범위를 잡거나 position&lt;length로만 검사하면 경계 처리가 달라져요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>삽입 위치 <code>1</code>부터 기존 마지막 인덱스 <code>3</code>까지 세 원소를 뒤에서 앞으로(<code>i = 3, 2, 1</code>) 한 칸씩 오른쪽으로 옮겨야 덮어쓰기가 발생하지 않아요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>(a) <code>i = 3, 2, 1</code> 순서로 <code>L-&gt;list[4] = L-&gt;list[3]</code>(<code>40</code>), <code>L-&gt;list[3] = L-&gt;list[2]</code>(<code>30</code>), <code>L-&gt;list[2] = L-&gt;list[1]</code>(<code>20</code>)을 실행한 뒤 <code>L-&gt;list[1] = 25</code>를 대입하고 <code>L-&gt;length</code>를 <code>5</code>로 늘려요. 최종 유효 원소는 <code>{10, 25, 20, 30, 40}</code>, <code>length = 5</code>예요. 만약 <code>i = 1</code>부터 앞으로 복사하면 아직 읽지 않은 <code>list[2]</code>(<code>30</code>)가 <code>20</code>으로 덮어써져 원래 원소가 손실돼요.</li><li>(b) 인덱스 <code>k</code>부터 <code>n - 1</code>까지 옮기므로 이동 횟수는 <code>n - k</code>회예요. 맨 끝 삽입(<code>position = n</code>)은 이동 횟수 <code>0</code>회로 최선 $O(1)$이고, 맨 앞 삽입(<code>position = 0</code>)은 <code>n</code>개 원소를 모두 옮기므로 이동 횟수 <code>n</code>회로 최악 $O(n)$이에요.</li></ol><p class="answer">정답: (a) <code>i = 3, 2, 1</code> 순으로 <code>list[4]=40, list[3]=30, list[2]=20</code> 이동 후 <code>list[1]=25</code> 저장, 최종 <code>list[0..4] = {10, 25, 20, 30, 40}</code>, <code>length = 5</code> (앞에서 뒤로 복사하면 아직 읽지 않은 원소를 덮어쓴다) (b) 이동 횟수 <code>n - k</code>회, 최선(맨 끝 삽입, <code>position = n</code>) <code>0</code>회로 $O(1)$, 최악(맨 앞 삽입, <code>position = 0</code>) <code>n</code>회로 $O(n)$</p><p><code>length</code>를 먼저 늘린 뒤 이동 범위를 잡거나 <code>position &lt; length</code>로만 검사하면 맨 끝 삽입 경계가 달라져요.</p></details>
 </article>
 <article class="card" id="p2" data-source="lecture-s04-p12-array-delete" data-source-kind="lecture-code">
 <h3>P2. 배열 리스트 삭제의 경계와 반환</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p12</p><p>error는 실행을 종료해요. list={10,20,30,40}, length=4에서 delete(L,1)의 반환값·복사 순서·유효 원소를 쓰세요. 삭제 뒤 배열의 마지막 칸을 0으로 만들지 않아도 되는 이유와 position=length가 불가능한 이유도 설명하세요. 길이 n에서 position=k일 때 이동 횟수와 최선·최악 시간복잡도도 구하세요.</p><pre><code class="language-c">element delete(ArrayListType *L, int position)
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p12</p><p><code>error</code>는 실행을 즉시 종료해요. 초기 상태는 <code>L.list = {10, 20, 30, 40}</code>, <code>L.length = 4</code>예요.</p><pre><code class="language-c">element delete(ArrayListType *L, int position)
 {
     int i; element item;
     if(position&lt;0 || position&gt;=L-&gt;length) error(&quot;위치오류&quot;);
@@ -412,7 +412,7 @@
         L-&gt;list[i]=L-&gt;list[i+1];
     L-&gt;length--;
     return item;
-}</code></pre></div>
+}</code></pre><ol><li>(a) <code>delete(&amp;L, 1)</code>을 실행할 때 반환값 <code>item</code>, 루프 변수 <code>i</code>의 이동 대입식(<code>L-&gt;list[i] = L-&gt;list[i+1]</code>), 실행 후 유효 원소 <code>L.list[0..2]</code>와 <code>L.length</code>를 쓰세요.</li><li>(b) 삽입(<code>add</code>)은 뒤에서 앞으로(<code>i--</code>), 삭제(<code>delete</code>)는 앞에서 뒤로(<code>i++</code>) 복사 방향이 반대인 이유와, 삭제에서 <code>position == L-&gt;length</code>가 불가능한 이유 및 최선·최악 시간 복잡도를 설명하세요.</li></ol></div>
 <details class="original"><summary>강의 예제 보기</summary><p>S4 p12 · Software_4_List.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">element delete(ArrayListType *L, int position)
 {
     int i; element item;
@@ -423,19 +423,23 @@
     L-&gt;length--;
     return item;
 }</code></pre></details>
-<details class="hint"><summary>힌트 보기</summary><p>이동 전에 삭제 대상 20을 item에 보관해요. 덮어쓴 뒤에는 원래 값을 복구할 수 없어요.</p></details>
-<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>이동 전에 삭제 대상 20을 item에 보관해요. 덮어쓴 뒤에는 원래 값을 복구할 수 없어요.</li><li>i=1,2에서 다음 값을 한 칸 앞으로 당겨요. i=3까지 실행하면 유효 범위 밖 원소를 읽을 수 있어요.</li><li>length를 3으로 줄이면 0,1,2번만 리스트에 속해요. 남아 있는 물리적 값과 논리적 원소를 구분해요.</li><li>반복 인덱스의 처음과 끝을 세면 이동 횟수가 나와요. 위치가 끝이면 이동이 없고 처음이면 길이에 비례해요.</li></ol><p class="answer">정답: 반환 20, 30을 1번에 복사한 뒤 40을 2번에 복사. 유효 원소 {10,30,40}, length=3. 3번 칸은 논리적 리스트 밖이므로 0으로 지울 필요가 없다. 삭제는 기존 원소가 있는 0..length-1만 유효하다. 이동 횟수 n-k-1, 맨 끝 삭제는 O(1), 맨 앞 삭제는 O(n).</p><p>삽입에서 허용된 position=length를 삭제에도 허용하지 마세요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>이동 전에 삭제 대상 <code>L-&gt;list[1] = 20</code>을 <code>item</code>에 먼저 보관한 뒤, 빈자리 <code>position</code>부터 앞에서 뒤로(<code>i++</code>) 당겨 와요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>(a) 먼저 <code>item = L-&gt;list[1] = 20</code>을 보관해요. 이어서 <code>i = 1, 2</code> 순서로 <code>L-&gt;list[1] = L-&gt;list[2]</code>(<code>30</code>), <code>L-&gt;list[2] = L-&gt;list[3]</code>(<code>40</code>)을 복사하고 <code>L-&gt;length</code>를 <code>3</code>으로 줄인 뒤 <code>20</code>을 반환해요. 유효 원소는 <code>L.list[0..2] = {10, 30, 40}</code>이에요(인덱스 <code>3</code>은 논리적 길이 밖이므로 <code>0</code>으로 지울 필요가 없어요).</li><li>(b) <code>add</code>는 오른쪽으로 밀어야 하므로 뒤에서부터(<code>i--</code>) 복사해야 아직 읽지 않은 원소를 덮어쓰지 않고, <code>delete</code>는 이미 <code>item</code>에 보관한 삭제 위치(왼쪽 빈자리)부터 차례로 채워야 하므로 앞에서 뒤로(<code>i++</code>) 복사해요. 또한 삭제는 실제 원소가 들어 있는 <code>0 .. length - 1</code>만 유효하므로 <code>position == length</code>는 삭제할 원소가 없어 불가능하며, 길이 <code>n</code>에서 <code>position = k</code> 삭제의 이동 횟수는 <code>n - k - 1</code>회로 맨 끝 삭제는 $O(1)$, 맨 앞 삭제는 $O(n)$이에요.</li></ol><p class="answer">정답: (a) 반환값 <code>item = 20</code>, <code>i = 1, 2</code>에서 <code>list[1]=30, list[2]=40</code> 복사, 최종 유효 원소 <code>list[0..2] = {10, 30, 40}</code>, <code>length = 3</code> (b) <code>add</code>는 오른쪽으로 밀 때 뒤 원소 덮어쓰기를 막으려 <code>i--</code>로 복사하고, <code>delete</code>는 보관 후 비워진 앞자리부터 채우려 <code>i++</code>로 복사한다. 삭제 유효 범위는 <code>0..length-1</code>뿐이며 이동 횟수는 <code>n - k - 1</code>회(최선 맨 끝 삭제 $O(1)$, 최악 맨 앞 삭제 $O(n)$)이다.</p><p>삽입에서 허용된 <code>position == length</code>를 삭제에도 허용하면 유효 범위 밖 원소를 읽게 돼요.</p></details>
 </article>
 <article class="card" id="p3" data-source="lecture-s04-p5-list-adt-contract" data-source-kind="lecture-code">
 <h3>P3. 리스트 ADT의 연산 계약과 순서</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p5 · 추가 근거 p2,3,4,6</p><p>리스트 ADT의 연산은 다음과 같아요. 위치는 0부터 셉니다. add_tail(x)는 리스트 끝에 x를 추가해요. add(pos,x)는 0≤pos≤길이인 pos 위치에 x를 넣고 원래 그 위치부터 있던 항목을 한 칸씩 뒤로 밀어요(pos가 길이와 같으면 끝에 추가돼요). delete(pos)는 pos 위치의 항목을 지우고 뒤 항목을 한 칸씩 당겨요. replace(pos,x)는 pos 위치의 항목을 x로 바꿔요. get_entry(pos)는 pos 위치의 항목을, get_length()는 항목 수를 돌려줘요.</p><p>빈 리스트에 add_tail(A), add_tail(B), add(2,C), add(1,D), delete(2), replace(1,E)를 차례로 적용하세요. 각 단계의 리스트와 길이, 마지막 get_entry(1)과 get_length()의 값을 쓰세요. add와 replace가 길이에 미치는 차이, [A,E,C]와 [E,A,C]가 서로 다른 리스트인 이유, 이 결과를 구하는 데 배열·연결 구현을 알아야 하는지도 설명하세요.</p></div>
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p5</p><p>위치를 <code>0</code>부터 세는 리스트 ADT의 연산 계약이 아래와 같고, 초기 리스트는 공백(<code>[]</code>, <code>length = 0</code>)이에요.</p><pre><code class="language-c">add_tail(x)    : 리스트 맨 끝에 x 추가 (length 1 증가)
+add(pos, x)    : 0 &lt;= pos &lt;= length 위치에 x 삽입, 기존 원소는 뒤로 한 칸 이동 (length 1 증가)
+delete(pos)    : pos 위치 원소를 삭제하고 뒤 원소를 앞으로 한 칸 이동 (length 1 감소)
+replace(pos, x): pos 위치 원소 값을 x로 교체 (length 유지)
+get_entry(pos) : pos 위치 원소 반환 / get_length() : 현재 원소 수(length) 반환</code></pre><ol><li>(a) 빈 리스트에 <code>add_tail(A)</code>, <code>add_tail(B)</code>, <code>add(2, C)</code>, <code>add(1, D)</code>, <code>delete(2)</code>, <code>replace(1, E)</code>를 순서대로 실행할 때 각 단계 직후의 리스트 상태와 <code>length</code>를 쓰세요.</li><li>(b) 최종 상태에서 <code>get_entry(1)</code>과 <code>get_length()</code>의 반환값을 쓰고, 여기서 <code>delete(0)</code>을 한 번 더 실행할 때 앞으로 당겨지는 원소 개수 및 <code>add</code>와 <code>replace</code>가 <code>length</code>에 미치는 차이를 설명하세요.</li></ol></div>
 <details class="original"><summary>강의 예제 보기</summary><p>S4 p5 · 추가 근거 p2,3,4,6 · Software_4_List.pdf. 강의 개념·그림을 근거로 질문을 직접 작성했습니다. 강의 원문 코드의 전사가 아닙니다. 질문·입력 조건·검산은 자체 작성했어요.</p></details>
-<details class="hint"><summary>힌트 보기</summary><p>초기 상태: L=[], 길이=0.</p></details>
-<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>처음 상태를 빈 리스트와 길이 0으로 적어요.</li><li>끝 추가 두 번 뒤 [A,B]가 돼요. 위치2에 C를 넣으면 [A,B,C]예요.</li><li>위치1 삽입은 B를 덮지 않으므로 [A,D,B,C], 길이 4예요.</li><li>위치2의 B를 삭제해 [A,D,C], 위치1만 E로 바꿔 [A,E,C]예요.</li><li>객체는 순서 있는 모임, 연산은 그 객체를 바꾸거나 조회하는 계약이므로 저장 구현 없이 판단해요.</li></ol><p class="answer">정답: [A](1), [A,B](2), [A,B,C](3), [A,D,B,C](4), [A,D,C](3), [A,E,C](3). get_entry(1)=E, get_length()=3. add는 기존 항목을 보존하며 길이를 1 늘리고 replace는 값만 바꿔 길이를 유지합니다. 위치별 순서가 다르면 다른 리스트이며 ADT 계약만으로 결과를 정할 수 있습니다.</p><p>add(1,D)를 기존 B를 없애는 대치로 읽지 않아요. 원소가 같아도 순서가 다르면 같은 리스트가 아니에요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>초기 상태는 <code>L = []</code>, <code>length = 0</code>이며 <code>add(1, D)</code>는 위치 <code>1</code>의 <code>B</code>를 지우지 않고 한 칸 뒤로 밀어요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>(a) 초기 <code>[]</code>(<code>length = 0</code>)에서 차례로 실행하면 <code>add_tail(A)</code> → <code>[A]</code>(<code>1</code>), <code>add_tail(B)</code> → <code>[A, B]</code>(<code>2</code>), <code>add(2, C)</code> → <code>[A, B, C]</code>(<code>3</code>), <code>add(1, D)</code> → <code>[A, D, B, C]</code>(<code>4</code>), <code>delete(2)</code> → <code>[A, D, C]</code>(<code>3</code>), <code>replace(1, E)</code> → <code>[A, E, C]</code>(<code>3</code>)이 돼요.</li><li>(b) 최종 리스트 <code>[A, E, C]</code>에서 <code>get_entry(1) = E</code>, <code>get_length() = 3</code>이에요. 여기서 <code>delete(0)</code>을 추가 실행하면 맨 앞 <code>A</code>가 지워지고 뒤의 <code>E, C</code> <code>2</code>개 원소가 앞으로 한 칸씩 당겨져요. <code>add</code>는 기존 원소를 밀어내며 <code>length</code>를 <code>1</code> 늘리고, <code>replace</code>는 해당 위치 값만 덮어써 <code>length</code>를 그대로 유지해요.</li></ol><p class="answer">정답: (a) <code>[A]</code>(<code>1</code>) → <code>[A, B]</code>(<code>2</code>) → <code>[A, B, C]</code>(<code>3</code>) → <code>[A, D, B, C]</code>(<code>4</code>) → <code>[A, D, C]</code>(<code>3</code>) → <code>[A, E, C]</code>(<code>3</code>) (b) <code>get_entry(1) = E</code>, <code>get_length() = 3</code>, <code>delete(0)</code> 추가 실행 시 앞으로 당겨지는 원소는 <code>2</code>개(<code>E, C</code>)이며, <code>add</code>는 <code>length</code>를 <code>1</code> 늘리고 <code>replace</code>는 값만 교체해 <code>length</code>를 유지한다.</p><p><code>add(1, D)</code>를 기존 <code>B</code>를 없애는 대치로 읽지 않아요. 원소가 같아도 순서가 다르면 같은 리스트가 아니에요.</p></details>
 </article>
 <article class="card" id="p4" data-source="lecture-s04-p9-array-list-state" data-source-kind="lecture-code">
 <h3>P4. 초기화와 논리적 길이</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p9 · 추가 근거 p10</p><p>MAX_LIST_SIZE=3이며 배열 세 칸에 이전 값 {7,8,9}가 남아 있어요. 아래 init을 호출한 직후 length, is_empty, is_full의 반환값과 논리적인 리스트를 쓰세요. 모든 칸을 0으로 지우지 않아도 되는 이유를 설명하고, 별도로 length=3인 유효 상태에서 is_empty와 is_full도 구하세요.</p><pre><code class="language-c">void init(ArrayListType *L)
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p9</p><p><code>MAX_LIST_SIZE = 3</code>인 배열 리스트 <code>L</code>의 배열 세 칸에 이전 값 <code>{7, 8, 9}</code>가 남아 있고, 조회 연산 <code>get_entry(L, pos)</code>는 <code>pos &lt; 0 || pos &gt;= L-&gt;length</code>일 때 위치 오류를 내요.</p><pre><code class="language-c">void init(ArrayListType *L)
 {
     L-&gt;length = 0;
 }
@@ -446,7 +450,7 @@ int is_empty(ArrayListType *L)
 int is_full(ArrayListType *L)
 {
     return L-&gt;length == MAX_LIST_SIZE;
-}</code></pre></div>
+}</code></pre><ol><li>(a) <code>init(&amp;L)</code> 호출 직후 <code>L.length</code>, <code>is_empty(&amp;L)</code>, <code>is_full(&amp;L)</code>의 값과 논리적 리스트 상태를 쓰고, 원소 3개를 채워 <code>L.length == 3</code>이 된 상태에서 <code>is_empty(&amp;L)</code>, <code>is_full(&amp;L)</code> 반환값 및 <code>get_entry(&amp;L, 2)</code>·<code>get_entry(&amp;L, 3)</code> 호출 결과를 쓰세요.</li><li>(b) <code>init</code>에서 배열 칸을 일일이 <code>0</code>으로 지우지 않아도 되는 이유와, <code>main</code>에서 구조체 값(<code>ArrayListType L</code>)이 아닌 주소(<code>&amp;L</code>)를 넘기는 이유를 설명하세요.</li></ol></div>
 <details class="original"><summary>강의 예제 보기</summary><p>S4 p9 · 추가 근거 p10 · Software_4_List.pdf. 강의 예제의 해당 코드를 발췌했습니다. 질문과 입력 조건은 자체 출제이며 주변 선언·입출력은 생략했습니다. 질문·입력 조건·검산은 자체 작성했어요.</p><pre><code class="language-c">void init(ArrayListType *L)
 {
     L-&gt;length = 0;
@@ -459,15 +463,16 @@ int is_full(ArrayListType *L)
 {
     return L-&gt;length == MAX_LIST_SIZE;
 }</code></pre></details>
-<details class="hint"><summary>힌트 보기</summary><p>init 뒤 length=0; 유효 인덱스는 없음.</p></details>
-<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>init은 length에0만 저장해요. 배열의 이전 값은 그대로예요.</li><li>유효 범위는0부터length−1까지이므로 length=0이면 원소가 없어요.</li><li>0==0은 참이고 0==3은 거짓이므로 공백1·포화0이에요.</li><li>별도 유효 상태 length=3에서는 공백0·포화1이에요.</li></ol><p class="answer">정답: 초기화 직후 length=0, is_empty=1, is_full=0, 논리적 리스트=[]. {7,8,9}는 길이 밖의 이전 값이므로 원소가 아닙니다. length=3이면 is_empty=0,is_full=1입니다.</p><p>배열에 값이 남아 있다는 이유로 리스트가 비어 있지 않다고 판단하지 않아요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p><code>init(&amp;L)</code> 직후 <code>L.length = 0</code>이므로 유효 인덱스(<code>0 .. length - 1</code>)는 하나도 없어요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>(a) <code>init(&amp;L)</code> 직후 <code>L.length = 0</code>, <code>is_empty(&amp;L) = 1</code>, <code>is_full(&amp;L) = 0</code>이고 유효 인덱스가 없으므로 논리적 리스트는 <code>[]</code>예요. <code>L.length == 3</code>일 때는 <code>is_empty(&amp;L) = 0</code>, <code>is_full(&amp;L) = 1</code>이며, 유효 인덱스 범위가 <code>0..2</code>이므로 <code>get_entry(&amp;L, 2)</code>는 <code>L.list[2]</code>를 반환하고 <code>get_entry(&amp;L, 3)</code>은 위치 오류가 발생해요.</li><li>(b) 논리적 리스트의 유효 원소 범위는 <code>0</code>부터 <code>L-&gt;length - 1</code>까지로만 판단하므로 범위 밖의 이전 값 <code>{7, 8, 9}</code>는 원소로 읽히지 않아 <code>0</code>으로 지울 필요가 없어요. 또한 C 함수는 인자를 값으로 복사해 전달하므로 구조체 주소(<code>&amp;L</code>)를 넘겨야 함수 안에서 원본 구조체 <code>L</code>의 <code>length</code>나 <code>list</code>를 직접 수정할 수 있고 큰 구조체 복사 비용도 줄일 수 있어요.</li></ol><p class="answer">정답: (a) <code>init(&amp;L)</code> 직후 <code>length = 0</code>, <code>is_empty(&amp;L) = 1</code>, <code>is_full(&amp;L) = 0</code>, 논리적 리스트 <code>[]</code>; <code>length == 3</code>일 때 <code>is_empty(&amp;L) = 0</code>, <code>is_full(&amp;L) = 1</code>, <code>get_entry(&amp;L, 2)</code>는 <code>L.list[2]</code> 반환, <code>get_entry(&amp;L, 3)</code>은 위치 오류 (b) 유효 원소는 <code>0..length-1</code> 범위로만 구분하므로 이전 값을 <code>0</code>으로 지울 필요가 없고, 원본 구조체 <code>L</code>을 직접 수정하고 복사 비용을 줄이기 위해 주소(<code>&amp;L</code>)를 전달한다.</p><p>배열에 이전 값이 남아 있다는 이유로 리스트가 비어 있지 않다고 판단하지 않아요.</p></details>
 </article>
 <article class="card" id="p5" data-source="lecture-s04-p18-linked-representation" data-source-kind="lecture-code">
 <h3>P5. 주소로 읽는 연결 리스트의 순서</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p18 · 추가 근거 p7,8,13,14,15,16,17</p><p>노드 A는 주소300에 data=10,link=100, B는 주소100에 data=20,link=500, C는 주소500에 data=30,link=NULL을 저장하고 head=300이에요(주소는 설명용 표식이며 실제 C 주소가 아닙니다). 논리적 원소 순서와 마지막 링크를 쓰고, head·data·link의 역할을 구별하세요. 원형 리스트라면 C의 link가 무엇인지, 이중 연결 리스트라면 어떤 링크가 추가되는지도 쓰세요. 배열과 달리 물리적 주소순 정렬이나 연속 배치가 필요 없는 이유와, 선행 노드 위치를 이미 알 때 연결 삽입 비용과 그 위치를 처음부터 찾는 비용을 구분하세요. 마지막으로 별도 임시 포인터 없이 N.link=A.link와 A.link=N 두 대입만 사용해 A→C→NULL 사이에 독립된 새 노드 N을 넣을 때, N의 link와 A의 link 중 어느 것을 먼저 연결해야 하는지 쓰고 순서를 뒤집었을 때 C로 가는 길이 어떻게 되는지 설명하세요(두 링크 대입의 순서만 묻습니다). 배열의 고정 용량과 연결 노드의 동적 증가를 비교하고, 연결 리스트도 메모리 할당 실패로 더 늘릴 수 없는 경우가 있는지 설명하세요.</p></div>
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p18</p><p>단순 연결 리스트의 초기 메모리 상태가 아래와 같아요(주소 숫자는 설명용 표식이에요).</p><pre><code class="language-c">head = 300, p = 100
+300:[data=10 | link=100] -&gt; 100:[data=20 | link=400] -&gt; 400:[data=30 | link=200] -&gt; 200:[data=40 | link=NULL]</code></pre><ol><li>(a) <code>head</code>부터 <code>NULL</code>까지 링크를 따라 방문하는 노드의 <code>(주소, data)</code> 순서와, 배열 리스트 대비 연결 표현의 장단점(메모리 배치·용량, 선행 노드를 알 때의 삽입·삭제 비용 vs $k$번째 위치 탐색 비용)을 쓰세요.</li><li>(b) 주소 <code>500</code>(<code>data = 25</code>)인 새 노드 <code>new_node</code>를 <code>p</code>(주소 <code>100</code>) 뒤에 삽입할 때 바꿀 링크 대입 순서와, 초기 상태에서 노드 <code>400</code>을 삭제할 때 바꿀 링크를 쓰세요.</li></ol></div>
 <details class="original"><summary>강의 예제 보기</summary><p>S4 p18 · 추가 근거 p7,8,13,14,15,16,17 · Software_4_List.pdf. 강의 개념·그림을 근거로 질문을 직접 작성했습니다. 강의 원문 코드의 전사가 아닙니다. 질문·입력 조건·검산은 자체 작성했어요.</p></details>
-<details class="hint"><summary>힌트 보기</summary><p>head=300 → A(data10) → link100.</p></details>
-<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>head의 300에서 A를 읽고 link 100으로 B, link 500으로 C를 찾아가요.</li><li>주소를 오름차순으로 정렬하는 것이 아니라 link 값을 따라 순서를 읽어요.</li><li>단순 리스트는 마지막 link가 NULL이고 원형은 첫 노드의 주소 300을 저장해요.</li><li>헤드 포인터는 노드 전체가 아니라 시작 주소를 담는 변수예요. 이중 연결은 앞뒤 링크를 두어요.</li><li>알고 있는 위치에서 연결을 바꾸는 일과 그 위치까지 이동하는 일을 나누어 비용을 말해요.</li><li>A와 C 사이에 넣을 때는 먼저 N이 C를 가리키게 한 다음 A가 N을 가리키게 해요. 반대로 바꾸면 기존 A.link의 C 주소가 사라져 N의 링크를 채울 근거를 잃어요.</li></ol><p class="answer">정답: 논리 순서는10→20→30이며 마지막 link=NULL입니다. head는 첫 노드의 주소를 담는 별도 포인터, data는 값,link는 다음 노드 주소입니다. 첫 노드를 head로 두는 원형 구조에서 C.link=300입니다. 이중 연결은 선행 노드 링크가 추가됩니다. 연결은 주소를 따라가므로 주소의 크기·연속성은 순서를 결정하지 않습니다. 유효 선행 노드를 알면 링크 변경 O(1), 일반적인 위치 탐색은 최악 O(n)입니다. 삽입은 N.link를 기존 A.link(C)에 먼저 연결한 뒤 A.link를 N으로 바꿉니다. 반대 순서 뒤 N.link=A.link를 적용하면 N이 자신을 가리키고 C로 가는 기존 연결을 잃습니다. 고정 배열은 정해진 용량에 제한되며 연결 노드는 필요할 때 할당해 늘릴 수 있지만, 사용 가능한 메모리와 할당 성공에 제한돼요.</p><p>마지막 data가 NULL이라고 쓰지 않아요. NULL인 것은 link예요. 탐색까지 포함한 임의 위치 삽입을 항상 O(1)이라 하지 않아요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>물리적 주소 크기순이 아니라 <code>head = 300</code>부터 각 노드의 <code>link</code>가 가리키는 다음 주소를 차례로 따라가요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>(a) <code>head = 300</code>에서 시작해 <code>link</code>를 따라가면 <code>(300, 10) → (100, 20) → (400, 30) → (200, 40)</code> 순서로 방문하고 마지막 <code>link = NULL</code>에서 멈춰요. 연결 표현은 연속된 메모리 공간이나 고정 용량이 필요 없고 선행 노드를 알면 원소 이동 없이 링크만 바꿔 $O(1)$에 삽입·삭제할 수 있지만, 포인터 저장 공간이 추가로 들고 $k$번째 위치를 찾으려면 <code>head</code>부터 순차 탐색해야 하므로 $O(n)$이 걸려요.</li><li>(b) <code>p</code>(주소 <code>100</code>) 뒤에 주소 <code>500</code>(<code>new_node</code>)을 삽입할 때는 기존 뒷노드 주소(<code>400</code>)를 잃지 않도록 먼저 <code>new_node-&gt;link = p-&gt;link</code>(주소 <code>500</code>의 <code>link = 400</code>)를 연결한 뒤 <code>p-&gt;link = new_node</code>(주소 <code>100</code>의 <code>link = 500</code>)로 바꿔요. 초기 상태에서 노드 <code>400</code>을 삭제할 때는 선행 노드 <code>p</code>(주소 <code>100</code>)의 <code>link</code>를 삭제 노드의 다음 주소인 <code>200</code>으로 바꿔(<code>p-&gt;link = 200</code>) 노드 <code>400</code>을 건너뛰게 해요.</li></ol><p class="answer">정답: (a) 방문 순서 <code>(300, 10) → (100, 20) → (400, 30) → (200, 40)</code>; 연결 표현은 연속 배치·고정 용량 제약 없이 선행 노드를 알 때 링크 변경만으로 $O(1)$ 삽입·삭제가 가능하나, 추가 링크 공간이 필요하고 위치 탐색에 $O(n)$이 걸린다. (b) 삽입: <code>new_node-&gt;link = 400</code>(<code>p-&gt;link</code>) 먼저 연결 후 <code>p-&gt;link = 500</code>으로 변경; 초기 상태에서 노드 <code>400</code> 삭제: 선행 노드 <code>100</code>(<code>p</code>)의 <code>link</code>를 <code>200</code>으로 변경(<code>p-&gt;link = 200</code>).</p><p>삽입 시 <code>p-&gt;link = new_node</code>를 먼저 실행하면 원래 <code>p-&gt;link</code>(주소 <code>400</code>)가 덮어써져 뒷부분 체인을 잃어버려요.</p></details>
 </article>
 </section>
 </main>
