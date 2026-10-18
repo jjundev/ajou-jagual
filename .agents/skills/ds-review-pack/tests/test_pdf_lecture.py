@@ -15,13 +15,15 @@ def lecture(range_, pid):
 
 def test_1015_p5_split():
     cond, ask = split_lecture_problem(lecture('1015', 'p5'))
-    assert cond.count('<p>') == 5 and ask.count('<li>') == 2
-    assert strip(ask).startswith('clock=1,2,3에서')
+    assert cond.count('<p>') == 1 and ask.count('<li>') == 2
+    assert strip(ask).startswith('(a) clock = 1, 2, 3')
     assert '강의 예제 기반' not in cond + ask and 'S6 p22' not in cond + ask
 
 def test_trailing_parenthetical_is_ask():
     cond, ask = split_lecture_problem(lecture('1001', 'p5'))
-    assert cond.count('<p>') == 1 and ask.count('<li>') == 5
+    assert cond.count('<p>') == 1 and ask.count('<li>') == 2
+    c2, a2 = split_lecture_problem((P('<p>상황이에요. 결과를 설명하세요(링크 변경만 묻습니다).</p>'),))
+    assert c2 == '<p>상황이에요.</p>' and a2 == '<ol class="ds-asks"><li>결과를 설명하세요(링크 변경만 묻습니다).</li></ol>'
 
 def test_supplement_kept_as_caption():
     cond, ask = split_lecture_problem(lecture('0907', 'p4'))
@@ -70,7 +72,7 @@ def payload(range_, mode='problems'):
 def test_lecture_payload_uses_conditions():
     pack, data = payload('1015')
     p5 = next(p for p in data['problems'] if p['id'] == 'p5')
-    assert p5['html']['conditions'].count('<p>') == 5 and '<ol class="ds-asks">' in p5['html']['ask']
+    assert p5['html']['conditions'].count('<p>') == 1 and '<ol class="ds-asks">' in p5['html']['ask']
     assert 'service_time--' in p5['html']['code']
 
 def test_lecture_answers_mode_split():

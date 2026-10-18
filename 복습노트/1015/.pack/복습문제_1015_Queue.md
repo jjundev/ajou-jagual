@@ -2,7 +2,7 @@
 
 서로 다른 기출은 풀이 목표가 비슷해도 모두 유지하고, 교과서와 강의 예제 코드를 함께 복습해요.
 
-> `복습문제_1015_Queue.html`를 마크다운으로 옮겼어요. 원문, 힌트, 풀이는 접혀 있어요. 먼저 풀어 보고 펼쳐 보세요.
+> 복습문제_1015_Queue.html를 마크다운으로 옮겼어요. 원문, 힌트, 풀이는 접혀 있어요. 먼저 풀어 보고 펼쳐 보세요.
 
 **목차**
 
@@ -204,13 +204,16 @@ rear에서 front를 뺀 뒤 음수 보정을 위해 크기를 더하고 나머�
 
 **강의 예제 기반 자체 출제** S6 p11
 
-단순 연결 큐의 노드는 data,link를 가지며 빈 큐 front=rear=NULL이에요. 이미 할당·초기화한 새 노드 N의 link=NULL일 때 enqueue의 빈 경우·나머지 경우 대입문을 쓰세요. 유일한 노드를 dequeue한 뒤 rear도 NULL로 만들어야 하는 이유를 설명하세요.
+단순 연결 큐의 노드는 `data`, `link` 필드를 가지며 공백 큐 상태는 `front = rear = NULL`이에요. 아래 의사코드를 C 포인터 대입문으로 옮겨 보세요.
 
 ```c
 /* 대입문으로 옮길 연산의 의사코드 */
-enqueue: 새 노드를 rear 뒤에 연결하고 rear를 갱신
-dequeue: front 노드의 값을 보관하고 front를 다음으로 이동
+enqueue: 새 노드 N(이미 할당되어 N->link = NULL)을 rear 뒤에 연결하고 rear를 갱신
+dequeue: front 노드(old)의 값을 보관하고 front를 다음으로 이동한 뒤 old를 해제
 ```
+
+- (a) 이미 할당·초기화되어 `N->link = NULL`인 새 노드 `N`을 삽입할 때, 공백 큐(`front == NULL`)인 경우와 비공백 큐인 경우를 처리하는 `enqueue`의 포인터 대입문을 쓰세요.
+- (b) 비어 있지 않은 큐에서 첫 노드 `old = front`를 꺼내는 `dequeue`의 대입문을 쓰고, 노드가 하나뿐이어서 삭제 후 `front == NULL`이 되었을 때 `rear = NULL`까지 함께 갱신해야 하는 이유를 설명하세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -226,17 +229,16 @@ dequeue: front 노드의 값을 보관하고 front를 다음으로 이동
 
 <details><summary>힌트 보기</summary>
 
-첫 노드를 넣을 때는 기존 rear가 없으므로 rear-&gt;link에 접근하지 않아요. front부터 N으로 정한 뒤 공통으로 rear=N을 실행해요.
+첫 노드를 넣을 때는 기존 `rear`가 없으므로 `rear->link`에 접근하지 않고 `front = N`으로 정한 뒤 공통으로 `rear = N`을 실행해요.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. 첫 노드를 넣을 때는 기존 rear가 없으므로 rear-&gt;link에 접근하지 않아요. front부터 N으로 정한 뒤 공통으로 rear=N을 실행해요.
-2. 기존 노드가 있으면 rear-&gt;link=N으로 이어 주고 rear=N으로 옮겨요.
-3. 삭제는 값을 보관하고 front를 이동한 다음 old를 해제해요. front가 NULL이면 마지막 노드였으므로 rear도 NULL로 바꿔 해제된 주소가 남지 않게 해요.
+- (a) 첫 노드를 넣는 공백 상태(`front == NULL`)에서는 기존 `rear`가 없으므로 `front = N;`으로 설정하고, 비공백 상태에서는 `rear->link = N;`으로 기존 꼬리 뒤에 연결한 다음, 두 경우 모두 공통으로 `rear = N;`으로 꼬리 포인터를 갱신해요.
+- (b) 삭제에서는 `old = front; item = old->data; front = old->link;`로 값을 보관하고 머리를 다음 노드로 옮긴 뒤, 만약 `front == NULL`이면 마지막 노드가 제거된 빈 큐이므로 `rear = NULL;`로 함께 초기화하고 `free(old);`를 호출해요. 그렇지 않으면 `rear`가 이미 해제된 노드를 가리키는 댕글링 포인터가 되기 때문이에요.
 
-**정답:** enqueue: if(front==NULL) front=N; else rear-&gt;link=N; rear=N;. dequeue는 old=front; item=old-&gt;data; front=old-&gt;link; if(front==NULL) rear=NULL; free(old);. 빈 큐는 양 끝이 모두 NULL이어야 한다.
+**정답:** (a) `enqueue`: `if (front == NULL) front = N; else rear->link = N; rear = N;` (b) `dequeue`: `old = front; item = old->data; front = old->link; if (front == NULL) rear = NULL; free(old);`이며, 빈 큐에서 `rear`도 `NULL`로 바꾸지 않으면 `rear`가 해제된 노드를 가리키게 된다.
 
 의사코드의 각 단계를 빠짐없이 대입문으로 옮기세요. 빈 큐와 노드가 하나뿐인 경우를 따로 확인해요.
 
@@ -250,13 +252,16 @@ dequeue: front 노드의 값을 보관하고 front를 다음으로 이동
 
 **강의 예제 기반 자체 출제** S6 p22
 
-은행 대기열 시뮬레이션에서 clock이 1씩 늘 때마다 실행되는 루프 본문의 일부예요. is_customer_arrived()가 참이면 insert_customer(clock)가 새 고객을 대기 큐에 넣어요. clock=1에서 처리 직전 service_time=1이고 B가 방금 도착해 기다려요. clock=2,3에는 새 도착이 없고 B의 서비스 시간은 2예요. remove_customer는 큐가 비면 0을 반환하고 꺼낼 때 대기시간을 기록한다고 가정해요. clock=1,2,3에서 service_time이 어떻게 바뀌고 B는 언제 시작하나요? else를 별도의 if(service_time==0)로 바꾸면 어떤 차이가 생기나요?
+은행 대기열 시뮬레이션에서 시각 `clock`이 `1`씩 증가할 때마다 실행되는 루프 본문이에요. `clock = 1`에서 아래 코드 실행 직전 `service_time = 1`이고 고객 `B`(서비스 시간 `2`)가 방금 도착하며, `clock = 2, 3`에는 새 고객 도착이 없다고 가정해요(`remove_customer()`는 큐에서 고객을 꺼내 서비스 시간을 반환하고 대기 시간을 기록해요).
 
 ```c
-if(is_customer_arrived()) insert_customer(clock);
-if(service_time>0) service_time--;
-else service_time=remove_customer();
+if (is_customer_arrived()) insert_customer(clock);
+if (service_time > 0) service_time--;
+else service_time = remove_customer();
 ```
+
+- (a) `clock = 1, 2, 3` 각 시각에서 위 코드가 실행된 직후 `service_time`의 변화와, 고객 `B`의 서비스 시작 시각 및 대기 시간을 쓰세요.
+- (b) 만약 두 번째 문장의 `else`를 떼어 별도의 `if (service_time == 0) service_time = remove_customer();`로 바꾸면, `clock = 1`에서의 동작과 고객 `B`의 대기 시간이 어떻게 달라지는지 설명하세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -272,19 +277,18 @@ else service_time=remove_customer();
 
 <details><summary>힌트 보기</summary>
 
-if 조건은 해당 분기로 들어갈 때 평가해요. 1을 0으로 줄였더라도 그 if에 연결된 else가 뒤이어 실행되지는 않아요.
+`if` 조건은 분기에 들어갈 때 한 번만 평가해요. `service_time`을 `1`에서 `0`으로 줄였더라도 그 `if`에 묶인 `else`가 같은 틱에 이어서 실행되지는 않아요.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. if 조건은 해당 분기로 들어갈 때 평가해요. 1을 0으로 줄였더라도 그 if에 연결된 else가 뒤이어 실행되지는 않아요.
-2. 다음 틱 clock=2에서 처음부터 service_time=0이므로 B를 꺼내요. 시작 시각-도착 시각=1이 대기시간이에요.
-3. clock=3에서는 2를 1로 줄이기만 해요. 별도 if로 쓰면 같은 틱 안에 두 번째 조건을 새로 평가하므로 이벤트 순서가 달라져요.
+- (a) `clock = 1`에서는 고객 `B`가 큐에 들어가고, 진입 시점 `service_time > 0`(`1 > 0`)이 참이므로 `service_time`이 `1 -> 0`으로만 줄고 `else`는 실행되지 않아요. `clock = 2`에서는 처음부터 `service_time == 0`이므로 `else` 분기가 실행되어 고객 `B`를 꺼내 서비스를 시작(`service_time = 0 -> 2`)하며, 대기 시간은 `2 - 1 = 1`이에요. `clock = 3`에서는 `service_time`이 `2 -> 1`로 줄어요.
+- (b) `else` 대신 별도의 `if (service_time == 0)`를 쓰면, `clock = 1`에서 앞 문장이 `service_time`을 `1 -> 0`으로 줄인 직후 같은 틱 안에서 두 번째 `if` 조건이 참이 되어 고객 `B`가 `clock = 1`에 바로 서비스를 시작하고 대기 시간이 `0`으로 바뀌어요.
 
-**정답:** clock1:1→0, 같은 틱에 else는 실행하지 않음. clock2:0→2이며 B 시작, 대기 2-1=1. clock3:2→1. else를 별도 if(service_time==0)로 바꾸면 clock1에 B를 바로 시작시켜 대기시간이 0이 된다.
+**정답:** (a) `clock = 1`: `1 -> 0`(`else` 미실행); `clock = 2`: `0 -> 2`(고객 `B` 서비스 시작, 대기 시간 `2 - 1 = 1`); `clock = 3`: `2 -> 1` (b) 별도의 `if (service_time == 0)`로 바꾸면 `clock = 1`에서 `1 -> 0` 감소 직후 같은 틱에 `remove_customer()`가 실행되어 고객 `B`가 `clock = 1`에 바로 시작하고 대기 시간이 `0`이 된다.
 
-말로 된 설명과 실제 if/else 순서를 구별하세요. 서비스가 0이 된 직후 즉시 다음 고객을 꺼내는 코드가 아니에요.
+말로 된 설명과 실제 `if/else` 순서를 구별하세요. 서비스가 `0`이 된 직후 같은 틱에 즉시 다음 고객을 꺼내는 코드가 아니에요.
 
 </details>
 
@@ -296,16 +300,19 @@ if 조건은 해당 분기로 들어갈 때 평가해요. 1을 0으로 줄였더
 
 **강의 예제 기반 자체 출제** S6 p9
 
-크기 M=5, front=3,rear=1이며 유효 원소는 queue\[4\]=A,queue\[0\]=B,queue\[1\]=C예요. dequeue,enqueue(D),enqueue(E)의 반환값·front·rear·논리적 원소를 순서대로 쓰고 마지막 포화 여부를 판단하세요. 배열의 유효 용량과 포화식을 설명하세요.
+배열 크기 `MAX_QUEUE_SIZE = 5`(`M = 5`)인 원형 큐에서 현재 `front = 3, rear = 1`이며 유효 원소는 `queue[4] = A, queue[0] = B, queue[1] = C`예요.
 
 ```c
 /* enqueue의 정상 경로 */
-q->rear=(q->rear+1)%MAX_QUEUE_SIZE;
-q->queue[q->rear]=item;
+q->rear = (q->rear + 1) % MAX_QUEUE_SIZE;
+q->queue[q->rear] = item;
 /* dequeue의 정상 경로 */
-q->front=(q->front+1)%MAX_QUEUE_SIZE;
+q->front = (q->front + 1) % MAX_QUEUE_SIZE;
 return q->queue[q->front];
 ```
+
+- (a) 위 상태에서 `dequeue()`, `enqueue(D)`, `enqueue(E)`를 순서대로 실행할 때, 각 연산의 반환값(해당 시), 실행 직후 `(front, rear)`, 큐의 논리적 원소 나열을 쓰고 마지막 상태의 포화 여부를 판정하세요.
+- (b) 크기 `M = 5`인 원형 큐에서 한 칸을 비워 둘 때의 최대 저장 가능 원소 수(유효 용량)와 포화 상태 판정식을 쓰세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -324,19 +331,18 @@ return q->queue[q->front];
 
 <details><summary>힌트 보기</summary>
 
-front는 첫 원소 바로 앞자리예요. 먼저 (3+1)%5=4로 옮기고 A를 꺼내요.
+`front`는 첫 원소 바로 앞자리예요. 먼저 `(3 + 1) % 5 = 4`로 옮기고 `A`를 꺼내요.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. front는 첫 원소 바로 앞자리예요. 먼저 (3+1)%5=4로 옮기고 A를 꺼내요.
-2. rear는 마지막 원소 자리예요. 1에서 2로 옮겨 D를 저장하고 3으로 옮겨 E를 저장해요.
-3. 마지막 rear의 다음 자리는 4로 front와 같아요. 한 칸을 비워 공백 front==rear와 포화를 구별해요.
+- (a) `dequeue()`는 `front`를 `(3 + 1) % 5 = 4`로 옮겨 `A`를 반환하고 `(front, rear) = (4, 1)`, 남은 원소는 `[B, C]`가 돼요. 이어 `enqueue(D)`는 `rear`를 `2`로 옮겨 `(4, 2)`, `[B, C, D]`가 되고, `enqueue(E)`는 `rear`를 `3`으로 옮겨 `(4, 3)`, `[B, C, D, E]`가 되며 `(3 + 1) % 5 == 4 == front`이므로 포화 상태예요.
+- (b) 공백 상태(`front == rear`)와 구별하려고 항상 한 칸을 비워 두므로 유효 용량은 `M - 1 = 4`개이고, 포화 판정식은 `(rear + 1) % M == front`예요.
 
-**정답:** dequeue: A, front=4,rear=1, \[B,C\]. enqueue(D): front=4,rear=2,\[B,C,D\]. enqueue(E): front=4,rear=3,\[B,C,D,E\], 포화. 유효 용량 M-1=4, (rear+1)%M==front가 포화식이다.
+**정답:** (a) `dequeue()`: 반환 `A`, `(front, rear) = (4, 1)`, `[B, C]`; `enqueue(D)`: `(4, 2)`, `[B, C, D]`; `enqueue(E)`: `(4, 3)`, `[B, C, D, E]` (포화 상태) (b) 유효 용량은 `M - 1 = 4`이며, 포화 판정식은 `(rear + 1) % M == front`이다.
 
-front 자리의 값을 먼저 반환하면 이미 삭제한 자리나 빈자리를 읽어요.
+`front` 자리의 값을 먼저 반환하면 이미 삭제한 자리나 빈자리를 읽어요.
 
 </details>
 
@@ -348,17 +354,20 @@ front 자리의 값을 먼저 반환하면 이미 삭제한 자리나 빈자리�
 
 **강의 예제 기반 자체 출제** S6 p16
 
-create_node(left,item,right)는 새 노드의 llink,data,rlink를 각각 설정하며 할당 실패는 종료한다고 가정해요. 빈 덱 head=tail=NULL에 A를 넣고 이어 B를 넣은 뒤 모든 포인터를 쓰세요. 비어 있을 때 head도 바꾸는 이유와 create_node의 세 필드 대입문을 쓰세요.
+이중 연결 리스트로 구현한 덱(deque)에서 `create_node(left, item, right)`는 새 노드의 `llink`, `data`, `rlink`를 각각 설정해 반환해요. 아래는 꼬리에 원소를 넣는 `add_rear` 함수예요.
 
 ```c
-void add_rear(DequeType *dq,element item)
+void add_rear(DequeType *dq, element item)
 {
-    DlistNode *new_node=create_node(dq->tail,item,NULL);
-    if(is_empty(dq)) dq->head=new_node;
-    else dq->tail->rlink=new_node;
-    dq->tail=new_node;
+    DlistNode *new_node = create_node(dq->tail, item, NULL);
+    if (is_empty(dq)) dq->head = new_node;
+    else dq->tail->rlink = new_node;
+    dq->tail = new_node;
 }
 ```
+
+- (a) 빈 덱(`dq->head = dq->tail = NULL`)에 `add_rear(dq, A)`를 실행한 직후와 이어서 `add_rear(dq, B)`를 실행한 직후, `dq->head`, `dq->tail` 및 각 노드의 `llink`, `rlink` 값을 모두 쓰세요.
+- (b) `create_node` 내부에서 새 노드의 세 필드를 초기화하는 대입문을 쓰고, `is_empty(dq)`가 참일 때 `dq->head = new_node;`도 함께 설정해야 하는 이유를 설명하세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -378,19 +387,18 @@ void add_rear(DequeType *dq,element item)
 
 <details><summary>힌트 보기</summary>
 
-빈 덱에서는 새 노드가 첫 노드이자 마지막 노드예요. create_node(NULL,A,NULL)가 양 끝 NULL을 만들어요.
+빈 덱에서는 새 노드가 첫 노드이자 마지막 노드예요. `create_node(NULL, A, NULL)`가 양 끝 링크를 `NULL`로 만들어요.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. 빈 덱에서는 새 노드가 첫 노드이자 마지막 노드예요. create_node(NULL,A,NULL)가 양 끝 NULL을 만들어요.
-2. B를 넣을 때 create_node(A,B,NULL)이 B의 왼쪽을 A로 설정해요. 기존 tail=A의 오른쪽을 B로 연결하고 tail을 B로 옮겨요.
-3. 할당과 필드 초기화는 create_node의 책임이고 덱 전체의 head,tail 연결은 add_rear의 책임이에요. 두 책임을 합쳐 검산해요.
+- (a) 첫 삽입에서는 `create_node(NULL, A, NULL)`로 `A.llink = A.rlink = NULL`이 되고, 빈 덱이므로 `dq->head = dq->tail = A`가 돼요. 두 번째 삽입에서는 `create_node(A, B, NULL)`로 `B.llink = A, B.rlink = NULL`이 되고, `else` 분기로 `A.rlink = B`를 연결한 뒤 `dq->tail = B`로 옮겨 `dq->head = A, dq->tail = B`가 돼요.
+- (b) `create_node`는 `node->llink = left; node->data = item; node->rlink = right;`로 세 필드를 설정해요. 공백 덱에 첫 원소를 넣을 때는 그 노드가 유일한 노드여서 머리이자 꼬리가 되므로, `dq->head`를 함께 설정하지 않으면 `head`가 `NULL`로 남아 앞쪽에서 첫 노드에 접근할 수 없어요.
 
-**정답:** 첫 삽입 head=tail=A,A.llink=A.rlink=NULL. 두 번째 head=A,tail=B,A.rlink=B,B.llink=A,A.llink=B.rlink=NULL. create_node는 node-&gt;llink=left; node-&gt;data=item; node-&gt;rlink=right;. 빈 덱에서 head를 설정하지 않으면 첫 노드에 접근할 수 없다.
+**정답:** (a) 첫 삽입 후: `head = tail = A`, `A.llink = A.rlink = NULL`; 두 번째 삽입 후: `head = A, tail = B`, `A.llink = NULL, A.rlink = B`, `B.llink = A, B.rlink = NULL` (b) `create_node` 대입문은 `node->llink = left; node->data = item; node->rlink = right;`이며, 빈 덱에서 `dq->head`를 설정하지 않으면 `head`가 `NULL`로 남아 첫 노드에 접근할 수 없다.
 
-tail만 새 노드로 옮기면 이전 노드에서 새 노드로 가는 연결이 생기지 않아요.
+`tail`만 새 노드로 옮기면 이전 노드에서 새 노드로 가는 연결이 생기지 않아요.
 
 </details>
 
@@ -402,24 +410,27 @@ tail만 새 노드로 옮기면 이전 노드에서 새 노드로 가는 연결�
 
 **강의 예제 기반 자체 출제** S6 p17
 
-error는 종료해요. A↔B인 덱에서 delete_front를 두 번 실행한 뒤 반환값과 head,tail 상태를 쓰세요. 마지막 if/else 두 분기가 각각 지키는 불변식과 이 검사를 생략했을 때의 문제를 설명하세요.
+이중 연결 리스트로 구현한 덱에서 맨 앞 노드를 꺼내는 `delete_front` 함수예요.
 
 ```c
 element delete_front(DequeType *dq)
 {
     element item; DlistNode *removed_node;
-    if(is_empty(dq)) error("공백 덱에서 삭제");
+    if (is_empty(dq)) error("공백 덱에서 삭제");
     else {
-        removed_node=dq->head;
-        item=removed_node->data;
-        dq->head=dq->head->rlink;
+        removed_node = dq->head;
+        item = removed_node->data;
+        dq->head = dq->head->rlink;
         free(removed_node);
-        if(dq->head==NULL) dq->tail=NULL;
-        else dq->head->llink=NULL;
+        if (dq->head == NULL) dq->tail = NULL;
+        else dq->head->llink = NULL;
     }
     return item;
 }
 ```
+
+- (a) 두 노드가 `A <-> B`로 연결된 덱(`dq->head = A, dq->tail = B`)에서 `delete_front(dq)`를 연속으로 두 번 호출할 때, 각 호출의 반환값과 호출 직후 `dq->head`, `dq->tail` 및 남은 노드의 링크 상태를 쓰세요.
+- (b) 함수 마지막의 `if (dq->head == NULL) dq->tail = NULL; else dq->head->llink = NULL;` 두 분기가 각각 유지하는 불변식과, 이 분기를 생략했을 때 생기는 문제를 설명하세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -446,19 +457,18 @@ element delete_front(DequeType *dq)
 
 <details><summary>힌트 보기</summary>
 
-A의 값을 item에 보관한 다음 head를 B로 옮기고 A를 해제해요. B가 있으므로 B의 왼쪽을 NULL로 끊어요.
+첫 삭제에서는 `A`를 해제한 뒤 남은 `B`의 왼쪽 링크를 `NULL`로 끊고, 두 번째 삭제에서는 `dq->head`가 `NULL`이 되므로 `dq->tail`도 `NULL`로 맞춰요.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. A의 값을 item에 보관한 다음 head를 B로 옮기고 A를 해제해요. B가 있으므로 B의 왼쪽을 NULL로 끊어요.
-2. 두 번째는 B의 오른쪽이 NULL이어서 head=NULL이 돼요. 이때 tail도 NULL로 만들어 빈 상태를 일치시켜요.
-3. free 전에 값을 저장했으므로 반환은 유효해요. 남아 있는 포인터가 해제된 노드를 가리키지 않는지도 함께 검사해야 해요.
+- (a) 첫 번째 호출은 `A`를 반환하고 `dq->head`를 `B`로 옮긴 뒤 `else` 분기로 `B.llink = NULL`로 끊어 `dq->head = dq->tail = B`(`B.llink = B.rlink = NULL`)가 돼요. 두 번째 호출은 `B`를 반환하고 `dq->head = B.rlink = NULL`이 되어 `if` 분기로 `dq->tail = NULL`까지 설정하므로 `dq->head = dq->tail = NULL`이 돼요.
+- (b) `if` 분기는 "공백 덱의 `head`와 `tail`은 모두 `NULL`이다"라는 불변식을 지키고, `else` 분기는 "비공백 덱의 첫 노드 왼쪽 링크(`head->llink`)는 항상 `NULL`이다"라는 불변식을 지켜요. 이를 생략하면 빈 덱의 `tail`이나 새 첫 노드의 `llink`가 이미 해제된 노드를 가리키는 댕글링 포인터가 돼요.
 
-**정답:** 첫 반환 A, head=tail=B,B.llink=NULL. 두 번째 반환 B, head=tail=NULL. 빈 덱의 양 끝은 모두 NULL이고 비어 있지 않은 덱의 head.llink는 NULL이다. 생략하면 tail이 해제된 노드를 가리키거나 새 head의 왼쪽이 해제된 노드를 가리킨다.
+**정답:** (a) 첫 호출: 반환 `A`, `head = tail = B`, `B.llink = B.rlink = NULL`; 두 번째 호출: 반환 `B`, `head = tail = NULL` (b) 공백 덱은 `head = tail = NULL`이고 비공백 덱은 `head->llink = NULL`이라는 불변식을 유지하며, 생략하면 `tail`이나 새 `head->llink`가 해제된 노드를 가리킨다.
 
-head=NULL인 경우 head-&gt;llink=NULL을 실행하면 NULL 역참조예요. 빈 경우와 남은 경우를 나눠야 해요.
+`dq->head == NULL`인 경우 `dq->head->llink = NULL`을 실행하면 `NULL` 역참조가 발생하므로 반드시 두 경우를 나눠야 해요.
 
 </details>
 
