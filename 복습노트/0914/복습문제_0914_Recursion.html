@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="de006c2d3e5cf21f31d3" data-screens="article.card" data-panels="review" data-range="0914">
+<body data-revision="3282c96c4db67c89df67" data-screens="article.card" data-panels="review" data-range="0914">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -455,52 +455,52 @@ for(i=0; i&lt;n; i++){
 <section id="partB"><h2>B. 강의 예제 코드</h2>
 <article class="card" id="p6" data-source="lecture-s01-p24-nat-no" data-source-kind="lecture-code">
 <h3>P6. 자연수 ADT의 연산 계약</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p24</p><p>이는 수학적 유사코드예요. 객체 범위를 쓰고 sub(3,5),sub(5,3),add(INT_MAX,1)의 결과를 구하세요. 사용자가 내부 표현을 몰라도 되는 이유와 add를 signed int C 코드로 그대로 옮길 때의 주의점을 설명하세요.</p><pre><code class="language-c">Nat_No
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p24</p><p>아래는 자연수 추상 데이터 타입(ADT) <code>Nat_No</code>의 일부 연산을 정의한 수학적 유사코드예요.</p><pre><code class="language-c">Nat_No
 zero() ::= return 0;
 sub(x,y) ::= if(x&lt;y) return 0;
              else return x-y;
 add(x,y) ::= if((x+y)&lt;=INT_MAX) return x+y;
-             else return INT_MAX;</code></pre></div>
+             else return INT_MAX;</code></pre><ol><li>(a) <code>Nat_No</code>의 객체 범위를 쓰고, <code>sub(3, 5)</code>, <code>sub(5, 3)</code>, <code>add(INT_MAX, 1)</code>의 반환 결과를 각각 구하세요.</li><li>(b) ADT 사용자가 내부 표현을 몰라도 되는 이유와, <code>add(x, y)</code>를 C의 <code>signed int</code> 코드로 옮길 때 <code>x + y</code>를 바로 계산하지 않고 먼저 검사해야 하는 이유·조건식을 설명하세요.</li></ol></div>
 <details class="original"><summary>강의 예제 보기</summary><p>S1 p24 · Software_1_자료구조및알고리즘.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">Nat_No
 zero() ::= return 0;
 sub(x,y) ::= if(x&lt;y) return 0;
              else return x-y;
 add(x,y) ::= if((x+y)&lt;=INT_MAX) return x+y;
              else return INT_MAX;</code></pre></details>
-<details class="hint"><summary>힌트 보기</summary><p>자연수 범위 밖의 음수가 나오지 않도록 sub는 작은 수에서 큰 수를 뺄 때 0을 반환해요.</p></details>
-<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>자연수 범위 밖의 음수가 나오지 않도록 sub는 작은 수에서 큰 수를 뺄 때 0을 반환해요.</li><li>add는 수학적 합이 상한을 넘으면 INT_MAX로 포화시킨다는 계약이에요. 이 계약은 배열이나 비트 등 내부 표현과 구별돼요.</li><li>C의 signed overflow는 정상 계산이 아니에요. x,y가 0..INT_MAX라면 INT_MAX-y는 안전하므로 먼저 비교하고 안전한 경우에만 더해요.</li></ol><p class="answer">정답: 객체 0..INT_MAX. 결과 0,2,INT_MAX. ADT는 객체와 연산 계약을 제공하고 표현을 숨긴다. C에서는 x+y 자체가 overflow할 수 있으므로 x&gt;INT_MAX-y를 먼저 검사해야 한다.</p><p>위 유사코드를 그대로 C의 정수 연산이라고 간주해 INT_MAX+1을 실행하지 마세요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>자연수 범위 밖의 음수가 나오지 않도록 <code>sub</code>는 작은 수에서 큰 수를 뺄 때 <code>0</code>을 반환해요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>(a) 객체 범위는 <code>0..INT_MAX</code>예요. <code>sub(3, 5)</code>는 <code>3 &lt; 5</code>이므로 <code>0</code>, <code>sub(5, 3)</code>은 <code>5 - 3 = 2</code>, <code>add(INT_MAX, 1)</code>은 수학적 합이 상한을 넘으므로 <code>INT_MAX</code>를 반환해요.</li><li>(b) ADT는 객체와 연산 계약(인터페이스)만 공개하고 내부 구현 표현을 숨기므로 사용자는 내부 표현을 몰라도 돼요. C의 <code>signed int</code>에서는 <code>x + y</code>가 <code>INT_MAX</code>를 넘는 순간 오버플로(미정의 동작)가 일어나므로, 덧셈 전에 <code>x &gt; INT_MAX - y</code>를 먼저 검사해야 해요.</li><li>수업과의 연결: 자판기 비유처럼 추상 데이터 타입(ADT)이 무엇을 하는지(계약)와 어떻게 구현하는지를 분리한다는 내용과 이어져요.</li></ol><p class="answer">정답: (a) 객체 범위: <code>0..INT_MAX</code>, 결과: <code>0</code>, <code>2</code>, <code>INT_MAX</code> (b) ADT는 객체와 연산 계약을 제공하고 내부 표현을 숨기기 때문이며, C에서는 <code>x + y</code> 자체가 오버플로할 수 있으므로 <code>x &gt; INT_MAX - y</code>를 먼저 검사해야 한다.</p><p>위 유사코드를 그대로 C의 정수 연산이라고 간주해 <code>INT_MAX + 1</code>을 실행하지 마세요.</p></details>
 </article>
 <article class="card" id="p7" data-source="lecture-s01-p29-square-cost" data-source-kind="lecture-code">
 <h3>P7. 같은 n²를 계산하는 세 알고리즘</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p29</p><p>for 문의 초기화·비교·증가 같은 루프 제어는 세지 않고, 대입·덧셈·곱셈만 각 1회로 세세요. n≥1일 때 각 알고리즘의 전체 연산 수와 빅오를 구하고, 같은 결과를 구한다는 사실만으로 실행 시간이 같다고 할 수 있는지 설명하세요.</p><pre><code class="language-c">A: sum &lt;- n*n
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p29</p><p>아래 세 알고리즘 <code>A</code>, <code>B</code>, <code>C</code>는 모두 $n \ge 1$일 때 $n^2$을 계산해요. <code>for</code> 문의 루프 제어 연산은 세지 않고 대입(<code>&lt;-</code>), 덧셈(<code>+</code>), 곱셈(<code>*</code>)만 각각 <code>1</code>회로 세기로 해요.</p><pre><code class="language-c">A: sum &lt;- n*n
 B: sum &lt;- 0
    for i &lt;- 1 to n do sum &lt;- sum+n
 C: sum &lt;- 0
    for i &lt;- 1 to n do
-       for j &lt;- 1 to n do sum &lt;- sum+1</code></pre></div>
+       for j &lt;- 1 to n do sum &lt;- sum+1</code></pre><ol><li>(a) 알고리즘 <code>A</code>, <code>B</code>, <code>C</code>의 전체 연산 횟수 $T(n)$과 빅오 표기법을 각각 구하세요.</li><li>(b) 세 알고리즘이 같은 결과를 반환한다는 사실만으로 실행 시간이 같다고 할 수 있는지 연산 횟수의 증가율로 설명하세요.</li></ol></div>
 <details class="original"><summary>강의 예제 보기</summary><p>S1 p29 · Software_1_자료구조및알고리즘.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">A: sum &lt;- n*n
 B: sum &lt;- 0
    for i &lt;- 1 to n do sum &lt;- sum+n
 C: sum &lt;- 0
    for i &lt;- 1 to n do
        for j &lt;- 1 to n do sum &lt;- sum+1</code></pre></details>
-<details class="hint"><summary>힌트 보기</summary><p>A는 곱셈 1회와 대입 1회예요.</p></details>
-<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>A는 곱셈 1회와 대입 1회예요.</li><li>B는 초기 대입 1회, n번 반복에서 덧셈과 대입을 각각 1회씩 하므로 1+2n이에요.</li><li>C는 본문이 n²번 실행되므로 1+2n²이에요. 상수 계수와 낮은 차수 항을 제외해 증가율을 비교해요.</li></ol><p class="answer">정답: A:2회,O(1). B:2n+1회,O(n). C:2n²+1회,O(n²). 반환 결과가 같아도 연산 횟수는 다르다.</p><p>문제에서 제외한 루프 제어 연산을 일부 알고리즘에만 더하지 마세요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p><code>A</code>는 곱셈 <code>1</code>회와 대입 <code>1</code>회예요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>(a) <code>A</code>는 곱셈 <code>1</code>회와 대입 <code>1</code>회로 총 <code>2</code>회($O(1)$)예요. <code>B</code>는 초기 대입 <code>1</code>회와 <code>n</code>번 반복되는 덧셈·대입 각 <code>1</code>회로 총 $2n + 1$회($O(n)$)이고, <code>C</code>는 초기 대입 <code>1</code>회와 $n^2$번 반복되는 덧셈·대입 각 <code>1</code>회로 총 $2n^2 + 1$회($O(n^2)$)예요.</li><li>(b) 반환 결과가 모두 $n^2$으로 같더라도 입력 크기 $n$이 커질 때 연산 횟수의 증가율이 $O(1)$, $O(n)$, $O(n^2)$으로 서로 다르므로 실행 시간은 같지 않아요.</li><li>수업과의 연결: 같은 결과를 구하는 세 알고리즘의 기본 연산 횟수 $T(n)$을 세어 빅오 차수로 비교한 내용과 이어져요.</li></ol><p class="answer">정답: (a) <code>A</code>: <code>2</code>회, $O(1)$ / <code>B</code>: $2n + 1$회, $O(n)$ / <code>C</code>: $2n^2 + 1$회, $O(n^2)$ (b) 반환 결과가 같아도 $n$에 따른 연산 횟수와 증가율이 다르므로 실행 시간은 다르다.</p><p>문제에서 제외한 루프 제어 연산을 일부 알고리즘에만 더하지 마세요.</p></details>
 </article>
 <article class="card" id="p8" data-source="lecture-s02-p4-factorial" data-source-kind="lecture-code">
 <h3>P8. 팩토리얼의 호출과 반환을 분리하기</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S2 p4</p><p>n은 0 이상의 정수이고 결과가 int에 들어간다고 가정해요. factorial(3)의 호출 순서와 반환 순서를 쓰고, factorial(0)의 값도 구하세요. 종료 조건과 문제 크기가 줄어드는 부분을 찾아 설명하세요.</p><pre><code class="language-c">int factorial(int n)
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S2 p4</p><p>아래 순환 함수 <code>factorial(n)</code>에서 <code>n</code>은 <code>0</code> 이상의 정수이고, 계산 결과는 <code>int</code> 범위에 들어간다고 가정해요.</p><pre><code class="language-c">int factorial(int n)
 {
     if(n &lt;= 1) return 1;
     else return n * factorial(n-1);
-}</code></pre></div>
+}</code></pre><ol><li>(a) <code>factorial(3)</code>을 실행할 때 호출 순서와 반환값 순서를 차례로 쓰고, <code>factorial(0)</code>의 반환값도 구하세요.</li><li>(b) 이 함수에서 순환을 멈추는 종료 조건과 호출마다 문제 크기가 줄어드는 부분을 찾아 설명하세요.</li></ol></div>
 <details class="original"><summary>강의 예제 보기</summary><p>S2 p4 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 들여쓰기를 정리했습니다. 주변 선언·main·입출력을 생략한 발췌·번역은 완전한 실행 프로그램과 구별해요. 아래 질문·입력 조건은 자체 출제예요.</p><pre><code class="language-c">int factorial(int n)
 {
     if(n &lt;= 1) return 1;
     else return n * factorial(n-1);
 }</code></pre></details>
-<details class="hint"><summary>힌트 보기</summary><p>먼저 종료 조건 n&lt;=1을 표시해요. factorial(3)은 아직 곱셈을 끝내지 못하고 factorial(2)를 기다려요.</p></details>
-<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>먼저 종료 조건 n&lt;=1을 표시해요. factorial(3)은 아직 곱셈을 끝내지 못하고 factorial(2)를 기다려요.</li><li>factorial(2)도 factorial(1)을 기다려요. factorial(1)은 1을 반환해요.</li><li>아래에서 올라오며 2×1=2, 3×2=6을 계산해요. 각 호출의 n은 서로 다른 지역 변수예요.</li><li>0은 바로 종료 조건을 만족하므로 1을 반환해요. 호출할 때 감소하는 n과 반환 때 계산하는 곱을 구분해요.</li></ol><p class="answer">정답: 호출 3→2→1, 반환 1→2→6. factorial(0)=1. n&lt;=1이 종료 조건이고 n-1로 크기가 줄어든다.</p><p>호출하는 순간 3×2×1이 한 번에 계산된다고 생각하지 마세요. 아직 끝나지 않은 곱셈이 각 호출에 남아 있어요.</p></details>
+<details class="hint"><summary>힌트 보기</summary><p>먼저 종료 조건 <code>n &lt;= 1</code>을 표시해요. <code>factorial(3)</code>은 아직 곱셈을 끝내지 못하고 <code>factorial(2)</code>를 기다려요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>(a) <code>factorial(3)</code>은 <code>factorial(2)</code>를, <code>factorial(2)</code>는 <code>factorial(1)</code>을 차례로 호출하므로 호출 인자 순서는 <code>3 → 2 → 1</code>이에요. <code>factorial(1)</code>이 <code>1</code>을 반환하면 역순으로 <code>2 * 1 = 2</code>, <code>3 * 2 = 6</code>이 계산되어 반환값 순서는 <code>1 → 2 → 6</code>이고, <code>factorial(0)</code>은 <code>0 &lt;= 1</code>을 만족해 <code>1</code>을 반환해요.</li><li>(b) 종료 조건은 <code>n &lt;= 1</code>일 때 <code>1</code>을 반환하는 기저 분기이며, 순환 호출 인자 <code>n - 1</code>이 매 호출마다 문제 크기를 <code>1</code>씩 줄여 결국 종료 조건에 도달하게 해요.</li><li>수업과의 연결: 순환 알고리즘의 두 필수 조건(종료 조건과 문제 크기 감소) 및 <code>factorial(3)</code>의 스택 호출·반환 추적과 이어져요.</li></ol><p class="answer">정답: (a) 호출 순서: <code>3 → 2 → 1</code>, 반환값 순서: <code>1 → 2 → 6</code>, <code>factorial(0) = 1</code> (b) <code>n &lt;= 1</code>이 종료 조건이고 <code>n - 1</code>로 문제 크기가 줄어든다.</p><p>호출하는 순간 <code>3 * 2 * 1</code>이 한 번에 계산된다고 생각하지 마세요. 아직 끝나지 않은 곱셈이 각 호출에 남아 있어요.</p></details>
 </article>
 </section>
 <section id="partRestored"><h2>C. 복구한 기출 원문</h2>
