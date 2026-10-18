@@ -1,0 +1,35 @@
+{
+  "references": {
+    "복습노트\\1008\\정리노트_1008_Stack.html": "2629e70bb4301f62c0f5751f44b2085e2ce7052976673dff7e391d2a77369fb5",
+    "복습노트\\1008\\.pack\\정리노트_1008_Stack.md": "9b79b5e66b9d07b9bed72fe7b20b0d7e993e8c42b582c292768aa90049c1cb5b",
+    "STT\\1008 자구알.md": "29166bb912118843f3d407bdb385abb189317a341f6e0db4907cdd2f68410cb3",
+    "자료구조_강의록_2026\\Software_4_List.pdf": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62"
+  },
+  "sources": [
+    {
+      "id": "add",
+      "label": "add · get_node_at · insert_node",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\ntypedef int element;\ntypedef struct ListNode {\n    element data;\n    struct ListNode *link;\n} ListNode;\ntypedef struct {\n    ListNode *head;\n    int length;\n} ListType;\nvoid error(char *message) { fprintf(stderr, \"%s\\n\", message); exit(1); }\n// phead: 리스트의 헤드 포인터의 포인터\n// p : 선행 노드\n// new_node : 삽입될 노드\nvoid insert_node(ListNode **phead, ListNode *p, ListNode *new_node)\n{\n    if( *phead == NULL ){        // 공백리스트인 경우\n        new_node->link = NULL;\n        *phead = new_node;\n    }\n    else if( p == NULL ){ // p가 NULL이면 첫번째 노드로 삽입\n        new_node->link = *phead;\n        *phead = new_node;\n    }\n    else {                       // p 다음에 삽입\n        new_node->link = p->link;\n        p->link = new_node;\n    }\n}\n// 리스트안에서 pos 위치의 노드를 반환한다.\nListNode *get_node_at(ListType *list, int pos)\n{\n    int i;\n    ListNode *tmp_node = list->head;\n    if( pos < 0 ) return NULL;\n    for (i=0; i<pos; i++)\n        tmp_node = tmp_node->link;\n    return tmp_node;\n}\n// 주어진 위치에 데이터를 삽입한다.\nvoid add(ListType *list, int position, element data)\n{\n    ListNode *p;\n    if ((position >= 0) && (position <= list->length)){\n        ListNode *node = (ListNode *)malloc(sizeof(ListNode));\n        if( node == NULL ) error(\"메모리 할당에러\");\n        node->data = data;\n        p = get_node_at(list, position-1);\n        insert_node(&(list->head), p, node);\n        list->length++;\n    }\n}\nint main(void)\n{\n    ListType list1;  /* 보충: 길이 {{n}}인 리스트(앞에서부터 10, 20, 30 중 n개)를 준비한 상태 */\n    add(&list1, {{position}}, {{data}});\n    return 0;\n}",
+      "provenance": {
+        "note": "S4 p47 get_node_at·add와 p25 insert_node 원문 · 헤더·ListNode·error·main과 준비된 list1은 보충했습니다.",
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "page": 47,
+        "section": "s0-adapter",
+        "supplement": false,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "adjustments": "get_node_at·add 본문은 S4 p47, insert_node 본문과 주석은 S4 p25, ListType은 S4 p45 원문. 줄 앞 공백만 정리. #include, ListNode 정의, error 함수, main과 준비된 list1은 보충."
+      }
+    }
+  ],
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "sourceC": {
+    "file": "source.c",
+    "note": "기본 입력과 준비된 호출자 상태를 실제 C로 적은 검산용 판본. 컴파일러 부재로 컴파일·실행하지 않았다."
+  },
+  "verification": "PDF S4 p25/45/47 rendered (90dpi PNG) and visually read; pdftotext saved in evidence; note HTML, .pack MD and STT cross-checked"
+}

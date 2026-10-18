@@ -1,0 +1,65 @@
+{
+  "references": {
+    "복습노트\\1008\\정리노트_1008_Stack.html": "2629e70bb4301f62c0f5751f44b2085e2ce7052976673dff7e391d2a77369fb5",
+    "복습노트\\1008\\.pack\\정리노트_1008_Stack.md": "9b79b5e66b9d07b9bed72fe7b20b0d7e993e8c42b582c292768aa90049c1cb5b",
+    "STT\\1008 자구알.md": "29166bb912118843f3d407bdb385abb189317a341f6e0db4907cdd2f68410cb3",
+    "자료구조_강의록_2026\\Software_5_Stack.pdf": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90"
+  },
+  "sources": [
+    {
+      "id": "push",
+      "label": "push · S5 p14",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\n#define MAX_STACK_SIZE 5\ntypedef int element;\ntypedef struct {\n    element stack[MAX_STACK_SIZE];\n    int top;\n} StackType;\n// 공백 상태 검출 함수\nint is_empty(StackType *s)\n{\n    return (s->top == -1);\n}\n// 포화 상태 검출 함수\nint is_full(StackType *s)\n{\n    return (s->top == (MAX_STACK_SIZE-1));\n}\n// 삽입함수\nvoid push(StackType *s, element item)\n{\n    if( is_full(s) ) {\n        fprintf(stderr,\"스택 포화 에러\\n\");\n        return;\n    }\n    else s->stack[++(s->top)] = item;\n}\n// 삭제함수\nelement pop(StackType *s)\n{\n    if( is_empty(s) ) {\n        fprintf(stderr, \"스택 공백 에러\\n\");\n        exit(1);\n    }\n    else return s->stack[(s->top)--];\n}\nint main(void)\n{\n    StackType s;  /* 보충: init(&s) 후 {{n}}개를 push한 상태 (10, 20, 30, 40, 50 순) */\n    push(&s, {{x}});\n    return 0;\n}",
+      "provenance": {
+        "note": "S5 p13–14 C 원문 · 1008 수업은 같은 순서를 p10–12 의사코드로 다뤘고, 헤더·main과 준비된 s는 보충했습니다.",
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 14,
+        "section": "s2-pushpop",
+        "supplement": false,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "adjustments": "StackType·is_empty·is_full은 S5 p13, push·pop 본문과 주석은 S5 p14 원문(줄 앞 공백만 정리). 1008 수업은 같은 순서를 p10–12 의사코드로 설명했고 p13–14 C 구현은 다음 시간 예고 범위다. #include, MAX_STACK_SIZE 값 5, main과 준비된 s는 보충."
+      }
+    },
+    {
+      "id": "pop",
+      "label": "pop · S5 p14",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\n#define MAX_STACK_SIZE 5\ntypedef int element;\ntypedef struct {\n    element stack[MAX_STACK_SIZE];\n    int top;\n} StackType;\n// 공백 상태 검출 함수\nint is_empty(StackType *s)\n{\n    return (s->top == -1);\n}\n// 포화 상태 검출 함수\nint is_full(StackType *s)\n{\n    return (s->top == (MAX_STACK_SIZE-1));\n}\n// 삽입함수\nvoid push(StackType *s, element item)\n{\n    if( is_full(s) ) {\n        fprintf(stderr,\"스택 포화 에러\\n\");\n        return;\n    }\n    else s->stack[++(s->top)] = item;\n}\n// 삭제함수\nelement pop(StackType *s)\n{\n    if( is_empty(s) ) {\n        fprintf(stderr, \"스택 공백 에러\\n\");\n        exit(1);\n    }\n    else return s->stack[(s->top)--];\n}\nint main(void)\n{\n    StackType s;  /* 보충: init(&s) 후 {{n}}개를 push한 상태 (10, 20, 30, 40, 50 순) */\n    element e = pop(&s);\n    return 0;\n}",
+      "provenance": {
+        "note": "S5 p13–14 C 원문 · 1008 수업은 같은 순서를 p10–12 의사코드로 다뤘고, 헤더·main과 준비된 s는 보충했습니다.",
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 14,
+        "section": "s2-pushpop",
+        "supplement": false,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "adjustments": "StackType·is_empty·is_full은 S5 p13, push·pop 본문과 주석은 S5 p14 원문(줄 앞 공백만 정리). 1008 수업은 같은 순서를 p10–12 의사코드로 설명했고 p13–14 C 구현은 다음 시간 예고 범위다. #include, MAX_STACK_SIZE 값 5, main과 준비된 s는 보충."
+      }
+    },
+    {
+      "id": "wrong",
+      "label": "보충 비교 · 저장 후 증가",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\n#define MAX_STACK_SIZE 5\ntypedef int element;\ntypedef struct {\n    element stack[MAX_STACK_SIZE];\n    int top;\n} StackType;\n// 공백 상태 검출 함수\nint is_empty(StackType *s)\n{\n    return (s->top == -1);\n}\n// 포화 상태 검출 함수\nint is_full(StackType *s)\n{\n    return (s->top == (MAX_STACK_SIZE-1));\n}\n// 삽입함수\nvoid push(StackType *s, element item)\n{\n    if( is_full(s) ) {\n        fprintf(stderr,\"스택 포화 에러\\n\");\n        return;\n    }\n    else s->stack[(s->top)++] = item;  // 보충 비교: 저장 후 증가\n}\n// 삭제함수\nelement pop(StackType *s)\n{\n    if( is_empty(s) ) {\n        fprintf(stderr, \"스택 공백 에러\\n\");\n        exit(1);\n    }\n    else return s->stack[(s->top)--];\n}\nint main(void)\n{\n    StackType s;  /* 보충: init(&s) 후 {{n}}개를 push한 상태 (10, 20, 30, 40, 50 순) */\n    push(&s, {{x}});\n    return 0;\n}",
+      "provenance": {
+        "note": "보충 오답 · 저장 후 증가로 바꾼 한 줄은 강의 코드가 아닙니다.",
+        "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
+        "page": 14,
+        "section": "s2-pushpop",
+        "supplement": true,
+        "sha256": "235bf69c42564fed2de833ae99701b849802d10093a028caa2bdfba1bc254e90",
+        "adjustments": "StackType·is_empty·is_full은 S5 p13, push·pop 본문과 주석은 S5 p14 원문(줄 앞 공백만 정리). 1008 수업은 같은 순서를 p10–12 의사코드로 설명했고 p13–14 C 구현은 다음 시간 예고 범위다. #include, MAX_STACK_SIZE 값 5, main과 준비된 s는 보충. 저장 후 증가 한 줄은 노트의 덮어쓰기 경고를 확인하기 위한 보충 오답 예제이며 강의 코드가 아니다."
+      }
+    }
+  ],
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "sourceC": {
+    "file": "source.c",
+    "note": "기본 입력과 준비된 호출자 상태를 실제 C로 적은 검산용 판본. 컴파일러 부재로 컴파일·실행하지 않았다."
+  },
+  "verification": "PDF S5 p10–14 rendered (90dpi PNG) and visually read; pdftotext saved in evidence; note HTML, .pack MD and STT cross-checked"
+}

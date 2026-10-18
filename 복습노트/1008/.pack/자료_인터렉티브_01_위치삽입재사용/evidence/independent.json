@@ -1,0 +1,1732 @@
+{
+  "method": "independent Python write/bind table + final list/stack model",
+  "topic": "list-add",
+  "compiler_unavailable": true,
+  "ub_executed": false,
+  "total": 103,
+  "writes": 1021,
+  "cases": [
+    {
+      "case": "default",
+      "input": {
+        "position": 1,
+        "data": 15,
+        "n": 3
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        15,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "middle",
+      "input": {
+        "n": 3,
+        "position": 1,
+        "data": 15
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        15,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "front",
+      "input": {
+        "n": 3,
+        "position": 0,
+        "data": -99
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        -99,
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "tail",
+      "input": {
+        "n": 3,
+        "position": 3,
+        "data": 99
+      },
+      "writes_checked": 25,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30,
+        99
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "empty",
+      "input": {
+        "n": 0,
+        "position": 0,
+        "data": 7
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        7
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "over",
+      "input": {
+        "n": 3,
+        "position": 4,
+        "data": 40
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "negative",
+      "input": {
+        "n": 3,
+        "position": -1,
+        "data": 5
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": -99,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": -99,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": -99,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": -1,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": -1,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": -1,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 0,
+        "data": -99
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        -99
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 0,
+        "data": 0
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        0
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 0,
+        "data": 99
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        99
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 1,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 1,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 1,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 2,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 2,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 2,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 3,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 3,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 3,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 4,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 4,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 4,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 99,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 99,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "position": 99,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": -99,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": -99,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": -99,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": -1,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": -1,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": -1,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 0,
+        "data": -99
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        -99,
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 0,
+        "data": 0
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        0,
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 0,
+        "data": 99
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        99,
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 1,
+        "data": -99
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        -99
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 1,
+        "data": 0
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        0
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 1,
+        "data": 99
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        99
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 2,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 2,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 2,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 3,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 3,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 3,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 4,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 4,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 4,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 99,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 99,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "position": 99,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": -99,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": -99,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": -99,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": -1,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": -1,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": -1,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 0,
+        "data": -99
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        -99,
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 0,
+        "data": 0
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        0,
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 0,
+        "data": 99
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        99,
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 1,
+        "data": -99
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        -99,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 1,
+        "data": 0
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        0,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 1,
+        "data": 99
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        99,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 2,
+        "data": -99
+      },
+      "writes_checked": 23,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        -99
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 2,
+        "data": 0
+      },
+      "writes_checked": 23,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        0
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 2,
+        "data": 99
+      },
+      "writes_checked": 23,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        99
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 3,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 3,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 3,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 4,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 4,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 4,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 99,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 99,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 2,
+        "position": 99,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": -99,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": -99,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": -99,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": -1,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": -1,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": -1,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 0,
+        "data": -99
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        -99,
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 0,
+        "data": 0
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        0,
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 0,
+        "data": 99
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final_list": [
+        99,
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 1,
+        "data": -99
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        -99,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 1,
+        "data": 0
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        0,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 1,
+        "data": 99
+      },
+      "writes_checked": 21,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        99,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 2,
+        "data": -99
+      },
+      "writes_checked": 23,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        -99,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 2,
+        "data": 0
+      },
+      "writes_checked": 23,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        0,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 2,
+        "data": 99
+      },
+      "writes_checked": 23,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        99,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 3,
+        "data": -99
+      },
+      "writes_checked": 25,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30,
+        -99
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 3,
+        "data": 0
+      },
+      "writes_checked": 25,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30,
+        0
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 3,
+        "data": 99
+      },
+      "writes_checked": 25,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30,
+        99
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 4,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 4,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 4,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 99,
+        "data": -99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 99,
+        "data": 0
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 3,
+        "position": 99,
+        "data": 99
+      },
+      "writes_checked": 4,
+      "diagnostic": null,
+      "final_list": [
+        10,
+        20,
+        30
+      ],
+      "leaked": [],
+      "freed": [],
+      "status": "pass"
+    }
+  ],
+  "status": "pass"
+}

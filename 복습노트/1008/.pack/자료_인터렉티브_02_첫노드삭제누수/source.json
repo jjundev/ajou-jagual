@@ -1,0 +1,50 @@
+{
+  "references": {
+    "복습노트\\1008\\정리노트_1008_Stack.html": "2629e70bb4301f62c0f5751f44b2085e2ce7052976673dff7e391d2a77369fb5",
+    "복습노트\\1008\\.pack\\정리노트_1008_Stack.md": "9b79b5e66b9d07b9bed72fe7b20b0d7e993e8c42b582c292768aa90049c1cb5b",
+    "STT\\1008 자구알.md": "29166bb912118843f3d407bdb385abb189317a341f6e0db4907cdd2f68410cb3",
+    "자료구조_강의록_2026\\Software_4_List.pdf": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62"
+  },
+  "sources": [
+    {
+      "id": "original",
+      "label": "원본 delete · S4 p48",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\ntypedef int element;\ntypedef struct ListNode {\n    element data;\n    struct ListNode *link;\n} ListNode;\ntypedef struct {\n    ListNode *head;\n    int length;\n} ListType;\n// phead : 헤드 포인터에 대한 포인터\n// p: 삭제될 노드의 선행 노드\n// removed: 삭제될 노드\nvoid remove_node(ListNode **phead, ListNode *p, ListNode *removed)\n{\n    if( p == NULL )\n        *phead = (*phead)->link;\n    else\n        p->link = removed->link;\n    free(removed);\n}\nint is_empty(ListType *list)\n{\n    if( list->head == NULL ) return 1;\n    else return 0;\n}\n// 리스트안에서 pos 위치의 노드를 반환한다.\nListNode *get_node_at(ListType *list, int pos)\n{\n    int i;\n    ListNode *tmp_node = list->head;\n    if( pos < 0 ) return NULL;\n    for (i=0; i<pos; i++)\n        tmp_node = tmp_node->link;\n    return tmp_node;\n}\n// 주어진 위치의 데이터를 삭제한다.\nvoid delete(ListType *list, int pos)\n{\n    if (!is_empty(list) && (pos >= 0) && (pos < list->length)){\n        ListNode *p = get_node_at(list, pos-1);\n        remove_node(&(list->head),p,(p!=NULL)?p->link:NULL);\n        list->length--;\n    }\n}\nint main(void)\n{\n    ListType list1;  /* 보충: 길이 {{n}}인 리스트(앞에서부터 10, 20, 30 중 n개)를 준비한 상태 */\n    delete(&list1, {{pos}});\n    return 0;\n}",
+      "provenance": {
+        "note": "S4 p48 delete와 p28 remove_node 원문 그대로 · 헤더·main과 준비된 list1은 보충했습니다.",
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "page": 48,
+        "section": "s0-adapter",
+        "supplement": false,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "adjustments": "delete 본문은 S4 p48, remove_node 본문과 주석은 S4 p28, is_empty는 S4 p46, get_node_at은 S4 p47, ListType은 S4 p45 원문. 줄 앞 공백만 정리. #include, ListNode 정의, main과 준비된 list1은 보충."
+      }
+    },
+    {
+      "id": "fixed",
+      "label": "보충 비교 · 첫 노드를 removed로 전달",
+      "language": "c",
+      "text": "#include <stdio.h>\n#include <stdlib.h>\ntypedef int element;\ntypedef struct ListNode {\n    element data;\n    struct ListNode *link;\n} ListNode;\ntypedef struct {\n    ListNode *head;\n    int length;\n} ListType;\n// phead : 헤드 포인터에 대한 포인터\n// p: 삭제될 노드의 선행 노드\n// removed: 삭제될 노드\nvoid remove_node(ListNode **phead, ListNode *p, ListNode *removed)\n{\n    if( p == NULL )\n        *phead = (*phead)->link;\n    else\n        p->link = removed->link;\n    free(removed);\n}\nint is_empty(ListType *list)\n{\n    if( list->head == NULL ) return 1;\n    else return 0;\n}\n// 리스트안에서 pos 위치의 노드를 반환한다.\nListNode *get_node_at(ListType *list, int pos)\n{\n    int i;\n    ListNode *tmp_node = list->head;\n    if( pos < 0 ) return NULL;\n    for (i=0; i<pos; i++)\n        tmp_node = tmp_node->link;\n    return tmp_node;\n}\n// 주어진 위치의 데이터를 삭제한다.\nvoid delete(ListType *list, int pos)\n{\n    if (!is_empty(list) && (pos >= 0) && (pos < list->length)){\n        ListNode *p = get_node_at(list, pos-1);\n        remove_node(&(list->head),p,(p!=NULL)?p->link:list->head); // 보충 비교\n        list->length--;\n    }\n}\nint main(void)\n{\n    ListType list1;  /* 보충: 길이 {{n}}인 리스트(앞에서부터 10, 20, 30 중 n개)를 준비한 상태 */\n    delete(&list1, {{pos}});\n    return 0;\n}",
+      "provenance": {
+        "note": "보충 비교 · 셋째 인자 한 줄만 list->head로 바꿨습니다. 강의 수정 코드가 아닙니다.",
+        "path": "자료구조_강의록_2026/Software_4_List.pdf",
+        "page": 48,
+        "section": "s0-adapter",
+        "supplement": true,
+        "sha256": "8daec2b3ba1a39259dfc9dea63ed8f492976da6392359e48a40d491a82254a62",
+        "adjustments": "원본 p48과 비교하기 위한 보충 수정. 셋째 인자의 NULL을 list->head로 바꾼 한 줄만 다르다. 강의에서 제시한 수정 코드가 아니다."
+      }
+    }
+  ],
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "sourceC": {
+    "file": "source.c",
+    "note": "기본 입력과 준비된 호출자 상태를 실제 C로 적은 검산용 판본. 컴파일러 부재로 컴파일·실행하지 않았다."
+  },
+  "verification": "PDF S4 p28/45/46/47/48 rendered (90dpi PNG) and visually read; pdftotext saved in evidence; note HTML, .pack MD and STT cross-checked"
+}

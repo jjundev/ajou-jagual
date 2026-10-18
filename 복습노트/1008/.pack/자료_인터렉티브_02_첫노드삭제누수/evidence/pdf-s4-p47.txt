@@ -1,0 +1,53 @@
+< Data Structure & Algorithms>                           AJOU University
+
+add  
+
+·     
+·       get_node_at 
+
+//  pos   .
+
+ListNode *get_node_at(ListType *list, int pos)
+
+{
+
+   int i;
+
+   ListNode *tmp_node = list->head;
+
+   if( pos < 0 ) return NULL;
+
+   for (i=0; i<pos; i++)
+
+                    tmp_node = tmp_node->link;
+
+   return tmp_node;
+
+}
+
+//    .
+
+void add(ListType *list, int position, element data)
+
+{
+
+ListNode *p;
+
+if ((position >= 0) && (position <= list->length)){
+
+   ListNode*node= (ListNode *)malloc(sizeof(ListNode));
+
+   if( node == NULL ) error(" ");
+
+   node->data = data;
+
+   p = get_node_at(list, position-1);
+
+   insert_node(&(list->head), p, node);
+
+   list->length++;
+
+}
+
+}                               -47-                     
+
