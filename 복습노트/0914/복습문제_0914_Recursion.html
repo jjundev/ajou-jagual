@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="659a0b0360ddf3302392" data-screens="article.card" data-panels="review" data-range="0914">
+<body data-revision="de006c2d3e5cf21f31d3" data-screens="article.card" data-panels="review" data-range="0914">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -468,11 +468,11 @@ sub(x,y) ::= if(x&lt;y) return 0;
 add(x,y) ::= if((x+y)&lt;=INT_MAX) return x+y;
              else return INT_MAX;</code></pre></details>
 <details class="hint"><summary>힌트 보기</summary><p>자연수 범위 밖의 음수가 나오지 않도록 sub는 작은 수에서 큰 수를 뺄 때 0을 반환해요.</p></details>
-<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>자연수 범위 밖의 음수가 나오지 않도록 sub는 작은 수에서 큰 수를 뺄 때 0을 반환해요.</li><li>add는 수학적 합이 상한을 넘으면 INT_MAX로 포화시킨다는 계약이에요. 이 계약은 배열이나 비트 등 내부 표현과 구별돼요.</li><li>C의 signed overflow는 정상 계산이 아니에요. x,y가 0..INT_MAX라면 INT_MAX-y는 안전하므로 먼저 비교하고 안전한 경우에만 더해요.</li></ol><p class="answer">정답: 객체 0..INT_MAX. 결과 0,2,INT_MAX. ADT는 객체와 연산 계약을 제공하고 표현을 숨긴다. C에서는 x+y 자체가 overflow할 수 있으므로 x&gt;INT_MAX-y를 먼저 검사해야 한다.</p><p>강의 유사코드를 그대로 C의 정수 연산이라고 간주해 INT_MAX+1을 실행하지 마세요.</p></details>
+<details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>자연수 범위 밖의 음수가 나오지 않도록 sub는 작은 수에서 큰 수를 뺄 때 0을 반환해요.</li><li>add는 수학적 합이 상한을 넘으면 INT_MAX로 포화시킨다는 계약이에요. 이 계약은 배열이나 비트 등 내부 표현과 구별돼요.</li><li>C의 signed overflow는 정상 계산이 아니에요. x,y가 0..INT_MAX라면 INT_MAX-y는 안전하므로 먼저 비교하고 안전한 경우에만 더해요.</li></ol><p class="answer">정답: 객체 0..INT_MAX. 결과 0,2,INT_MAX. ADT는 객체와 연산 계약을 제공하고 표현을 숨긴다. C에서는 x+y 자체가 overflow할 수 있으므로 x&gt;INT_MAX-y를 먼저 검사해야 한다.</p><p>위 유사코드를 그대로 C의 정수 연산이라고 간주해 INT_MAX+1을 실행하지 마세요.</p></details>
 </article>
 <article class="card" id="p7" data-source="lecture-s01-p29-square-cost" data-source-kind="lecture-code">
 <h3>P7. 같은 n²를 계산하는 세 알고리즘</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p29</p><p>강의 규칙처럼 루프 제어는 제외하고 대입·덧셈·곱셈을 각 1회로 세세요. n≥1일 때 각 알고리즘의 전체 연산 수와 빅오를 구하고, 같은 결과를 구한다는 사실만으로 실행 시간이 같다고 할 수 있는지 설명하세요.</p><pre><code class="language-c">A: sum &lt;- n*n
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p29</p><p>for 문의 초기화·비교·증가 같은 루프 제어는 세지 않고, 대입·덧셈·곱셈만 각 1회로 세세요. n≥1일 때 각 알고리즘의 전체 연산 수와 빅오를 구하고, 같은 결과를 구한다는 사실만으로 실행 시간이 같다고 할 수 있는지 설명하세요.</p><pre><code class="language-c">A: sum &lt;- n*n
 B: sum &lt;- 0
    for i &lt;- 1 to n do sum &lt;- sum+n
 C: sum &lt;- 0

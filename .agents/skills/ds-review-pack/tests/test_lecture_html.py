@@ -42,3 +42,13 @@ def test_past_exam_cards_not_linted():
 def test_lecture_standalone_ignores_badge_after_supplement_note():
     html = card('<p>값을 쓰세요.</p>').replace('<div class="problem">','<div class="problem"><p><strong>후속 수업 보충:</strong> 0914 수업에서 다뤘어요.</p>')
     assert codes(html) == []
+
+def test_repo_lecture_cards_are_standalone():
+    from _util import REPO
+    import json
+    bad = []
+    for m in sorted((REPO/'복습노트').glob('*/.pack/자료_복습팩/manifest.json')):
+        rng = m.parents[2]
+        html = next(rng.glob('복습문제_*.html')).read_text(encoding='utf-8')
+        bad += [(rng.name, e.where, e.detail) for e in check_review(parse_html(html), json.loads(m.read_text(encoding='utf-8'))) if e.code == 'lecture-standalone']
+    assert bad == []

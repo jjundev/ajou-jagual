@@ -348,7 +348,7 @@
     }
   </style>
 </head>
-<body data-revision="28498b2fd42b48354bcf" data-screens="article.card" data-panels="review" data-range="1001">
+<body data-revision="76bcbbff11bac6d4dab4" data-screens="article.card" data-panels="review" data-range="1001">
   <header class="topbar">
     <div class="topbar-inner">
       <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
@@ -428,7 +428,7 @@
 </article>
 <article class="card" id="p3" data-source="lecture-s04-p5-list-adt-contract" data-source-kind="lecture-code">
 <h3>P3. 리스트 ADT의 연산 계약과 순서</h3>
-<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p5 · 추가 근거 p2,3,4,6</p><p>빈 리스트에 강의 사용 예의 add_tail(A), add_tail(B), add(2,C), add(1,D), delete(2), replace(1,E)를 차례로 적용하세요(위치는 0부터 셉니다). 각 단계의 리스트와 길이, 마지막 get_entry(1)과 get_length()의 값을 쓰세요. add와 replace가 길이에 미치는 차이, [A,E,C]와 [E,A,C]가 서로 다른 리스트인 이유, 이 결과를 구하는 데 배열·연결 구현을 알아야 하는지도 설명하세요.</p></div>
+<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p5 · 추가 근거 p2,3,4,6</p><p>리스트 ADT의 연산은 다음과 같아요. 위치는 0부터 셉니다. add_tail(x)는 리스트 끝에 x를 추가해요. add(pos,x)는 0≤pos≤길이인 pos 위치에 x를 넣고 원래 그 위치부터 있던 항목을 한 칸씩 뒤로 밀어요(pos가 길이와 같으면 끝에 추가돼요). delete(pos)는 pos 위치의 항목을 지우고 뒤 항목을 한 칸씩 당겨요. replace(pos,x)는 pos 위치의 항목을 x로 바꿔요. get_entry(pos)는 pos 위치의 항목을, get_length()는 항목 수를 돌려줘요.</p><p>빈 리스트에 add_tail(A), add_tail(B), add(2,C), add(1,D), delete(2), replace(1,E)를 차례로 적용하세요. 각 단계의 리스트와 길이, 마지막 get_entry(1)과 get_length()의 값을 쓰세요. add와 replace가 길이에 미치는 차이, [A,E,C]와 [E,A,C]가 서로 다른 리스트인 이유, 이 결과를 구하는 데 배열·연결 구현을 알아야 하는지도 설명하세요.</p></div>
 <details class="original"><summary>강의 예제 보기</summary><p>S4 p5 · 추가 근거 p2,3,4,6 · Software_4_List.pdf. 강의 개념·그림을 근거로 질문을 직접 작성했습니다. 강의 원문 코드의 전사가 아닙니다. 질문·입력 조건·검산은 자체 작성했어요.</p></details>
 <details class="hint"><summary>힌트 보기</summary><p>초기 상태: L=[], 길이=0.</p></details>
 <details class="solution"><summary>풀이 보기</summary><ol class="steps"><li>처음 상태를 빈 리스트와 길이 0으로 적어요.</li><li>끝 추가 두 번 뒤 [A,B]가 돼요. 위치2에 C를 넣으면 [A,B,C]예요.</li><li>위치1 삽입은 B를 덮지 않으므로 [A,D,B,C], 길이 4예요.</li><li>위치2의 B를 삭제해 [A,D,C], 위치1만 E로 바꿔 [A,E,C]예요.</li><li>객체는 순서 있는 모임, 연산은 그 객체를 바꾸거나 조회하는 계약이므로 저장 구현 없이 판단해요.</li></ol><p class="answer">정답: [A](1), [A,B](2), [A,B,C](3), [A,D,B,C](4), [A,D,C](3), [A,E,C](3). get_entry(1)=E, get_length()=3. add는 기존 항목을 보존하며 길이를 1 늘리고 replace는 값만 바꿔 길이를 유지합니다. 위치별 순서가 다르면 다른 리스트이며 ADT 계약만으로 결과를 정할 수 있습니다.</p><p>add(1,D)를 기존 B를 없애는 대치로 읽지 않아요. 원소가 같아도 순서가 다르면 같은 리스트가 아니에요.</p></details>
