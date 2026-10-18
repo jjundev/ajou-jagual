@@ -1,0 +1,103 @@
+{
+  "references": {
+    "복습노트/0921/정리노트_0921_ArrayStructureList.html": "31d46fadabbfb90bdc556322bc1b726115da1347d16b10d552b97f33686fa189",
+    "복습노트/0921/.pack/정리노트_0921_ArrayStructureList.md": "cf70aec94105a0fd38e8e1d96e1c5da64cd0f4113eae242e05760e38427a3fa0",
+    "STT/0921 자구알.md": "174610d261923edce3009b9df2e90402ead7e29ea13708e08ea53b44d1bdf523",
+    "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a"
+  },
+  "question": "프로그램 3.2의 while 루프에서 Apos·Bpos·Cpos와 degree_a·degree_b가 언제 바뀌고, C.coef의 어느 칸에 무엇이 쓰이는가? 후처리는 왜 돌지 않는가?",
+  "pages": [
+    7,
+    8
+  ],
+  "section": "s2-poly-add1",
+  "sources": [
+    {
+      "id": "note",
+      "label": "5차 + 3차",
+      "language": "c",
+      "text": "#include <stdio.h>\n#define MAX_DEGREE 6\ntypedef struct {\n    int degree;\n    int coef[MAX_DEGREE];   /* 강의는 float */\n} polynomial;\nint main(void)\n{\n    polynomial A = { 5, {10, 0, 0, 0, 6, 3} };\n    polynomial B = { 3, {10, 3, 0, {{k}}} };\n    polynomial C;\n    int Apos=0, Bpos=0, Cpos=0;\n    int degree_a=A.degree, degree_b=B.degree;\n    C.degree = (A.degree > B.degree) ? A.degree : B.degree;\n    while( Apos<=A.degree && Bpos<=B.degree ){\n        if( degree_a > degree_b ){ // A항 > B항\n            C.coef[Cpos++]= A.coef[Apos++];\n            degree_a--;\n        }\n        else if( degree_a == degree_b ){ // A항 == B항\n            C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];\n            degree_a--; degree_b--;\n        }\n        else {                 // B항 > A항\n            C.coef[Cpos++]= B.coef[Bpos++];\n            degree_b--;\n        }\n    }\n    /* 후처리: 남은 항을 C 끝으로 (보충) */\n    while( Apos<=A.degree )\n        C.coef[Cpos++]= A.coef[Apos++];\n    while( Bpos<=B.degree )\n        C.coef[Cpos++]= B.coef[Bpos++];\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "page": 8,
+        "section": "s2-poly-add1",
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "supplement": false,
+        "note": "강의 p8 while 루프 원문 · p7 구조체(coef는 float→int), 선언·초기값(B의 상수항 k)·C.degree·후처리는 보충입니다.",
+        "adjustments": "p8 프로그램 3.2 while 루프 본문 보존. p7 polynomial 구조체의 float coef를 정수 예제에 맞춰 int로, MAX_DEGREE를 6으로 단순화. main, 변수 선언, C.degree 계산, 후처리 while 두 개(정리노트 보충)는 보충."
+      }
+    },
+    {
+      "id": "same",
+      "label": "3차 + 3차",
+      "language": "c",
+      "text": "#include <stdio.h>\n#define MAX_DEGREE 6\ntypedef struct {\n    int degree;\n    int coef[MAX_DEGREE];   /* 강의는 float */\n} polynomial;\nint main(void)\n{\n    polynomial A = { 3, {8, 0, 7, 1} };\n    polynomial B = { 3, {10, 3, 0, {{k}}} };\n    polynomial C;\n    int Apos=0, Bpos=0, Cpos=0;\n    int degree_a=A.degree, degree_b=B.degree;\n    C.degree = (A.degree > B.degree) ? A.degree : B.degree;\n    while( Apos<=A.degree && Bpos<=B.degree ){\n        if( degree_a > degree_b ){ // A항 > B항\n            C.coef[Cpos++]= A.coef[Apos++];\n            degree_a--;\n        }\n        else if( degree_a == degree_b ){ // A항 == B항\n            C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];\n            degree_a--; degree_b--;\n        }\n        else {                 // B항 > A항\n            C.coef[Cpos++]= B.coef[Bpos++];\n            degree_b--;\n        }\n    }\n    /* 후처리: 남은 항을 C 끝으로 (보충) */\n    while( Apos<=A.degree )\n        C.coef[Cpos++]= A.coef[Apos++];\n    while( Bpos<=B.degree )\n        C.coef[Cpos++]= B.coef[Bpos++];\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "page": 8,
+        "section": "s2-poly-add1",
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "supplement": false,
+        "note": "강의 p8 while 루프 원문 · p7 구조체(coef는 float→int), 선언·초기값(B의 상수항 k)·C.degree·후처리는 보충입니다.",
+        "adjustments": "p8 프로그램 3.2 while 루프 본문 보존. p7 polynomial 구조체의 float coef를 정수 예제에 맞춰 int로, MAX_DEGREE를 6으로 단순화. main, 변수 선언, C.degree 계산, 후처리 while 두 개(정리노트 보충)는 보충."
+      }
+    },
+    {
+      "id": "bigb",
+      "label": "1차 + 3차",
+      "language": "c",
+      "text": "#include <stdio.h>\n#define MAX_DEGREE 6\ntypedef struct {\n    int degree;\n    int coef[MAX_DEGREE];   /* 강의는 float */\n} polynomial;\nint main(void)\n{\n    polynomial A = { 1, {6, 3} };\n    polynomial B = { 3, {10, 3, 0, {{k}}} };\n    polynomial C;\n    int Apos=0, Bpos=0, Cpos=0;\n    int degree_a=A.degree, degree_b=B.degree;\n    C.degree = (A.degree > B.degree) ? A.degree : B.degree;\n    while( Apos<=A.degree && Bpos<=B.degree ){\n        if( degree_a > degree_b ){ // A항 > B항\n            C.coef[Cpos++]= A.coef[Apos++];\n            degree_a--;\n        }\n        else if( degree_a == degree_b ){ // A항 == B항\n            C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];\n            degree_a--; degree_b--;\n        }\n        else {                 // B항 > A항\n            C.coef[Cpos++]= B.coef[Bpos++];\n            degree_b--;\n        }\n    }\n    /* 후처리: 남은 항을 C 끝으로 (보충) */\n    while( Apos<=A.degree )\n        C.coef[Cpos++]= A.coef[Apos++];\n    while( Bpos<=B.degree )\n        C.coef[Cpos++]= B.coef[Bpos++];\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "page": 8,
+        "section": "s2-poly-add1",
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "supplement": true,
+        "note": "강의 p8 while 루프 원문 · p7 구조체(coef는 float→int), 선언·초기값(B의 상수항 k)·C.degree·후처리는 보충입니다.",
+        "adjustments": "p8 프로그램 3.2 while 루프 본문 보존. p7 polynomial 구조체의 float coef를 정수 예제에 맞춰 int로, MAX_DEGREE를 6으로 단순화. main, 변수 선언, C.degree 계산, 후처리 while 두 개(정리노트 보충)는 보충."
+      }
+    },
+    {
+      "id": "cancel",
+      "label": "최고차 상쇄",
+      "language": "c",
+      "text": "#include <stdio.h>\n#define MAX_DEGREE 6\ntypedef struct {\n    int degree;\n    int coef[MAX_DEGREE];   /* 강의는 float */\n} polynomial;\nint main(void)\n{\n    polynomial A = { 2, {3, 0, 1} };\n    polynomial B = { 2, {-3, 5, {{k}}} };\n    polynomial C;\n    int Apos=0, Bpos=0, Cpos=0;\n    int degree_a=A.degree, degree_b=B.degree;\n    C.degree = (A.degree > B.degree) ? A.degree : B.degree;\n    while( Apos<=A.degree && Bpos<=B.degree ){\n        if( degree_a > degree_b ){ // A항 > B항\n            C.coef[Cpos++]= A.coef[Apos++];\n            degree_a--;\n        }\n        else if( degree_a == degree_b ){ // A항 == B항\n            C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];\n            degree_a--; degree_b--;\n        }\n        else {                 // B항 > A항\n            C.coef[Cpos++]= B.coef[Bpos++];\n            degree_b--;\n        }\n    }\n    /* 후처리: 남은 항을 C 끝으로 (보충) */\n    while( Apos<=A.degree )\n        C.coef[Cpos++]= A.coef[Apos++];\n    while( Bpos<=B.degree )\n        C.coef[Cpos++]= B.coef[Bpos++];\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "page": 8,
+        "section": "s2-poly-add1",
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "supplement": true,
+        "note": "강의 p8 while 루프 원문 · p7 구조체(coef는 float→int), 선언·초기값(B의 상수항 k)·C.degree·후처리는 보충입니다.",
+        "adjustments": "p8 프로그램 3.2 while 루프 본문 보존. p7 polynomial 구조체의 float coef를 정수 예제에 맞춰 int로, MAX_DEGREE를 6으로 단순화. main, 변수 선언, C.degree 계산, 후처리 while 두 개(정리노트 보충)는 보충."
+      }
+    },
+    {
+      "id": "constant",
+      "label": "상수항만",
+      "language": "c",
+      "text": "#include <stdio.h>\n#define MAX_DEGREE 6\ntypedef struct {\n    int degree;\n    int coef[MAX_DEGREE];   /* 강의는 float */\n} polynomial;\nint main(void)\n{\n    polynomial A = { 0, {7} };\n    polynomial B = { 0, {{{k}}} };\n    polynomial C;\n    int Apos=0, Bpos=0, Cpos=0;\n    int degree_a=A.degree, degree_b=B.degree;\n    C.degree = (A.degree > B.degree) ? A.degree : B.degree;\n    while( Apos<=A.degree && Bpos<=B.degree ){\n        if( degree_a > degree_b ){ // A항 > B항\n            C.coef[Cpos++]= A.coef[Apos++];\n            degree_a--;\n        }\n        else if( degree_a == degree_b ){ // A항 == B항\n            C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];\n            degree_a--; degree_b--;\n        }\n        else {                 // B항 > A항\n            C.coef[Cpos++]= B.coef[Bpos++];\n            degree_b--;\n        }\n    }\n    /* 후처리: 남은 항을 C 끝으로 (보충) */\n    while( Apos<=A.degree )\n        C.coef[Cpos++]= A.coef[Apos++];\n    while( Bpos<=B.degree )\n        C.coef[Cpos++]= B.coef[Bpos++];\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "page": 8,
+        "section": "s2-poly-add1",
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "supplement": true,
+        "note": "강의 p8 while 루프 원문 · p7 구조체(coef는 float→int), 선언·초기값(B의 상수항 k)·C.degree·후처리는 보충입니다.",
+        "adjustments": "p8 프로그램 3.2 while 루프 본문 보존. p7 polynomial 구조체의 float coef를 정수 예제에 맞춰 int로, MAX_DEGREE를 6으로 단순화. main, 변수 선언, C.degree 계산, 후처리 while 두 개(정리노트 보충)는 보충."
+      }
+    }
+  ],
+  "source_c": {
+    "file": "source.c",
+    "sha256": "1ea234a5e87dcf55d6731a18b9eeaf3baab698b3db1e461f94482b095bc201c9",
+    "role": "검산용 완전 프로그램: p8 while 루프 원문 + p7 구조체(int coef) + 보충 main/후처리. 컴파일러가 없어 독립 Python 표 사용."
+  },
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "simplifications": "p7 float coef를 int로(예제 계수가 정수, 정리노트도 int 가능하다고 설명), MAX_DEGREE 6. main, 변수 선언, degree_a/degree_b 초기화(p8 하단 문장), C.degree 계산, 후처리 while 두 개는 보충. 초기 상태는 9–11줄(A, B 초기화와 C 선언) 실행 후로 시작. Cpos++/Apos++/Bpos++의 증가와 배열 쓰기의 상대 순서는 C가 정하지 않음을 설명에 명시하고 인덱스는 증가 전 값으로 확정. && 단락 평가로 왼쪽이 거짓이면 오른쪽 조건을 읽지 않음. note·same 사례는 정리노트 예, bigb·cancel·constant는 보충.",
+  "verification": "PDF p7, p8 렌더링을 직접 읽어 루프 원문 대조. 정리노트 s2-poly-method1/s2-poly-add1의 보충 추적표(C: 10,0,10,3,6,4 / 18,3,7,2)와 결과 일치 확인."
+}

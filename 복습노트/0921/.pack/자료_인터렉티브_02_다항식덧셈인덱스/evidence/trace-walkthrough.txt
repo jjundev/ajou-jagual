@@ -1,0 +1,1534 @@
+
+=== default {"case":"note","k":1} (132 snapshots)
+initial  L12 [int Apos=0, Bpos=0, Cpos=0;] 호출 전 · 초기 상태
+         9–11줄까지 실행해 A, B를 초기화하고 C를 선언한 상태입니다. 초기값 목록이 짧으면 나머지 coef 칸은 0으로 채워집니다. C는 아직 아무 값도 없습니다.
+step-1   L12 [int Apos=0, Bpos=0, Cpos=0;] Apos = 0 W(Apos:uninitialized→0)
+         A에서 다음에 읽을 계수의 인덱스 Apos를 0으로 시작합니다.
+step-2   L12 [int Apos=0, Bpos=0, Cpos=0;] Bpos = 0 W(Bpos:uninitialized→0)
+         B에서 다음에 읽을 계수의 인덱스 Bpos를 0으로 시작합니다.
+step-3   L12 [int Apos=0, Bpos=0, Cpos=0;] Cpos = 0 W(Cpos:uninitialized→0)
+         C에 다음으로 쓸 인덱스 Cpos를 0으로 시작합니다.
+step-4   L13 [int degree_a=A.degree, degree_b=B.degree;] A.degree 읽기 R(A.degree)
+         A의 최고 차수 5를 읽습니다.
+step-5   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_a = 5 W(degree_a:uninitialized→5)
+         A.degree를 degree_a에 복사합니다. degree_a는 지금 Apos 자리 계수의 차수입니다.
+step-6   L13 [int degree_a=A.degree, degree_b=B.degree;] B.degree 읽기 R(B.degree)
+         B의 최고 차수 3을 읽습니다.
+step-7   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_b = 3 W(degree_b:uninitialized→3)
+         B.degree를 degree_b에 복사합니다. 복사본만 줄여 가므로 A.degree, B.degree는 그대로 남습니다.
+step-8   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] A.degree 읽기 R(A.degree)
+         결과 차수를 정하려고 A.degree를 읽습니다.
+step-9   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] B.degree 읽기 R(B.degree)
+         B.degree도 읽어 비교합니다. 5 > 3이 참이므로 A.degree를 고릅니다.
+step-10  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] 고른 차수 읽기 R(A.degree)
+         고른 쪽의 차수 5를 다시 읽습니다.
+step-11  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] C.degree = 5 W(C.degree:uninitialized→5)
+         C의 최고 차수는 두 차수 중 큰 값 5입니다.
+step-12  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-13  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 5가 참입니다.
+step-14  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-15  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-16  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         1번째 반복입니다. A의 현재 항 차수 degree_a(5)를 읽습니다.
+step-17  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 5 > 3이 참입니다.
+step-18  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 0을 내놓으므로 C.coef[0]에 씁니다.
+step-19  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 0을 내놓으므로 A.coef[0]을 읽습니다.
+step-20  L17 [C.coef[Cpos++]= A.coef[Apos++];] A.coef[0] 읽기 R(A.coef[0])
+         A.coef[0] = 10 (차수 5)
+step-21  L17 [C.coef[Cpos++]= A.coef[Apos++];] C.coef[0] = 10 W(C.coef[0]:uninitialized→10)
+         A의 계수 10을 그대로 C.coef[0]에 복사합니다.
+step-22  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos = 1 W(Cpos:0→1)
+         같은 문장 안의 Cpos++가 Cpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-23  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos = 1 W(Apos:0→1)
+         같은 문장 안의 Apos++가 Apos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-24  L18 [degree_a--;] degree_a 읽기 R(degree_a)
+         degree_a(5)를 읽습니다.
+step-25  L18 [degree_a--;] degree_a = 4 W(degree_a:5→4)
+         degree_a--로 다음 항의 차수 4로 내려갑니다.
+step-26  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(1)을 읽습니다.
+step-27  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         1 <= 5가 참입니다.
+step-28  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-29  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-30  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         2번째 반복입니다. A의 현재 항 차수 degree_a(4)를 읽습니다.
+step-31  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 4 > 3이 참입니다.
+step-32  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 1을 내놓으므로 C.coef[1]에 씁니다.
+step-33  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 1을 내놓으므로 A.coef[1]을 읽습니다.
+step-34  L17 [C.coef[Cpos++]= A.coef[Apos++];] A.coef[1] 읽기 R(A.coef[1])
+         A.coef[1] = 0 (차수 4)
+step-35  L17 [C.coef[Cpos++]= A.coef[Apos++];] C.coef[1] = 0 W(C.coef[1]:uninitialized→0)
+         A의 계수 0을 그대로 C.coef[1]에 복사합니다.
+step-36  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos = 2 W(Cpos:1→2)
+         같은 문장 안의 Cpos++가 Cpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-37  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos = 2 W(Apos:1→2)
+         같은 문장 안의 Apos++가 Apos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-38  L18 [degree_a--;] degree_a 읽기 R(degree_a)
+         degree_a(4)를 읽습니다.
+step-39  L18 [degree_a--;] degree_a = 3 W(degree_a:4→3)
+         degree_a--로 다음 항의 차수 3으로 내려갑니다.
+step-40  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(2)를 읽습니다.
+step-41  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         2 <= 5가 참입니다.
+step-42  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-43  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-44  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         3번째 반복입니다. A의 현재 항 차수 degree_a(3)을 읽습니다.
+step-45  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 3 > 3이 거짓입니다.
+step-46  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-47  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         3 == 3이 참입니다. 같은 차수끼리 더합니다.
+step-48  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 2를 내놓으므로 C.coef[2]에 씁니다.
+step-49  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 2를 내놓으므로 A.coef[2]를 읽습니다.
+step-50  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[2] 읽기 R(A.coef[2])
+         A.coef[2] = 0 (차수 3)
+step-51  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 0을 내놓으므로 B.coef[0]을 읽습니다.
+step-52  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[0] 읽기 R(B.coef[0])
+         B.coef[0] = 10 (차수 3)
+step-53  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[2] = 10 W(C.coef[2]:uninitialized→10)
+         0 + 10 = 10을 C.coef[2]에 씁니다.
+step-54  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 3 W(Cpos:2→3)
+         같은 문장 안의 Cpos++가 Cpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-55  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 3 W(Apos:2→3)
+         같은 문장 안의 Apos++가 Apos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-56  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 1 W(Bpos:0→1)
+         같은 문장 안의 Bpos++가 Bpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-57  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(3)을 읽습니다.
+step-58  L22 [degree_a--; degree_b--;] degree_a = 2 W(degree_a:3→2)
+         degree_a--로 다음 항의 차수 2로 내려갑니다.
+step-59  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(3)을 읽습니다.
+step-60  L22 [degree_a--; degree_b--;] degree_b = 2 W(degree_b:3→2)
+         degree_b--로 다음 항의 차수 2로 내려갑니다.
+step-61  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(3)을 읽습니다.
+step-62  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         3 <= 5가 참입니다.
+step-63  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(1)을 읽습니다.
+step-64  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         1 <= 3이 참입니다.
+step-65  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         4번째 반복입니다. A의 현재 항 차수 degree_a(2)를 읽습니다.
+step-66  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(2)를 읽습니다. 2 > 2가 거짓입니다.
+step-67  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-68  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         2 == 2가 참입니다. 같은 차수끼리 더합니다.
+step-69  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 3을 내놓으므로 C.coef[3]에 씁니다.
+step-70  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 3을 내놓으므로 A.coef[3]을 읽습니다.
+step-71  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[3] 읽기 R(A.coef[3])
+         A.coef[3] = 0 (차수 2)
+step-72  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 1을 내놓으므로 B.coef[1]을 읽습니다.
+step-73  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[1] 읽기 R(B.coef[1])
+         B.coef[1] = 3 (차수 2)
+step-74  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[3] = 3 W(C.coef[3]:uninitialized→3)
+         0 + 3 = 3을 C.coef[3]에 씁니다.
+step-75  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 4 W(Cpos:3→4)
+         같은 문장 안의 Cpos++가 Cpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-76  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 4 W(Apos:3→4)
+         같은 문장 안의 Apos++가 Apos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-77  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 2 W(Bpos:1→2)
+         같은 문장 안의 Bpos++가 Bpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-78  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(2)를 읽습니다.
+step-79  L22 [degree_a--; degree_b--;] degree_a = 1 W(degree_a:2→1)
+         degree_a--로 다음 항의 차수 1로 내려갑니다.
+step-80  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(2)를 읽습니다.
+step-81  L22 [degree_a--; degree_b--;] degree_b = 1 W(degree_b:2→1)
+         degree_b--로 다음 항의 차수 1로 내려갑니다.
+step-82  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(4)를 읽습니다.
+step-83  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         4 <= 5가 참입니다.
+step-84  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(2)를 읽습니다.
+step-85  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         2 <= 3이 참입니다.
+step-86  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         5번째 반복입니다. A의 현재 항 차수 degree_a(1)을 읽습니다.
+step-87  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(1)을 읽습니다. 1 > 1이 거짓입니다.
+step-88  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-89  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         1 == 1이 참입니다. 같은 차수끼리 더합니다.
+step-90  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 4를 내놓으므로 C.coef[4]에 씁니다.
+step-91  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 4를 내놓으므로 A.coef[4]를 읽습니다.
+step-92  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[4] 읽기 R(A.coef[4])
+         A.coef[4] = 6 (차수 1)
+step-93  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 2를 내놓으므로 B.coef[2]를 읽습니다.
+step-94  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[2] 읽기 R(B.coef[2])
+         B.coef[2] = 0 (차수 1)
+step-95  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[4] = 6 W(C.coef[4]:uninitialized→6)
+         6 + 0 = 6을 C.coef[4]에 씁니다.
+step-96  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 5 W(Cpos:4→5)
+         같은 문장 안의 Cpos++가 Cpos를 5로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 4입니다.
+step-97  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 5 W(Apos:4→5)
+         같은 문장 안의 Apos++가 Apos를 5로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 4입니다.
+step-98  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 3 W(Bpos:2→3)
+         같은 문장 안의 Bpos++가 Bpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-99  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(1)을 읽습니다.
+step-100 L22 [degree_a--; degree_b--;] degree_a = 0 W(degree_a:1→0)
+         degree_a--로 다음 항의 차수 0으로 내려갑니다.
+step-101 L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(1)을 읽습니다.
+step-102 L22 [degree_a--; degree_b--;] degree_b = 0 W(degree_b:1→0)
+         degree_b--로 다음 항의 차수 0으로 내려갑니다.
+step-103 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(5)를 읽습니다.
+step-104 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         5 <= 5가 참입니다.
+step-105 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(3)을 읽습니다.
+step-106 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         3 <= 3이 참입니다.
+step-107 L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         6번째 반복입니다. A의 현재 항 차수 degree_a(0)을 읽습니다.
+step-108 L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(0)을 읽습니다. 0 > 0이 거짓입니다.
+step-109 L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-110 L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         0 == 0이 참입니다. 같은 차수끼리 더합니다.
+step-111 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 5를 내놓으므로 C.coef[5]에 씁니다.
+step-112 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 5를 내놓으므로 A.coef[5]를 읽습니다.
+step-113 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[5] 읽기 R(A.coef[5])
+         A.coef[5] = 3 (차수 0)
+step-114 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 3을 내놓으므로 B.coef[3]을 읽습니다.
+step-115 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[3] 읽기 R(B.coef[3])
+         B.coef[3] = 1 (차수 0)
+step-116 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[5] = 4 W(C.coef[5]:uninitialized→4)
+         3 + 1 = 4를 C.coef[5]에 씁니다.
+step-117 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 6 W(Cpos:5→6)
+         같은 문장 안의 Cpos++가 Cpos를 6으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 5입니다.
+step-118 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 6 W(Apos:5→6)
+         같은 문장 안의 Apos++가 Apos를 6으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 5입니다.
+step-119 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 4 W(Bpos:3→4)
+         같은 문장 안의 Bpos++가 Bpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-120 L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(0)을 읽습니다.
+step-121 L22 [degree_a--; degree_b--;] degree_a = -1 W(degree_a:0→-1)
+         degree_a--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-122 L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(0)을 읽습니다.
+step-123 L22 [degree_a--; degree_b--;] degree_b = -1 W(degree_b:0→-1)
+         degree_b--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-124 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(6)을 읽습니다.
+step-125 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         6 <= 5가 거짓입니다. A의 계수를 모두 썼습니다.
+step-126 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] while 종료
+         &&의 왼쪽이 거짓이므로 오른쪽 Bpos<=B.degree는 계산하지 않고 while을 빠져나옵니다.
+step-127 L30 [while( Apos<=A.degree )] Apos 읽기 R(Apos)
+         후처리: A에 남은 항이 있는지 Apos(6)을 읽습니다.
+step-128 L30 [while( Apos<=A.degree )] A.degree 읽기 R(A.degree)
+         6 <= 5가 거짓입니다. A에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-129 L32 [while( Bpos<=B.degree )] Bpos 읽기 R(Bpos)
+         후처리: B에 남은 항이 있는지 Bpos(4)를 읽습니다.
+step-130 L32 [while( Bpos<=B.degree )] B.degree 읽기 R(B.degree)
+         4 <= 3이 거짓입니다. B에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-131 L34 [return 0;] 결과 확인
+         C = { 5, {10, 0, 10, 3, 6, 4} } → 10x⁵+10x³+3x²+6x+4. 반복 6번, Apos=6, Bpos=4, Cpos=6.
+
+=== note {"case":"note","k":1} (132 snapshots)
+initial  L12 [int Apos=0, Bpos=0, Cpos=0;] 호출 전 · 초기 상태
+         9–11줄까지 실행해 A, B를 초기화하고 C를 선언한 상태입니다. 초기값 목록이 짧으면 나머지 coef 칸은 0으로 채워집니다. C는 아직 아무 값도 없습니다.
+step-1   L12 [int Apos=0, Bpos=0, Cpos=0;] Apos = 0 W(Apos:uninitialized→0)
+         A에서 다음에 읽을 계수의 인덱스 Apos를 0으로 시작합니다.
+step-2   L12 [int Apos=0, Bpos=0, Cpos=0;] Bpos = 0 W(Bpos:uninitialized→0)
+         B에서 다음에 읽을 계수의 인덱스 Bpos를 0으로 시작합니다.
+step-3   L12 [int Apos=0, Bpos=0, Cpos=0;] Cpos = 0 W(Cpos:uninitialized→0)
+         C에 다음으로 쓸 인덱스 Cpos를 0으로 시작합니다.
+step-4   L13 [int degree_a=A.degree, degree_b=B.degree;] A.degree 읽기 R(A.degree)
+         A의 최고 차수 5를 읽습니다.
+step-5   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_a = 5 W(degree_a:uninitialized→5)
+         A.degree를 degree_a에 복사합니다. degree_a는 지금 Apos 자리 계수의 차수입니다.
+step-6   L13 [int degree_a=A.degree, degree_b=B.degree;] B.degree 읽기 R(B.degree)
+         B의 최고 차수 3을 읽습니다.
+step-7   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_b = 3 W(degree_b:uninitialized→3)
+         B.degree를 degree_b에 복사합니다. 복사본만 줄여 가므로 A.degree, B.degree는 그대로 남습니다.
+step-8   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] A.degree 읽기 R(A.degree)
+         결과 차수를 정하려고 A.degree를 읽습니다.
+step-9   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] B.degree 읽기 R(B.degree)
+         B.degree도 읽어 비교합니다. 5 > 3이 참이므로 A.degree를 고릅니다.
+step-10  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] 고른 차수 읽기 R(A.degree)
+         고른 쪽의 차수 5를 다시 읽습니다.
+step-11  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] C.degree = 5 W(C.degree:uninitialized→5)
+         C의 최고 차수는 두 차수 중 큰 값 5입니다.
+step-12  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-13  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 5가 참입니다.
+step-14  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-15  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-16  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         1번째 반복입니다. A의 현재 항 차수 degree_a(5)를 읽습니다.
+step-17  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 5 > 3이 참입니다.
+step-18  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 0을 내놓으므로 C.coef[0]에 씁니다.
+step-19  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 0을 내놓으므로 A.coef[0]을 읽습니다.
+step-20  L17 [C.coef[Cpos++]= A.coef[Apos++];] A.coef[0] 읽기 R(A.coef[0])
+         A.coef[0] = 10 (차수 5)
+step-21  L17 [C.coef[Cpos++]= A.coef[Apos++];] C.coef[0] = 10 W(C.coef[0]:uninitialized→10)
+         A의 계수 10을 그대로 C.coef[0]에 복사합니다.
+step-22  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos = 1 W(Cpos:0→1)
+         같은 문장 안의 Cpos++가 Cpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-23  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos = 1 W(Apos:0→1)
+         같은 문장 안의 Apos++가 Apos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-24  L18 [degree_a--;] degree_a 읽기 R(degree_a)
+         degree_a(5)를 읽습니다.
+step-25  L18 [degree_a--;] degree_a = 4 W(degree_a:5→4)
+         degree_a--로 다음 항의 차수 4로 내려갑니다.
+step-26  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(1)을 읽습니다.
+step-27  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         1 <= 5가 참입니다.
+step-28  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-29  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-30  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         2번째 반복입니다. A의 현재 항 차수 degree_a(4)를 읽습니다.
+step-31  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 4 > 3이 참입니다.
+step-32  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 1을 내놓으므로 C.coef[1]에 씁니다.
+step-33  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 1을 내놓으므로 A.coef[1]을 읽습니다.
+step-34  L17 [C.coef[Cpos++]= A.coef[Apos++];] A.coef[1] 읽기 R(A.coef[1])
+         A.coef[1] = 0 (차수 4)
+step-35  L17 [C.coef[Cpos++]= A.coef[Apos++];] C.coef[1] = 0 W(C.coef[1]:uninitialized→0)
+         A의 계수 0을 그대로 C.coef[1]에 복사합니다.
+step-36  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos = 2 W(Cpos:1→2)
+         같은 문장 안의 Cpos++가 Cpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-37  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos = 2 W(Apos:1→2)
+         같은 문장 안의 Apos++가 Apos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-38  L18 [degree_a--;] degree_a 읽기 R(degree_a)
+         degree_a(4)를 읽습니다.
+step-39  L18 [degree_a--;] degree_a = 3 W(degree_a:4→3)
+         degree_a--로 다음 항의 차수 3으로 내려갑니다.
+step-40  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(2)를 읽습니다.
+step-41  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         2 <= 5가 참입니다.
+step-42  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-43  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-44  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         3번째 반복입니다. A의 현재 항 차수 degree_a(3)을 읽습니다.
+step-45  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 3 > 3이 거짓입니다.
+step-46  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-47  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         3 == 3이 참입니다. 같은 차수끼리 더합니다.
+step-48  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 2를 내놓으므로 C.coef[2]에 씁니다.
+step-49  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 2를 내놓으므로 A.coef[2]를 읽습니다.
+step-50  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[2] 읽기 R(A.coef[2])
+         A.coef[2] = 0 (차수 3)
+step-51  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 0을 내놓으므로 B.coef[0]을 읽습니다.
+step-52  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[0] 읽기 R(B.coef[0])
+         B.coef[0] = 10 (차수 3)
+step-53  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[2] = 10 W(C.coef[2]:uninitialized→10)
+         0 + 10 = 10을 C.coef[2]에 씁니다.
+step-54  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 3 W(Cpos:2→3)
+         같은 문장 안의 Cpos++가 Cpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-55  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 3 W(Apos:2→3)
+         같은 문장 안의 Apos++가 Apos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-56  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 1 W(Bpos:0→1)
+         같은 문장 안의 Bpos++가 Bpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-57  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(3)을 읽습니다.
+step-58  L22 [degree_a--; degree_b--;] degree_a = 2 W(degree_a:3→2)
+         degree_a--로 다음 항의 차수 2로 내려갑니다.
+step-59  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(3)을 읽습니다.
+step-60  L22 [degree_a--; degree_b--;] degree_b = 2 W(degree_b:3→2)
+         degree_b--로 다음 항의 차수 2로 내려갑니다.
+step-61  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(3)을 읽습니다.
+step-62  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         3 <= 5가 참입니다.
+step-63  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(1)을 읽습니다.
+step-64  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         1 <= 3이 참입니다.
+step-65  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         4번째 반복입니다. A의 현재 항 차수 degree_a(2)를 읽습니다.
+step-66  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(2)를 읽습니다. 2 > 2가 거짓입니다.
+step-67  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-68  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         2 == 2가 참입니다. 같은 차수끼리 더합니다.
+step-69  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 3을 내놓으므로 C.coef[3]에 씁니다.
+step-70  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 3을 내놓으므로 A.coef[3]을 읽습니다.
+step-71  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[3] 읽기 R(A.coef[3])
+         A.coef[3] = 0 (차수 2)
+step-72  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 1을 내놓으므로 B.coef[1]을 읽습니다.
+step-73  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[1] 읽기 R(B.coef[1])
+         B.coef[1] = 3 (차수 2)
+step-74  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[3] = 3 W(C.coef[3]:uninitialized→3)
+         0 + 3 = 3을 C.coef[3]에 씁니다.
+step-75  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 4 W(Cpos:3→4)
+         같은 문장 안의 Cpos++가 Cpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-76  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 4 W(Apos:3→4)
+         같은 문장 안의 Apos++가 Apos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-77  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 2 W(Bpos:1→2)
+         같은 문장 안의 Bpos++가 Bpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-78  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(2)를 읽습니다.
+step-79  L22 [degree_a--; degree_b--;] degree_a = 1 W(degree_a:2→1)
+         degree_a--로 다음 항의 차수 1로 내려갑니다.
+step-80  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(2)를 읽습니다.
+step-81  L22 [degree_a--; degree_b--;] degree_b = 1 W(degree_b:2→1)
+         degree_b--로 다음 항의 차수 1로 내려갑니다.
+step-82  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(4)를 읽습니다.
+step-83  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         4 <= 5가 참입니다.
+step-84  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(2)를 읽습니다.
+step-85  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         2 <= 3이 참입니다.
+step-86  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         5번째 반복입니다. A의 현재 항 차수 degree_a(1)을 읽습니다.
+step-87  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(1)을 읽습니다. 1 > 1이 거짓입니다.
+step-88  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-89  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         1 == 1이 참입니다. 같은 차수끼리 더합니다.
+step-90  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 4를 내놓으므로 C.coef[4]에 씁니다.
+step-91  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 4를 내놓으므로 A.coef[4]를 읽습니다.
+step-92  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[4] 읽기 R(A.coef[4])
+         A.coef[4] = 6 (차수 1)
+step-93  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 2를 내놓으므로 B.coef[2]를 읽습니다.
+step-94  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[2] 읽기 R(B.coef[2])
+         B.coef[2] = 0 (차수 1)
+step-95  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[4] = 6 W(C.coef[4]:uninitialized→6)
+         6 + 0 = 6을 C.coef[4]에 씁니다.
+step-96  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 5 W(Cpos:4→5)
+         같은 문장 안의 Cpos++가 Cpos를 5로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 4입니다.
+step-97  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 5 W(Apos:4→5)
+         같은 문장 안의 Apos++가 Apos를 5로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 4입니다.
+step-98  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 3 W(Bpos:2→3)
+         같은 문장 안의 Bpos++가 Bpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-99  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(1)을 읽습니다.
+step-100 L22 [degree_a--; degree_b--;] degree_a = 0 W(degree_a:1→0)
+         degree_a--로 다음 항의 차수 0으로 내려갑니다.
+step-101 L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(1)을 읽습니다.
+step-102 L22 [degree_a--; degree_b--;] degree_b = 0 W(degree_b:1→0)
+         degree_b--로 다음 항의 차수 0으로 내려갑니다.
+step-103 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(5)를 읽습니다.
+step-104 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         5 <= 5가 참입니다.
+step-105 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(3)을 읽습니다.
+step-106 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         3 <= 3이 참입니다.
+step-107 L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         6번째 반복입니다. A의 현재 항 차수 degree_a(0)을 읽습니다.
+step-108 L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(0)을 읽습니다. 0 > 0이 거짓입니다.
+step-109 L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-110 L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         0 == 0이 참입니다. 같은 차수끼리 더합니다.
+step-111 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 5를 내놓으므로 C.coef[5]에 씁니다.
+step-112 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 5를 내놓으므로 A.coef[5]를 읽습니다.
+step-113 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[5] 읽기 R(A.coef[5])
+         A.coef[5] = 3 (차수 0)
+step-114 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 3을 내놓으므로 B.coef[3]을 읽습니다.
+step-115 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[3] 읽기 R(B.coef[3])
+         B.coef[3] = 1 (차수 0)
+step-116 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[5] = 4 W(C.coef[5]:uninitialized→4)
+         3 + 1 = 4를 C.coef[5]에 씁니다.
+step-117 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 6 W(Cpos:5→6)
+         같은 문장 안의 Cpos++가 Cpos를 6으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 5입니다.
+step-118 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 6 W(Apos:5→6)
+         같은 문장 안의 Apos++가 Apos를 6으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 5입니다.
+step-119 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 4 W(Bpos:3→4)
+         같은 문장 안의 Bpos++가 Bpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-120 L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(0)을 읽습니다.
+step-121 L22 [degree_a--; degree_b--;] degree_a = -1 W(degree_a:0→-1)
+         degree_a--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-122 L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(0)을 읽습니다.
+step-123 L22 [degree_a--; degree_b--;] degree_b = -1 W(degree_b:0→-1)
+         degree_b--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-124 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(6)을 읽습니다.
+step-125 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         6 <= 5가 거짓입니다. A의 계수를 모두 썼습니다.
+step-126 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] while 종료
+         &&의 왼쪽이 거짓이므로 오른쪽 Bpos<=B.degree는 계산하지 않고 while을 빠져나옵니다.
+step-127 L30 [while( Apos<=A.degree )] Apos 읽기 R(Apos)
+         후처리: A에 남은 항이 있는지 Apos(6)을 읽습니다.
+step-128 L30 [while( Apos<=A.degree )] A.degree 읽기 R(A.degree)
+         6 <= 5가 거짓입니다. A에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-129 L32 [while( Bpos<=B.degree )] Bpos 읽기 R(Bpos)
+         후처리: B에 남은 항이 있는지 Bpos(4)를 읽습니다.
+step-130 L32 [while( Bpos<=B.degree )] B.degree 읽기 R(B.degree)
+         4 <= 3이 거짓입니다. B에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-131 L34 [return 0;] 결과 확인
+         C = { 5, {10, 0, 10, 3, 6, 4} } → 10x⁵+10x³+3x²+6x+4. 반복 6번, Apos=6, Bpos=4, Cpos=6.
+
+=== same {"case":"same","k":1} (104 snapshots)
+initial  L12 [int Apos=0, Bpos=0, Cpos=0;] 호출 전 · 초기 상태
+         9–11줄까지 실행해 A, B를 초기화하고 C를 선언한 상태입니다. 초기값 목록이 짧으면 나머지 coef 칸은 0으로 채워집니다. C는 아직 아무 값도 없습니다.
+step-1   L12 [int Apos=0, Bpos=0, Cpos=0;] Apos = 0 W(Apos:uninitialized→0)
+         A에서 다음에 읽을 계수의 인덱스 Apos를 0으로 시작합니다.
+step-2   L12 [int Apos=0, Bpos=0, Cpos=0;] Bpos = 0 W(Bpos:uninitialized→0)
+         B에서 다음에 읽을 계수의 인덱스 Bpos를 0으로 시작합니다.
+step-3   L12 [int Apos=0, Bpos=0, Cpos=0;] Cpos = 0 W(Cpos:uninitialized→0)
+         C에 다음으로 쓸 인덱스 Cpos를 0으로 시작합니다.
+step-4   L13 [int degree_a=A.degree, degree_b=B.degree;] A.degree 읽기 R(A.degree)
+         A의 최고 차수 3을 읽습니다.
+step-5   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_a = 3 W(degree_a:uninitialized→3)
+         A.degree를 degree_a에 복사합니다. degree_a는 지금 Apos 자리 계수의 차수입니다.
+step-6   L13 [int degree_a=A.degree, degree_b=B.degree;] B.degree 읽기 R(B.degree)
+         B의 최고 차수 3을 읽습니다.
+step-7   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_b = 3 W(degree_b:uninitialized→3)
+         B.degree를 degree_b에 복사합니다. 복사본만 줄여 가므로 A.degree, B.degree는 그대로 남습니다.
+step-8   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] A.degree 읽기 R(A.degree)
+         결과 차수를 정하려고 A.degree를 읽습니다.
+step-9   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] B.degree 읽기 R(B.degree)
+         B.degree도 읽어 비교합니다. 3 > 3이 거짓이므로 B.degree를 고릅니다.
+step-10  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] 고른 차수 읽기 R(B.degree)
+         고른 쪽의 차수 3을 다시 읽습니다.
+step-11  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] C.degree = 3 W(C.degree:uninitialized→3)
+         C의 최고 차수는 두 차수 중 큰 값 3입니다.
+step-12  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-13  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 3이 참입니다.
+step-14  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-15  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-16  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         1번째 반복입니다. A의 현재 항 차수 degree_a(3)을 읽습니다.
+step-17  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 3 > 3이 거짓입니다.
+step-18  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-19  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         3 == 3이 참입니다. 같은 차수끼리 더합니다.
+step-20  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 0을 내놓으므로 C.coef[0]에 씁니다.
+step-21  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 0을 내놓으므로 A.coef[0]을 읽습니다.
+step-22  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[0] 읽기 R(A.coef[0])
+         A.coef[0] = 8 (차수 3)
+step-23  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 0을 내놓으므로 B.coef[0]을 읽습니다.
+step-24  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[0] 읽기 R(B.coef[0])
+         B.coef[0] = 10 (차수 3)
+step-25  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[0] = 18 W(C.coef[0]:uninitialized→18)
+         8 + 10 = 18을 C.coef[0]에 씁니다.
+step-26  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 1 W(Cpos:0→1)
+         같은 문장 안의 Cpos++가 Cpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-27  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 1 W(Apos:0→1)
+         같은 문장 안의 Apos++가 Apos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-28  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 1 W(Bpos:0→1)
+         같은 문장 안의 Bpos++가 Bpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-29  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(3)을 읽습니다.
+step-30  L22 [degree_a--; degree_b--;] degree_a = 2 W(degree_a:3→2)
+         degree_a--로 다음 항의 차수 2로 내려갑니다.
+step-31  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(3)을 읽습니다.
+step-32  L22 [degree_a--; degree_b--;] degree_b = 2 W(degree_b:3→2)
+         degree_b--로 다음 항의 차수 2로 내려갑니다.
+step-33  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(1)을 읽습니다.
+step-34  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         1 <= 3이 참입니다.
+step-35  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(1)을 읽습니다.
+step-36  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         1 <= 3이 참입니다.
+step-37  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         2번째 반복입니다. A의 현재 항 차수 degree_a(2)를 읽습니다.
+step-38  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(2)를 읽습니다. 2 > 2가 거짓입니다.
+step-39  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-40  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         2 == 2가 참입니다. 같은 차수끼리 더합니다.
+step-41  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 1을 내놓으므로 C.coef[1]에 씁니다.
+step-42  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 1을 내놓으므로 A.coef[1]을 읽습니다.
+step-43  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[1] 읽기 R(A.coef[1])
+         A.coef[1] = 0 (차수 2)
+step-44  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 1을 내놓으므로 B.coef[1]을 읽습니다.
+step-45  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[1] 읽기 R(B.coef[1])
+         B.coef[1] = 3 (차수 2)
+step-46  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[1] = 3 W(C.coef[1]:uninitialized→3)
+         0 + 3 = 3을 C.coef[1]에 씁니다.
+step-47  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 2 W(Cpos:1→2)
+         같은 문장 안의 Cpos++가 Cpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-48  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 2 W(Apos:1→2)
+         같은 문장 안의 Apos++가 Apos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-49  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 2 W(Bpos:1→2)
+         같은 문장 안의 Bpos++가 Bpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-50  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(2)를 읽습니다.
+step-51  L22 [degree_a--; degree_b--;] degree_a = 1 W(degree_a:2→1)
+         degree_a--로 다음 항의 차수 1로 내려갑니다.
+step-52  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(2)를 읽습니다.
+step-53  L22 [degree_a--; degree_b--;] degree_b = 1 W(degree_b:2→1)
+         degree_b--로 다음 항의 차수 1로 내려갑니다.
+step-54  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(2)를 읽습니다.
+step-55  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         2 <= 3이 참입니다.
+step-56  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(2)를 읽습니다.
+step-57  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         2 <= 3이 참입니다.
+step-58  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         3번째 반복입니다. A의 현재 항 차수 degree_a(1)을 읽습니다.
+step-59  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(1)을 읽습니다. 1 > 1이 거짓입니다.
+step-60  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-61  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         1 == 1이 참입니다. 같은 차수끼리 더합니다.
+step-62  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 2를 내놓으므로 C.coef[2]에 씁니다.
+step-63  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 2를 내놓으므로 A.coef[2]를 읽습니다.
+step-64  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[2] 읽기 R(A.coef[2])
+         A.coef[2] = 7 (차수 1)
+step-65  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 2를 내놓으므로 B.coef[2]를 읽습니다.
+step-66  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[2] 읽기 R(B.coef[2])
+         B.coef[2] = 0 (차수 1)
+step-67  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[2] = 7 W(C.coef[2]:uninitialized→7)
+         7 + 0 = 7을 C.coef[2]에 씁니다.
+step-68  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 3 W(Cpos:2→3)
+         같은 문장 안의 Cpos++가 Cpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-69  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 3 W(Apos:2→3)
+         같은 문장 안의 Apos++가 Apos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-70  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 3 W(Bpos:2→3)
+         같은 문장 안의 Bpos++가 Bpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-71  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(1)을 읽습니다.
+step-72  L22 [degree_a--; degree_b--;] degree_a = 0 W(degree_a:1→0)
+         degree_a--로 다음 항의 차수 0으로 내려갑니다.
+step-73  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(1)을 읽습니다.
+step-74  L22 [degree_a--; degree_b--;] degree_b = 0 W(degree_b:1→0)
+         degree_b--로 다음 항의 차수 0으로 내려갑니다.
+step-75  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(3)을 읽습니다.
+step-76  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         3 <= 3이 참입니다.
+step-77  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(3)을 읽습니다.
+step-78  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         3 <= 3이 참입니다.
+step-79  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         4번째 반복입니다. A의 현재 항 차수 degree_a(0)을 읽습니다.
+step-80  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(0)을 읽습니다. 0 > 0이 거짓입니다.
+step-81  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-82  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         0 == 0이 참입니다. 같은 차수끼리 더합니다.
+step-83  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 3을 내놓으므로 C.coef[3]에 씁니다.
+step-84  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 3을 내놓으므로 A.coef[3]을 읽습니다.
+step-85  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[3] 읽기 R(A.coef[3])
+         A.coef[3] = 1 (차수 0)
+step-86  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 3을 내놓으므로 B.coef[3]을 읽습니다.
+step-87  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[3] 읽기 R(B.coef[3])
+         B.coef[3] = 1 (차수 0)
+step-88  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[3] = 2 W(C.coef[3]:uninitialized→2)
+         1 + 1 = 2를 C.coef[3]에 씁니다.
+step-89  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 4 W(Cpos:3→4)
+         같은 문장 안의 Cpos++가 Cpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-90  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 4 W(Apos:3→4)
+         같은 문장 안의 Apos++가 Apos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-91  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 4 W(Bpos:3→4)
+         같은 문장 안의 Bpos++가 Bpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-92  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(0)을 읽습니다.
+step-93  L22 [degree_a--; degree_b--;] degree_a = -1 W(degree_a:0→-1)
+         degree_a--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-94  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(0)을 읽습니다.
+step-95  L22 [degree_a--; degree_b--;] degree_b = -1 W(degree_b:0→-1)
+         degree_b--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-96  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(4)를 읽습니다.
+step-97  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         4 <= 3이 거짓입니다. A의 계수를 모두 썼습니다.
+step-98  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] while 종료
+         &&의 왼쪽이 거짓이므로 오른쪽 Bpos<=B.degree는 계산하지 않고 while을 빠져나옵니다.
+step-99  L30 [while( Apos<=A.degree )] Apos 읽기 R(Apos)
+         후처리: A에 남은 항이 있는지 Apos(4)를 읽습니다.
+step-100 L30 [while( Apos<=A.degree )] A.degree 읽기 R(A.degree)
+         4 <= 3이 거짓입니다. A에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-101 L32 [while( Bpos<=B.degree )] Bpos 읽기 R(Bpos)
+         후처리: B에 남은 항이 있는지 Bpos(4)를 읽습니다.
+step-102 L32 [while( Bpos<=B.degree )] B.degree 읽기 R(B.degree)
+         4 <= 3이 거짓입니다. B에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-103 L34 [return 0;] 결과 확인
+         C = { 3, {18, 3, 7, 2} } → 18x³+3x²+7x+2. 반복 4번, Apos=4, Bpos=4, Cpos=4.
+
+=== bigb {"case":"bigb","k":1} (94 snapshots)
+initial  L12 [int Apos=0, Bpos=0, Cpos=0;] 호출 전 · 초기 상태
+         9–11줄까지 실행해 A, B를 초기화하고 C를 선언한 상태입니다. 초기값 목록이 짧으면 나머지 coef 칸은 0으로 채워집니다. C는 아직 아무 값도 없습니다.
+step-1   L12 [int Apos=0, Bpos=0, Cpos=0;] Apos = 0 W(Apos:uninitialized→0)
+         A에서 다음에 읽을 계수의 인덱스 Apos를 0으로 시작합니다.
+step-2   L12 [int Apos=0, Bpos=0, Cpos=0;] Bpos = 0 W(Bpos:uninitialized→0)
+         B에서 다음에 읽을 계수의 인덱스 Bpos를 0으로 시작합니다.
+step-3   L12 [int Apos=0, Bpos=0, Cpos=0;] Cpos = 0 W(Cpos:uninitialized→0)
+         C에 다음으로 쓸 인덱스 Cpos를 0으로 시작합니다.
+step-4   L13 [int degree_a=A.degree, degree_b=B.degree;] A.degree 읽기 R(A.degree)
+         A의 최고 차수 1을 읽습니다.
+step-5   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_a = 1 W(degree_a:uninitialized→1)
+         A.degree를 degree_a에 복사합니다. degree_a는 지금 Apos 자리 계수의 차수입니다.
+step-6   L13 [int degree_a=A.degree, degree_b=B.degree;] B.degree 읽기 R(B.degree)
+         B의 최고 차수 3을 읽습니다.
+step-7   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_b = 3 W(degree_b:uninitialized→3)
+         B.degree를 degree_b에 복사합니다. 복사본만 줄여 가므로 A.degree, B.degree는 그대로 남습니다.
+step-8   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] A.degree 읽기 R(A.degree)
+         결과 차수를 정하려고 A.degree를 읽습니다.
+step-9   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] B.degree 읽기 R(B.degree)
+         B.degree도 읽어 비교합니다. 1 > 3이 거짓이므로 B.degree를 고릅니다.
+step-10  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] 고른 차수 읽기 R(B.degree)
+         고른 쪽의 차수 3을 다시 읽습니다.
+step-11  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] C.degree = 3 W(C.degree:uninitialized→3)
+         C의 최고 차수는 두 차수 중 큰 값 3입니다.
+step-12  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-13  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 1이 참입니다.
+step-14  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-15  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-16  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         1번째 반복입니다. A의 현재 항 차수 degree_a(1)을 읽습니다.
+step-17  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 1 > 3이 거짓입니다.
+step-18  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-19  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         1 == 3이 거짓입니다. else로 가서 B의 항을 옮깁니다.
+step-20  L25 [C.coef[Cpos++]= B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 0을 내놓으므로 C.coef[0]에 씁니다.
+step-21  L25 [C.coef[Cpos++]= B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++는 증가 전 값 0을 내놓으므로 B.coef[0]을 읽습니다.
+step-22  L25 [C.coef[Cpos++]= B.coef[Bpos++];] B.coef[0] 읽기 R(B.coef[0])
+         B.coef[0] = 10 (차수 3)
+step-23  L25 [C.coef[Cpos++]= B.coef[Bpos++];] C.coef[0] = 10 W(C.coef[0]:uninitialized→10)
+         B의 계수 10을 그대로 C.coef[0]에 복사합니다.
+step-24  L25 [C.coef[Cpos++]= B.coef[Bpos++];] Cpos = 1 W(Cpos:0→1)
+         같은 문장 안의 Cpos++가 Cpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-25  L25 [C.coef[Cpos++]= B.coef[Bpos++];] Bpos = 1 W(Bpos:0→1)
+         같은 문장 안의 Bpos++가 Bpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-26  L26 [degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(3)을 읽습니다.
+step-27  L26 [degree_b--;] degree_b = 2 W(degree_b:3→2)
+         degree_b--로 다음 항의 차수 2로 내려갑니다.
+step-28  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-29  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 1이 참입니다.
+step-30  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(1)을 읽습니다.
+step-31  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         1 <= 3이 참입니다.
+step-32  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         2번째 반복입니다. A의 현재 항 차수 degree_a(1)을 읽습니다.
+step-33  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(2)를 읽습니다. 1 > 2가 거짓입니다.
+step-34  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-35  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         1 == 2가 거짓입니다. else로 가서 B의 항을 옮깁니다.
+step-36  L25 [C.coef[Cpos++]= B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 1을 내놓으므로 C.coef[1]에 씁니다.
+step-37  L25 [C.coef[Cpos++]= B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++는 증가 전 값 1을 내놓으므로 B.coef[1]을 읽습니다.
+step-38  L25 [C.coef[Cpos++]= B.coef[Bpos++];] B.coef[1] 읽기 R(B.coef[1])
+         B.coef[1] = 3 (차수 2)
+step-39  L25 [C.coef[Cpos++]= B.coef[Bpos++];] C.coef[1] = 3 W(C.coef[1]:uninitialized→3)
+         B의 계수 3을 그대로 C.coef[1]에 복사합니다.
+step-40  L25 [C.coef[Cpos++]= B.coef[Bpos++];] Cpos = 2 W(Cpos:1→2)
+         같은 문장 안의 Cpos++가 Cpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-41  L25 [C.coef[Cpos++]= B.coef[Bpos++];] Bpos = 2 W(Bpos:1→2)
+         같은 문장 안의 Bpos++가 Bpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-42  L26 [degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(2)를 읽습니다.
+step-43  L26 [degree_b--;] degree_b = 1 W(degree_b:2→1)
+         degree_b--로 다음 항의 차수 1로 내려갑니다.
+step-44  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-45  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 1이 참입니다.
+step-46  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(2)를 읽습니다.
+step-47  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         2 <= 3이 참입니다.
+step-48  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         3번째 반복입니다. A의 현재 항 차수 degree_a(1)을 읽습니다.
+step-49  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(1)을 읽습니다. 1 > 1이 거짓입니다.
+step-50  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-51  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         1 == 1이 참입니다. 같은 차수끼리 더합니다.
+step-52  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 2를 내놓으므로 C.coef[2]에 씁니다.
+step-53  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 0을 내놓으므로 A.coef[0]을 읽습니다.
+step-54  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[0] 읽기 R(A.coef[0])
+         A.coef[0] = 6 (차수 1)
+step-55  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 2를 내놓으므로 B.coef[2]를 읽습니다.
+step-56  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[2] 읽기 R(B.coef[2])
+         B.coef[2] = 0 (차수 1)
+step-57  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[2] = 6 W(C.coef[2]:uninitialized→6)
+         6 + 0 = 6을 C.coef[2]에 씁니다.
+step-58  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 3 W(Cpos:2→3)
+         같은 문장 안의 Cpos++가 Cpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-59  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 1 W(Apos:0→1)
+         같은 문장 안의 Apos++가 Apos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-60  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 3 W(Bpos:2→3)
+         같은 문장 안의 Bpos++가 Bpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-61  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(1)을 읽습니다.
+step-62  L22 [degree_a--; degree_b--;] degree_a = 0 W(degree_a:1→0)
+         degree_a--로 다음 항의 차수 0으로 내려갑니다.
+step-63  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(1)을 읽습니다.
+step-64  L22 [degree_a--; degree_b--;] degree_b = 0 W(degree_b:1→0)
+         degree_b--로 다음 항의 차수 0으로 내려갑니다.
+step-65  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(1)을 읽습니다.
+step-66  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         1 <= 1이 참입니다.
+step-67  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(3)을 읽습니다.
+step-68  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         3 <= 3이 참입니다.
+step-69  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         4번째 반복입니다. A의 현재 항 차수 degree_a(0)을 읽습니다.
+step-70  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(0)을 읽습니다. 0 > 0이 거짓입니다.
+step-71  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-72  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         0 == 0이 참입니다. 같은 차수끼리 더합니다.
+step-73  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 3을 내놓으므로 C.coef[3]에 씁니다.
+step-74  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 1을 내놓으므로 A.coef[1]을 읽습니다.
+step-75  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[1] 읽기 R(A.coef[1])
+         A.coef[1] = 3 (차수 0)
+step-76  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 3을 내놓으므로 B.coef[3]을 읽습니다.
+step-77  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[3] 읽기 R(B.coef[3])
+         B.coef[3] = 1 (차수 0)
+step-78  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[3] = 4 W(C.coef[3]:uninitialized→4)
+         3 + 1 = 4를 C.coef[3]에 씁니다.
+step-79  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 4 W(Cpos:3→4)
+         같은 문장 안의 Cpos++가 Cpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-80  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 2 W(Apos:1→2)
+         같은 문장 안의 Apos++가 Apos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-81  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 4 W(Bpos:3→4)
+         같은 문장 안의 Bpos++가 Bpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-82  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(0)을 읽습니다.
+step-83  L22 [degree_a--; degree_b--;] degree_a = -1 W(degree_a:0→-1)
+         degree_a--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-84  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(0)을 읽습니다.
+step-85  L22 [degree_a--; degree_b--;] degree_b = -1 W(degree_b:0→-1)
+         degree_b--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-86  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(2)를 읽습니다.
+step-87  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         2 <= 1이 거짓입니다. A의 계수를 모두 썼습니다.
+step-88  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] while 종료
+         &&의 왼쪽이 거짓이므로 오른쪽 Bpos<=B.degree는 계산하지 않고 while을 빠져나옵니다.
+step-89  L30 [while( Apos<=A.degree )] Apos 읽기 R(Apos)
+         후처리: A에 남은 항이 있는지 Apos(2)를 읽습니다.
+step-90  L30 [while( Apos<=A.degree )] A.degree 읽기 R(A.degree)
+         2 <= 1이 거짓입니다. A에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-91  L32 [while( Bpos<=B.degree )] Bpos 읽기 R(Bpos)
+         후처리: B에 남은 항이 있는지 Bpos(4)를 읽습니다.
+step-92  L32 [while( Bpos<=B.degree )] B.degree 읽기 R(B.degree)
+         4 <= 3이 거짓입니다. B에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-93  L34 [return 0;] 결과 확인
+         C = { 3, {10, 3, 6, 4} } → 10x³+3x²+6x+4. 반복 4번, Apos=2, Bpos=4, Cpos=4.
+
+=== cancel {"case":"cancel","k":1} (83 snapshots)
+initial  L12 [int Apos=0, Bpos=0, Cpos=0;] 호출 전 · 초기 상태
+         9–11줄까지 실행해 A, B를 초기화하고 C를 선언한 상태입니다. 초기값 목록이 짧으면 나머지 coef 칸은 0으로 채워집니다. C는 아직 아무 값도 없습니다.
+step-1   L12 [int Apos=0, Bpos=0, Cpos=0;] Apos = 0 W(Apos:uninitialized→0)
+         A에서 다음에 읽을 계수의 인덱스 Apos를 0으로 시작합니다.
+step-2   L12 [int Apos=0, Bpos=0, Cpos=0;] Bpos = 0 W(Bpos:uninitialized→0)
+         B에서 다음에 읽을 계수의 인덱스 Bpos를 0으로 시작합니다.
+step-3   L12 [int Apos=0, Bpos=0, Cpos=0;] Cpos = 0 W(Cpos:uninitialized→0)
+         C에 다음으로 쓸 인덱스 Cpos를 0으로 시작합니다.
+step-4   L13 [int degree_a=A.degree, degree_b=B.degree;] A.degree 읽기 R(A.degree)
+         A의 최고 차수 2를 읽습니다.
+step-5   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_a = 2 W(degree_a:uninitialized→2)
+         A.degree를 degree_a에 복사합니다. degree_a는 지금 Apos 자리 계수의 차수입니다.
+step-6   L13 [int degree_a=A.degree, degree_b=B.degree;] B.degree 읽기 R(B.degree)
+         B의 최고 차수 2를 읽습니다.
+step-7   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_b = 2 W(degree_b:uninitialized→2)
+         B.degree를 degree_b에 복사합니다. 복사본만 줄여 가므로 A.degree, B.degree는 그대로 남습니다.
+step-8   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] A.degree 읽기 R(A.degree)
+         결과 차수를 정하려고 A.degree를 읽습니다.
+step-9   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] B.degree 읽기 R(B.degree)
+         B.degree도 읽어 비교합니다. 2 > 2가 거짓이므로 B.degree를 고릅니다.
+step-10  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] 고른 차수 읽기 R(B.degree)
+         고른 쪽의 차수 2를 다시 읽습니다.
+step-11  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] C.degree = 2 W(C.degree:uninitialized→2)
+         C의 최고 차수는 두 차수 중 큰 값 2입니다.
+step-12  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-13  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 2가 참입니다.
+step-14  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-15  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 2가 참입니다.
+step-16  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         1번째 반복입니다. A의 현재 항 차수 degree_a(2)를 읽습니다.
+step-17  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(2)를 읽습니다. 2 > 2가 거짓입니다.
+step-18  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-19  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         2 == 2가 참입니다. 같은 차수끼리 더합니다.
+step-20  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 0을 내놓으므로 C.coef[0]에 씁니다.
+step-21  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 0을 내놓으므로 A.coef[0]을 읽습니다.
+step-22  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[0] 읽기 R(A.coef[0])
+         A.coef[0] = 3 (차수 2)
+step-23  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 0을 내놓으므로 B.coef[0]을 읽습니다.
+step-24  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[0] 읽기 R(B.coef[0])
+         B.coef[0] = -3 (차수 2)
+step-25  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[0] = 0 W(C.coef[0]:uninitialized→0)
+         3 + (-3) = 0을 C.coef[0]에 씁니다. 합이 0이어도 방법 #1은 자리를 그대로 차지합니다.
+step-26  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 1 W(Cpos:0→1)
+         같은 문장 안의 Cpos++가 Cpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-27  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 1 W(Apos:0→1)
+         같은 문장 안의 Apos++가 Apos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-28  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 1 W(Bpos:0→1)
+         같은 문장 안의 Bpos++가 Bpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-29  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(2)를 읽습니다.
+step-30  L22 [degree_a--; degree_b--;] degree_a = 1 W(degree_a:2→1)
+         degree_a--로 다음 항의 차수 1로 내려갑니다.
+step-31  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(2)를 읽습니다.
+step-32  L22 [degree_a--; degree_b--;] degree_b = 1 W(degree_b:2→1)
+         degree_b--로 다음 항의 차수 1로 내려갑니다.
+step-33  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(1)을 읽습니다.
+step-34  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         1 <= 2가 참입니다.
+step-35  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(1)을 읽습니다.
+step-36  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         1 <= 2가 참입니다.
+step-37  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         2번째 반복입니다. A의 현재 항 차수 degree_a(1)을 읽습니다.
+step-38  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(1)을 읽습니다. 1 > 1이 거짓입니다.
+step-39  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-40  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         1 == 1이 참입니다. 같은 차수끼리 더합니다.
+step-41  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 1을 내놓으므로 C.coef[1]에 씁니다.
+step-42  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 1을 내놓으므로 A.coef[1]을 읽습니다.
+step-43  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[1] 읽기 R(A.coef[1])
+         A.coef[1] = 0 (차수 1)
+step-44  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 1을 내놓으므로 B.coef[1]을 읽습니다.
+step-45  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[1] 읽기 R(B.coef[1])
+         B.coef[1] = 5 (차수 1)
+step-46  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[1] = 5 W(C.coef[1]:uninitialized→5)
+         0 + 5 = 5를 C.coef[1]에 씁니다.
+step-47  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 2 W(Cpos:1→2)
+         같은 문장 안의 Cpos++가 Cpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-48  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 2 W(Apos:1→2)
+         같은 문장 안의 Apos++가 Apos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-49  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 2 W(Bpos:1→2)
+         같은 문장 안의 Bpos++가 Bpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-50  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(1)을 읽습니다.
+step-51  L22 [degree_a--; degree_b--;] degree_a = 0 W(degree_a:1→0)
+         degree_a--로 다음 항의 차수 0으로 내려갑니다.
+step-52  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(1)을 읽습니다.
+step-53  L22 [degree_a--; degree_b--;] degree_b = 0 W(degree_b:1→0)
+         degree_b--로 다음 항의 차수 0으로 내려갑니다.
+step-54  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(2)를 읽습니다.
+step-55  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         2 <= 2가 참입니다.
+step-56  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(2)를 읽습니다.
+step-57  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         2 <= 2가 참입니다.
+step-58  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         3번째 반복입니다. A의 현재 항 차수 degree_a(0)을 읽습니다.
+step-59  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(0)을 읽습니다. 0 > 0이 거짓입니다.
+step-60  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-61  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         0 == 0이 참입니다. 같은 차수끼리 더합니다.
+step-62  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 2를 내놓으므로 C.coef[2]에 씁니다.
+step-63  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 2를 내놓으므로 A.coef[2]를 읽습니다.
+step-64  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[2] 읽기 R(A.coef[2])
+         A.coef[2] = 1 (차수 0)
+step-65  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 2를 내놓으므로 B.coef[2]를 읽습니다.
+step-66  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[2] 읽기 R(B.coef[2])
+         B.coef[2] = 1 (차수 0)
+step-67  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[2] = 2 W(C.coef[2]:uninitialized→2)
+         1 + 1 = 2를 C.coef[2]에 씁니다.
+step-68  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 3 W(Cpos:2→3)
+         같은 문장 안의 Cpos++가 Cpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-69  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 3 W(Apos:2→3)
+         같은 문장 안의 Apos++가 Apos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-70  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 3 W(Bpos:2→3)
+         같은 문장 안의 Bpos++가 Bpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-71  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(0)을 읽습니다.
+step-72  L22 [degree_a--; degree_b--;] degree_a = -1 W(degree_a:0→-1)
+         degree_a--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-73  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(0)을 읽습니다.
+step-74  L22 [degree_a--; degree_b--;] degree_b = -1 W(degree_b:0→-1)
+         degree_b--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-75  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(3)을 읽습니다.
+step-76  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         3 <= 2가 거짓입니다. A의 계수를 모두 썼습니다.
+step-77  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] while 종료
+         &&의 왼쪽이 거짓이므로 오른쪽 Bpos<=B.degree는 계산하지 않고 while을 빠져나옵니다.
+step-78  L30 [while( Apos<=A.degree )] Apos 읽기 R(Apos)
+         후처리: A에 남은 항이 있는지 Apos(3)을 읽습니다.
+step-79  L30 [while( Apos<=A.degree )] A.degree 읽기 R(A.degree)
+         3 <= 2가 거짓입니다. A에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-80  L32 [while( Bpos<=B.degree )] Bpos 읽기 R(Bpos)
+         후처리: B에 남은 항이 있는지 Bpos(3)을 읽습니다.
+step-81  L32 [while( Bpos<=B.degree )] B.degree 읽기 R(B.degree)
+         3 <= 2가 거짓입니다. B에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-82  L34 [return 0;] 결과 확인
+         C = { 2, {0, 5, 2} } → 5x+2. C.degree는 2이지만 최고차 계수가 0입니다. 방법 #1은 0인 계수도 자리를 차지하고, 이 코드는 차수를 줄이지 않습니다. 반복 3번, Apos=3, Bpos=3, Cpos=3.
+
+=== zero-const {"case":"note","k":-3} (132 snapshots)
+initial  L12 [int Apos=0, Bpos=0, Cpos=0;] 호출 전 · 초기 상태
+         9–11줄까지 실행해 A, B를 초기화하고 C를 선언한 상태입니다. 초기값 목록이 짧으면 나머지 coef 칸은 0으로 채워집니다. C는 아직 아무 값도 없습니다.
+step-1   L12 [int Apos=0, Bpos=0, Cpos=0;] Apos = 0 W(Apos:uninitialized→0)
+         A에서 다음에 읽을 계수의 인덱스 Apos를 0으로 시작합니다.
+step-2   L12 [int Apos=0, Bpos=0, Cpos=0;] Bpos = 0 W(Bpos:uninitialized→0)
+         B에서 다음에 읽을 계수의 인덱스 Bpos를 0으로 시작합니다.
+step-3   L12 [int Apos=0, Bpos=0, Cpos=0;] Cpos = 0 W(Cpos:uninitialized→0)
+         C에 다음으로 쓸 인덱스 Cpos를 0으로 시작합니다.
+step-4   L13 [int degree_a=A.degree, degree_b=B.degree;] A.degree 읽기 R(A.degree)
+         A의 최고 차수 5를 읽습니다.
+step-5   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_a = 5 W(degree_a:uninitialized→5)
+         A.degree를 degree_a에 복사합니다. degree_a는 지금 Apos 자리 계수의 차수입니다.
+step-6   L13 [int degree_a=A.degree, degree_b=B.degree;] B.degree 읽기 R(B.degree)
+         B의 최고 차수 3을 읽습니다.
+step-7   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_b = 3 W(degree_b:uninitialized→3)
+         B.degree를 degree_b에 복사합니다. 복사본만 줄여 가므로 A.degree, B.degree는 그대로 남습니다.
+step-8   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] A.degree 읽기 R(A.degree)
+         결과 차수를 정하려고 A.degree를 읽습니다.
+step-9   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] B.degree 읽기 R(B.degree)
+         B.degree도 읽어 비교합니다. 5 > 3이 참이므로 A.degree를 고릅니다.
+step-10  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] 고른 차수 읽기 R(A.degree)
+         고른 쪽의 차수 5를 다시 읽습니다.
+step-11  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] C.degree = 5 W(C.degree:uninitialized→5)
+         C의 최고 차수는 두 차수 중 큰 값 5입니다.
+step-12  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-13  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 5가 참입니다.
+step-14  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-15  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-16  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         1번째 반복입니다. A의 현재 항 차수 degree_a(5)를 읽습니다.
+step-17  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 5 > 3이 참입니다.
+step-18  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 0을 내놓으므로 C.coef[0]에 씁니다.
+step-19  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 0을 내놓으므로 A.coef[0]을 읽습니다.
+step-20  L17 [C.coef[Cpos++]= A.coef[Apos++];] A.coef[0] 읽기 R(A.coef[0])
+         A.coef[0] = 10 (차수 5)
+step-21  L17 [C.coef[Cpos++]= A.coef[Apos++];] C.coef[0] = 10 W(C.coef[0]:uninitialized→10)
+         A의 계수 10을 그대로 C.coef[0]에 복사합니다.
+step-22  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos = 1 W(Cpos:0→1)
+         같은 문장 안의 Cpos++가 Cpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-23  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos = 1 W(Apos:0→1)
+         같은 문장 안의 Apos++가 Apos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-24  L18 [degree_a--;] degree_a 읽기 R(degree_a)
+         degree_a(5)를 읽습니다.
+step-25  L18 [degree_a--;] degree_a = 4 W(degree_a:5→4)
+         degree_a--로 다음 항의 차수 4로 내려갑니다.
+step-26  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(1)을 읽습니다.
+step-27  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         1 <= 5가 참입니다.
+step-28  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-29  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-30  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         2번째 반복입니다. A의 현재 항 차수 degree_a(4)를 읽습니다.
+step-31  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 4 > 3이 참입니다.
+step-32  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 1을 내놓으므로 C.coef[1]에 씁니다.
+step-33  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 1을 내놓으므로 A.coef[1]을 읽습니다.
+step-34  L17 [C.coef[Cpos++]= A.coef[Apos++];] A.coef[1] 읽기 R(A.coef[1])
+         A.coef[1] = 0 (차수 4)
+step-35  L17 [C.coef[Cpos++]= A.coef[Apos++];] C.coef[1] = 0 W(C.coef[1]:uninitialized→0)
+         A의 계수 0을 그대로 C.coef[1]에 복사합니다.
+step-36  L17 [C.coef[Cpos++]= A.coef[Apos++];] Cpos = 2 W(Cpos:1→2)
+         같은 문장 안의 Cpos++가 Cpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-37  L17 [C.coef[Cpos++]= A.coef[Apos++];] Apos = 2 W(Apos:1→2)
+         같은 문장 안의 Apos++가 Apos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-38  L18 [degree_a--;] degree_a 읽기 R(degree_a)
+         degree_a(4)를 읽습니다.
+step-39  L18 [degree_a--;] degree_a = 3 W(degree_a:4→3)
+         degree_a--로 다음 항의 차수 3으로 내려갑니다.
+step-40  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(2)를 읽습니다.
+step-41  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         2 <= 5가 참입니다.
+step-42  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-43  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 3이 참입니다.
+step-44  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         3번째 반복입니다. A의 현재 항 차수 degree_a(3)을 읽습니다.
+step-45  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(3)을 읽습니다. 3 > 3이 거짓입니다.
+step-46  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-47  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         3 == 3이 참입니다. 같은 차수끼리 더합니다.
+step-48  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 2를 내놓으므로 C.coef[2]에 씁니다.
+step-49  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 2를 내놓으므로 A.coef[2]를 읽습니다.
+step-50  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[2] 읽기 R(A.coef[2])
+         A.coef[2] = 0 (차수 3)
+step-51  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 0을 내놓으므로 B.coef[0]을 읽습니다.
+step-52  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[0] 읽기 R(B.coef[0])
+         B.coef[0] = 10 (차수 3)
+step-53  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[2] = 10 W(C.coef[2]:uninitialized→10)
+         0 + 10 = 10을 C.coef[2]에 씁니다.
+step-54  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 3 W(Cpos:2→3)
+         같은 문장 안의 Cpos++가 Cpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-55  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 3 W(Apos:2→3)
+         같은 문장 안의 Apos++가 Apos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-56  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 1 W(Bpos:0→1)
+         같은 문장 안의 Bpos++가 Bpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-57  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(3)을 읽습니다.
+step-58  L22 [degree_a--; degree_b--;] degree_a = 2 W(degree_a:3→2)
+         degree_a--로 다음 항의 차수 2로 내려갑니다.
+step-59  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(3)을 읽습니다.
+step-60  L22 [degree_a--; degree_b--;] degree_b = 2 W(degree_b:3→2)
+         degree_b--로 다음 항의 차수 2로 내려갑니다.
+step-61  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(3)을 읽습니다.
+step-62  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         3 <= 5가 참입니다.
+step-63  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(1)을 읽습니다.
+step-64  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         1 <= 3이 참입니다.
+step-65  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         4번째 반복입니다. A의 현재 항 차수 degree_a(2)를 읽습니다.
+step-66  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(2)를 읽습니다. 2 > 2가 거짓입니다.
+step-67  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-68  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         2 == 2가 참입니다. 같은 차수끼리 더합니다.
+step-69  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 3을 내놓으므로 C.coef[3]에 씁니다.
+step-70  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 3을 내놓으므로 A.coef[3]을 읽습니다.
+step-71  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[3] 읽기 R(A.coef[3])
+         A.coef[3] = 0 (차수 2)
+step-72  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 1을 내놓으므로 B.coef[1]을 읽습니다.
+step-73  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[1] 읽기 R(B.coef[1])
+         B.coef[1] = 3 (차수 2)
+step-74  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[3] = 3 W(C.coef[3]:uninitialized→3)
+         0 + 3 = 3을 C.coef[3]에 씁니다.
+step-75  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 4 W(Cpos:3→4)
+         같은 문장 안의 Cpos++가 Cpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-76  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 4 W(Apos:3→4)
+         같은 문장 안의 Apos++가 Apos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-77  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 2 W(Bpos:1→2)
+         같은 문장 안의 Bpos++가 Bpos를 2로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 1입니다.
+step-78  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(2)를 읽습니다.
+step-79  L22 [degree_a--; degree_b--;] degree_a = 1 W(degree_a:2→1)
+         degree_a--로 다음 항의 차수 1로 내려갑니다.
+step-80  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(2)를 읽습니다.
+step-81  L22 [degree_a--; degree_b--;] degree_b = 1 W(degree_b:2→1)
+         degree_b--로 다음 항의 차수 1로 내려갑니다.
+step-82  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(4)를 읽습니다.
+step-83  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         4 <= 5가 참입니다.
+step-84  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(2)를 읽습니다.
+step-85  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         2 <= 3이 참입니다.
+step-86  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         5번째 반복입니다. A의 현재 항 차수 degree_a(1)을 읽습니다.
+step-87  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(1)을 읽습니다. 1 > 1이 거짓입니다.
+step-88  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-89  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         1 == 1이 참입니다. 같은 차수끼리 더합니다.
+step-90  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 4를 내놓으므로 C.coef[4]에 씁니다.
+step-91  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 4를 내놓으므로 A.coef[4]를 읽습니다.
+step-92  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[4] 읽기 R(A.coef[4])
+         A.coef[4] = 6 (차수 1)
+step-93  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 2를 내놓으므로 B.coef[2]를 읽습니다.
+step-94  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[2] 읽기 R(B.coef[2])
+         B.coef[2] = 0 (차수 1)
+step-95  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[4] = 6 W(C.coef[4]:uninitialized→6)
+         6 + 0 = 6을 C.coef[4]에 씁니다.
+step-96  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 5 W(Cpos:4→5)
+         같은 문장 안의 Cpos++가 Cpos를 5로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 4입니다.
+step-97  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 5 W(Apos:4→5)
+         같은 문장 안의 Apos++가 Apos를 5로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 4입니다.
+step-98  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 3 W(Bpos:2→3)
+         같은 문장 안의 Bpos++가 Bpos를 3으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 2입니다.
+step-99  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(1)을 읽습니다.
+step-100 L22 [degree_a--; degree_b--;] degree_a = 0 W(degree_a:1→0)
+         degree_a--로 다음 항의 차수 0으로 내려갑니다.
+step-101 L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(1)을 읽습니다.
+step-102 L22 [degree_a--; degree_b--;] degree_b = 0 W(degree_b:1→0)
+         degree_b--로 다음 항의 차수 0으로 내려갑니다.
+step-103 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(5)를 읽습니다.
+step-104 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         5 <= 5가 참입니다.
+step-105 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(3)을 읽습니다.
+step-106 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         3 <= 3이 참입니다.
+step-107 L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         6번째 반복입니다. A의 현재 항 차수 degree_a(0)을 읽습니다.
+step-108 L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(0)을 읽습니다. 0 > 0이 거짓입니다.
+step-109 L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-110 L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         0 == 0이 참입니다. 같은 차수끼리 더합니다.
+step-111 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 5를 내놓으므로 C.coef[5]에 씁니다.
+step-112 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 5를 내놓으므로 A.coef[5]를 읽습니다.
+step-113 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[5] 읽기 R(A.coef[5])
+         A.coef[5] = 3 (차수 0)
+step-114 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 3을 내놓으므로 B.coef[3]을 읽습니다.
+step-115 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[3] 읽기 R(B.coef[3])
+         B.coef[3] = -3 (차수 0)
+step-116 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[5] = 0 W(C.coef[5]:uninitialized→0)
+         3 + (-3) = 0을 C.coef[5]에 씁니다. 합이 0이어도 방법 #1은 자리를 그대로 차지합니다.
+step-117 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 6 W(Cpos:5→6)
+         같은 문장 안의 Cpos++가 Cpos를 6으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 5입니다.
+step-118 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 6 W(Apos:5→6)
+         같은 문장 안의 Apos++가 Apos를 6으로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 5입니다.
+step-119 L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 4 W(Bpos:3→4)
+         같은 문장 안의 Bpos++가 Bpos를 4로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 3입니다.
+step-120 L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(0)을 읽습니다.
+step-121 L22 [degree_a--; degree_b--;] degree_a = -1 W(degree_a:0→-1)
+         degree_a--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-122 L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(0)을 읽습니다.
+step-123 L22 [degree_a--; degree_b--;] degree_b = -1 W(degree_b:0→-1)
+         degree_b--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-124 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(6)을 읽습니다.
+step-125 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         6 <= 5가 거짓입니다. A의 계수를 모두 썼습니다.
+step-126 L15 [while( Apos<=A.degree && Bpos<=B.degree ){] while 종료
+         &&의 왼쪽이 거짓이므로 오른쪽 Bpos<=B.degree는 계산하지 않고 while을 빠져나옵니다.
+step-127 L30 [while( Apos<=A.degree )] Apos 읽기 R(Apos)
+         후처리: A에 남은 항이 있는지 Apos(6)을 읽습니다.
+step-128 L30 [while( Apos<=A.degree )] A.degree 읽기 R(A.degree)
+         6 <= 5가 거짓입니다. A에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-129 L32 [while( Bpos<=B.degree )] Bpos 읽기 R(Bpos)
+         후처리: B에 남은 항이 있는지 Bpos(4)를 읽습니다.
+step-130 L32 [while( Bpos<=B.degree )] B.degree 읽기 R(B.degree)
+         4 <= 3이 거짓입니다. B에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-131 L34 [return 0;] 결과 확인
+         C = { 5, {10, 0, 10, 3, 6, 0} } → 10x⁵+10x³+3x²+6x. 반복 6번, Apos=6, Bpos=4, Cpos=6.
+
+=== constant {"case":"constant","k":-2} (41 snapshots)
+initial  L12 [int Apos=0, Bpos=0, Cpos=0;] 호출 전 · 초기 상태
+         9–11줄까지 실행해 A, B를 초기화하고 C를 선언한 상태입니다. 초기값 목록이 짧으면 나머지 coef 칸은 0으로 채워집니다. C는 아직 아무 값도 없습니다.
+step-1   L12 [int Apos=0, Bpos=0, Cpos=0;] Apos = 0 W(Apos:uninitialized→0)
+         A에서 다음에 읽을 계수의 인덱스 Apos를 0으로 시작합니다.
+step-2   L12 [int Apos=0, Bpos=0, Cpos=0;] Bpos = 0 W(Bpos:uninitialized→0)
+         B에서 다음에 읽을 계수의 인덱스 Bpos를 0으로 시작합니다.
+step-3   L12 [int Apos=0, Bpos=0, Cpos=0;] Cpos = 0 W(Cpos:uninitialized→0)
+         C에 다음으로 쓸 인덱스 Cpos를 0으로 시작합니다.
+step-4   L13 [int degree_a=A.degree, degree_b=B.degree;] A.degree 읽기 R(A.degree)
+         A의 최고 차수 0을 읽습니다.
+step-5   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_a = 0 W(degree_a:uninitialized→0)
+         A.degree를 degree_a에 복사합니다. degree_a는 지금 Apos 자리 계수의 차수입니다.
+step-6   L13 [int degree_a=A.degree, degree_b=B.degree;] B.degree 읽기 R(B.degree)
+         B의 최고 차수 0을 읽습니다.
+step-7   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_b = 0 W(degree_b:uninitialized→0)
+         B.degree를 degree_b에 복사합니다. 복사본만 줄여 가므로 A.degree, B.degree는 그대로 남습니다.
+step-8   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] A.degree 읽기 R(A.degree)
+         결과 차수를 정하려고 A.degree를 읽습니다.
+step-9   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] B.degree 읽기 R(B.degree)
+         B.degree도 읽어 비교합니다. 0 > 0이 거짓이므로 B.degree를 고릅니다.
+step-10  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] 고른 차수 읽기 R(B.degree)
+         고른 쪽의 차수 0을 다시 읽습니다.
+step-11  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] C.degree = 0 W(C.degree:uninitialized→0)
+         C의 최고 차수는 두 차수 중 큰 값 0입니다.
+step-12  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-13  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 0이 참입니다.
+step-14  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-15  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 0이 참입니다.
+step-16  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         1번째 반복입니다. A의 현재 항 차수 degree_a(0)을 읽습니다.
+step-17  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(0)을 읽습니다. 0 > 0이 거짓입니다.
+step-18  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-19  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         0 == 0이 참입니다. 같은 차수끼리 더합니다.
+step-20  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 0을 내놓으므로 C.coef[0]에 씁니다.
+step-21  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 0을 내놓으므로 A.coef[0]을 읽습니다.
+step-22  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[0] 읽기 R(A.coef[0])
+         A.coef[0] = 7 (차수 0)
+step-23  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 0을 내놓으므로 B.coef[0]을 읽습니다.
+step-24  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[0] 읽기 R(B.coef[0])
+         B.coef[0] = -2 (차수 0)
+step-25  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[0] = 5 W(C.coef[0]:uninitialized→5)
+         7 + (-2) = 5를 C.coef[0]에 씁니다.
+step-26  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 1 W(Cpos:0→1)
+         같은 문장 안의 Cpos++가 Cpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-27  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 1 W(Apos:0→1)
+         같은 문장 안의 Apos++가 Apos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-28  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 1 W(Bpos:0→1)
+         같은 문장 안의 Bpos++가 Bpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-29  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(0)을 읽습니다.
+step-30  L22 [degree_a--; degree_b--;] degree_a = -1 W(degree_a:0→-1)
+         degree_a--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-31  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(0)을 읽습니다.
+step-32  L22 [degree_a--; degree_b--;] degree_b = -1 W(degree_b:0→-1)
+         degree_b--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-33  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(1)을 읽습니다.
+step-34  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         1 <= 0이 거짓입니다. A의 계수를 모두 썼습니다.
+step-35  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] while 종료
+         &&의 왼쪽이 거짓이므로 오른쪽 Bpos<=B.degree는 계산하지 않고 while을 빠져나옵니다.
+step-36  L30 [while( Apos<=A.degree )] Apos 읽기 R(Apos)
+         후처리: A에 남은 항이 있는지 Apos(1)을 읽습니다.
+step-37  L30 [while( Apos<=A.degree )] A.degree 읽기 R(A.degree)
+         1 <= 0이 거짓입니다. A에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-38  L32 [while( Bpos<=B.degree )] Bpos 읽기 R(Bpos)
+         후처리: B에 남은 항이 있는지 Bpos(1)을 읽습니다.
+step-39  L32 [while( Bpos<=B.degree )] B.degree 읽기 R(B.degree)
+         1 <= 0이 거짓입니다. B에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-40  L34 [return 0;] 결과 확인
+         C = { 0, {5} } → 5. 반복 1번, Apos=1, Bpos=1, Cpos=1.
+
+=== boundary {"case":"constant","k":99} (41 snapshots)
+initial  L12 [int Apos=0, Bpos=0, Cpos=0;] 호출 전 · 초기 상태
+         9–11줄까지 실행해 A, B를 초기화하고 C를 선언한 상태입니다. 초기값 목록이 짧으면 나머지 coef 칸은 0으로 채워집니다. C는 아직 아무 값도 없습니다.
+step-1   L12 [int Apos=0, Bpos=0, Cpos=0;] Apos = 0 W(Apos:uninitialized→0)
+         A에서 다음에 읽을 계수의 인덱스 Apos를 0으로 시작합니다.
+step-2   L12 [int Apos=0, Bpos=0, Cpos=0;] Bpos = 0 W(Bpos:uninitialized→0)
+         B에서 다음에 읽을 계수의 인덱스 Bpos를 0으로 시작합니다.
+step-3   L12 [int Apos=0, Bpos=0, Cpos=0;] Cpos = 0 W(Cpos:uninitialized→0)
+         C에 다음으로 쓸 인덱스 Cpos를 0으로 시작합니다.
+step-4   L13 [int degree_a=A.degree, degree_b=B.degree;] A.degree 읽기 R(A.degree)
+         A의 최고 차수 0을 읽습니다.
+step-5   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_a = 0 W(degree_a:uninitialized→0)
+         A.degree를 degree_a에 복사합니다. degree_a는 지금 Apos 자리 계수의 차수입니다.
+step-6   L13 [int degree_a=A.degree, degree_b=B.degree;] B.degree 읽기 R(B.degree)
+         B의 최고 차수 0을 읽습니다.
+step-7   L13 [int degree_a=A.degree, degree_b=B.degree;] degree_b = 0 W(degree_b:uninitialized→0)
+         B.degree를 degree_b에 복사합니다. 복사본만 줄여 가므로 A.degree, B.degree는 그대로 남습니다.
+step-8   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] A.degree 읽기 R(A.degree)
+         결과 차수를 정하려고 A.degree를 읽습니다.
+step-9   L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] B.degree 읽기 R(B.degree)
+         B.degree도 읽어 비교합니다. 0 > 0이 거짓이므로 B.degree를 고릅니다.
+step-10  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] 고른 차수 읽기 R(B.degree)
+         고른 쪽의 차수 0을 다시 읽습니다.
+step-11  L14 [C.degree = (A.degree > B.degree) ? A.degree : B.degree;] C.degree = 0 W(C.degree:uninitialized→0)
+         C의 최고 차수는 두 차수 중 큰 값 0입니다.
+step-12  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(0)을 읽습니다.
+step-13  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         0 <= 0이 참입니다.
+step-14  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Bpos 읽기 R(Bpos)
+         조건 Bpos<=B.degree를 계산하려고 Bpos(0)을 읽습니다.
+step-15  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] B.degree 읽기 R(B.degree)
+         0 <= 0이 참입니다.
+step-16  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_a 읽기 R(degree_a)
+         1번째 반복입니다. A의 현재 항 차수 degree_a(0)을 읽습니다.
+step-17  L16 [if( degree_a > degree_b ){ // A항 > B항] degree_b 읽기 R(degree_b)
+         B의 현재 항 차수 degree_b(0)을 읽습니다. 0 > 0이 거짓입니다.
+step-18  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_a 읽기 R(degree_a)
+         else if로 넘어와 degree_a를 다시 읽습니다.
+step-19  L20 [else if( degree_a == degree_b ){ // A항 == B항] degree_b 읽기 R(degree_b)
+         0 == 0이 참입니다. 같은 차수끼리 더합니다.
+step-20  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos 읽기 R(Cpos)
+         Cpos++는 증가 전 값 0을 내놓으므로 C.coef[0]에 씁니다.
+step-21  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos 읽기 R(Apos)
+         Apos++도 증가 전 값 0을 내놓으므로 A.coef[0]을 읽습니다.
+step-22  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] A.coef[0] 읽기 R(A.coef[0])
+         A.coef[0] = 7 (차수 0)
+step-23  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos 읽기 R(Bpos)
+         Bpos++도 증가 전 값 0을 내놓으므로 B.coef[0]을 읽습니다.
+step-24  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] B.coef[0] 읽기 R(B.coef[0])
+         B.coef[0] = 99 (차수 0)
+step-25  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] C.coef[0] = 106 W(C.coef[0]:uninitialized→106)
+         7 + 99 = 106을 C.coef[0]에 씁니다.
+step-26  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Cpos = 1 W(Cpos:0→1)
+         같은 문장 안의 Cpos++가 Cpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-27  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Apos = 1 W(Apos:0→1)
+         같은 문장 안의 Apos++가 Apos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-28  L21 [C.coef[Cpos++]=A.coef[Apos++]+B.coef[Bpos++];] Bpos = 1 W(Bpos:0→1)
+         같은 문장 안의 Bpos++가 Bpos를 1로 올립니다. 이 증가와 배열 쓰기의 상대 순서는 C가 정하지 않지만, 쓰는 자리는 증가 전 값 0입니다.
+step-29  L22 [degree_a--; degree_b--;] degree_a 읽기 R(degree_a)
+         degree_a(0)을 읽습니다.
+step-30  L22 [degree_a--; degree_b--;] degree_a = -1 W(degree_a:0→-1)
+         degree_a--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-31  L22 [degree_a--; degree_b--;] degree_b 읽기 R(degree_b)
+         degree_b(0)을 읽습니다.
+step-32  L22 [degree_a--; degree_b--;] degree_b = -1 W(degree_b:0→-1)
+         degree_b--로 -1이 됩니다. 상수항까지 다 처리해 더 내려갈 차수가 없습니다.
+step-33  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] Apos 읽기 R(Apos)
+         조건 Apos<=A.degree를 계산하려고 Apos(1)을 읽습니다.
+step-34  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] A.degree 읽기 R(A.degree)
+         1 <= 0이 거짓입니다. A의 계수를 모두 썼습니다.
+step-35  L15 [while( Apos<=A.degree && Bpos<=B.degree ){] while 종료
+         &&의 왼쪽이 거짓이므로 오른쪽 Bpos<=B.degree는 계산하지 않고 while을 빠져나옵니다.
+step-36  L30 [while( Apos<=A.degree )] Apos 읽기 R(Apos)
+         후처리: A에 남은 항이 있는지 Apos(1)을 읽습니다.
+step-37  L30 [while( Apos<=A.degree )] A.degree 읽기 R(A.degree)
+         1 <= 0이 거짓입니다. A에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-38  L32 [while( Bpos<=B.degree )] Bpos 읽기 R(Bpos)
+         후처리: B에 남은 항이 있는지 Bpos(1)을 읽습니다.
+step-39  L32 [while( Bpos<=B.degree )] B.degree 읽기 R(B.degree)
+         1 <= 0이 거짓입니다. B에 남은 항이 없어 이 while은 한 번도 돌지 않습니다.
+step-40  L34 [return 0;] 결과 확인
+         C = { 0, {106} } → 106. 반복 1번, Apos=1, Bpos=1, Cpos=1.

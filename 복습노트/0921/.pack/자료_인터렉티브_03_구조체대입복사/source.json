@@ -1,0 +1,73 @@
+{
+  "references": {
+    "복습노트/0921/정리노트_0921_ArrayStructureList.html": "31d46fadabbfb90bdc556322bc1b726115da1347d16b10d552b97f33686fa189",
+    "복습노트/0921/.pack/정리노트_0921_ArrayStructureList.md": "cf70aec94105a0fd38e8e1d96e1c5da64cd0f4113eae242e05760e38427a3fa0",
+    "STT/0921 자구알.md": "174610d261923edce3009b9df2e90402ead7e29ea13708e08ea53b44d1bdf523",
+    "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a"
+  },
+  "question": "같은 타입 구조체의 대입 b = a는 무엇을 복사하고, 복사 후 한쪽을 바꾸면 다른 쪽도 바뀌는가? 포인터 필드가 있으면?",
+  "pages": [
+    17,
+    18
+  ],
+  "section": "s4-struct-assign / s4-self-ref",
+  "sources": [
+    {
+      "id": "copy",
+      "label": "b = a · 강의 대입",
+      "language": "c",
+      "text": "#include <stdio.h>\ntypedef struct person {\n    int age;            // 나이를 나타내는 정수값\n    int height;         // 키(cm) · 강의는 float\n} person;\nint main(void)\n{\n    person a = { {{x}}, {{y}} }, b;\n    b = a;                  // 가능\n    a.age = a.age + 1;      // a만 바꾸면?\n    if( a.age > b.age )     // 필드를 골라 비교\n        printf(\"a가 b보다 나이가 많음\");\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "page": 17,
+        "section": "s4-struct-assign",
+        "supplement": false,
+        "note": "강의 p17 대입·비교 · name[10]을 빼고 height를 int로 줄인 단순화, 초기값과 a.age 변경은 보충입니다.",
+        "adjustments": "p17 person 구조체에서 char name[10]을 빼고 float height를 int로 바꿔 정수 필드 두 개로 단순화. b = a; 원문 보존. 초기값, a.age 변경, 필드 비교 a.age > b.age(정리노트 보충)와 int main(void)는 보충."
+      }
+    },
+    {
+      "id": "uninit",
+      "label": "a를 초기화하지 않으면 · 강의 main",
+      "language": "c",
+      "text": "#include <stdio.h>\ntypedef struct person {\n    int age;            // 나이를 나타내는 정수값\n    int height;         // 키(cm) · 강의는 float\n} person;\nint main(void)\n{\n    person a, b;\n    b = a;                  // 가능\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "page": 17,
+        "section": "s4-struct-assign",
+        "supplement": false,
+        "note": "강의 p17 main 그대로 a를 초기화하지 않고 대입합니다 · 구조체 필드는 단순화했습니다.",
+        "adjustments": "p17 main 원문 그대로(main()→int main(void)) a를 초기화하지 않고 b = a; 실행. 복사할 값이 정해지지 않으므로 첫 필드 읽기에서 중단. person 필드 단순화는 copy와 같음."
+      }
+    },
+    {
+      "id": "link",
+      "label": "포인터 필드 복사 · 보충",
+      "language": "c",
+      "text": "#include <stddef.h>\ntypedef struct ListNode {\n    int data;               // 강의는 char data[10]\n    struct ListNode *link;\n} ListNode;\nint main(void)\n{\n    ListNode n2 = { {{y}}, NULL };\n    ListNode n1 = { {{x}}, &n2 };\n    ListNode c;\n    c = n1;                 // 필드별 복사\n    c.data = c.data + 1;    // c만 바뀜\n    c.link->data = 0;       // n2를 바꿈\n    int seen = n1.link->data;   // n1에서 보면?\n    return 0;\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_3_ArrayStructureList.pdf",
+        "sha256": "765ff7fae303bdcf83aa116cf8171482d083641617c24314304ca01f6953917a",
+        "page": 18,
+        "section": "s4-self-ref",
+        "supplement": true,
+        "note": "강의 p18 ListNode(data는 int로 단순화)로 대입이 포인터 필드를 어떻게 복사하는지 보는 보충 예제입니다.",
+        "adjustments": "p18 ListNode의 char data[10]을 int data로 단순화. main 전체(n1→n2 연결, c = n1, 필드 변경)는 p17 대입 규칙을 자체 참조 구조체에 적용한 보충."
+      }
+    }
+  ],
+  "source_c": {
+    "file": "source.c",
+    "sha256": "9f87a7a07119dd19417c64e2a77d18e33a3c21e9a1f62911274a35963441fa51",
+    "role": "검산용 완전 프로그램: p17·p18 원문을 주석으로 보존 + 정수·포인터 필드로 단순화한 copy/link 예제. 컴파일러가 없어 독립 Python 표 사용."
+  },
+  "engineHashes": {
+    "contract": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory": "d067f7cbf5bd0675fcc94ca8496f85e8d9167b95dc318dee6ad5a8eb4309c2d0",
+    "trace": "8a9daeea8fd3c62145ecc89699d712c2025229f9800c793c719a5bfcea388a6d"
+  },
+  "simplifications": "person에서 char name[10] 생략, float height를 int(cm)로. ListNode의 char data[10]을 int data로. 초기값, a.age 변경, 필드 비교 a.age > b.age(정리노트 보충), link 예제 main 전체는 보충. uninit 모드는 강의 main(person a, b; b = a;)을 그대로 실행해 미초기화 a의 첫 필드 읽기에서 중단(주소를 쓰지 않은 미초기화 자동 변수 읽기는 UB). 구조체 대입은 필드별 read/write 이벤트로 저작.",
+  "verification": "PDF p17, p18 렌더링을 직접 읽어 구조체 정의·main 원문 대조. 정리노트 s4-struct-assign/s4-self-ref, STT 0921 철가방 설명(1687–1763행) 대조."
+}

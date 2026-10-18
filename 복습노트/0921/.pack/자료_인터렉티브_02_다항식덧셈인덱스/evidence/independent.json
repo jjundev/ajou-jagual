@@ -1,0 +1,3453 @@
+{
+  "method": "independent Python C-semantics table (every bind/declare/write in order, stop point, final cells)",
+  "topic": "poly-add-index",
+  "compiler_unavailable": true,
+  "compiler_note": "gcc/clang/cl/cc/tcc not on PATH; no Visual Studio/MSYS2/MinGW install; WSL has only docker-desktop distro; Docker engine not running. UB paths are never executed.",
+  "total": 68,
+  "cases": [
+    {
+      "case": "default",
+      "input": {
+        "case": "note",
+        "k": 1
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "note",
+      "input": {
+        "case": "note",
+        "k": 1
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "same",
+      "input": {
+        "case": "same",
+        "k": 1
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 2
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "bigb",
+      "input": {
+        "case": "bigb",
+        "k": 1
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "cancel",
+      "input": {
+        "case": "cancel",
+        "k": 1
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 2
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "zero-const",
+      "input": {
+        "case": "note",
+        "k": -3
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "constant",
+      "input": {
+        "case": "constant",
+        "k": -2
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "boundary",
+      "input": {
+        "case": "constant",
+        "k": 99
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 106
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": -99
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": -96
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": -3
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 0
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": -1
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 2
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": 0
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 3
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": 1
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 4
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": 7
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 10
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": 12
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 15
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": 13
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 16
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": 14
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 17
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": 63
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 66
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": 64
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 67
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "note",
+        "k": 99
+      },
+      "writes_checked": 38,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 5
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 6
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[5]": {
+          "kind": "int",
+          "value": 102
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": -99
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": -98
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": -3
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": -2
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": -1
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": 0
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": 1
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 2
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": 7
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 8
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": 12
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 13
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": 13
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 14
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": 14
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 15
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": 63
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 64
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": 64
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 65
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "same",
+        "k": 99
+      },
+      "writes_checked": 30,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 18
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 100
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": -99
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": -96
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": -3
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": -1
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 2
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": 0
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": 1
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": 7
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": 12
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 15
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": 13
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 16
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": 14
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 17
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": 63
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 66
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": 64
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 67
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "bigb",
+        "k": 99
+      },
+      "writes_checked": 26,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 3
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 2
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 10
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[3]": {
+          "kind": "int",
+          "value": 102
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": -99
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": -98
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": -3
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": -2
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": -1
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": 0
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": 1
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 2
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": 7
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 8
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": 12
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 13
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": 13
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 14
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": 14
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 15
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": 63
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 64
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": 64
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 65
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "cancel",
+        "k": 99
+      },
+      "writes_checked": 24,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 2
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 3
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 0
+        },
+        "C.coef[1]": {
+          "kind": "int",
+          "value": 5
+        },
+        "C.coef[2]": {
+          "kind": "int",
+          "value": 100
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": -99
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": -92
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": -3
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 4
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": -1
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 6
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": 0
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 7
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": 1
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 8
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": 7
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 14
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": 12
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 19
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": 13
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 20
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": 14
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 21
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": 63
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 70
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": 64
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 71
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "case": "constant",
+        "k": 99
+      },
+      "writes_checked": 12,
+      "diagnostic": null,
+      "final": {
+        "C.degree": {
+          "kind": "int",
+          "value": 0
+        },
+        "Apos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Bpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "Cpos": {
+          "kind": "int",
+          "value": 1
+        },
+        "C.coef[0]": {
+          "kind": "int",
+          "value": 106
+        },
+        "C.coef[1]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[2]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[3]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[4]": {
+          "kind": "uninitialized"
+        },
+        "C.coef[5]": {
+          "kind": "uninitialized"
+        }
+      },
+      "post_processing_iterations": 0,
+      "status": "pass"
+    }
+  ],
+  "status": "pass"
+}

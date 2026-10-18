@@ -1,0 +1,534 @@
+{
+  "method": "independent Python C-semantics table (every bind/declare/write in order, stop point, final cells)",
+  "topic": "factorial-frames",
+  "compiler_unavailable": true,
+  "compiler_note": "gcc/clang/cl/cc/tcc not on PATH; no Visual Studio/MSYS2/MinGW install; WSL has only docker-desktop distro; Docker engine not running. UB paths are never executed.",
+  "total": 34,
+  "cases": [
+    {
+      "case": "default",
+      "input": {
+        "n": 4,
+        "mode": "lecture"
+      },
+      "writes_checked": 11,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 24
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "four",
+      "input": {
+        "n": 4,
+        "mode": "lecture"
+      },
+      "writes_checked": 11,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 24
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "one",
+      "input": {
+        "n": 1,
+        "mode": "lecture"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "zero",
+      "input": {
+        "n": 0,
+        "mode": "lecture"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "negative",
+      "input": {
+        "n": -3,
+        "mode": "lecture"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "twelve",
+      "input": {
+        "n": 12,
+        "mode": "lecture"
+      },
+      "writes_checked": 35,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 479001600
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "overflow",
+      "input": {
+        "n": 13,
+        "mode": "lecture"
+      },
+      "writes_checked": 37,
+      "diagnostic": "SIGNED_OVERFLOW",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "nobase",
+      "input": {
+        "n": 4,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": -99,
+        "mode": "lecture"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": -99,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": -3,
+        "mode": "lecture"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": -3,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": -1,
+        "mode": "lecture"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": -1,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "mode": "lecture"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 0,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "mode": "lecture"
+      },
+      "writes_checked": 2,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 1
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 1,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 4,
+        "mode": "lecture"
+      },
+      "writes_checked": 11,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 24
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 4,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 7,
+        "mode": "lecture"
+      },
+      "writes_checked": 20,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 5040
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 7,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 12,
+        "mode": "lecture"
+      },
+      "writes_checked": 35,
+      "diagnostic": null,
+      "final": {
+        "r": {
+          "kind": "int",
+          "value": 479001600
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 12,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 13,
+        "mode": "lecture"
+      },
+      "writes_checked": 37,
+      "diagnostic": "SIGNED_OVERFLOW",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 13,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 14,
+        "mode": "lecture"
+      },
+      "writes_checked": 39,
+      "diagnostic": "SIGNED_OVERFLOW",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 14,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 63,
+        "mode": "lecture"
+      },
+      "writes_checked": 137,
+      "diagnostic": "SIGNED_OVERFLOW",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 63,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 64,
+        "mode": "lecture"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 64,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 99,
+        "mode": "lecture"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    },
+    {
+      "case": "grid",
+      "input": {
+        "n": 99,
+        "mode": "nobase"
+      },
+      "writes_checked": 126,
+      "diagnostic": "LIMIT_REACHED",
+      "final": {
+        "r": {
+          "kind": "uninitialized"
+        }
+      },
+      "status": "pass"
+    }
+  ],
+  "status": "pass"
+}
