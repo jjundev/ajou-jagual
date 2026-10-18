@@ -35,7 +35,7 @@ function renderMath(root) { dsDecorateCode(root);""")
   center.append(work);""")
     from pdf_code import code_css
     template=template.replace('</head>', '<style>'+code_css(layout)+'</style></head>')
-    return template.replace('</head>', '<style>.ds-worksheet { padding: 5mm; background: var(--paper); } .ds-worksheet table, .panel table { width: 100%; border-collapse: collapse; } .ds-worksheet th, .ds-worksheet td, .panel th, .panel td { border: 1px solid #888; padding: 2mm; height: 6mm; } .code-box pre { white-space: pre; background: var(--paper); padding: 2mm; border-radius: 1mm; margin: 0; } .code-box pre + pre { margin-top: 2mm; }</style></head>')
+    return template.replace('</head>', '<style>.ds-worksheet { padding: 5mm; background: var(--paper); } .ds-worksheet table, .panel table { width: 100%; border-collapse: collapse; } .ds-worksheet th, .ds-worksheet td, .panel th, .panel td { border: 1px solid #888; padding: 2mm; height: 6mm; } .code-box pre { white-space: pre; background: var(--paper); padding: 2mm; border-radius: 1mm; margin: 0; } .code-box pre + pre { margin-top: 2mm; } .ds-source { font-size: .8em; color: #777; margin: 0 0 2mm; } .conditions p { margin: 0; } .conditions p + p, .ds-asks li + li { margin-top: 1.5mm; } .ds-asks { padding-left: 1.4em; margin: 0; } .ds-asks li { padding-left: 0; } .ds-asks li::before { display: none; }</style></head>')
 
 
 def extension_hash():

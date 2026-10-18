@@ -35,6 +35,13 @@ backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 run
 
 작성용 표는 source ID 2018-mid-c024-q9, 2017-mid-c050-q6에 적용하며 문항 번호 변경과 무관하다. 문제지에서는 원래 표를 중앙 작업 공간으로 옮기며, 답안지에서는 좌측에 유지한다. 답안의 풀이 표는 중앙에 그대로 둔다. 참고용 표는 옮기지 않는다. 확장 코드의 해시도 build/check/publish에서 검증한다.
 
+## 강의 코드 문제 분해
+
+`data-source-kind="lecture-code"` 카드만 `pdf_lecture.split_lecture_problem`으로 문제 prose를 `조건`(문장마다 `<p>`)과 `구할 것`(`<ol class="ds-asks">`)으로 나눈다. HTML/MD 원본은 바꾸지 않는다.
+`class="badge"`를 포함한 배지 문단은 문제·답안 PDF에서 삭제한다. `후속 수업 보충:` 문단은 조건 맨 위 `<p class="ds-source">` 캡션으로 남긴다.
+문장 분리는 `[.?!]` 직후 공백에서만, 열린 HTML 요소가 없고 `$…$` 밖일 때만 한다. 질문은 끝 괄호주석을 뺀 뒤 `(세요|시오|하라|보라)[.)]?$` 또는 `?$`로 끝나는 문장이며, 질문 뒤에 있던 조건 문장도 조건으로 올라간다.
+이미 `<ol>`/`<ul>`이 있거나 질문이 0개면 배지만 빼고 원래 문단을 구할 것에 둔다. 문장 분리 또는 배치에서 글자가 달라지면 `PdfError`로 빌드를 멈춘다.
+
 ## 블록 코드 가독성 계약 (code_style_version 1)
 
 최종 1440×810pt PDF의 블록 코드는 실제 12pt(±0.05pt), JetBrains Mono Regular 400이다. 공식 v2.304 static TTF와 OFL-1.1 라이선스를 vendor/jetbrains-mono에 고정하며 manifest의 SHA256을 빌드·검사·게시 때 검증한다. 한글 주석은 번들 Pretendard로 출력하고 실제 PDF 글꼴도 검사한다. 온라인 또는 시스템 폰트 fallback은 통과 근거가 아니다.
