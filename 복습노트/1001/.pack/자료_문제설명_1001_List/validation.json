@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "8475af731fbcddfdc3b65637f7a9fb6900c94269e0afd22a43cc20ddd3165dee",
+  "input_hash": "8ada7ac4b6f49559869d51ef8cb194a17f5ca909d0fc2a198409d51cd9e22925",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\docs\\verify\\no-exam-coverage-20261017\\all-preserved.json",
@@ -116,95 +116,155 @@
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1001\\복습문제_1001_List.html",
-      "sha256": "92d5faf1d76e4d325772157ca10ddbe3b1569ff2d509836f536534f210e38d60"
+      "sha256": "97b8a481c8cc6182b6ae6c04967e46bdfa026f11d6bb741da00ffdc51600efdf"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-    "evidence": "Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment/reference equality checked before reuse."
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Layout-only rerender. Staged HTML compared with the previously published, reviewed HTML: after removing the new data-labeled attribute and the single labeled-ol CSS rule the files are line-identical (CR-insensitive), so problem conditions, code, asks, figures and originals are unchanged from the source-visual review already on record."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-    "evidence": "Fresh stage checked with Playwright Chrome at 1280x900, 1024x900 and 375x812 in light/dark: 30 problem views, 0 console/KaTeX/resource errors, no document overflow, seven sections each, summary panel at >=1024px, next/prev navigation. For every changed item one viewport screenshot (1280 dark or 375 light, evidence/browser-2026-10-18/) was opened and inspected; the remaining variants rely on the machine metrics. evidence/browser-2026-10-18.json"
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Playwright Chrome at 1280x900 light and 375x812 dark: every lecture ask block has data-labeled and computed list-style-type none (no duplicate 1./2. before (a)/(b)); 0 console/page errors; no document horizontal overflow. 1005 P3 problem pane screenshot inspected. All other panel/navigation behaviour is byte-identical to the previously reviewed publish."
   },
   "content": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "2 changed lecture-code item(s) ['p3', 'p5'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: 1 changed lecture-code item(s) ['p3'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment/reference equality checked before reuse.",
     "items": {
-      "p1:main": {
+      "p1:a": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Rightward shifts must visit the source suffix from right to left so each source is read before it is overwritten. A left-to-right loop propagates an already copied value, losing later values (20 would overwrite 30 before 30 is preserved)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p1 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Rightward shifts must visit the source suffix from right to left so each source is read before it is overwritten. A left-to-right loop propagates an already copied value, losing later values (20 would overwrite 30 before 30 is preserved)."
       },
-      "p2:main": {
+      "p1:b": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: The last physical slot may still contain 40 but is outside the valid prefix of length 3. Deletion requires 0<=position<length, because position=length contains no valid item to return; left shifts run from low to high positions to preserve unread sources."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p1 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Rightward shifts must visit the source suffix from right to left so each source is read before it is overwritten. A left-to-right loop propagates an already copied value, losing later values (20 would overwrite 30 before 30 is preserved)."
       },
-      "p3:main": {
+      "p2:a": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "Card p3 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p2 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: The last physical slot may still contain 40 but is outside the valid prefix of length 3. Deletion requires 0<=position<length, because position=length contains no valid item to return; left shifts run from low to high positions to preserve unread sources."
       },
-      "p4:main": {
+      "p2:b": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 주어진 세 함수는 length만 읽거나 쓴다. 따라서 배열 칸의 값은 검사 결과에 영향을 주지 않는다. 일반적인 논리 초기화가 민감 데이터 소거까지 수행한다는 뜻은 아니다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p2 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: The last physical slot may still contain 40 but is outside the valid prefix of length 3. Deletion requires 0<=position<length, because position=length contains no valid item to return; left shifts run from low to high positions to preserve unread sources."
       },
-      "p5:main": {
+      "p3:a": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "Card p5 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p3 structured into conditions and ask list; explanations verified. Prior: Card p3 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+      },
+      "p3:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p3 structured into conditions and ask list; explanations verified. Prior: Card p3 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+      },
+      "p4:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p4 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 주어진 세 함수는 length만 읽거나 쓴다. 따라서 배열 칸의 값은 검사 결과에 영향을 주지 않는다. 일반적인 논리 초기화가 민감 데이터 소거까지 수행한다는 뜻은 아니다."
+      },
+      "p4:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p4 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 주어진 세 함수는 length만 읽거나 쓴다. 따라서 배열 칸의 값은 검사 결과에 영향을 주지 않는다. 일반적인 논리 초기화가 민감 데이터 소거까지 수행한다는 뜻은 아니다."
+      },
+      "p5:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 structured into conditions and ask list; explanations verified. Prior: Card p5 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+      },
+      "p5:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 structured into conditions and ask list; explanations verified. Prior: Card p5 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
       }
     }
   },
   "independent": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "2 changed lecture-code item(s) ['p3', 'p5'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: 1 changed lecture-code item(s) ['p3'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment/reference equality checked before reuse.",
     "items": {
-      "p1:main": {
+      "p1:a": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Rightward shifts must visit the source suffix from right to left so each source is read before it is overwritten. A left-to-right loop propagates an already copied value, losing later values (20 would overwrite 30 before 30 is preserved).",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p1 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Rightward shifts must visit the source suffix from right to left so each source is read before it is overwritten. A left-to-right loop propagates an already copied value, losing later values (20 would overwrite 30 before 30 is preserved).",
         "method": "qualitative",
-        "conclusion": "Copies: list[4]=list[3]=40; list[3]=list[2]=30; list[2]=list[1]=20; then list[1]=99. Valid array {10,99,20,30,40}, length=5. Insertion positions satisfy 0<=position<=length; append is position=length. At original length n and position k, n-k shifts; best O(1) at k=n, worst O(n) at k=0."
+        "conclusion": "Subpart (a): Copies: list[4]=list[3]=40; list[3]=list[2]=30; list[2]=list[1]=20; then list[1]=99. Valid array {10,99,20,30,40}, length=5. Insertion positions satisfy 0<=position<=length; append is position=length. At original length n and position k, n-k shifts; best O(1) at k=n, worst O(n) at k=0."
       },
-      "p2:main": {
+      "p1:b": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. The last physical slot may still contain 40 but is outside the valid prefix of length 3. Deletion requires 0<=position<length, because position=length contains no valid item to return; left shifts run from low to high positions to preserve unread sources.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p1 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Rightward shifts must visit the source suffix from right to left so each source is read before it is overwritten. A left-to-right loop propagates an already copied value, losing later values (20 would overwrite 30 before 30 is preserved).",
         "method": "qualitative",
-        "conclusion": "Return 20. Copy list[1]=list[2] (30), then list[2]=list[3] (40). Valid array {10,30,40}, length=3. Shifts=n-k-1; best O(1) deleting k=n-1, worst O(n) deleting k=0."
+        "conclusion": "Subpart (b): Copies: list[4]=list[3]=40; list[3]=list[2]=30; list[2]=list[1]=20; then list[1]=99. Valid array {10,99,20,30,40}, length=5. Insertion positions satisfy 0<=position<=length; append is position=length. At original length n and position k, n-k shifts; best O(1) at k=n, worst O(n) at k=0."
       },
-      "p3:main": {
+      "p2:a": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18.json[p3] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p2 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. The last physical slot may still contain 40 but is outside the valid prefix of length 3. Deletion requires 0<=position<length, because position=length contains no valid item to return; left shifts run from low to high positions to preserve unread sources.",
         "method": "qualitative",
-        "conclusion": "Blind answer equals the published answer: add_tail(A): [A] 길이1. add_tail(B): [A,B] 길이2. add(2,C): 위치 2는 끝 다음이므로 [A,B,C] 길이3. add(1,D): [A,D,B,C] 길이4. delete(2): B 삭제 [A,D,C] 길이3. replace(1,E): [A,E,C] 길이3. get_entry(1)=E, get_length()=3. add는 길이를 1 늘리고 replace는 항목 하나만 덮어써서 길이 불변. 리스트는 순서가 있는 항목열이라 [A,E,C]와 [E,A,C]는 위치별 항목이 달라 서로 다르다. ADT 연산"
+        "conclusion": "Subpart (a): Return 20. Copy list[1]=list[2] (30), then list[2]=list[3] (40). Valid array {10,30,40}, length=3. Shifts=n-k-1; best O(1) deleting k=n-1, worst O(n) deleting k=0."
       },
-      "p4:main": {
+      "p2:b": {
         "status": "pass",
-        "reviewer": "blind_coverage, final question snapshot bound",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p2 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. The last physical slot may still contain 40 but is outside the valid prefix of length 3. Deletion requires 0<=position<length, because position=length contains no valid item to return; left shifts run from low to high positions to preserve unread sources.",
         "method": "qualitative",
-        "conclusion": "init 직후 length=0,is_empty=1,is_full=0,논리 리스트=[]다. 물리 배열의 {7,8,9}는 남아 있어도 유효 원소 구간 [0,length)에 포함되지 않아 리스트 항목이 아니다. 별도의 유효 length=3 상태에서는 is_empty=0,is_full=1이다.",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 주어진 세 함수는 length만 읽거나 쓴다. 따라서 배열 칸의 값은 검사 결과에 영향을 주지 않는다. 일반적인 논리 초기화가 민감 데이터 소거까지 수행한다는 뜻은 아니다."
+        "conclusion": "Subpart (b): Return 20. Copy list[1]=list[2] (30), then list[2]=list[3] (40). Valid array {10,30,40}, length=3. Shifts=n-k-1; best O(1) deleting k=n-1, worst O(n) deleting k=0."
       },
-      "p5:main": {
+      "p3:a": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18.json[p5] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p3 independent verification: evidence/blind-solver-2026-10-18.json[p3] solved from the new statement alone with missing=\"\" and matched the reference answer.",
         "method": "qualitative",
-        "conclusion": "Blind answer equals the published answer: 논리 순서 A(10)→B(20)→C(30), 마지막 링크 C.link=NULL. head는 첫 노드를 가리키는 포인터(300), data는 노드가 담은 값, link는 다음 노드의 위치를 담은 필드. 원형이면 C.link=A(주소300, 첫 노드). 이중 연결이면 이전 노드를 가리키는 링크(llink)가 추가된다. 순서는 물리 주소가 아니라 link로 정해지므로 주소순 정렬이나 연속 배치가 필요 없다. 선행 노드를 이미 알면 삽입은 링크 두 개 수정으로 O(1)이지만, 그 위치를 head부터 찾는 데는 O(k)(최악 O(n)) 걸린"
+        "conclusion": "Subpart (a): Blind answer equals the published answer: add_tail(A): [A] 길이1. add_tail(B): [A,B] 길이2. add(2,C): 위치 2는 끝 다음이므로 [A,B,C] 길이3. add(1,D): [A,D,B,C] 길이4. delete(2): B 삭제 [A,D,C] 길이3. replace(1,E): [A,E,C] 길이3. get_entry(1)=E, get_length()=3. add는 길이를 1 늘리고 replace는 항목 하나만 덮어써서 길이 불변. 리스트는 순서가 있는 항목열이라 [A,E,C]와 [E,A,C]는 위치별 항목이 달라 서로 다르다. ADT 연산"
+      },
+      "p3:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p3 independent verification: evidence/blind-solver-2026-10-18.json[p3] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): Blind answer equals the published answer: add_tail(A): [A] 길이1. add_tail(B): [A,B] 길이2. add(2,C): 위치 2는 끝 다음이므로 [A,B,C] 길이3. add(1,D): [A,D,B,C] 길이4. delete(2): B 삭제 [A,D,C] 길이3. replace(1,E): [A,E,C] 길이3. get_entry(1)=E, get_length()=3. add는 길이를 1 늘리고 replace는 항목 하나만 덮어써서 길이 불변. 리스트는 순서가 있는 항목열이라 [A,E,C]와 [E,A,C]는 위치별 항목이 달라 서로 다르다. ADT 연산"
+      },
+      "p4:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p4 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 주어진 세 함수는 length만 읽거나 쓴다. 따라서 배열 칸의 값은 검사 결과에 영향을 주지 않는다. 일반적인 논리 초기화가 민감 데이터 소거까지 수행한다는 뜻은 아니다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): init 직후 length=0,is_empty=1,is_full=0,논리 리스트=[]다. 물리 배열의 {7,8,9}는 남아 있어도 유효 원소 구간 [0,length)에 포함되지 않아 리스트 항목이 아니다. 별도의 유효 length=3 상태에서는 is_empty=0,is_full=1이다."
+      },
+      "p4:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p4 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 주어진 세 함수는 length만 읽거나 쓴다. 따라서 배열 칸의 값은 검사 결과에 영향을 주지 않는다. 일반적인 논리 초기화가 민감 데이터 소거까지 수행한다는 뜻은 아니다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): init 직후 length=0,is_empty=1,is_full=0,논리 리스트=[]다. 물리 배열의 {7,8,9}는 남아 있어도 유효 원소 구간 [0,length)에 포함되지 않아 리스트 항목이 아니다. 별도의 유효 length=3 상태에서는 is_empty=0,is_full=1이다."
+      },
+      "p5:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 independent verification: evidence/blind-solver-2026-10-18.json[p5] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): Blind answer equals the published answer: 논리 순서 A(10)→B(20)→C(30), 마지막 링크 C.link=NULL. head는 첫 노드를 가리키는 포인터(300), data는 노드가 담은 값, link는 다음 노드의 위치를 담은 필드. 원형이면 C.link=A(주소300, 첫 노드). 이중 연결이면 이전 노드를 가리키는 링크(llink)가 추가된다. 순서는 물리 주소가 아니라 link로 정해지므로 주소순 정렬이나 연속 배치가 필요 없다. 선행 노드를 이미 알면 삽입은 링크 두 개 수정으로 O(1)이지만, 그 위치를 head부터 찾는 데는 O(k)(최악 O(n)) 걸린"
+      },
+      "p5:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 independent verification: evidence/blind-solver-2026-10-18.json[p5] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): Blind answer equals the published answer: 논리 순서 A(10)→B(20)→C(30), 마지막 링크 C.link=NULL. head는 첫 노드를 가리키는 포인터(300), data는 노드가 담은 값, link는 다음 노드의 위치를 담은 필드. 원형이면 C.link=A(주소300, 첫 노드). 이중 연결이면 이전 노드를 가리키는 링크(llink)가 추가된다. 순서는 물리 주소가 아니라 link로 정해지므로 주소순 정렬이나 연속 배치가 필요 없다. 선행 노드를 이미 알면 삽입은 링크 두 개 수정으로 O(1)이지만, 그 위치를 head부터 찾는 데는 O(k)(최악 O(n)) 걸린"
       }
     }
   },
   "artifact_hashes": {
-    ".pack/문제설명_1001_List.md": "307fb46865e419e46e0dead87294efeb213f0f497b645635b96237588511c5e6",
+    ".pack/문제설명_1001_List.md": "790765c26231723abb2128181d4d659c446717086e319989e2d71bf9aab8f018",
     ".pack/자료_문제설명_1001_List/evidence/author.py": "6ba343876427331cc04eaf733cb49b26542f8c07061a1215aeec05117e4e6cfa",
     ".pack/자료_문제설명_1001_List/evidence/blind-solver-2026-10-18.json": "80664487099a7094925ed90f4fda833e5e513e456dd539063bdf1150f6b3eae9",
     ".pack/자료_문제설명_1001_List/evidence/browser-2026-10-18/1024-dark/p3-viewport.png": "d11940b35f06003dd892d4de38ce869ec609a4b7e241bbabef880a9e7b03f257",
@@ -290,11 +350,11 @@
     ".pack/자료_문제설명_1001_List/evidence/verify_lecture.c": "96caead1491181076b9f385bbbf281b130385592bc24a3e2371f1a49fa62f325",
     ".pack/자료_문제설명_1001_List/evidence/verify_new.c": "78742596c5611ca295c1976d12c27ae8bad0be6d36047348044960bee36929a6",
     ".pack/자료_문제설명_1001_List/evidence/verify_new.py": "7021dd89b46a4fd421ffb58a4000730af4c3d6f66e53335e98fa4f939063aef8",
-    ".pack/자료_문제설명_1001_List/fragments/p1.html": "c402a53e1e1154266f3d92a59cdfb3b58608ce72df99adb804a964bc80f70e0a",
-    ".pack/자료_문제설명_1001_List/fragments/p2.html": "6b316bffeec96d57d78ab577f204fd63840f02c90d66793fdf3319c5cd4bd112",
-    ".pack/자료_문제설명_1001_List/fragments/p3.html": "716c0ce3c1801b52dd0da626b6d7f5329b4c9dbc9c39674c5a2ee2f7deddc62d",
-    ".pack/자료_문제설명_1001_List/fragments/p4.html": "387bb125b339fd6dd79ee123f3d492125967830fad16e25e6f05078d851af2fa",
-    ".pack/자료_문제설명_1001_List/fragments/p5.html": "011316de556f9a722e32c74b2f986b992faa48133de507fc15d1aa458d753984",
+    ".pack/자료_문제설명_1001_List/fragments/p1.html": "0c055282b1c2d12e30dab7727e85eb05839c7d8011691ebf90faebbc0b73d85d",
+    ".pack/자료_문제설명_1001_List/fragments/p2.html": "b0dfd59ce44b7c9d8300a2daeea7d5e11779c6b04fd7b33ec0440c7e11e3507a",
+    ".pack/자료_문제설명_1001_List/fragments/p3.html": "6bd75a2d26dcd37e8867c80c435cab1d01ed904c0f37759991b2df407e2a8038",
+    ".pack/자료_문제설명_1001_List/fragments/p4.html": "863910947328fe3ab2fcac5d4be499bc970ad84a21d11936c5b38fc6c24c0e7b",
+    ".pack/자료_문제설명_1001_List/fragments/p5.html": "217c9f8f49e7cdfb1c92740352d2c3e6c305b2f25637a75aaf918b438d25c867",
     ".pack/자료_문제설명_1001_List/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
     ".pack/자료_문제설명_1001_List/vendor/katex/contrib/auto-render.min.js": "7b57d427ac6270677daf8d8380ded2cc73336f9149a167b8e1fe0d6ef66604ae",
     ".pack/자료_문제설명_1001_List/vendor/katex/fonts/KaTeX_AMS-Regular.ttf": "68534840bcfdd2bffb6f0e8deb48684dd01e7f04ea2813267577afb906de1d13",
@@ -381,7 +441,7 @@
     ".pack/자료_문제설명_1001_List/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     ".pack/자료_문제설명_1001_List/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     ".pack/자료_문제설명_1001_List/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "문제설명_1001_List.html": "65570f774d3f36ea21bcd809dab4b8b1602d835a0a84f777c3d49995948ec8ca",
-    ".pack/자료_문제설명_1001_List/manifest.json": "11c08b65bb26b89d30ed21255cdb81eef093d3339bc32e7b4d8796f6fdea431a"
+    "문제설명_1001_List.html": "b28d81f64e84d0ccb200ba27210f531970e00911c107bfca1cf1252c71d3c0e6",
+    ".pack/자료_문제설명_1001_List/manifest.json": "802011d2936c59b1ba678f67ae4968b1644edded5bd5e77cadcfd1e7220c0d1c"
   }
 }

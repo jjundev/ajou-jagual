@@ -345,7 +345,7 @@
       "terms": [
         "거듭제곱: 홀수 분기와 호출 크기"
       ],
-      "answer": "홀수 분기 x*power(x*x,(n-1)/2). 호출 (2,5)→(4,2)→(16,1)→(256,0), 반환 1→16→16→32. power는 O(log n), slow_power는 O(n)이다(n≥1).",
+      "answer": "(a) 홀수 분기: x * power(x * x, (n - 1) / 2), 호출: (2, 5) → (4, 2) → (16, 1) → (256, 0), 반환: 1 → 16 → 16 → 32 (b) power는 지수가 절반씩 줄어 $O(\\log n)$, slow_power는 n번 곱하므로 $O(n)$이다($n \\ge 1$).",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
         "pdf_page": 10,
@@ -355,7 +355,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "power"
+        "순환 거듭제곱의 홀수 분기 식 완성과 power(2, 5) 호출·반환 추적",
+        "power O(log n)과 slow_power O(n)의 시간복잡도 비교"
       ],
       "task_family": "power"
     },
@@ -371,7 +372,7 @@
       "terms": [
         "피보나치의 중복 호출과 반복 상태"
       ],
-      "answer": "fib(6)=8, fib(3)은 3회. tmp=current; current+=last; last=tmp;. 두 자식 호출의 하위 호출이 겹치고 계산 결과를 저장하지 않기 때문이다.",
+      "answer": "(a) fib(6) = 8, fib(3)은 3회 호출 (두 자식 호출의 하위 호출이 겹치고 계산 결과를 저장하지 않기 때문) (b) tmp = current; current += last; last = tmp;",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
         "pdf_page": 12,
@@ -384,7 +385,8 @@
         ]
       },
       "objectives": [
-        "fibonacci"
+        "fib(6)의 값과 fib(3) 중복 호출 횟수 및 원인 분석",
+        "반복 피보나치에서 tmp·current·last 상태 갱신 대입문 작성"
       ],
       "task_family": "fibonacci"
     },

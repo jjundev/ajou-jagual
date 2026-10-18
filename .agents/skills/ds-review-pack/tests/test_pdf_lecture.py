@@ -15,13 +15,15 @@ def lecture(range_, pid):
 
 def test_1015_p5_split():
     cond, ask = split_lecture_problem(lecture('1015', 'p5'))
-    assert cond.count('<p>') == 5 and ask.count('<li>') == 2
-    assert strip(ask).startswith('clock=1,2,3에서')
+    assert cond.count('<p>') == 1 and ask.count('<li>') == 2
+    assert strip(ask).startswith('(a) clock = 1, 2, 3')
     assert '강의 예제 기반' not in cond + ask and 'S6 p22' not in cond + ask
 
 def test_trailing_parenthetical_is_ask():
     cond, ask = split_lecture_problem(lecture('1001', 'p5'))
-    assert cond.count('<p>') == 1 and ask.count('<li>') == 5
+    assert cond.count('<p>') == 1 and ask.count('<li>') == 2
+    c2, a2 = split_lecture_problem((P('<p>상황이에요. 결과를 설명하세요(링크 변경만 묻습니다).</p>'),))
+    assert c2 == '<p>상황이에요.</p>' and a2 == '<ol class="ds-asks"><li>결과를 설명하세요(링크 변경만 묻습니다).</li></ol>'
 
 def test_supplement_kept_as_caption():
     cond, ask = split_lecture_problem(lecture('0907', 'p4'))
@@ -39,6 +41,25 @@ def test_fallback_existing_list_and_no_question():
     assert split_lecture_problem((badge, lst)) == ('', lst.html)
     plain = P('<p>상황만 있어요. 끝이에요.</p>')
     assert split_lecture_problem((badge, plain)) == ('', plain.html)
+
+def test_structured_lecture_ol_split():
+    badge = P('<p><span class="badge">강의 예제 기반 자체 출제</span> S4 p18</p>')
+    cond_p = P('<p>단순 연결 리스트에서 <code>head = 300</code>이에요.</p>')
+    asks_ol = P('<ol><li>(a) 방문 순서를 쓰세요.</li><li>(b) 삽입 후 링크를 쓰세요.</li></ol>')
+    cond, ask = split_lecture_problem((badge, cond_p, asks_ol))
+    assert cond == '<p>단순 연결 리스트에서 <code>head = 300</code>이에요.</p>'
+    assert ask == '<ol class="ds-asks ds-labeled"><li>(a) 방문 순서를 쓰세요.</li><li>(b) 삽입 후 링크를 쓰세요.</li></ol>'
+
+def test_split_list_blocks_merge_into_one_ol():
+    cond_p = P('<p>상황이에요.</p>')
+    a, b = P('<ol start="1"><li>(a) 첫째를 쓰세요.</li></ol>'), P('<ol start="2"><li>(b) 둘째를 쓰세요.</li></ol>')
+    assert split_lecture_problem((cond_p, a, b))[1] == '<ol class="ds-asks ds-labeled"><li>(a) 첫째를 쓰세요.</li><li>(b) 둘째를 쓰세요.</li></ol>'
+    plain = P('<ol><li>첫째를 쓰세요.</li></ol>')
+    assert split_lecture_problem((cond_p, plain))[1] == '<ol class="ds-asks"><li>첫째를 쓰세요.</li></ol>'
+
+def test_list_before_prose_keeps_original_order():
+    blocks = (P('<p>다음 연산을 실행해요.</p>'), P('<ol><li>push(1)</li></ol>'), P('<p>최종 상태를 쓰세요.</p>'))
+    assert split_lecture_problem(blocks) == ('', ''.join(b.html for b in blocks))
 
 def test_all_lecture_cards_lossless_and_badge_free():
     n = 0
@@ -62,14 +83,14 @@ def payload(range_, mode='problems'):
 def test_lecture_payload_uses_conditions():
     pack, data = payload('1015')
     p5 = next(p for p in data['problems'] if p['id'] == 'p5')
-    assert p5['html']['conditions'].count('<p>') == 5 and '<ol class="ds-asks">' in p5['html']['ask']
+    assert p5['html']['conditions'].count('<p>') == 1 and p5['html']['ask'].count('<ol class="ds-asks ds-labeled">') == 1
     assert 'service_time--' in p5['html']['code']
 
 def test_lecture_answers_mode_split():
     _, data = payload('1015', 'answers')
     assert all('강의 예제 기반' not in json.dumps(p['html'], ensure_ascii=False) for p in data['problems'])
     p5 = next(p for p in data['problems'] if p['id'] == 'p5')
-    assert '<ol class="ds-asks">' in p5['html']['ask'] and p5['solution']['steps']
+    assert '<ol class="ds-asks ds-labeled">' in p5['html']['ask'] and p5['solution']['steps']
 
 def test_non_lecture_payload_unchanged():
     _, data = payload('1015')
@@ -99,7 +120,7 @@ def test_lecture_long_card_renders(tmp_path):
             r = pdf_render.render(to_payload(pack, mode, pages, tmp_path / 'assets'), mode, tmp_path / mode, tmp_path / (mode + '.pdf'))
             assert r.errors == () and r.overflow == ()
 
-def test_lecture_asks_show_number_only(tmp_path):
+def test_lecture_labeled_asks_hide_numbers(tmp_path):
     from pdf_render import probe, render_session
     _, data = payload('1015')
     data = {'meta': data['meta'], 'problems': [p for p in data['problems'] if p['id'] == 'p5']}
@@ -108,8 +129,8 @@ def test_lecture_asks_show_number_only(tmp_path):
         page = browser.new_page()
         page.goto((tmp_path / 'problems-video-16x9.html').resolve().as_uri())
         page.wait_for_function('document.documentElement.dataset.ready', timeout=120000)
-        marks = page.evaluate("[...document.querySelectorAll('.ds-asks li')].map(li => [getComputedStyle(li, '::before').display, getComputedStyle(li).display])")
-    assert marks == [['none', 'list-item']] * 2
+        marks = page.evaluate("[...document.querySelectorAll('.ds-asks li')].map(li => [getComputedStyle(li, '::before').display, getComputedStyle(li).listStyleType])")
+    assert marks == [['none', 'none']] * 2
 
 def test_badge_with_extra_text_raises():
     import pytest

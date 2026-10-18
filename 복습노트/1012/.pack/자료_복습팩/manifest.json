@@ -443,7 +443,7 @@
       "terms": [
         "배열 스택의 전위·후위 연산"
       ],
-      "answer": "정상 push는 올린 인덱스에 저장하고 정상 pop은 현재 인덱스를 읽은 뒤 줄인다. 잘못된 push top++는 -1에 쓰고 잘못된 pop --top은 -1을 읽어 배열 밖 접근을 일으킨다.",
+      "answer": "(a) 정상 push는 ++(s->top)으로 인덱스를 먼저 올린 자리에 저장하고, 정상 pop은 (s->top)--로 현재 맨 위 인덱스를 먼저 읽은 뒤 s->top을 줄인다. (b) 잘못된 push(top++)는 인덱스 -1에 쓰고, 잘못된 pop(--top)은 인덱스 -1을 읽어 모두 배열 범위 밖 접근(미정의 동작)을 일으킨다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
         "pdf_page": 14,
@@ -453,7 +453,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "stack-c"
+        "배열 스택 push의 ++(s->top)과 pop의 (s->top)-- 식 평가값 및 인덱스 갱신 원리",
+        "top++와 --top 오용 시 인덱스 -1 범위 밖 접근(미정의 동작) 판정"
       ],
       "task_family": "stack-c"
     },
@@ -469,7 +470,7 @@
       "terms": [
         "연결 스택의 두 링크 갱신"
       ],
-      "answer": "push 뒤 N→A→B, pop 뒤 top=A이고 N이 해제된다. push 순서를 뒤집으면 N->link=N이 된다. free 뒤 temp->item이나 temp->link를 읽으면 해제 후 접근이다.",
+      "answer": "(a) push 직후 N -> A -> B -> NULL이 되고, pop 직후 s->top = A가 되며 노드 N이 해제된다. (b) push 순서를 뒤집으면 N->link = N 자기 참조가 되어 기존 노드들을 잃어버리고, pop에서 free(temp) 뒤에 temp->item이나 temp->link를 읽으면 해제 후 접근(use-after-free) 오류가 발생한다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
         "pdf_page": 17,
@@ -481,7 +482,8 @@
         ]
       },
       "objectives": [
-        "linked-stack"
+        "연결 스택 push·pop 실행 시 s->top과 노드 연결 상태 및 free 대상 추적",
+        "push 링크 대입 역전 시 자기 참조 오류와 pop 조기 free 시 해제 후 접근 오류 설명"
       ],
       "task_family": "linked-stack"
     },
@@ -497,7 +499,7 @@
       "terms": [
         "후위식 계산 코드의 입력 계약"
       ],
-      "answer": "[8]→[8,2]→[4]→[4,3]→[1], 결과 1. 먼저 꺼낸 값은 오른쪽 피연산자다. 코드는 숫자 여러 자리를 묶지 않고 공백도 숫자로 취급하므로 \"12 3+\"는 지원하지 않는다.",
+      "answer": "(a) 문자별 스택: [8] -> [8, 2] -> [4] -> [4, 3] -> [1], 최종 결과 1 (b) 나중에 push된 오른쪽 피연산자가 먼저 pop되므로 첫 pop이 op2여야 뺄셈·나눗셈 순서가 맞는다. 코드는 여러 자리 숫자를 토큰화하지 않고 공백 문자도 피연산자 분기(ch - '0')로 처리하므로 \"12 3+\"는 지원하지 않는다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
         "pdf_page": 27,
@@ -507,7 +509,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "postfix-code"
+        "후위 표기식 eval 반복문에서 문자별 스택 상태 변화와 결과 추적",
+        "첫 pop을 오른쪽 피연산자 op2로 두는 이유와 한 자리 숫자·무공백 입력 계약 한계 설명"
       ],
       "task_family": "postfix-code"
     },

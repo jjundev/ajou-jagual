@@ -523,7 +523,11 @@ int main(void)
       <li><code>new_node</code>: 새 노드를 가리키는 포인터예요.</li>
     </ul>
     <p>의사코드의 (L, before, new)에 포인터가 하나씩 더 붙었어요. before와 new는 노드를 가리켜야 하니 포인터예요. new_node는 malloc으로 받은 주소이니 당연히 포인터예요. 헤드는 이중 포인터(double pointer), 곧 포인터의 포인터가 됐어요.</p>
-    <p><strong>왜 이중 포인터인가</strong>: 헤드 포인터는 함수 안에서 바뀔 수 있어요. 바뀐 값을 호출한 쪽과 공유하려면 헤드 포인터가 가리키는 주소가 아니라 헤드 포인터 자신의 주소를 넘겨야 해요.</p>
+    <p><strong>왜 이중 포인터인가</strong>: 헤드 포인터는 함수 안에서 바뀔 수 있어요. 바뀐 값을 호출한 쪽과 공유하려면 헤드 포인터가 가리키는 주소가 아니라 헤드 포인터 자신의 주소를 넘겨야 해요. 매개변수 세 개를 나란히 비교하면 기준이 분명해요.</p>
+    <ul>
+      <li><strong>이중 포인터(<code>ListNode **phead</code>)</strong>: 함수 안에서 포인터 변수(<code>head</code>)가 가리키는 <strong>주소 자체</strong>를 바꿀 때 써요(<code>*phead = new_node;</code>).</li>
+      <li><strong>일반 포인터(<code>ListNode *p</code>, <code>ListNode *new_node</code>)</strong>: 함수 안에서 그 포인터가 가리키는 <strong>노드 객체 내부의 값(<code>link</code>)</strong>을 바꿀 때 써요(<code>p-&gt;link = new_node;</code>, <code>new_node-&gt;link = …;</code>).</li>
+    </ul>
     <figure class="figure"><svg id="fig-insert-dptr" viewBox="0 0 420 80" role="img" aria-label="phead 상자가 head 상자를 가리키고, head 상자가 10과 색칠된 점이 든 첫 노드를 가리키는 그림"><rect x="10" y="22" width="70" height="34" class="fig-ink" fill="none"/><text x="22" y="44" class="fig-text" font-size="14" font-family="monospace">phead</text><path d="M80 39 L113 39 M106 33 L113 39 L106 45" class="fig-accent" fill="none"/><rect x="120" y="22" width="70" height="34" class="fig-accent" fill="none"/><text x="137" y="44" class="fig-text" font-size="14" font-family="monospace">head</text><path d="M190 39 L233 39 M226 33 L233 39 L226 45" class="fig-ink" fill="none"/><rect x="240" y="22" width="110" height="34" class="fig-ink" fill="none"/><path d="M295 22 L295 56" class="fig-ink" fill="none"/><text x="258" y="44" class="fig-text" font-size="14">10</text><circle cx="322" cy="39" r="4" class="fig-dot"/><path d="M326 39 L373 39 M366 33 L373 39 L366 45" class="fig-ink" fill="none"/><text x="380" y="44" class="fig-muted" font-size="14">…</text></svg><figcaption><code>*phead</code>는 head 변수 그 자체라서, 함수 안에서 바꾸면 바깥의 head도 바뀌어요.</figcaption></figure>
     <p><strong>삽입의 3가지 경우</strong></p>
     <ol>
@@ -743,7 +747,7 @@ void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
 <blockquote>그렇게 많이 쓰는 연산이라고 보긴 어렵습니다. (1005 Part 04)</blockquote></div>
   <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span><p>수업에서 "따라가 보세요"로 넘긴 추적을 리스트 10→20→30으로 해 보면 다음과 같아요. 각 줄은 반복 한 번이 끝난 뒤의 상태예요.</p>
 <ol class="steps"><li>시작: p는 10 노드, q는 NULL, 원래 리스트 10→20→30</li><li>1회차: <code>r = q</code> → r은 NULL, <code>q = p</code> → q는 10 노드, <code>p = p-&gt;link</code> → p는 20 노드, <code>q-&gt;link =r;</code> → 10의 링크는 NULL. 역순 부분 10, 남은 부분 20→30</li><li>2회차: r은 10 노드, q는 20 노드, p는 30 노드, 20의 링크는 10. 역순 부분 20→10, 남은 부분 30</li><li>3회차: r은 20 노드, q는 30 노드, p는 NULL, 30의 링크는 20. 역순 부분 30→20→10</li><li><code>p != NULL</code>이 거짓 → 반복 종료, <code>return q;</code> → 30 노드를 돌려줌. 결과 30→20→10</li></ol>
-<ul><li><code>p = p-&gt;link;</code>가 <code>q-&gt;link =r;</code>보다 먼저 와요. 링크를 먼저 바꾸면 나머지 리스트로 가는 길을 잃기 때문이에요. 삽입에서 본 <a href="#s0-insert-order">연결 순서</a>와 같은 이유예요.</li><li>빈 리스트면 반복을 한 번도 돌지 않고 q의 초깃값 NULL을 돌려줘요.</li></ul>
+<ul><li><code>p = p-&gt;link;</code>가 <code>q-&gt;link =r;</code>보다 먼저 와요. 링크를 먼저 바꾸면 나머지 리스트로 가는 길을 잃기 때문이에요. 삽입에서 본 <a href="#s0-insert-order">연결 순서</a>와 같은 이유예요.</li><li>노드를 새로 만들지 않고 기존 노드의 <code>link</code>를 직접 덮어쓰므로, 실행이 끝나면 맨 처음 순서(10→20→30)의 리스트는 사라지고 역순 리스트(30→20→10)만 남아요.</li><li>바깥의 <code>head</code> 변수는 값으로 전달되어 여전히 10 노드를 가리켜요. 첫 회차에 <code>10-&gt;link = NULL</code>이 되므로, 반환값을 받지 않으면 <code>head</code>로는 10→NULL만 남아요. 반드시 <code>head = reverse(head);</code>처럼 반환값 <code>q</code>를 받아 써야 해요.</li><li>빈 리스트면 반복을 한 번도 돌지 않고 q의 초깃값 NULL을 돌려줘요.</li></ul>
 <p>노드마다 반복을 한 번씩 돌므로 시간복잡도는 $O(n)$이에요.</p></div>
   <div class="sum" hidden><p class="sum-lead">p, q, r을 한 칸씩 밀며 각 노드의 링크를 앞 노드 쪽으로 돌려 역순 리스트를 만들어요.</p><p class="panel-label">용어</p><dl class="terms"><dt>역순 연산(reverse)</dt><dd>리스트의 노드들을 역순으로 만드는 연산</dd><dt>순회 포인터 p, q, r</dt><dd>나머지 리스트, 방향을 바꿀 노드, 역순이 된 리스트</dd></dl></div>
 </article>

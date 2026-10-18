@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "44375337d8c7cd3d346e04b7f319e9757b33306334da918889c2f3390d99e561",
+  "input_hash": "2695cef1ba2849b7d972955340504a79d0c03011936ae65b4cd5f34f86b3afc7",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\docs\\verify\\no-exam-coverage-20261017\\all-preserved.json",
@@ -144,7 +144,7 @@
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1005\\정리노트_1005_List.html",
-      "sha256": "aedf87b1c0026c0e0747d1755b212394cb85fcd1223acb5d40db0b31fdbd406e"
+      "sha256": "54380a3bb3218ea5273ab2b04dfbb09beb6733072530335e8ce389aeb6b5219e"
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\자료구조_강의록_2026\\Software_1_자료구조및알고리즘.pdf",
@@ -172,22 +172,22 @@
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1005\\복습문제_1005_List.html",
-      "sha256": "35e6ffdb32e1564dae2c19eea1e9b2e1f7ec9ac8e806d2c9e50d0c2b72f60f6e"
+      "sha256": "2c10aa5080beab5ddaab2f03dd97676b08abb0796682f4b9a736a1df6ee97e98"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone minors 2026-10-18)",
-    "evidence": "Changed text checked against the lecture PDF page text (PyMuPDF); unchanged items keep the prior source review. Prior: Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment equality checked. Unchanged references required for reuse;1005 note-reference change triggers fresh content and blind independent review."
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Layout-only rerender. Staged HTML compared with the previously published, reviewed HTML: after removing the new data-labeled attribute and the single labeled-ol CSS rule the files are line-identical (CR-insensitive), so problem conditions, code, asks, figures and originals are unchanged from the source-visual review already on record."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone minors 2026-10-18)",
-    "evidence": "Fresh stage checked with Playwright Chrome at 1280x900, 1024x900 and 375x812 in light/dark: 66 problem views, 0 console/KaTeX/resource errors, no overflow, seven sections each, summary panel at >=1024px, next/prev navigation. Changed-item screenshots (1280 dark, 375 light) in evidence/browser-2026-10-18-minors/ were opened and inspected. evidence/browser-2026-10-18-minors.json"
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Playwright Chrome at 1280x900 light and 375x812 dark: every lecture ask block has data-labeled and computed list-style-type none (no duplicate 1./2. before (a)/(b)); 0 console/page errors; no document horizontal overflow. 1005 P3 problem pane screenshot inspected. All other panel/navigation behaviour is byte-identical to the previously reviewed publish."
   },
   "content": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone minors 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "1 changed item(s) ['p10'] freshly reviewed; unchanged items reuse the prior review with hash-equality proof (evidence/lecture-minors-2026-10-18.json). 복습문제_1005_List.html republished by this revision (evidence/lecture-minors-changes-2026-10-18.md). Prior summary: 2 changed lecture-code item(s) ['p7', 'p10'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: 2 changed lecture-code item(s) ['p7', 'p10'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment equality checked. Unchanged references required for reuse;1005 note-reference change triggers fresh content and blind independent review.",
     "items": {
       "p1:main": {
@@ -200,56 +200,101 @@
         "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
         "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 순회 시작 전 count=0. 반복 불변식은 count가 이미 방문한 노드 수이며 p는 다음 미방문 노드라는 것이다. 각 반복에 한 노드를 세고 다음으로 이동하여 유한 비순환 리스트에서는 종료한다. 빈 리스트는0. 시간 Θ(n), 추가 계수 공간 Θ(1). 입력받은 n을 그대로 출력하는 것은 연결 구조를 실제로 세는 검증이 아니다."
       },
-      "p3:main": {
+      "p3:a": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 마지막 노드를 보존해야 그 link를 수정할 수 있다. 연결이 겹치지 않는 유한 리스트라는 전제가 순환 생성 방지를 보장한다. 반환값으로 호출자의 head 변수를 대입하지 않는 한 함수 인자 head1 자체의 복사값 변경이 호출자 포인터를 바꾸지는 않는다. 한쪽이 빈 조기 반환은 Θ(1),일반 최악은 Θ(m)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p3 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 마지막 노드를 보존해야 그 link를 수정할 수 있다. 연결이 겹치지 않는 유한 리스트라는 전제가 순환 생성 방지를 보장한다. 반환값으로 호출자의 head 변수를 대입하지 않는 한 함수 인자 head1 자체의 복사값 변경이 호출자 포인터를 바꾸지는 않는다. 한쪽이 빈 조기 반환은 Θ(1),일반 최악은 Θ(m)."
       },
-      "p4:main": {
+      "p3:b": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 각 반복 시작 시 q는 뒤집힌 앞부분,p는 원래 방향의 미처리 뒷부분을 가리킨다. r=q로 이전 뒤집힌 머리를 저장하고 q=p로 현재 노드를 잡은 뒤 원래 다음 노드를 p에 저장해야 링크를 안전하게 반전할 수 있다. 잘못된 순서의 첫 반복은 A.link=NULL 다음 p=NULL이 되어 B,C를 처리하지 못한다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p3 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 마지막 노드를 보존해야 그 link를 수정할 수 있다. 연결이 겹치지 않는 유한 리스트라는 전제가 순환 생성 방지를 보장한다. 반환값으로 호출자의 head 변수를 대입하지 않는 한 함수 인자 head1 자체의 복사값 변경이 호출자 포인터를 바꾸지는 않는다. 한쪽이 빈 조기 반환은 Θ(1),일반 최악은 Θ(m)."
       },
-      "p5:main": {
+      "p4:a": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. head 포인터를 값으로만 받으면 함수 안에서 head 변수의 복사값만 바뀐다. 주소를 받아 *phead를 변경해야 빈 리스트/첫 위치 삽입을 호출자에게 반영한다. 세 경우는 독립이며 새 노드가 유효하게 할당됐다는 전제가 있다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p4 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 각 반복 시작 시 q는 뒤집힌 앞부분,p는 원래 방향의 미처리 뒷부분을 가리킨다. r=q로 이전 뒤집힌 머리를 저장하고 q=p로 현재 노드를 잡은 뒤 원래 다음 노드를 p에 저장해야 링크를 안전하게 반전할 수 있다. 잘못된 순서의 첫 반복은 A.link=NULL 다음 p=NULL이 되어 B,C를 처리하지 못한다."
       },
-      "p6:main": {
+      "p4:b": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 삭제 대상은 살아 있는 해당 리스트 노드여야 하며 p는 실제 선행 노드 또는 첫 노드 삭제의 NULL이다. 링크를 우회시킨 뒤 정확히 삭제 노드만 반납한다. removed 자체는 호출자에게 남아도 dangling pointer이며 이후 역참조하면 안 된다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p4 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 각 반복 시작 시 q는 뒤집힌 앞부분,p는 원래 방향의 미처리 뒷부분을 가리킨다. r=q로 이전 뒤집힌 머리를 저장하고 q=p로 현재 노드를 잡은 뒤 원래 다음 노드를 p에 저장해야 링크를 안전하게 반전할 수 있다. 잘못된 순서의 첫 반복은 A.link=NULL 다음 p=NULL이 되어 B,C를 처리하지 못한다."
       },
-      "p7:main": {
+      "p5:a": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. Card p7 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. head 포인터를 값으로만 받으면 함수 안에서 head 변수의 복사값만 바뀐다. 주소를 받아 *phead를 변경해야 빈 리스트/첫 위치 삽입을 호출자에게 반영한다. 세 경우는 독립이며 새 노드가 유효하게 할당됐다는 전제가 있다."
       },
-      "p8:main": {
+      "p5:b": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 원래 오른쪽 노드 B를 지칭하는 before->rlink는 A.rlink를 덮어쓰기 전까지만 유지된다. 삭제 대입 두 문장은 양옆 노드를 서로 연결하고 N 자체의 llink/rlink를 바꾸지 않으므로 유효한 리스트와 실제 데이터 노드 N이라는 전제에서 어느 순서로도 가능하다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. head 포인터를 값으로만 받으면 함수 안에서 head 변수의 복사값만 바뀐다. 주소를 받아 *phead를 변경해야 빈 리스트/첫 위치 삽입을 호출자에게 반영한다. 세 경우는 독립이며 새 노드가 유효하게 할당됐다는 전제가 있다."
       },
-      "p9:main": {
+      "p6:a": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. printf가 재귀 호출 앞에 있어 정방향 출력이다. 데이터 비교 성공 시 return p이므로 반환은 int20이 아니라 ListNode 포인터다. 종료 증명은 남은 노드 수가 매 호출1 감소하고 음수가 되지 않는다는 감소량에 근거한다. 순환 연결 리스트를 주면 이 종료 증명은 성립하지 않는다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p6 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 삭제 대상은 살아 있는 해당 리스트 노드여야 하며 p는 실제 선행 노드 또는 첫 노드 삭제의 NULL이다. 링크를 우회시킨 뒤 정확히 삭제 노드만 반납한다. removed 자체는 호출자에게 남아도 dangling pointer이며 이후 역참조하면 안 된다."
       },
-      "p10:main": {
+      "p6:b": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone minors 2026-10-18)",
-        "evidence": "Card p10: insert_node/remove_node contract summary now includes the p==NULL front-insert/front-remove case, matching S4 p22/p25/p26/p28 page text; fragment understand sentence mirrors it; answer unchanged. All seven explanation sections re-read against the new card: every asked subpart covered, no lecture-page/slide/other-problem reference, badge and original panel unchanged."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p6 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 삭제 대상은 살아 있는 해당 리스트 노드여야 하며 p는 실제 선행 노드 또는 첫 노드 삭제의 NULL이다. 링크를 우회시킨 뒤 정확히 삭제 노드만 반납한다. removed 자체는 호출자에게 남아도 dangling pointer이며 이후 역참조하면 안 된다."
       },
-      "p11:main": {
+      "p7:a": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 매 비교에서 더 높은 지수는 다른 입력 뒤에 같은 지수가 없으므로 확정할 수 있다. 같으면 합쳐 두 항을 모두 소비한다. 각 입력 노드를 최대 한 번 소비하므로 O(m+n),서로 겹치지 않는 모든 항을 결과에 옮겨야 하는 경우 Ω(m+n)이다. 최종 질문은 출력 꼬리 포인터를 유지해 항 추가가 O(1)임을 명시했으므로 최악 Θ(m+n)이 보장된다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p7 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. Card p7 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+      },
+      "p7:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p7 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. Card p7 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+      },
+      "p8:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p8 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 원래 오른쪽 노드 B를 지칭하는 before->rlink는 A.rlink를 덮어쓰기 전까지만 유지된다. 삭제 대입 두 문장은 양옆 노드를 서로 연결하고 N 자체의 llink/rlink를 바꾸지 않으므로 유효한 리스트와 실제 데이터 노드 N이라는 전제에서 어느 순서로도 가능하다."
+      },
+      "p8:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p8 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Fresh content review against current1005note and unchanged lecture PDFs after detecting old note-reference hash: docs/verify/no-exam-coverage-20261017/content-existing-1005.json. 원래 오른쪽 노드 B를 지칭하는 before->rlink는 A.rlink를 덮어쓰기 전까지만 유지된다. 삭제 대입 두 문장은 양옆 노드를 서로 연결하고 N 자체의 llink/rlink를 바꾸지 않으므로 유효한 리스트와 실제 데이터 노드 N이라는 전제에서 어느 순서로도 가능하다."
+      },
+      "p9:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p9 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. printf가 재귀 호출 앞에 있어 정방향 출력이다. 데이터 비교 성공 시 return p이므로 반환은 int20이 아니라 ListNode 포인터다. 종료 증명은 남은 노드 수가 매 호출1 감소하고 음수가 되지 않는다는 감소량에 근거한다. 순환 연결 리스트를 주면 이 종료 증명은 성립하지 않는다."
+      },
+      "p9:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p9 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. printf가 재귀 호출 앞에 있어 정방향 출력이다. 데이터 비교 성공 시 return p이므로 반환은 int20이 아니라 ListNode 포인터다. 종료 증명은 남은 노드 수가 매 호출1 감소하고 음수가 되지 않는다는 감소량에 근거한다. 순환 연결 리스트를 주면 이 종료 증명은 성립하지 않는다."
+      },
+      "p10:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p10 structured into conditions and ask list; explanations verified. Prior: Card p10: insert_node/remove_node contract summary now includes the p==NULL front-insert/front-remove case, matching S4 p22/p25/p26/p28 page text; fragment understand sentence mirrors it; answer unchanged. All seven explanation sections re-read against the new card: every asked subpart covered, no lecture-page/slide/other-problem reference, badge and original panel unchanged."
+      },
+      "p10:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p10 structured into conditions and ask list; explanations verified. Prior: Card p10: insert_node/remove_node contract summary now includes the p==NULL front-insert/front-remove case, matching S4 p22/p25/p26/p28 page text; fragment understand sentence mirrors it; answer unchanged. All seven explanation sections re-read against the new card: every asked subpart covered, no lecture-page/slide/other-problem reference, badge and original panel unchanged."
+      },
+      "p11:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p11 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 매 비교에서 더 높은 지수는 다른 입력 뒤에 같은 지수가 없으므로 확정할 수 있다. 같으면 합쳐 두 항을 모두 소비한다. 각 입력 노드를 최대 한 번 소비하므로 O(m+n),서로 겹치지 않는 모든 항을 결과에 옮겨야 하는 경우 Ω(m+n)이다. 최종 질문은 출력 꼬리 포인터를 유지해 항 추가가 O(1)임을 명시했으므로 최악 Θ(m+n)이 보장된다."
+      },
+      "p11:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p11 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 매 비교에서 더 높은 지수는 다른 입력 뒤에 같은 지수가 없으므로 확정할 수 있다. 같으면 합쳐 두 항을 모두 소비한다. 각 입력 노드를 최대 한 번 소비하므로 O(m+n),서로 겹치지 않는 모든 항을 결과에 옮겨야 하는 경우 Ω(m+n)이다. 최종 질문은 출력 꼬리 포인터를 유지해 항 추가가 O(1)임을 명시했으므로 최악 Θ(m+n)이 보장된다."
       }
     }
   },
   "independent": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone minors 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "1 changed item(s) ['p10'] freshly reviewed; unchanged items reuse the prior review with hash-equality proof (evidence/lecture-minors-2026-10-18.json). 복습문제_1005_List.html republished by this revision (evidence/lecture-minors-changes-2026-10-18.md). Prior summary: 2 changed lecture-code item(s) ['p7', 'p10'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: 2 changed lecture-code item(s) ['p7', 'p10'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment equality checked. Unchanged references required for reuse;1005 note-reference change triggers fresh content and blind independent review.",
     "items": {
       "p1:main": {
@@ -266,75 +311,138 @@
         "conclusion": "노드를 실제로 연결해 만든 뒤 head부터 NULL까지 순회하며 개수를1씩 센다. 예시 입력5,6,7의 데이터값과 무관하게 노드 수는3이다. 완성 C 프로그램은 code 필드에 제시한다.",
         "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 순회 시작 전 count=0. 반복 불변식은 count가 이미 방문한 노드 수이며 p는 다음 미방문 노드라는 것이다. 각 반복에 한 노드를 세고 다음으로 이동하여 유한 비순환 리스트에서는 종료한다. 빈 리스트는0. 시간 Θ(n), 추가 계수 공간 Θ(1). 입력받은 n을 그대로 출력하는 것은 연결 구조를 실제로 세는 검증이 아니다."
       },
-      "p3:main": {
+      "p3:a": {
         "status": "pass",
-        "reviewer": "blind_coverage, fresh existing1005 question-only snapshot",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p3 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 마지막 노드를 보존해야 그 link를 수정할 수 있다. 연결이 겹치지 않는 유한 리스트라는 전제가 순환 생성 방지를 보장한다. 반환값으로 호출자의 head 변수를 대입하지 않는 한 함수 인자 head1 자체의 복사값 변경이 호출자 포인터를 바꾸지는 않는다. 한쪽이 빈 조기 반환은 Θ(1),일반 최악은 Θ(m).",
         "method": "qualitative",
-        "conclusion": "반환 포인터는 head1,즉 A의 주소이며 B.link가 NULL에서 C의 주소로 바뀌어 A→B→C→D→NULL이 된다. head1이 NULL이면 head2를 바로 반환한다. head2가 NULL이면 head1을 바로 반환한다. while(p!=NULL)로 바꾸면 p가 NULL까지 진행하고 다음 p->link=head2가 NULL 역참조가 된다. 두 입력이 비어 있지 않을 때 첫 리스트 길이m에 대한 비용은 Θ(m)이다.",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 마지막 노드를 보존해야 그 link를 수정할 수 있다. 연결이 겹치지 않는 유한 리스트라는 전제가 순환 생성 방지를 보장한다. 반환값으로 호출자의 head 변수를 대입하지 않는 한 함수 인자 head1 자체의 복사값 변경이 호출자 포인터를 바꾸지는 않는다. 한쪽이 빈 조기 반환은 Θ(1),일반 최악은 Θ(m)."
+        "conclusion": "Subpart (a): 반환 포인터는 head1,즉 A의 주소이며 B.link가 NULL에서 C의 주소로 바뀌어 A→B→C→D→NULL이 된다. head1이 NULL이면 head2를 바로 반환한다. head2가 NULL이면 head1을 바로 반환한다. while(p!=NULL)로 바꾸면 p가 NULL까지 진행하고 다음 p->link=head2가 NULL 역참조가 된다. 두 입력이 비어 있지 않을 때 첫 리스트 길이m에 대한 비용은 Θ(m)이다."
       },
-      "p4:main": {
+      "p3:b": {
         "status": "pass",
-        "reviewer": "blind_coverage, fresh existing1005 question-only snapshot",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p3 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 마지막 노드를 보존해야 그 link를 수정할 수 있다. 연결이 겹치지 않는 유한 리스트라는 전제가 순환 생성 방지를 보장한다. 반환값으로 호출자의 head 변수를 대입하지 않는 한 함수 인자 head1 자체의 복사값 변경이 호출자 포인터를 바꾸지는 않는다. 한쪽이 빈 조기 반환은 Θ(1),일반 최악은 Θ(m).",
         "method": "qualitative",
-        "conclusion": "1회 뒤 p=B,q=A,r=NULL,뒤집힌 부분 A→NULL. 2회 뒤 p=C,q=B,r=A,뒤집힌 부분 B→A→NULL. 3회 뒤 p=NULL,q=C,r=B,뒤집힌 부분 C→B→A→NULL. 반환은 C이다. q->link=r을 p=p->link보다 먼저 실행하면 q와p가 같은 현재 노드이므로 원래 next를 덮어써 원래 나머지로 가는 포인터를 잃는다. 빈 리스트는 q=NULL을 반환한다.",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 각 반복 시작 시 q는 뒤집힌 앞부분,p는 원래 방향의 미처리 뒷부분을 가리킨다. r=q로 이전 뒤집힌 머리를 저장하고 q=p로 현재 노드를 잡은 뒤 원래 다음 노드를 p에 저장해야 링크를 안전하게 반전할 수 있다. 잘못된 순서의 첫 반복은 A.link=NULL 다음 p=NULL이 되어 B,C를 처리하지 못한다."
+        "conclusion": "Subpart (b): 반환 포인터는 head1,즉 A의 주소이며 B.link가 NULL에서 C의 주소로 바뀌어 A→B→C→D→NULL이 된다. head1이 NULL이면 head2를 바로 반환한다. head2가 NULL이면 head1을 바로 반환한다. while(p!=NULL)로 바꾸면 p가 NULL까지 진행하고 다음 p->link=head2가 NULL 역참조가 된다. 두 입력이 비어 있지 않을 때 첫 리스트 길이m에 대한 비용은 Θ(m)이다."
       },
-      "p5:main": {
+      "p4:a": {
         "status": "pass",
-        "reviewer": "blind_coverage, fresh existing1005 question-only snapshot",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p4 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 각 반복 시작 시 q는 뒤집힌 앞부분,p는 원래 방향의 미처리 뒷부분을 가리킨다. r=q로 이전 뒤집힌 머리를 저장하고 q=p로 현재 노드를 잡은 뒤 원래 다음 노드를 p에 저장해야 링크를 안전하게 반전할 수 있다. 잘못된 순서의 첫 반복은 A.link=NULL 다음 p=NULL이 되어 B,C를 처리하지 못한다.",
         "method": "qualitative",
-        "conclusion": "빈 리스트는 head=N,N.link=NULL이다. A→B에서 p=NULL은 head=N,N.link=A로 N→A→B→NULL이다. A→B에서 p=A는 A.link=N,N.link=B로 A→N→B→NULL이다. phead는 호출자 head 자체를 갱신하기 위한 ListNode**다. 마지막 두 대입을 뒤집으면 p.link가 먼저 N이 되고 이어 N.link=p.link로 N 자신을 가리키므로 기존 다음 노드로 가는 경로를 잃는다.",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. head 포인터를 값으로만 받으면 함수 안에서 head 변수의 복사값만 바뀐다. 주소를 받아 *phead를 변경해야 빈 리스트/첫 위치 삽입을 호출자에게 반영한다. 세 경우는 독립이며 새 노드가 유효하게 할당됐다는 전제가 있다."
+        "conclusion": "Subpart (a): 1회 뒤 p=B,q=A,r=NULL,뒤집힌 부분 A→NULL. 2회 뒤 p=C,q=B,r=A,뒤집힌 부분 B→A→NULL. 3회 뒤 p=NULL,q=C,r=B,뒤집힌 부분 C→B→A→NULL. 반환은 C이다. q->link=r을 p=p->link보다 먼저 실행하면 q와p가 같은 현재 노드이므로 원래 next를 덮어써 원래 나머지로 가는 포인터를 잃는다. 빈 리스트는 q=NULL을 반환한다."
       },
-      "p6:main": {
+      "p4:b": {
         "status": "pass",
-        "reviewer": "blind_coverage, fresh existing1005 question-only snapshot",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p4 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 각 반복 시작 시 q는 뒤집힌 앞부분,p는 원래 방향의 미처리 뒷부분을 가리킨다. r=q로 이전 뒤집힌 머리를 저장하고 q=p로 현재 노드를 잡은 뒤 원래 다음 노드를 p에 저장해야 링크를 안전하게 반전할 수 있다. 잘못된 순서의 첫 반복은 A.link=NULL 다음 p=NULL이 되어 B,C를 처리하지 못한다.",
         "method": "qualitative",
-        "conclusion": "B 삭제는 p=A,removed=B로 A.link=C가 되고 B를 free한다. A 삭제는 p=NULL,removed=A로 head=B가 되고 A를 free한다. 하나뿐인 A 삭제는 head=NULL이다. 먼저 free하면 removed->link 또는 (*phead)->link를 읽을 때 해제된 객체를 사용하므로 정의되지 않은 동작이다.",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 삭제 대상은 살아 있는 해당 리스트 노드여야 하며 p는 실제 선행 노드 또는 첫 노드 삭제의 NULL이다. 링크를 우회시킨 뒤 정확히 삭제 노드만 반납한다. removed 자체는 호출자에게 남아도 dangling pointer이며 이후 역참조하면 안 된다."
+        "conclusion": "Subpart (b): 1회 뒤 p=B,q=A,r=NULL,뒤집힌 부분 A→NULL. 2회 뒤 p=C,q=B,r=A,뒤집힌 부분 B→A→NULL. 3회 뒤 p=NULL,q=C,r=B,뒤집힌 부분 C→B→A→NULL. 반환은 C이다. q->link=r을 p=p->link보다 먼저 실행하면 q와p가 같은 현재 노드이므로 원래 next를 덮어써 원래 나머지로 가는 포인터를 잃는다. 빈 리스트는 q=NULL을 반환한다."
       },
-      "p7:main": {
+      "p5:a": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. evidence/blind-solver-2026-10-18.json[p7] solved from the new statement alone with missing=\"\" and matched the reference answer; inserted lecture code re-traced line by line in harness-2026-10-18-p7.out, harness-2026-10-18-p7.py.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. head 포인터를 값으로만 받으면 함수 안에서 head 변수의 복사값만 바뀐다. 주소를 받아 *phead를 변경해야 빈 리스트/첫 위치 삽입을 호출자에게 반영한다. 세 경우는 독립이며 새 노드가 유효하게 할당됐다는 전제가 있다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): 빈 리스트는 head=N,N.link=NULL이다. A→B에서 p=NULL은 head=N,N.link=A로 N→A→B→NULL이다. A→B에서 p=A는 A.link=N,N.link=B로 A→N→B→NULL이다. phead는 호출자 head 자체를 갱신하기 위한 ListNode**다. 마지막 두 대입을 뒤집으면 p.link가 먼저 N이 되고 이어 N.link=p.link로 N 자신을 가리키므로 기존 다음 노드로 가는 경로를 잃는다."
+      },
+      "p5:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. head 포인터를 값으로만 받으면 함수 안에서 head 변수의 복사값만 바뀐다. 주소를 받아 *phead를 변경해야 빈 리스트/첫 위치 삽입을 호출자에게 반영한다. 세 경우는 독립이며 새 노드가 유효하게 할당됐다는 전제가 있다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): 빈 리스트는 head=N,N.link=NULL이다. A→B에서 p=NULL은 head=N,N.link=A로 N→A→B→NULL이다. A→B에서 p=A는 A.link=N,N.link=B로 A→N→B→NULL이다. phead는 호출자 head 자체를 갱신하기 위한 ListNode**다. 마지막 두 대입을 뒤집으면 p.link가 먼저 N이 되고 이어 N.link=p.link로 N 자신을 가리키므로 기존 다음 노드로 가는 경로를 잃는다."
+      },
+      "p6:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p6 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 삭제 대상은 살아 있는 해당 리스트 노드여야 하며 p는 실제 선행 노드 또는 첫 노드 삭제의 NULL이다. 링크를 우회시킨 뒤 정확히 삭제 노드만 반납한다. removed 자체는 호출자에게 남아도 dangling pointer이며 이후 역참조하면 안 된다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): B 삭제는 p=A,removed=B로 A.link=C가 되고 B를 free한다. A 삭제는 p=NULL,removed=A로 head=B가 되고 A를 free한다. 하나뿐인 A 삭제는 head=NULL이다. 먼저 free하면 removed->link 또는 (*phead)->link를 읽을 때 해제된 객체를 사용하므로 정의되지 않은 동작이다."
+      },
+      "p6:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p6 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 삭제 대상은 살아 있는 해당 리스트 노드여야 하며 p는 실제 선행 노드 또는 첫 노드 삭제의 NULL이다. 링크를 우회시킨 뒤 정확히 삭제 노드만 반납한다. removed 자체는 호출자에게 남아도 dangling pointer이며 이후 역참조하면 안 된다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): B 삭제는 p=A,removed=B로 A.link=C가 되고 B를 free한다. A 삭제는 p=NULL,removed=A로 head=B가 되고 A를 free한다. 하나뿐인 A 삭제는 head=NULL이다. 먼저 free하면 removed->link 또는 (*phead)->link를 읽을 때 해제된 객체를 사용하므로 정의되지 않은 동작이다."
+      },
+      "p7:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p7 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. evidence/blind-solver-2026-10-18.json[p7] solved from the new statement alone with missing=\"\" and matched the reference answer; inserted lecture code re-traced line by line in harness-2026-10-18-p7.out, harness-2026-10-18-p7.py.",
         "method": "exact",
-        "conclusion": "Blind answer equals the published answer: 삽입 후 head=N, 첫 노드는 head->link=A. link: N.link=A, A.link=B, B.link=N. 즉 A→B→N→A. *phead=node를 생략하면 head가 B로 남아 첫 노드가 B->link=N이 되어, 논리적으로 N이 끝이 아니라 맨 앞(첫 노드)에 삽입된 것처럼 된다(순서 N→A→B)."
+        "conclusion": "Subpart (a): Blind answer equals the published answer: 삽입 후 head=N, 첫 노드는 head->link=A. link: N.link=A, A.link=B, B.link=N. 즉 A→B→N→A. *phead=node를 생략하면 head가 B로 남아 첫 노드가 B->link=N이 되어, 논리적으로 N이 끝이 아니라 맨 앞(첫 노드)에 삽입된 것처럼 된다(순서 N→A→B)."
       },
-      "p8:main": {
+      "p7:b": {
         "status": "pass",
-        "reviewer": "blind_coverage, fresh existing1005 question-only snapshot",
-        "method": "qualitative",
-        "conclusion": "삽입 후 N.llink=A,N.rlink=B,B.llink=N,A.rlink=N이다. 마지막 두 문장을 뒤집으면 A.rlink가 먼저 N이 되고 before->rlink->llink=new_node는 B.llink가 아니라 N.llink를 N으로 바꾼다. 그 결과 N.llink=N,B.llink=A로 잘못 남는다. N 삭제의 우회 대입은 N->llink->rlink=N->rlink; N->rlink->llink=N->llink;이다. 이후 필요하면 free(N)한다.",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 원래 오른쪽 노드 B를 지칭하는 before->rlink는 A.rlink를 덮어쓰기 전까지만 유지된다. 삭제 대입 두 문장은 양옆 노드를 서로 연결하고 N 자체의 llink/rlink를 바꾸지 않으므로 유효한 리스트와 실제 데이터 노드 N이라는 전제에서 어느 순서로도 가능하다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p7 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. evidence/blind-solver-2026-10-18.json[p7] solved from the new statement alone with missing=\"\" and matched the reference answer; inserted lecture code re-traced line by line in harness-2026-10-18-p7.out, harness-2026-10-18-p7.py.",
+        "method": "exact",
+        "conclusion": "Subpart (b): Blind answer equals the published answer: 삽입 후 head=N, 첫 노드는 head->link=A. link: N.link=A, A.link=B, B.link=N. 즉 A→B→N→A. *phead=node를 생략하면 head가 B로 남아 첫 노드가 B->link=N이 되어, 논리적으로 N이 끝이 아니라 맨 앞(첫 노드)에 삽입된 것처럼 된다(순서 N→A→B)."
       },
-      "p9:main": {
+      "p8:a": {
         "status": "pass",
-        "reviewer": "blind_coverage, final question snapshot bound",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p8 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 원래 오른쪽 노드 B를 지칭하는 before->rlink는 A.rlink를 덮어쓰기 전까지만 유지된다. 삭제 대입 두 문장은 양옆 노드를 서로 연결하고 N 자체의 llink/rlink를 바꾸지 않으므로 유효한 리스트와 실제 데이터 노드 N이라는 전제에서 어느 순서로도 가능하다.",
         "method": "qualitative",
-        "conclusion": "출력은 10->20->30->다. search(head,20)은 B의 노드 주소,search(head,99)는 NULL을 반환한다. head 인자는 값으로 전달되고 p만 이동하므로 원래 head와 링크는 바뀌지 않는다. 빈 리스트는 출력 없음,탐색 반환 NULL이다. 유한한 비순환 단순 리스트이므로 방문할 때마다 다음 노드로 가서 마지막 NULL에 도달하고 재귀는 종료한다.",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. printf가 재귀 호출 앞에 있어 정방향 출력이다. 데이터 비교 성공 시 return p이므로 반환은 int20이 아니라 ListNode 포인터다. 종료 증명은 남은 노드 수가 매 호출1 감소하고 음수가 되지 않는다는 감소량에 근거한다. 순환 연결 리스트를 주면 이 종료 증명은 성립하지 않는다."
+        "conclusion": "Subpart (a): 삽입 후 N.llink=A,N.rlink=B,B.llink=N,A.rlink=N이다. 마지막 두 문장을 뒤집으면 A.rlink가 먼저 N이 되고 before->rlink->llink=new_node는 B.llink가 아니라 N.llink를 N으로 바꾼다. 그 결과 N.llink=N,B.llink=A로 잘못 남는다. N 삭제의 우회 대입은 N->llink->rlink=N->rlink; N->rlink->llink=N->llink;이다. 이후 필요하면 free(N)한다."
       },
-      "p10:main": {
+      "p8:b": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only) + Claude native executor (lecture-standalone minors 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18-minors.json[p10] solved from the new statement alone and matched the reference answer.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p8 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. docs/verify/no-exam-coverage-20261017/independent-existing-1005.json; verify_existing_1005.py and trace-existing-1005-result.txt in the same durable evidence folder. Fresh blind solve because saved note reference changed; no rehashing of old approval. 원래 오른쪽 노드 B를 지칭하는 before->rlink는 A.rlink를 덮어쓰기 전까지만 유지된다. 삭제 대입 두 문장은 양옆 노드를 서로 연결하고 N 자체의 llink/rlink를 바꾸지 않으므로 유효한 리스트와 실제 데이터 노드 N이라는 전제에서 어느 순서로도 가능하다.",
         "method": "qualitative",
-        "conclusion": "Blind answer equals the published answer: 빈 상태: (1) 헤드 노드 없는 단순 리스트: head=NULL. (2) 헤드 노드 없는 원형 단순 리스트(head가 꼬리를 가리킴): head=NULL. 이 두 경우 head는 노드가 아니라 포인터 변수 하나이므로 링크가 따로 없고 값은 NULL 하나다. (3) 헤드 노드 H가 있는 원형 이중 리스트: H->llink=H, H->rlink=H (자기 자신을 가리킴).\n헤드 포인터는 첫(또는 꼬리) 노드의 주소만 담는 포인터 변수이고 데이터·링크 필드가 없으며 빈 리스트면 NULL이다. 헤드 노드는 실제로 할당된 더미 노드로 링크"
+        "conclusion": "Subpart (b): 삽입 후 N.llink=A,N.rlink=B,B.llink=N,A.rlink=N이다. 마지막 두 문장을 뒤집으면 A.rlink가 먼저 N이 되고 before->rlink->llink=new_node는 B.llink가 아니라 N.llink를 N으로 바꾼다. 그 결과 N.llink=N,B.llink=A로 잘못 남는다. N 삭제의 우회 대입은 N->llink->rlink=N->rlink; N->rlink->llink=N->llink;이다. 이후 필요하면 free(N)한다."
       },
-      "p11:main": {
+      "p9:a": {
         "status": "pass",
-        "reviewer": "blind_coverage, final question snapshot bound",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p9 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. printf가 재귀 호출 앞에 있어 정방향 출력이다. 데이터 비교 성공 시 return p이므로 반환은 int20이 아니라 ListNode 포인터다. 종료 증명은 남은 노드 수가 매 호출1 감소하고 음수가 되지 않는다는 감소량에 근거한다. 순환 연결 리스트를 주면 이 종료 증명은 성립하지 않는다.",
         "method": "qualitative",
-        "conclusion": "지수12=12에서 (11,12)를 붙이고 p,q 모두 이동한다. 8<10에서 (-3,10)을 붙이고 q만 이동한다. 8>6에서 (2,8)을 붙이고 p만 이동한다. 0<6에서 (10,6)을 붙이고 q만 이동하여 B가 끝난다. A의 남은 (1,0)을 붙인다. 결과는 11x^12-3x^10+2x^8+10x^6+1이다. 같은 지수의 합0이면 출력 항을 생략하고 두 포인터는 모두 이동한다. 꼬리에 Θ(1)로 붙이는 병합이면 최악 Θ(m+n)이다.",
-        "evidence": "2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 매 비교에서 더 높은 지수는 다른 입력 뒤에 같은 지수가 없으므로 확정할 수 있다. 같으면 합쳐 두 항을 모두 소비한다. 각 입력 노드를 최대 한 번 소비하므로 O(m+n),서로 겹치지 않는 모든 항을 결과에 옮겨야 하는 경우 Ω(m+n)이다. 최종 질문은 출력 꼬리 포인터를 유지해 항 추가가 O(1)임을 명시했으므로 최악 Θ(m+n)이 보장된다."
+        "conclusion": "Subpart (a): 출력은 10->20->30->다. search(head,20)은 B의 노드 주소,search(head,99)는 NULL을 반환한다. head 인자는 값으로 전달되고 p만 이동하므로 원래 head와 링크는 바뀌지 않는다. 빈 리스트는 출력 없음,탐색 반환 NULL이다. 유한한 비순환 단순 리스트이므로 방문할 때마다 다음 노드로 가서 마지막 NULL에 도달하고 재귀는 종료한다."
+      },
+      "p9:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p9 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. printf가 재귀 호출 앞에 있어 정방향 출력이다. 데이터 비교 성공 시 return p이므로 반환은 int20이 아니라 ListNode 포인터다. 종료 증명은 남은 노드 수가 매 호출1 감소하고 음수가 되지 않는다는 감소량에 근거한다. 순환 연결 리스트를 주면 이 종료 증명은 성립하지 않는다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): 출력은 10->20->30->다. search(head,20)은 B의 노드 주소,search(head,99)는 NULL을 반환한다. head 인자는 값으로 전달되고 p만 이동하므로 원래 head와 링크는 바뀌지 않는다. 빈 리스트는 출력 없음,탐색 반환 NULL이다. 유한한 비순환 단순 리스트이므로 방문할 때마다 다음 노드로 가서 마지막 NULL에 도달하고 재귀는 종료한다."
+      },
+      "p10:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p10 independent verification: evidence/blind-solver-2026-10-18-minors.json[p10] solved from the new statement alone and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): Blind answer equals the published answer: 빈 상태: (1) 헤드 노드 없는 단순 리스트: head=NULL. (2) 헤드 노드 없는 원형 단순 리스트(head가 꼬리를 가리킴): head=NULL. 이 두 경우 head는 노드가 아니라 포인터 변수 하나이므로 링크가 따로 없고 값은 NULL 하나다. (3) 헤드 노드 H가 있는 원형 이중 리스트: H->llink=H, H->rlink=H (자기 자신을 가리킴).\n헤드 포인터는 첫(또는 꼬리) 노드의 주소만 담는 포인터 변수이고 데이터·링크 필드가 없으며 빈 리스트면 NULL이다. 헤드 노드는 실제로 할당된 더미 노드로 링크"
+      },
+      "p10:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p10 independent verification: evidence/blind-solver-2026-10-18-minors.json[p10] solved from the new statement alone and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): Blind answer equals the published answer: 빈 상태: (1) 헤드 노드 없는 단순 리스트: head=NULL. (2) 헤드 노드 없는 원형 단순 리스트(head가 꼬리를 가리킴): head=NULL. 이 두 경우 head는 노드가 아니라 포인터 변수 하나이므로 링크가 따로 없고 값은 NULL 하나다. (3) 헤드 노드 H가 있는 원형 이중 리스트: H->llink=H, H->rlink=H (자기 자신을 가리킴).\n헤드 포인터는 첫(또는 꼬리) 노드의 주소만 담는 포인터 변수이고 데이터·링크 필드가 없으며 빈 리스트면 NULL이다. 헤드 노드는 실제로 할당된 더미 노드로 링크"
+      },
+      "p11:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p11 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 매 비교에서 더 높은 지수는 다른 입력 뒤에 같은 지수가 없으므로 확정할 수 있다. 같으면 합쳐 두 항을 모두 소비한다. 각 입력 노드를 최대 한 번 소비하므로 O(m+n),서로 겹치지 않는 모든 항을 결과에 옮겨야 하는 경우 Ω(m+n)이다. 최종 질문은 출력 꼬리 포인터를 유지해 항 추가가 O(1)임을 명시했으므로 최악 Θ(m+n)이 보장된다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): 지수12=12에서 (11,12)를 붙이고 p,q 모두 이동한다. 8<10에서 (-3,10)을 붙이고 q만 이동한다. 8>6에서 (2,8)을 붙이고 p만 이동한다. 0<6에서 (10,6)을 붙이고 q만 이동하여 B가 끝난다. A의 남은 (1,0)을 붙인다. 결과는 11x^12-3x^10+2x^8+10x^6+1이다. 같은 지수의 합0이면 출력 항을 생략하고 두 포인터는 모두 이동한다. 꼬리에 Θ(1)로 붙이는 병합이면 최악 Θ(m+n)이다."
+      },
+      "p11:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p11 independent verification: 2026-10-18 minors revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-minors-2026-10-18.json); prior same-policy review reused. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 매 비교에서 더 높은 지수는 다른 입력 뒤에 같은 지수가 없으므로 확정할 수 있다. 같으면 합쳐 두 항을 모두 소비한다. 각 입력 노드를 최대 한 번 소비하므로 O(m+n),서로 겹치지 않는 모든 항을 결과에 옮겨야 하는 경우 Ω(m+n)이다. 최종 질문은 출력 꼬리 포인터를 유지해 항 추가가 O(1)임을 명시했으므로 최악 Θ(m+n)이 보장된다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): 지수12=12에서 (11,12)를 붙이고 p,q 모두 이동한다. 8<10에서 (-3,10)을 붙이고 q만 이동한다. 8>6에서 (2,8)을 붙이고 p만 이동한다. 0<6에서 (10,6)을 붙이고 q만 이동하여 B가 끝난다. A의 남은 (1,0)을 붙인다. 결과는 11x^12-3x^10+2x^8+10x^6+1이다. 같은 지수의 합0이면 출력 항을 생략하고 두 포인터는 모두 이동한다. 꼬리에 Θ(1)로 붙이는 병합이면 최악 Θ(m+n)이다."
       }
     }
   },
   "artifact_hashes": {
     ".pack/figures_문제설명_1005_List/explain-fig-1.svg": "c61f030bf923ad3a8753be2cec994f9308379ff85b629915f04c29217b87ef22",
     ".pack/figures_문제설명_1005_List/explain-fig-2.svg": "c61f030bf923ad3a8753be2cec994f9308379ff85b629915f04c29217b87ef22",
-    ".pack/문제설명_1005_List.md": "16195f0ba8f619b52a559bd94eddfa708bcb7b7ab0a4d7507e8b0b0d35c0e25e",
+    ".pack/문제설명_1005_List.md": "313d07b436d2fb3ba23030be7149ac1ad776007f437904c28c16e2add2018151",
     ".pack/자료_문제설명_1005_List/evidence/author.py": "fba730706e3c03ebecdd785f228c0f99e2dac4fac76e96141306ccf8c52f37d8",
     ".pack/자료_문제설명_1005_List/evidence/blind-solver-2026-10-18-minors.json": "025971f8a22f1e9ab3e2c8d64fce15338bacb63c941dd0e5b6cd692c3ee61c0a",
     ".pack/자료_문제설명_1005_List/evidence/blind-solver-2026-10-18.json": "30dc570f84abdf59f0bf6625faeb07139532613e6f8e7ace1927ea00f95ce6c5",
@@ -433,16 +541,16 @@
     ".pack/자료_문제설명_1005_List/evidence/verify_new.c": "78742596c5611ca295c1976d12c27ae8bad0be6d36047348044960bee36929a6",
     ".pack/자료_문제설명_1005_List/evidence/verify_new.py": "7021dd89b46a4fd421ffb58a4000730af4c3d6f66e53335e98fa4f939063aef8",
     ".pack/자료_문제설명_1005_List/fragments/p1.html": "c17a407f497d63497e84fd9631512ca7a14622d606ae63462c22c8da9bacdba7",
-    ".pack/자료_문제설명_1005_List/fragments/p10.html": "701933698ea828b0e50fb70eb32fb6e36f216cacc6cec10f5b36144d01d3c988",
-    ".pack/자료_문제설명_1005_List/fragments/p11.html": "8750d5e2f475bed9ff19fc9ef2c34b60ae2d95c685373be8533a512fe9724e2c",
+    ".pack/자료_문제설명_1005_List/fragments/p10.html": "ce9a2fb8ec120072dfcb19bee835ead1f6c9fd2e9c564f36e44b32f7dfe22526",
+    ".pack/자료_문제설명_1005_List/fragments/p11.html": "e82d967d541ca157df065825d8a8b7bb294053fed7ede60cbc232f8a520fbed9",
     ".pack/자료_문제설명_1005_List/fragments/p2.html": "c0e6f718109549ae281984381de06a9c016c0b165b9f2dca33513c891b8e7c3c",
-    ".pack/자료_문제설명_1005_List/fragments/p3.html": "9436a77a7e1831a79c9ab54f63acdd8e6b6eb23cdc134fec96de81032686e545",
-    ".pack/자료_문제설명_1005_List/fragments/p4.html": "b04ae9235f94fc489d0b2af925ad1ddf6e2637099e9312acf2300af51d9d04a1",
-    ".pack/자료_문제설명_1005_List/fragments/p5.html": "62e310908e378db0c8b347507abd9b47a38c2f7f7ed1f70ffb6f8b352303f0cf",
-    ".pack/자료_문제설명_1005_List/fragments/p6.html": "c40e82a2173bd64ae2206573be03dc544b31e951a7f18b1a4951feee6c50229c",
-    ".pack/자료_문제설명_1005_List/fragments/p7.html": "955ef0ecbe4344e21dd1eeff9aba8eb857138d437871403c983aae27f297339d",
-    ".pack/자료_문제설명_1005_List/fragments/p8.html": "3e5d2c5d6e03a908f3a795441167676801c6a67bc7ec242c631e6ff77600aa63",
-    ".pack/자료_문제설명_1005_List/fragments/p9.html": "ff90afbde0dc8eb421e4a635b6b40e000d32608b6a717a309b0f1ac0603f9575",
+    ".pack/자료_문제설명_1005_List/fragments/p3.html": "6034ae02ee9a5b26ea5d316e1e7f6e60e8ceae9d6ef5c08e4de5e69a18abdade",
+    ".pack/자료_문제설명_1005_List/fragments/p4.html": "02c8425c21410b8ecfa4e76b9b4ff26b5f9a8975a38ee929b871574a48c22f48",
+    ".pack/자료_문제설명_1005_List/fragments/p5.html": "1348aea00d83cd379cd30aaca18d2474513d1a4ad0dea1c01cd52d92136a22a2",
+    ".pack/자료_문제설명_1005_List/fragments/p6.html": "4d303e23b7fb795ddc63531ec10d46d03a12a883afa2b26b8f96c102f4e7df02",
+    ".pack/자료_문제설명_1005_List/fragments/p7.html": "a9a10e1a7896ebc7b3f1dba3eb3d7ac567c13c704c20a325fc2e73a07c6a9a51",
+    ".pack/자료_문제설명_1005_List/fragments/p8.html": "273b339270593277e890031bfffccb7f5f606ad46a4df34983bbff2796f6421a",
+    ".pack/자료_문제설명_1005_List/fragments/p9.html": "29232c7a6f17fdfc512efb0074a826745ae96bb604f877d9dee4c2e34366663b",
     ".pack/자료_문제설명_1005_List/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
     ".pack/자료_문제설명_1005_List/vendor/katex/contrib/auto-render.min.js": "7b57d427ac6270677daf8d8380ded2cc73336f9149a167b8e1fe0d6ef66604ae",
     ".pack/자료_문제설명_1005_List/vendor/katex/fonts/KaTeX_AMS-Regular.ttf": "68534840bcfdd2bffb6f0e8deb48684dd01e7f04ea2813267577afb906de1d13",
@@ -529,7 +637,7 @@
     ".pack/자료_문제설명_1005_List/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     ".pack/자료_문제설명_1005_List/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     ".pack/자료_문제설명_1005_List/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "문제설명_1005_List.html": "5ae166ed627aef8cf987a6cad18bac0fef5a70736ef20bbc15540647adc8cc6d",
-    ".pack/자료_문제설명_1005_List/manifest.json": "c3824978901cc5aa7ba401da86f10a56257f39211823c3124a89e0b9a1e8c061"
+    "문제설명_1005_List.html": "4d75d5c51aa714fa1abdbfbb1bbc308b6e40742f7c495d5d63bc4fddc845d374",
+    ".pack/자료_문제설명_1005_List/manifest.json": "d40848b146291f77b1d92a21b7733344b15fa1a3e9ad725d8fc69da4637cb6a9"
   }
 }

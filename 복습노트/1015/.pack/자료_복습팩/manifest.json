@@ -330,7 +330,7 @@
       "terms": [
         "연결 큐 의사코드를 대입문으로 옮기기"
       ],
-      "answer": "enqueue: if(front==NULL) front=N; else rear->link=N; rear=N;. dequeue는 old=front; item=old->data; front=old->link; if(front==NULL) rear=NULL; free(old);. 빈 큐는 양 끝이 모두 NULL이어야 한다.",
+      "answer": "(a) enqueue: if (front == NULL) front = N; else rear->link = N; rear = N; (b) dequeue: old = front; item = old->data; front = old->link; if (front == NULL) rear = NULL; free(old);이며, 빈 큐에서 rear도 NULL로 바꾸지 않으면 rear가 해제된 노드를 가리키게 된다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
         "pdf_page": 11,
@@ -340,7 +340,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "linked-queue"
+        "단순 연결 큐 enqueue의 공백·비공백 분기 포인터 대입문 작성",
+        "단순 연결 큐 dequeue 대입문과 마지막 노드 삭제 시 rear=NULL 동시 갱신 이유"
       ],
       "task_family": "linked-queue"
     },
@@ -356,7 +357,7 @@
       "terms": [
         "시뮬레이션의 if/else가 만드는 한 틱"
       ],
-      "answer": "clock1:1→0, 같은 틱에 else는 실행하지 않음. clock2:0→2이며 B 시작, 대기 2-1=1. clock3:2→1. else를 별도 if(service_time==0)로 바꾸면 clock1에 B를 바로 시작시켜 대기시간이 0이 된다.",
+      "answer": "(a) clock = 1: 1 -> 0(else 미실행); clock = 2: 0 -> 2(고객 B 서비스 시작, 대기 시간 2 - 1 = 1); clock = 3: 2 -> 1 (b) 별도의 if (service_time == 0)로 바꾸면 clock = 1에서 1 -> 0 감소 직후 같은 틱에 remove_customer()가 실행되어 고객 B가 clock = 1에 바로 시작하고 대기 시간이 0이 된다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
         "pdf_page": 22,
@@ -366,7 +367,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "simulation"
+        "은행 대기열 시뮬레이션 루프에서 if/else 분기에 따른 틱별 service_time과 대기 시간 추적",
+        "else를 별도 if(service_time==0)로 분리할 때 한 틱 내 중복 처리로 인한 대기 시간 변화 분석"
       ],
       "task_family": "simulation"
     },
@@ -382,7 +384,7 @@
       "terms": [
         "원형 큐의 인덱스를 먼저 옮기기"
       ],
-      "answer": "dequeue: A, front=4,rear=1, [B,C]. enqueue(D): front=4,rear=2,[B,C,D]. enqueue(E): front=4,rear=3,[B,C,D,E], 포화. 유효 용량 M-1=4, (rear+1)%M==front가 포화식이다.",
+      "answer": "(a) dequeue(): 반환 A, (front, rear) = (4, 1), [B, C]; enqueue(D): (4, 2), [B, C, D]; enqueue(E): (4, 3), [B, C, D, E] (포화 상태) (b) 유효 용량은 M - 1 = 4이며, 포화 판정식은 (rear + 1) % M == front이다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
         "pdf_page": 9,
@@ -392,7 +394,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "circular-queue"
+        "원형 큐에서 나머지 연산으로 인덱스를 먼저 이동하는 dequeue·enqueue 상태 추적 및 포화 판정",
+        "공백·포화 구별을 위한 한 칸 비움 규칙과 유효 용량 M-1 및 포화 판정식"
       ],
       "task_family": "circular-queue"
     },
@@ -408,7 +411,7 @@
       "terms": [
         "덱의 첫 삽입과 양 끝 포인터"
       ],
-      "answer": "첫 삽입 head=tail=A,A.llink=A.rlink=NULL. 두 번째 head=A,tail=B,A.rlink=B,B.llink=A,A.llink=B.rlink=NULL. create_node는 node->llink=left; node->data=item; node->rlink=right;. 빈 덱에서 head를 설정하지 않으면 첫 노드에 접근할 수 없다.",
+      "answer": "(a) 첫 삽입 후: head = tail = A, A.llink = A.rlink = NULL; 두 번째 삽입 후: head = A, tail = B, A.llink = NULL, A.rlink = B, B.llink = A, B.rlink = NULL (b) create_node 대입문은 node->llink = left; node->data = item; node->rlink = right;이며, 빈 덱에서 dq->head를 설정하지 않으면 head가 NULL로 남아 첫 노드에 접근할 수 없다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
         "pdf_page": 16,
@@ -418,7 +421,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "deque-add"
+        "이중 연결 리스트 덱에서 빈 덱과 비공백 덱에 add_rear 연속 호출 시 head·tail·링크 상태 추적",
+        "create_node의 세 필드 초기화 대입문과 빈 덱 첫 삽입 시 head 동시 설정 이유"
       ],
       "task_family": "deque-add"
     },
@@ -434,7 +438,7 @@
       "terms": [
         "덱에서 마지막 원소를 삭제할 때"
       ],
-      "answer": "첫 반환 A, head=tail=B,B.llink=NULL. 두 번째 반환 B, head=tail=NULL. 빈 덱의 양 끝은 모두 NULL이고 비어 있지 않은 덱의 head.llink는 NULL이다. 생략하면 tail이 해제된 노드를 가리키거나 새 head의 왼쪽이 해제된 노드를 가리킨다.",
+      "answer": "(a) 첫 호출: 반환 A, head = tail = B, B.llink = B.rlink = NULL; 두 번째 호출: 반환 B, head = tail = NULL (b) 공백 덱은 head = tail = NULL이고 비공백 덱은 head->llink = NULL이라는 불변식을 유지하며, 생략하면 tail이나 새 head->llink가 해제된 노드를 가리킨다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_6_Queue.pdf",
         "pdf_page": 17,
@@ -444,7 +448,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "deque-delete"
+        "이중 연결 리스트 덱에서 delete_front 연속 호출 시 반환값과 head·tail 상태 변화 추적",
+        "삭제 후 공백 여부(dq->head==NULL)에 따른 tail=NULL 및 head->llink=NULL 불변식 유지 이유"
       ],
       "task_family": "deque-delete"
     },

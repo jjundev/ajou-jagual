@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "6bec786ac4019368b9dae061e4966136da9777634ad305320a8d7ec7eb36a6c3",
+  "input_hash": "b0e3679d32a3bb99f8c80fb470572cf8fd032bb3ee188e0198eb05278780bf87",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\docs\\verify\\no-exam-coverage-20261017\\all-preserved.json",
@@ -152,22 +152,22 @@
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1008\\복습문제_1008_Stack.html",
-      "sha256": "bdf613a7b5b7b7032419eb76accfc69dcb09d4a2343b5caad6c700aa232b803a"
+      "sha256": "436b217f372d79d6e1a38e0091c327205fa08b7fd89af0315041135007f5ec34"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment equality checked. Unchanged references required for reuse;1005 note-reference change triggers fresh content and blind independent review."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "Fresh stage checked with Playwright Chrome at 1280x900, 1024x900 and 375x812 in light/dark: 30 problem views, 0 console/KaTeX/resource errors, no document overflow, seven sections each, summary panel at >=1024px, next/prev navigation. For every changed item one viewport screenshot (1280 dark or 375 light, evidence/browser-2026-10-18/) was opened and inspected; the remaining variants rely on the machine metrics. evidence/browser-2026-10-18.json"
   },
   "content": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "3 changed lecture-code item(s) ['p2', 'p4', 'p5'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: 3 changed lecture-code item(s) ['p2', 'p4', 'p5'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json). 정리노트_1008_Stack.html changed only by 3 added interactive-note link paragraphs (evidence/reference-diff-2026-10-18-정리노트_1008_Stack.txt); the content relied on is byte-identical. Prior summary: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment equality checked. Unchanged references required for reuse;1005 note-reference change triggers fresh content and blind independent review.",
     "items": {
       "p1:main": {
@@ -175,31 +175,51 @@
         "reviewer": "Codex native executor — actual source/content/browser review",
         "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: With zero-based storage, occupied indexes are 0..top. No occupied index corresponds to -1; the last permitted occupied index is capacity-1."
       },
-      "p2:main": {
+      "p2:a": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "Card p2 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p2 structured into conditions and ask list; explanations verified. Prior: Card p2 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
       },
-      "p3:main": {
+      "p2:b": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: peek observes the top value without changing top; pop reads the current top before decrement. Underflow must be checked first: an empty stack has top=-1, and decrementing then reading would address -2; even a nonempty top=0 would skip its only valid item if decremented first."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p2 structured into conditions and ask list; explanations verified. Prior: Card p2 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
       },
-      "p4:main": {
+      "p3:a": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "Card p4 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p3 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: peek observes the top value without changing top; pop reads the current top before decrement. Underflow must be checked first: an empty stack has top=-1, and decrementing then reading would address -2; even a nonempty top=0 would skip its only valid item if decremented first."
       },
-      "p5:main": {
+      "p3:b": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "Card p5 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_5_Stack.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p3 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: peek observes the top value without changing top; pop reads the current top before decrement. Underflow must be checked first: an empty stack has top=-1, and decrementing then reading would address -2; even a nonempty top=0 would skip its only valid item if decremented first."
+      },
+      "p4:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p4 structured into conditions and ask list; explanations verified. Prior: Card p4 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+      },
+      "p4:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p4 structured into conditions and ask list; explanations verified. Prior: Card p4 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_4_List.pdf (PyMuPDF extraction)."
+      },
+      "p5:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 structured into conditions and ask list; explanations verified. Prior: Card p5 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_5_Stack.pdf (PyMuPDF extraction)."
+      },
+      "p5:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 structured into conditions and ask list; explanations verified. Prior: Card p5 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_5_Stack.pdf (PyMuPDF extraction)."
       }
     }
   },
   "independent": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "3 changed lecture-code item(s) ['p2', 'p4', 'p5'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: 3 changed lecture-code item(s) ['p2', 'p4', 'p5'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json). 정리노트_1008_Stack.html changed only by 3 added interactive-note link paragraphs (evidence/reference-diff-2026-10-18-정리노트_1008_Stack.txt); the content relied on is byte-identical. Prior summary: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment equality checked. Unchanged references required for reuse;1005 note-reference change triggers fresh content and blind independent review.",
     "items": {
       "p1:main": {
@@ -209,133 +229,71 @@
         "method": "qualitative",
         "conclusion": "Empty: (1) top==-1. Full: (3) top==MAX_STACK_SIZE-1."
       },
-      "p2:main": {
+      "p2:a": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18.json[p2] solved from the new statement alone with missing=\"\" and matched the reference answer; inserted lecture code re-traced line by line in harness-2026-10-18-p2.out, harness-2026-10-18-p2.py.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p2 independent verification: evidence/blind-solver-2026-10-18.json[p2] solved from the new statement alone with missing=\"\" and matched the reference answer; inserted lecture code re-traced line by line in harness-2026-10-18-p2.out, harness-2026-10-18-p2.py.",
         "method": "exact",
-        "conclusion": "Blind answer equals the published answer: pos=0이면 p=get_node_at(list,-1)=NULL이라 removed 인자가 NULL이 되고, remove_node는 head=head->link(=NULL), free(NULL)만 수행한다. head=NULL, length=0으로 바뀌지만 실제 노드 A는 free되지 않고 어디서도 가리키지 않으므로 메모리 누수가 남는다. 수정: remove_node(&(list->head),p,(p!=NULL)?p->link:list->head); (p==NULL이면 삭제 대상은 head 노드)."
+        "conclusion": "Subpart (a): Blind answer equals the published answer: pos=0이면 p=get_node_at(list,-1)=NULL이라 removed 인자가 NULL이 되고, remove_node는 head=head->link(=NULL), free(NULL)만 수행한다. head=NULL, length=0으로 바뀌지만 실제 노드 A는 free되지 않고 어디서도 가리키지 않으므로 메모리 누수가 남는다. 수정: remove_node(&(list->head),p,(p!=NULL)?p->link:list->head); (p==NULL이면 삭제 대상은 head 노드)."
       },
-      "p3:main": {
+      "p2:b": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. peek observes the top value without changing top; pop reads the current top before decrement. Underflow must be checked first: an empty stack has top=-1, and decrementing then reading would address -2; even a nonempty top=0 would skip its only valid item if decremented first.",
-        "method": "qualitative",
-        "conclusion": "push(5): no return value, top=0, stack=[5]. push(8): no return, top=1, [5,8]. peek(): returns 8, top=1, unchanged. pop(): returns 8, top=0, [5]. push(2): no return, top=1, [5,2]. pop(): returns 2, top=0, [5]."
-      },
-      "p4:main": {
-        "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18.json[p4] solved from the new statement alone with missing=\"\" and matched the reference answer; inserted lecture code re-traced line by line in harness-2026-10-18-p4.out, harness-2026-10-18-p4.py.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p2 independent verification: evidence/blind-solver-2026-10-18.json[p2] solved from the new statement alone with missing=\"\" and matched the reference answer; inserted lecture code re-traced line by line in harness-2026-10-18-p2.out, harness-2026-10-18-p2.py.",
         "method": "exact",
-        "conclusion": "Blind answer equals the published answer: get_node_at(list,1)=B가 선행 노드. insert_node(&(list->head), B, N) 호출 후 A→B→N→C→NULL, N이 위치2, length=4(add에서 증가). 위치0 삽입: get_node_at(list,-1)=NULL이므로 p==NULL, N이 맨 앞에 들어가 N->link=기존 head, *phead=N으로 head가 바뀐다. position을 그대로 넘기면 위치2 노드 C가 선행 노드가 되어 C 뒤(위치3)에 삽입되는 off-by-one 오류가 난다. length를 저장하면 유효 범위(0≤"
+        "conclusion": "Subpart (b): Blind answer equals the published answer: pos=0이면 p=get_node_at(list,-1)=NULL이라 removed 인자가 NULL이 되고, remove_node는 head=head->link(=NULL), free(NULL)만 수행한다. head=NULL, length=0으로 바뀌지만 실제 노드 A는 free되지 않고 어디서도 가리키지 않으므로 메모리 누수가 남는다. 수정: remove_node(&(list->head),p,(p!=NULL)?p->link:list->head); (p==NULL이면 삭제 대상은 head 노드)."
       },
-      "p5:main": {
+      "p3:a": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18.json[p5] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p3 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. peek observes the top value without changing top; pop reads the current top before decrement. Underflow must be checked first: an empty stack has top=-1, and decrementing then reading would address -2; even a nonempty top=0 would skip its only valid item if decremented first.",
         "method": "qualitative",
-        "conclusion": "Blind answer equals the published answer: sub2 실행 중 기억할 호출 정보(아래→위): main(i=3, 복귀지점=sub1 호출문 다음), sub1(a=3, j=5, 복귀지점=sub2 호출문 다음), sub2(매개변수/지역변수). sub2 return 시 sub1으로, 이어 sub1 return 시 main으로 복귀(sub2→sub1→main). 지역 변수만 저장하고 복귀 위치를 버리면 return 후 어디서 계속할지 모르므로 부족하다. 가장 오래된 호출(main)로 먼저 돌아가면 아직 끝나지 않은 sub1/sub2가 중단되어 호출 관계가 깨지므로 안 되며, 가장 나중에"
+        "conclusion": "Subpart (a): push(5): no return value, top=0, stack=[5]. push(8): no return, top=1, [5,8]. peek(): returns 8, top=1, unchanged. pop(): returns 8, top=0, [5]. push(2): no return, top=1, [5,2]. pop(): returns 2, top=0, [5]."
+      },
+      "p3:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p3 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. peek observes the top value without changing top; pop reads the current top before decrement. Underflow must be checked first: an empty stack has top=-1, and decrementing then reading would address -2; even a nonempty top=0 would skip its only valid item if decremented first.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): push(5): no return value, top=0, stack=[5]. push(8): no return, top=1, [5,8]. peek(): returns 8, top=1, unchanged. pop(): returns 8, top=0, [5]. push(2): no return, top=1, [5,2]. pop(): returns 2, top=0, [5]."
+      },
+      "p4:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p4 independent verification: evidence/blind-solver-2026-10-18.json[p4] solved from the new statement alone with missing=\"\" and matched the reference answer; inserted lecture code re-traced line by line in harness-2026-10-18-p4.out, harness-2026-10-18-p4.py.",
+        "method": "exact",
+        "conclusion": "Subpart (a): Blind answer equals the published answer: get_node_at(list,1)=B가 선행 노드. insert_node(&(list->head), B, N) 호출 후 A→B→N→C→NULL, N이 위치2, length=4(add에서 증가). 위치0 삽입: get_node_at(list,-1)=NULL이므로 p==NULL, N이 맨 앞에 들어가 N->link=기존 head, *phead=N으로 head가 바뀐다. position을 그대로 넘기면 위치2 노드 C가 선행 노드가 되어 C 뒤(위치3)에 삽입되는 off-by-one 오류가 난다. length를 저장하면 유효 범위(0≤"
+      },
+      "p4:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p4 independent verification: evidence/blind-solver-2026-10-18.json[p4] solved from the new statement alone with missing=\"\" and matched the reference answer; inserted lecture code re-traced line by line in harness-2026-10-18-p4.out, harness-2026-10-18-p4.py.",
+        "method": "exact",
+        "conclusion": "Subpart (b): Blind answer equals the published answer: get_node_at(list,1)=B가 선행 노드. insert_node(&(list->head), B, N) 호출 후 A→B→N→C→NULL, N이 위치2, length=4(add에서 증가). 위치0 삽입: get_node_at(list,-1)=NULL이므로 p==NULL, N이 맨 앞에 들어가 N->link=기존 head, *phead=N으로 head가 바뀐다. position을 그대로 넘기면 위치2 노드 C가 선행 노드가 되어 C 뒤(위치3)에 삽입되는 off-by-one 오류가 난다. length를 저장하면 유효 범위(0≤"
+      },
+      "p5:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 independent verification: evidence/blind-solver-2026-10-18.json[p5] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): Blind answer equals the published answer: sub2 실행 중 기억할 호출 정보(아래→위): main(i=3, 복귀지점=sub1 호출문 다음), sub1(a=3, j=5, 복귀지점=sub2 호출문 다음), sub2(매개변수/지역변수). sub2 return 시 sub1으로, 이어 sub1 return 시 main으로 복귀(sub2→sub1→main). 지역 변수만 저장하고 복귀 위치를 버리면 return 후 어디서 계속할지 모르므로 부족하다. 가장 오래된 호출(main)로 먼저 돌아가면 아직 끝나지 않은 sub1/sub2가 중단되어 호출 관계가 깨지므로 안 되며, 가장 나중에"
+      },
+      "p5:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 independent verification: evidence/blind-solver-2026-10-18.json[p5] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): Blind answer equals the published answer: sub2 실행 중 기억할 호출 정보(아래→위): main(i=3, 복귀지점=sub1 호출문 다음), sub1(a=3, j=5, 복귀지점=sub2 호출문 다음), sub2(매개변수/지역변수). sub2 return 시 sub1으로, 이어 sub1 return 시 main으로 복귀(sub2→sub1→main). 지역 변수만 저장하고 복귀 위치를 버리면 return 후 어디서 계속할지 모르므로 부족하다. 가장 오래된 호출(main)로 먼저 돌아가면 아직 끝나지 않은 sub1/sub2가 중단되어 호출 관계가 깨지므로 안 되며, 가장 나중에"
       }
     }
   },
   "artifact_hashes": {
-    ".pack/문제설명_1008_Stack.md": "ee6d4200c6bdc196443a2d3a2bd33ffd1aa63c8c75c3f82ff1c66d97efe6bdbe",
-    ".pack/자료_문제설명_1008_Stack/evidence/author.py": "fba730706e3c03ebecdd785f228c0f99e2dac4fac76e96141306ccf8c52f37d8",
-    ".pack/자료_문제설명_1008_Stack/evidence/blind-solver-2026-10-18.json": "4c4eddb2339d75fbc1ffbe1f632876f8d89c8f46dd2968f891c7fb17842eb75a",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1024-dark/p2-viewport.png": "9a8e55b6a1229d049a1dc0e913b3cec5c3d537a186633d6400eac334c90b1066",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1024-dark/p4-viewport.png": "3e896220bd3b26dc16471c56512c3dc2baec8f3ef09580838a831c2362f83133",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1024-dark/p5-viewport.png": "80a7443c43b9e04407e2e1804dec4473fabbd8a41f6db8e49cd9553fd0720ad7",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1024-light/p2-viewport.png": "621b299f36b8f76e8b26aa1b218856e5bd318e854d920adbf3fcb713cdaa651f",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1024-light/p4-viewport.png": "f091e9e7e7e676a2058fbb4fc1c40118e0c67feb559ac175b3d5345334ddda0c",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1024-light/p5-viewport.png": "8ec8f87d01a67aa8db3a7db0bf136fb893c0ee0ff3d003852e91835a56302c0e",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1280-dark/p2-viewport.png": "fe1555acd5e43d29f50b5ea79af0daa074f7ade61b874a6475e039b2c32f3b09",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1280-dark/p4-viewport.png": "c88f811cc1223cd56f0287352faf943b56f8ccf0a8b5067631db0125bdd56739",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1280-dark/p5-viewport.png": "ee66769af141fde8fbc0ca929baff0fec313d451f430a41be8552d5dc48a0bfa",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1280-light/p2-viewport.png": "6b763e43d604bccf3a92663f7fac6958fd1bd5cfc9a4433337c8e7c3ec53aebf",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1280-light/p4-viewport.png": "cb06ea2c28783ba20bda5a46841fe13a3f34062a2f2e8bbc80286c6b6f1e7cd2",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/1280-light/p5-viewport.png": "03c0606795b6802f7807e61f5147b1d0a45a4b0bcb48161f9b815abdf8357dd1",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/375-dark/p2-viewport.png": "d1a8b6f975d3e0000814cb7020ac3737d05911d3b577293f912b7080dc207138",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/375-dark/p4-viewport.png": "87b3221d4d8340327d4b6cf18719194a978b562ed61c134cc53dda182192e87e",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/375-dark/p5-viewport.png": "0264f7fbc3f1b74a798034e4cc6c2e5df2e5b126b3bfad4acfa03977367b63ea",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/375-light/p2-viewport.png": "e7f72cf35094d40eed755bc651959c0d5f96edd9dd99538c5f0cce8e1a2225da",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/375-light/p4-viewport.png": "2447326349056ac7fb53671df824774ec7577013babb0bcf54c207bdb6219c05",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18/375-light/p5-viewport.png": "0e1d1e315fbe664d9754656def7469d8fa5076a64bbdcc428e51a3052062e04a",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-2026-10-18.json": "4696a05948904acda1bfe016c0c94efb73f1ecd7d75934cf5459a84ad1940d42",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-current.json": "81fc52e51497f61746998b19f930f48f8b7dbbd78ec66c198fdf9af678a1dea3",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-current.py": "97ef053c8a97de77f121e565b06b0067e0743c1ad0490f59ad6b435bb8df7f26",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-initial/1280-dark-p1.png": "0210dadc3899b16a50c8a345a3047c91a98feabce442ffe5c6e7231f1e4479b8",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-initial/1280-light-p1.png": "bbf871e5199314d42fbb31eec7be13cf145c5076ddcc471f0c67133854996232",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-initial/375-dark-p1.png": "a9da74ae3bca9d383487b2bb33758c77b9a71cca337b6d5e4bce8581e2fa7577",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-initial/375-light-p1.png": "3abb75eb2be712c3d77bea860a2ec4a73738810b37b01c4ebd450828bd4401cf",
-    ".pack/자료_문제설명_1008_Stack/evidence/browser-initial/results.json": "9196d38306dded9d764cabd051a35e6d3fdb4212b725c158ccc61ec2370ea1e6",
-    ".pack/자료_문제설명_1008_Stack/evidence/c11-result.txt": "d2280f55bc094d0dcb41ee5227e50fae562ff45f82d339f53ffdf38f4900f49a",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-browser/1280-dark-p1.png": "4fc44e4164dd8e454247cb10c5dfba2f00080bafef8c4b47e61ea41a8a93efdd",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-browser/1280-light-p1.png": "5d82af3013eb961e0ea06f6be5049dcdedecff6c81a0723ee5fd58c830439067",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-browser/375-dark-p1.png": "95630673c4cb0da65dc3c752595ab8ec8ae0ad3360df593606f4e9c094d16117",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-browser/375-dark-p4.png": "3d146abbf71af8d7f2d0462abc7d46e03d1cab6d64bb3faee7434cacfe9dbac7",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-browser/375-light-p1.png": "46f0b97fd99694419df40b511804bceb8d67ca0e387c753df5899e3f35b252d5",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-browser/results.json": "4f7f5163852777617af7821ffbeb5cb58a517a7c282408d0d864b3aa24933e10",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-browser.py": "c4827c990381a5cec33813ab81002bed2688331cb7fd597869661ed2b18d56bf",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-equivalence.json": "7c59a9ee56e51c75da02f07b49643731084342d8822713378708ed9375639c30",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-history/manifest.json": "6eedfa02e2fd1ef534ac9582354a25234214b79b47d194c19f10dda6bd37f1e9",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-history/previous-validation.json": "7087f52dfff46119bb23ce27f6e4dc15ede6f09e358849c6bd4e1205095fdf24",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-history/문제설명_1008_Stack.html": "b0cd7debcfedbf32d21c2a48e51e4f98ff4878faf28a11f06c162e9526b546c5",
-    ".pack/자료_문제설명_1008_Stack/evidence/code-block-review.md": "8320d08a018ec5452b02ec915c3e108190c28d9e4521e12aa7bbaa8ad5e684a5",
-    ".pack/자료_문제설명_1008_Stack/evidence/content-review.json": "ad3f36b6a328b6b57e8e591abb0da5135fd42b86fb6b2e5356265da450058cd8",
-    ".pack/자료_문제설명_1008_Stack/evidence/harness-2026-10-18-p2.out": "cdc410c39f4f2b9d35495dd00336cd7f32e3832022b7ed152b24b54c420f1122",
-    ".pack/자료_문제설명_1008_Stack/evidence/harness-2026-10-18-p2.py": "8adf5ac84c5a3b2fc5398c86fb499e4a09a90a21f7f1ff4cc806a2fdd52463a7",
-    ".pack/자료_문제설명_1008_Stack/evidence/harness-2026-10-18-p4.out": "5a351aab7ee4e50849bfa7b9f6e5c74419d3f0b46cae1c486b797fac8577d70b",
-    ".pack/자료_문제설명_1008_Stack/evidence/harness-2026-10-18-p4.py": "96cd51519ec2e978e485ebbcea5fe5e749bb594e293b06da0f414ff87cd86433",
-    ".pack/자료_문제설명_1008_Stack/evidence/independent-answers.json": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
-    ".pack/자료_문제설명_1008_Stack/evidence/independent-code-blocks-run.txt": "188fb40ab58cd76424e768f39b8f6d23f4ba3a239c9d47d1cf94805a7fdfa21e",
-    ".pack/자료_문제설명_1008_Stack/evidence/independent-delta.json": "f6f570cd08c140faefdf8857d340320f9a8e153816140059eada929da2781427",
-    ".pack/자료_문제설명_1008_Stack/evidence/independent-replay-run.txt": "188fb40ab58cd76424e768f39b8f6d23f4ba3a239c9d47d1cf94805a7fdfa21e",
-    ".pack/자료_문제설명_1008_Stack/evidence/independent-results.json": "bc5cf285006537d8ab05d222daf805bcd93ba01e38b4a14786d569616cafdb54",
-    ".pack/자료_문제설명_1008_Stack/evidence/independent-verification.json": "4a8da0500907450be9fc5278d7e3a8e63b0cef49132efdffed4716ef7776a802",
-    ".pack/자료_문제설명_1008_Stack/evidence/independent.json": "f6eb0dd21466836f8a86f9c91a6eab82161d781f349f644b62db1cbbc02f75ca",
-    ".pack/자료_문제설명_1008_Stack/evidence/lecture-standalone-2026-10-18.json": "bdd0732e55245456251c84b826635df7fabf24ae586e57251e9d2d6202d03b1a",
-    ".pack/자료_문제설명_1008_Stack/evidence/lecture-standalone-changes-2026-10-18.md": "5d9b47a85e95233a29115f3e03f6a5b9f9a1a65cbb3a771e29c528fb21730280",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/1024-light.png": "6953efac7a2c1a454b3d909526747a63102b5e529162898dddf56277ad9cd7bd",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/1280-dark.png": "5f434ce2ce859493bf4d029242efae3841889c4b785546f9e76172fb88ada89d",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/1280-light.png": "15627cb349c94bb85ac9cc491d927b3bdfc8b3aa15f0db7cd3c4ec004a9c2177",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/375-dark.png": "e6b892b714248491bb161b510d2980a7e8a3caef923f811c1f336a13a6feb3b8",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/375-light.png": "bc2101b16048623f04747cc9b31aedbb04a742ec21689fb4707266ff6222913e",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/browser-rerender-1008.json": "44301bed1f77e388f73b2ccf85b805f1ae875c74154bb5eb5c0a333806e982d5",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/dock-float.png": "3df8d95569ead9abf6474f8872f3ba2874f4157e06834c64ead034a954c0b6ae",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/dock-left.png": "20401cc4f0216802bd499268a5f47607d6a9a042a69f1aa099cb165c183bad26",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/dock-right.png": "eec2797f32dec1f3f6aecbf5961c6a34b16c2f3055c305d7f640d4d3ae9c157c",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/panel-p1-original.png": "981c3c6698c945795d3d2d6f9c4028b7bc54ec573dde3228718410203577cc80",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/panel-p1-problem.png": "d09bcc998a3e2f0cabecfd239054eef1c5c695d54e72f37bc04f0c80bc92c7ea",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/panel-p2-original.png": "8645a91e4dcb96a444a3b27ac7eb80f066d790213822a9d241ecd48de5d54825",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/panel-p2-problem.png": "5ab02a5d54567dee3ccbe43ae2ec3efadc370ea8d6ae0ae9f01ce448f49384a6",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/panel-p3-original.png": "413b78cd678ab438f9576743ec00d530d1ecfd11d5a6852539bd667fcb624fe6",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/panel-p3-problem.png": "95773b527bc5e2f7d42e824c428b963662f78cb6399aa069c4aa410721049394",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/panel-p4-original.png": "07ce75717fda173a49321c6dddcc87ce7aa4f7819a9df79dd19859dd5dd1a63a",
-    ".pack/자료_문제설명_1008_Stack/evidence/panel-browser/panel-p4-problem.png": "21596a5c853f0163f37a3ce17d6ef1e2b70185ac990cc7b97aa5339e064832e8",
-    ".pack/자료_문제설명_1008_Stack/evidence/previous-validation-2026-10-18.json": "7b9b0d51dcd4ed25ea31038aae2d786f7e30e5477629c3b7895e7c0cd0be77c6",
-    ".pack/자료_문제설명_1008_Stack/evidence/previous-validation.json": "05395723477504a4b40ca4450947a32040c4d30fc0dc1e730819f2563051abad",
-    ".pack/자료_문제설명_1008_Stack/evidence/qualitative-proof.md": "d28ba24fe3cd8edee5cebe5b593cc0b662ae57dc382a04543c7922e86524185a",
-    ".pack/자료_문제설명_1008_Stack/evidence/reference-diff-2026-10-18-정리노트_1008_Stack.txt": "819f7828ce0a625fe92dccfdca894238ad0dc0613171eedd9e2f3d27521bf991",
-    ".pack/자료_문제설명_1008_Stack/evidence/replay-instructions.md": "026585c8fd248ae4885a4282159307e241c216fa53511b2f3819302b0b874c7c",
-    ".pack/자료_문제설명_1008_Stack/evidence/rerun-ds-code-blocks.py": "1827efa235e0bc12674602210147cb4acc34629053e6a8b3250344ad73d17702",
-    ".pack/자료_문제설명_1008_Stack/evidence/scope-early.json": "3fe504b46ae3de5787c895df7f12d5b362336d33791d6e77f9ad2fbf35fe28c1",
-    ".pack/자료_문제설명_1008_Stack/evidence/scope-lists.json": "42ec00873e8fc1d825becab82d19b230d254c27041514175c371aba55a9f2c89",
-    ".pack/자료_문제설명_1008_Stack/evidence/source-locators.json": "2ae01073b6554304ef6c9560303cfed5efcc1686fb0c0fea9d38ca267a540231",
-    ".pack/자료_문제설명_1008_Stack/evidence/source-reading.txt": "91b041477b6005dbba32e2d725298aa63e2e2527a022694a6eaa2237bfa2b8ba",
-    ".pack/자료_문제설명_1008_Stack/evidence/source-review.md": "4d79d4e1b866efee572908cbf2136d9ab633fa982cf440e1d928c47e6ef804d9",
-    ".pack/자료_문제설명_1008_Stack/evidence/trace-result.txt": "73a072cf481d4b4414b86e9b0a557c19d938e5bd905a54c6109156d0031543f4",
-    ".pack/자료_문제설명_1008_Stack/evidence/verification_key.py": "582c35eaf025ecb9d07a8636a31aee611e5f39af504b35987e85fbfd17ae46bc",
-    ".pack/자료_문제설명_1008_Stack/evidence/verify-code-blocks.py": "1246ad83debc0ca29e8b8c57f5df5fe7a8b4365bfdff47fad6ce06908004907c",
-    ".pack/자료_문제설명_1008_Stack/evidence/verify.py": "3772a6cc07eca0321655071dfd3e87771c546a03cb4ee6ea232ae508a1eada74",
-    ".pack/자료_문제설명_1008_Stack/evidence/verify_lecture.c": "96caead1491181076b9f385bbbf281b130385592bc24a3e2371f1a49fa62f325",
-    ".pack/자료_문제설명_1008_Stack/evidence/verify_new.c": "78742596c5611ca295c1976d12c27ae8bad0be6d36047348044960bee36929a6",
-    ".pack/자료_문제설명_1008_Stack/evidence/verify_new.py": "7021dd89b46a4fd421ffb58a4000730af4c3d6f66e53335e98fa4f939063aef8",
+    ".pack/문제설명_1008_Stack.md": "4c689528e8c7e28e96c5a3ac0ac3174b0fd977f14420e1689e59b3a48dc1454c",
     ".pack/자료_문제설명_1008_Stack/fragments/p1.html": "3ffaa51ef75cd05aed04585223c7a9a931dff451e4409b60f716f146d56ce5d1",
-    ".pack/자료_문제설명_1008_Stack/fragments/p2.html": "cf17835625ab665414370090285b01b1e645c8319d8377a606815351cd87ffbd",
-    ".pack/자료_문제설명_1008_Stack/fragments/p3.html": "9dba6979cd63f4e9906d64cd8c7bd62b26a92ae7a31a54dd0b7883ad94c432e2",
-    ".pack/자료_문제설명_1008_Stack/fragments/p4.html": "2d78fb7efe1e3d32ad570d53e5810e2d60a4475bafa920031a84d6fab498559b",
-    ".pack/자료_문제설명_1008_Stack/fragments/p5.html": "f54501883271e76b671b0ce1c578a53def20233abf98b9b185efb1257b1aa0ad",
+    ".pack/자료_문제설명_1008_Stack/fragments/p2.html": "f11b8723263eb6386d78302207a901630e94707c3b4c33c8fc3fb2c6697a91b0",
+    ".pack/자료_문제설명_1008_Stack/fragments/p3.html": "c80519a8538b2bf4b4e69c20fc134659cd539be58efe3934711c2d06db8ee50f",
+    ".pack/자료_문제설명_1008_Stack/fragments/p4.html": "07d8e0b3387c35d197d0e8ad1245eb573b4d64756f1a614d629c6b8a7b1f51c5",
+    ".pack/자료_문제설명_1008_Stack/fragments/p5.html": "4c5ba4254196250a36b1345b76d2b2fd245ab4f86e31b376382d3d04310bee74",
     ".pack/자료_문제설명_1008_Stack/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
     ".pack/자료_문제설명_1008_Stack/vendor/katex/contrib/auto-render.min.js": "7b57d427ac6270677daf8d8380ded2cc73336f9149a167b8e1fe0d6ef66604ae",
     ".pack/자료_문제설명_1008_Stack/vendor/katex/fonts/KaTeX_AMS-Regular.ttf": "68534840bcfdd2bffb6f0e8deb48684dd01e7f04ea2813267577afb906de1d13",
@@ -422,7 +380,7 @@
     ".pack/자료_문제설명_1008_Stack/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     ".pack/자료_문제설명_1008_Stack/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     ".pack/자료_문제설명_1008_Stack/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "문제설명_1008_Stack.html": "616c9fcf4c0b3a728de4a1f589609431f4919646d109669a6437730ca60f64c0",
-    ".pack/자료_문제설명_1008_Stack/manifest.json": "ca21dd379bd27fa7abc4f7842a7f84c86a49d1bb3cd1115398342b666591a4c6"
+    "문제설명_1008_Stack.html": "3adfc94d795832488a7514358c8a3df06c6b65a2ddd894fd82813decb83d379a",
+    ".pack/자료_문제설명_1008_Stack/manifest.json": "d8454f25c5af0f6df4d94284aa4cbaffbde961b744efbecaee911d187d163e52"
   }
 }

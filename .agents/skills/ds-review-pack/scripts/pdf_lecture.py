@@ -6,6 +6,7 @@ ASK = re.compile(r'(?:세요|시오|하라|보라)[.)]?$|\?$')
 TRAILING_NOTE = re.compile(r'\s*\([^()]*\)(?=[.?!]?$)')
 CITATION = re.compile(r'S\d+ p\d+(?: · 추가 근거 p\d+(?:,\d+)*)?')
 BADGE = re.compile(r'<span class="badge">.*?</span>')
+LABEL = re.compile(r'\s*\([a-z]\)')
 
 def text(s: str) -> str:
     return html.unescape(re.sub(r'<[^>]+>', '', s)).strip()
@@ -40,6 +41,9 @@ def assert_lossless(source_html: str, out_html: str) -> None:
     if sorted(squash(out_html)) != sorted(squash(source_html)):
         raise PdfError(f'lecture split lost text: {text(source_html)[:40]}')
 
+def is_list(block: Block) -> bool:
+    return bool(re.match(r'\s*<[ou]l\b', block.html))
+
 def is_badge(block: Block) -> bool:
     if 'class="badge"' not in block.html:
         return False
@@ -53,8 +57,20 @@ def split_lecture_problem(blocks: tuple[Block, ...]) -> tuple[str, str]:
     body = [b for b in kept if b not in notes]
     caption = ''.join(f'<p class="ds-source">{inner_p(b.html)}</p>' for b in notes)
     original = ''.join(b.html for b in body)
-    if any(re.match(r'\s*<[ou]l\b', b.html) for b in body):
-        return caption, original
+    if any(is_list(b) for b in body):
+        n = len(body)
+        while n and is_list(body[n - 1]):
+            n -= 1
+        pre, lists = body[:n], body[n:]
+        if not pre or any(is_list(b) for b in pre):
+            return caption, original
+        items = ''.join(re.sub(r'^\s*<[ou]l\b[^>]*>|</[ou]l>\s*$', '', b.html) for b in lists)
+        labeled = all(LABEL.match(text(li)) for li in re.findall(r'<li\b.*?</li>', items, re.S))
+        cls = 'ds-asks ds-labeled' if labeled else 'ds-asks'
+        cond = caption + ''.join(b.html for b in pre)
+        ask = f'<ol class="{cls}">{items}</ol>'
+        assert_lossless(''.join(b.html for b in kept), cond + ask)
+        return cond, ask
     parts = [s for b in body for s in sentences(inner_p(b.html))]
     asks = [s for s in parts if is_ask(s)]
     if not asks:

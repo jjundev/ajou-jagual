@@ -71,3 +71,32 @@ def test_paragraph_question_labels():
 
 def test_lettered_operation_list_is_single_question():
     assert subparts('<p>다음 연산을 실행한다.</p><ol><li>(a) push(1)</li><li>(b) pop()</li></ol><p>최종 상태를 구하라.</p>', '') == ('main',)
+
+from mpe_source import split_lecture_statement
+
+def test_split_lecture_statement_with_subparts():
+    stmt = (
+        '<p><span class="badge">강의 예제 기반 자체 출제</span> S4 p18</p>'
+        '<p>단순 연결 리스트에서 <code>head = 300</code>이에요.</p>'
+        '<pre><code class="language-c">300: [10 | 100] -&gt; 100: [20 | NULL]</code></pre>'
+        '<ol><li>(a) 순회 순서를 쓰세요.</li><li>(b) 삽입 후 링크를 쓰세요.</li></ol>'
+    )
+    cond, ask = split_lecture_statement(stmt, 'lecture-s04-p18-linked-representation')
+    assert cond == (
+        '<p><span class="badge">강의 예제 기반 자체 출제</span> S4 p18</p>'
+        '<p>단순 연결 리스트에서 <code>head = 300</code>이에요.</p>'
+        '<pre><code class="language-c">300: [10 | 100] -&gt; 100: [20 | NULL]</code></pre>'
+    )
+    assert ask == '<ol><li>(a) 순회 순서를 쓰세요.</li><li>(b) 삽입 후 링크를 쓰세요.</li></ol>'
+    assert subparts(ask, '') == ('a', 'b')
+
+def test_non_lecture_ol_stays_in_conditions():
+    stmt = '<p>다음 연산을 수행한다.</p><ol><li>(a) 첫째</li><li>(b) 둘째</li></ol>'
+    cond, ask = split_lecture_statement(stmt, '2022-mid-q1')
+    assert cond == stmt and ask == ''
+
+def test_labeled_asks_only_when_every_item_has_label():
+    from mpe_render import labeled_asks
+    assert labeled_asks('<ol><li>(a) 첫째</li><li>(b) <code>p</code> 둘째</li></ol>')
+    assert not labeled_asks('<ol><li>(a) 첫째</li><li>둘째</li></ol>')
+    assert not labeled_asks('')

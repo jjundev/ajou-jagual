@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "b42b18ab49368b309790e96c2acd84cace9064ed33b0ff03ef705ad14a7d792b",
+  "input_hash": "e01e5ede9c50d772fa3ff715f5a856ab53cf784e15fcd10fc8d33a01c1cab670",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\docs\\verify\\exam-restore-20261017\\baseline.json",
@@ -108,22 +108,22 @@
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\1012\\복습문제_1012_Queue.html",
-      "sha256": "6e7ffb0ee08fdd366de598a354d7cc5f0f408d26cba778db4ef84b0d15b5c821"
+      "sha256": "e7b56c3539f542da19bf393fe30bed90cce00500cb087fceeba49a7bbd75833a"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-    "evidence": "Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly."
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Layout-only rerender. Staged HTML compared with the previously published, reviewed HTML: after removing the new data-labeled attribute and the single labeled-ol CSS rule the files are line-identical (CR-insensitive), so problem conditions, code, asks, figures and originals are unchanged from the source-visual review already on record."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-    "evidence": "Fresh stage checked with Playwright Chrome at 1280x900, 1024x900 and 375x812 in light/dark: 78 problem views, 0 console/KaTeX/resource errors, no document overflow, seven sections each, summary panel at >=1024px, next/prev navigation. For every changed item one viewport screenshot (1280 dark or 375 light, evidence/browser-2026-10-18/) was opened and inspected; the remaining variants rely on the machine metrics. evidence/browser-2026-10-18.json"
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Playwright Chrome at 1280x900 light and 375x812 dark: every lecture ask block has data-labeled and computed list-style-type none (no duplicate 1./2. before (a)/(b)); 0 console/page errors; no document horizontal overflow. 1005 P3 problem pane screenshot inspected. All other panel/navigation behaviour is byte-identical to the previously reviewed publish."
   },
   "content": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "1 changed lecture-code item(s) ['p9'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json). 정리노트_1012_Queue.html changed only by 3 added interactive-note link paragraphs (evidence/reference-diff-2026-10-18-정리노트_1012_Queue.txt); the content relied on is byte-identical. Prior summary: Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
     "items": {
       "p1:main": {
@@ -156,20 +156,35 @@
         "reviewer": "Codex native executor — actual source/content/browser review",
         "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Assign and print a fresh number on every open; push it. On each close, pop and print the matched opening number. Unclosed openings still have printed numbers, consistent with the second supplied example."
       },
-      "p7:main": {
+      "p7:a": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: The increment/decrement value used as index depends on prefix versus postfix evaluation. Top updates do not make a negative subscript valid; no deterministic normal output can be inferred from UB."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p7 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: The increment/decrement value used as index depends on prefix versus postfix evaluation. Top updates do not make a negative subscript valid; no deterministic normal output can be inferred from UB."
       },
-      "p8:main": {
+      "p7:b": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Push must save old top as the new node successor before changing top. Reversing those two statements sets temp->link=temp, forming a self-loop and losing A/B from stack reachability. Pop must read item and successor before freeing temp; moving free ahead of either read causes use-after-free."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p7 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: The increment/decrement value used as index depends on prefix versus postfix evaluation. Top updates do not make a negative subscript valid; no deterministic normal output can be inferred from UB."
       },
-      "p9:main": {
+      "p8:a": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "Card p9 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_5_Stack.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p8 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Push must save old top as the new node successor before changing top. Reversing those two statements sets temp->link=temp, forming a self-loop and losing A/B from stack reachability. Pop must read item and successor before freeing temp; moving free ahead of either read causes use-after-free."
+      },
+      "p8:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p8 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Push must save old top as the new node successor before changing top. Reversing those two statements sets temp->link=temp, forming a self-loop and losing A/B from stack reachability. Pop must read item and successor before freeing temp; moving free ahead of either read causes use-after-free."
+      },
+      "p9:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p9 structured into conditions and ask list; explanations verified. Prior: Card p9 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_5_Stack.pdf (PyMuPDF extraction)."
+      },
+      "p9:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p9 structured into conditions and ask list; explanations verified. Prior: Card p9 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_5_Stack.pdf (PyMuPDF extraction)."
       },
       "p10:main": {
         "status": "pass",
@@ -195,7 +210,7 @@
   },
   "independent": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "1 changed lecture-code item(s) ['p9'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json). 정리노트_1012_Queue.html changed only by 3 added interactive-note link paragraphs (evidence/reference-diff-2026-10-18-정리노트_1012_Queue.txt); the content relied on is byte-identical. Prior summary: Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
     "items": {
       "p1:main": {
@@ -240,26 +255,47 @@
         "method": "qualitative",
         "conclusion": "#include <stdio.h>\nint main(void){int st[1024],top=-1,next=0,ch;printf(\"괄호 수:\");while((ch=getchar())!=EOF&&ch!='\\n'){if(ch=='('){if(top==1023)return 1;st[++top]=++next;printf(\" %d\",next);}else if(ch==')'){if(top<0)return 1;printf(\" %d\",st[top--]);}}putchar('\\n');return 0;}\nFor ((())(())): 1 2 3 3 2 4 5 5 4 1. For (((((): 1 2 3 4 5 5."
       },
-      "p7:main": {
+      "p7:a": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. The increment/decrement value used as index depends on prefix versus postfix evaluation. Top updates do not make a negative subscript valid; no deterministic normal output can be inferred from UB.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p7 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. The increment/decrement value used as index depends on prefix versus postfix evaluation. Top updates do not make a negative subscript valid; no deterministic normal output can be inferred from UB.",
         "method": "qualitative",
-        "conclusion": "Normal push ++top selects next vacant index (first index 0); normal pop top-- reads the current valid index then removes it; peek reads without changing top. Changed push top++ with top=-1 writes stack[-1] and only then makes top=0. Changed pop --top with top=0 reads stack[-1] after reducing top to -1. Both changed accesses are out-of-bounds UB."
+        "conclusion": "Subpart (a): Normal push ++top selects next vacant index (first index 0); normal pop top-- reads the current valid index then removes it; peek reads without changing top. Changed push top++ with top=-1 writes stack[-1] and only then makes top=0. Changed pop --top with top=0 reads stack[-1] after reducing top to -1. Both changed accesses are out-of-bounds UB."
       },
-      "p8:main": {
+      "p7:b": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Push must save old top as the new node successor before changing top. Reversing those two statements sets temp->link=temp, forming a self-loop and losing A/B from stack reachability. Pop must read item and successor before freeing temp; moving free ahead of either read causes use-after-free.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p7 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. The increment/decrement value used as index depends on prefix versus postfix evaluation. Top updates do not make a negative subscript valid; no deterministic normal output can be inferred from UB.",
         "method": "qualitative",
-        "conclusion": "After push: top=N,N->link=A,A->link=B,B->link=NULL. Immediate pop returns N item, restores top=A, and frees N only."
+        "conclusion": "Subpart (b): Normal push ++top selects next vacant index (first index 0); normal pop top-- reads the current valid index then removes it; peek reads without changing top. Changed push top++ with top=-1 writes stack[-1] and only then makes top=0. Changed pop --top with top=0 reads stack[-1] after reducing top to -1. Both changed accesses are out-of-bounds UB."
       },
-      "p9:main": {
+      "p8:a": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18.json[p9] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p8 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Push must save old top as the new node successor before changing top. Reversing those two statements sets temp->link=temp, forming a self-loop and losing A/B from stack reachability. Pop must read item and successor before freeing temp; moving free ahead of either read causes use-after-free.",
         "method": "qualitative",
-        "conclusion": "Blind answer equals the published answer: '8': push 8 → [8]. '2': push 2 → [8,2]. '/': op2=2, op1=8, push 8/2=4 → [4]. '3': push 3 → [4,3]. '-': op2=3, op1=4, push 4-3=1 → [1]. 결과 1. 먼저 pop한 것이 오른쪽 피연산자(op2)이고 나중에 pop한 것이 왼쪽(op1)이다. 바꾸면 비가환 연산에서 순서가 뒤집혀 8/2 대신 2/8=0(정수 나눗셈), 4-3 대신 3-4=-1이 되어 틀린다. \"12 3+\"은 한 자리 숫자 가정이라 '1','2'가 각각 별개 피연산자(1"
+        "conclusion": "Subpart (a): After push: top=N,N->link=A,A->link=B,B->link=NULL. Immediate pop returns N item, restores top=A, and frees N only."
+      },
+      "p8:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p8 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. Push must save old top as the new node successor before changing top. Reversing those two statements sets temp->link=temp, forming a self-loop and losing A/B from stack reachability. Pop must read item and successor before freeing temp; moving free ahead of either read causes use-after-free.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): After push: top=N,N->link=A,A->link=B,B->link=NULL. Immediate pop returns N item, restores top=A, and frees N only."
+      },
+      "p9:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p9 independent verification: evidence/blind-solver-2026-10-18.json[p9] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): Blind answer equals the published answer: '8': push 8 → [8]. '2': push 2 → [8,2]. '/': op2=2, op1=8, push 8/2=4 → [4]. '3': push 3 → [4,3]. '-': op2=3, op1=4, push 4-3=1 → [1]. 결과 1. 먼저 pop한 것이 오른쪽 피연산자(op2)이고 나중에 pop한 것이 왼쪽(op1)이다. 바꾸면 비가환 연산에서 순서가 뒤집혀 8/2 대신 2/8=0(정수 나눗셈), 4-3 대신 3-4=-1이 되어 틀린다. \"12 3+\"은 한 자리 숫자 가정이라 '1','2'가 각각 별개 피연산자(1"
+      },
+      "p9:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p9 independent verification: evidence/blind-solver-2026-10-18.json[p9] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): Blind answer equals the published answer: '8': push 8 → [8]. '2': push 2 → [8,2]. '/': op2=2, op1=8, push 8/2=4 → [4]. '3': push 3 → [4,3]. '-': op2=3, op1=4, push 4-3=1 → [1]. 결과 1. 먼저 pop한 것이 오른쪽 피연산자(op2)이고 나중에 pop한 것이 왼쪽(op1)이다. 바꾸면 비가환 연산에서 순서가 뒤집혀 8/2 대신 2/8=0(정수 나눗셈), 4-3 대신 3-4=-1이 되어 틀린다. \"12 3+\"은 한 자리 숫자 가정이라 '1','2'가 각각 별개 피연산자(1"
       },
       "p10:main": {
         "status": "pass",
@@ -292,7 +328,7 @@
     }
   },
   "artifact_hashes": {
-    ".pack/문제설명_1012_Queue.md": "7382952fe0fde6dba70ede9d5d88f64dbc4c7d624195b2e74f161e26ddc8e9ba",
+    ".pack/문제설명_1012_Queue.md": "1796513d4e8270f714712a082aa94dd2e1b6ee2a36a13f8dea3831882dc12f55",
     ".pack/자료_문제설명_1012_Queue/evidence/2017-original.txt": "0e28b01802eafd825f929285b2a7f024ead30e2426b0093f1981e8e4585a865b",
     ".pack/자료_문제설명_1012_Queue/evidence/2017-page-1.png": "d98b61ab48b0a0ec4a43aea8b1c30434bdf2b40815ce6f4a425357dd43bb99d4",
     ".pack/자료_문제설명_1012_Queue/evidence/2017-page-2.png": "b062982b751657cd4be425a6ce9ca36bd60cd209a61e8c819381eebda7c2f824",
@@ -468,9 +504,9 @@
     ".pack/자료_문제설명_1012_Queue/fragments/p4.html": "ed4d0a44f7b110a2816c3f876f2c1a1a88e200eeaf2dcfdb4991ffc29355deb8",
     ".pack/자료_문제설명_1012_Queue/fragments/p5.html": "6dac38c8792ed0773320127f16cd275d43c6f1b5c0e9db5448ccc688fc2c6e1d",
     ".pack/자료_문제설명_1012_Queue/fragments/p6.html": "44bf024aa746a2ad211a71f49264e0adbc8c90a4517fd5619c0d5b7747afcc61",
-    ".pack/자료_문제설명_1012_Queue/fragments/p7.html": "ac1e9cc215ada988b9499440cb8f81a7c9638bc4741497551738a127d74756e1",
-    ".pack/자료_문제설명_1012_Queue/fragments/p8.html": "5e177fbe50e56c70c87cab8183153c6a7bab87afe902633745d8876aeafa0967",
-    ".pack/자료_문제설명_1012_Queue/fragments/p9.html": "931fa99de248ac11507743e385482f802c14daa42044db7795dd5af394dd7227",
+    ".pack/자료_문제설명_1012_Queue/fragments/p7.html": "17526a30180865959becbc3a888024432b579a0579b20d3c279a9d27e9f07bb9",
+    ".pack/자료_문제설명_1012_Queue/fragments/p8.html": "d831b8919328a5478a3c6fd26a4ea0149efdd0f99d93f936ee690ef74c5c6f39",
+    ".pack/자료_문제설명_1012_Queue/fragments/p9.html": "701bce7b6660d99d8a3b666584bb6d7f85805b051bb78de54ee7ad22a6e764e8",
     ".pack/자료_문제설명_1012_Queue/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
     ".pack/자료_문제설명_1012_Queue/vendor/katex/contrib/auto-render.min.js": "7b57d427ac6270677daf8d8380ded2cc73336f9149a167b8e1fe0d6ef66604ae",
     ".pack/자료_문제설명_1012_Queue/vendor/katex/fonts/KaTeX_AMS-Regular.ttf": "68534840bcfdd2bffb6f0e8deb48684dd01e7f04ea2813267577afb906de1d13",
@@ -557,7 +593,7 @@
     ".pack/자료_문제설명_1012_Queue/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     ".pack/자료_문제설명_1012_Queue/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     ".pack/자료_문제설명_1012_Queue/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "문제설명_1012_Queue.html": "86ec8b4f6bce2b565fd1a2a6690d7f3c0071626992ffea48cf4f919f70103414",
-    ".pack/자료_문제설명_1012_Queue/manifest.json": "d681b416c409fd96766efb1200c9d6235787db5678fc380eb0e8b7dc08825c9b"
+    "문제설명_1012_Queue.html": "557a79758ac7fb6770377397b1a6669e32a7c973db35b14fc945b01953b916af",
+    ".pack/자료_문제설명_1012_Queue/manifest.json": "7615afd463ee73bf31150e2f11c9d812957c22369ca6e3f82919718efe874458"
   }
 }

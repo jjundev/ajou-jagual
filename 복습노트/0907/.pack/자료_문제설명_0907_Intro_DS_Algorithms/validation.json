@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "bbcb62662e317549df007206a4cb9b414d617d9a1a9d09291f8ffbea9872de0a",
+  "input_hash": "045e77b365ecf3e2ac57c46d69dddf51d30fda97372733c79a93889b03f726f2",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\docs\\verify\\no-exam-coverage-20261017\\all-preserved.json",
@@ -148,22 +148,22 @@
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\0907\\복습문제_0907_Intro_DS_Algorithms.html",
-      "sha256": "2c11ea4fe19cc0d6a7d2527e02cdd2740e4a429fe4c75a5d3a73295a3075b078"
+      "sha256": "8717a07ed32e97467df0cc337ff5916496efcd87d2214a5276415db061a97325"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-    "evidence": "Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment/reference equality checked before reuse."
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Layout-only rerender. Staged HTML compared with the previously published, reviewed HTML: after removing the new data-labeled attribute and the single labeled-ol CSS rule the files are line-identical (CR-insensitive), so problem conditions, code, asks, figures and originals are unchanged from the source-visual review already on record."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-    "evidence": "Fresh stage checked with Playwright Chrome at 1280x900, 1024x900 and 375x812 in light/dark: 42 problem views, 0 console/KaTeX/resource errors, no document overflow, seven sections each, summary panel at >=1024px, next/prev navigation. For every changed item one viewport screenshot (1280 dark or 375 light, evidence/browser-2026-10-18/) was opened and inspected; the remaining variants rely on the machine metrics. evidence/browser-2026-10-18.json"
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Playwright Chrome at 1280x900 light and 375x812 dark: every lecture ask block has data-labeled and computed list-style-type none (no duplicate 1./2. before (a)/(b)); 0 console/page errors; no document horizontal overflow. 1005 P3 problem pane screenshot inspected. All other panel/navigation behaviour is byte-identical to the previously reviewed publish."
   },
   "content": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "1 changed lecture-code item(s) ['p4'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment/reference equality checked before reuse.",
     "items": {
       "p1:main": {
@@ -181,31 +181,51 @@
         "reviewer": "Codex native executor — actual source/content/browser review",
         "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Same serialized question, exact same fragment, same policy and unchanged references; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Queue FIFO removes the earliest enqueued remaining item each time."
       },
-      "p5:main": {
+      "p5:a": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. S1 p2는 Data와 Data Structures를 구별한다. 원래 벽돌을 자료구조/알고리즘 중 고르게 한 문구는 데이터 자체와 조직을 혼동시켰으나, 최종 질문은 벽돌 자체/조직된 벽/절차를 명시하여 이 모호성이 해소되었다. 알고리즘 유한성은 소스 명령문 개수가 유한하다는 뜻만이 아니라 실행 단계의 유한성을 포함해야 한다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. S1 p2는 Data와 Data Structures를 구별한다. 원래 벽돌을 자료구조/알고리즘 중 고르게 한 문구는 데이터 자체와 조직을 혼동시켰으나, 최종 질문은 벽돌 자체/조직된 벽/절차를 명시하여 이 모호성이 해소되었다. 알고리즘 유한성은 소스 명령문 개수가 유한하다는 뜻만이 아니라 실행 단계의 유한성을 포함해야 한다."
       },
-      "p6:main": {
+      "p5:b": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 수명, 객체 자체 크기, 최대 동시 사용량을 구분한다. C는 스택 구현을 강제하지 않으며 지역 static 배열은 자동 배열과 수명이 다르다. 따라서 '지역 변수는 항상 메모리를 절약한다'는 명제는 거짓이다. 대응 signed/unsigned 정수형은 같은 저장 크기와 정렬 요구를 가진다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. S1 p2는 Data와 Data Structures를 구별한다. 원래 벽돌을 자료구조/알고리즘 중 고르게 한 문구는 데이터 자체와 조직을 혼동시켰으나, 최종 질문은 벽돌 자체/조직된 벽/절차를 명시하여 이 모호성이 해소되었다. 알고리즘 유한성은 소스 명령문 개수가 유한하다는 뜻만이 아니라 실행 단계의 유한성을 포함해야 한다."
       },
-      "p7:main": {
+      "p6:a": {
         "status": "pass",
-        "reviewer": "Codex executor, source/scope reviewers and blind_coverage",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 문제의 구조상 특징을 직접 대응한다. 스택 pop은 가장 최근 삽입 항목을 선택하고 큐 dequeue는 가장 오래된 항목을 선택한다."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p6 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 수명, 객체 자체 크기, 최대 동시 사용량을 구분한다. C는 스택 구현을 강제하지 않으며 지역 static 배열은 자동 배열과 수명이 다르다. 따라서 '지역 변수는 항상 메모리를 절약한다'는 명제는 거짓이다. 대응 signed/unsigned 정수형은 같은 저장 크기와 정렬 요구를 가진다."
       },
-      "p4:main": {
+      "p6:b": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "Card p4 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p6 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 수명, 객체 자체 크기, 최대 동시 사용량을 구분한다. C는 스택 구현을 강제하지 않으며 지역 static 배열은 자동 배열과 수명이 다르다. 따라서 '지역 변수는 항상 메모리를 절약한다'는 명제는 거짓이다. 대응 signed/unsigned 정수형은 같은 저장 크기와 정렬 요구를 가진다."
+      },
+      "p7:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p7 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 문제의 구조상 특징을 직접 대응한다. 스택 pop은 가장 최근 삽입 항목을 선택하고 큐 dequeue는 가장 오래된 항목을 선택한다."
+      },
+      "p7:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p7 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Final row fields assembled without changing authored prose; seven sections cover all requested conditions and results. 문제의 구조상 특징을 직접 대응한다. 스택 pop은 가장 최근 삽입 항목을 선택하고 큐 dequeue는 가장 오래된 항목을 선택한다."
+      },
+      "p4:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p4 structured into conditions and ask list; explanations verified. Prior: Card p4 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf (PyMuPDF extraction)."
+      },
+      "p4:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p4 structured into conditions and ask list; explanations verified. Prior: Card p4 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf (PyMuPDF extraction)."
       }
     }
   },
   "independent": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "1 changed lecture-code item(s) ['p4'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Actual lecture PDF pages visually inspected; STT/core goals and every new prompt/subquestion compared with final independently solved answers, qualitative proofs, Python traces and defined C11 execution. Existing question/fragment/reference equality checked before reuse.",
     "items": {
       "p1:main": {
@@ -229,38 +249,66 @@
         "method": "qualitative",
         "conclusion": "(a) A, B, C, D, E."
       },
-      "p5:main": {
+      "p5:a": {
         "status": "pass",
-        "reviewer": "blind_coverage, final question snapshot bound",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. S1 p2는 Data와 Data Structures를 구별한다. 원래 벽돌을 자료구조/알고리즘 중 고르게 한 문구는 데이터 자체와 조직을 혼동시켰으나, 최종 질문은 벽돌 자체/조직된 벽/절차를 명시하여 이 모호성이 해소되었다. 알고리즘 유한성은 소스 명령문 개수가 유한하다는 뜻만이 아니라 실행 단계의 유한성을 포함해야 한다.",
         "method": "qualitative",
-        "conclusion": "벽돌 자체는 데이터, 벽돌을 조직한 벽의 구조는 자료구조, 벽을 쌓는 절차는 알고리즘이다. 유한하고 명확한 명령과 수행 순서가 있어야 절차를 따라 실행할 수 있으며, 유효 입력에 대해 유한 단계 안에 끝나야 한다. 새 문제 해결 방법 선택은 설계, 주어진 방법의 시간·공간 비용 계산은 분석이다. 속도와 메모리 제약을 만족하면서 재사용성과 가독성으로 유지보수 비용도 고려해야 한다.",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. S1 p2는 Data와 Data Structures를 구별한다. 원래 벽돌을 자료구조/알고리즘 중 고르게 한 문구는 데이터 자체와 조직을 혼동시켰으나, 최종 질문은 벽돌 자체/조직된 벽/절차를 명시하여 이 모호성이 해소되었다. 알고리즘 유한성은 소스 명령문 개수가 유한하다는 뜻만이 아니라 실행 단계의 유한성을 포함해야 한다."
+        "conclusion": "Subpart (a): 벽돌 자체는 데이터, 벽돌을 조직한 벽의 구조는 자료구조, 벽을 쌓는 절차는 알고리즘이다. 유한하고 명확한 명령과 수행 순서가 있어야 절차를 따라 실행할 수 있으며, 유효 입력에 대해 유한 단계 안에 끝나야 한다. 새 문제 해결 방법 선택은 설계, 주어진 방법의 시간·공간 비용 계산은 분석이다. 속도와 메모리 제약을 만족하면서 재사용성과 가독성으로 유지보수 비용도 고려해야 한다."
       },
-      "p6:main": {
+      "p5:b": {
         "status": "pass",
-        "reviewer": "blind_coverage, final question snapshot bound",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. S1 p2는 Data와 Data Structures를 구별한다. 원래 벽돌을 자료구조/알고리즘 중 고르게 한 문구는 데이터 자체와 조직을 혼동시켰으나, 최종 질문은 벽돌 자체/조직된 벽/절차를 명시하여 이 모호성이 해소되었다. 알고리즘 유한성은 소스 명령문 개수가 유한하다는 뜻만이 아니라 실행 단계의 유한성을 포함해야 한다.",
         "method": "qualitative",
-        "conclusion": "전역 배열은 프로그램 실행 동안 저장 공간을 유지한다. 일반적인 자동 지역 배열은 함수 호출마다 별도의 수명을 가지며 호출이 끝나면 그 공간을 재사용할 수 있다. 지역이라는 사실만으로 바이트 크기가 줄지는 않는다. 재귀 깊이 k에서 크기 B의 자동 배열이 각 호출에 필요하면 동시에 대략 kB가 필요할 수 있다. 함수 분리는 가독성·재사용·검증을 돕는다. 주소 전달은 큰 원본의 복사를 피하지만 여러 함수가 같은 값을 보므로 의도하지 않은 수정에 주의해야 한다. int와 unsigned int의 sizeof는 같다. 100칸 중 10칸만 쓰면 90칸을 사용하지 않는다.",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 수명, 객체 자체 크기, 최대 동시 사용량을 구분한다. C는 스택 구현을 강제하지 않으며 지역 static 배열은 자동 배열과 수명이 다르다. 따라서 '지역 변수는 항상 메모리를 절약한다'는 명제는 거짓이다. 대응 signed/unsigned 정수형은 같은 저장 크기와 정렬 요구를 가진다."
+        "conclusion": "Subpart (b): 벽돌 자체는 데이터, 벽돌을 조직한 벽의 구조는 자료구조, 벽을 쌓는 절차는 알고리즘이다. 유한하고 명확한 명령과 수행 순서가 있어야 절차를 따라 실행할 수 있으며, 유효 입력에 대해 유한 단계 안에 끝나야 한다. 새 문제 해결 방법 선택은 설계, 주어진 방법의 시간·공간 비용 계산은 분석이다. 속도와 메모리 제약을 만족하면서 재사용성과 가독성으로 유지보수 비용도 고려해야 한다."
       },
-      "p7:main": {
+      "p6:a": {
         "status": "pass",
-        "reviewer": "blind_coverage, final question snapshot bound",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p6 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 수명, 객체 자체 크기, 최대 동시 사용량을 구분한다. C는 스택 구현을 강제하지 않으며 지역 static 배열은 자동 배열과 수명이 다르다. 따라서 '지역 변수는 항상 메모리를 절약한다'는 명제는 거짓이다. 대응 signed/unsigned 정수형은 같은 저장 크기와 정렬 요구를 가진다.",
         "method": "qualitative",
-        "conclusion": "할 일의 순서는 리스트, 도시와 도로는 그래프, 조직도는 트리, 책더미는 스택, 단어로 뜻 찾기는 사전이다. 각각 순서, 연결, 계층, 후입선출, 키와 값의 대응을 표현한다. A,B,C 순서로 쌓으면 C가 먼저 나온다. 매표소 줄은 먼저 들어온 항목을 먼저 내보내는 선입선출(FIFO) 큐다.",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 문제의 구조상 특징을 직접 대응한다. 스택 pop은 가장 최근 삽입 항목을 선택하고 큐 dequeue는 가장 오래된 항목을 선택한다."
+        "conclusion": "Subpart (a): 전역 배열은 프로그램 실행 동안 저장 공간을 유지한다. 일반적인 자동 지역 배열은 함수 호출마다 별도의 수명을 가지며 호출이 끝나면 그 공간을 재사용할 수 있다. 지역이라는 사실만으로 바이트 크기가 줄지는 않는다. 재귀 깊이 k에서 크기 B의 자동 배열이 각 호출에 필요하면 동시에 대략 kB가 필요할 수 있다. 함수 분리는 가독성·재사용·검증을 돕는다. 주소 전달은 큰 원본의 복사를 피하지만 여러 함수가 같은 값을 보므로 의도하지 않은 수정에 주의해야 한다. int와 unsigned int의 sizeof는 같다. 100칸 중 10칸만 쓰면 90칸을 사용하지 않는다."
       },
-      "p4:main": {
+      "p6:b": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18.json[p4] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p6 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 수명, 객체 자체 크기, 최대 동시 사용량을 구분한다. C는 스택 구현을 강제하지 않으며 지역 static 배열은 자동 배열과 수명이 다르다. 따라서 '지역 변수는 항상 메모리를 절약한다'는 명제는 거짓이다. 대응 signed/unsigned 정수형은 같은 저장 크기와 정렬 요구를 가진다.",
         "method": "qualitative",
-        "conclusion": "Blind answer equals the published answer: tmp: 초기 -8 → i=1에서 -3 > -8이라 -3 → i=2 -10은 갱신 없음(-3) → i=3 -1 > -3이라 -1. 반환값 -1. tmp를 0으로 초기화하면 원소가 모두 음수일 때 어떤 원소도 0보다 크지 않아 0(배열에 없는 값)을 반환하는 오류. n은 n>=1 (score[0] 접근 필요, 그리고 n<=MAX). i가 1에서 시작해 매 반복 1씩 증가하고 i<n이 거짓이 되는 순간 끝나므로 최대 n-1회로 유한."
+        "conclusion": "Subpart (b): 전역 배열은 프로그램 실행 동안 저장 공간을 유지한다. 일반적인 자동 지역 배열은 함수 호출마다 별도의 수명을 가지며 호출이 끝나면 그 공간을 재사용할 수 있다. 지역이라는 사실만으로 바이트 크기가 줄지는 않는다. 재귀 깊이 k에서 크기 B의 자동 배열이 각 호출에 필요하면 동시에 대략 kB가 필요할 수 있다. 함수 분리는 가독성·재사용·검증을 돕는다. 주소 전달은 큰 원본의 복사를 피하지만 여러 함수가 같은 값을 보므로 의도하지 않은 수정에 주의해야 한다. int와 unsigned int의 sizeof는 같다. 100칸 중 10칸만 쓰면 90칸을 사용하지 않는다."
+      },
+      "p7:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p7 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 문제의 구조상 특징을 직접 대응한다. 스택 pop은 가장 최근 삽입 항목을 선택하고 큐 dequeue는 가장 오래된 항목을 선택한다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): 할 일의 순서는 리스트, 도시와 도로는 그래프, 조직도는 트리, 책더미는 스택, 단어로 뜻 찾기는 사전이다. 각각 순서, 연결, 계층, 후입선출, 키와 값의 대응을 표현한다. A,B,C 순서로 쌓으면 C가 먼저 나온다. 매표소 줄은 먼저 들어온 항목을 먼저 내보내는 선입선출(FIFO) 큐다."
+      },
+      "p7:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p7 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. evidence/independent.json; independent-verification.json; verify_new.py/trace-result.txt; qualitative-proof.md; verify_new.c/c11-result.txt. 문제의 구조상 특징을 직접 대응한다. 스택 pop은 가장 최근 삽입 항목을 선택하고 큐 dequeue는 가장 오래된 항목을 선택한다.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): 할 일의 순서는 리스트, 도시와 도로는 그래프, 조직도는 트리, 책더미는 스택, 단어로 뜻 찾기는 사전이다. 각각 순서, 연결, 계층, 후입선출, 키와 값의 대응을 표현한다. A,B,C 순서로 쌓으면 C가 먼저 나온다. 매표소 줄은 먼저 들어온 항목을 먼저 내보내는 선입선출(FIFO) 큐다."
+      },
+      "p4:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p4 independent verification: evidence/blind-solver-2026-10-18.json[p4] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): Blind answer equals the published answer: tmp: 초기 -8 → i=1에서 -3 > -8이라 -3 → i=2 -10은 갱신 없음(-3) → i=3 -1 > -3이라 -1. 반환값 -1. tmp를 0으로 초기화하면 원소가 모두 음수일 때 어떤 원소도 0보다 크지 않아 0(배열에 없는 값)을 반환하는 오류. n은 n>=1 (score[0] 접근 필요, 그리고 n<=MAX). i가 1에서 시작해 매 반복 1씩 증가하고 i<n이 거짓이 되는 순간 끝나므로 최대 n-1회로 유한."
+      },
+      "p4:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p4 independent verification: evidence/blind-solver-2026-10-18.json[p4] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): Blind answer equals the published answer: tmp: 초기 -8 → i=1에서 -3 > -8이라 -3 → i=2 -10은 갱신 없음(-3) → i=3 -1 > -3이라 -1. 반환값 -1. tmp를 0으로 초기화하면 원소가 모두 음수일 때 어떤 원소도 0보다 크지 않아 0(배열에 없는 값)을 반환하는 오류. n은 n>=1 (score[0] 접근 필요, 그리고 n<=MAX). i가 1에서 시작해 매 반복 1씩 증가하고 i<n이 거짓이 되는 순간 끝나므로 최대 n-1회로 유한."
       }
     }
   },
   "artifact_hashes": {
-    ".pack/문제설명_0907_Intro_DS_Algorithms.md": "a4bdad697f358aa04956048b1e601f31ffce270a4b3f24b053c36278b6ec7299",
+    ".pack/문제설명_0907_Intro_DS_Algorithms.md": "344fa23f7d1c4ac8ddca66a1960cf2f3c1dc9748f47b9653b33b4283606457ef",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/evidence/author.py": "fba730706e3c03ebecdd785f228c0f99e2dac4fac76e96141306ccf8c52f37d8",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/evidence/blind-solver-2026-10-18.json": "fa0de40f1cf592e9e6d2988ad4006cfcc734afe527d812f1076bcb63b330ae97",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/evidence/browser-2026-10-18/1024-dark/p4-viewport.png": "758816026f154e6e1b494d449ef5b1987f3c24c81f992e9ca5c57f54d193b467",
@@ -338,10 +386,10 @@
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p1.html": "05480f57d0509371ec24763f4faa223e505122b35806cf2435666fc466bff57d",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p2.html": "907d7f7db7037393d2b5e80935ea15710ca0d4f0d518f0913ffcbfaae5649499",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p3.html": "1c2cd2acd7cf486d699c23e72b3888aa758d9bbe54705b4b5ac82835b7c3b358",
-    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p4.html": "fc66fb707dfbcb87ed81c8ea541285c1d1ca325426577dda80f4422a88d6152e",
-    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p5.html": "89729a7b6b51b0bd7659d3277bf7a110709454790c98fd73795c99d8e9acb722",
-    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p6.html": "ddaa4f1e3b88f6d680a6e8621066c7f371ba2cc42e904086bf20004f115e0363",
-    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p7.html": "ef58b5b0d972a3ba4785f9774c1636734ab93676554b04386803189ba3a33f40",
+    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p4.html": "abc582b8360839e559f77a44326032b4b6bc8b6f2f2f745c992161780c08722b",
+    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p5.html": "22f6933697ea752072d1cbb0642fce594510a43df51cfbc3c4cccfebe230b889",
+    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p6.html": "f994dd2b0346bcee2bc73ec1efea17825c49cf7b4fea7e14ba0bbf2f56038480",
+    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/fragments/p7.html": "a1fe767761b3fd20d6bf5597eeac0ed9c2925dd90ccaf0574f48f02c40ee57df",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/vendor/katex/contrib/auto-render.min.js": "7b57d427ac6270677daf8d8380ded2cc73336f9149a167b8e1fe0d6ef66604ae",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/vendor/katex/fonts/KaTeX_AMS-Regular.ttf": "68534840bcfdd2bffb6f0e8deb48684dd01e7f04ea2813267577afb906de1d13",
@@ -428,7 +476,7 @@
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     ".pack/자료_문제설명_0907_Intro_DS_Algorithms/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "문제설명_0907_Intro_DS_Algorithms.html": "6bdee214381905205747bba8d5f54472946af6565076dcda24b738e36802569a",
-    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/manifest.json": "a84eb7400b33e6ae094b4a263fcc6ccfd75062a45bce88cc024ddaa943ee4e31"
+    "문제설명_0907_Intro_DS_Algorithms.html": "a13f35c127f0dd6d0bc751c65efbe6f8e4387cdebc57965e7d11dae02995d87d",
+    ".pack/자료_문제설명_0907_Intro_DS_Algorithms/manifest.json": "888d660d5d7fe7e8ce80bc9ae4730dbb0c4347bc857d5c83b47939d0bffefd15"
   }
 }

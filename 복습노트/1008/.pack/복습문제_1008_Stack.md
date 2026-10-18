@@ -2,7 +2,7 @@
 
 강의노트의 핵심 개념과 예제 코드를 함께 복습해요. 먼저 직접 풀고 원문·힌트·풀이를 확인하세요.
 
-> `복습문제_1008_Stack.html`를 마크다운으로 옮겼어요. 원문, 힌트, 풀이는 접혀 있어요. 먼저 풀어 보고 펼쳐 보세요.
+> 복습문제_1008_Stack.html를 마크다운으로 옮겼어요. 원문, 힌트, 풀이는 접혀 있어요. 먼저 풀어 보고 펼쳐 보세요.
 
 **목차**
 
@@ -91,9 +91,9 @@ top은 개수가 아니라 마지막 원소의 인덱스예요.
 
 ### P2. ListType 삭제 래퍼의 메모리 누수 찾기
 
-**강의 예제 기반 자체 출제** S4 p48 · 추가 근거 p28,47
+**강의 예제 기반 자체 출제** S4 p48
 
-ListType은 첫 노드를 가리키는 head와 노드 개수 length를 보관해요. get_node_at(list,pos)는 pos&lt;0이면 NULL을 돌려주고, 그 밖에는 head에서 link를 pos번 따라간 노드를 돌려줘요. remove_node는 다음과 같아요.
+`ListType`은 첫 노드를 가리키는 `head`와 노드 개수 `length`를 보관해요. `get_node_at(list, pos)`는 `pos < 0`이면 `NULL`을 돌려주고, 그 밖에는 `head`에서 `link`를 `pos`번 따라간 노드를 돌려줘요. 아래는 `remove_node` 함수와 비어 있지 않은 리스트에서 유효한 위치 `pos`(`0 <= pos < length`)의 노드를 삭제하는 래퍼 본문이에요.
 
 ```c
 // p: 삭제될 노드의 선행 노드, removed: 삭제될 노드
@@ -105,15 +105,15 @@ void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
         p->link = removed->link;
     free(removed);
 }
-```
 
-아래는 비어 있지 않은 리스트에서 유효한 위치 pos(0≤pos&lt;length)의 노드를 삭제하는 래퍼의 본문이에요. 노드 A 하나뿐인 길이 1 리스트에서 pos=0을 삭제하면 head와 length는 바뀌지만 어떤 메모리 문제가 남나요? removed 인자를 고치세요.
-
-```c
-ListNode *p=get_node_at(list,pos-1);
-remove_node(&(list->head),p,(p!=NULL)?p->link:NULL);
+// delete(list, pos) 래퍼 본문 (결함이 있는 코드)
+ListNode *p = get_node_at(list, pos - 1);
+remove_node(&(list->head), p, (p != NULL) ? p->link : NULL);
 list->length--;
 ```
+
+- (a) 노드 `A` 하나뿐인 길이 `1` 리스트(`list->head = A, list->length = 1`)에서 `pos = 0`을 삭제할 때, `p`와 `removed` 인자에 전달되는 값과 실행 후 발생하는 메모리 누수 문제를 설명하세요.
+- (b) `pos == 0`일 때도 첫 노드가 정상적으로 해제되도록 `remove_node` 호출문의 세 번째 인자 식을 고치세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -129,17 +129,16 @@ list->length--;
 
 <details><summary>힌트 보기</summary>
 
-pos-1=-1이므로 get_node_at은 NULL을 반환해요. 삼항식의 거짓 분기도 NULL을 넘겨요.
+`pos - 1 = -1`이므로 `get_node_at`은 `NULL`을 반환하고, 삼항 연산자의 거짓 분기도 `NULL`을 넘겨요.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. pos-1=-1이므로 get_node_at은 NULL을 반환해요. 삼항식의 거짓 분기도 NULL을 넘겨요.
-2. remove_node는 head를 다음으로 옮기지만 free(NULL)은 아무 메모리도 반납하지 않아요. 기존 첫 노드 주소를 잃으므로 누수가 남아요.
-3. 호출 시점의 list-&gt;head를 removed로 넘기면 remove_node가 갱신 전에 받은 첫 노드 주소를 해제할 수 있어요. 비어 있지 않고 위치가 유효하다는 래퍼의 검사는 유지해요.
+- (a) `pos = 0`이면 `pos - 1 = -1`이므로 `p = get_node_at(list, -1) = NULL`이 돼요. 삼항 연산자 `(p != NULL) ? p->link : NULL`의 거짓 분기가 선택되어 `removed = NULL`이 전달되므로, `remove_node` 안에서 `*phead = (*phead)->link`로 `list->head`는 `NULL`이 되고 `list->length`도 `0`이 되지만 `free(NULL)`이 실행되어 원래 첫 노드 `A`가 해제되지 않고 누수돼요.
+- (b) `p == NULL`(즉 `pos == 0`)일 때 삭제 대상은 현재 첫 노드 `list->head`예요. 따라서 세 번째 인자를 `(p != NULL) ? p->link : list->head`로 고쳐야 `*phead`가 갱신되기 전의 첫 노드 주소가 `removed`로 전달되어 정상 해제돼요.
 
-**정답:** p=NULL,removed=NULL로 전달되어 head=NULL,length=0이지만 실제 첫 노드는 free되지 않아 누수된다. removed 인자는 (p!=NULL)?p-&gt;link:list-&gt;head로 고친다.
+**정답:** (a) `p = NULL`, `removed = NULL`이 전달되어 `list->head = NULL`, `list->length = 0`으로 갱신되지만 `free(NULL)`이 호출되어 원래 첫 노드 `A`가 해제되지 않고 메모리 누수가 발생한다. (b) 세 번째 인자를 `(p != NULL) ? p->link : list->head`로 고친다.
 
 이 문제는 래퍼 코드의 결함을 찾는 문제예요. 코드를 몰래 고쳐 쓰거나 누수를 정상 동작으로 승인하지 않아요.
 
@@ -151,22 +150,25 @@ pos-1=-1이므로 get_node_at은 NULL을 반환해요. 삼항식의 거짓 분�
 
 ### P3. push·pop·peek의 순서 복원
 
-**강의 예제 기반 자체 출제** S5 p11 · 추가 근거 p12
+**강의 예제 기반 자체 출제** S5 p11
 
-인덱스 0부터 쓰는 용량 3의 스택이며 초기 top=-1이에요. push(5),push(8),peek(),pop(),push(2),pop()의 반환값과 각 단계 top을 쓰세요. peek를 pop과 구별하고 빈 스택에서 먼저 top을 줄여 읽으면 안 되는 이유도 설명하세요.
+인덱스 `0`부터 쓰는 용량 `3`의 배열 스택이며 초기 상태는 `top = -1`이에요.
 
 ```c
-push(S,x)
+push(S, x)
     if is_full(S) then error "overflow"
-    else top <- top+1
+    else top <- top + 1
          stack[top] <- x
 
 pop(S)
     if is_empty(S) then error "underflow"
     else e <- stack[top]
-         top <- top-1
+         top <- top - 1
          return e
 ```
+
+- (a) 빈 스택에서 `push(5)`, `push(8)`, `peek()`, `pop()`, `push(2)`, `pop()`을 순서대로 실행할 때 각 연산 직후의 `top` 값과 `peek`·`pop`의 반환값, 최종 남은 스택 원소를 쓰세요.
+- (b) `peek()`을 `pop()`과 구별하는 차이점과, `pop()`에서 공백 검사 없이 `top`을 먼저 줄여 읽으면 안 되는 이유를 설명하세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -189,20 +191,18 @@ pop(S)
 
 <details><summary>힌트 보기</summary>
 
-top=-1은 원소가 없다는 뜻이에요. push는 먼저 top을 올리고 그 위치에 저장해요.
+`top = -1`은 원소가 없다는 뜻이에요. `push`는 먼저 `top`을 올리고 그 위치에 저장해요.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. top=-1은 원소가 없다는 뜻이에요. push는 먼저 top을 올리고 그 위치에 저장해요.
-2. 5와 8을 넣으면 top=1이에요. peek는 8을 읽기만 해서 top=1을 유지해요.
-3. pop은 현재 top의 8을 보관한 뒤 top을 0으로 줄여요. 2를 넣고 꺼내면 다시 5만 남아요.
-4. top을 먼저 줄여 읽으면 꺼낼 원소가 아닌 그 아래를 읽어요. 빈 상태에서는 배열 범위 밖 접근이 될 수 있어요.
+- (a) `push(5)` 후 `top = 0`(`[5]`), `push(8)` 후 `top = 1`(`[5, 8]`)이에요. `peek()`은 맨 위 값 `8`만 읽고 `top = 1`을 유지해요. 첫 `pop()`은 `8`을 반환하고 `top = 0`(`[5]`)으로 줄여요. 이어 `push(2)` 후 `top = 1`(`[5, 2]`), 마지막 `pop()`은 `2`를 반환하고 `top = 0`이 되어 스택에는 `{5}`만 남아요.
+- (b) `peek()`은 `top`을 바꾸지 않고 맨 위 원소를 조회만 하는 연산이에요. `pop()`에서 `top`을 먼저 줄여 읽으면 현재 맨 위 원소가 아니라 그 아래 원소를 잘못 읽게 되고, 공백 스택(`top == -1`)에서는 배열 범위 밖 접근이 발생하므로 반드시 접근 전에 `is_empty`를 먼저 검사해야 해요.
 
-**정답:** top: 0,1,1,0,1,0. peek=8, 첫 pop=8, 마지막 pop=2. 남은 스택 {5}. peek는 top을 바꾸지 않는다. 빈 스택은 접근 전에 검사해야 한다.
+**정답:** (a) 단계별 `top`: `0, 1, 1, 0, 1, 0`; 반환값: `peek() = 8`, 첫 `pop() = 8`, 마지막 `pop() = 2`; 남은 스택: `{5}` (b) `peek()`은 `top`을 바꾸지 않고 맨 위 원소만 읽는다. `top`을 먼저 줄여 읽으면 아래 원소를 잘못 읽고 공백 스택에서 범위 밖 접근이 발생하므로 먼저 공백 여부를 검사해야 한다.
 
-peek에도 top--를 적용하면 조회가 삭제로 바뀌어요.
+`peek`에도 `top--`를 적용하면 단순 조회가 삭제로 바뀌어요.
 
 </details>
 
@@ -212,9 +212,20 @@ peek에도 top--를 적용하면 조회가 삭제로 바뀌어요.
 
 ### P4. 위치 인자를 선행 노드로 바꾸기
 
-**강의 예제 기반 자체 출제** S4 p47 · 추가 근거 p44,45,46,25
+**강의 예제 기반 자체 출제** S4 p47
 
-ListType은 첫 노드를 가리키는 head와 노드 개수 length를 함께 보관해요. 위치는 0부터 셉니다. get_node_at(list,pos)는 pos&lt;0이면 NULL을 돌려주고, 그 밖에는 head에서 link를 pos번 따라간 노드를 돌려줘요. insert_node(phead,p,new_node)는 리스트가 비어 있으면 new_node를 유일한 노드로 만들고, p==NULL이면 new_node를 맨 앞에 넣어 \*phead를 바꾸며, 그 밖에는 new_node를 p 바로 뒤에 넣어요. A→B→C→NULL,length=3인 리스트에서 위치2에 N을 넣는 add가 get_node_at(list,position-1)를 호출한 뒤 그 결과로 insert_node를 호출합니다. 반환되는 선행 노드, 함수에 넘기는 세 인자와 결과를 쓰세요. 위치0 삽입에서는 선행 노드와 head가 어떻게 되는지, position을 그대로 get_node_at에 넘기면 생기는 위치 오류, length를 따로 저장하는 이점과 탐색을 포함한 최악 비용도 설명하세요.
+`ListType`은 첫 노드 포인터 `head`와 노드 개수 `length`를 함께 보관하며 위치 `position`은 `0`부터 세요. 아래는 위치 기반 삽입 함수 `add`가 사용하는 보조 함수 계약과 호출 흐름이에요.
+
+```c
+// get_node_at(list, pos): pos < 0이면 NULL, 그 밖에는 head에서 link를 pos번 따라간 노드 반환
+// insert_node(phead, p, new_node): p == NULL이면 맨 앞(*phead)에, 아니면 선행 노드 p 바로 뒤에 삽입
+ListNode *p = get_node_at(list, position - 1);
+insert_node(&(list->head), p, new_node);
+list->length++;
+```
+
+- (a) `A -> B -> C -> NULL`(`length = 3`)인 리스트에서 `position = 2`에 새 노드 `N`을 넣을 때와 `position = 0`에 `N`을 넣을 때, 선행 노드 `p`의 값, `insert_node`에 넘기는 세 인자, 삽입 후 리스트 상태와 `length`를 각각 쓰세요.
+- (b) `get_node_at(list, position)`처럼 `position`을 그대로 넘기면 어떤 위치 오류가 생기는지 설명하고, `length` 필드를 둔 덕에 가능한 길이 조회 비용과 선행 노드 탐색을 포함한 `add`의 최악 시간 복잡도를 쓰세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -224,21 +235,18 @@ S4 p47 · 추가 근거 p44,45,46,25 · Software_4_List.pdf. 1008에 재강조�
 
 <details><summary>힌트 보기</summary>
 
-position=2 → position−1=1 → 선행 노드B.
+`position = 2`이면 `position - 1 = 1`이므로 선행 노드는 `B`예요.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. 위치 2는 현재 C의 자리이므로 바로 앞의 인덱스 1에 있는 B를 찾아야 해요.
-2. insert_node가 요구하는 것은 위치 정수가 아닌 선행 노드의 주소예요.
-3. 호출자의 head를 바꿀 가능성이 있으므로 head 필드의 주소와 B, N을 전달해요.
-4. 위치 0에서는 음수 −1에 대해 NULL을 반환하는 약속으로 맨 앞 삽입을 표현해요.
-5. 래퍼는 삽입 성공 후 length를 1 늘려요. 길이 조회와 선행 노드 탐색은 서로 다른 연산이에요.
+- (a) `position = 2`는 현재 `C`의 자리이므로 바로 앞인 인덱스 `1`의 노드 `B`가 선행 노드 `p`가 돼요. 따라서 `insert_node(&(list->head), B, N)`을 호출해 `A -> B -> N -> C -> NULL`(`length = 4`)이 돼요. 반면 `position = 0`에서는 `get_node_at(list, -1) = NULL`이므로 `insert_node(&(list->head), NULL, N)`을 호출해 `N`이 새 `head`가 돼요.
+- (b) `position - 1` 대신 `position`을 그대로 넘기면 `position = 2`에서 `C`가 선행 노드로 선택되어 `C` 뒤에 들어가므로 목표 위치보다 한 칸 뒤에 삽입돼요. `length`를 저장하므로 길이 조회는 `O(1)`이고, 선행 노드 탐색은 최악 `O(n)`, 포인터 연결 변경 자체는 `O(1)`이에요.
 
-**정답:** 위치 2의 선행 노드는 B이며 insert_node(&(list-&gt;head),B,N)을 호출합니다. 결과는 A→B→N→C, length=4입니다. 위치 0에서는 get_node_at(-1)=NULL이므로 N이 새 head가 됩니다. position을 그대로 쓰면 C 뒤에 넣어 한 칸 늦어집니다. length를 저장하므로 길이 조회는 O(1)입니다. 위치 변환을 위한 탐색은 최악 O(n)이고 삽입의 링크 변경 자체는 O(1)입니다.
+**정답:** (a) `position = 2`: `p = B`, `insert_node(&(list->head), B, N)` 호출, 결과 `A -> B -> N -> C`(`length = 4`); `position = 0`: `p = NULL`, `insert_node(&(list->head), NULL, N)` 호출로 `N`이 새 `head`가 된다. (b) `position`을 그대로 넘기면 `C` 뒤에 삽입되어 한 칸 뒤로 밀린다. 길이 조회는 `O(1)`, 선행 노드 탐색을 포함한 삽입은 최악 `O(n)`(링크 갱신 자체는 `O(1)`)이다.
 
-position번째 노드를 선행 노드라고 혼동하지 않아요. head 필드의 주소와 head가 가리키는 첫 노드의 주소도 구분해요.
+`position`번째 노드를 선행 노드라고 혼동하지 않아요. `head` 필드의 주소와 `head`가 가리키는 첫 노드의 주소도 구분해요.
 
 </details>
 
@@ -248,9 +256,16 @@ position번째 노드를 선행 노드라고 혼동하지 않아요. head 필드
 
 ### P5. 함수 호출과 복귀 순서의 스택
 
-**강의 예제 기반 자체 출제** S5 p8 · 추가 근거 p10,11,12
+**강의 예제 기반 자체 출제** S5 p8
 
-main의 i=3에서 sub1(i)를 호출하고 sub1의 a=3,j=5에서 sub2(j)를 호출했어요. sub2 실행 중 기억해야 할 호출 정보의 순서와, sub2와 sub1이 차례로 return할 때 복귀하는 함수 순서를 쓰세요. 지역 변수만 저장하고 돌아올 위치를 버리면 왜 부족한지, 가장 오래된 호출로 먼저 돌아가면 안 되는 이유, 되돌리기(undo)와의 공통 규칙도 설명하세요. 복귀 위치는 실제 C 주소가 아니라 "호출문 바로 다음"이라는 개념으로만 다뤄요. 이어 용량 M=3인 배열 스택에서 top=2일 때 push, top=-1일 때 pop을 요청했어요(두 상황은 독립적이에요). 각 경우 어떤 검사가 top 변경과 배열 접근보다 먼저여야 하며, 거부된 연산 뒤 상태가 유지돼야 하는 이유를 쓰세요.
+아래 순서로 함수가 중첩 호출될 때 시스템 스택의 활성 레코드(복귀 위치와 지역 변수)와 배열 스택의 경계 검사를 살펴봐요. 복귀 위치는 실제 기계 주소가 아니라 "호출문 바로 다음"이라는 개념으로만 다뤄요.
+
+```c
+main (i = 3)  --호출-->  sub1(i) (a = 3, j = 5)  --호출-->  sub2(j) (b = 5)
+```
+
+- (a) `sub2` 실행 중 시스템 스택에 아래부터 쌓여 있는 호출 정보 순서와 `sub2`, `sub1`이 차례로 `return`할 때 복귀하는 함수 순서를 쓰고, 지역 변수만 저장하면 부족한 이유와 되돌리기(undo)와의 공통 규칙을 설명하세요.
+- (b) 용량 `M = 3`인 배열 스택에서 `top = 2`일 때의 `push`와 `top = -1`일 때의 `pop`이 각각 `top` 변경·배열 접근보다 먼저 수행해야 하는 검사와, 거부된 연산 뒤 상태가 보존되어야 하는 이유를 쓰세요.
 
 <details><summary>강의 예제 보기</summary>
 
@@ -260,19 +275,16 @@ S5 p8 · 추가 근거 p10,11,12 · Software_5_Stack.pdf. 강의 개념·그림�
 
 <details><summary>힌트 보기</summary>
 
-바닥: main의 복귀 위치와 i=3 / 그 위: sub1의 복귀 위치와 a=3, j=5.
+바닥: `main`의 복귀 위치와 `i = 3` / 그 위: `sub1`의 복귀 위치와 `a = 3, j = 5`.
 
 </details>
 
 <details><summary>풀이 보기</summary>
 
-1. main은 sub1을 호출하며 실행을 잠시 멈추므로 돌아올 위치와 현재 지역 상태를 남겨요.
-2. sub1이 sub2를 호출할 때도 같은 정보를 그 위에 쌓아요.
-3. sub2의 return은 맨 위의 sub1 정보를 사용해 sub1의 호출 다음으로 돌아가요.
-4. 그 뒤 sub1이 끝나면 아래에 남은 main 정보로 돌아가요.
-5. 가장 최근 정보를 먼저 사용한다는 점에서 undo의 최근 변경 취소와 같은 LIFO예요.
+- (a) `main`이 `sub1`을 호출하고 `sub1`이 `sub2`를 호출하므로, 스택 아래에는 `main`의 복귀 위치와 `i = 3`, 그 위에는 `sub1`의 복귀 위치와 `a = 3, j = 5`가 쌓여요(현재 활성 문맥 `sub2`는 `b = 5`). `sub2`가 끝나면 맨 위의 `sub1` 호출 다음으로, `sub1`이 끝나면 `main` 호출 다음으로 돌아가요. 지역 변수만 저장하면 돌아갈 실행 위치를 알 수 없고, 가장 최근 호출·변경부터 처리하는 후입선출(LIFO) 규칙이 함수 복귀와 undo에 공통으로 적용돼요.
+- (b) 용량 `M = 3`의 유효 인덱스는 `0..2`이므로, `top = 2`에서의 `push`는 `is_full`을 먼저 검사해 증가·저장을 거부해야 하고, `top = -1`에서의 `pop`은 `is_empty`를 먼저 검사해 읽기·감소를 거부해야 해요. 실패한 연산이 `top`이나 배열을 건드리면 범위 밖 접근이 일어나거나 기존 스택 상태가 깨지기 때문이에요.
 
-**정답:** 호출 정보는 아래부터 main의 복귀 위치·i=3, 그 위에 sub1의 복귀 위치·a=3,j=5를 기억합니다. sub2가 끝나면 sub1의 호출 다음으로, sub1이 끝나면 main의 호출 다음으로 돌아갑니다. 지역 변수만으로는 다음 실행 위치를 알 수 없습니다. 가장 최근에 중단한 호출부터 복귀하는 LIFO이며 undo도 마지막 변경부터 되돌립니다. 현재 실행 중인 sub2의 문맥에는 b=5도 있어요. main·sub1은 복귀를 기다리는 호출자이며 sub2가 현재 활성 문맥이에요. top=2인 push는 is_full을 먼저 검사하여 증가·저장을 거부하고, top=-1인 pop은 is_empty를 먼저 검사하여 읽기·감소를 거부해요. 실패한 연산은 유효 범위 밖에 접근하거나 상태를 바꾸지 않아야 해요.
+**정답:** (a) 스택 아래부터 `main`(복귀 위치, `i = 3`), 그 위에 `sub1`(복귀 위치, `a = 3, j = 5`)을 기억하며, 복귀 순서는 `sub2 -> sub1 -> main`이다. 지역 변수만으로는 다음 실행 위치를 알 수 없으며, 함수 복귀와 undo 모두 가장 최근 항목부터 처리하는 LIFO 규칙을 따른다. (b) `top = 2`인 `push`는 `is_full`을, `top = -1`인 `pop`은 `is_empty`를 먼저 검사해 거부해야 하며, 실패한 연산은 범위 밖 접근을 막고 기존 스택 상태를 그대로 유지해야 한다.
 
 복귀 위치를 배열 인덱스나 실제 기계 주소로 계산하지 않아요. 이 문제는 개념 모형의 복귀 관계를 물어요.
 

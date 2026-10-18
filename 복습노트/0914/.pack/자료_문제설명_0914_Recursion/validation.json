@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "9ec7f2ca118858d00cf0770feb740969a6733ea033a6cd573f9fe584e90eb777",
+  "input_hash": "8e5e2a11f64720261022b123a7db704e59197caecbae713d8f8f051b406b806b",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\docs\\verify\\exam-restore-20261017\\baseline.json",
@@ -108,22 +108,22 @@
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\복습노트\\0914\\복습문제_0914_Recursion.html",
-      "sha256": "86bee629face1c558303a32d067bfd12e9a4586c26fd7cf60359366acade1b68"
+      "sha256": "0d3c3fd25302028ba4378f23fc5ee330d8693a02e1508dab4100e75799c34cb8"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-    "evidence": "Changed statements compared with the actual lecture PDF page text (PyMuPDF) for every inserted declaration, code block and contract; unchanged items keep the prior source review. Prior: Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly."
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Layout-only rerender. Staged HTML compared with the previously published, reviewed HTML: after removing the new data-labeled attribute and the single labeled-ol CSS rule the files are line-identical (CR-insensitive), so problem conditions, code, asks, figures and originals are unchanged from the source-visual review already on record."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-    "evidence": "Fresh stage checked with Playwright Chrome at 1280x900, 1024x900 and 375x812 in light/dark: 60 problem views, 0 console/KaTeX/resource errors, no document overflow, seven sections each, summary panel at >=1024px, next/prev navigation. For every changed item one viewport screenshot (1280 dark or 375 light, evidence/browser-2026-10-18/) was opened and inspected; the remaining variants rely on the machine metrics. evidence/browser-2026-10-18.json"
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Playwright Chrome at 1280x900 light and 375x812 dark: every lecture ask block has data-labeled and computed list-style-type none (no duplicate 1./2. before (a)/(b)); 0 console/page errors; no document horizontal overflow. 1005 P3 problem pane screenshot inspected. All other panel/navigation behaviour is byte-identical to the previously reviewed publish."
   },
   "content": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "2 changed lecture-code item(s) ['p6', 'p7'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
     "items": {
       "p1:main": {
@@ -151,20 +151,35 @@
         "reviewer": "Codex native executor — actual source/content/browser review",
         "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: For n=2, all active calls again receive 2. If factorial were intended, use if(n<=1) return 1; return n*recursive(n-1); for n>=0 and representable results."
       },
-      "p6:main": {
+      "p6:a": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "Card p6 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p6 structured into conditions and ask list; explanations verified. Prior: Card p6 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf (PyMuPDF extraction)."
       },
-      "p7:main": {
+      "p6:b": {
         "status": "pass",
-        "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "Card p7 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf (PyMuPDF extraction)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p6 structured into conditions and ask list; explanations verified. Prior: Card p6 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf (PyMuPDF extraction)."
       },
-      "p8:main": {
+      "p7:a": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: n<=1 is the termination case. For n>=2 the recursive argument n-1 is smaller and reaches 1. Stated nonnegative and representability assumptions prevent invalid input and arithmetic overflow."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p7 structured into conditions and ask list; explanations verified. Prior: Card p7 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf (PyMuPDF extraction)."
+      },
+      "p7:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p7 structured into conditions and ask list; explanations verified. Prior: Card p7 rewritten to be standalone (evidence/lecture-standalone-changes-2026-10-18.md). Fragment understand/recall/pitfall sentences updated to mirror the new statement; answer, steps, verify and summary text are unchanged and the manifest answer is unchanged. All seven sections re-read against the new question: every asked subpart covered, no reference to lecture pages, slides or other problems remains, inserted definitions/code match the page text of 자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf (PyMuPDF extraction)."
+      },
+      "p8:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p8 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: n<=1 is the termination case. For n>=2 the recursive argument n-1 is smaller and reaches 1. Stated nonnegative and representability assumptions prevent invalid input and arithmetic overflow."
+      },
+      "p8:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p8 structured into conditions and ask list; explanations verified. Prior: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: n<=1 is the termination case. For n>=2 the recursive argument n-1 is smaller and reaches 1. Stated nonnegative and representability assumptions prevent invalid input and arithmetic overflow."
       },
       "p9:main": {
         "status": "pass",
@@ -180,7 +195,7 @@
   },
   "independent": {
     "status": "pass",
-    "reviewer": "Claude native executor (lecture-standalone revision 2026-10-18)",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "2 changed lecture-code item(s) ['p6', 'p7'] freshly reviewed; unchanged items reuse the same-policy prior review with hash-equality proof (evidence/lecture-standalone-2026-10-18.json).  Prior summary: Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
     "items": {
       "p1:main": {
@@ -218,26 +233,47 @@
         "method": "qualitative",
         "conclusion": "recursive(n) recurses with unchanged n. For n!=1 it never approaches the only base case, and eventually exhausts recursion resources. For n=1 it returns 0. A decreasing call such as recursive(n-1), with an appropriate domain and base return, is required."
       },
-      "p6:main": {
+      "p6:a": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18.json[p6] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p6 independent verification: evidence/blind-solver-2026-10-18.json[p6] solved from the new statement alone with missing=\"\" and matched the reference answer.",
         "method": "qualitative",
-        "conclusion": "Blind answer equals the published answer: 객체 범위: 0 이상 INT_MAX 이하의 정수(자연수). sub(3,5)=0 (x<y), sub(5,3)=2, add(INT_MAX,1)=INT_MAX (상한 포화). 사용자는 zero/add/sub 연산의 의미(인터페이스)만 알면 되고 내부 표현(비트, 배열 등)은 추상화로 감춰지므로 몰라도 된다. signed int 코드로 그대로 옮기면 x+y가 INT_MAX를 넘을 때 오버플로(정의되지 않은 동작/음수로 래핑)가 발생해 (x+y)<=INT_MAX가 항상 참이 되므로, 더하기 전에 x > INT_MAX - y 로 검사해야 한다"
+        "conclusion": "Subpart (a): Blind answer equals the published answer: 객체 범위: 0 이상 INT_MAX 이하의 정수(자연수). sub(3,5)=0 (x<y), sub(5,3)=2, add(INT_MAX,1)=INT_MAX (상한 포화). 사용자는 zero/add/sub 연산의 의미(인터페이스)만 알면 되고 내부 표현(비트, 배열 등)은 추상화로 감춰지므로 몰라도 된다. signed int 코드로 그대로 옮기면 x+y가 INT_MAX를 넘을 때 오버플로(정의되지 않은 동작/음수로 래핑)가 발생해 (x+y)<=INT_MAX가 항상 참이 되므로, 더하기 전에 x > INT_MAX - y 로 검사해야 한다"
       },
-      "p7:main": {
+      "p6:b": {
         "status": "pass",
-        "reviewer": "blind solver agent (problem statement only; no hint/solution/fragment/answer) + Claude native executor (lecture-standalone revision 2026-10-18)",
-        "evidence": "evidence/blind-solver-2026-10-18.json[p7] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p6 independent verification: evidence/blind-solver-2026-10-18.json[p6] solved from the new statement alone with missing=\"\" and matched the reference answer.",
         "method": "qualitative",
-        "conclusion": "Blind answer equals the published answer: A: 곱셈1+대입1=2회, O(1). B: sum<-0 1회 + 루프 n회 x (덧셈1+대입1) = 2n+1회, O(n). C: 1 + n*n*2 = 2n^2+1회, O(n^2). 같은 결과를 구한다고 실행 시간이 같다고 할 수 없다: 연산 수가 입력 크기 n에 따라 다르게 증가하므로 시간은 달라진다."
+        "conclusion": "Subpart (b): Blind answer equals the published answer: 객체 범위: 0 이상 INT_MAX 이하의 정수(자연수). sub(3,5)=0 (x<y), sub(5,3)=2, add(INT_MAX,1)=INT_MAX (상한 포화). 사용자는 zero/add/sub 연산의 의미(인터페이스)만 알면 되고 내부 표현(비트, 배열 등)은 추상화로 감춰지므로 몰라도 된다. signed int 코드로 그대로 옮기면 x+y가 INT_MAX를 넘을 때 오버플로(정의되지 않은 동작/음수로 래핑)가 발생해 (x+y)<=INT_MAX가 항상 참이 되므로, 더하기 전에 x > INT_MAX - y 로 검사해야 한다"
       },
-      "p8:main": {
+      "p7:a": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. n<=1 is the termination case. For n>=2 the recursive argument n-1 is smaller and reaches 1. Stated nonnegative and representability assumptions prevent invalid input and arithmetic overflow.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p7 independent verification: evidence/blind-solver-2026-10-18.json[p7] solved from the new statement alone with missing=\"\" and matched the reference answer.",
         "method": "qualitative",
-        "conclusion": "Calls: factorial(3) -> factorial(2) -> factorial(1). Returns: factorial(1)=1 -> factorial(2)=2 -> factorial(3)=6. factorial(0)=1."
+        "conclusion": "Subpart (a): Blind answer equals the published answer: A: 곱셈1+대입1=2회, O(1). B: sum<-0 1회 + 루프 n회 x (덧셈1+대입1) = 2n+1회, O(n). C: 1 + n*n*2 = 2n^2+1회, O(n^2). 같은 결과를 구한다고 실행 시간이 같다고 할 수 없다: 연산 수가 입력 크기 n에 따라 다르게 증가하므로 시간은 달라진다."
+      },
+      "p7:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p7 independent verification: evidence/blind-solver-2026-10-18.json[p7] solved from the new statement alone with missing=\"\" and matched the reference answer.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): Blind answer equals the published answer: A: 곱셈1+대입1=2회, O(1). B: sum<-0 1회 + 루프 n회 x (덧셈1+대입1) = 2n+1회, O(n). C: 1 + n*n*2 = 2n^2+1회, O(n^2). 같은 결과를 구한다고 실행 시간이 같다고 할 수 없다: 연산 수가 입력 크기 n에 따라 다르게 증가하므로 시간은 달라진다."
+      },
+      "p8:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p8 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. n<=1 is the termination case. For n>=2 the recursive argument n-1 is smaller and reaches 1. Stated nonnegative and representability assumptions prevent invalid input and arithmetic overflow.",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): Calls: factorial(3) -> factorial(2) -> factorial(1). Returns: factorial(1)=1 -> factorial(2)=2 -> factorial(3)=6. factorial(0)=1."
+      },
+      "p8:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p8 independent verification: 2026-10-18 lecture-standalone revision: card raw and explanation fragment sha256 unchanged (evidence/lecture-standalone-2026-10-18.json); prior same-policy review reused from evidence/previous-validation-2026-10-18.json. Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. n<=1 is the termination case. For n>=2 the recursive argument n-1 is smaller and reaches 1. Stated nonnegative and representability assumptions prevent invalid input and arithmetic overflow.",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): Calls: factorial(3) -> factorial(2) -> factorial(1). Returns: factorial(1)=1 -> factorial(2)=2 -> factorial(3)=6. factorial(0)=1."
       },
       "p9:main": {
         "status": "pass",
@@ -256,7 +292,7 @@
     }
   },
   "artifact_hashes": {
-    ".pack/문제설명_0914_Recursion.md": "7c96b23a28d2efa2be0d373746ce475435b9b984eddbdfe9338a1da8648a65b3",
+    ".pack/문제설명_0914_Recursion.md": "fd7a25628966f082d2346fadd19be47bab0ccbcd76cc06034b5f4b78f7aa1aa1",
     ".pack/자료_문제설명_0914_Recursion/evidence/author.py": "6ba343876427331cc04eaf733cb49b26542f8c07061a1215aeec05117e4e6cfa",
     ".pack/자료_문제설명_0914_Recursion/evidence/baseline.json": "55686a6e40d0a2701eeaba64992b2200abd47ec307b5b5e15eb07162df8aca04",
     ".pack/자료_문제설명_0914_Recursion/evidence/blind-solver-2026-10-18.json": "34cddbfabd1772ddc867aeff3dad5fa61c91de61e3e23729fae69a761d2267b3",
@@ -365,9 +401,9 @@
     ".pack/자료_문제설명_0914_Recursion/fragments/p3.html": "2965d6544677dde208d10a3afd2b3b8bdcfb242e6404ca5b496f26677f1eb025",
     ".pack/자료_문제설명_0914_Recursion/fragments/p4.html": "449469269f89427a860c8b9963c1883acb600599a3f084b8693a77c1ef34b0f7",
     ".pack/자료_문제설명_0914_Recursion/fragments/p5.html": "5b371d8548a9319fef694dd1160df9d8f28e30cc4818bf184e83db2119184e79",
-    ".pack/자료_문제설명_0914_Recursion/fragments/p6.html": "2cf9e7c774211876094584fbda68b48d5bc7b6215c54a18fd316f7758643af47",
-    ".pack/자료_문제설명_0914_Recursion/fragments/p7.html": "bed63e620b921f11fbe69794903c17248202403ad8c6db79d3251faad878a4b7",
-    ".pack/자료_문제설명_0914_Recursion/fragments/p8.html": "d2e5e071dcaa54b12b85ccb50bbef8dbd3ce1db5901ac0bded1ab4c3cce44d5e",
+    ".pack/자료_문제설명_0914_Recursion/fragments/p6.html": "27de5aba8626d19e3bfcba027fd88a4fc86921cd581dd807a6f236b1216ccaa2",
+    ".pack/자료_문제설명_0914_Recursion/fragments/p7.html": "82c062be2b9899e681e931189aa4cefcb339a8e1bc79e2144d01dc68116b574c",
+    ".pack/자료_문제설명_0914_Recursion/fragments/p8.html": "09c5c88173242e62885510365617b94f38d206342f233ab554919f6fa8d3411c",
     ".pack/자료_문제설명_0914_Recursion/fragments/p9.html": "08f921ed8f3a9353772c62624a6c6e400661ee326348c04cc9de8c17b085bafe",
     ".pack/자료_문제설명_0914_Recursion/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
     ".pack/자료_문제설명_0914_Recursion/vendor/katex/contrib/auto-render.min.js": "7b57d427ac6270677daf8d8380ded2cc73336f9149a167b8e1fe0d6ef66604ae",
@@ -455,7 +491,7 @@
     ".pack/자료_문제설명_0914_Recursion/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     ".pack/자료_문제설명_0914_Recursion/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     ".pack/자료_문제설명_0914_Recursion/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "문제설명_0914_Recursion.html": "4bbf4035f499da9c795aab235912dcc33ead99a862cdf50eac2051d53bc70130",
-    ".pack/자료_문제설명_0914_Recursion/manifest.json": "0ab6469b995acd78a3dab144f939ab3f1c9409d6652bc79e78efb9d520164c79"
+    "문제설명_0914_Recursion.html": "a21f95a1deb2d07a8b01b02b54094ffd79c15c4d819c280a03bcdd242bd14aba",
+    ".pack/자료_문제설명_0914_Recursion/manifest.json": "ff38d466231d44cb0525ff27149fbe8f68d6e2c25e8535cc6dc18c111615fbaf"
   }
 }

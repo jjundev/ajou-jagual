@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "f1bb658908a6cb7b899ac10044950c933a01b6ff9b9afbbdad72d2415cf70fc8",
+  "input_hash": "619505b50c9902461ba2b27f356139d5c092c52809fc374074e4d796c81d6d22",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\docs\\verify\\exam-restore-20261017\\baseline.json",
@@ -93,17 +93,17 @@
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Codex native executor",
-    "evidence": "Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly."
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Layout-only rerender. Staged HTML compared with the previously published, reviewed HTML: after removing the new data-labeled attribute and the single labeled-ol CSS rule the files are line-identical (CR-insensitive), so problem conditions, code, asks, figures and originals are unchanged from the source-visual review already on record."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Codex native executor",
-    "evidence": "Fresh Chrome stage check: all40 questions at1280/1024/375 light/dark (240 checks); restored9 additional solve/verify scrolling at1280/375 light/dark (36 configurations,108 screenshots). Actual screenshot inspection recorded in execution report. No console/math/image/document-overflow errors."
+    "reviewer": "Claude (lecture-code labeled asks fix 2026-10-19)",
+    "evidence": "Playwright Chrome at 1280x900 light and 375x812 dark: every lecture ask block has data-labeled and computed list-style-type none (no duplicate 1./2. before (a)/(b)); 0 console/page errors; no document horizontal overflow. 1005 P3 problem pane screenshot inspected. All other panel/navigation behaviour is byte-identical to the previously reviewed publish."
   },
   "content": {
     "status": "pass",
-    "reviewer": "Codex native executor",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
     "items": {
       "p1:main": {
@@ -126,15 +126,25 @@
         "reviewer": "Codex native executor — actual source/content/browser review",
         "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: Descending accumulation evaluates n+(n-1)+...+1, the same recurrence expansion; a loop replaces call-stack storage."
       },
-      "p5:main": {
+      "p5:a": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: For odd n, x^n=x*(x*x)^((n-1)/2); for even n, x^n=(x*x)^(n/2). The exponent is roughly halved per recursive level, and each level has constant arithmetic work in the given machine-number model. A repeated-multiplication implementation performs n multiplications."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 structured into conditions and ask list; explanations verified. Prior: Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: For odd n, x^n=x*(x*x)^((n-1)/2); for even n, x^n=(x*x)^(n/2). The exponent is roughly halved per recursive level, and each level has constant arithmetic work in the given machine-number model. A repeated-multiplication implementation performs n multiplications."
       },
-      "p6:main": {
+      "p5:b": {
         "status": "pass",
-        "reviewer": "Codex native executor — actual source/content/browser review",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: F0=0,F1=1 gives 0,1,1,2,3,5,8. Count of F3 calls: C(3)=1,C(4)=1,C(5)=2,C(6)=3. The new pair must become F(i-1),F(i); tmp preserves the sum before overwriting last. Recursive branches overlap: fib(6) calls fib(5) and fib(4), and fib(5) again calls fib(4)."
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 structured into conditions and ask list; explanations verified. Prior: Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: For odd n, x^n=x*(x*x)^((n-1)/2); for even n, x^n=(x*x)^(n/2). The exponent is roughly halved per recursive level, and each level has constant arithmetic work in the given machine-number model. A repeated-multiplication implementation performs n multiplications."
+      },
+      "p6:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p6 structured into conditions and ask list; explanations verified. Prior: Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: F0=0,F1=1 gives 0,1,1,2,3,5,8. Count of F3 calls: C(3)=1,C(4)=1,C(5)=2,C(6)=3. The new pair must become F(i-1),F(i); tmp preserves the sum before overwriting last. Recursive branches overlap: fib(6) calls fib(5) and fib(4), and fib(5) again calls fib(4)."
+      },
+      "p6:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p6 structured into conditions and ask list; explanations verified. Prior: Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. All requested subparts, original boundaries, concepts/first line/steps/answer/pitfall checked against current question. Independent answer evidence: F0=0,F1=1 gives 0,1,1,2,3,5,8. Count of F3 calls: C(3)=1,C(4)=1,C(5)=2,C(6)=3. The new pair must become F(i-1),F(i); tmp preserves the sum before overwriting last. Recursive branches overlap: fib(6) calls fib(5) and fib(4), and fib(5) again calls fib(4)."
       },
       "p7:main": {
         "status": "pass",
@@ -145,7 +155,7 @@
   },
   "independent": {
     "status": "pass",
-    "reviewer": "blind restored-answer reviewer and preserved previous independent evidence",
+    "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
     "evidence": "Restored nine original questions checked against 2017 PDF pp1-2, LTK PDF p1 and CP949 2019 restoration text; all nine explanations read; source conditions, concepts, first line, solve/verify, caveats and summary compared with blind answers and executable traces. Existing questions/fragments and their saved reference hashes compared exactly.",
     "items": {
       "p1:main": {
@@ -176,19 +186,33 @@
         "method": "qualitative",
         "conclusion": "int sum(int n){int s=0; for(int i=n;i>=1;--i) s+=i; return s;} for n>=1 and representable sums."
       },
-      "p5:main": {
+      "p5:a": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. For odd n, x^n=x*(x*x)^((n-1)/2); for even n, x^n=(x*x)^(n/2). The exponent is roughly halved per recursive level, and each level has constant arithmetic work in the given machine-number model. A repeated-multiplication implementation performs n multiplications.",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p5 independent verification: Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. For odd n, x^n=x*(x*x)^((n-1)/2); for even n, x^n=(x*x)^(n/2). The exponent is roughly halved per recursive level, and each level has constant arithmetic work in the given machine-number model. A repeated-multiplication implementation performs n multiplications.",
         "method": "qualitative",
-        "conclusion": "Blank: x*power(x*x,(n-1)/2). Calls (x,n): (2,5)->(4,2)->(16,1)->(256,0). Return values in reverse call order: 1,16,16,32. Final result 32. O(log n) for positive n versus O(n) for slow_power; n=0 is O(1)."
+        "conclusion": "Subpart (a): Blank: x*power(x*x,(n-1)/2). Calls (x,n): (2,5)->(4,2)->(16,1)->(256,0). Return values in reverse call order: 1,16,16,32. Final result 32. O(log n) for positive n versus O(n) for slow_power; n=0 is O(1)."
       },
-      "p6:main": {
+      "p5:b": {
         "status": "pass",
-        "reviewer": "independent_answers agent (blind to reference answers)",
-        "evidence": "Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. F0=0,F1=1 gives 0,1,1,2,3,5,8. Count of F3 calls: C(3)=1,C(4)=1,C(5)=2,C(6)=3. The new pair must become F(i-1),F(i); tmp preserves the sum before overwriting last. Recursive branches overlap: fib(6) calls fib(5) and fib(4), and fib(5) again calls fib(4).",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p5 independent verification: Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. For odd n, x^n=x*(x*x)^((n-1)/2); for even n, x^n=(x*x)^(n/2). The exponent is roughly halved per recursive level, and each level has constant arithmetic work in the given machine-number model. A repeated-multiplication implementation performs n multiplications.",
         "method": "qualitative",
-        "conclusion": "fib(6)=8; fib(3) is invoked 3 times. Updates: tmp=last+current; last=current; current=tmp;"
+        "conclusion": "Subpart (b): Blank: x*power(x*x,(n-1)/2). Calls (x,n): (2,5)->(4,2)->(16,1)->(256,0). Return values in reverse call order: 1,16,16,32. Final result 32. O(log n) for positive n versus O(n) for slow_power; n=0 is O(1)."
+      },
+      "p6:a": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (a) of p6 independent verification: Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. F0=0,F1=1 gives 0,1,1,2,3,5,8. Count of F3 calls: C(3)=1,C(4)=1,C(5)=2,C(6)=3. The new pair must become F(i-1),F(i); tmp preserves the sum before overwriting last. Recursive branches overlap: fib(6) calls fib(5) and fib(4), and fib(5) again calls fib(4).",
+        "method": "qualitative",
+        "conclusion": "Subpart (a): fib(6)=8; fib(3) is invoked 3 times. Updates: tmp=last+current; last=current; current=tmp;"
+      },
+      "p6:b": {
+        "status": "pass",
+        "reviewer": "Claude native executor (lecture-readability 2026-10-18)",
+        "evidence": "Subpart (b) of p6 independent verification: Preserved per-question verification: exact serialized question and fragment equality, same policy and unchanged reference hashes; evidence/previous-validation.json. evidence/independent-answers.json or independent-delta.json; additional defined C11 cases in evidence/verify_lecture.c and c11-result.txt. F0=0,F1=1 gives 0,1,1,2,3,5,8. Count of F3 calls: C(3)=1,C(4)=1,C(5)=2,C(6)=3. The new pair must become F(i-1),F(i); tmp preserves the sum before overwriting last. Recursive branches overlap: fib(6) calls fib(5) and fib(4), and fib(5) again calls fib(4).",
+        "method": "qualitative",
+        "conclusion": "Subpart (b): fib(6)=8; fib(3) is invoked 3 times. Updates: tmp=last+current; last=current; current=tmp;"
       },
       "p7:main": {
         "status": "pass",
@@ -200,14 +224,37 @@
     }
   },
   "artifact_hashes": {
-    ".pack/문제설명_0917_Recursion.md": "08631e9cc224346918f7ed0ea87b6c6cb4293c4c033ef6ab9207f0494e9aee72",
+    ".pack/문제설명_0917_Recursion.md": "be2d3a9e70f9c95b1146209fc0415ffe9fbff05c4e59b504514c3746d9c07323",
     ".pack/자료_문제설명_0917_Recursion/evidence/author.py": "fba730706e3c03ebecdd785f228c0f99e2dac4fac76e96141306ccf8c52f37d8",
     ".pack/자료_문제설명_0917_Recursion/evidence/baseline.json": "55686a6e40d0a2701eeaba64992b2200abd47ec307b5b5e15eb07162df8aca04",
     ".pack/자료_문제설명_0917_Recursion/evidence/browser-current.json": "d9c131bcd0dc863126232b6076b7236e87325114349faabfe56b3b95f36f3298",
     ".pack/자료_문제설명_0917_Recursion/evidence/browser-current.py": "97ef053c8a97de77f121e565b06b0067e0743c1ad0490f59ad6b435bb8df7f26",
+    ".pack/자료_문제설명_0917_Recursion/evidence/browser-initial/1280-dark-p1.png": "1f9e9774b6cc904d0ace1d83dd35db467b9082eeb45fcfe542eb06a1a2fd367a",
+    ".pack/자료_문제설명_0917_Recursion/evidence/browser-initial/1280-light-p1.png": "c32270a00b72538218a43ac8ddab3d67227efb3d8c8b3122ddb203917501c161",
+    ".pack/자료_문제설명_0917_Recursion/evidence/browser-initial/375-dark-p1.png": "3346c331d52625d7a6acd941612a6a762514d24c87e6a7e5482956ba3ff0a67c",
+    ".pack/자료_문제설명_0917_Recursion/evidence/browser-initial/375-light-p1.png": "c30de330831cdb2e01964ea044dc6de351e03cb30b350439756260c6317a8f8d",
+    ".pack/자료_문제설명_0917_Recursion/evidence/browser-initial/results.json": "48dcd40b5abf5f706dc874a53d47c1e8923c65ed0d36dc5cdd17ee6b4540eb5e",
     ".pack/자료_문제설명_0917_Recursion/evidence/c11-result.txt": "3cb0c6199c3116ad2cc0256fb972340a7bf180d3e6563aab131f71461d0f1c9b",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/1280-dark-p1.png": "244d49ed471b8ccad1a6b353d7fb025876a6b369f493eab0adfe2a56d4fe5f36",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/1280-light-p1.png": "caeed611c74f52f9ae222b7c611597aef8a87129f1e1a7c3d7a6ba723c092394",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p1.png": "ac9495ead43d645649bcf7f8ccc562ca3d8f0e70fff9588139d7cfcb1a76d013",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p10.png": "dc87d86fbfecc2969005efe911caae429fcbb69973d1c6aa4a06020a28d367aa",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p11.png": "7630f69b631c4dbff2287a927e81f343db5434d81a6112e19ad70fffac2b192e",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p12.png": "17734b35ba4f24a5b18f3f85e2deccdceb0d9f669e41a1306286d6b3c168d07e",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p2.png": "1c92d1757f2e29325962b8efdf102d368894e453920fe34da4b6776c5ea8b598",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p3.png": "ec75b9c48cd99f9a80e7b0a9e874362bfd5fda0dac02511aac67b587c352cdef",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p5.png": "a18298e6d542db997885cb50b6d48841becd6061823a9b71f3c66fb71de3ab9f",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p6.png": "60d671b3acf60b4d641d339c09145a528abf39d9dfed1d9c901a5c92f8e6727d",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p7.png": "1b3426b91de6be2516b99afc1c48bd39caecb563c4fe2db0ce5ee278f8dd8004",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p8.png": "0452311d6d59072d80a9aece81661542ac66affcc288fa3000d74a1d73595d59",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-dark-p9.png": "27d342cabea4b61fb8a82fef266315e64a235f16d439d3409073751ed1537b7a",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/375-light-p1.png": "4b04804b60f2596edaf37cab483123ca6cc7bf9048e34bcc957f6dd4ef05cb38",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser/results.json": "fba2869d03751830a9349b3a5a1e28073bf401e0c73c1d6825bf43dac0a2dd33",
     ".pack/자료_문제설명_0917_Recursion/evidence/code-block-browser.py": "c4827c990381a5cec33813ab81002bed2688331cb7fd597869661ed2b18d56bf",
     ".pack/자료_문제설명_0917_Recursion/evidence/code-block-equivalence.json": "a1921eef60697af65e5abf2df6e8c0d8d3126c68d1dc8ac02c34b3dd27575167",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-history/manifest.json": "8fda0d6f4fb299c76894d36cbdfea67b03d00c485893087275e9636807821e4e",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-history/previous-validation.json": "fb3d1e3c911f2cc7b3ddecc6734a8ca01a32e72d876bd41efa43b4cb1c10785d",
+    ".pack/자료_문제설명_0917_Recursion/evidence/code-block-history/문제설명_0917_Recursion.html": "ece69c60057222dbfaa4c7a7286630f9ccef2a53aca47f796f170cad911ab0f3",
     ".pack/자료_문제설명_0917_Recursion/evidence/code-block-review.md": "d25f7acf9127e7e5e8fcc28c331dcbc5af0099ae39c8cd095f83a15f821c4041",
     ".pack/자료_문제설명_0917_Recursion/evidence/independent-answers.json": "8fcccb39c3864131793023d25c43983239687f6910856f0558d19c40039baf18",
     ".pack/자료_문제설명_0917_Recursion/evidence/independent-code-blocks-run.txt": "188fb40ab58cd76424e768f39b8f6d23f4ba3a239c9d47d1cf94805a7fdfa21e",
@@ -215,6 +262,39 @@
     ".pack/자료_문제설명_0917_Recursion/evidence/independent-replay-run.txt": "188fb40ab58cd76424e768f39b8f6d23f4ba3a239c9d47d1cf94805a7fdfa21e",
     ".pack/자료_문제설명_0917_Recursion/evidence/independent-restored.json": "69b6dd17c79f4b807ad78f76df4f34d371185d7aa8e764029ff0c266ea9ea323",
     ".pack/자료_문제설명_0917_Recursion/evidence/independent-results.json": "60a4a36487881b7a6dbc46fca4627a3795fa3fca323abe8b59234740e3064720",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/1024-light.png": "70b116a371651911501b2ac2e38f0cc3884cdf33dae9eeddd8ca00aba1bea84d",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/1280-dark.png": "6d194dc00bc6f69600ed5316589d9b8b6e04329787289bf3a5d1f8ec7ddbde24",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/1280-light.png": "3cf48dbd9adda83a2c0208c8d68779a29f77be45457b328692ef71b71ba1c732",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/375-dark.png": "42e27e5fd6b308c29e72ef5b3218799246856d6949c19d4b11dd0136428ec474",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/375-light.png": "678ea8b3fa7c01fc2252d356682bc39504a226063b712487b5a51929857e3408",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/browser-rerender-0917.json": "8b54a3cd1446723d5f09e7ec0c5c9e7dd358741c2d6ddc3864488c1e0e46a28e",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/dock-float.png": "e40085a6006d33d1d6755a351bdd70bde81e867184d198296b4ec072c702b3e6",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/dock-left.png": "0298fe1e7a7a13a1de6e681a9b97ca8dc685b0839a9e2e35e853dabc608ae9ab",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/dock-right.png": "ff304382107cb8fd9f9d4d08dfc1df3c3f1322473cfeadd0f1257830d9a2b43b",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p1-original.png": "91bba63daf7397c80a68cf51d224d806cf16a03692793b999f111b2acc864914",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p1-problem.png": "b7a2193836dc5cdc2abecfc72319245c3f0979baef20c683c359efd1a6823d04",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p10-original.png": "d2557d85e5a4d4929223f786c9f8e6f75720e48ddf4035d85a0ba0538f65fa0b",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p10-problem.png": "fbf629dc5065b13d7c042bca13da5865b9979e58d2a894f207749c502d67fb3a",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p11-original.png": "b4ba224afb1a956bad5de7c2d3fef86b9317fb05b7275d907e8d6b21c7e821bc",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p11-problem.png": "d6b3d18e61fbc76731667e4ab60d519bd86c91b23194c4349652f1f93101a53d",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p12-original.png": "ca4588f2c092304c4a951b444ed8c9d244b7272987439c287e5cda70c624e69e",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p12-problem.png": "e74f0c8a30b760635dd49fac64ea9cf5fa6f685ac750ac2b48521dd1bed73bef",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p2-original.png": "8bd1444fc9a3966c13b7f96d708a3b571fb18c28f9dbc8326e0ec631dd41f274",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p2-problem.png": "15ecf57ca321415c064a4b8576ee9b42fb259fbd7edc9217ff74728290eb5d4c",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p3-original.png": "e93e3f1a1113cc05c945d8eed03608cca07824dbe47dbe12d6bc28d3a9ae51c0",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p3-problem.png": "c2d99ad8990f751de5115f3c8b6b5937e62f5d469a57dc113c74e5e39b1c959f",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p4-original.png": "1738f6fc2137d8d750420f4267c8510587b593bb1c473b04278ca09344fe164d",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p4-problem.png": "964c6c411c13d963ac35d0d6ab8e99e8643553943515d5280de482b4389c79f3",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p5-original.png": "c21d5578901121e7ede0e2511395b4ca83367566f39366a43343069a75f887e9",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p5-problem.png": "192232f32398587018e96a4f9334f3f5dcb41ad361df4b5a04c9e0708c1eb2f7",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p6-original.png": "c10a3323826674ff3ac5ed7c6a0e8c9bf1c80dd19867fb73dfcc18ecec247311",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p6-problem.png": "f538141f3b9b56f034717cd19ffd7b8115fbbcbe3b91f9546d8bed86233a2007",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p7-original.png": "9052ff0f8888a3555b2681aa7386c82eb00a050dd9c0085a1486ffa201485eaa",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p7-problem.png": "acb9facfa236ea080d2925afa873c20deffaa87b99f7fc696a3d0b296e9c9bd2",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p8-original.png": "056a3d16c95d4dcbd6d7001286774dfdb3ae86a8cfa487487d469bea4f72f7bb",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p8-problem.png": "1dc33506e2a4a73bb8f41cab9a00a04c7bc3530588bfaa66b8bb3296148279af",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p9-original.png": "34cf64601e2ed6ea699462c9a5c234888e5241a01d8c3e03898528605a22302d",
+    ".pack/자료_문제설명_0917_Recursion/evidence/panel-browser/panel-p9-problem.png": "0d9f78e8ae09cf2aa45b70ecce0256e65c0c8449be783e6684d87af54da56a78",
     ".pack/자료_문제설명_0917_Recursion/evidence/previous-validation.json": "4a044a6fe8a2cd3389ad294ee850a2a16693bbdb44a0b80522b5d14a4bc04b86",
     ".pack/자료_문제설명_0917_Recursion/evidence/replay-instructions.md": "026585c8fd248ae4885a4282159307e241c216fa53511b2f3819302b0b874c7c",
     ".pack/자료_문제설명_0917_Recursion/evidence/rerun-ds-code-blocks.py": "1827efa235e0bc12674602210147cb4acc34629053e6a8b3250344ad73d17702",
@@ -231,8 +311,8 @@
     ".pack/자료_문제설명_0917_Recursion/fragments/p2.html": "07c142f88f6c545737f9c35e1515034242e3d8cd93e644b4d65522ec3b0c173b",
     ".pack/자료_문제설명_0917_Recursion/fragments/p3.html": "435ccc9a6ec662acac4fa3c96e96f8f73387d447844568ef713ce788b603a5c0",
     ".pack/자료_문제설명_0917_Recursion/fragments/p4.html": "9c50d9c5359876ae72f5f5336f56dc11d0121771f7806c3d3920f47c30b0ed3a",
-    ".pack/자료_문제설명_0917_Recursion/fragments/p5.html": "57c964eb738cae1d2f2bf22fcf11b0a6e22dbc1ddf655f63c9b3dac3edc1a15f",
-    ".pack/자료_문제설명_0917_Recursion/fragments/p6.html": "c7d3b0c50065132d783e4ba7842b3c7e59e09cc581e74932323c80ccef40195d",
+    ".pack/자료_문제설명_0917_Recursion/fragments/p5.html": "b0af83f3f8454b5dc8217da2435860795e9aa6a21604b69f76b656c30f6feca2",
+    ".pack/자료_문제설명_0917_Recursion/fragments/p6.html": "ab66f67cd8bb0b2e92884c7e2ac5ca8c878ed81d89fc001d170a789079bf8749",
     ".pack/자료_문제설명_0917_Recursion/fragments/p7.html": "53e6360261f8c615b0290abaa0b90964e8b7d6f795772251f3fcf2acb4f5cfb9",
     ".pack/자료_문제설명_0917_Recursion/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
     ".pack/자료_문제설명_0917_Recursion/vendor/katex/contrib/auto-render.min.js": "7b57d427ac6270677daf8d8380ded2cc73336f9149a167b8e1fe0d6ef66604ae",
@@ -320,7 +400,7 @@
     ".pack/자료_문제설명_0917_Recursion/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
     ".pack/자료_문제설명_0917_Recursion/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
     ".pack/자료_문제설명_0917_Recursion/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
-    "문제설명_0917_Recursion.html": "0b1d9583974143dfe93264ab57b1f2431aa6b3e5658e8ef16d99576375a8917c",
-    ".pack/자료_문제설명_0917_Recursion/manifest.json": "90f9b8752c280af709ffe2ac4035374f997a5a0cd69f8f8dae12efa42767e1ca"
+    "문제설명_0917_Recursion.html": "a4b96c63d683268151135c30e7b59d277696fc58aad2861eb0475ab7766a538c",
+    ".pack/자료_문제설명_0917_Recursion/manifest.json": "aa9e3543612936b040c579d2ff54f9bcf4f78e251de33b0a9d70eb5c01867d90"
   }
 }

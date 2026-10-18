@@ -302,7 +302,7 @@
       "terms": [
         "ListType 삭제 래퍼의 메모리 누수 찾기"
       ],
-      "answer": "p=NULL,removed=NULL로 전달되어 head=NULL,length=0이지만 실제 첫 노드는 free되지 않아 누수된다. removed 인자는 (p!=NULL)?p->link:list->head로 고친다.",
+      "answer": "(a) p = NULL, removed = NULL이 전달되어 list->head = NULL, list->length = 0으로 갱신되지만 free(NULL)이 호출되어 원래 첫 노드 A가 해제되지 않고 메모리 누수가 발생한다. (b) 세 번째 인자를 (p != NULL) ? p->link : list->head로 고친다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_4_List.pdf",
         "pdf_page": 48,
@@ -315,7 +315,8 @@
         ]
       },
       "objectives": [
-        "list-delete-leak"
+        "ListType pos==0 삭제 시 removed=NULL 전달로 인한 첫 노드 메모리 누수 분석",
+        "삼항 연산자 거짓 분기를 list->head로 수정해 첫 노드 정상 해제"
       ],
       "task_family": "list-delete-leak"
     },
@@ -331,7 +332,7 @@
       "terms": [
         "push·pop·peek의 순서 복원"
       ],
-      "answer": "top: 0,1,1,0,1,0. peek=8, 첫 pop=8, 마지막 pop=2. 남은 스택 {5}. peek는 top을 바꾸지 않는다. 빈 스택은 접근 전에 검사해야 한다.",
+      "answer": "(a) 단계별 top: 0, 1, 1, 0, 1, 0; 반환값: peek() = 8, 첫 pop() = 8, 마지막 pop() = 2; 남은 스택: {5} (b) peek()은 top을 바꾸지 않고 맨 위 원소만 읽는다. top을 먼저 줄여 읽으면 아래 원소를 잘못 읽고 공백 스택에서 범위 밖 접근이 발생하므로 먼저 공백 여부를 검사해야 한다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
         "pdf_page": 11,
@@ -343,7 +344,8 @@
         ]
       },
       "objectives": [
-        "stack-adt"
+        "배열 스택 push·pop·peek 연산 열 실행 시 단계별 top과 반환값 추적",
+        "peek의 비파괴 조회 성질과 pop 선감소·미검사 시 범위 밖 접근 오류 설명"
       ],
       "task_family": "stack-adt"
     },
@@ -359,7 +361,7 @@
       "terms": [
         "위치 인자를 선행 노드로 바꾸기"
       ],
-      "answer": "위치 2의 선행 노드는 B이며 insert_node(&(list->head),B,N)을 호출합니다. 결과는 A→B→N→C, length=4입니다. 위치 0에서는 get_node_at(-1)=NULL이므로 N이 새 head가 됩니다. position을 그대로 쓰면 C 뒤에 넣어 한 칸 늦어집니다. length를 저장하므로 길이 조회는 O(1)입니다. 위치 변환을 위한 탐색은 최악 O(n)이고 삽입의 링크 변경 자체는 O(1)입니다.",
+      "answer": "(a) position = 2: p = B, insert_node(&(list->head), B, N) 호출, 결과 A -> B -> N -> C(length = 4); position = 0: p = NULL, insert_node(&(list->head), NULL, N) 호출로 N이 새 head가 된다. (b) position을 그대로 넘기면 C 뒤에 삽입되어 한 칸 뒤로 밀린다. 길이 조회는 O(1), 선행 노드 탐색을 포함한 삽입은 최악 O(n)(링크 갱신 자체는 O(1))이다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_4_List.pdf",
         "pdf_page": 47,
@@ -374,9 +376,8 @@
         ]
       },
       "objectives": [
-        "위치 기반 ADT와 노드 기반 함수 인터페이스 변환",
-        "ListType head와 length 불변식 및 함수 재사용",
-        "길이조회·위치탐색·링크 변경 비용 분리"
+        "위치 기반 add에서 get_node_at(list, position-1)을 통한 선행 노드 변환과 insert_node 재사용",
+        "position 그대로 전달 시 위치 오류와 길이 조회 O(1) 및 탐색 포함 삽입 O(n) 비용 분석"
       ],
       "task_family": "list-position-adapter"
     },
@@ -392,7 +393,7 @@
       "terms": [
         "함수 호출과 복귀 순서의 스택"
       ],
-      "answer": "호출 정보는 아래부터 main의 복귀 위치·i=3, 그 위에 sub1의 복귀 위치·a=3,j=5를 기억합니다. sub2가 끝나면 sub1의 호출 다음으로, sub1이 끝나면 main의 호출 다음으로 돌아갑니다. 지역 변수만으로는 다음 실행 위치를 알 수 없습니다. 가장 최근에 중단한 호출부터 복귀하는 LIFO이며 undo도 마지막 변경부터 되돌립니다. 현재 실행 중인 sub2의 문맥에는 b=5도 있어요. main·sub1은 복귀를 기다리는 호출자이며 sub2가 현재 활성 문맥이에요. top=2인 push는 is_full을 먼저 검사하여 증가·저장을 거부하고, top=-1인 pop은 is_empty를 먼저 검사하여 읽기·감소를 거부해요. 실패한 연산은 유효 범위 밖에 접근하거나 상태를 바꾸지 않아야 해요.",
+      "answer": "(a) 스택 아래부터 main(복귀 위치, i = 3), 그 위에 sub1(복귀 위치, a = 3, j = 5)을 기억하며, 복귀 순서는 sub2 -> sub1 -> main이다. 지역 변수만으로는 다음 실행 위치를 알 수 없으며, 함수 복귀와 undo 모두 가장 최근 항목부터 처리하는 LIFO 규칙을 따른다. (b) top = 2인 push는 is_full을, top = -1인 pop은 is_empty를 먼저 검사해 거부해야 하며, 실패한 연산은 범위 밖 접근을 막고 기존 스택 상태를 그대로 유지해야 한다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_5_Stack.pdf",
         "pdf_page": 8,
@@ -406,9 +407,8 @@
         ]
       },
       "objectives": [
-        "시스템 스택의 복귀 정보와 지역 상태",
-        "호출·반환의 LIFO와 undo 적용",
-        "스택 overflow·underflow의 검사 순서와 실패 상태 보존"
+        "중첩 함수 호출 시 시스템 스택의 활성 레코드(복귀 위치·지역 상태) 저장과 LIFO 복귀 순서",
+        "배열 스택 포화·공백 경계 선검사(is_full, is_empty)와 실패 시 상태 보존"
       ],
       "task_family": "activation-record-return"
     }

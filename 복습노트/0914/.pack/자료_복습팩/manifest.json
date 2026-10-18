@@ -428,7 +428,7 @@
       "terms": [
         "자연수 ADT의 연산 계약"
       ],
-      "answer": "객체 0..INT_MAX. 결과 0,2,INT_MAX. ADT는 객체와 연산 계약을 제공하고 표현을 숨긴다. C에서는 x+y 자체가 overflow할 수 있으므로 x>INT_MAX-y를 먼저 검사해야 한다.",
+      "answer": "(a) 객체 범위: 0..INT_MAX, 결과: 0, 2, INT_MAX (b) ADT는 객체와 연산 계약을 제공하고 내부 표현을 숨기기 때문이며, C에서는 x + y 자체가 오버플로할 수 있으므로 x > INT_MAX - y를 먼저 검사해야 한다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
         "pdf_page": 24,
@@ -438,7 +438,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "nat-no"
+        "자연수 ADT(Nat_No)의 객체 범위와 sub·add 연산 결과 계산",
+        "정보 은닉 원리와 signed int 덧셈 오버플로 사전 검사 조건 설명"
       ],
       "task_family": "nat-no"
     },
@@ -454,7 +455,7 @@
       "terms": [
         "같은 n²를 계산하는 세 알고리즘"
       ],
-      "answer": "A:2회,O(1). B:2n+1회,O(n). C:2n²+1회,O(n²). 반환 결과가 같아도 연산 횟수는 다르다.",
+      "answer": "(a) A: 2회, $O(1)$ / B: $2n + 1$회, $O(n)$ / C: $2n^2 + 1$회, $O(n^2)$ (b) 반환 결과가 같아도 $n$에 따른 연산 횟수와 증가율이 다르므로 실행 시간은 다르다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_1_자료구조및알고리즘.pdf",
         "pdf_page": 29,
@@ -464,7 +465,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "square-cost"
+        "알고리즘 A·B·C의 기본 연산 횟수 T(n)과 빅오 복잡도 계산",
+        "동일 출력 알고리즘 간 연산 증가율과 실행 시간 비교"
       ],
       "task_family": "square-cost"
     },
@@ -480,7 +482,7 @@
       "terms": [
         "팩토리얼의 호출과 반환을 분리하기"
       ],
-      "answer": "호출 3→2→1, 반환 1→2→6. factorial(0)=1. n<=1이 종료 조건이고 n-1로 크기가 줄어든다.",
+      "answer": "(a) 호출 순서: 3 → 2 → 1, 반환값 순서: 1 → 2 → 6, factorial(0) = 1 (b) n <= 1이 종료 조건이고 n - 1로 문제 크기가 줄어든다.",
       "lecture_ref": {
         "path": "자료구조_강의록_2026/Software_2_Recursion.pdf",
         "pdf_page": 4,
@@ -490,7 +492,8 @@
         "extra_pages": []
       },
       "objectives": [
-        "factorial"
+        "factorial(3)의 호출·반환 순서 추적과 factorial(0) 계산",
+        "순환의 종료 조건(n <= 1)과 문제 크기 감소(n - 1) 확인"
       ],
       "task_family": "factorial"
     },
