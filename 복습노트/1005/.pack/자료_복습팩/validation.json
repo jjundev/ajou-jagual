@@ -1,7 +1,7 @@
 {
   "status": "published",
   "policy_version": "review-questions-2026-10-17",
-  "source_sha256": "0addb89cdda62e3d1bca645fd466daa0fd7a097305eecc7c531c4f04d7b0b13e",
+  "source_sha256": "35e6ffdb32e1564dae2c19eea1e9b2e1f7ec9ac8e806d2c9e50d0c2b72f60f6e",
   "counts": {
     "total": 11,
     "added": 3,
@@ -61,6 +61,24 @@
       },
       "evidence": "docs/superpowers/plans/2026-10-18-lecture-problem-standalone.md",
       "notes": "Blind solver (problem text only) matched every lecture-code answer; inserted lecture code re-traced by Python simulation (no C compiler on host)."
+    },
+    {
+      "date": "2026-10-18",
+      "kind": "lecture-standalone-minors",
+      "cards": [
+        "p10"
+      ],
+      "before_sha256": "0addb89cdda62e3d1bca645fd466daa0fd7a097305eecc7c531c4f04d7b0b13e",
+      "after_sha256": "35e6ffdb32e1564dae2c19eea1e9b2e1f7ec9ac8e806d2c9e50d0c2b72f60f6e",
+      "checks": {
+        "lecture-standalone": "pass",
+        "check_pack": "pass",
+        "global_audit": "pass",
+        "blind_solver": "pass",
+        "harness": "n/a"
+      },
+      "evidence": "복습노트/1005/.pack/자료_문제설명_*/evidence/lecture-minors-changes-2026-10-18.md",
+      "notes": "Follow-up to the lecture-standalone revision: deferred minors fixed. - p10: insert_node/remove_node 계약 요약에 p==NULL(맨 앞 삽입/삭제) 경우 추가 (S4 p22,25,26,28 원문 기준)"
     }
   ]
 }

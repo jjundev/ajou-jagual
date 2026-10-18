@@ -1,7 +1,7 @@
 {
   "status": "published",
   "policy_version": "review-questions-2026-10-17",
-  "source_sha256": "5b51112814221042819309b0f8a04605b18b54486c642d027f39bed8840f6e47",
+  "source_sha256": "e35fc15834452d8e65cd7cdf7887da86efc06c8daf96a602f83c67e6bf634ce9",
   "before_sha256": "acad2cb2cb839cd6dd3d64cf9dc3b1be1f3f2a5b44b997ffb464b924e4419eda",
   "checks": {
     "manifest": "pass",
@@ -62,6 +62,24 @@
       },
       "evidence": "docs/superpowers/plans/2026-10-18-lecture-problem-standalone.md",
       "notes": "Blind solver (problem text only) matched every lecture-code answer; inserted lecture code re-traced by Python simulation (no C compiler on host)."
+    },
+    {
+      "date": "2026-10-18",
+      "kind": "lecture-standalone-minors",
+      "cards": [
+        "p4"
+      ],
+      "before_sha256": "5b51112814221042819309b0f8a04605b18b54486c642d027f39bed8840f6e47",
+      "after_sha256": "e35fc15834452d8e65cd7cdf7887da86efc06c8daf96a602f83c67e6bf634ce9",
+      "checks": {
+        "lecture-standalone": "pass",
+        "check_pack": "pass",
+        "global_audit": "pass",
+        "blind_solver": "pass",
+        "harness": "n/a"
+      },
+      "evidence": "복습노트/1015/.pack/자료_문제설명_*/evidence/lecture-minors-changes-2026-10-18.md",
+      "notes": "Follow-up to the lecture-standalone revision: deferred minors fixed. - p4: 제목 \"연결 큐 그림에서 갱신 코드 만들기\" → \"연결 큐 의사코드를 대입문으로 옮기기\" (카드에 없는 그림 언급 제거), manifest terms 동기화"
     }
   ]
 }
