@@ -109,6 +109,10 @@ empty −1, full M−1
 
 본문의 조건과 독립 추적을 함께 확인해요.
 
+#### 조건·구분과 확인
+
+- 공백은 (1) top=-1, 포화는 (3) top=M-1이에요. top=0은 원소 1개이고 top=M은 이미 배열 범위 밖이에요.
+
 ---
 
 <a id="p2"></a>
@@ -198,6 +202,10 @@ list->length--;`
 #### 검산
 
 (a) `p = NULL, removed = NULL`로 첫 노드 `A` 누수 (b) `(p != NULL) ? p->link : list->head`
+
+#### 조건·구분과 확인
+
+- free(NULL)은 아무 블록도 해제하지 않아요. head를 옮기기 전 첫 노드 주소를 removed 인자로 넘겨야 실제 A가 free돼요.
 
 ---
 
@@ -368,6 +376,10 @@ S4 p47 · 추가 근거 p44,45,46,25 · Software_4_List.pdf. 1008에 재강조�
 #### 핵심 답
 
 (a) `position = 2`: `p = B`, `A -> B -> N -> C`(`length = 4`); `position = 0`: `p = NULL`, `N`이 새 `head` (b) `position` 그대로 전달 시 한 칸 뒤 삽입, 길이 조회 `O(1)`, 탐색 포함 삽입 `O(n)`
+
+#### 조건·구분과 확인
+
+- insert_node(&(list-&gt;head),p,new_node)는 첫 노드 주소가 아니라 head 필드 자신의 주소를 첫 인자로 받아요.
 
 ---
 

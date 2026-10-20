@@ -450,7 +450,7 @@
     <p class="sum-lead">자료구조는 벽돌 같은 재료이고, 알고리즘은 벽돌을 지그재그로 쌓는 방법이라 둘이 함께 있어야 해요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>자료구조(data structure)</dt><dd>벽돌처럼 쓰기 좋게 짜 놓은 재료</dd><dt>알고리즘(algorithm)</dt><dd>벽돌을 지그재그로 쌓는 것 같은 제작 방법</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>데이터는 원재료이고 자료구조는 쓰기 좋게 짜 놓은 재료예요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s0-algorithm-def"><h3>알고리즘의 정의</h3><div class="tags"><span class="tag date">0907 수업</span><span class="tag slide">S1 p5</span></div>
@@ -590,7 +590,7 @@
     <p class="sum-lead">기계는 0과 1밖에 몰라서, 프로그래밍 언어가 사람과 컴퓨터 사이의 중간 언어 역할을 해요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>중간 언어</dt><dd>사람과 컴퓨터 사이에서 둘을 잇는 프로그래밍 언어</dd><dt>C, C++</dt><dd>하드웨어에 맞고 계산에 특화된 언어, 임베디드(embedded)에서 중요</dd><dt>Python</dt><dd>사람의 사고와 닮은 상위 수준 언어, 데이터 처리에 강함</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>언어가 달라도 자료구조의 콘셉트는 같고 구현 방법이 달라요.</li></ul></div></div>
 </article>
     </section>
     <section id="s1"><h2>1. 알고리즘을 배우는 이유</h2>
@@ -655,7 +655,7 @@
       <dt>Fast</dt><dd>빨라야 한다는 목표</dd>
       <dt>Little storage</dt><dd>메모리를 되도록 적게 써야 한다는 목표</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>임베디드에서는 기기 자원 한도를 넘으면 프로그램이 돌아가지 않아요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s1-elegant-reuse"><h3>elegant, simple, general과 재사용성</h3><div class="tags"><span class="tag date">0907 수업</span><span class="tag slide">S1 p6</span></div>
@@ -770,7 +770,7 @@
       <dt>가독성(readability)</dt><dd>다른 사람이 코드를 읽고 이해하기 쉬운 정도</dd>
       <dt>함수 호출</dt><dd>이름만으로 단계를 드러내는 코드 구성 단위</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>중첩 제어문은 흐름을 읽는 부담을 키우고, 함수 이름으로 단계를 드러내면 이해하기 쉬워요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s1-function-bag"><h3>함수로 짜는 이유: 여행 가방</h3><div class="tags"><span class="tag date">0907 수업</span><span class="tag slide">S1 p6</span></div>
@@ -1035,7 +1035,7 @@
       <dt>unsigned int</dt><dd><code>int</code>와 크기가 같고, 음수 대신 양의 범위를 넓혀 써요.</dd>
       <dt>double</dt><dd>64비트 실수 타입이에요.</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>크기 표는 보통의 구현 기준이며, 본문에서 short는 보통 16비트·float는 32비트·double은 64비트로 비교해요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s2-global-local"><h3>글로벌 변수와 로컬 변수</h3><div class="tags"><span class="tag date">0907 수업</span><span class="tag slide">S1 p7</span></div>
@@ -1098,7 +1098,7 @@ int total(int a, int b) /* a, b만 받아서 쓴다 */
       <dt>글로벌 변수(global variable)</dt><dd>어디서나 건드릴 수 있어서 위험해요.</dd>
       <dt>파라미터 패싱(parameter passing)</dt><dd>열거된 파라미터만 함수 안에서 접근하게 하는 견고한 방법이에요.</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>보충(수업에서 유도하지 않음): 캡슐화는 데이터·코드를 묶어 바깥의 직접 변경을 제한해요.</li><li>보충: C의 값 전달은 복사본을 바꾸며, 호출자의 자료를 고치려면 주소를 넘겨야 해요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s2-pointer"><h3>포인터로 자원 공유하기</h3><div class="tags"><span class="tag date">0907 수업</span><span class="tag slide">S1 p7</span></div>
@@ -1161,7 +1161,7 @@ int total(int a, int b) /* a, b만 받아서 쓴다 */
       <dt>포인터(pointer)</dt><dd>자원 공유로 공간을 줄이는 도구예요.</dd>
       <dt>student[10]</dt><dd>배열 이름 <code>student</code>는 <code>*</code>가 없어도 주소예요.</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>공유한 자료는 한쪽에서 고치면 같은 원본에 반영돼요.</li></ul></div></div>
 </article>
     </section>
     <section id="s3"><h2>3. 일상생활과 자료구조</h2>
@@ -1210,7 +1210,7 @@ int total(int a, int b) /* a, b만 받아서 쓴다 */
     <p class="sum-lead">할 일 리스트처럼 순서가 있는 선형 데이터가 리스트예요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>리스트(list)</dt><dd>순서가 있는 선형 데이터</dd><dt>배열(array)</dt><dd>0번, 1번, 2번 인덱스로 순서를 나타내요</dd><dt>연결 리스트(linked list)</dt><dd>첫 번째 노드, 두 번째 노드로 순서를 나타내요</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>배열은 인덱스, 연결 리스트는 노드의 연결로 순서를 나타내요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s3-graph-tree"><h3>지도는 그래프, 조직도는 트리</h3><div class="tags"><span class="tag date">0907 수업</span><span class="tag slide">S1 p13–14</span></div>
@@ -1339,7 +1339,7 @@ int total(int a, int b) /* a, b만 받아서 쓴다 */
     <p class="sum-lead">매표소 줄처럼 들어온 순서대로 나가면 큐, 책더미처럼 맨 위부터 꺼내면 스택이에요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>큐(queue)</dt><dd>데이터가 들어온 순서를 지키며 차례로 빠져나가는 자료구조</dd><dt>스택(stack)</dt><dd>책더미처럼 맨 위부터 꺼내는 자료구조, stack은 더미라는 뜻</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>수업 밖 예시: A,B,C를 넣으면 큐는 A,B,C, 스택은 C,B,A로 나와요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s3-dictionary"><h3>영어사전과 사전 구조</h3><div class="tags"><span class="tag date">0907 수업</span><span class="tag slide">S1 p13–14</span></div>
@@ -1440,9 +1440,8 @@ int total(int a, int b) /* a, b만 받아서 쓴다 */
           <h2 id="panel-right-title">페이지 요약</h2>
           <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
         </div>
-        <p class="panel-sub" id="sum-for">전체 흐름</p>
         <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
-        <div class="sums"></div>
+        <div class="sums" id="sum-for"></div>
       </div>
     </aside>
   </div>
@@ -1770,7 +1769,6 @@ int total(int a, int b) /* a, b만 받아서 쓴다 */
         const KEY = 'od-review-solved:' + RANGE;
         const cards = Array.from(document.querySelectorAll('main article.card'));
         const aids = panels.right.querySelector('.aids');
-        const sub = document.getElementById('aid-for');
         const empty = panels.right.querySelector('.panel-empty');
         const btn = document.getElementById('solved-btn');
         const groups = {};
@@ -1802,8 +1800,6 @@ int total(int a, int b) /* a, b만 받아서 쓴다 */
           Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
           empty.hidden = Boolean(curId);
           btn.hidden = !curId;
-          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';
-          sub.hidden = !curId;
           if (curId) paintBtn();
           panels.right.querySelector('.panel-inner').scrollTop = 0;
           markToc(solved, cards.length, '푼 문제');
@@ -1826,14 +1822,12 @@ int total(int a, int b) /* a, b만 받아서 쓴다 */
           box.appendChild(el);
           sums[t.id] = el;
         });
-        const sub = document.getElementById('sum-for');
         const empty = document.getElementById('sum-empty');
         document.addEventListener('od:screen', (e) => {
           const s = e.detail.screen;
           const key = s.matches('article.topic') ? s.id : 'intro';
           Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
           empty.hidden = Boolean(sums[key]);
-          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
           if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
           panels.right.querySelector('.panel-inner').scrollTop = 0;
           markToc(read, topics.length, '읽음');

@@ -452,7 +452,7 @@
     <ul class="eq-list"><li><span class="eq-name">팩토리얼 정의</span>$$n! = n \times (n-1)! \quad (n \ge 1)$$</li><li><span class="eq-name">factorial(5)</span>$$= 5 \times 4 \times 3 \times 2 \times 1 = 120$$</li></ul>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>순환 호출(recursive call)</dt><dd>지금 작성 중인 함수를 다시 호출하는 것</dd><dt>내부 스택(stack)</dt><dd>대기 중인 곱셈을 책 더미처럼 쌓아 기억하는 곳</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>n&lt;=1이면 1을 반환하고 그 외 n*factorial(n-1)로 줄이며, factorial(5)는 돌아오며 120을 만들어요.</li></ul></div></div>
 </article>
 <article class="topic" id="s0-structure"><h3>2. 순환 알고리즘의 두 조건</h3><div class="tags"><span class="tag date">0917 수업</span><span class="tag slide">S2 p6</span></div>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
@@ -531,7 +531,7 @@
     <ul class="eq-list"><li><span class="eq-name">수렴하는 인자</span>$$n \to n-1 \to n-2 \to \cdots \to 1$$</li></ul>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>종결 조건(바닥 조건)</dt><dd>더는 자기를 부르지 않고 값을 돌려주는 조건</dd><dt>수렴</dt><dd>호출할 때마다 인자가 종결 조건 쪽으로 다가가는 것</dd><dt>발산</dt><dd>인자가 커져서 종결 조건에 닿지 않는 것</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>n-1·n-2·n/2처럼 줄여도 되고, 종료 조건이 큰 쪽에 있으면 증가해도 돼요. 핵심은 종료 조건 도달 보장이에요.</li></ul></div></div>
 </article>
     </section>
     <section id="s1"><h2>2. 순환과 반복</h2>
@@ -616,7 +616,7 @@
       <dt>반복(iteration)</dt><dd><code>for</code>나 <code>while</code>을 이용한 되풀이예요.</dd>
       <dt>함수 호출의 오버헤드</dt><dd>내부 스택에 호출을 쌓았다 꺼내는 데 드는 부담이에요.</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>반복은 호출 오버헤드가 없지만, 하노이처럼 순환적인 문제는 반복으로 작성하기 어려울 수 있어요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s1-fact-iter"><h3>4. 팩토리얼의 반복 구현과 빅오</h3><div class="tags"><span class="tag date">0917 수업</span><span class="tag slide">S2 p8</span><span class="tag slide">S1 p32</span></div>
@@ -710,7 +710,7 @@
       <dt>빅오 표기법(Big-O)</dt><dd>연산의 횟수를 대략적(점근적)으로 표기한 것이에요.</dd>
       <dt>꼬랑지</dt><dd>최고차항 뒤에 붙는 낮은 차수 항이에요. 빅오에서는 떼요.</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>v=1에서 시작해 k=n부터 k&gt;0 동안 v=v*k, k--를 반복하고 v를 반환해요.</li></ul></div></div>
 </article>
     </section>
     <section id="s2"><h2>3. 거듭제곱</h2>
@@ -801,7 +801,7 @@
     <dl class="terms">
       <dt>모듈러 연산자(%)</dt><dd>나머지를 구해요. (n%2)==0이면 짝수예요.</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>n==0이면 1, 짝수는 power(x*x,n/2), 홀수는 x*power(x*x,(n-1)/2)를 반환해요.</li><li>수업 밖 추적: power(2,10)은 호출 5번으로 1024를 구하고 slow_power는 10번 곱해요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s2-power-analysis"><h3>6. 거듭제곱의 복잡도 분석</h3><div class="tags"><span class="tag date">0917 수업</span><span class="tag slide">S2 p11</span><span class="tag slide">S1 p33</span></div>
@@ -881,7 +881,7 @@
       <dt>로그형</dt><dd>$O(\log n)$. 선형 $O(n)$보다 입력이 불어나도 안정적이에요.</dd>
       <dt>이진 탐색(binary search)</dt><dd>매번 절반을 버리며 찾는 방법이에요.</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>for가 없다고 O(1)이라 하지 말고 재귀 호출 횟수와 제어 구조를 확인해요.</li><li>슬라이드의 실측 비교는 slow_power 7.17초·power 0.47초이며 수업에서 읽은 수치와 구별해요.</li></ul></div></div>
 </article>
     </section>
     <section id="s3"><h2>4. 피보나치</h2>
@@ -946,7 +946,7 @@
     <ul class="eq-list"><li><span class="eq-name">피보나치 점화식</span>$$fib(n) = fib(n-2) + fib(n-1)$$</li></ul>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>바닥 조건</dt><dd>n이 0이면 0, 1이면 1을 바로 돌려주고 순환 호출을 멈추는 부분</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>n≥2에서는 fib(n-1)+fib(n-2)로 두 인자를 줄여 더하지만, 같은 항의 중복 호출로 더 느려질 수 있어요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s3-fib-waste"><h3>8. 중복 계산과 다이내믹 프로그래밍</h3><div class="tags"><span class="tag date">0917 수업</span><span class="tag slide">S2 p13</span></div>
@@ -1049,7 +1049,7 @@
     <p class="sum-lead">순환 피보나치는 같은 항을 여러 번 다시 계산하고, 다이내믹 프로그래밍은 테이블에서 먼저 찾아 가지를 끊어요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>중복 계산</dt><dd>이미 계산한 항을 다른 가지에서 또 계산하는 것</dd><dt>다이내믹 프로그래밍(dynamic programming)</dt><dd>이미 나온 결과를 테이블에 저장해 두고, 계산 전에 테이블을 먼저 뒤지는 방법</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>슬라이드 부분 트리와 전체 트리를 구별해요. 슬라이드 밖 전체 추적의 fib(6)은 호출 25회이고 fib(3)은 3회예요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s3-fib-iter"><h3>9. 피보나치의 반복 구현</h3><div class="tags"><span class="tag date">0917 수업</span><span class="tag slide">S2 p14</span></div>
@@ -1117,7 +1117,7 @@
     <ul class="eq-list"><li><span class="eq-name">fib_iter 시간복잡도</span>$$O(n)$$</li></ul>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>반복(iteration)</dt><dd>for 루프로 같은 계산을 차례로 되풀이하는 구조</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>n&lt;2이면 n을 반환하고, 그 외 last=0·current=1에서 tmp=current; current+=last; last=tmp; 순으로 갱신해요.</li></ul></div></div>
 </article>
     </section>
     <section id="s4"><h2>5. 하노이 탑</h2>
@@ -1153,7 +1153,7 @@
     <p class="sum-lead">하노이 탑은 규칙을 지키며 막대 A의 원판 n개를 막대 C로 옮기는 문제예요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>하노이 탑(Tower of Hanoi)</dt><dd>수학적 정의가 없는 문제에 순환을 응용하는 예</dd><dt>반복(iteration)</dt><dd>for·while로 되풀이하는 방법. 하노이 탑은 반복으로 짜기 어려워요</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>한 번에 맨 위 원판 한 개만 옮기고 작은 원판 위에 큰 원판을 놓지 않으며, 임시 막대 B에서도 이 규칙을 지켜요.</li></ul></div></div>
 </article>
 <article class="topic" id="s4-hanoi-3"><h3>11. 원판 3개 풀이에서 규칙 찾기</h3><div class="tags"><span class="tag date">0917 수업</span><span class="tag slide">S2 p16</span></div>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">가장 큰 원판이 도착 막대에 놓이면, 그 원판은 없는 셈 쳐도 돼요.</p>
@@ -1214,7 +1214,7 @@
     <p class="sum-lead">원판 3개는 7번에 옮겨지고, 가장 큰 원판이 C에 놓이면 원판 2개 문제로 줄어요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>임시 거처</dt><dd>소스도 타깃도 아닌, 원판을 잠시 두는 막대</dd><dt>로지컬 씽킹(logical thinking)</dt><dd>규칙을 따라 하다가 논리를 찾아내는 것</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>작은 2개 A→B, 큰 원판 A→C, 작은 2개 B→C로 나누며 소스·타깃·임시 막대 역할이 바뀌어요.</li></ul></div></div>
 </article>
 <article class="topic" id="s4-hanoi-general"><h3>12. 일반적인 경우와 남은 문제</h3><div class="tags"><span class="tag date">0917 수업</span><span class="tag slide">S2 p17–18</span></div>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">원판이 아무리 많아도, 맨 아래 큰 원판과 그 위 나머지 덩어리로 나눠 생각해요.</p>
@@ -1297,7 +1297,7 @@ void hanoi_tower(int n, char from, char tmp, char to)
     <p class="sum-lead">가장 큰 원판을 뺀 n-1개를 옮기는 일을 같은 함수의 순환 호출로 두 번 맡겨요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>임시 버퍼</dt><dd>n-1개를 옮기는 동안 원판을 잠시 두는 막대</dd><dt>순환 호출(recursive call)</dt><dd>파라미터를 n-1로 바꾸어 지금 작성하는 함수를 다시 부르는 것</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>n==1은 from→to 직접 이동하고, 그 외 (n-1,from,to,tmp) 호출 → 큰 원판 from→to → (n-1,tmp,from,to) 호출 순서예요.</li><li>보충(수업에서 유도하지 않음): 인자 자리는 출발·임시·도착이며, 이동 횟수 T(1)=1, T(n)=2T(n-1)+1에서 T(n)=2ⁿ-1이에요.</li></ul></div></div>
 </article>
     </section>
     <section id="s5"><h2>6. 요약 · 예고</h2>
@@ -1376,9 +1376,8 @@ void hanoi_tower(int n, char from, char tmp, char to)
           <h2 id="panel-right-title">페이지 요약</h2>
           <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
         </div>
-        <p class="panel-sub" id="sum-for">전체 흐름</p>
         <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
-        <div class="sums"></div>
+        <div class="sums" id="sum-for"></div>
       </div>
     </aside>
   </div>
@@ -1769,7 +1768,6 @@ void hanoi_tower(int n, char from, char tmp, char to)
         const KEY = 'od-review-solved:' + RANGE;
         const cards = Array.from(document.querySelectorAll('main article.card'));
         const aids = panels.right.querySelector('.aids');
-        const sub = document.getElementById('aid-for');
         const empty = panels.right.querySelector('.panel-empty');
         const btn = document.getElementById('solved-btn');
         const groups = {};
@@ -1801,8 +1799,6 @@ void hanoi_tower(int n, char from, char tmp, char to)
           Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
           empty.hidden = Boolean(curId);
           btn.hidden = !curId;
-          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';
-          sub.hidden = !curId;
           if (curId) paintBtn();
           panels.right.querySelector('.panel-inner').scrollTop = 0;
           markToc(solved, cards.length, '푼 문제');
@@ -1825,14 +1821,12 @@ void hanoi_tower(int n, char from, char tmp, char to)
           box.appendChild(el);
           sums[t.id] = el;
         });
-        const sub = document.getElementById('sum-for');
         const empty = document.getElementById('sum-empty');
         document.addEventListener('od:screen', (e) => {
           const s = e.detail.screen;
           const key = s.matches('article.topic') ? s.id : 'intro';
           Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
           empty.hidden = Boolean(sums[key]);
-          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
           if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
           panels.right.querySelector('.panel-inner').scrollTop = 0;
           markToc(read, topics.length, '읽음');

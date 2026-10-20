@@ -592,7 +592,7 @@ def check_md(html_path, md_path):
         if not _exists(os.path.join(md_dir, unquote(img))):
             problems.append(f"그림 없음: {img}")
     pack = _pack_names(html_path)
-    for target in re.findall(r"(?<!!)\[[^\]]*\]\(([^)]+)\)", md):
+    for target in re.findall(r"(?<!!)\[[^\]]*\]\(([^)]+)\)", prose):
         if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", target):  # http:, https:, mailto: 등 외부
             continue
         path_part, _, frag = target.partition("#")

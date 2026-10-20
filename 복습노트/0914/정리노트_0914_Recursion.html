@@ -428,7 +428,7 @@
       <dt>추상 데이터 타입(ADT: Abstract Data Type)</dt><dd>무엇(what)은 정의하고 어떻게(how)는 정의하지 않은 데이터 타입</dd>
       <dt>인터페이스</dt><dd>ADT와 외부를 연결하는 연산</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>ADT의 객체는 입력·출력 데이터이고 연산은 외부 인터페이스예요.</li><li>실제 타입에는 크기·규격에 따른 값의 범위가 있어 범위를 넘으면 오버플로가 나요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s0-nat-no"><h3>1.2 추상 데이터 타입의 예: 자연수</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p24</span></div>
@@ -505,7 +505,7 @@
       <dt>INT_MAX</dt><dd>객체 범위의 상한</dd>
       <dt>successor(x)</dt><dd>x+1이 INT_MAX 이하면 x+1을 돌려주는 연산</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>zero는 0, is_zero는 x=0일 때 TRUE, equal은 두 값이 같을 때 TRUE를 돌려줘요.</li><li>add는 합이 INT_MAX를 넘으면 INT_MAX, sub는 x&lt;y이면 0을 반환해 객체 범위를 지켜요.</li><li>이것은 C 코드가 아닌 ADT 표기이며 ::=는 정의, x=y는 같음 비교예요.</li><li>연산은 필요한 것만 정의해도 되고, 내부 구현 방법은 정하는 사람 몫이에요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s0-vending"><h3>1.3 추상 데이터 타입과 자판기</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p25</span></div>
@@ -635,7 +635,7 @@ void main( void )
       <dt>수행 시간 측정</dt><dd>실제로 구현한 두 알고리즘을 동일한 하드웨어에서 돌려 시간을 재는 방법</dd>
       <dt>CLOCKS_PER_SEC</dt><dd>clock이 돌려주는 시각의 단위. 차이를 이 값으로 나누면 초</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>초 단위 시간은 (double)(finish-start)/CLOCKS_PER_SEC로 구하고, double 변환으로 정수 나눗셈 절단을 막아요.</li><li>다 만든 뒤 성능 부족을 알면 다시 개발해야 하므로, 수업은 구현 전 복잡도 분석을 사용해요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s1-complexity"><h3>2.2 복잡도 분석과 시간복잡도 함수</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p26–28</span></div>
@@ -714,7 +714,7 @@ void main( void )
       <dt>공간 복잡도(space complexity)</dt><dd>수행하는 동안 필요한 메모리 공간. 이 수업에서는 다루지 않음</dd>
       <dt>시간복잡도 함수</dt><dd>연산 횟수를 입력 개수 n의 함수로 쓴 것, $T(n)$</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>산술·대입·비교·이동 연산을 세고, 기능과 답이 같으면 연산 횟수가 적은 쪽을 골라요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s1-n-times"><h3>2.3 n을 n번 더하는 세 알고리즘</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p29–30</span></div>
@@ -795,7 +795,7 @@ sum ←n*n;        sum ←0;                 sum ←0;
       <dt>수도코드(pseudocode)</dt><dd>특정 언어가 아닌, 알고리즘을 적는 약식 코드</dd>
       <dt>for 루프 제어 연산</dt><dd>루프 변수의 대입·비교. 연산 개수를 셀 때 제외</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>A는 곱셈·대입으로 2회, B는 초기화 1회와 n번의 덧셈·대입으로 2n+1회, C는 2n²+1회예요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s1-arraymax"><h3>2.4 ArrayMax 연산 세기</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p31</span></div>
@@ -862,7 +862,7 @@ return tmp;              1번의 반환 연산
       <dt>최악의 경우</dt><dd>조건문 안 연산이 매번 실행된다고 가정해 세는 기준</dd>
       <dt>반환 연산</dt><dd><code>return</code>. 결과를 함수에 넣는 대입이라 1번으로 셈</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>A[0]으로 후보를 시작하고 더 큰 원소를 만나면 바꾸며, 루프 제어 연산은 제외해요.</li></ul></div></div>
 </article>
     </section>
     <section id="s2"><h2>3. 빅오 표기법</h2>
@@ -1153,7 +1153,7 @@ $$</p>
       <dt>빅오 표기법(Big-O notation)</dt><dd>연산의 횟수를 대략적(점근적)으로 나타내는 방법</dd>
       <dt>상한(upper bound)</dt><dd>$n \ge n_0$ 에서 $f(n)$ 이 넘지 않는 선 $c|g(n)|$</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>정의는 모든 n≥n₀에서 |f(n)|≤c|g(n)|이 되게 하는 상수 c와 n₀가 존재한다는 뜻이에요.</li><li>루프 개수만 세지 말고 시작값·조건·증가식에 따른 실제 반복 횟수를 확인해요.</li><li>보충(복습문제 기반): n은 양의 정수이고 루프 제어를 뺀 대입만 세며, 안쪽 횟수를 구해 바깥에서 더해요.</li><li>보충: 안쪽이 n번·i번·n-i번이면 대입 합은 각각 30n², 30n(n-1)/2, 30n(n+1)/2이며 모두 O(n²)예요.</li><li>보충: j를 공유하는 루프는 j가 0..i-1을 한 번만 지나므로 30i를 합하고 n을 추가로 곱하지 않아요.</li><li>보충 자체 연습: k&lt;j, j&lt;i, i&lt;n의 count++ 횟수는 n(n-1)(n-2)/6이며 O(n³)예요.</li><li>보충: i+=2·i*=2·break·변수 공유에서는 실제 변화와 종료 지점을 먼저 따라가고 연속 정수 합 공식을 그대로 쓰지 않아요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s2-bigo-kinds"><h3>3.2 빅오 표기법의 종류</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p33</span></div>
@@ -1247,7 +1247,7 @@ $$</p>
     <dl class="terms">
       <dt>확장성(scalability)</dt><dd>입력 데이터가 늘어나도 실행 시간 성능을 어느 정도 유지하는 성질</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>log n은 증가가 느려져도 끝없이 커지고, 이 표의 로그 밑은 2예요.</li><li>슬라이드 표의 오기를 고치면 8!=40320, 32!≈2.63×10³⁵예요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s2-cases"><h3>3.3 최선, 평균, 최악의 경우</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p34</span></div>
@@ -1295,7 +1295,7 @@ $$</p>
       <dt>평균의 경우(average case)</dt><dd>수행 시간이 평균적인 경우</dd>
       <dt>최악의 경우(worst case)</dt><dd>수행 시간이 가장 늦은 경우</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>원칙은 최악 기준이지만 뒤에서 평균 경우로 설명하는 알고리즘도 있어요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s2-seq-search"><h3>3.4 순차 탐색의 경우 분석</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p35</span></div>
@@ -1339,7 +1339,7 @@ $$</p>
     <dl class="terms">
       <dt>순차 탐색(sequential search)</dt><dd>앞에서부터 한 칸씩 비교하며 찾는 탐색</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>평균 (n+1)/2회는 각 요소가 동일한 확률로 탐색된다는 가정에서 구해요.</li></ul></div></div>
 </article>
     </section>
     <section id="s3"><h2>4. 자료구조의 C언어 표현</h2>
@@ -1402,7 +1402,7 @@ void push(StackType *s, element item)
       <dt>typedef</dt><dd>기존 타입에 새 이름(별명)을 붙여요. 예: <code>typedef int element;</code></dd>
       <dt>구조체(struct)</dt><dd>관련 데이터를 한 덩어리로 묶어요. 예: <code>StackType</code></dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>자료구조의 연산 함수는 관련 데이터를 담은 구조체를 매개변수로 받아요.</li></ul></div></div>
 </article>
 <article class="topic" id="s3-naming"><h3>4.2 이름 짓기 규칙</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S1 p37</span></div>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
@@ -1522,7 +1522,7 @@ typedef struct ListNode {
     </ul>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>순환(recursion)</dt><dd>수행 도중에 자기 자신을 다시 호출해 문제를 해결하는 기법</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>팩토리얼은 0!=1, 피보나치는 fib(0)=0·fib(1)=1을 시작값으로 정해 순환을 멈춰요.</li><li>이항계수는 Cⁿₖ=Cⁿ⁻¹ₖ₋₁+Cⁿ⁻¹ₖ, 경계 Cⁿ₀=Cⁿₙ=1이며 수업에서는 이름만 나왔어요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s4-two-conditions"><h3>5.2 순환으로 풀 수 있는 문제의 두 조건</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S2 p2</span></div>
@@ -1636,7 +1636,7 @@ typedef struct ListNode {
       <dt>순환 호출(recursive call)</dt><dd>지금 작성 중인 함수를 다시 호출하는 것</dd>
       <dt>반환 타입</dt><dd>함수 앞에 적는 타입. <code>return</code> 값의 타입과 일치해야 해요</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>n&lt;=1이면 1을 반환하고, 그 외에는 n*factorial(n-1)로 인자를 줄여요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s4-factorial-trace"><h3>5.4 factorial(3)의 호출과 스택</h3><div class="tags"><span class="tag date">0914 수업</span><span class="tag slide">S2 p4–5</span><span class="tag slide">S2 p7</span></div>
@@ -1717,7 +1717,7 @@ typedef struct ListNode {
       <dt>스택(stack)</dt><dd>순환 호출마다 상자를 쌓아 중간 기억을 대신 맡는 곳</dd>
       <dt>순환 호출</dt><dd><code>factorial(3)</code>이 <code>3 * factorial(2)</code>를 계산하려고 자기 자신을 다시 부르는 것</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>factorial(3)은 3→2→1로 호출하고, 바닥의 1에서 시작해 1→2→6으로 반환해요.</li></ul></div></div>
 </article>
     </section>
     <section id="s5"><h2>6. 요약 · 예고</h2>
@@ -1769,9 +1769,8 @@ typedef struct ListNode {
           <h2 id="panel-right-title">페이지 요약</h2>
           <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
         </div>
-        <p class="panel-sub" id="sum-for">전체 흐름</p>
         <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
-        <div class="sums"></div>
+        <div class="sums" id="sum-for"></div>
       </div>
     </aside>
   </div>
@@ -2167,7 +2166,6 @@ var FACT = (function () {
         const KEY = 'od-review-solved:' + RANGE;
         const cards = Array.from(document.querySelectorAll('main article.card'));
         const aids = panels.right.querySelector('.aids');
-        const sub = document.getElementById('aid-for');
         const empty = panels.right.querySelector('.panel-empty');
         const btn = document.getElementById('solved-btn');
         const groups = {};
@@ -2199,8 +2197,6 @@ var FACT = (function () {
           Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
           empty.hidden = Boolean(curId);
           btn.hidden = !curId;
-          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';
-          sub.hidden = !curId;
           if (curId) paintBtn();
           panels.right.querySelector('.panel-inner').scrollTop = 0;
           markToc(solved, cards.length, '푼 문제');
@@ -2223,14 +2219,12 @@ var FACT = (function () {
           box.appendChild(el);
           sums[t.id] = el;
         });
-        const sub = document.getElementById('sum-for');
         const empty = document.getElementById('sum-empty');
         document.addEventListener('od:screen', (e) => {
           const s = e.detail.screen;
           const key = s.matches('article.topic') ? s.id : 'intro';
           Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
           empty.hidden = Boolean(sums[key]);
-          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
           if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
           panels.right.querySelector('.panel-inner').scrollTop = 0;
           markToc(read, topics.length, '읽음');

@@ -1738,6 +1738,74 @@
           "new": "    assert cond == stmt and ask == ''\n\ndef test_labeled_asks_only_when_every_item_has_label():\n    from mpe_render import labeled_asks\n    assert labeled_asks('<ol><li>(a) 첫째</li><li>(b) <code>p</code> 둘째</li></ol>')\n    assert not labeled_asks('<ol><li>(a) 첫째</li><li>둘째</li></ol>')\n    assert not labeled_asks('')\n"
         }
       ]
+    },
+    {
+      "destination": "SKILL.md",
+      "base_sha256": "a21a2dc084e671be3dee6514f59b3733f821277117be8a15b0b9fef18341ee01",
+      "current_sha256": "b227d074a359ec1d8937ec2a9ef2c23f46ccdd748b789e4f851edb3075aa98ed",
+      "reason": "Task 1: remove duplicate panel titles; preserve container ID and require semantic/browser audit; synthetic behavior regressions",
+      "replacements": [
+        {
+          "old": "입력·설명 조각·입력 그림·검산 자료·참조 파일이 검증되고 검토 기준도 현재와 같을 때만 content·independent를 재사용한다. 전자회로2는 problems.txt뿐 아니라 문제 MD·그림 전체의 합성 해시가 같아야 한다. 참조 누락·내용 변경·기준 누락/변경이면 content·independent도 not_run으로 되돌리고 실제 검토를 다시 한다. 경로 이전은 실제 대상과 바이트/링크 동등성을 입증할 때만 허용하며, 입증하지 못하면 재검토한다. 원본 HTML의 스타일·실행 스크립트만 바뀐 경우는 과거 입력을 확인할 수 있을 때만 동일 문항으로 인정하고 JSON 정답 데이터는 내용으로 취급한다.\n\n`check` 뒤 source_visual·browser를 실제로 다시 확인한다. 검토 기준이 바뀐 이번 업데이트의 옛 발행분은 내용 검토·독립 검산도 새로 필요하다. 네 검토가 모두 pass인 뒤에만 별도 publish 절차를 사용한다. 사용자가 stage까지만 요청했다면 publish를 실행하지 않는다. 새로 해설을 저작해야 하면 기존 정상 저작 절차로 돌아간다.\n",
+          "new": "입력·설명 조각·입력 그림·검산 자료·참조 파일이 검증되고 검토 기준도 현재와 같을 때만 content·independent를 재사용한다. 전자회로2는 problems.txt뿐 아니라 문제 MD·그림 전체의 합성 해시가 같아야 한다. 참조 누락·내용 변경·기준 누락/변경이면 content·independent도 not_run으로 되돌리고 실제 검토를 다시 한다. 경로 이전은 실제 대상과 바이트/링크 동등성을 입증할 때만 허용하며, 입증하지 못하면 재검토한다. 원본 HTML의 스타일·실행 스크립트만 바뀐 경우는 과거 입력을 확인할 수 있을 때만 동일 문항으로 인정하고 JSON 정답 데이터는 내용으로 취급한다.\n\n`check` 뒤 source_visual·browser를 실제로 다시 확인한다. 검토 기준이 바뀐 이번 업데이트의 옛 발행분은 내용 검토·독립 검산도 새로 필요하다. 네 검토가 모두 pass인 뒤에만 별도 publish 절차를 사용한다. 사용자가 stage까지만 요청했다면 publish를 실행하지 않는다. 새로 해설을 저작해야 하면 기존 정상 저작 절차로 돌아간다.\n\n## 패널 제목과 요약 계약\n중앙 제목과 고정 패널 제목을 유지하고 오른쪽의 중복 주제·문항 제목은 출력하지 않는다. `sum-for`는 `.sums` 컨테이너의 유일한 ID로 보존하며 `aid-for`와 제거한 제목의 JavaScript 참조는 두지 않는다.\n\n요약 항목 수에 고정 상한을 두지 않는다. 같은 토픽 본문의 핵심 개념·원리·성립 조건·혼동 구분을 압축하고, 본문에 없는 사실을 추가하지 않는다. 보충의 범위·출처·불확실성을 유지한다. 모든 학습 토픽의 일반·강조·주의·보충 핵심을 본문 주장, 대응 요약, 판정 또는 생략 이유로 대조한다. 누락은 unresolved로 기록하고 보완된 실제 요약을 다시 읽은 뒤 pass로 바꾼다. 기존 동반 MD와 실제 생성 원고를 동기화하고 동반 MD가 없으면 새 형식을 만들지 않는다.\n\n브라우저는 HTTP 임시 stage에서 1280×900, 375×812 각각 light/dark로 검사한다. 요약·풀이 패널을 열어 중앙 제목 표시, 우측 중복 제목 없음, 토픽별 요약 하나와 정확한 내용, 표지 안내, 이전 요약 숨김, 수식 오류와 페이지 오류 0을 확인한다. 문제·원문 탭, 이전/다음, 힌트·풀이, 푼 문제 토글과 기존 read/solved 저장 키를 유지한다. missing-sum 실패 탐지와 no-panel legacy 검사를 유지한다.\n"
+        }
+      ]
+    },
+    {
+      "destination": "assets/note-template.html",
+      "base_sha256": "605811cea3df793de31f01d87231b12ce93a64025a765accf0b12e88bb7bb46e",
+      "current_sha256": "abddec8bc4fd8d177ecd8dc6200f0b05de4e8f26fbbc599c9fac82a269ba9079",
+      "reason": "Task 1: remove duplicate panel titles; preserve container ID and require semantic/browser audit; synthetic behavior regressions",
+      "replacements": [
+        {
+          "old": "          <button class=\"text-btn panel-close\" type=\"button\" data-panel-close>닫기</button>\n        </div>\n        <div class=\"sum-tab\">\n          <p class=\"panel-sub\" id=\"sum-for\">전체 흐름</p>\n          <p class=\"panel-empty\" id=\"sum-empty\">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>\n          <div class=\"sums\"></div>\n        </div>\n      </div>\n    </aside>\n",
+          "new": "          <button class=\"text-btn panel-close\" type=\"button\" data-panel-close>닫기</button>\n        </div>\n        <div class=\"sum-tab\">\n          <p class=\"panel-empty\" id=\"sum-empty\">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>\n          <div class=\"sums\" id=\"sum-for\"></div>\n        </div>\n      </div>\n    </aside>\n"
+        },
+        {
+          "old": "        const KEY = 'od-review-solved:' + RANGE;\n        const cards = Array.from(document.querySelectorAll('main article.card'));\n        const aids = panels.right.querySelector('.aids');\n        const sub = document.getElementById('aid-for');\n        const empty = panels.right.querySelector('.panel-empty');\n        const btn = document.getElementById('solved-btn');\n        const groups = {};\n",
+          "new": "        const KEY = 'od-review-solved:' + RANGE;\n        const cards = Array.from(document.querySelectorAll('main article.card'));\n        const aids = panels.right.querySelector('.aids');\n        const empty = panels.right.querySelector('.panel-empty');\n        const btn = document.getElementById('solved-btn');\n        const groups = {};\n"
+        },
+        {
+          "old": "          Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });\n          empty.hidden = Boolean(curId);\n          btn.hidden = !curId;\n          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';\n          sub.hidden = !curId;\n          if (curId) paintBtn();\n          panels.right.querySelector('.panel-inner').scrollTop = 0;\n          markToc(solved, cards.length, '푼 문제');\n",
+          "new": "          Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });\n          empty.hidden = Boolean(curId);\n          btn.hidden = !curId;\n          if (curId) paintBtn();\n          panels.right.querySelector('.panel-inner').scrollTop = 0;\n          markToc(solved, cards.length, '푼 문제');\n"
+        },
+        {
+          "old": "        const origBtn = document.getElementById('tab-original');\n        const tabList = panels.prob.querySelector('.panel-tabs');\n        const tabs = Array.from(tabList.querySelectorAll('[role=\"tab\"]'));\n        const sub = document.getElementById('sum-for');\n        const empty = document.getElementById('sum-empty');\n        const probEmpty = document.getElementById('prob-empty');\n        const sums = {};\n",
+          "new": "        const origBtn = document.getElementById('tab-original');\n        const tabList = panels.prob.querySelector('.panel-tabs');\n        const tabs = Array.from(tabList.querySelectorAll('[role=\"tab\"]'));\n        const empty = document.getElementById('sum-empty');\n        const probEmpty = document.getElementById('prob-empty');\n        const sums = {};\n"
+        },
+        {
+          "old": "          curId = key === 'intro' ? null : key;\n          Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });\n          empty.hidden = Boolean(sums[key]);\n          if (key === 'intro') sub.textContent = '전체 흐름';\n          else sub.innerHTML = (s.querySelector('h3') || {}).innerHTML || ''; // preserve rendered title math\n          if (wideMq.matches) {\n            Object.keys(panes).forEach((id) => { panes[id].hidden = id !== curId; });\n            Object.keys(origs).forEach((id) => { origs[id].hidden = id !== curId; });\n",
+          "new": "          curId = key === 'intro' ? null : key;\n          Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });\n          empty.hidden = Boolean(sums[key]);\n          if (wideMq.matches) {\n            Object.keys(panes).forEach((id) => { panes[id].hidden = id !== curId; });\n            Object.keys(origs).forEach((id) => { origs[id].hidden = id !== curId; });\n"
+        }
+      ]
+    },
+    {
+      "destination": "references/verification.md",
+      "base_sha256": "f8db8d6132147ef1fb36d4f1261d834eda9fc36618b99dd476a941c51f4ecae0",
+      "current_sha256": "b64064e36738cc949dcb737b3b4bdfae3b70b922913e4ad41f2ca084f9153f1b",
+      "reason": "Task 1: remove duplicate panel titles; preserve container ID and require semantic/browser audit; synthetic behavior regressions",
+      "replacements": [
+        {
+          "old": "browser는 1280×900·1024×900·375×812, light/dark에서 실제 확인한다. 1023→1024 경계에서 목차·문제 기본 열림, 저장한 닫힘 유지, 원문 탭(원문 없는 문항은 숨김), 문제 패널 왼쪽·오른쪽 붙이기·띄우기, 이동·크기 조절·화면 내 제한, 모바일 접힘, 그림 확대와 인쇄 문제/원문 보존을 확인한다. 유효한 객관식은 오답·정답·다시 풀기·판정 이동, 모델 없는 문항은 정적 표시를 확인한다. 코드 문자·들여쓰기·수식·소문항·원문을 보존하고 외부 요청·콘솔/KaTeX 오류·누락 자원·문서 가로 넘침은 0이어야 한다.\n\n참조 HTML·MD·SVG가 로컬 그림을 사용하면 해당 그림도 references에 절대 경로와 SHA-256으로 별도 기록한다. 참조 그림 해시 누락·변경은 검토 재사용과 새 발행을 막는다. 옮긴 그림의 이전 바이트를 확인할 수 없으면 현재 파일을 자기 자신과 비교해 같은 그림이라고 간주하지 않는다.\n",
+          "new": "browser는 1280×900·1024×900·375×812, light/dark에서 실제 확인한다. 1023→1024 경계에서 목차·문제 기본 열림, 저장한 닫힘 유지, 원문 탭(원문 없는 문항은 숨김), 문제 패널 왼쪽·오른쪽 붙이기·띄우기, 이동·크기 조절·화면 내 제한, 모바일 접힘, 그림 확대와 인쇄 문제/원문 보존을 확인한다. 유효한 객관식은 오답·정답·다시 풀기·판정 이동, 모델 없는 문항은 정적 표시를 확인한다. 코드 문자·들여쓰기·수식·소문항·원문을 보존하고 외부 요청·콘솔/KaTeX 오류·누락 자원·문서 가로 넘침은 0이어야 한다.\n\n참조 HTML·MD·SVG가 로컬 그림을 사용하면 해당 그림도 references에 절대 경로와 SHA-256으로 별도 기록한다. 참조 그림 해시 누락·변경은 검토 재사용과 새 발행을 막는다. 옮긴 그림의 이전 바이트를 확인할 수 없으면 현재 파일을 자기 자신과 비교해 같은 그림이라고 간주하지 않는다.\n\n## 패널 제목과 요약 계약\n중앙 제목과 고정 패널 제목을 유지하고 오른쪽의 중복 주제·문항 제목은 출력하지 않는다. `sum-for`는 `.sums` 컨테이너의 유일한 ID로 보존하며 `aid-for`와 제거한 제목의 JavaScript 참조는 두지 않는다.\n\n요약 항목 수에 고정 상한을 두지 않는다. 같은 토픽 본문의 핵심 개념·원리·성립 조건·혼동 구분을 압축하고, 본문에 없는 사실을 추가하지 않는다. 보충의 범위·출처·불확실성을 유지한다. 모든 학습 토픽의 일반·강조·주의·보충 핵심을 본문 주장, 대응 요약, 판정 또는 생략 이유로 대조한다. 누락은 unresolved로 기록하고 보완된 실제 요약을 다시 읽은 뒤 pass로 바꾼다. 기존 동반 MD와 실제 생성 원고를 동기화하고 동반 MD가 없으면 새 형식을 만들지 않는다.\n\n브라우저는 HTTP 임시 stage에서 1280×900, 375×812 각각 light/dark로 검사한다. 요약·풀이 패널을 열어 중앙 제목 표시, 우측 중복 제목 없음, 토픽별 요약 하나와 정확한 내용, 표지 안내, 이전 요약 숨김, 수식 오류와 페이지 오류 0을 확인한다. 문제·원문 탭, 이전/다음, 힌트·풀이, 푼 문제 토글과 기존 read/solved 저장 키를 유지한다. missing-sum 실패 탐지와 no-panel legacy 검사를 유지한다.\n\n의미 감사표는 `자료·토픽`을 키로 서로 다른 일반·강조·주의·보충 핵심을 별도 행에 둔다. 검증 JSON은 `{schema_version:1, html, html_sha256, audit_path, audit_sha256, semantic_status, browser_status, evidence, unresolved}`를 기록한다. `pass | unresolved`는 실제 검사 뒤에만 판정하며 산출물 해시가 바뀌면 기존 근거는 갱신 전까지 오래된 것으로 취급한다.\n"
+        }
+      ]
+    },
+    {
+      "destination": "tests/test_sync_browser.py",
+      "base_sha256": "a7a58a5c9ceb5d2fed46039718a910e3cc02391511af3cb308db3232028f13f3",
+      "current_sha256": "19625e5b3dd975ba99ad8075c8cbc10dcedf05a66852d42c6abcb176f833b905",
+      "reason": "Task 1: remove duplicate panel titles; preserve container ID and require semantic/browser audit; synthetic behavior regressions",
+      "replacements": [
+        {
+          "old": "    from mpe_types import ChoiceModel\n    conditions += '<ul class=\"choices\"><li>A</li><li>B</li></ul>'\n    p=replace(p,choice=ChoiceModel('B','single',('A','B')))\n    p=replace(p,conditions_html=conditions)\n    p2=replace(p,id='p2',number=2,title='두 번째 문항',original_html='')\n    pack=replace(pack,problems=(p,p2))\n    fragments={q.id:fragments['p1'] for q in pack.problems}\n    a=build_explanation(pack,fragments,root/'stage',repo)\n    assert check_artifacts(pack,a)==[]\n    return a\n",
+          "new": "    from mpe_types import ChoiceModel\n    conditions += '<ul class=\"choices\"><li>A</li><li>B</li></ul>'\n    p=replace(p,choice=ChoiceModel('B','single',('A','B')))\n    p=replace(p,conditions_html=conditions,title='행렬 $A^2$')\n    p2=replace(p,id='p2',number=2,title='두 번째 문항',original_html='')\n    pack=replace(pack,problems=(p,p2))\n    fragments={q.id:fragments['p1'].replace('시작·판단·검산', '첫 문항 요약' if q.id=='p1' else '둘째 문항 요약') for q in pack.problems}\n    a=build_explanation(pack,fragments,root/'stage',repo)\n    assert check_artifacts(pack,a)==[]\n    return a\n"
+        },
+        {
+          "old": "        assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')\n    finally:\n        context.close()\n",
+          "new": "        assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')\n    finally:\n        context.close()\n\n\n@pytest.mark.parametrize('width,height',[(1280,900),(375,812)])\n@pytest.mark.parametrize('theme',['light','dark'])\ndef test_summary_switch_with_math_title(browser,stage_url,width,height,theme):\n    context=browser.new_context(viewport={'width':width,'height':height},color_scheme=theme)\n    page=context.new_page();errors=[]\n    page.on('pageerror',lambda e:errors.append(str(e)))\n    try:\n        page.goto(stage_url,wait_until='networkidle')\n        page.locator('#toggle-right').click()\n        for topic in ['p1','p2','p1']:\n            page.evaluate('(id)=>{location.hash=id}',topic)\n            page.wait_for_timeout(80)\n            title=page.locator(f'main #{topic} h3').text_content()\n            assert page.locator('main h3',has_text=title).is_visible()\n            assert page.locator('#panel-right').get_by_text(title,exact=True).count()==0\n            assert page.locator('#sum-for.sums').count()==1\n            assert page.locator('#panel-right .sum:not([hidden])').count()==1\n            assert page.locator('#panel-right .sum:not([hidden])').inner_text()==('첫 문항 요약' if topic=='p1' else '둘째 문항 요약')\n            assert page.locator('.katex-error').count()==0\n        assert errors==[]\n    finally: context.close()\n"
+        }
+      ]
     }
   ],
   "common_sync": {

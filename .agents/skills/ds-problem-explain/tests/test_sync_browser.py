@@ -21,10 +21,10 @@ def make_stage(root):
     from mpe_types import ChoiceModel
     conditions += '<ul class="choices"><li>A</li><li>B</li></ul>'
     p=replace(p,choice=ChoiceModel('B','single',('A','B')))
-    p=replace(p,conditions_html=conditions)
+    p=replace(p,conditions_html=conditions,title='행렬 $A^2$')
     p2=replace(p,id='p2',number=2,title='두 번째 문항',original_html='')
     pack=replace(pack,problems=(p,p2))
-    fragments={q.id:fragments['p1'] for q in pack.problems}
+    fragments={q.id:fragments['p1'].replace('시작·판단·검산', '첫 문항 요약' if q.id=='p1' else '둘째 문항 요약') for q in pack.problems}
     a=build_explanation(pack,fragments,root/'stage',repo)
     assert check_artifacts(pack,a)==[]
     return a
@@ -141,3 +141,26 @@ def test_dock_float_drag_resize_and_restore(browser,stage_url):
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
     finally:
         context.close()
+
+
+@pytest.mark.parametrize('width,height',[(1280,900),(375,812)])
+@pytest.mark.parametrize('theme',['light','dark'])
+def test_summary_switch_with_math_title(browser,stage_url,width,height,theme):
+    context=browser.new_context(viewport={'width':width,'height':height},color_scheme=theme)
+    page=context.new_page();errors=[]
+    page.on('pageerror',lambda e:errors.append(str(e)))
+    try:
+        page.goto(stage_url,wait_until='networkidle')
+        page.locator('#toggle-right').click()
+        for topic in ['p1','p2','p1']:
+            page.evaluate('(id)=>{location.hash=id}',topic)
+            page.wait_for_timeout(80)
+            title=page.locator(f'main #{topic} h3').text_content()
+            assert page.locator('main h3',has_text=title).is_visible()
+            assert page.locator('#panel-right').get_by_text(title,exact=True).count()==0
+            assert page.locator('#sum-for.sums').count()==1
+            assert page.locator('#panel-right .sum:not([hidden])').count()==1
+            assert page.locator('#panel-right .sum:not([hidden])').inner_text()==('첫 문항 요약' if topic=='p1' else '둘째 문항 요약')
+            assert page.locator('.katex-error').count()==0
+        assert errors==[]
+    finally: context.close()

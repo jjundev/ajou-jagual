@@ -419,7 +419,7 @@ p = &amp;a;
       <dt>공유</dt><dd>주소를 넘겨 같은 데이터를 함께 쓰는 것</dd>
       <dt>밥그릇 · 국그릇</dt><dd>값을 담는 일반 변수 · 주소를 담는 포인터 변수</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>p=&amp;a 뒤 *p를 바꾸면 a의 내용이 바뀌지만 p에 저장된 주소는 그대로예요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s0-pointer-ops"><h3>2. &amp; 연산자와 * 연산자</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p20</span></div>
@@ -518,7 +518,7 @@ pp = &amp;p;   // 포인터 p와 포인터의 포인터 pp를 연결</code></pre
       <dt>p가 가리키는 곳의 내용</dt><dd>문장 안에서 쓴 <code>*p</code>의 뜻</dd>
       <dt>타입 미스매치(type mismatch)</dt><dd>대입의 양변이 주소와 값처럼 서로 다른 그릇인 것</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>선언 char *p의 *는 포인터 표시이고, 문장의 *p는 대상 내용이에요. p는 담긴 주소, &amp;p는 포인터 자신의 주소예요.</li><li>*p++·*p--는 현재 내용을 쓰고 p를 다음·이전 칸으로 옮기며, (*p)++는 p를 두고 대상 값만 1 늘려요.</li><li>p=&amp;a, pp=&amp;p이면 *pp는 p에 든 주소이고 **pp는 a의 값이에요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s0-pointer-risk"><h3>3. 포인터는 왜 위험한가</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p20</span></div>
@@ -561,7 +561,7 @@ pp = &amp;p;   // 포인터 p와 포인터의 포인터 pp를 연결</code></pre
       <dt>malicious code(악성 코드)</dt><dd>포인터를 악의적으로 써서 넣는 코드</dd>
       <dt>Java, Python</dt><dd>겉으로 포인터 연산자만 없애고 모든 것을 포인터화한 언어</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>Java·Python의 “모든 것을 포인터화했다”는 수업 표현의 세부 원리는 이번 수업에서 설명하지 않았어요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s0-pointer-types"><h3>4. 다양한 포인터와 형 변환</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p21</span></div>
@@ -626,7 +626,7 @@ pi=(int *) p;   /* p를 정수 포인터로 변경하여 pi에 대입 */</code><
       <dt>형 변환</dt><dd>캐스트 연산자 <code>(int *)</code>로 포인터 타입을 바꾸는 것</dd>
       <dt>철가방</dt><dd>여러 멤버를 담는 구조체(struct)의 비유</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>주소가 정수처럼 보여도 C 포인터는 int 타입이 아니며, 보통 64비트 환경에서 포인터 8바이트·int 4바이트로 크기도 달라요.</li></ul></div></div>
 </article>
     </section>
     <section id="s1"><h2>2. 함수·배열·구조체와 포인터</h2>
@@ -737,7 +737,7 @@ main()
       <dt>call by reference(call by address)</dt><dd>주소를 넘겨 원본을 함수와 공유하는 전달 방식</dd>
       <dt>임시 변수(temporary variable)</dt><dd>맞바꿀 때 한 값을 잠시 맡아 두는 tmp</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>swap(&amp;a,&amp;b)로 부르고 tmp=*px; *px=*py; *py=tmp; 순으로 바꿔요. py=tmp처럼 주소와 값을 섞지 않아요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s1-call-by-value"><h3>2. call by value와 전달 방식 고르기</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p22</span></div>
@@ -828,7 +828,7 @@ main()
       <dt>positional mapping</dt><dd>호출 인자와 파라미터가 자리끼리 대응해 복사되는 것</dd>
       <dt>누더기 프로그래밍</dt><dd>전역 변수로 결과를 주고받는, 하지 말아야 할 방식</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>원본에 결과를 반영하거나 여러 결과를 공유하려면 주소를, 원본을 지켜야 하면 값을 복사해요. 복사 비용은 넘기는 크기에 따라 들어요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s1-array-pointer"><h3>3. 배열과 포인터</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p23</span></div>
@@ -962,7 +962,7 @@ main()
       <dt>간접 참조 연산자(-&gt;)</dt><dd>앞이 포인터 변수일 때 쓴다: ps-&gt;i</dd>
       <dt>heterogeneous(이질적)</dt><dd>구조체가 묶는, 서로 다른 데이터 타입</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>s와 *ps를 선언해도 구조체 객체는 s 하나예요. ps=&amp;s로 연결하면 ps-&gt;i는 (*ps).i, 곧 s.i와 같아요.</li></ul></div></div>
 </article>
     </section>
     <section id="s2"><h2>3. 포인터의 포인터, 포인터 연산, 주의할 점</h2>
@@ -1027,7 +1027,7 @@ pp = &amp;p;   // 포인터 p와 포인터의 포인터 pp를 연결</code></pre
     <p class="sum-lead">이중 포인터는 포인터의 주소를 담아서, 두 번 따라가면 끝의 값에 닿아요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt>이중 포인터(double pointer)</dt><dd>포인터 변수의 주소를 담는 변수(<code>int **pp;</code>)</dd><dt><code>**pp</code></dt><dd><code>pp</code> → <code>p</code> → <code>a</code>로 두 번 따라간 곳의 내용</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>p=&amp;a, pp=&amp;p이면 pp는 p의 주소, *pp는 a의 주소, **pp는 a의 내용이에요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s2-pointer-arith"><h3>2. 포인터 연산</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p26</span></div>
@@ -1105,7 +1105,7 @@ p-1  // 포인터 p가 가리키는 객체의 바로 앞 객체</code></pre>
     <ul class="eq-list"><li><span class="eq-name">포인터 이동</span>$$\text{addr}(p+k) = \text{addr}(p) + k \cdot \texttt{sizeof}(\ast p)$$</li></ul>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt><code>p+1</code></dt><dd>포인터 p가 가리키는 객체의 바로 뒤 객체</dd><dt><code>p-1</code></dt><dd>포인터 p가 가리키는 객체의 바로 앞 객체</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>보충(수업에서 쓴 식 아님): addr(p+k)=addr(p)+k·sizeof(*p)로 객체 단위 이동을 나타내요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s2-null-init"><h3>3. NULL과 초기화 규칙</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p27</span></div>
@@ -1178,7 +1178,7 @@ pf = (float *)pi;</code></pre>
     <p class="sum-lead">가리킬 곳이 없는 포인터는 NULL로 두고, 우변에 쓰이는 변수는 꼭 초기화해요.</p>
     <p class="panel-label">용어</p>
     <dl class="terms"><dt><code>NULL</code></dt><dd>아무것도 가리키지 않는 포인터 값(<code>int *pi=NULL;</code>)</dd><dt>좌변·우변</dt><dd>좌변에만 쓰이면 초기화하지 않아도 되고, 우변에 쓰이면 초기화해야 해요</dd><dt>Tri-state</dt><dd>0도 1도 아닌 상태, NULL 포인터의 비유</dd></dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>초기화되지 않은 pc에 *pc=값을 쓰지 말고, 포인터 타입 간 변환에는 바꿀 타입을 명시해요.</li></ul></div></div>
 </article>
     </section>
     <section id="s3"><h2>4. 동적 메모리 할당</h2>
@@ -1246,7 +1246,7 @@ pf = (float *)pi;</code></pre>
       <dt>동적 메모리 할당(dynamic memory allocation)</dt><dd>실행 도중 필요한 만큼 받고 다 쓰면 반납</dd>
       <dt>overflow</dt><dd>정해 둔 크기보다 큰 입력이 들어와 처리하지 못하는 것</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>고정 용량은 큰 입력에서 부족하고 작은 입력에서는 낭비예요. 포인터는 공유·여러 결과 반환·동적 할당에 써요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s3-malloc-free"><h3>2. malloc과 free</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p29</span></div>
@@ -1314,7 +1314,7 @@ sizeof(var)    // 변수나 타입의 크기 반환(바이트 단위)</code></pr
       <dt>free</dt><dd>포인터가 가리키는 할당된 블록을 해제</dd>
       <dt>overwrite</dt><dd>좌변에만 쓰인 변수는 늘 덮어써지므로 초기화가 필수는 아님</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>해제 전 pi에 새 malloc 결과를 덮어쓰면 옛 블록의 주소를 잃어 free할 수 없으므로 별도 포인터로 보관해요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s3-sizeof-align"><h3>3. sizeof와 메모리 정렬</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p30</span></div>
@@ -1410,7 +1410,7 @@ size_t sizearr = sizeof( array ) / sizeof( array[0] );
       <dt>ALU(Arithmetic Logic Unit)</dt><dd>어긋난 주소를 쓰려면 거쳐야 하는 연산 장치, 그만큼 클럭 사이클이 더 듦</dd>
       <dt>시간 대 공간(time vs space)</dt><dd>지금은 무조건 빠름이 우선, 메모리 낭비는 감수</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>예제는 c가 0, 패딩이 1–3, i가 4–7에 놓여 8바이트예요. 정렬 패딩은 할당 뒤 해제하지 않은 메모리 누수와 달라요.</li><li>보충(수업에서 유도하지 않음): sizeof(char)는 C에서 항상 1이고, 시스템마다 달라질 수 있는 것은 한 바이트의 비트 수 CHAR_BIT예요.</li></ul></div></div>
 </article>
 
 <article class="topic" id="s3-malloc-example"><h3>4. 동적 메모리 할당 예제</h3><div class="tags"><span class="tag date">0928 수업</span><span class="tag slide">S3 p31</span></div>
@@ -1485,7 +1485,7 @@ void main()
       <dt>NULL 검사</dt><dd><code>malloc</code>이 <code>NULL</code>을 돌려주면 할당을 못 받은 것, 좋은 습관</dd>
       <dt>p+1</dt><dd><code>p</code>에서 <code>sizeof(struct Example)</code> 바이트 뒤의 다음 구조체</dd>
     </dl>
-  </div>
+  <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>2*sizeof(struct Example)을 받아 p[0]={1,&quot;Park&quot;}, p[1]={2,&quot;Kim&quot;}을 저장하고 free(p)로 블록 전체를 반납해요.</li></ul></div></div>
 </article>
     </section>
     <section id="s4"><h2>5. 요약 · 예고</h2>
@@ -1544,9 +1544,8 @@ void main()
           <h2 id="panel-right-title">페이지 요약</h2>
           <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
         </div>
-        <p class="panel-sub" id="sum-for">전체 흐름</p>
         <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
-        <div class="sums"></div>
+        <div class="sums" id="sum-for"></div>
       </div>
     </aside>
   </div>
@@ -1952,7 +1951,6 @@ function swapModel() {
         const KEY = 'od-review-solved:' + RANGE;
         const cards = Array.from(document.querySelectorAll('main article.card'));
         const aids = panels.right.querySelector('.aids');
-        const sub = document.getElementById('aid-for');
         const empty = panels.right.querySelector('.panel-empty');
         const btn = document.getElementById('solved-btn');
         const groups = {};
@@ -1984,8 +1982,6 @@ function swapModel() {
           Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
           empty.hidden = Boolean(curId);
           btn.hidden = !curId;
-          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';
-          sub.hidden = !curId;
           if (curId) paintBtn();
           panels.right.querySelector('.panel-inner').scrollTop = 0;
           markToc(solved, cards.length, '푼 문제');
@@ -2008,14 +2004,12 @@ function swapModel() {
           box.appendChild(el);
           sums[t.id] = el;
         });
-        const sub = document.getElementById('sum-for');
         const empty = document.getElementById('sum-empty');
         document.addEventListener('od:screen', (e) => {
           const s = e.detail.screen;
           const key = s.matches('article.topic') ? s.id : 'intro';
           Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
           empty.hidden = Boolean(sums[key]);
-          sub.textContent = key === 'intro' ? '전체 흐름' : ((s.querySelector('h3') || {}).textContent || '').trim();
           if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
           panels.right.querySelector('.panel-inner').scrollTop = 0;
           markToc(read, topics.length, '읽음');

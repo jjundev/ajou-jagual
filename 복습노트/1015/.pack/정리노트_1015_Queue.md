@@ -62,6 +62,10 @@
 - **선입선출(FIFO)** — 먼저 들어온 요소가 먼저 나가요.
 - **버퍼(buffer)** — 처리 속도가 다른 두 곳 사이에 데이터를 잠시 보관해요.
 
+#### 조건·구분과 확인
+
+- 삽입은 rear·삭제는 front예요. 선형 배열은 뒤 인덱스가 끝이면 앞이 비어도 못 넣으므로, 마지막 다음을 0으로 보는 논리적 순환으로 재사용해요.
+
 ---
 
 <a id="s0-index"></a>
@@ -103,6 +107,10 @@ front는 첫 요소 하나 앞, rear는 마지막 요소를 가리켜요.
 - **front** — 첫 번째 요소 하나 앞의 인덱스예요.
 - **rear** — 마지막 요소의 인덱스예요.
 
+#### 조건·구분과 확인
+
+- 공백은 front=rear이면 0번이 아니어도 돼요. 원소 수는 (rear-front+MAX_QUEUE_SIZE)%MAX_QUEUE_SIZE예요.
+
 ---
 
 <a id="s0-state"></a>
@@ -137,6 +145,10 @@ front는 첫 요소 하나 앞, rear는 마지막 요소를 가리켜요.
 
 - **공백** — `front == rear`예요.
 - **포화** — `(rear + 1) % MAX_QUEUE_SIZE == front`예요.
+
+#### 조건·구분과 확인
+
+- 다음 위치는 (index+1)%M이라 끝 다음 0으로 돌아가요. M칸 중 실제 용량은 M-1이고 마지막까지 채우면 front==rear로 공백과 같아져요.
 
 ---
 
@@ -224,6 +236,10 @@ element dequeue(QueueType *q)
 - **enqueue** — 포화 검사 뒤 rear를 옮기고 저장해요.
 - **dequeue** — 공백 검사 뒤 front를 옮기고 읽어요.
 
+#### 조건·구분과 확인
+
+- enqueue·dequeue는 일정한 인덱스 계산과 한 칸 접근만 하므로 O(1)이에요.
+
 ---
 
 <a id="s1"></a>
@@ -271,6 +287,11 @@ element dequeue(QueueType *q)
 - **rear** — 마지막 노드를 가리키는 포인터
 - **NULL** — 공백일 때 두 포인터의 값
 
+#### 조건·구분과 확인
+
+- 공백 삽입은 front도 새 노드로 정하고 rear를 갱신해요. 삭제는 옛 front를 보관하고 다음으로 옮긴 뒤 해제하며, 마지막이면 rear도 NULL로 맞춰요.
+- 연결 큐 front는 실제 첫 노드로, 원형 배열의 첫 요소 하나 앞 인덱스와 의미가 달라요.
+
 ---
 
 <a id="s1-deque"></a>
@@ -291,12 +312,12 @@ element dequeue(QueueType *q)
 
 덱(`deque`, double-ended queue)은 전단과 후단 모두에서 삽입·삭제할 수 있어요. `create`·`init`은 생성·초기화, `is_empty`·`is_full`은 상태 검사예요. `add_front`·`add_rear`는 삽입, `delete_front`·`delete_rear`는 반환 후 삭제, `get_front`·`get_rear`는 삭제 없이 조회해요.
 
-1. `add_front(A)`: [A]
-2. `add_rear(B)`: [A, B]
-3. `add_front(C)`: [C, A, B]
-4. `add_rear(D)`: [C, A, B, D]
-5. `delete_front()`: C를 꺼내 [A, B, D]
-6. `delete_rear()`: D를 꺼내 [A, B]
+1. `add_front(A)`: \[A\]
+2. `add_rear(B)`: \[A, B\]
+3. `add_front(C)`: \[C, A, B\]
+4. `add_rear(D)`: \[C, A, B, D\]
+5. `delete_front()`: C를 꺼내 \[A, B, D\]
+6. `delete_rear()`: D를 꺼내 \[A, B\]
 
 수업 구현은 이중 연결 리스트(doubly linked list)를 써요. 노드의 `llink`는 앞 이웃, `rlink`는 뒤 이웃을 가리키고 덱은 `head`·`tail`을 유지해요. 양쪽 끝 연산은 $O(1)$이에요.
 
@@ -332,6 +353,10 @@ typedef struct DequeType {
 - **deque** — 양 끝에서 삽입·삭제하는 큐
 - **llink** — 앞 이웃으로 가는 연결
 - **rlink** — 뒤 이웃으로 가는 연결
+
+#### 조건·구분과 확인
+
+- add_front·add_rear는 삽입, delete_front·delete_rear는 삭제·반환, get_front·get_rear는 삭제 없는 조회예요. 수업은 head·tail을 둔 이중 연결 구현을 사용해요.
 
 ---
 
@@ -399,6 +424,10 @@ void add_front(DequeType *dq, element item)
 - **add_rear** — 덱 뒤에 넣는 연산
 - **create_node** — 새 노드를 만드는 함수
 
+#### 조건·구분과 확인
+
+- create_node(left,item,right)로 두 링크를 정해요. 공백이면 head·tail을 모두 새 노드로, 비공백이면 옛 이웃의 반대 링크도 이은 뒤 해당 끝 포인터를 옮겨요.
+
 ---
 
 <a id="s1-delete"></a>
@@ -462,6 +491,11 @@ element delete_front(DequeType *dq)
 - **removed_node** — 옛 머리를 보관하는 포인터
 - **free** — 동적 할당 노드의 메모리 반납
 
+#### 조건·구분과 확인
+
+- 삭제 후 head가 NULL이면 tail도 NULL, 아니면 새 head-&gt;llink를 NULL로 정해요. 공백 error()가 중단해야 안전하며 복귀하면 미초기화 item 반환 문제가 있어요.
+- element는 함수 호출 결과의 자료형이며 함수 자체가 변수라는 뜻은 아니에요.
+
 ---
 
 <a id="s2"></a>
@@ -515,6 +549,11 @@ unlock(buffer);
 - **lock** — 버퍼 접근 권한을 얻는 동작
 - **unlock** — 버퍼 접근 권한을 놓는 동작
 
+#### 조건·구분과 확인
+
+- 생산자는 비포화 때 enqueue, 소비자는 비공백 때 dequeue하고 공유 갱신은 lock으로 권한을 얻어 작업 뒤 unlock해요.
+- 슬라이드 while(lock(buffer)==SUCCESS);는 구두 설명과 맞지 않고 성공·실패·동시성 보장이 불명확해 실행 가능한 C 잠금 구현으로 쓰지 않아요.
+
 ---
 
 <a id="s2-simulation"></a>
@@ -563,6 +602,10 @@ unlock(buffer);
 
 - **clock** — 현재 시각
 - **service_time** — 현재 서비스의 남은 시간
+
+#### 조건·구분과 확인
+
+- 대기는 서비스 시작-도착 시각이며 평균 대상은 완료한 고객이 아닌 시작한 3명이에요. 구술 시작 1·4·9와 p22 코드의 1·5·11은 달라 2.67을 코드 실행 결과로 단정하지 않아요.
 
 ---
 
@@ -634,6 +677,10 @@ print_stat();
 - **duration** — 종료 시각
 - **is_customer_arrived** — 새 고객 도착 여부를 판단하는 함수
 - **연습문제** — 수업에서 시험 준비 자료로 언급한 문제
+
+#### 조건·구분과 확인
+
+- if/else 때문에 service_time이 막 0이 된 틱에는 다음 고객을 꺼내지 않아요. 빈 큐 remove_customer 반환은 발췌로 확정할 수 없고, 연습문제·코드 언급은 새 시험 범위 확정이 아니에요.
 
 ---
 

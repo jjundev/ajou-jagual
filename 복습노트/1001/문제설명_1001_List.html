@@ -589,7 +589,7 @@
 <div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) <code>i = 3, 2, 1</code> 순서로 <code>L-&gt;list[4] = L-&gt;list[3]</code>(<code>40</code>), <code>L-&gt;list[3] = L-&gt;list[2]</code>(<code>30</code>), <code>L-&gt;list[2] = L-&gt;list[1]</code>(<code>20</code>)을 차례로 이동한 뒤 <code>L-&gt;list[1] = 25</code>를 저장하고 <code>L-&gt;length</code>를 <code>5</code>로 늘려요. 따라서 최종 유효 원소는 <code>{10, 25, 20, 30, 40}</code>, <code>length = 5</code>예요. 만약 앞에서 뒤(<code>i++</code>)로 복사하면 <code>list[2]</code>의 <code>30</code>이 먼저 <code>20</code>으로 덮어써져 원래 값을 잃게 돼요.</p></div><div data-subpart="b"><p>(b) 길이 <code>n</code>인 리스트의 <code>position = k</code>에 삽입할 때 인덱스 <code>k .. n - 1</code>의 원소를 옮기므로 이동 횟수는 <code>n - k</code>회예요. 맨 끝 삽입(<code>position = n</code>)은 이동 횟수 <code>0</code>회로 최선 $O(1)$이고, 맨 앞 삽입(<code>position = 0</code>)은 <code>n</code>회 이동하므로 최악 $O(n)$이에요.</p></div></div>
 <div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="a"><p>(a) <code>n = 4</code>, <code>k = 1</code>에서 이동 횟수는 <code>4 - 1 = 3</code>회(<code>40, 30, 20</code>)이고, 기존 세 원소가 한 칸씩 밀린 자리에 <code>25</code>가 들어가 원소 <code>5</code>개가 모두 보존돼요.</p></div><div data-subpart="b"><p>(b) <code>k = n</code>을 <code>n - k</code>에 대입하면 <code>0</code>회($O(1)$), <code>k = 0</code>을 대입하면 <code>n</code>회($O(n)$)로 최선·최악 이동 횟수 공식과 일치해요.</p></div></div>
 <div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p><code>length</code>를 먼저 늘린 뒤 이동 범위를 잡거나 <code>position &lt; length</code>로만 검사하면 맨 끝 삽입 경계가 달라져요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li><code>i = 3, 2, 1</code>에 대해 <code>L-&gt;list[i+1] = L-&gt;list[i]</code> 대입 결과를 차례로 적어요.</li><li>앞에서 뒤로 복사할 때 덮어써지는 원소를 직접 확인해요.</li><li><code>position = k</code>일 때 이동 횟수 <code>n - k</code>로 최선과 최악 복잡도를 계산해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p><code>i = L-&gt;length - 1 = 3</code>에서 <code>L-&gt;list[4] = L-&gt;list[3]</code>부터 역순으로 실행해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>배열 리스트 삽입은 <code>i = length - 1</code>부터 <code>position</code>까지 역방향(<code>i--</code>)으로 복사하며 이동 횟수는 <code>n - k</code>회예요.</p></div><div class="summary-group"><h4>검산</h4><p>(a) <code>i = 3, 2, 1</code> 이동 후 <code>list[0..4] = {10, 25, 20, 30, 40}</code>, <code>length = 5</code> (b) 이동 횟수 <code>n - k</code>회, 최선 $O(1)$, 최악 $O(n)$</p></div></div></article><article class="topic" id="p2"><h3>P2. 배열 리스트 삭제의 경계와 반환</h3><p class="panel-meta">lecture-s04-p12-array-delete · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1001_List.html#p2">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p2"><div class="layer formal" data-source-problem="p2"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p12</p><p><code>error</code>는 실행을 즉시 종료해요. 초기 상태는 <code>L.list = {10, 20, 30, 40}</code>, <code>L.length = 4</code>예요.</p><pre><code class="language-c">element delete(ArrayListType *L, int position)
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li><code>i = 3, 2, 1</code>에 대해 <code>L-&gt;list[i+1] = L-&gt;list[i]</code> 대입 결과를 차례로 적어요.</li><li>앞에서 뒤로 복사할 때 덮어써지는 원소를 직접 확인해요.</li><li><code>position = k</code>일 때 이동 횟수 <code>n - k</code>로 최선과 최악 복잡도를 계산해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p><code>i = L-&gt;length - 1 = 3</code>에서 <code>L-&gt;list[4] = L-&gt;list[3]</code>부터 역순으로 실행해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>배열 리스트 삽입은 <code>i = length - 1</code>부터 <code>position</code>까지 역방향(<code>i--</code>)으로 복사하며 이동 횟수는 <code>n - k</code>회예요.</p></div><div class="summary-group"><h4>검산</h4><p>(a) <code>i = 3, 2, 1</code> 이동 후 <code>list[0..4] = {10, 25, 20, 30, 40}</code>, <code>length = 5</code> (b) 이동 횟수 <code>n - k</code>회, 최선 $O(1)$, 최악 $O(n)$</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>용량이 충분하고 0≤k≤n이어야 해요. 앞에서 뒤로 복사하면 아직 읽지 않은 30 등이 덮어써져 손실돼요.</li></ul></div></div></article><article class="topic" id="p2"><h3>P2. 배열 리스트 삭제의 경계와 반환</h3><p class="panel-meta">lecture-s04-p12-array-delete · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1001_List.html#p2">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p2"><div class="layer formal" data-source-problem="p2"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p12</p><p><code>error</code>는 실행을 즉시 종료해요. 초기 상태는 <code>L.list = {10, 20, 30, 40}</code>, <code>L.length = 4</code>예요.</p><pre><code class="language-c">element delete(ArrayListType *L, int position)
 {
     int i; element item;
     if(position&lt;0 || position&gt;=L-&gt;length) error("위치오류");
@@ -613,7 +613,7 @@
 <div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 먼저 삭제 대상 <code>item = L-&gt;list[1] = 20</code>을 보관해요. 그다음 <code>i = 1, 2</code>에서 <code>L-&gt;list[1] = L-&gt;list[2]</code>(<code>30</code>), <code>L-&gt;list[2] = L-&gt;list[3]</code>(<code>40</code>)을 복사하고 <code>L-&gt;length</code>를 <code>3</code>으로 줄여 <code>20</code>을 반환해요. 최종 유효 원소는 <code>L.list[0..2] = {10, 30, 40}</code>, <code>length = 3</code>이에요.</p></div><div data-subpart="b"><p>(b) <code>add</code>는 원소를 오른쪽으로 밀어야 하므로 아직 읽지 않은 뒤 원소를 덮어쓰지 않으려 뒤에서 앞으로(<code>i--</code>) 복사하고, <code>delete</code>는 <code>item</code>을 따로 보관해 비워진 앞자리(<code>position</code>)부터 차례로 채우므로 앞에서 뒤로(<code>i++</code>) 복사해요. 삭제는 실제 원소가 있는 <code>0 .. length - 1</code>만 가능하므로 <code>position == length</code>는 불가능하며, 이동 횟수는 <code>n - k - 1</code>회로 맨 끝 삭제는 $O(1)$, 맨 앞 삭제는 $O(n)$이에요.</p></div></div>
 <div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="a"><p>(a) <code>n = 4</code>, <code>k = 1</code>에서 이동 횟수는 <code>4 - 1 - 1 = 2</code>회(<code>30, 40</code>)이고, <code>length = 3</code>이므로 인덱스 <code>0..2</code>의 <code>{10, 30, 40}</code>만 유효 원소로 남아요.</p></div><div data-subpart="b"><p>(b) 맨 끝 원소 삭제(<code>k = n - 1</code>)를 <code>n - k - 1</code>에 대입하면 <code>0</code>회($O(1)$), 맨 앞 원소 삭제(<code>k = 0</code>)를 대입하면 <code>n - 1</code>회($O(n)$)가 되어 복잡도와 일치해요.</p></div></div>
 <div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 조심할 점</h4><p>삽입에서 허용된 <code>position == length</code>를 삭제에도 허용하면 유효 범위 밖 원소를 읽게 돼요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li><code>item</code> 보관 후 <code>i = 1, 2</code>에서 <code>L-&gt;list[i] = L-&gt;list[i+1]</code> 결과를 적어요.</li><li><code>add</code>(<code>i--</code>)와 <code>delete</code>(<code>i++</code>)의 복사 방향이 반대인 이유를 비교해요.</li><li>삭제 유효 범위 <code>0 .. length - 1</code>과 이동 횟수 <code>n - k - 1</code>을 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p><code>item = L-&gt;list[1] = 20</code>을 먼저 보관하고 <code>i = 1</code>부터 복사를 시작해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>삭제는 <code>item</code>을 보관한 뒤 <code>i = position .. length - 2</code>를 순방향(<code>i++</code>)으로 당기며 이동 횟수는 <code>n - k - 1</code>회예요.</p></div><div class="summary-group"><h4>검산</h4><p>(a) 반환값 <code>20</code>, <code>list[0..2] = {10, 30, 40}</code>, <code>length = 3</code> (b) <code>add</code>는 <code>i--</code>, <code>delete</code>는 <code>i++</code>, 이동 횟수 <code>n - k - 1</code>회(최선 $O(1)$, 최악 $O(n)$)</p></div></div></article><article class="topic" id="p3"><h3>P3. 리스트 ADT의 연산 계약과 순서</h3><p class="panel-meta">lecture-s04-p5-list-adt-contract · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1001_List.html#p3">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p3"><div class="layer formal" data-source-problem="p3"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p5</p><p>위치를 <code>0</code>부터 세는 리스트 ADT의 연산 계약이 아래와 같고, 초기 리스트는 공백(<code>[]</code>, <code>length = 0</code>)이에요.</p><pre><code class="language-c">add_tail(x)    : 리스트 맨 끝에 x 추가 (length 1 증가)
+<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li><code>item</code> 보관 후 <code>i = 1, 2</code>에서 <code>L-&gt;list[i] = L-&gt;list[i+1]</code> 결과를 적어요.</li><li><code>add</code>(<code>i--</code>)와 <code>delete</code>(<code>i++</code>)의 복사 방향이 반대인 이유를 비교해요.</li><li>삭제 유효 범위 <code>0 .. length - 1</code>과 이동 횟수 <code>n - k - 1</code>을 확인해요.</li></ol></div><div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p><code>item = L-&gt;list[1] = 20</code>을 먼저 보관하고 <code>i = 1</code>부터 복사를 시작해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>삭제는 <code>item</code>을 보관한 뒤 <code>i = position .. length - 2</code>를 순방향(<code>i++</code>)으로 당기며 이동 횟수는 <code>n - k - 1</code>회예요.</p></div><div class="summary-group"><h4>검산</h4><p>(a) 반환값 <code>20</code>, <code>list[0..2] = {10, 30, 40}</code>, <code>length = 3</code> (b) <code>add</code>는 <code>i--</code>, <code>delete</code>는 <code>i++</code>, 이동 횟수 <code>n - k - 1</code>회(최선 $O(1)$, 최악 $O(n)$)</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>삭제 유효 위치는 0..length-1이라 position==length는 허용되지 않아요. 삽입의 끝 경계와 구별해요.</li></ul></div></div></article><article class="topic" id="p3"><h3>P3. 리스트 ADT의 연산 계약과 순서</h3><p class="panel-meta">lecture-s04-p5-list-adt-contract · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1001_List.html#p3">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p3"><div class="layer formal" data-source-problem="p3"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S4 p5</p><p>위치를 <code>0</code>부터 세는 리스트 ADT의 연산 계약이 아래와 같고, 초기 리스트는 공백(<code>[]</code>, <code>length = 0</code>)이에요.</p><pre><code class="language-c">add_tail(x)    : 리스트 맨 끝에 x 추가 (length 1 증가)
 add(pos, x)    : 0 &lt;= pos &lt;= length 위치에 x 삽입, 기존 원소는 뒤로 한 칸 이동 (length 1 증가)
 delete(pos)    : pos 위치 원소를 삭제하고 뒤 원소를 앞으로 한 칸 이동 (length 1 감소)
 replace(pos, x): pos 위치 원소 값을 x로 교체 (length 유지)
@@ -670,9 +670,8 @@ int is_full(ArrayListType *L)
           <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
         </div>
         <div class="sum-tab">
-          <p class="panel-sub" id="sum-for">전체 흐름</p>
           <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
-          <div class="sums"></div>
+          <div class="sums" id="sum-for"></div>
         </div>
       </div>
     </aside>
@@ -1088,7 +1087,6 @@ int is_full(ArrayListType *L)
         const KEY = 'od-review-solved:' + RANGE;
         const cards = Array.from(document.querySelectorAll('main article.card'));
         const aids = panels.right.querySelector('.aids');
-        const sub = document.getElementById('aid-for');
         const empty = panels.right.querySelector('.panel-empty');
         const btn = document.getElementById('solved-btn');
         const groups = {};
@@ -1120,8 +1118,6 @@ int is_full(ArrayListType *L)
           Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
           empty.hidden = Boolean(curId);
           btn.hidden = !curId;
-          sub.textContent = curId ? ((s.querySelector('h3') || {}).textContent || '').trim() : '';
-          sub.hidden = !curId;
           if (curId) paintBtn();
           panels.right.querySelector('.panel-inner').scrollTop = 0;
           markToc(solved, cards.length, '푼 문제');
@@ -1141,7 +1137,6 @@ int is_full(ArrayListType *L)
         const origBtn = document.getElementById('tab-original');
         const tabList = panels.prob.querySelector('.panel-tabs');
         const tabs = Array.from(tabList.querySelectorAll('[role="tab"]'));
-        const sub = document.getElementById('sum-for');
         const empty = document.getElementById('sum-empty');
         const probEmpty = document.getElementById('prob-empty');
         const sums = {};
@@ -1456,8 +1451,6 @@ int is_full(ArrayListType *L)
           curId = key === 'intro' ? null : key;
           Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
           empty.hidden = Boolean(sums[key]);
-          if (key === 'intro') sub.textContent = '전체 흐름';
-          else sub.innerHTML = (s.querySelector('h3') || {}).innerHTML || ''; // preserve rendered title math
           if (wideMq.matches) {
             Object.keys(panes).forEach((id) => { panes[id].hidden = id !== curId; });
             Object.keys(origs).forEach((id) => { origs[id].hidden = id !== curId; });
