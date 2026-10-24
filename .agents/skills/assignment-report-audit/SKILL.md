@@ -11,7 +11,8 @@ Review the **current deliverable** against the current assignment, not against a
 
 1. Identify the requested report version and its source: local draft, Notion page, exported PDF, or submitted file. Do not silently treat a local draft as the live Notion page. For Notion comparisons or targeted edits, use `notion-report-sync` with that page's verified ID.
 2. Read the assignment prompt, grading rubric, supplied material, and any official updates available in the workspace. Record each relevant requirement with its source and page, weight or hard-fail condition when stated, and the evidence needed to check it. Inspect rendered PDF pages when layout or figures matter; text extraction alone cannot establish appearance.
-3. Separate requirements for report content, code or other underlying work, layout, file format, and submission. Do not carry scores, page layouts, examples, or deadlines from HW1 to another assignment.
+3. For **[2026-2] 자료구조 및 알고리즘 이해** programming assignments, read [the common course rubric](../programming-assignment-report/references/course-rubric.md) before assessing the current assignment and official changes. The user confirmed its course-wide scope. Reuse its confirmed grading and submission rules, keep its deferred items unresolved, and distinguish mandatory rules from author layout preferences. Do not apply it automatically to other courses or semesters.
+4. Separate requirements for report content, code or other underlying work, layout, file format, and submission. Do not carry HW1-specific earned scores, examples, or deadlines into another assignment; shared rubric weights are reusable within the scope above. Author preferences cannot waive official requirements. Record contradictions unless an explicit official change resolves them.
 
 ## Test the report's claims
 
