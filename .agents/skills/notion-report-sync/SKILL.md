@@ -1,11 +1,21 @@
 ---
 name: notion-report-sync
-description: Use when comparing a course report edited in Notion with its local Markdown, editing specified report blocks, or adding image upload slots. Works across assignments with an explicit page ID and file paths; not for databases or PDF export.
+description: Use when uploading a course report to Notion, applying its report format, comparing it with local Markdown, editing specified report blocks, or adding image upload slots. Not for databases or PDF export.
 ---
 
 # Notion report sync
 
-Use [`scripts/notion_report.py`](scripts/notion_report.py) for report pages across assignments. Resolve the page ID and the assignment's local report, downloaded Markdown, and evidence directory from current project material or the user's request. Do not infer a page ID from another assignment. Keep `NOTION_TOKEN` in the environment.
+Resolve the assignment's local report, source, execution images, downloaded Markdown, and evidence directory from current project material or the user's request. For a new page, verify its parent and title; for an existing page, verify its page ID. Do not infer a page ID from another assignment. Keep `NOTION_TOKEN` in the environment.
+
+## Upload and apply report format
+
+A request to upload the report includes applying the course's default report format and verifying it, unless the user specifies another format. For this workspace's **[2026-2] 자료구조 및 알고리즘 이해** reports, read and apply [the course report format](../programming-assignment-report/references/data-structures-course-format.md). Treat it as author preferences within the current assignment's official requirements; do not apply it automatically to other courses.
+
+Before uploading, read [Native report upload](references/native-report-upload.md). Upload editable native Notion blocks, including source/analysis tables and requested execution images. Markdown is the local manuscript and comparison artifact; this workflow does not import a Markdown file. Preserve the approved wording and authorship disclosures. Create the required heading hierarchy and blank-block spacing in the initial plan, rather than leaving formatting for a later request.
+
+The common [`scripts/notion_report.py`](scripts/notion_report.py) CLI provides **only `pull` and `edit`**, not upload/create/layout commands. Use its API client for an assignment-specific native upload following the reference; do not invent an upload CLI or run a historical assignment script unchanged. Prefer connected tools when they support the required operations; use the UI for settings or empty image slots unsupported by the API.
+
+Upload completion requires the reference's verification record: native content, code, images or slots, headings/spacing, live page settings and table widths, and a fresh Markdown download. For the course default, explicitly check the single gray TOC, direct explanation-cell text, every execution case's gaps, and consistent captions without duplicate case titles. Record each as verified, failed, or not verified with evidence. An incomplete setting or readback is partial completion, even when the page exists. Keep Notion upload, local PDF generation, Notion PDF export, cover merge, and actual submission as separate states.
 
 ## Pull and compare
 
@@ -44,4 +54,4 @@ Use the Notion editor for this operation: insert an image block with `/image` at
 
 Read the page again after editing. Confirm the expected number and order of `image` blocks at the intended positions, with empty `external.url`, and confirm the old text placeholders are gone. Notion's Markdown export represents these empty image blocks as `![]()`; that syntax alone does not prove their position or type, so verify the live blocks. Pull again to update the local Markdown. Later, the user can click **이미지 추가** on each block and choose **파일 업로드**.
 
-`과제/과제1/검토자료/notion_sync.py` contains historical HW1-only upload and table-migration commands. Use the common script above for new assignments and routine HW1 pull or targeted edits. The user handles final Notion PDF export and any separate cover merge.
+`과제/과제1/검토자료/notion_sync.py` contains historical HW1-only upload and table-migration commands. Use the common script for pull or targeted text edits across assignments, and the native-upload reference for new uploads. PDF export and separate cover merging are outside this skill; perform them only under the user's requested scope and the relevant workflow.
