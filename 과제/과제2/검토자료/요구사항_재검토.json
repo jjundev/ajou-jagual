@@ -1,0 +1,190 @@
+{
+  "checked_on": "2026-10-25 Asia/Seoul",
+  "source_sha256": "b98e015d3526f011a157df53466c6383f02fdabdccfa2618366944a6300c78b2",
+  "pdf_sha256": "2920ef957f7df52c24b9bfdd4f78d97a0b6898a1b7010789a65c2783db4ac9cf",
+  "test_results": {
+    "functional": {
+      "passed": 32,
+      "total": 32
+    },
+    "additional_boundary": {
+      "passed": 2,
+      "total": 2
+    },
+    "ide_cases": 6
+  },
+  "requirements": [
+    {
+      "requirement": "First-Fit 탐색 (0.3점)",
+      "source_and_page": "HW2 15·21쪽",
+      "report_location": "PDF 10쪽 / find_first_fit",
+      "evidence": "공식·선택 사례, 32건 실행기록",
+      "status": "충족",
+      "correction": "검증 범위 내"
+    },
+    {
+      "requirement": "PID 탐색 (0.2점)",
+      "source_and_page": "HW2 15·21쪽",
+      "report_location": "PDF 11쪽 / find_process_block",
+      "evidence": "중복 PID·미존재 PID 실행 및 하네스",
+      "status": "충족",
+      "correction": "검증 범위 내"
+    },
+    {
+      "requirement": "할당 및 분할 (0.6점)",
+      "source_and_page": "HW2 15·21쪽",
+      "report_location": "PDF 12쪽 / allocate_memory",
+      "evidence": "작성자 코드 통합, 정확한 크기·분할 사례",
+      "status": "충족",
+      "correction": "검증 범위 내"
+    },
+    {
+      "requirement": "양쪽 빈 블록 병합 (0.5점)",
+      "source_and_page": "HW2 15·21쪽",
+      "report_location": "PDF 13쪽 / merge_free_blocks",
+      "evidence": "왼쪽·오른쪽·양쪽 병합 및 링크 검사",
+      "status": "충족",
+      "correction": "검증 범위 내"
+    },
+    {
+      "requirement": "메모리 반납 (0.2점)",
+      "source_and_page": "HW2 15·21쪽",
+      "report_location": "PDF 14쪽 / release_memory",
+      "evidence": "작성자 코드 통합, 단독 FREE 유지·재할당",
+      "status": "충족",
+      "correction": "검증 범위 내"
+    },
+    {
+      "requirement": "실패 시 리스트 유지 (0.2점)",
+      "source_and_page": "HW2 19·21쪽",
+      "report_location": "PDF 12·14·22·28쪽",
+      "evidence": "중복 PID·공간 부족·없는 PID, malloc 실패 주입",
+      "status": "충족",
+      "correction": "실제 호스트 메모리 고갈을 관측한 것은 아님"
+    },
+    {
+      "requirement": "헤드 보호·원형 이중 연결",
+      "source_and_page": "HW2 11·19쪽",
+      "report_location": "PDF 4·6~8·10~14쪽",
+      "evidence": "헤드 제외 분기, 양방향 링크 하네스",
+      "status": "충족",
+      "correction": "할당·해제 후 인접 FREE가 남지 않는 불변식 하에서 검사"
+    },
+    {
+      "requirement": "제공 형식·매크로·구조체 유지, 추가 함수 없음",
+      "source_and_page": "HW2 19쪽",
+      "report_location": "HW2.c 전체",
+      "evidence": "스켈레톤 대비 5개 본문과 출처 머리말만 차이; 12개 함수",
+      "status": "충족",
+      "correction": "원본 스켈레톤은 변경하지 않음"
+    },
+    {
+      "requirement": "제공·구현 코드 기능 명세와 동작 원리 (내용 1.5점 관련)",
+      "source_and_page": "HW2 21쪽 / 공통 1쪽",
+      "report_location": "PDF 2~16쪽",
+      "evidence": "12개 함수·13개 소스 표·20개 코드 행",
+      "status": "충족",
+      "correction": "내용·대응 확인이며 직접 작성 판정과 별개"
+    },
+    {
+      "requirement": "선언·헤더·매크로·구조체 분석 (누락 -0.5점)",
+      "source_and_page": "공통 1쪽",
+      "report_location": "PDF 2~3쪽",
+      "evidence": "모든 제공 선언을 4개 부분으로 분석",
+      "status": "충족",
+      "correction": "미작성 개인 동기나 성능 측정 주장 없음"
+    },
+    {
+      "requirement": "실제 실행 화면·분석 (1점 관련)",
+      "source_and_page": "HW2 16~18·21쪽 / 공통 1쪽",
+      "report_location": "PDF 17~29쪽",
+      "evidence": "현재 소스의 IDE 실행 6건, 입력·출력·상태 추적·실제 종료 코드 0",
+      "status": "충족",
+      "correction": "로그 32건과 보고서 대표 6건 및 추가 감사 2건을 구분"
+    },
+    {
+      "requirement": "함수별 좌측 코드·우측 분석 (0.5점, 부분점수 없음)",
+      "source_and_page": "공통 1쪽",
+      "report_location": "PDF 2~16쪽",
+      "evidence": "동일 행의 코드·설명이 한 쪽에 포함되는지 검사",
+      "status": "충족",
+      "correction": "A4 가로·목차·번호 생략은 작성자 선호"
+    },
+    {
+      "requirement": "소스 텍스트 필수 (위반 과제 0점)",
+      "source_and_page": "공통 2쪽",
+      "report_location": "PDF 2~16·30~34쪽",
+      "evidence": "DOM 원문 일치, PDF 추출 공백 제외 일치",
+      "status": "충족",
+      "correction": "실행 이미지를 소스코드 대신 사용하지 않음"
+    },
+    {
+      "requirement": "PDF 형식 필수 (미준수 보고서 0점)",
+      "source_and_page": "HW2 20쪽",
+      "report_location": "보고서_초안.pdf 34쪽",
+      "evidence": "A4 가로, 페이지 밖 넘침 0, 전체 렌더 검토",
+      "status": "충족",
+      "correction": "본문 초안이며 표지 병합 전"
+    },
+    {
+      "requirement": "Mac 전체 소스 부록 (채점 반영 없음)",
+      "source_and_page": "HW2 21쪽",
+      "report_location": "PDF 30~34쪽",
+      "evidence": "현재 HW2.c 전체와 추출 텍스트 일치",
+      "status": "충족",
+      "correction": "출처 머리말도 유지"
+    },
+    {
+      "requirement": "실제 구현은 본인 (ChatGPT 구현 적발 0점)",
+      "source_and_page": "HW2 21쪽",
+      "report_location": "PDF 1쪽 고지 / HW2.c 머리말",
+      "evidence": "작성자 코드·설명 확보, 선행 AI 구현·힌트·통합 지원 존재",
+      "status": "확인 불가",
+      "correction": "대화의 직접 코드 작성은 확인되나 독립 구현을 인증하지 않음; AI 참고와 실제 구현의 허용 경계는 과목 지시 준수 필요"
+    },
+    {
+      "requirement": "보고서 모든 내용 본인 직접 작성 (ChatGPT paste 금지)",
+      "source_and_page": "HW2 21쪽",
+      "report_location": "PDF 1쪽 고지 및 일부 기능 명세·보충 분석",
+      "evidence": "작성자 자유서술 반영; 기존 AI 기능 명세·선언부 보충·main 세부 분석·검증 서술도 잔존",
+      "status": "보완 필요",
+      "correction": "남은 AI 보충 문장을 본인 설명으로 직접 작성해야 함; 단순 문체 변경이나 동의로 해결되지 않음"
+    },
+    {
+      "requirement": ".c와 PDF 각각 업로드, ZIP 불가",
+      "source_and_page": "HW2 21쪽 / 공통 2쪽",
+      "report_location": "로컬 HW2.c·보고서_초안.pdf",
+      "evidence": "업로드 수행하지 않음",
+      "status": "보완 필요",
+      "correction": "최종 확정 후 두 파일을 아주BB에 개별 제출; 기한 10/28에서 10/29로 넘어가는 자정"
+    }
+  ],
+  "all_requirements_confirmed": false,
+  "understanding": "Author free-text code and causal explanation confirmed in this conversation; not an independent-authorship certification",
+  "report_pages": 34,
+  "cover_merged": false,
+  "uploaded": false,
+  "author_updates": [
+    {
+      "section": "헤더 선언부",
+      "report_page": 2,
+      "status": "author explanation incorporated; prose endings normalized only",
+      "scope": "stdio.h scanf/printf; stdlib.h malloc/free; string.h strcmp"
+    }
+  ],
+  "interview_status": {
+    "remaining_questions": "skipped at user request",
+    "assumption": "All remaining recommended answers adopted for proceeding; no actual author answers collected for those items",
+    "authorship_effect": "Existing author-written code and free-text explanations remain confirmed; assumed recommended answers remain AI reference explanations and do not establish direct authorship",
+    "report_content": "Existing supplementary explanations retained; no factual or code changes required"
+  },
+  "notion": {
+    "uploaded": true,
+    "page_id": "404b06d2-63bc-81cd-b588-d36e59ca3a77",
+    "url": "https://app.notion.com/p/HW2-404b06d263bc81cdb588d36e59ca3a77",
+    "native_content_verified": true,
+    "images": 6,
+    "pdf_exported": false
+  },
+  "uploaded_to_blackboard": false
+}

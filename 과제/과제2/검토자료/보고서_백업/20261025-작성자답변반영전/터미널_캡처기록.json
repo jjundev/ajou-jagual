@@ -1,0 +1,315 @@
+{
+  "app": "Antigravity IDE",
+  "bundle_id": "com.google.antigravity-ide",
+  "workdir": "/tmp/hw2-evidence-tie9ez1q",
+  "source": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/HW2.c",
+  "source_sha256": "c65d81a7dcba55aa7894901f7537cc1e626a9e9de5d64d8e52aff4f663f3a67b",
+  "build_command": [
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror",
+    "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/HW2.c",
+    "-o",
+    "/tmp/hw2-evidence-tie9ez1q/HW2"
+  ],
+  "build_exit_status": 0,
+  "build_stderr": "",
+  "binary_sha256": "6cffde09b6b20a579cab3432a1450b3e337892940fd27b33456ab447cfa31375",
+  "runner": "#!/bin/sh\ncase \"$1\" in\n  01) case_name=official-16 ;;\n  02) case_name=official-17 ;;\n  03) case_name=official-18 ;;\n  04) case_name=exact-fit-and-single-node ;;\n  05) case_name=choose-first-not-best-fit ;;\n  06) case_name=fragmentation-and-recovery ;;\n  *) exit 2 ;;\nesac\nprintf 'HW2 | CASE %s | %s\\n' \"$1\" \"$case_name\"\nexec /usr/bin/script -q \"case-$1.tty\" /bin/sh -c './HW2; program_status=$?; printf \"\\nEXIT_STATUS: %d\\n\" \"$program_status\"; exit \"$program_status\"'\n",
+  "cases": [
+    {
+      "case_name": "official-16",
+      "case_number": "01",
+      "command": "clear; ./run 01",
+      "stdin": "100\n2\nALLOC 1 20\nALLOC 2 30\n",
+      "terminal_transcript": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/검토자료/터미널_대화로그/01-official-16.tty",
+      "terminal_text": "전체 메모리 크기를 입력하세요: 100\n명령의 개수를 입력하세요: 2\nALLOC 1 20\nALLOC P1 20: SUCCESS\nMemory map: [0-19, P1] <-> [20-99, FREE]\nALLOC 2 30\nALLOC P2 30: SUCCESS\nMemory map: [0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]\n\nEXIT_STATUS: 0\n",
+      "observed_results": [
+        "ALLOC P1 20: SUCCESS",
+        "ALLOC P2 30: SUCCESS"
+      ],
+      "observed_maps": [
+        "[0-19, P1] <-> [20-99, FREE]",
+        "[0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]"
+      ],
+      "exit_status": 0,
+      "raw_screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/01.png",
+      "passed": true,
+      "original_capture": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/01.jpg",
+      "original_capture_format": "JPEG",
+      "original_capture_sha256": "fa77c8d57644501f449edb7570746ba4f1b6d697151ff493f943cc0a62fc346c",
+      "png_conversion_pixel_identical": true,
+      "crop": {
+        "source": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/01.png",
+        "source_sha256": "b0eb6557a87c53dfe1d3e5f26b1b0ae4c6f447236732580295254d6dd6329788",
+        "output": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/01-공식예제1.png",
+        "output_sha256": "4d0a07946cff47b622be8cf86d91cd967fb391081588ad61bffc34f053b763a4",
+        "box": [
+          20,
+          65,
+          2020,
+          434
+        ],
+        "size": [
+          2000,
+          369
+        ],
+        "pixel_identical": true
+      },
+      "screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/01-공식예제1.png",
+      "visual_review": "Cropped screenshot visually checked: command, every input, observed result and EXIT_STATUS 0 remain visible; no unrelated application content."
+    },
+    {
+      "case_name": "official-17",
+      "case_number": "02",
+      "command": "clear; ./run 02",
+      "stdin": "100\n6\nALLOC 1 20\nALLOC 2 30\nALLOC 3 10\nFREE 2\nFREE 1\nFREE 3\n",
+      "terminal_transcript": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/검토자료/터미널_대화로그/02-official-17.tty",
+      "terminal_text": "전체 메모리 크기를 입력하세요: 100\n명령의 개수를 입력하세요: 6\nALLOC 1 20\nALLOC P1 20: SUCCESS\nMemory map: [0-19, P1] <-> [20-99, FREE]\nALLOC 2 30\nALLOC P2 30: SUCCESS\nMemory map: [0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]\nALLOC 3 10\nALLOC P3 10: SUCCESS\nMemory map: [0-19, P1] <-> [20-49, P2] <-> [50-59, P3] <-> [60-99, FREE]\nFREE 2\nFREE P2: SUCCESS\nMemory map: [0-19, P1] <-> [20-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]\nFREE 1\nFREE P1: SUCCESS\nMemory map: [0-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]\nFREE 3\nFREE P3: SUCCESS\nMemory map: [0-99, FREE]\n\nEXIT_STATUS: 0\n",
+      "observed_results": [
+        "ALLOC P1 20: SUCCESS",
+        "ALLOC P2 30: SUCCESS",
+        "ALLOC P3 10: SUCCESS",
+        "FREE P2: SUCCESS",
+        "FREE P1: SUCCESS",
+        "FREE P3: SUCCESS"
+      ],
+      "observed_maps": [
+        "[0-19, P1] <-> [20-99, FREE]",
+        "[0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]",
+        "[0-19, P1] <-> [20-49, P2] <-> [50-59, P3] <-> [60-99, FREE]",
+        "[0-19, P1] <-> [20-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]",
+        "[0-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]",
+        "[0-99, FREE]"
+      ],
+      "exit_status": 0,
+      "raw_screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/02.png",
+      "passed": true,
+      "original_capture": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/02.jpg",
+      "original_capture_format": "JPEG",
+      "original_capture_sha256": "6fe6e77b6f58e03b260a7b80784624b5cc3c997ef943e63bfef95f8e4e050582",
+      "png_conversion_pixel_identical": true,
+      "crop": {
+        "source": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/02.png",
+        "source_sha256": "1c96dccd54e99ec5e43087acef720b4be1c75fedf5ead57103431bf3de57a1bf",
+        "output": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/02-공식예제2.png",
+        "output_sha256": "71f1362030229e858fcc7cb67ed6db2341209f018591faebdfa6a4939279fa36",
+        "box": [
+          20,
+          65,
+          2020,
+          770
+        ],
+        "size": [
+          2000,
+          705
+        ],
+        "pixel_identical": true
+      },
+      "screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/02-공식예제2.png",
+      "visual_review": "Cropped screenshot visually checked: command, every input, observed result and EXIT_STATUS 0 remain visible; no unrelated application content."
+    },
+    {
+      "case_name": "official-18",
+      "case_number": "03",
+      "command": "clear; ./run 03",
+      "stdin": "50\n4\nALLOC 1 30\nALLOC 2 30\nFREE 7\nALLOC 1 10\n",
+      "terminal_transcript": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/검토자료/터미널_대화로그/03-official-18.tty",
+      "terminal_text": "전체 메모리 크기를 입력하세요: 50\n명령의 개수를 입력하세요: 4\nALLOC 1 30\nALLOC P1 30: SUCCESS\nMemory map: [0-29, P1] <-> [30-49, FREE]\nALLOC 2 30\nALLOC P2 30: FAIL\nMemory map: [0-29, P1] <-> [30-49, FREE]\nFREE 7\nFREE P7: FAIL\nMemory map: [0-29, P1] <-> [30-49, FREE]\nALLOC 1 10\nALLOC P1 10: FAIL\nMemory map: [0-29, P1] <-> [30-49, FREE]\n\nEXIT_STATUS: 0\n",
+      "observed_results": [
+        "ALLOC P1 30: SUCCESS",
+        "ALLOC P2 30: FAIL",
+        "FREE P7: FAIL",
+        "ALLOC P1 10: FAIL"
+      ],
+      "observed_maps": [
+        "[0-29, P1] <-> [30-49, FREE]",
+        "[0-29, P1] <-> [30-49, FREE]",
+        "[0-29, P1] <-> [30-49, FREE]",
+        "[0-29, P1] <-> [30-49, FREE]"
+      ],
+      "exit_status": 0,
+      "raw_screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/03.png",
+      "passed": true,
+      "original_capture": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/03.jpg",
+      "original_capture_format": "JPEG",
+      "original_capture_sha256": "9fa2f9f8d67da3878eb3859d652fc55ffe195237c0c550345bbc90812b36fac0",
+      "png_conversion_pixel_identical": true,
+      "crop": {
+        "source": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/03.png",
+        "source_sha256": "a53a3faa10f68647ed5b92c8f875d248211cbdc6c1a1d58de6a8f2892ac59e78",
+        "output": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/03-공식예제3.png",
+        "output_sha256": "020a44672919ed15cd9009e79044b4292943d0d6e2c7bcbeeb5f23cd5876c0af",
+        "box": [
+          20,
+          65,
+          2020,
+          602
+        ],
+        "size": [
+          2000,
+          537
+        ],
+        "pixel_identical": true
+      },
+      "screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/03-공식예제3.png",
+      "visual_review": "Cropped screenshot visually checked: command, every input, observed result and EXIT_STATUS 0 remain visible; no unrelated application content."
+    },
+    {
+      "case_name": "exact-fit-and-single-node",
+      "case_number": "04",
+      "command": "clear; ./run 04",
+      "stdin": "1\n4\nALLOC 1 1\nALLOC 2 1\nFREE 1\nALLOC 2 1\n",
+      "terminal_transcript": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/검토자료/터미널_대화로그/04-exact-fit-and-single-node.tty",
+      "terminal_text": "전체 메모리 크기를 입력하세요: 1\n명령의 개수를 입력하세요: 4\nALLOC 1 1\nALLOC P1 1: SUCCESS\nMemory map: [0-0, P1]\nALLOC 2 1\nALLOC P2 1: FAIL\nMemory map: [0-0, P1]\nFREE 1\nFREE P1: SUCCESS\nMemory map: [0-0, FREE]\nALLOC 2 1\nALLOC P2 1: SUCCESS\nMemory map: [0-0, P2]\n\nEXIT_STATUS: 0\n",
+      "observed_results": [
+        "ALLOC P1 1: SUCCESS",
+        "ALLOC P2 1: FAIL",
+        "FREE P1: SUCCESS",
+        "ALLOC P2 1: SUCCESS"
+      ],
+      "observed_maps": [
+        "[0-0, P1]",
+        "[0-0, P1]",
+        "[0-0, FREE]",
+        "[0-0, P2]"
+      ],
+      "exit_status": 0,
+      "raw_screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/04.png",
+      "passed": true,
+      "original_capture": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/04.jpg",
+      "original_capture_format": "JPEG",
+      "original_capture_sha256": "efdf80862cce2dfe1b9ffe192e24a689bcc253ce818215d56c07a05c5dfe54e7",
+      "png_conversion_pixel_identical": true,
+      "crop": {
+        "source": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/04.png",
+        "source_sha256": "fdd3f284119cc51601eb27f44b7980313d06cdf1a245d24ac1c822ead2155a46",
+        "output": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/04-정확한크기할당.png",
+        "output_sha256": "cd664bace56b56ba6b99b5aa80146089c548d7b9292ed2d212895df3cf8a9b8a",
+        "box": [
+          20,
+          65,
+          2020,
+          602
+        ],
+        "size": [
+          2000,
+          537
+        ],
+        "pixel_identical": true
+      },
+      "screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/04-정확한크기할당.png",
+      "visual_review": "Cropped screenshot visually checked: command, every input, observed result and EXIT_STATUS 0 remain visible; no unrelated application content."
+    },
+    {
+      "case_name": "choose-first-not-best-fit",
+      "case_number": "05",
+      "command": "clear; ./run 05",
+      "stdin": "40\n7\nALLOC 1 15\nALLOC 2 5\nALLOC 3 10\nALLOC 4 10\nFREE 1\nFREE 3\nALLOC 5 8\n",
+      "terminal_transcript": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/검토자료/터미널_대화로그/05-choose-first-not-best-fit.tty",
+      "terminal_text": "전체 메모리 크기를 입력하세요: 40\n명령의 개수를 입력하세요: 7\nALLOC 1 15\nALLOC P1 15: SUCCESS\nMemory map: [0-14, P1] <-> [15-39, FREE]\nALLOC 2 5\nALLOC P2 5: SUCCESS\nMemory map: [0-14, P1] <-> [15-19, P2] <-> [20-39, FREE]\nALLOC 3 10\nALLOC P3 10: SUCCESS\nMemory map: [0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, FREE]\nALLOC 4 10\nALLOC P4 10: SUCCESS\nMemory map: [0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]\nFREE 1\nFREE P1: SUCCESS\nMemory map: [0-14, FREE] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]\nFREE 3\nFREE P3: SUCCESS\nMemory map: [0-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]\nALLOC 5 8\nALLOC P5 8: SUCCESS\nMemory map: [0-7, P5] <-> [8-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]\n\nEXIT_STATUS: 0\n",
+      "observed_results": [
+        "ALLOC P1 15: SUCCESS",
+        "ALLOC P2 5: SUCCESS",
+        "ALLOC P3 10: SUCCESS",
+        "ALLOC P4 10: SUCCESS",
+        "FREE P1: SUCCESS",
+        "FREE P3: SUCCESS",
+        "ALLOC P5 8: SUCCESS"
+      ],
+      "observed_maps": [
+        "[0-14, P1] <-> [15-39, FREE]",
+        "[0-14, P1] <-> [15-19, P2] <-> [20-39, FREE]",
+        "[0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, FREE]",
+        "[0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]",
+        "[0-14, FREE] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]",
+        "[0-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]",
+        "[0-7, P5] <-> [8-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]"
+      ],
+      "exit_status": 0,
+      "raw_screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/05.png",
+      "passed": true,
+      "original_capture": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/05.jpg",
+      "original_capture_format": "JPEG",
+      "original_capture_sha256": "63d3dad40b6ed30b8872b5db00f06851b295038dfe4913f9fa6f11718e84c450",
+      "png_conversion_pixel_identical": true,
+      "crop": {
+        "source": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/05.png",
+        "source_sha256": "c81d0723595f2dbd614919e340ffaa06bd0097906b73a7fe2162cde3270048da",
+        "output": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/05-First-Fit선택.png",
+        "output_sha256": "27919cd63976e4afee7854177b1f95089da2176160b2236cefcb93c9ff017769",
+        "box": [
+          20,
+          65,
+          2020,
+          854
+        ],
+        "size": [
+          2000,
+          789
+        ],
+        "pixel_identical": true
+      },
+      "screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/05-First-Fit선택.png",
+      "visual_review": "Cropped screenshot visually checked: command, every input, observed result and EXIT_STATUS 0 remain visible; no unrelated application content."
+    },
+    {
+      "case_name": "fragmentation-and-recovery",
+      "case_number": "06",
+      "command": "clear; ./run 06",
+      "stdin": "30\n8\nALLOC 1 10\nALLOC 2 10\nALLOC 3 10\nFREE 1\nFREE 3\nALLOC 4 15\nFREE 2\nALLOC 4 30\n",
+      "terminal_transcript": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/검토자료/터미널_대화로그/06-fragmentation-and-recovery.tty",
+      "terminal_text": "전체 메모리 크기를 입력하세요: 30\n명령의 개수를 입력하세요: 8\nALLOC 1 10\nALLOC P1 10: SUCCESS\nMemory map: [0-9, P1] <-> [10-29, FREE]\nALLOC 2 10\nALLOC P2 10: SUCCESS\nMemory map: [0-9, P1] <-> [10-19, P2] <-> [20-29, FREE]\nALLOC 3 10\nALLOC P3 10: SUCCESS\nMemory map: [0-9, P1] <-> [10-19, P2] <-> [20-29, P3]\nFREE 1\nFREE P1: SUCCESS\nMemory map: [0-9, FREE] <-> [10-19, P2] <-> [20-29, P3]\nFREE 3\nFREE P3: SUCCESS\nMemory map: [0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]\nALLOC 4 15\nALLOC P4 15: FAIL\nMemory map: [0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]\nFREE 2\nFREE P2: SUCCESS\nMemory map: [0-29, FREE]\nALLOC 4 30\nALLOC P4 30: SUCCESS\nMemory map: [0-29, P4]\n\nEXIT_STATUS: 0\n",
+      "observed_results": [
+        "ALLOC P1 10: SUCCESS",
+        "ALLOC P2 10: SUCCESS",
+        "ALLOC P3 10: SUCCESS",
+        "FREE P1: SUCCESS",
+        "FREE P3: SUCCESS",
+        "ALLOC P4 15: FAIL",
+        "FREE P2: SUCCESS",
+        "ALLOC P4 30: SUCCESS"
+      ],
+      "observed_maps": [
+        "[0-9, P1] <-> [10-29, FREE]",
+        "[0-9, P1] <-> [10-19, P2] <-> [20-29, FREE]",
+        "[0-9, P1] <-> [10-19, P2] <-> [20-29, P3]",
+        "[0-9, FREE] <-> [10-19, P2] <-> [20-29, P3]",
+        "[0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]",
+        "[0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]",
+        "[0-29, FREE]",
+        "[0-29, P4]"
+      ],
+      "exit_status": 0,
+      "raw_screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/06.png",
+      "passed": true,
+      "original_capture": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/06.jpg",
+      "original_capture_format": "JPEG",
+      "original_capture_sha256": "9d259ec1b1cfd96d00bfa3a039aef763788c3c286e43e4ba7f9b5a368a17ef94",
+      "png_conversion_pixel_identical": true,
+      "crop": {
+        "source": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/원본/06.png",
+        "source_sha256": "0e7d2a7757853e9f26b96bd37743426d53a039a9936bbc0d430afa93615cc08f",
+        "output": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/06-외부단편화.png",
+        "output_sha256": "e14a50705342ace0a8f45b93bb386512c52820f365beb07a280c7418f6409cae",
+        "box": [
+          20,
+          65,
+          2020,
+          938
+        ],
+        "size": [
+          2000,
+          873
+        ],
+        "pixel_identical": true
+      },
+      "screenshot": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/과제/과제2/터미널_스크린샷/06-외부단편화.png",
+      "visual_review": "Cropped screenshot visually checked: command, every input, observed result and EXIT_STATUS 0 remain visible; no unrelated application content."
+    }
+  ],
+  "screenshot_count": 6
+}

@@ -1,0 +1,22 @@
+전체 메모리 크기를 입력하세요: 100
+명령의 개수를 입력하세요: 6
+ALLOC 1 20
+ALLOC P1 20: SUCCESS
+Memory map: [0-19, P1] <-> [20-99, FREE]
+ALLOC 2 30
+ALLOC P2 30: SUCCESS
+Memory map: [0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]
+ALLOC 3 10
+ALLOC P3 10: SUCCESS
+Memory map: [0-19, P1] <-> [20-49, P2] <-> [50-59, P3] <-> [60-99, FREE]
+FREE 2
+FREE P2: SUCCESS
+Memory map: [0-19, P1] <-> [20-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]
+FREE 1
+FREE P1: SUCCESS
+Memory map: [0-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]
+FREE 3
+FREE P3: SUCCESS
+Memory map: [0-99, FREE]
+
+EXIT_STATUS: 0
