@@ -1,0 +1,1057 @@
+<table_of_contents color="gray"/>
+<empty-block/>
+# 구현 목적
+메모리를 원형 이중 연결 리스트로 표현하며 각 노드는 한 구간을 기록한다. 할당 시 First-Fit으로 요청 크기 이상인 첫 빈 블록을 찾는다. 공간이 더 크면 할당 부분과 남는 부분으로 나눈다. 해제 시 FREE로 바꾸고 인접한 빈 블록과 합친다. 실패하면 기존 메모리 지도를 유지한다.
+<empty-block/>
+<empty-block/>
+# 소스코드 분석
+HW2_skeleton.c의 헤더·상수·구조체·함수 원형과 제공 함수 6개 및 main을 유지하고, TODO였던 함수 5개를 채운 HW2.c를 분석한다. 리스트가 나타내는 주소는 관리 대상의 가상 주소이며, 실제 동적 메모리는 이를 기록하는 노드에 사용된다.
+## 헤더·상수·구조체·함수 원형
+<table header-row="true">
+<colgroup>
+<col width="438">
+<col width="396">
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>#define _CRT_SECURE_NO_WARNINGS<br><br>#include \<stdio.h\><br>#include \<stdlib.h\><br>#include \<string.h\><br><br>#define FREE_PID (-1)<br>#define HEAD_PID (-2)<br>#define MAX_COMMANDS 10000<br>#define COMMAND_LENGTH 16<br><br></td>
+<td>stdio.h는 scanf와 printf를 사용해 입력을 받고 결과를 출력하기 위해 필요하다. stdlib.h는 malloc과 free로 노드를 생성하고 해제하는 데 필요하고, string.h는 strcmp로 입력 명령이 ALLOC인지 FREE인지 비교하는 데 필요하다.<br><br>_CRT_SECURE_NO_WARNINGS는 MSVC의 관련 보안 경고를 억제하는 매크로이며 입력을 검증하거나 안전성을 보장하는 기능은 아니다.<br><br>FREE_PID(-1)는 빈 블록, HEAD_PID(-2)는 헤드의 표식이다. 실제 PID는 양수다. MAX_COMMANDS(10000)는 명령 개수 상한이고, COMMAND_LENGTH(16)는 명령 문자열의 저장 공간이다. scanf의 %15s와 결합해 널 문자 한 칸을 남긴다.</td>
+</tr>
+<tr>
+<td>typedef struct MemoryBlock<br>\{<br>    int start;<br>    int size;<br>    int pid;<br>    struct MemoryBlock \*prev;<br>    struct MemoryBlock \*next;<br>\} MemoryBlock;<br><br></td>
+<td>제공된 MemoryBlock에서 start는 블록의 시작 주소, size는 크기, pid는 사용 중인 프로세스 번호나 FREE 상태를 나타낸다. prev와 next는 이전·다음 노드를 가리켜 리스트를 양방향으로 연결한다. 끝 주소는 start + size - 1이다.<br><br>노드의 앞뒤 순서는 주소 순서와 일치한다. 빈 구간도 FREE_PID를 가진 노드로 기록하므로 사용 중인 구간과 빈 구간을 모두 리스트에서 추적할 수 있다.</td>
+</tr>
+<tr>
+<td>typedef struct<br>\{<br>    MemoryBlock head;<br>    int total_size;<br>\} MemoryList;<br><br></td>
+<td>제공된 MemoryList는 기준 노드 head 자체와 전체 크기 total_size를 포함한다. head는 실제 할당 대상이 아니고 원형 리스트의 시작과 끝을 구분한다.<br><br>실제 노드가 하나도 없을 때 head.prev와 head.next는 head 자신을 가리킨다. 별도의 파일 범위 전역 상태 변수는 없으며 main의 지역 변수 memory를 포인터로 전달해 상태를 공유한다.</td>
+</tr>
+<tr>
+<td>int init_list(MemoryList \*list, int total_size);<br>MemoryBlock \*create_block(int start, int size, int pid);<br>void insert_after(MemoryBlock \*position, MemoryBlock \*new_block);<br>void remove_block(MemoryBlock \*removed);<br>void destroy_list(MemoryList \*list);<br>void print_memory_map(const MemoryList \*list);<br><br>/\* 학생 구현 함수 \*/<br>MemoryBlock \*find_first_fit(MemoryList \*list, int size);<br>MemoryBlock \*find_process_block(MemoryList \*list, int pid);<br>int allocate_memory(MemoryList \*list, int pid, int size);<br>MemoryBlock \*merge_free_blocks(MemoryList \*list, MemoryBlock \*current);<br>int release_memory(MemoryList \*list, int pid);<br><br></td>
+<td>앞의 6개는 리스트 생성·삽입·삭제·정리·출력을 담당하는 제공 함수다. 뒤의 5개는 탐색·할당·병합·반납을 담당하는 구현 대상 함수다. 선언한 함수 형식과 자료구조는 유지하고 추가 함수는 만들지 않았다.<br><br>리스트 포인터를 받은 함수가 같은 상태를 참조한다. print_memory_map의 const는 출력 함수가 전달받은 리스트를 수정하지 않는 용도를 나타낸다. 각 함수의 실제 변경 상태와 반환값은 다음 항목에서 구분한다.</td>
+</tr>
+</table>
+<empty-block/>
+## init_list
+제공 함수
+<table header-row="true">
+<colgroup>
+<col width="515">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>int init_list(MemoryList \*list, int total_size)<br>\{<br>    MemoryBlock \*initial_block;<br><br>    if (list == NULL \|\| total_size \<= 0)<br>    \{<br>        return 0;<br>    \}<br><br>    list-\>head.start = -1;<br>    list-\>head.size = 0;<br>    list-\>head.pid = HEAD_PID;<br>    list-\>head.prev = &list-\>head;<br>    list-\>head.next = &list-\>head;<br>    list-\>total_size = total_size;<br><br>    initial_block = create_block(0, total_size, FREE_PID);<br>    if (initial_block == NULL)<br>    \{<br>        list-\>total_size = 0;<br>        return 0;<br>    \}<br><br>    insert_after(&list-\>head, initial_block);<br>    return 1;<br>\}</td>
+<td>인자: 초기화할 MemoryList 포인터와 전체 크기. 반환값: 성공 1, 잘못된 인자나 초기 노드 생성 실패 시 0. 변경 상태: 헤드의 연결, total_size, 초기 FREE 블록.<br><br>헤드는 실제 주소 구간을 나타내지 않는 기준 노드다. 먼저 prev와 next를 자기 자신으로 설정해 빈 원형 리스트를 만든다. 아직 어떤 프로세스에도 할당하지 않았으므로 전체 메모리가 하나의 연속된 빈 공간이다. 따라서 시작 주소 0, 크기 total_size인 FREE 블록 하나로 표현한다.<br><br>초기 블록을 만들지 못하면 total_size를 0으로 되돌리고 실패를 반환한다. 헤드만 자기 자신을 가리키는 상태이므로 불완전한 실제 블록이 리스트에 남지 않는다.</td>
+</tr>
+</table>
+<empty-block/>
+## create_block
+제공 함수
+<table header-row="true">
+<colgroup>
+<col width="448">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>MemoryBlock \*create_block(int start, int size, int pid)<br>\{<br>    MemoryBlock \*block;<br><br>    block = (MemoryBlock \*)malloc(sizeof(MemoryBlock));<br>    if (block == NULL)<br>    \{<br>        return NULL;<br>    \}<br><br>    block-\>start = start;<br>    block-\>size = size;<br>    block-\>pid = pid;<br>    block-\>prev = NULL;<br>    block-\>next = NULL;<br>    return block;<br>\}</td>
+<td>인자: 시작 주소, 크기, PID. 반환값: 생성한 MemoryBlock 포인터 또는 NULL. 변경 상태: 성공 시 노드 한 개를 동적 생성한다. 리스트 연결은 변경하지 않는다.<br><br>malloc으로 확보하는 것은 프로세스가 사용할 size칸의 실제 RAM이 아니라, start·size·pid와 링크를 보관하는 관리 노드의 저장 공간이다. 따라서 요청량과 관계없이 sizeof(MemoryBlock)만큼 생성한다.<br><br>malloc이 메모리 확보에 실패하면 NULL을 반환하므로 먼저 확인해야 한다. NULL인 상태에서 노드의 필드에 접근하면 유효하지 않은 메모리에 접근하는 문제가 생기며, C에서는 정의되지 않은 동작이다. 생성 성공 후 prev와 next는 NULL로 초기화하고, 실제 리스트 연결은 insert_after가 담당한다.</td>
+</tr>
+</table>
+<empty-block/>
+## insert_after
+제공 함수
+<table header-row="true">
+<colgroup>
+<col width="415">
+<col width="396">
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>void insert_after(MemoryBlock \*position, MemoryBlock \*new_block)<br>\{<br>    if (position == NULL \|\| new_block == NULL)<br>    \{<br>        return;<br>    \}<br><br>    new_block-\>prev = position;<br>    new_block-\>next = position-\>next;<br>    position-\>next-\>prev = new_block;<br>    position-\>next = new_block;<br>\}</td>
+<td>인자: 삽입 기준 노드 position과 새 노드 new_block. 반환값: 없음. 변경 상태: 두 노드와 기존 다음 노드의 prev·next 연결.<br><br>position과 원래 다음 노드 사이에 새 노드를 넣는다. 새 노드의 prev는 position, next는 원래 다음 노드를 가리키게 한다. 이어서 원래 다음 노드의 prev와 position의 next를 새 노드로 바꾼다.<br><br>이중 연결 리스트는 앞뒤로 이동하므로 next뿐 아니라 prev도 새 연결에 맞게 바꿔야 한다. prev를 갱신하지 않으면 뒤로 이동할 때 새 노드를 건너뛰거나 잘못된 노드를 가리킬 수 있다. position-\>next를 마지막에 바꾸므로 원래 다음 노드를 잃지 않는다.</td>
+</tr>
+</table>
+<empty-block/>
+## remove_block
+제공 함수
+<table header-row="true">
+<colgroup>
+<col width="478">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>void remove_block(MemoryBlock \*removed)<br>\{<br>    if (removed == NULL \|\| removed-\>pid == HEAD_PID \|\|<br>        removed-\>prev == NULL \|\| removed-\>next == NULL)<br>    \{<br>        return;<br>    \}<br><br>    removed-\>prev-\>next = removed-\>next;<br>    removed-\>next-\>prev = removed-\>prev;<br>    removed-\>prev = NULL;<br>    removed-\>next = NULL;<br>    free(removed);<br>\}</td>
+<td>인자: 제거할 노드 removed. 반환값: 없음. 변경 상태: 양옆 노드를 직접 연결하고 removed의 동적 저장 공간을 해제한다.<br><br>NULL, 헤드 PID, 연결되지 않은 노드는 제거하지 않는다. 정상 노드는 이전 노드의 next와 다음 노드의 prev를 서로 연결한 뒤 free한다. 헤드가 있어서 첫 블록의 prev와 마지막 블록의 next도 NULL이 아니라 헤드를 가리킨다. 그래서 처음이나 끝의 블록을 삭제할 때도 양옆 노드를 연결하는 같은 코드로 처리할 수 있다.<br><br>이 함수 호출 후 기존 removed 포인터로 노드 멤버를 읽으면 안 된다. 또한 이 함수 자체는 가상 주소 구간을 이웃 블록에 합치지 않는다. 병합 함수가 먼저 크기를 합산한 뒤 불필요해진 관리 노드만 삭제해야 전체 구간이 보존된다.</td>
+</tr>
+</table>
+<empty-block/>
+## destroy_list
+제공 함수
+<table header-row="true">
+<colgroup>
+<col width="407">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>void destroy_list(MemoryList \*list)<br>\{<br>    if (list == NULL)<br>    \{<br>        return;<br>    \}<br><br>    while (list-\>head.next != &list-\>head)<br>    \{<br>        remove_block(list-\>head.next);<br>    \}<br><br>    list-\>head.prev = &list-\>head;<br>    list-\>head.next = &list-\>head;<br>    list-\>total_size = 0;<br>\}</td>
+<td>인자: 정리할 리스트. 반환값: 없음. 변경 상태: 모든 실제 노드를 해제하고 헤드 연결과 total_size를 초기 상태로 정리한다.<br><br>헤드 다음 노드가 헤드 자체가 될 때까지 첫 실제 노드를 반복해서 제거한다. 삭제된 노드의 next를 따라가지 않고 매번 list-\>head.next를 다시 읽기 때문에 해제된 노드를 다음 반복에서 참조하지 않는다.<br><br>헤드는 MemoryList 내부에 포함된 객체이므로 free하지 않는다. 실제 노드를 모두 없앤 뒤 prev·next를 헤드 자신으로 맞추고 total_size를 0으로 설정한다. 노드 수를 n이라 하면 전체 정리에는 O(n)이 필요하다.</td>
+</tr>
+</table>
+<empty-block/>
+## print_memory_map
+제공 함수
+<table header-row="true">
+<colgroup>
+<col width="547">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>void print_memory_map(const MemoryList \*list)<br>\{<br>    const MemoryBlock \*block;<br><br>    if (list == NULL)<br>    \{<br>        return;<br>    \}<br><br>    printf("Memory map: ");<br>    block = list-\>head.next;<br>    while (block != &list-\>head)<br>    \{<br>        printf("\[%d-%d, ", block-\>start, block-\>start + block-\>size - 1);<br>        if (block-\>pid == FREE_PID)<br>        \{<br>            printf("FREE\]");<br>        \}<br>        else<br>        \{<br>            printf("P%d\]", block-\>pid);<br>        \}<br><br>        block = block-\>next;<br>        if (block != &list-\>head)<br>        \{<br>            printf(" \<-\> ");<br>        \}<br>    \}<br>    printf("\\n");<br>\}</td>
+<td>인자: 읽기 전용 리스트 포인터. 반환값: 없음. 변경 상태: 리스트를 변경하지 않고 표준 출력에 메모리 지도를 쓴다.<br><br>헤드 다음부터 실제 블록을 순회한다. 시작 주소 20에서 크기가 10이면 20\~29까지 사용한다. 시작 주소도 한 칸에 포함되므로 마지막 주소는 start + size가 아니라 start + size - 1이다.<br><br>FREE_PID이면 FREE, 아니면 P와 PID를 출력한다. 다음 노드가 헤드가 아닐 때만 연결 표시를 넣어 마지막에 불필요한 구분자가 남지 않게 한다. 탐색 중 노드가 헤드로 돌아오면 한 바퀴를 마친 것이다. 노드 수에 비례해 O(n)의 순회가 필요하다.</td>
+</tr>
+</table>
+<empty-block/>
+## find_first_fit
+구현 대상 함수
+<table header-row="true">
+<colgroup>
+<col width="529">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>MemoryBlock \*find_first_fit(MemoryList \*list, int size)<br>\{<br>    MemoryBlock \*current;<br><br>    if (list == NULL \|\| size \<= 0)<br>    \{<br>        return NULL;<br>    \}<br><br>    current = list-\>head.next;<br>    while (current != &list-\>head)<br>    \{<br>        if (current-\>pid == FREE_PID && current-\>size \>= size)<br>        \{<br>            return current;<br>        \}<br>        current = current-\>next;<br>    \}<br>    return NULL;<br>\}</td>
+<td>인자: 리스트와 요청 크기. 반환값: 조건을 만족하는 첫 FREE 블록의 포인터, 없거나 인자가 잘못되면 NULL. 변경 상태: 없음.<br><br>head.next부터 시작해서 헤드로 돌아올 때까지 탐색한다. pid가 FREE_PID이고 크기가 요청 크기 이상이면 그 블록을 바로 반환하고, 아니면 next로 이동한다. 끝까지 없으면 NULL을 반환한다. 조건을 만족하는 즉시 반환하므로 주소 순서상 첫 적합 블록이 선택된다.<br><br>원형 리스트에서는 마지막 노드의 next가 NULL이 아니라 헤드다. 따라서 current != &list-\>head로 종료하며 헤드를 실제 후보로 검사하지 않는다. 최악에는 모든 실제 블록을 확인하므로 O(n)이다. 크기 15와 10의 빈 블록이 이 순서로 있고 8칸을 요청하면 앞의 15칸을 선택한다.</td>
+</tr>
+</table>
+<empty-block/>
+## find_process_block
+구현 대상 함수
+<table header-row="true">
+<colgroup>
+<col width="501">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>MemoryBlock \*find_process_block(MemoryList \*list, int pid)<br>\{<br>    MemoryBlock \*current;<br><br>    if (list == NULL \|\| pid \<= 0)<br>    \{<br>        return NULL;<br>    \}<br><br>    current = list-\>head.next;<br>    while (current != &list-\>head)<br>    \{<br>        if (current-\>pid == pid)<br>        \{<br>            return current;<br>        \}<br>        current = current-\>next;<br>    \}<br>    return NULL;<br>\}</td>
+<td>인자: 리스트와 양의 PID. 반환값: 해당 PID를 가진 블록 포인터, 없거나 인자가 잘못되면 NULL. 변경 상태: 없음.<br><br>헤드 다음부터 한 바퀴 동안 pid가 입력과 같은 노드를 탐색한다. PID가 양수인 경우만 찾으므로 FREE_PID(-1)와 HEAD_PID(-2)를 프로세스로 반환하지 않는다.<br><br>할당에서는 같은 PID가 이미 존재하는지 확인하는 데, 반납에서는 반납할 블록을 찾는 데 재사용한다. 현재 구현은 PID 한 개에 블록 한 개를 대응시키며 중복 할당을 거부한다. 최악의 탐색 시간은 O(n)이다.</td>
+</tr>
+</table>
+<empty-block/>
+## allocate_memory
+구현 대상 함수
+<table header-row="true">
+<colgroup>
+<col width="527">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>int allocate_memory(MemoryList \*list, int pid, int size)<br>\{<br>    if (list == NULL \|\| pid \<= 0 \|\| size \<= 0)<br>    \{<br>        return 0;<br>    \}<br>    if (find_process_block(list, pid) != NULL)<br>    \{<br>        return 0;<br>    \}<br><br>    MemoryBlock \*block = find_first_fit(list, size);<br>    if (block == NULL)<br>    \{<br>        return 0;<br>    \}<br>    if (block-\>size == size)<br>    \{<br>        block-\>pid = pid;<br>        return 1;<br>    \}<br><br></td>
+<td>인자: 리스트, PID, 요청 크기. 반환값: 성공 1, 실패 0. 변경 상태: 성공 시 선택한 블록의 소유자와 필요에 따른 크기·리스트 연결. 실패 시 기존 지도 유지.<br><br>먼저 잘못된 입력, 중복 PID, 적합한 빈 블록의 부재를 검사한다. 이때는 기존 블록을 변경하지 않는다. 찾은 블록 크기와 요청 크기가 같으면 분할 없이 PID만 바꾸고 1을 반환한다. 중복 PID 검사와 First-Fit 탐색이 각각 O(n)이지만 순서대로 한 번씩 실행하므로 전체는 O(n)이다.</td>
+</tr>
+<tr>
+<td>    MemoryBlock \*remaining = create_block(block-\>start + size,<br>                                          block-\>size - size, FREE_PID);<br>    if (remaining == NULL)<br>    \{<br>        return 0;<br>    \}<br>    block-\>size = size;<br>    block-\>pid = pid;<br>    insert_after(block, remaining);<br>    return 1;<br>\}</td>
+<td>선택한 블록이 더 크면 남는 블록의 시작 주소는 block-\>start + size, 크기는 block-\>size - size다. 새 노드 생성에 실패하면 기존 메모리 지도를 그대로 유지해야 한다. 기존 블록을 먼저 바꾸면 남는 공간을 기록할 노드가 없는 상태가 될 수 있으므로, 새 노드 생성에 성공한 뒤 크기와 PID를 변경한다.<br><br>남은 FREE 노드는 insert_after로 할당 블록 바로 뒤에 연결한다. 두 구간의 주소 순서와 원래 크기의 합이 유지되고, 성공 시 1을 반환한다.</td>
+</tr>
+</table>
+<empty-block/>
+## merge_free_blocks
+구현 대상 함수
+<table header-row="true">
+<colgroup>
+<col width="578">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>MemoryBlock \*merge_free_blocks(MemoryList \*list, MemoryBlock \*current)<br>\{<br>    MemoryBlock \*previous;<br>    MemoryBlock \*next;<br><br>    if (list == NULL \|\| current == NULL \|\|<br>        current == &list-\>head \|\| current-\>pid != FREE_PID)<br>    \{<br>        return current;<br>    \}<br><br>    previous = current-\>prev;<br>    if (previous != &list-\>head && previous-\>pid == FREE_PID)<br>    \{<br>        previous-\>size += current-\>size;<br>        remove_block(current);<br>        /\* current가 삭제되었으므로 살아 있는 이전 노드를 기준으로 바꾼다. \*/<br>        current = previous;<br>    \}<br><br></td>
+<td>인자: 리스트와 병합 기준 FREE 노드. 반환값: 병합 후 살아 있는 기준 노드. 변경 상태: 인접 FREE 구간의 크기와 링크, 중복 관리 노드의 삭제.<br><br>잘못된 인자, 헤드, 사용 중 블록은 병합하지 않는다. 왼쪽이 실제 FREE 블록이면 previous의 크기에 current의 크기를 더한 뒤 current를 삭제한다. remove_block(current)에서 current가 가리키던 노드가 해제되므로, 그대로 current-\>next에 접근하면 해제된 메모리를 사용하는 문제가 생긴다. 그래서 살아 있는 previous를 current로 지정한 뒤 오른쪽 병합을 계속해야 한다.</td>
+</tr>
+<tr>
+<td>    next = current-\>next;<br>    if (next != &list-\>head && next-\>pid == FREE_PID)<br>    \{<br>        current-\>size += next-\>size;<br>        remove_block(next);<br>    \}<br><br>    return current;<br>\}</td>
+<td>왼쪽 병합 후 current-\>next를 다시 읽어 오른쪽 FREE 블록도 합친다. 헤드는 실제 메모리 구간이 아니라 리스트의 시작과 끝을 표시하는 노드다. 마지막 블록의 next가 head를 가리켜도 실제 주소가 이어지는 것은 아니므로 병합하면 안 된다.<br><br>정상적인 할당·반납 뒤에는 인접 FREE 블록이 남지 않는 상태가 유지된다. 이 전제에서 한 블록을 반납할 때 양옆만 검사하면 되므로 이 함수 자체는 O(1)이다. 예를 들어 \[0\~19 FREE\], \[20\~49 FREE\], \[50\~99 FREE\]는 시작 0·크기 100인 한 블록으로 합쳐진다.</td>
+</tr>
+</table>
+<empty-block/>
+## release_memory
+구현 대상 함수
+<table header-row="true">
+<colgroup>
+<col width="523">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>int release_memory(MemoryList \*list, int pid)<br>\{<br>    if (list == NULL \|\| pid \<= 0)<br>    \{<br>        return 0;<br>    \}<br>    MemoryBlock \*block = find_process_block(list, pid);<br>    if (block == NULL)<br>    \{<br>        return 0;<br>    \}<br>    block-\>pid = FREE_PID;<br>    merge_free_blocks(list, block);<br>    return 1;<br>\}</td>
+<td>인자: 리스트와 반납할 PID. 반환값: 해당 블록 반납 성공 시 1, 찾지 못하면 0. 변경 상태: 블록을 FREE로 표시하고 가능한 이웃 FREE 블록과 병합한다.<br><br>PID를 찾지 못하면 리스트를 변경하지 않고 실패한다. 찾으면 pid를 FREE_PID로 바꾼다. 이는 프로세스에 배정한 가상 구간을 사용 가능한 공간으로 돌려놓는 처리다.<br><br>그 노드는 해당 메모리 구간의 시작 주소와 크기를 기록하므로, 삭제하면 빈 공간의 정보가 사라진다. 따라서 노드는 유지하고 pid만 FREE_PID로 바꿔야 나중에 다시 할당할 수 있다. 이후 merge_free_blocks로 이웃과 합칠 때만 중복 노드를 제거한다. 병합 후 block을 다시 사용하지 않으므로 반환 포인터를 저장하지 않아도 된다. PID 탐색 O(n)과 병합 O(1)을 합쳐 최악 시간은 O(n)이다.</td>
+</tr>
+</table>
+<empty-block/>
+## main
+제공 함수
+<table header-row="true">
+<colgroup>
+<col width="584">
+<col>
+</colgroup>
+<tr>
+<td>소스코드</td>
+<td>기능 명세와 분석</td>
+</tr>
+<tr>
+<td>int main(void)<br>\{<br>    MemoryList memory;<br>    char command\[COMMAND_LENGTH\];<br>    int total_size;<br>    int command_count;<br>    int i;<br>    int pid;<br>    int size;<br>    int result;<br><br>    printf("전체 메모리 크기를 입력하세요: ");<br>    if (scanf("%d", &total_size) != 1 \|\| total_size \<= 0)<br>    \{<br>        printf("잘못된 전체 메모리 크기입니다.\\n");<br>        return 0;<br>    \}<br><br>    if (!init_list(&memory, total_size))<br>    \{<br>        printf("메모리 리스트를 초기화할 수 없습니다.\\n");<br>        return 0;<br>    \}<br><br>    printf("명령의 개수를 입력하세요: ");<br>    if (scanf("%d", &command_count) != 1 \|\|<br>        command_count \< 0 \|\| command_count \> MAX_COMMANDS)<br>    \{<br>        printf("잘못된 명령 개수입니다.\\n");<br>        destroy_list(&memory);<br>        return 0;<br>    \}<br><br></td>
+<td>인자: 없음. 반환값: 종료 경로에서 0. 참조 데이터: 표준 입력의 크기·명령 개수·명령. 변경 상태: 지역 변수 memory가 보관하는 리스트와 표준 출력.<br><br>전체 크기를 읽고 init_list를 호출한다. 이어 명령 개수를 0\~MAX_COMMANDS 범위에서 확인한다. 리스트 생성 뒤 명령 개수가 잘못되면 destroy_list로 생성한 노드를 정리한 후 종료한다. 입력 실패와 프로그램 종료 코드는 별개이며, 이 제공 코드의 해당 경로도 0을 반환한다.</td>
+</tr>
+<tr>
+<td>    for (i = 0; i \< command_count; ++i)<br>    \{<br>        if (scanf("%15s", command) != 1)<br>        \{<br>            printf("명령을 읽을 수 없습니다.\\n");<br>            break;<br>        \}<br><br>        if (strcmp(command, "ALLOC") == 0)<br>        \{<br>            if (scanf("%d %d", &pid, &size) != 2)<br>            \{<br>                printf("ALLOC 명령 형식이 잘못되었습니다.\\n");<br>                break;<br>            \}<br>            result = allocate_memory(&memory, pid, size);<br>            printf("ALLOC P%d %d: %s\\n",<br>                   pid, size, result ? "SUCCESS" : "FAIL");<br>        \}<br></td>
+<td>명령을 최대 15문자로 읽어 16바이트 배열의 끝에 널 문자를 둘 공간을 남긴다. ALLOC이면 PID와 크기를 읽어 allocate_memory를 호출하고, 반환값이 1인지 0인지에 따라 SUCCESS 또는 FAIL을 출력한다. 형식이 맞지 않으면 반복문을 종료한다.</td>
+</tr>
+<tr>
+<td>        else if (strcmp(command, "FREE") == 0)<br>        \{<br>            if (scanf("%d", &pid) != 1)<br>            \{<br>                printf("FREE 명령 형식이 잘못되었습니다.\\n");<br>                break;<br>            \}<br>            result = release_memory(&memory, pid);<br>            printf("FREE P%d: %s\\n",<br>                   pid, result ? "SUCCESS" : "FAIL");<br>        \}<br>        else<br>        \{<br>            printf("알 수 없는 명령입니다: %s\\n", command);<br>        \}<br>        print_memory_map(&memory);<br>    \}<br><br>    destroy_list(&memory);<br>    return 0;<br>\}</td>
+<td>FREE이면 PID를 읽어 release_memory를 호출하고 결과를 출력한다. 인식하지 못한 명령은 안내 문구를 출력한다. 정상적으로 해석한 명령에서 기능이 실패해도 현재 지도를 출력하므로 상태 유지 여부를 비교할 수 있다. 반복문 종료 뒤 destroy_list로 남은 관리 노드를 해제한다. 명령마다 기능 실행과 지도 출력에 최악 O(n)이 들며, 잘못된 모든 입력 형식을 완전하게 검증하는 파서라고 볼 수는 없다. 입출력과 할당·해제 처리를 분리하면 입력 방식이 바뀌어도 같은 함수를 재사용할 수 있고, 각 함수를 따로 호출해 기능이 올바른지 검사하기 쉽다.</td>
+</tr>
+</table>
+<empty-block/>
+<empty-block/>
+# 실행결과 및 분석
+현재 HW2.c를 macOS arm64의 Apple clang으로 빌드하여 아래 입력을 실행했다. 각 출력은 실행 기록의 표준 출력 원문이며, 따로 제시한 입력이 표준 출력에 자동으로 섞여 들어가는 것은 아니다. 이어 동일한 소스를 별도로 빌드해 Antigravity IDE의 내장 터미널에서 대표 사례를 한 줄씩 직접 입력하고, 실제 입력·출력·프로세스 종료 코드가 보이는 화면을 캡처했다.
+검증 기록은 총 32건이며 32건이 통과했다. 아래 상세 분석에 수록한 사례는 6건이다. 전체 검증 건수와 보고서의 대표 사례 수를 구분한다. 실행 파일은 저장소 밖 임시 디렉터리에 만들었고, 현재 소스의 해시와 입력·출력·종료 코드는 별도 실행 기록에 보관했다.
+실제 IDE 터미널에서 재실행하고 캡처한 사례는 6건이다. 캡처용 빌드는 C11과 -Wall -Wextra -Wpedantic -Werror를 사용했다. 각 화면의 ./run은 현재 실행 파일을 대화형으로 실행하고 대화 로그 및 실제 종료 코드를 기록하는 래퍼다. 캡처 이미지에서는 창 장식과 빈 여백만 잘랐으며 입력·출력 텍스트를 수정하지 않았다.
+<table header-row="true">
+<tr>
+<td>구분</td>
+<td>확인 내용</td>
+<td>관찰 결과</td>
+</tr>
+<tr>
+<td>공식 예제</td>
+<td>HW2.pdf 16\~18쪽의 입력</td>
+<td>세 예제의 명령 결과와 매 단계 지도가 일치</td>
+</tr>
+<tr>
+<td>경계·분기</td>
+<td>정확한 크기, First-Fit 선택, 왼쪽·오른쪽·양쪽 병합, 단편화, PID 예외, 명령 0개</td>
+<td>기록된 사례에서 기대 결과와 일치</td>
+</tr>
+<tr>
+<td>명령 시퀀스</td>
+<td>20개 고정 시드에서 각각 80개 명령</td>
+<td>주소별 배열 모델과 매 명령 결과·지도를 대조하여 일치</td>
+</tr>
+<tr>
+<td>실패 주입</td>
+<td>분할 노드 malloc 실패, 정확한 크기의 무분할 할당, 원형 양방향 링크</td>
+<td>테스트 하네스에서 기존 상태 보존 및 링크 확인</td>
+</tr>
+<tr>
+<td>빌드·실행 진단</td>
+<td>C11, -Wall -Wextra -Wpedantic, AddressSanitizer·UndefinedBehaviorSanitizer</td>
+<td>해당 빌드와 실행에서 진단 없음, 모든 실행 종료 코드 0</td>
+</tr>
+</table>
+malloc 실패는 테스트 하네스에서만 의도적으로 주입했다. 실제 컴퓨터의 메모리가 고갈되는 현상을 관측한 것은 아니다. 또한 실행 종료 코드 0은 ALLOC·FREE의 성공과 같지 않다. 명령별 성공 여부는 각 함수의 반환값과 SUCCESS·FAIL 출력으로 따로 판단했다.
+준비한 테스트는 가능한 입력과 실행 순서 중 일부만 확인한 것이므로, 통과했더라도 검사하지 않은 경우에 오류가 있을 수 있다. 따라서 검증한 범위에서 정상 동작했다고 설명해야 한다.
+범위의 한계: 양의 정수라는 과제 입력 계약 안의 기록된 사례를 확인했다. 모든 가능한 입력, 정수 범위를 벗어난 입력, 다른 운영체제의 동작을 검증한 결과는 아니다. 음수·실수 등은 과제에서 필수 예외 처리 대상으로 요구하지 않으며, 현재 코드를 모든 잘못된 입력을 거르는 파서라고 서술하지 않는다.
+<empty-block/>
+## 공식 예제 1: 연속 할당과 분할
+**입력**
+```plain text
+100
+2
+ALLOC 1 20
+ALLOC 2 30
+
+```
+<empty-block/>
+**실제 출력 (표준 출력 원문)**
+```plain text
+전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 20: SUCCESS
+Memory map: [0-19, P1] <-> [20-99, FREE]
+ALLOC P2 30: SUCCESS
+Memory map: [0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]
+
+```
+<table header-row="true">
+<tr>
+<td>입력 명령과 결과</td>
+<td>관찰한 메모리 지도</td>
+<td>상태 변화의 이유</td>
+</tr>
+<tr>
+<td>ALLOC 1 20 / SUCCESS</td>
+<td>\[0-19, P1\] \<-\> \[20-99, FREE\]</td>
+<td>시작 0·크기 100의 빈 블록에서 앞 20칸을 P1에 배정한다. 남는 블록은 시작 20·크기 80이다.</td>
+</tr>
+<tr>
+<td>ALLOC 2 30 / SUCCESS</td>
+<td>\[0-19, P1\] \<-\> \[20-49, P2\] \<-\> \[50-99, FREE\]</td>
+<td>P1은 사용 중이므로 건너뛴다. 시작 20인 FREE 블록 앞 30칸이 P2가 되고 시작 50·크기 50이 남는다.</td>
+</tr>
+</table>
+결과 분석: 첫 요청의 끝 주소는 0 + 20 - 1 = 19이고, 두 번째 요청은 남은 빈 블록의 시작인 20에서 출발한다. 두 번의 분할 뒤 구간 크기는 20 + 30 + 50 = 100으로 보존된다. 각 요청은 요청량 이상인 첫 빈 블록에서 처리된다.
+관찰한 종료 코드: 0. 표준 오류 출력: 없음.
+<empty-block/>
+**실제 터미널 실행 화면**
+![터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다.](https://prod-files-secure.s3.us-west-2.amazonaws.com/bb202fe9-e653-4278-8d2f-0d12906a5653/d07475ef-f5f7-46d3-88b6-b2d5e4ae6dfe/hw2-case-01.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466TNXME3UE%2F20261025%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20261025T091553Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEO7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDnaIlGAxWTmR0N%2F%2F7USvc6AR8Q5Y74pv9c%2F28gj038lwIhAPLMT%2FzoCt6WatRquQzAo%2Fyeux2FLT6fEnH8vuhM322iKogECLf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNjM3NDIzMTgzODA1IgxW27fuv9GOgsr%2F9mcq3AMHjftHY08u%2Bq9bOSptgsUjZgxo7Tfwfiyve5BRj6%2BuyqD7PPbT%2FCrafcQ5F0jxJ35a5Bbbs5yLhTKbWjM6ZDTT6cnRvoLvfnD6dT6CjJ6JwbqK1DpGAMBqh5BtnPY1OV4HVpAtclrMxEm%2BUWUtdSw92vHcpyG7hfBvNvEymOw%2BNC7JY5RRk1jauFqMlPIXvVfUKBAF6vgbEtkUxdR5SHJ1Nu1JonAAYeewz%2BEsP%2BvsnRhzFw8Y0shgkRXBSuPS08oK5pMzS7raPPoj492zmu7TKABoG6w7bMTfTzN%2BxVzyIXk%2BvkUbGGos848tzJz7gHqz1KEeY601BGKq%2F3oTebsLXzVCYKbf%2FBp5rOx9Z7%2F05TH9w07ugMqdIcMyaJ6JH9Y%2FppwiUkQCodFLAcBuLWAJ1rF%2FAqww%2BgNSCgwdnpjWCllBsOS4ZfIXB1ayYSmaz8NDsz7E8a%2BocqGmy9%2FdwqpxfglMkf6umF5YjZoCgj93108zaWb84togQG09XSoU895kbDWpHNXInKe0yMs3raEIPArj9bkKUv%2FRY7YzaCkEwKCAeiPZTuBJ9zo8jVwPLYWB2KxMBO7ccPAEvVkbjxR8krTiRmT%2Burw1cIz9JVAFP7qTfXz%2Fya5U6BtH3zDjs%2FbWBjqkAZIwk6p4x0xEj6Z6mHCEoorOwL1KhHHeiF5fhF3BD40WgwUW1soA3RIgls8%2B3GyLOp4vPx%2FmRVWo9mmAucEUuSYy0TVhLAfGEbdW6UM6O5u%2FlXdvr%2BxWMSg05pWynufHJLI%2BLDGf9zcA3NQisZqmXedvSZdUPeSzQisQKtOrC4VlV5Kg8Er6Mw%2BWXRNehOLXTaR%2Bt2aPvAa3GpnFD%2BnHucX10L7F&X-Amz-Signature=74a8ac7ed6038125791250a1ca2069e965d970487a805f0c22dae27aa0ae3d93&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject#notion_record=block.404b06d2-63bc-8146-9280-e5c34c1b9b98.bb202fe9-e653-4278-8d2f-0d12906a5653)
+<empty-block/>
+## 공식 예제 2: 반납과 양쪽 병합
+**입력**
+```plain text
+100
+6
+ALLOC 1 20
+ALLOC 2 30
+ALLOC 3 10
+FREE 2
+FREE 1
+FREE 3
+
+```
+<empty-block/>
+**실제 출력 (표준 출력 원문)**
+```plain text
+전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 20: SUCCESS
+Memory map: [0-19, P1] <-> [20-99, FREE]
+ALLOC P2 30: SUCCESS
+Memory map: [0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]
+ALLOC P3 10: SUCCESS
+Memory map: [0-19, P1] <-> [20-49, P2] <-> [50-59, P3] <-> [60-99, FREE]
+FREE P2: SUCCESS
+Memory map: [0-19, P1] <-> [20-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]
+FREE P1: SUCCESS
+Memory map: [0-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]
+FREE P3: SUCCESS
+Memory map: [0-99, FREE]
+
+```
+<table header-row="true">
+<tr>
+<td>입력 명령과 결과</td>
+<td>관찰한 메모리 지도</td>
+<td>상태 변화의 이유</td>
+</tr>
+<tr>
+<td>ALLOC 1 20 / SUCCESS</td>
+<td>\[0-19, P1\] \<-\> \[20-99, FREE\]</td>
+<td>P1에 0\~19를 배정하고 20\~99를 FREE로 남긴다.</td>
+</tr>
+<tr>
+<td>ALLOC 2 30 / SUCCESS</td>
+<td>\[0-19, P1\] \<-\> \[20-49, P2\] \<-\> \[50-99, FREE\]</td>
+<td>P2에 20\~49를 배정하고 50\~99를 FREE로 남긴다.</td>
+</tr>
+<tr>
+<td>ALLOC 3 10 / SUCCESS</td>
+<td>\[0-19, P1\] \<-\> \[20-49, P2\] \<-\> \[50-59, P3\] \<-\> \[60-99, FREE\]</td>
+<td>P3에 50\~59를 배정하고 60\~99를 FREE로 남긴다.</td>
+</tr>
+<tr>
+<td>FREE 2 / SUCCESS</td>
+<td>\[0-19, P1\] \<-\> \[20-49, FREE\] \<-\> \[50-59, P3\] \<-\> \[60-99, FREE\]</td>
+<td>P2의 구간 20\~49를 FREE로 바꾼다. 양옆 P1·P3가 사용 중이어서 병합하지 않는다.</td>
+</tr>
+<tr>
+<td>FREE 1 / SUCCESS</td>
+<td>\[0-49, FREE\] \<-\> \[50-59, P3\] \<-\> \[60-99, FREE\]</td>
+<td>P1을 반납하면 오른쪽 FREE 20\~49와 합쳐 0\~49가 된다.</td>
+</tr>
+<tr>
+<td>FREE 3 / SUCCESS</td>
+<td>\[0-99, FREE\]</td>
+<td>P3를 반납하면 왼쪽 0\~49, 현재 50\~59, 오른쪽 60\~99가 모두 빈 공간이 되어 0\~99로 합쳐진다.</td>
+</tr>
+</table>
+결과 분석: FREE 2는 노드를 삭제하는 대신 소유자 표시만 바꾸는 경우이고, FREE 1은 오른쪽 병합, FREE 3은 양쪽 병합을 보여 준다. 마지막에는 크기 100의 FREE 노드 하나가 남는다. 이 순서에서 해제되지 않은 프로세스의 주소는 이동하지 않는다.
+관찰한 종료 코드: 0. 표준 오류 출력: 없음.
+<empty-block/>
+**실제 터미널 실행 화면**
+![터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다.](https://prod-files-secure.s3.us-west-2.amazonaws.com/bb202fe9-e653-4278-8d2f-0d12906a5653/4b3a982e-4649-4d15-a3d0-e83967975c72/hw2-case-02.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466TNXME3UE%2F20261025%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20261025T091553Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEO7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDnaIlGAxWTmR0N%2F%2F7USvc6AR8Q5Y74pv9c%2F28gj038lwIhAPLMT%2FzoCt6WatRquQzAo%2Fyeux2FLT6fEnH8vuhM322iKogECLf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNjM3NDIzMTgzODA1IgxW27fuv9GOgsr%2F9mcq3AMHjftHY08u%2Bq9bOSptgsUjZgxo7Tfwfiyve5BRj6%2BuyqD7PPbT%2FCrafcQ5F0jxJ35a5Bbbs5yLhTKbWjM6ZDTT6cnRvoLvfnD6dT6CjJ6JwbqK1DpGAMBqh5BtnPY1OV4HVpAtclrMxEm%2BUWUtdSw92vHcpyG7hfBvNvEymOw%2BNC7JY5RRk1jauFqMlPIXvVfUKBAF6vgbEtkUxdR5SHJ1Nu1JonAAYeewz%2BEsP%2BvsnRhzFw8Y0shgkRXBSuPS08oK5pMzS7raPPoj492zmu7TKABoG6w7bMTfTzN%2BxVzyIXk%2BvkUbGGos848tzJz7gHqz1KEeY601BGKq%2F3oTebsLXzVCYKbf%2FBp5rOx9Z7%2F05TH9w07ugMqdIcMyaJ6JH9Y%2FppwiUkQCodFLAcBuLWAJ1rF%2FAqww%2BgNSCgwdnpjWCllBsOS4ZfIXB1ayYSmaz8NDsz7E8a%2BocqGmy9%2FdwqpxfglMkf6umF5YjZoCgj93108zaWb84togQG09XSoU895kbDWpHNXInKe0yMs3raEIPArj9bkKUv%2FRY7YzaCkEwKCAeiPZTuBJ9zo8jVwPLYWB2KxMBO7ccPAEvVkbjxR8krTiRmT%2Burw1cIz9JVAFP7qTfXz%2Fya5U6BtH3zDjs%2FbWBjqkAZIwk6p4x0xEj6Z6mHCEoorOwL1KhHHeiF5fhF3BD40WgwUW1soA3RIgls8%2B3GyLOp4vPx%2FmRVWo9mmAucEUuSYy0TVhLAfGEbdW6UM6O5u%2FlXdvr%2BxWMSg05pWynufHJLI%2BLDGf9zcA3NQisZqmXedvSZdUPeSzQisQKtOrC4VlV5Kg8Er6Mw%2BWXRNehOLXTaR%2Bt2aPvAa3GpnFD%2BnHucX10L7F&X-Amz-Signature=60cc95ee825177c7d725d534b314d0076bc3e2e15618d350430d4523a6f20fee&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject#notion_record=block.404b06d2-63bc-81f1-b087-e6852fe7aad0.bb202fe9-e653-4278-8d2f-0d12906a5653)
+<empty-block/>
+## 공식 예제 3: 할당 실패와 예외 처리
+**입력**
+```plain text
+50
+4
+ALLOC 1 30
+ALLOC 2 30
+FREE 7
+ALLOC 1 10
+
+```
+<empty-block/>
+**실제 출력 (표준 출력 원문)**
+```plain text
+전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 30: SUCCESS
+Memory map: [0-29, P1] <-> [30-49, FREE]
+ALLOC P2 30: FAIL
+Memory map: [0-29, P1] <-> [30-49, FREE]
+FREE P7: FAIL
+Memory map: [0-29, P1] <-> [30-49, FREE]
+ALLOC P1 10: FAIL
+Memory map: [0-29, P1] <-> [30-49, FREE]
+
+```
+<table header-row="true">
+<tr>
+<td>입력 명령과 결과</td>
+<td>관찰한 메모리 지도</td>
+<td>상태 변화의 이유</td>
+</tr>
+<tr>
+<td>ALLOC 1 30 / SUCCESS</td>
+<td>\[0-29, P1\] \<-\> \[30-49, FREE\]</td>
+<td>P1에 30칸을 배정해 30\~49의 20칸이 남는다.</td>
+</tr>
+<tr>
+<td>ALLOC 2 30 / FAIL</td>
+<td>\[0-29, P1\] \<-\> \[30-49, FREE\]</td>
+<td>요청 30보다 남은 연속 빈 공간 20이 작아 실패한다.</td>
+</tr>
+<tr>
+<td>FREE 7 / FAIL</td>
+<td>\[0-29, P1\] \<-\> \[30-49, FREE\]</td>
+<td>PID 7이 존재하지 않아 반납에 실패한다.</td>
+</tr>
+<tr>
+<td>ALLOC 1 10 / FAIL</td>
+<td>\[0-29, P1\] \<-\> \[30-49, FREE\]</td>
+<td>10칸을 담을 공간은 있지만 PID 1이 이미 존재하므로 할당에 실패한다.</td>
+</tr>
+</table>
+결과 분석: 성공한 첫 요청 이후 세 요청이 모두 실패했고, 각 실패 뒤 지도는 \[0-29, P1\] \<-\> \[30-49, FREE\]로 같았다. 이는 공간 부족, 존재하지 않는 PID, 중복 PID를 서로 다른 원인으로 구분하면서도 기존 상태를 보존한 결과다. 실패 명령 실행 전후의 메모리 지도가 같아야 한다. 기존 P1의 시작 주소와 크기, 다른 블록들의 상태와 연결 순서가 그대로 유지되는지 확인한다.
+관찰한 종료 코드: 0. 표준 오류 출력: 없음.
+<empty-block/>
+**실제 터미널 실행 화면**
+![터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다.](https://prod-files-secure.s3.us-west-2.amazonaws.com/bb202fe9-e653-4278-8d2f-0d12906a5653/5d53b2bc-5055-44b7-b0c3-4dd1ab451713/hw2-case-03.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466TNXME3UE%2F20261025%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20261025T091553Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEO7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDnaIlGAxWTmR0N%2F%2F7USvc6AR8Q5Y74pv9c%2F28gj038lwIhAPLMT%2FzoCt6WatRquQzAo%2Fyeux2FLT6fEnH8vuhM322iKogECLf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNjM3NDIzMTgzODA1IgxW27fuv9GOgsr%2F9mcq3AMHjftHY08u%2Bq9bOSptgsUjZgxo7Tfwfiyve5BRj6%2BuyqD7PPbT%2FCrafcQ5F0jxJ35a5Bbbs5yLhTKbWjM6ZDTT6cnRvoLvfnD6dT6CjJ6JwbqK1DpGAMBqh5BtnPY1OV4HVpAtclrMxEm%2BUWUtdSw92vHcpyG7hfBvNvEymOw%2BNC7JY5RRk1jauFqMlPIXvVfUKBAF6vgbEtkUxdR5SHJ1Nu1JonAAYeewz%2BEsP%2BvsnRhzFw8Y0shgkRXBSuPS08oK5pMzS7raPPoj492zmu7TKABoG6w7bMTfTzN%2BxVzyIXk%2BvkUbGGos848tzJz7gHqz1KEeY601BGKq%2F3oTebsLXzVCYKbf%2FBp5rOx9Z7%2F05TH9w07ugMqdIcMyaJ6JH9Y%2FppwiUkQCodFLAcBuLWAJ1rF%2FAqww%2BgNSCgwdnpjWCllBsOS4ZfIXB1ayYSmaz8NDsz7E8a%2BocqGmy9%2FdwqpxfglMkf6umF5YjZoCgj93108zaWb84togQG09XSoU895kbDWpHNXInKe0yMs3raEIPArj9bkKUv%2FRY7YzaCkEwKCAeiPZTuBJ9zo8jVwPLYWB2KxMBO7ccPAEvVkbjxR8krTiRmT%2Burw1cIz9JVAFP7qTfXz%2Fya5U6BtH3zDjs%2FbWBjqkAZIwk6p4x0xEj6Z6mHCEoorOwL1KhHHeiF5fhF3BD40WgwUW1soA3RIgls8%2B3GyLOp4vPx%2FmRVWo9mmAucEUuSYy0TVhLAfGEbdW6UM6O5u%2FlXdvr%2BxWMSg05pWynufHJLI%2BLDGf9zcA3NQisZqmXedvSZdUPeSzQisQKtOrC4VlV5Kg8Er6Mw%2BWXRNehOLXTaR%2Bt2aPvAa3GpnFD%2BnHucX10L7F&X-Amz-Signature=215815f8cd603ac00de43d7242a4a533640e519f59486c224adc00803943f27f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject#notion_record=block.404b06d2-63bc-81e7-92b1-fbd66662e83e.bb202fe9-e653-4278-8d2f-0d12906a5653)
+<empty-block/>
+## 경계 사례: 정확한 크기와 최소 크기
+**입력**
+```plain text
+1
+4
+ALLOC 1 1
+ALLOC 2 1
+FREE 1
+ALLOC 2 1
+
+```
+<empty-block/>
+**실제 출력 (표준 출력 원문)**
+```plain text
+전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 1: SUCCESS
+Memory map: [0-0, P1]
+ALLOC P2 1: FAIL
+Memory map: [0-0, P1]
+FREE P1: SUCCESS
+Memory map: [0-0, FREE]
+ALLOC P2 1: SUCCESS
+Memory map: [0-0, P2]
+
+```
+<table header-row="true">
+<tr>
+<td>입력 명령과 결과</td>
+<td>관찰한 메모리 지도</td>
+<td>상태 변화의 이유</td>
+</tr>
+<tr>
+<td>ALLOC 1 1 / SUCCESS</td>
+<td>\[0-0, P1\]</td>
+<td>유일한 1칸을 전부 배정하므로 남는 FREE 노드를 만들지 않는다.</td>
+</tr>
+<tr>
+<td>ALLOC 2 1 / FAIL</td>
+<td>\[0-0, P1\]</td>
+<td>사용 가능한 빈 블록이 없어 실패하며 P1의 상태가 유지된다.</td>
+</tr>
+<tr>
+<td>FREE 1 / SUCCESS</td>
+<td>\[0-0, FREE\]</td>
+<td>P1이 사용하던 노드는 0\~0의 FREE 노드가 된다. 헤드와는 병합하지 않는다.</td>
+</tr>
+<tr>
+<td>ALLOC 2 1 / SUCCESS</td>
+<td>\[0-0, P2\]</td>
+<td>반납된 1칸을 P2가 다시 배정받는다.</td>
+</tr>
+</table>
+결과 분석: 블록 크기와 요청 크기가 같으면 분할 없이 PID만 바꾸는 분기가 실행된다. 이때 크기 0인 FREE 노드가 생기지 않고 기존 블록 전체가 할당되는지 확인하기 위해 검사한다. 이 사례에서는 주소 0\~0의 한 칸을 할당하고, 공간 부족 실패 후 반납과 재할당까지 확인했다.
+관찰한 종료 코드: 0. 표준 오류 출력: 없음.
+<empty-block/>
+**실제 터미널 실행 화면**
+경계 사례: 정확한 크기와 최소 크기
+![Antigravity IDE 내장 터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다.](https://prod-files-secure.s3.us-west-2.amazonaws.com/bb202fe9-e653-4278-8d2f-0d12906a5653/358ed89c-cb9e-4e6b-b1f2-db7bfb88b4c3/hw2-case-04.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466TNXME3UE%2F20261025%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20261025T091553Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEO7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDnaIlGAxWTmR0N%2F%2F7USvc6AR8Q5Y74pv9c%2F28gj038lwIhAPLMT%2FzoCt6WatRquQzAo%2Fyeux2FLT6fEnH8vuhM322iKogECLf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNjM3NDIzMTgzODA1IgxW27fuv9GOgsr%2F9mcq3AMHjftHY08u%2Bq9bOSptgsUjZgxo7Tfwfiyve5BRj6%2BuyqD7PPbT%2FCrafcQ5F0jxJ35a5Bbbs5yLhTKbWjM6ZDTT6cnRvoLvfnD6dT6CjJ6JwbqK1DpGAMBqh5BtnPY1OV4HVpAtclrMxEm%2BUWUtdSw92vHcpyG7hfBvNvEymOw%2BNC7JY5RRk1jauFqMlPIXvVfUKBAF6vgbEtkUxdR5SHJ1Nu1JonAAYeewz%2BEsP%2BvsnRhzFw8Y0shgkRXBSuPS08oK5pMzS7raPPoj492zmu7TKABoG6w7bMTfTzN%2BxVzyIXk%2BvkUbGGos848tzJz7gHqz1KEeY601BGKq%2F3oTebsLXzVCYKbf%2FBp5rOx9Z7%2F05TH9w07ugMqdIcMyaJ6JH9Y%2FppwiUkQCodFLAcBuLWAJ1rF%2FAqww%2BgNSCgwdnpjWCllBsOS4ZfIXB1ayYSmaz8NDsz7E8a%2BocqGmy9%2FdwqpxfglMkf6umF5YjZoCgj93108zaWb84togQG09XSoU895kbDWpHNXInKe0yMs3raEIPArj9bkKUv%2FRY7YzaCkEwKCAeiPZTuBJ9zo8jVwPLYWB2KxMBO7ccPAEvVkbjxR8krTiRmT%2Burw1cIz9JVAFP7qTfXz%2Fya5U6BtH3zDjs%2FbWBjqkAZIwk6p4x0xEj6Z6mHCEoorOwL1KhHHeiF5fhF3BD40WgwUW1soA3RIgls8%2B3GyLOp4vPx%2FmRVWo9mmAucEUuSYy0TVhLAfGEbdW6UM6O5u%2FlXdvr%2BxWMSg05pWynufHJLI%2BLDGf9zcA3NQisZqmXedvSZdUPeSzQisQKtOrC4VlV5Kg8Er6Mw%2BWXRNehOLXTaR%2Bt2aPvAa3GpnFD%2BnHucX10L7F&X-Amz-Signature=ea1acbdf45449fc879d50d6dc869d5dbd0a09aa6a55d71daf495cb82fca40085&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject#notion_record=block.404b06d2-63bc-81b9-87cd-ee8fd287d29b.bb202fe9-e653-4278-8d2f-0d12906a5653)
+<empty-block/>
+## 선택 사례: First-Fit과 작은 빈 블록의 구분
+**입력**
+```plain text
+40
+7
+ALLOC 1 15
+ALLOC 2 5
+ALLOC 3 10
+ALLOC 4 10
+FREE 1
+FREE 3
+ALLOC 5 8
+
+```
+<empty-block/>
+**실제 출력 (표준 출력 원문)**
+```plain text
+전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 15: SUCCESS
+Memory map: [0-14, P1] <-> [15-39, FREE]
+ALLOC P2 5: SUCCESS
+Memory map: [0-14, P1] <-> [15-19, P2] <-> [20-39, FREE]
+ALLOC P3 10: SUCCESS
+Memory map: [0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, FREE]
+ALLOC P4 10: SUCCESS
+Memory map: [0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]
+FREE P1: SUCCESS
+Memory map: [0-14, FREE] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]
+FREE P3: SUCCESS
+Memory map: [0-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]
+ALLOC P5 8: SUCCESS
+Memory map: [0-7, P5] <-> [8-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]
+
+```
+<table header-row="true">
+<tr>
+<td>입력 명령과 결과</td>
+<td>관찰한 메모리 지도</td>
+<td>상태 변화의 이유</td>
+</tr>
+<tr>
+<td>ALLOC 1 15 / SUCCESS</td>
+<td>\[0-14, P1\] \<-\> \[15-39, FREE\]</td>
+<td>P1에 앞 15칸을 배정한다.</td>
+</tr>
+<tr>
+<td>ALLOC 2 5 / SUCCESS</td>
+<td>\[0-14, P1\] \<-\> \[15-19, P2\] \<-\> \[20-39, FREE\]</td>
+<td>P2에 다음 5칸을 배정한다.</td>
+</tr>
+<tr>
+<td>ALLOC 3 10 / SUCCESS</td>
+<td>\[0-14, P1\] \<-\> \[15-19, P2\] \<-\> \[20-29, P3\] \<-\> \[30-39, FREE\]</td>
+<td>P3에 다음 10칸을 배정한다.</td>
+</tr>
+<tr>
+<td>ALLOC 4 10 / SUCCESS</td>
+<td>\[0-14, P1\] \<-\> \[15-19, P2\] \<-\> \[20-29, P3\] \<-\> \[30-39, P4\]</td>
+<td>P4에 마지막 10칸을 배정한다.</td>
+</tr>
+<tr>
+<td>FREE 1 / SUCCESS</td>
+<td>\[0-14, FREE\] \<-\> \[15-19, P2\] \<-\> \[20-29, P3\] \<-\> \[30-39, P4\]</td>
+<td>앞쪽 0\~14를 빈 공간으로 만든다.</td>
+</tr>
+<tr>
+<td>FREE 3 / SUCCESS</td>
+<td>\[0-14, FREE\] \<-\> \[15-19, P2\] \<-\> \[20-29, FREE\] \<-\> \[30-39, P4\]</td>
+<td>P2와 P4 사이 20\~29도 빈 공간으로 만든다. 두 빈 블록은 P2 때문에 분리되어 있다.</td>
+</tr>
+<tr>
+<td>ALLOC 5 8 / SUCCESS</td>
+<td>\[0-7, P5\] \<-\> \[8-14, FREE\] \<-\> \[15-19, P2\] \<-\> \[20-29, FREE\] \<-\> \[30-39, P4\]</td>
+<td>8칸은 앞쪽 15칸 블록에서 배정된다. 뒤쪽 10칸이 더 작더라도 먼저 맞는 블록을 선택한다.</td>
+</tr>
+</table>
+결과 분석: First-Fit은 앞에서부터 요청을 만족하는 첫 블록인 15칸을 선택하고, Best-Fit은 요청을 만족하는 블록 중 가장 작은 10칸을 선택한다. 선택 결과가 다르므로 First-Fit으로 구현됐는지 확인할 수 있다. P5에는 0\~7을 할당하고, 남은 8\~14는 크기 7의 FREE 블록으로 유지한다. 뒤쪽 20\~29의 FREE 블록은 그대로 남는다.
+관찰한 종료 코드: 0. 표준 오류 출력: 없음.
+<empty-block/>
+**실제 터미널 실행 화면**
+![Antigravity IDE 내장 터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다.](https://prod-files-secure.s3.us-west-2.amazonaws.com/bb202fe9-e653-4278-8d2f-0d12906a5653/472477fc-8874-486b-afc8-0315b04184a1/hw2-case-05.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466TNXME3UE%2F20261025%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20261025T091553Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEO7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDnaIlGAxWTmR0N%2F%2F7USvc6AR8Q5Y74pv9c%2F28gj038lwIhAPLMT%2FzoCt6WatRquQzAo%2Fyeux2FLT6fEnH8vuhM322iKogECLf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNjM3NDIzMTgzODA1IgxW27fuv9GOgsr%2F9mcq3AMHjftHY08u%2Bq9bOSptgsUjZgxo7Tfwfiyve5BRj6%2BuyqD7PPbT%2FCrafcQ5F0jxJ35a5Bbbs5yLhTKbWjM6ZDTT6cnRvoLvfnD6dT6CjJ6JwbqK1DpGAMBqh5BtnPY1OV4HVpAtclrMxEm%2BUWUtdSw92vHcpyG7hfBvNvEymOw%2BNC7JY5RRk1jauFqMlPIXvVfUKBAF6vgbEtkUxdR5SHJ1Nu1JonAAYeewz%2BEsP%2BvsnRhzFw8Y0shgkRXBSuPS08oK5pMzS7raPPoj492zmu7TKABoG6w7bMTfTzN%2BxVzyIXk%2BvkUbGGos848tzJz7gHqz1KEeY601BGKq%2F3oTebsLXzVCYKbf%2FBp5rOx9Z7%2F05TH9w07ugMqdIcMyaJ6JH9Y%2FppwiUkQCodFLAcBuLWAJ1rF%2FAqww%2BgNSCgwdnpjWCllBsOS4ZfIXB1ayYSmaz8NDsz7E8a%2BocqGmy9%2FdwqpxfglMkf6umF5YjZoCgj93108zaWb84togQG09XSoU895kbDWpHNXInKe0yMs3raEIPArj9bkKUv%2FRY7YzaCkEwKCAeiPZTuBJ9zo8jVwPLYWB2KxMBO7ccPAEvVkbjxR8krTiRmT%2Burw1cIz9JVAFP7qTfXz%2Fya5U6BtH3zDjs%2FbWBjqkAZIwk6p4x0xEj6Z6mHCEoorOwL1KhHHeiF5fhF3BD40WgwUW1soA3RIgls8%2B3GyLOp4vPx%2FmRVWo9mmAucEUuSYy0TVhLAfGEbdW6UM6O5u%2FlXdvr%2BxWMSg05pWynufHJLI%2BLDGf9zcA3NQisZqmXedvSZdUPeSzQisQKtOrC4VlV5Kg8Er6Mw%2BWXRNehOLXTaR%2Bt2aPvAa3GpnFD%2BnHucX10L7F&X-Amz-Signature=788e7d7a204f29c4b576923e81c4dfa9631e7d7e02603f14d130af8397373071&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject#notion_record=block.404b06d2-63bc-818c-923f-c94137b59470.bb202fe9-e653-4278-8d2f-0d12906a5653)
+<empty-block/>
+## 실패 사례: 외부 단편화와 병합 후 재시도
+**입력**
+```plain text
+30
+8
+ALLOC 1 10
+ALLOC 2 10
+ALLOC 3 10
+FREE 1
+FREE 3
+ALLOC 4 15
+FREE 2
+ALLOC 4 30
+
+```
+**실제 출력 (표준 출력 원문)**
+```plain text
+전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 10: SUCCESS
+Memory map: [0-9, P1] <-> [10-29, FREE]
+ALLOC P2 10: SUCCESS
+Memory map: [0-9, P1] <-> [10-19, P2] <-> [20-29, FREE]
+ALLOC P3 10: SUCCESS
+Memory map: [0-9, P1] <-> [10-19, P2] <-> [20-29, P3]
+FREE P1: SUCCESS
+Memory map: [0-9, FREE] <-> [10-19, P2] <-> [20-29, P3]
+FREE P3: SUCCESS
+Memory map: [0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]
+ALLOC P4 15: FAIL
+Memory map: [0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]
+FREE P2: SUCCESS
+Memory map: [0-29, FREE]
+ALLOC P4 30: SUCCESS
+Memory map: [0-29, P4]
+
+```
+<table header-row="true">
+<tr>
+<td>입력 명령과 결과</td>
+<td>관찰한 메모리 지도</td>
+<td>상태 변화의 이유</td>
+</tr>
+<tr>
+<td>ALLOC 1 10 / SUCCESS</td>
+<td>\[0-9, P1\] \<-\> \[10-29, FREE\]</td>
+<td>P1에 0\~9를 배정한다.</td>
+</tr>
+<tr>
+<td>ALLOC 2 10 / SUCCESS</td>
+<td>\[0-9, P1\] \<-\> \[10-19, P2\] \<-\> \[20-29, FREE\]</td>
+<td>P2에 10\~19를 배정한다.</td>
+</tr>
+<tr>
+<td>ALLOC 3 10 / SUCCESS</td>
+<td>\[0-9, P1\] \<-\> \[10-19, P2\] \<-\> \[20-29, P3\]</td>
+<td>P3에 20\~29를 배정해 전체 공간이 사용 중이 된다.</td>
+</tr>
+<tr>
+<td>FREE 1 / SUCCESS</td>
+<td>\[0-9, FREE\] \<-\> \[10-19, P2\] \<-\> \[20-29, P3\]</td>
+<td>앞쪽 10칸을 반납한다.</td>
+</tr>
+<tr>
+<td>FREE 3 / SUCCESS</td>
+<td>\[0-9, FREE\] \<-\> \[10-19, P2\] \<-\> \[20-29, FREE\]</td>
+<td>뒤쪽 10칸을 반납한다. 가운데 P2 때문에 빈 공간은 합쳐지지 않는다.</td>
+</tr>
+<tr>
+<td>ALLOC 4 15 / FAIL</td>
+<td>\[0-9, FREE\] \<-\> \[10-19, P2\] \<-\> \[20-29, FREE\]</td>
+<td>빈 공간의 합은 20이지만 가장 큰 연속 빈 블록은 10이므로 15칸 요청이 실패한다.</td>
+</tr>
+<tr>
+<td>FREE 2 / SUCCESS</td>
+<td>\[0-29, FREE\]</td>
+<td>P2를 반납하면서 양쪽 FREE와 병합되어 연속된 30칸이 된다.</td>
+</tr>
+<tr>
+<td>ALLOC 4 30 / SUCCESS</td>
+<td>\[0-29, P4\]</td>
+<td>병합된 30칸과 요청 30칸이 정확히 같아 전체 구간을 P4에 배정한다.</td>
+</tr>
+</table>
+결과 분석: 전체 빈 공간은 20칸이지만 P2가 사이에 있어서 각각 10칸씩 나뉘어 있다. 15칸 이상의 연속된 빈 블록이 없으므로 할당에 실패한다. 이후 P2도 해제하면 세 구간이 합쳐져 연속된 30칸이 되며, 마지막 30칸 요청이 성공한다.
+관찰한 종료 코드: 0. 표준 오류 출력: 없음.
+<empty-block/>
+**실제 터미널 실행 화면**
+![Antigravity IDE 내장 터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다.](https://prod-files-secure.s3.us-west-2.amazonaws.com/bb202fe9-e653-4278-8d2f-0d12906a5653/4ef92a0c-7e89-4b3d-966e-7978d13277d9/hw2-case-06.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB466TNXME3UE%2F20261025%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20261025T091553Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEO7%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJIMEYCIQDnaIlGAxWTmR0N%2F%2F7USvc6AR8Q5Y74pv9c%2F28gj038lwIhAPLMT%2FzoCt6WatRquQzAo%2Fyeux2FLT6fEnH8vuhM322iKogECLf%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNjM3NDIzMTgzODA1IgxW27fuv9GOgsr%2F9mcq3AMHjftHY08u%2Bq9bOSptgsUjZgxo7Tfwfiyve5BRj6%2BuyqD7PPbT%2FCrafcQ5F0jxJ35a5Bbbs5yLhTKbWjM6ZDTT6cnRvoLvfnD6dT6CjJ6JwbqK1DpGAMBqh5BtnPY1OV4HVpAtclrMxEm%2BUWUtdSw92vHcpyG7hfBvNvEymOw%2BNC7JY5RRk1jauFqMlPIXvVfUKBAF6vgbEtkUxdR5SHJ1Nu1JonAAYeewz%2BEsP%2BvsnRhzFw8Y0shgkRXBSuPS08oK5pMzS7raPPoj492zmu7TKABoG6w7bMTfTzN%2BxVzyIXk%2BvkUbGGos848tzJz7gHqz1KEeY601BGKq%2F3oTebsLXzVCYKbf%2FBp5rOx9Z7%2F05TH9w07ugMqdIcMyaJ6JH9Y%2FppwiUkQCodFLAcBuLWAJ1rF%2FAqww%2BgNSCgwdnpjWCllBsOS4ZfIXB1ayYSmaz8NDsz7E8a%2BocqGmy9%2FdwqpxfglMkf6umF5YjZoCgj93108zaWb84togQG09XSoU895kbDWpHNXInKe0yMs3raEIPArj9bkKUv%2FRY7YzaCkEwKCAeiPZTuBJ9zo8jVwPLYWB2KxMBO7ccPAEvVkbjxR8krTiRmT%2Burw1cIz9JVAFP7qTfXz%2Fya5U6BtH3zDjs%2FbWBjqkAZIwk6p4x0xEj6Z6mHCEoorOwL1KhHHeiF5fhF3BD40WgwUW1soA3RIgls8%2B3GyLOp4vPx%2FmRVWo9mmAucEUuSYy0TVhLAfGEbdW6UM6O5u%2FlXdvr%2BxWMSg05pWynufHJLI%2BLDGf9zcA3NQisZqmXedvSZdUPeSzQisQKtOrC4VlV5Kg8Er6Mw%2BWXRNehOLXTaR%2Bt2aPvAa3GpnFD%2BnHucX10L7F&X-Amz-Signature=149f1c86a167fde1adedb413d66014cd1ee0ae5af0c3cac227647e095cf74e34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject#notion_record=block.404b06d2-63bc-8148-889e-d80bfb1cbfca.bb202fe9-e653-4278-8d2f-0d12906a5653)
+<empty-block/>
+<empty-block/>
+# 전체 소스코드
+```c
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define FREE_PID (-1)
+#define HEAD_PID (-2)
+#define MAX_COMMANDS 10000
+#define COMMAND_LENGTH 16
+
+typedef struct MemoryBlock
+{
+    int start;
+    int size;
+    int pid;
+    struct MemoryBlock *prev;
+    struct MemoryBlock *next;
+} MemoryBlock;
+
+typedef struct
+{
+    MemoryBlock head;
+    int total_size;
+} MemoryList;
+
+int init_list(MemoryList *list, int total_size);
+MemoryBlock *create_block(int start, int size, int pid);
+void insert_after(MemoryBlock *position, MemoryBlock *new_block);
+void remove_block(MemoryBlock *removed);
+void destroy_list(MemoryList *list);
+void print_memory_map(const MemoryList *list);
+
+/* 학생 구현 함수 */
+MemoryBlock *find_first_fit(MemoryList *list, int size);
+MemoryBlock *find_process_block(MemoryList *list, int pid);
+int allocate_memory(MemoryList *list, int pid, int size);
+MemoryBlock *merge_free_blocks(MemoryList *list, MemoryBlock *current);
+int release_memory(MemoryList *list, int pid);
+
+int init_list(MemoryList *list, int total_size)
+{
+    MemoryBlock *initial_block;
+
+    if (list == NULL || total_size <= 0)
+    {
+        return 0;
+    }
+
+    list->head.start = -1;
+    list->head.size = 0;
+    list->head.pid = HEAD_PID;
+    list->head.prev = &list->head;
+    list->head.next = &list->head;
+    list->total_size = total_size;
+
+    initial_block = create_block(0, total_size, FREE_PID);
+    if (initial_block == NULL)
+    {
+        list->total_size = 0;
+        return 0;
+    }
+
+    insert_after(&list->head, initial_block);
+    return 1;
+}
+
+MemoryBlock *create_block(int start, int size, int pid)
+{
+    MemoryBlock *block;
+
+    block = (MemoryBlock *)malloc(sizeof(MemoryBlock));
+    if (block == NULL)
+    {
+        return NULL;
+    }
+
+    block->start = start;
+    block->size = size;
+    block->pid = pid;
+    block->prev = NULL;
+    block->next = NULL;
+    return block;
+}
+
+void insert_after(MemoryBlock *position, MemoryBlock *new_block)
+{
+    if (position == NULL || new_block == NULL)
+    {
+        return;
+    }
+
+    new_block->prev = position;
+    new_block->next = position->next;
+    position->next->prev = new_block;
+    position->next = new_block;
+}
+
+void remove_block(MemoryBlock *removed)
+{
+    if (removed == NULL || removed->pid == HEAD_PID ||
+        removed->prev == NULL || removed->next == NULL)
+    {
+        return;
+    }
+
+    removed->prev->next = removed->next;
+    removed->next->prev = removed->prev;
+    removed->prev = NULL;
+    removed->next = NULL;
+    free(removed);
+}
+
+void destroy_list(MemoryList *list)
+{
+    if (list == NULL)
+    {
+        return;
+    }
+
+    while (list->head.next != &list->head)
+    {
+        remove_block(list->head.next);
+    }
+
+    list->head.prev = &list->head;
+    list->head.next = &list->head;
+    list->total_size = 0;
+}
+
+void print_memory_map(const MemoryList *list)
+{
+    const MemoryBlock *block;
+
+    if (list == NULL)
+    {
+        return;
+    }
+
+    printf("Memory map: ");
+    block = list->head.next;
+    while (block != &list->head)
+    {
+        printf("[%d-%d, ", block->start, block->start + block->size - 1);
+        if (block->pid == FREE_PID)
+        {
+            printf("FREE]");
+        }
+        else
+        {
+            printf("P%d]", block->pid);
+        }
+
+        block = block->next;
+        if (block != &list->head)
+        {
+            printf(" <-> ");
+        }
+    }
+    printf("\n");
+}
+
+MemoryBlock *find_first_fit(MemoryList *list, int size)
+{
+    MemoryBlock *current;
+
+    if (list == NULL || size <= 0)
+    {
+        return NULL;
+    }
+
+    current = list->head.next;
+    while (current != &list->head)
+    {
+        if (current->pid == FREE_PID && current->size >= size)
+        {
+            return current;
+        }
+        current = current->next;
+    }
+    return NULL;
+}
+
+MemoryBlock *find_process_block(MemoryList *list, int pid)
+{
+    MemoryBlock *current;
+
+    if (list == NULL || pid <= 0)
+    {
+        return NULL;
+    }
+
+    current = list->head.next;
+    while (current != &list->head)
+    {
+        if (current->pid == pid)
+        {
+            return current;
+        }
+        current = current->next;
+    }
+    return NULL;
+}
+
+int allocate_memory(MemoryList *list, int pid, int size)
+{
+    if (list == NULL || pid <= 0 || size <= 0)
+    {
+        return 0;
+    }
+    if (find_process_block(list, pid) != NULL)
+    {
+        return 0;
+    }
+
+    MemoryBlock *block = find_first_fit(list, size);
+    if (block == NULL)
+    {
+        return 0;
+    }
+    if (block->size == size)
+    {
+        block->pid = pid;
+        return 1;
+    }
+
+    MemoryBlock *remaining = create_block(block->start + size,
+                                          block->size - size, FREE_PID);
+    if (remaining == NULL)
+    {
+        return 0;
+    }
+    block->size = size;
+    block->pid = pid;
+    insert_after(block, remaining);
+    return 1;
+}
+
+MemoryBlock *merge_free_blocks(MemoryList *list, MemoryBlock *current)
+{
+    MemoryBlock *previous;
+    MemoryBlock *next;
+
+    if (list == NULL || current == NULL ||
+        current == &list->head || current->pid != FREE_PID)
+    {
+        return current;
+    }
+
+    previous = current->prev;
+    if (previous != &list->head && previous->pid == FREE_PID)
+    {
+        previous->size += current->size;
+        remove_block(current);
+        /* current가 삭제되었으므로 살아 있는 이전 노드를 기준으로 바꾼다. */
+        current = previous;
+    }
+
+    next = current->next;
+    if (next != &list->head && next->pid == FREE_PID)
+    {
+        current->size += next->size;
+        remove_block(next);
+    }
+
+    return current;
+}
+
+int release_memory(MemoryList *list, int pid)
+{
+    if (list == NULL || pid <= 0)
+    {
+        return 0;
+    }
+    MemoryBlock *block = find_process_block(list, pid);
+    if (block == NULL)
+    {
+        return 0;
+    }
+    block->pid = FREE_PID;
+    merge_free_blocks(list, block);
+    return 1;
+}
+
+int main(void)
+{
+    MemoryList memory;
+    char command[COMMAND_LENGTH];
+    int total_size;
+    int command_count;
+    int i;
+    int pid;
+    int size;
+    int result;
+
+    printf("전체 메모리 크기를 입력하세요: ");
+    if (scanf("%d", &total_size) != 1 || total_size <= 0)
+    {
+        printf("잘못된 전체 메모리 크기입니다.\n");
+        return 0;
+    }
+
+    if (!init_list(&memory, total_size))
+    {
+        printf("메모리 리스트를 초기화할 수 없습니다.\n");
+        return 0;
+    }
+
+    printf("명령의 개수를 입력하세요: ");
+    if (scanf("%d", &command_count) != 1 ||
+        command_count < 0 || command_count > MAX_COMMANDS)
+    {
+        printf("잘못된 명령 개수입니다.\n");
+        destroy_list(&memory);
+        return 0;
+    }
+
+    for (i = 0; i < command_count; ++i)
+    {
+        if (scanf("%15s", command) != 1)
+        {
+            printf("명령을 읽을 수 없습니다.\n");
+            break;
+        }
+
+        if (strcmp(command, "ALLOC") == 0)
+        {
+            if (scanf("%d %d", &pid, &size) != 2)
+            {
+                printf("ALLOC 명령 형식이 잘못되었습니다.\n");
+                break;
+            }
+            result = allocate_memory(&memory, pid, size);
+            printf("ALLOC P%d %d: %s\n",
+                   pid, size, result ? "SUCCESS" : "FAIL");
+        }
+        else if (strcmp(command, "FREE") == 0)
+        {
+            if (scanf("%d", &pid) != 1)
+            {
+                printf("FREE 명령 형식이 잘못되었습니다.\n");
+                break;
+            }
+            result = release_memory(&memory, pid);
+            printf("FREE P%d: %s\n",
+                   pid, result ? "SUCCESS" : "FAIL");
+        }
+        else
+        {
+            printf("알 수 없는 명령입니다: %s\n", command);
+        }
+        print_memory_map(&memory);
+    }
+
+    destroy_list(&memory);
+    return 0;
+}
+
+```
