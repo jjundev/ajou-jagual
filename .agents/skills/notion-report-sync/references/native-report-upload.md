@@ -60,8 +60,8 @@ Read the complete remote tree, including paginated table rows and nested childre
 | Structure | Exactly one gray native TOC for the course default, intended heading levels and unnumbered titles, bold repeated execution labels, exact empty-block counts at every required chapter/case boundary including the last case |
 | Page settings | Live UI evidence and reload confirmation for font, small text and full width; content-based per-table column widths checked for readability |
 | Download | Fresh complete Markdown saved to a separate path using common `pull`, with previous-download diff before local-report diff and backups when changed |
-| Deliverable states | Notion uploaded/formatted/verified, local PDF, Notion-exported PDF, cover merge, and submission recorded separately |
+| Deliverable states | Notion uploaded/formatted/verified, native HTML download, export-derived PDF printing/content/visual verification, native Notion PDF export, cover merge, and submission recorded separately |
 
-Mark upload and formatting complete only when all applicable checks are verified. If a check cannot be completed, report the page URL and the specific partial state. Do not call the local HTML-generated PDF a Notion export or claim PDF layout from this verification.
+Mark upload and formatting complete only when all applicable checks are verified. If a check cannot be completed, report the page URL and the specific partial state. Upload verification alone does not verify PDF layout. For requested report downloads or PDF output, continue with [HTML export to PDF](html-export-to-pdf.md); identify an export-derived PDF as **Notion HTML export → PDF**, and keep it distinct from both a locally authored HTML preview and Notion's native PDF export.
 
 Finish by linking the page and summarizing content/format verification and any incomplete PDF or submission steps. Do not regenerate local report prose or PDFs merely because the Notion Markdown serialization changed.

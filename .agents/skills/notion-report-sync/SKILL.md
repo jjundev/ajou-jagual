@@ -1,6 +1,6 @@
 ---
 name: notion-report-sync
-description: Use when uploading a course report to Notion, applying its report format, comparing it with local Markdown, editing specified report blocks, or adding image upload slots. Not for databases or PDF export.
+description: Use when uploading or editing a course report in Notion, applying its format, comparing local Markdown, adding image slots, or downloading its default-mode HTML and producing a verified A4 landscape PDF. Not for databases, cover creation, or cover merging.
 ---
 
 # Notion report sync
@@ -13,9 +13,15 @@ A request to upload the report includes applying the course's default report for
 
 Before uploading, read [Native report upload](references/native-report-upload.md). Upload editable native Notion blocks, including source/analysis tables and requested execution images. Markdown is the local manuscript and comparison artifact; this workflow does not import a Markdown file. Preserve the approved wording and authorship disclosures. Create the required heading hierarchy and blank-block spacing in the initial plan, rather than leaving formatting for a later request.
 
-The common [`scripts/notion_report.py`](scripts/notion_report.py) CLI provides **only `pull` and `edit`**, not upload/create/layout commands. Use its API client for an assignment-specific native upload following the reference; do not invent an upload CLI or run a historical assignment script unchanged. Prefer connected tools when they support the required operations; use the UI for settings or empty image slots unsupported by the API.
+The common [`scripts/notion_report.py`](scripts/notion_report.py) CLI provides **only `pull` and `edit`**, not upload/create/layout/export/print commands. Use its API client for an assignment-specific native upload following the reference; do not invent CLI commands or run a historical assignment script unchanged. Prefer connected tools when they support the required operations; use the UI for settings, exports, or empty image slots unsupported by available tools.
 
-Upload completion requires the reference's verification record: native content, code, images or slots, headings/spacing, live page settings and table widths, and a fresh Markdown download. For the course default, explicitly check the single gray TOC, direct explanation-cell text, every execution case's gaps, and consistent captions without duplicate case titles. Record each as verified, failed, or not verified with evidence. An incomplete setting or readback is partial completion, even when the page exists. Keep Notion upload, local PDF generation, Notion PDF export, cover merge, and actual submission as separate states.
+Upload completion requires the reference's verification record: native content, code, images or slots, headings/spacing, live page settings and table widths, and a fresh Markdown download. For the course default, explicitly check the single gray TOC, direct explanation-cell text, every execution case's gaps, and consistent captions without duplicate case titles. Record each as verified, failed, or not verified with evidence. An incomplete setting or readback is partial completion, even when the page exists. Keep Notion content verification, HTML export, export-derived PDF printing and verification, native Notion PDF export, cover merge, and actual submission as separate states.
+
+## Download HTML and produce a landscape PDF
+
+For a requested report export or complete HTML-to-PDF workflow, follow [HTML export to PDF](references/html-export-to-pdf.md). The course default is **verified Notion report → native HTML download in default mode with its assets → A4 landscape PDF print → content and visual verification**. Perform the export UI actions, file saving, safe extraction, printing, and checks directly with available tools; do not hand these steps to the user when the agent can complete them. Report a concrete access or authentication blocker if one prevents progress.
+
+An upload, comparison, wording edit, or image-slot request alone does not trigger PDF production. If the user requests only the HTML download, deliver the verified HTML bundle and stop there. For the complete workflow, preserve the downloaded ZIP and untouched extracted files, print a separate copy, and retain the existing PDF until its replacement is checked. Use the genuine Notion export rather than a locally authored report HTML. Describe the result as **Notion HTML export → A4 landscape PDF**, not Notion's native PDF export. Preserve default font/appearance, wording, code, indentation, order, links, and assets; adjust only print layout when needed.
 
 ## Pull and compare
 
@@ -54,4 +60,4 @@ Use the Notion editor for this operation: insert an image block with `/image` at
 
 Read the page again after editing. Confirm the expected number and order of `image` blocks at the intended positions, with empty `external.url`, and confirm the old text placeholders are gone. Notion's Markdown export represents these empty image blocks as `![]()`; that syntax alone does not prove their position or type, so verify the live blocks. Pull again to update the local Markdown. Later, the user can click **이미지 추가** on each block and choose **파일 업로드**.
 
-`과제/과제1/검토자료/notion_sync.py` contains historical HW1-only upload and table-migration commands. Use the common script for pull or targeted text edits across assignments, and the native-upload reference for new uploads. PDF export and separate cover merging are outside this skill; perform them only under the user's requested scope and the relevant workflow.
+`과제/과제1/검토자료/notion_sync.py` contains historical HW1-only upload and table-migration commands. Use the common script for pull or targeted text edits across assignments, the native-upload reference for new uploads, and the HTML export reference for requested downloads and PDF printing. Cover creation, cover merging, and actual submission remain separate requested work.

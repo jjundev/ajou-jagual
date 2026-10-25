@@ -1,0 +1,381 @@
+{
+  "page_id": "404b06d2-63bc-81cd-b588-d36e59ca3a77",
+  "status": "complete",
+  "actions": [
+    {
+      "block_id": "404b06d2-63bc-813e-b652-d3bdebacbf4f",
+      "operation": "edit",
+      "body": {
+        "paragraph": {
+          "rich_text": [
+            {
+              "type": "text",
+              "text": {
+                "content": "과제에 제시된 예제 3건과 정확한 크기의 할당, First-Fit 선택, 외부 단편화를 확인하는 실행 사례 3건을 정리했다. 각 사례에서 입력과 실제 출력, 실행 화면을 제시하고 메모리 지도가 변하는 이유를 분석한다.",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-8118-a0fd-e5c9c0b260af",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-8112-871a-d18af0b5a1f8",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-8125-b45e-c24cf5733c1c",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-814a-a013-de5c5030467e",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-8187-849a-f1bcfab7d930",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-8169-837f-fe707a933920",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-812b-80dc-f6f45f6db4ee",
+      "operation": "edit",
+      "body": {
+        "table_row": {
+          "cells": [
+            [
+              {
+                "type": "text",
+                "text": {
+                  "content": "int main(void)\n{\n    MemoryList memory;\n    char command[COMMAND_LENGTH];\n    int total_size;\n    int command_count;\n    int i;\n    int pid;\n    int size;\n    int result;\n\n    printf(\"전체 메모리 크기를 입력하세요: \");\n    if (scanf(\"%d\", &total_size) != 1 || total_size <= 0)\n    {\n        printf(\"잘못된 전체 메모리 크기입니다.\\n\");\n        return 0;\n    }\n\n    if (!init_list(&memory, total_size))\n    {\n        printf(\"메모리 리스트를 초기화할 수 없습니다.\\n\");\n        return 0;\n    }\n\n    printf(\"명령의 개수를 입력하세요: \");\n    if (scanf(\"%d\", &command_count) != 1 ||\n        command_count < 0 || command_count > MAX_COMMANDS)\n    {\n        printf(\"잘못된 명령 개수입니다.\\n\");\n        destroy_list(&memory);\n        return 0;\n    }\n\n",
+                  "link": null
+                },
+                "annotations": {
+                  "bold": false,
+                  "italic": false,
+                  "strikethrough": false,
+                  "underline": false,
+                  "code": false,
+                  "color": "default"
+                }
+              }
+            ],
+            [
+              {
+                "type": "text",
+                "text": {
+                  "content": "인자: 없음. 반환값: 종료 경로에서 0. 참조 데이터: 표준 입력의 크기·명령 개수·명령. 변경 상태: 지역 변수 memory가 보관하는 리스트와 표준 출력.\n\n전체 크기를 읽고 init_list를 호출한다. 이어 명령 개수를 0~MAX_COMMANDS 범위에서 확인한다. 리스트 생성 뒤 명령 개수가 잘못되면 destroy_list로 생성한 노드를 정리한 후 종료한다. 입력이 올바르면 각 명령을 순서대로 처리한다.",
+                  "link": null
+                },
+                "annotations": {
+                  "bold": false,
+                  "italic": false,
+                  "strikethrough": false,
+                  "underline": false,
+                  "code": false,
+                  "color": "default"
+                }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-8169-a983-f819002a2294",
+      "operation": "edit",
+      "body": {
+        "table_row": {
+          "cells": [
+            [
+              {
+                "type": "text",
+                "text": {
+                  "content": "        else if (strcmp(command, \"FREE\") == 0)\n        {\n            if (scanf(\"%d\", &pid) != 1)\n            {\n                printf(\"FREE 명령 형식이 잘못되었습니다.\\n\");\n                break;\n            }\n            result = release_memory(&memory, pid);\n            printf(\"FREE P%d: %s\\n\",\n                   pid, result ? \"SUCCESS\" : \"FAIL\");\n        }\n        else\n        {\n            printf(\"알 수 없는 명령입니다: %s\\n\", command);\n        }\n        print_memory_map(&memory);\n    }\n\n    destroy_list(&memory);\n    return 0;\n}",
+                  "link": null
+                },
+                "annotations": {
+                  "bold": false,
+                  "italic": false,
+                  "strikethrough": false,
+                  "underline": false,
+                  "code": false,
+                  "color": "default"
+                }
+              }
+            ],
+            [
+              {
+                "type": "text",
+                "text": {
+                  "content": "FREE이면 PID를 읽어 release_memory를 호출하고 결과를 출력한다. 인식하지 못한 명령은 안내 문구를 출력한다. 정상적으로 해석한 명령에서 기능이 실패해도 현재 지도를 출력하므로 상태 유지 여부를 비교할 수 있다. 반복문 종료 뒤 destroy_list로 남은 관리 노드를 해제한다. 명령마다 기능 실행과 지도 출력에 최악 O(n)이 든다. 입출력과 할당·해제 처리를 분리하면 입력 방식이 바뀌어도 같은 함수를 재사용할 수 있고, 각 함수를 따로 호출해 기능이 올바른지 검사하기 쉽다.",
+                  "link": null
+                },
+                "annotations": {
+                  "bold": false,
+                  "italic": false,
+                  "strikethrough": false,
+                  "underline": false,
+                  "code": false,
+                  "color": "default"
+                }
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-81c0-91ea-c28e03b67eed",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-8146-9280-e5c34c1b9b98",
+      "operation": "caption",
+      "body": {
+        "image": {
+          "caption": [
+            {
+              "type": "text",
+              "text": {
+                "content": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-81d7-af76-ff916fad0217",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-81f1-b087-e6852fe7aad0",
+      "operation": "caption",
+      "body": {
+        "image": {
+          "caption": [
+            {
+              "type": "text",
+              "text": {
+                "content": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-81ed-bd10-cb853bc38390",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-81e7-92b1-fbd66662e83e",
+      "operation": "caption",
+      "body": {
+        "image": {
+          "caption": [
+            {
+              "type": "text",
+              "text": {
+                "content": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-819b-b5b7-f381e21ca9dc",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-81b9-87cd-ee8fd287d29b",
+      "operation": "caption",
+      "body": {
+        "image": {
+          "caption": [
+            {
+              "type": "text",
+              "text": {
+                "content": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-81b0-b877-e2a9c0826b58",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-818c-923f-c94137b59470",
+      "operation": "caption",
+      "body": {
+        "image": {
+          "caption": [
+            {
+              "type": "text",
+              "text": {
+                "content": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-81fd-8b23-dccefc38d254",
+      "operation": "archive",
+      "body": {
+        "in_trash": true
+      }
+    },
+    {
+      "block_id": "404b06d2-63bc-8148-889e-d80bfb1cbfca",
+      "operation": "caption",
+      "body": {
+        "image": {
+          "caption": [
+            {
+              "type": "text",
+              "text": {
+                "content": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.",
+                "link": null
+              },
+              "annotations": {
+                "bold": false,
+                "italic": false,
+                "strikethrough": false,
+                "underline": false,
+                "code": false,
+                "color": "default"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "completed": [
+    "404b06d2-63bc-813e-b652-d3bdebacbf4f",
+    "404b06d2-63bc-8118-a0fd-e5c9c0b260af",
+    "404b06d2-63bc-8112-871a-d18af0b5a1f8",
+    "404b06d2-63bc-8125-b45e-c24cf5733c1c",
+    "404b06d2-63bc-814a-a013-de5c5030467e",
+    "404b06d2-63bc-8187-849a-f1bcfab7d930",
+    "404b06d2-63bc-8169-837f-fe707a933920",
+    "404b06d2-63bc-812b-80dc-f6f45f6db4ee",
+    "404b06d2-63bc-8169-a983-f819002a2294",
+    "404b06d2-63bc-81c0-91ea-c28e03b67eed",
+    "404b06d2-63bc-8146-9280-e5c34c1b9b98",
+    "404b06d2-63bc-81d7-af76-ff916fad0217",
+    "404b06d2-63bc-81f1-b087-e6852fe7aad0",
+    "404b06d2-63bc-81ed-bd10-cb853bc38390",
+    "404b06d2-63bc-81e7-92b1-fbd66662e83e",
+    "404b06d2-63bc-819b-b5b7-f381e21ca9dc",
+    "404b06d2-63bc-81b9-87cd-ee8fd287d29b",
+    "404b06d2-63bc-81b0-b877-e2a9c0826b58",
+    "404b06d2-63bc-818c-923f-c94137b59470",
+    "404b06d2-63bc-81fd-8b23-dccefc38d254",
+    "404b06d2-63bc-8148-889e-d80bfb1cbfca"
+  ],
+  "pending": null,
+  "non_target_content_unchanged": true,
+  "images": 6,
+  "notion_pdf_exported": false,
+  "readback_note": "Canonical comparison ignores derived plain_text/href; writable text, annotations, links, children, and file paths match expected edits exactly."
+}

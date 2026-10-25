@@ -1,0 +1,1326 @@
+<html><head><base href="file:///Users/hyunjun_macbook_pro/Documents/Univ/%E1%84%8C%E1%85%A1%E1%84%80%E1%85%AE%E1%84%8B%E1%85%A1%E1%86%AF/%EA%B3%BC%EC%A0%9C/%EA%B3%BC%EC%A0%9C2/%EA%B2%80%ED%86%A0%EC%9E%90%EB%A3%8C/Notion_HTML_%EB%82%B4%EB%B3%B4%EB%82%B4%EA%B8%B0_20261025/%EC%9B%90%EB%B3%B8/"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>HW2: 프로세스 메모리 관리 보고서</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+	/* Paint a complete callout box on every PDF page fragment. */
+	-webkit-box-decoration-break: clone;
+	box-decoration-break: clone;
+}
+
+/* For default-background callouts, render the border outline. */
+.callout.block-color-default_background {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+/*
+ * Toggles and callouts hold arbitrary content, so they can easily be taller
+ * than a page. They must stay breakable: avoiding breaks inside them makes
+ * Chromium push the whole block onto the next page, which leaves the previous
+ * page mostly empty before every long toggle.
+ */
+details,
+aside {
+	margin: 1.25em 0;
+}
+
+/* Keep a toggle's title on the same page as the start of its content. */
+summary {
+	page-break-after: avoid;
+	break-after: avoid;
+}
+
+/*
+ * Toggle headings render as <h1/h2/h3 style="display:inline-block"> inside
+ * <summary>. Without this reset, the heading's margin-top pushes it below the
+ * ::marker (▼), so the triangle and the title appear on separate lines.
+ */
+summary h1,
+summary h2,
+summary h3,
+summary h4 {
+	margin-top: 0;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding-inline: 0.125rem;
+	padding-block: 0.375rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+/*
+ * Render emoji icons using a ::before pseudo-element to keep the glyph
+ * out of the DOM textContent traversal. This avoids double-rendering icons
+ * in callouts and page titles.
+ * NOTE(slim/html-export-pseudo-icons): I can't tagref this because it will
+ * flag as a duplicate tag after codegen.
+ */
+.icon[data-emoji]::before {
+	content: attr(data-emoji);
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	margin-right: 0.4em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.tab {
+	margin: 1.25em 0;
+	padding-inline: 1rem;
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><style id="a4-landscape-print">
+@page { size: A4 landscape; margin: 14mm; }
+@media print {
+ html { font-size: 13.333px; }
+ body { margin: 0 !important; padding: 0; color: rgb(55,53,47); font-size: 10pt; line-height: 1.4; }
+ article.page { width: 100%; max-width: none; }
+ h1 { font-size: 16pt; break-after: avoid; }
+ h2 { font-size: 12pt; break-after: avoid; }
+ h3 { font-size: 10.5pt; break-after: avoid; }
+ .page-title { font-size: 22pt; }
+ .table_of_contents { font-size: 9pt; columns: 2; column-gap: 20pt; }
+ .table_of_contents-item { break-inside: avoid; }
+ .page-body > .first-chapter, .page-body > .chapter-first-section { break-before: auto; }
+ table { width: 100%; table-layout: fixed; }
+ .simple-table { font-size: 8.7pt; }
+ th,td { min-width: 0 !important; overflow-wrap: anywhere; vertical-align: top; line-height: 1.4; }
+ tr { break-inside: avoid; }
+ thead { display: table-header-group; }
+ .page-body > h1, .page-body > h2 { break-before: page; }
+ .page-body > h1 + p + h2 { break-before: auto; }
+ h2 + p, .page-body > p:has(+ figure.image), .page-body > p:has(+ pre) { break-after: avoid; }
+ .code { break-inside: avoid; }
+ .code.language-c { break-inside: auto; }
+ figure:has(table) { break-inside: auto; page-break-inside: auto; }
+ .code { font-size: 8.2pt; line-height: 1.35; white-space: pre-wrap; overflow-wrap: anywhere; break-inside: auto; }
+ figure.image { break-inside: avoid; page-break-inside: avoid; }
+ figure.image img { max-width: 100%; max-height: 152mm; width: auto; height: auto; object-fit: contain; }
+ figcaption { font-size: 8.5pt; }
+ p { orphans: 2; widows: 2; }
+}
+</style></head><body><article id="404b06d2-63bc-81cd-b588-d36e59ca3a77" class="page sans"><header><h1 class="page-title" dir="auto">HW2: 프로세스 메모리 관리 보고서</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><nav id="404b06d2-63bc-8073-b39f-c604d4a16374" class="block-color-gray table_of_contents" data-notion-highlight="gray" data-notion-toc="" dir="ltr"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#404b06d2-63bc-81bc-85e4-ffa036352a13">구현 목적</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#404b06d2-63bc-81e5-b913-e0f7841438a3">소스코드 분석</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-81e6-b095-c53866b5c759">헤더·상수·구조체·함수 원형</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-81cc-8cd5-c5872f1b1281">init_list</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-8157-b92e-d65ebaa8e8d0">create_block</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-816b-bda1-c537763f0304">insert_after</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-8148-be56-da73379beb1f">remove_block</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-8160-af4e-c235a2abf217">destroy_list</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-8189-b7c8-c255c6c25e99">print_memory_map</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-819c-b97e-e6c25eeaa5d2">find_first_fit</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-816d-8b07-c808c8c3a1d4">find_process_block</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-8123-9bbf-fe54a89d663e">allocate_memory</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-810d-9141-c5ce8939ac73">merge_free_blocks</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-814a-bb95-f03c34a9c11a">release_memory</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-8125-8346-e022392dd1ad">main</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#404b06d2-63bc-81ed-8095-f2ba8f10d249">실행결과 및 분석</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-814e-9981-eab5ab4be166">공식 예제 1: 연속 할당과 분할</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-8194-974d-c7a8ab3ca887">공식 예제 2: 반납과 양쪽 병합</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-819f-80fb-e86d03d8892d">공식 예제 3: 할당 실패와 예외 처리</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-81ec-96e1-f205d1ebbe21">경계 사례: 정확한 크기와 최소 크기</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-8154-9a0c-df474ff85185">선택 사례: First-Fit과 작은 빈 블록의 구분</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#404b06d2-63bc-8188-b328-c00978c641d6">실패 사례: 외부 단편화와 병합 후 재시도</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#404b06d2-63bc-819d-9051-ec655ad663b9">전체 소스코드</a></div></nav><p id="404b06d2-63bc-8132-8282-f9bd802147e7" class="" dir="auto">
+</p><h1 id="404b06d2-63bc-81bc-85e4-ffa036352a13" class="first-chapter" dir="auto">구현 목적</h1><p id="404b06d2-63bc-81b9-8ff6-c8e872304b12" class="" dir="auto">메모리를 원형 이중 연결 리스트로 표현하며 각 노드는 한 구간을 기록한다. 할당 시 First-Fit으로 요청 크기 이상인 첫 빈 블록을 찾는다. 공간이 더 크면 할당 부분과 남는 부분으로 나눈다. 해제 시 FREE로 바꾸고 인접한 빈 블록과 합친다. 실패하면 기존 메모리 지도를 유지한다.</p><p id="404b06d2-63bc-8186-8af9-cae822300b33" class="" dir="auto">
+</p><p id="404b06d2-63bc-8132-98a9-c48ea66658d3" class="" dir="auto">
+</p><h1 id="404b06d2-63bc-81e5-b913-e0f7841438a3" class="" dir="auto">소스코드 분석</h1><p id="404b06d2-63bc-812c-b16b-e3204935286f" class="" dir="auto">HW2_skeleton.c의 헤더·상수·구조체·함수 원형과 제공 함수 6개 및 main을 유지하고, TODO였던 함수 5개를 채운 HW2.c를 분석한다. 리스트가 나타내는 주소는 관리 대상의 가상 주소이며, 실제 동적 메모리는 이를 기록하는 노드에 사용된다.</p><h2 id="404b06d2-63bc-81e6-b095-c53866b5c759" class="chapter-first-section" dir="auto">헤더·상수·구조체·함수 원형</h2><table id="404b06d2-63bc-818f-a1df-d403256ef4a9" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8132-a37f-cd879907bceb" dir="ltr"><th id="SU}t" class="simple-table-header-color simple-table-header" style="width: 52.518%;">소스코드</th><th id="oqzt" class="simple-table-header-color simple-table-header" style="width: 47.482%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-811d-915a-cd43a15947d1" dir="ltr"><td id="SU}t" class="" style="width: 52.518%;">#define _CRT_SECURE_NO_WARNINGS<br><br>#include &lt;stdio.h&gt;<br>#include &lt;stdlib.h&gt;<br>#include &lt;string.h&gt;<br><br>#define FREE_PID (-1)<br>#define HEAD_PID (-2)<br>#define MAX_COMMANDS 10000<br>#define COMMAND_LENGTH 16<br><br></td><td id="oqzt" class="" style="width: 47.482%;">stdio.h는 scanf와 printf를 사용해 입력을 받고 결과를 출력하기 위해 필요하다. stdlib.h는 malloc과 free로 노드를 생성하고 해제하는 데 필요하고, string.h는 strcmp로 입력 명령이 ALLOC인지 FREE인지 비교하는 데 필요하다.<br><br>_CRT_SECURE_NO_WARNINGS는 MSVC의 관련 보안 경고를 억제하는 매크로이며 입력을 검증하거나 안전성을 보장하는 기능은 아니다.<br><br>FREE_PID(-1)는 빈 블록, HEAD_PID(-2)는 헤드의 표식이다. 실제 PID는 양수다. MAX_COMMANDS(10000)는 명령 개수 상한이고, COMMAND_LENGTH(16)는 명령 문자열의 저장 공간이다. scanf의 %15s와 결합해 널 문자 한 칸을 남긴다.</td></tr><tr id="404b06d2-63bc-816c-8ce2-fc088217b744" dir="ltr"><td id="SU}t" class="" style="width: 52.518%;">typedef struct MemoryBlock<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;int start;<br>&nbsp;&nbsp;&nbsp;&nbsp;int size;<br>&nbsp;&nbsp;&nbsp;&nbsp;int pid;<br>&nbsp;&nbsp;&nbsp;&nbsp;struct MemoryBlock *prev;<br>&nbsp;&nbsp;&nbsp;&nbsp;struct MemoryBlock *next;<br>} MemoryBlock;<br><br></td><td id="oqzt" class="" style="width: 47.482%;">제공된 MemoryBlock에서 start는 블록의 시작 주소, size는 크기, pid는 사용 중인 프로세스 번호나 FREE 상태를 나타낸다. prev와 next는 이전·다음 노드를 가리켜 리스트를 양방향으로 연결한다. 끝 주소는 start + size - 1이다.<br><br>노드의 앞뒤 순서는 주소 순서와 일치한다. 빈 구간도 FREE_PID를 가진 노드로 기록하므로 사용 중인 구간과 빈 구간을 모두 리스트에서 추적할 수 있다.</td></tr><tr id="404b06d2-63bc-8180-9b0d-de93723d07ae" dir="ltr"><td id="SU}t" class="" style="width: 52.518%;">typedef struct<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock head;<br>&nbsp;&nbsp;&nbsp;&nbsp;int total_size;<br>} MemoryList;<br><br></td><td id="oqzt" class="" style="width: 47.482%;">제공된 MemoryList는 기준 노드 head 자체와 전체 크기 total_size를 포함한다. head는 실제 할당 대상이 아니고 원형 리스트의 시작과 끝을 구분한다.<br><br>실제 노드가 하나도 없을 때 head.prev와 head.next는 head 자신을 가리킨다. 별도의 파일 범위 전역 상태 변수는 없으며 main의 지역 변수 memory를 포인터로 전달해 상태를 공유한다.</td></tr><tr id="404b06d2-63bc-81c0-94d7-dec4e66e4ce8" dir="ltr"><td id="SU}t" class="" style="width: 52.518%;">int init_list(MemoryList *list, int total_size);<br>MemoryBlock *create_block(int start, int size, int pid);<br>void insert_after(MemoryBlock *position, MemoryBlock *new_block);<br>void remove_block(MemoryBlock *removed);<br>void destroy_list(MemoryList *list);<br>void print_memory_map(const MemoryList *list);<br><br>/* 학생 구현 함수 */<br>MemoryBlock *find_first_fit(MemoryList *list, int size);<br>MemoryBlock *find_process_block(MemoryList *list, int pid);<br>int allocate_memory(MemoryList *list, int pid, int size);<br>MemoryBlock *merge_free_blocks(MemoryList *list, MemoryBlock *current);<br>int release_memory(MemoryList *list, int pid);<br><br></td><td id="oqzt" class="" style="width: 47.482%;">앞의 6개는 리스트 생성·삽입·삭제·정리·출력을 담당하는 제공 함수다. 뒤의 5개는 탐색·할당·병합·반납을 담당하는 구현 대상 함수다. 선언한 함수 형식과 자료구조는 유지하고 추가 함수는 만들지 않았다.<br><br>리스트 포인터를 받은 함수가 같은 상태를 참조한다. print_memory_map의 const는 출력 함수가 전달받은 리스트를 수정하지 않는 용도를 나타낸다. 각 함수의 실제 변경 상태와 반환값은 다음 항목에서 구분한다.</td></tr></tbody></table><p id="404b06d2-63bc-8159-8d59-efab5d899c8f" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-81cc-8cd5-c5872f1b1281" class="" dir="auto">init_list</h2><p id="404b06d2-63bc-8153-8a1e-ddbc28070e95" class="" dir="auto">제공 함수</p><table id="404b06d2-63bc-81c8-b19c-e4a5570a3aca" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-81e9-8be3-d5f27e799130" dir="ltr"><th id="]`cT" class="simple-table-header-color simple-table-header" style="width: 45.9002%;">소스코드</th><th id="z[^Y" class="simple-table-header-color simple-table-header" style="width: 54.0998%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-81bf-9f80-e4f35bd498c9" dir="ltr"><td id="]`cT" class="" style="width: 45.9002%;">int init_list(MemoryList *list, int total_size)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock *initial_block;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if (list == NULL || total_size &lt;= 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;head.start = -1;<br>&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;head.size = 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;head.pid = HEAD_PID;<br>&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;head.prev = &amp;list-&gt;head;<br>&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;head.next = &amp;list-&gt;head;<br>&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;total_size = total_size;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;initial_block = create_block(0, total_size, FREE_PID);<br>&nbsp;&nbsp;&nbsp;&nbsp;if (initial_block == NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;total_size = 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;insert_after(&amp;list-&gt;head, initial_block);<br>&nbsp;&nbsp;&nbsp;&nbsp;return 1;<br>}</td><td id="z[^Y" class="" style="width: 54.0998%;">인자: 초기화할 MemoryList 포인터와 전체 크기. 반환값: 성공 1, 잘못된 인자나 초기 노드 생성 실패 시 0. 변경 상태: 헤드의 연결, total_size, 초기 FREE 블록.<br><br>헤드는 실제 주소 구간을 나타내지 않는 기준 노드다. 먼저 prev와 next를 자기 자신으로 설정해 빈 원형 리스트를 만든다. 아직 어떤 프로세스에도 할당하지 않았으므로 전체 메모리가 하나의 연속된 빈 공간이다. 따라서 시작 주소 0, 크기 total_size인 FREE 블록 하나로 표현한다.<br><br>초기 블록을 만들지 못하면 total_size를 0으로 되돌리고 실패를 반환한다. 헤드만 자기 자신을 가리키는 상태이므로 불완전한 실제 블록이 리스트에 남지 않는다.</td></tr></tbody></table><p id="404b06d2-63bc-816d-a786-c9c3f19f7f37" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-8157-b92e-d65ebaa8e8d0" class="" dir="auto">create_block</h2><p id="404b06d2-63bc-818e-bae2-e455219eef72" class="" dir="auto">제공 함수</p><table id="404b06d2-63bc-8157-bd19-f5a0485e2478" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8139-8840-df669b7261c2" dir="ltr"><th id="x@fS" class="simple-table-header-color simple-table-header" style="width: 39.9287%;">소스코드</th><th id="Cxcs" class="simple-table-header-color simple-table-header" style="width: 60.0713%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-81c8-bce1-d8b30cec1d4a" dir="ltr"><td id="x@fS" class="" style="width: 39.9287%;">MemoryBlock *create_block(int start, int size, int pid)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock *block;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;block = (MemoryBlock *)malloc(sizeof(MemoryBlock));<br>&nbsp;&nbsp;&nbsp;&nbsp;if (block == NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return NULL;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;start = start;<br>&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;size = size;<br>&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;pid = pid;<br>&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;prev = NULL;<br>&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;next = NULL;<br>&nbsp;&nbsp;&nbsp;&nbsp;return block;<br>}</td><td id="Cxcs" class="" style="width: 60.0713%;">인자: 시작 주소, 크기, PID. 반환값: 생성한 MemoryBlock 포인터 또는 NULL. 변경 상태: 성공 시 노드 한 개를 동적 생성한다. 리스트 연결은 변경하지 않는다.<br><br>malloc으로 확보하는 것은 프로세스가 사용할 size칸의 실제 RAM이 아니라, start·size·pid와 링크를 보관하는 관리 노드의 저장 공간이다. 따라서 요청량과 관계없이 sizeof(MemoryBlock)만큼 생성한다.<br><br>malloc이 메모리 확보에 실패하면 NULL을 반환하므로 먼저 확인해야 한다. NULL인 상태에서 노드의 필드에 접근하면 유효하지 않은 메모리에 접근하는 문제가 생기며, C에서는 정의되지 않은 동작이다. 생성 성공 후 prev와 next는 NULL로 초기화하고, 실제 리스트 연결은 insert_after가 담당한다.</td></tr></tbody></table><p id="404b06d2-63bc-8125-8755-ecdc9d68d401" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-816b-bda1-c537763f0304" class="" dir="auto">insert_after</h2><p id="404b06d2-63bc-81ce-b6f2-f4aa4b70a504" class="" dir="auto">제공 함수</p><table id="404b06d2-63bc-8145-a20b-eb7cf74142d4" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8124-aa87-d7ab4970771e" dir="ltr"><th id="&gt;UjZ" class="simple-table-header-color simple-table-header" style="width: 51.1714%;">소스코드</th><th id="JFdM" class="simple-table-header-color simple-table-header" style="width: 48.8286%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-8174-bcd2-cb64561f021a" dir="ltr"><td id="&gt;UjZ" class="" style="width: 51.1714%;">void insert_after(MemoryBlock *position, MemoryBlock *new_block)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;if (position == NULL || new_block == NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;new_block-&gt;prev = position;<br>&nbsp;&nbsp;&nbsp;&nbsp;new_block-&gt;next = position-&gt;next;<br>&nbsp;&nbsp;&nbsp;&nbsp;position-&gt;next-&gt;prev = new_block;<br>&nbsp;&nbsp;&nbsp;&nbsp;position-&gt;next = new_block;<br>}</td><td id="JFdM" class="" style="width: 48.8286%;">인자: 삽입 기준 노드 position과 새 노드 new_block. 반환값: 없음. 변경 상태: 두 노드와 기존 다음 노드의 prev·next 연결.<br><br>position과 원래 다음 노드 사이에 새 노드를 넣는다. 새 노드의 prev는 position, next는 원래 다음 노드를 가리키게 한다. 이어서 원래 다음 노드의 prev와 position의 next를 새 노드로 바꾼다.<br><br>이중 연결 리스트는 앞뒤로 이동하므로 next뿐 아니라 prev도 새 연결에 맞게 바꿔야 한다. prev를 갱신하지 않으면 뒤로 이동할 때 새 노드를 건너뛰거나 잘못된 노드를 가리킬 수 있다. position-&gt;next를 마지막에 바꾸므로 원래 다음 노드를 잃지 않는다.</td></tr></tbody></table><p id="404b06d2-63bc-8117-9e19-c043b4dc29fd" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-8148-be56-da73379beb1f" class="" dir="auto">remove_block</h2><p id="404b06d2-63bc-819c-b0bd-deaec81c1adc" class="" dir="auto">제공 함수</p><table id="404b06d2-63bc-8127-8759-e909487b77e6" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-81c4-9a0b-c21a84e49f57" dir="ltr"><th id="^VHw" class="simple-table-header-color simple-table-header" style="width: 42.6025%;">소스코드</th><th id="vn&gt;p" class="simple-table-header-color simple-table-header" style="width: 57.3975%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-8167-ad35-c4c4907a6125" dir="ltr"><td id="^VHw" class="" style="width: 42.6025%;">void remove_block(MemoryBlock *removed)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;if (removed == NULL || removed-&gt;pid == HEAD_PID ||<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;removed-&gt;prev == NULL || removed-&gt;next == NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;removed-&gt;prev-&gt;next = removed-&gt;next;<br>&nbsp;&nbsp;&nbsp;&nbsp;removed-&gt;next-&gt;prev = removed-&gt;prev;<br>&nbsp;&nbsp;&nbsp;&nbsp;removed-&gt;prev = NULL;<br>&nbsp;&nbsp;&nbsp;&nbsp;removed-&gt;next = NULL;<br>&nbsp;&nbsp;&nbsp;&nbsp;free(removed);<br>}</td><td id="vn&gt;p" class="" style="width: 57.3975%;">인자: 제거할 노드 removed. 반환값: 없음. 변경 상태: 양옆 노드를 직접 연결하고 removed의 동적 저장 공간을 해제한다.<br><br>NULL, 헤드 PID, 연결되지 않은 노드는 제거하지 않는다. 정상 노드는 이전 노드의 next와 다음 노드의 prev를 서로 연결한 뒤 free한다. 헤드가 있어서 첫 블록의 prev와 마지막 블록의 next도 NULL이 아니라 헤드를 가리킨다. 그래서 처음이나 끝의 블록을 삭제할 때도 양옆 노드를 연결하는 같은 코드로 처리할 수 있다.<br><br>이 함수 호출 후 기존 removed 포인터로 노드 멤버를 읽으면 안 된다. 또한 이 함수 자체는 가상 주소 구간을 이웃 블록에 합치지 않는다. 병합 함수가 먼저 크기를 합산한 뒤 불필요해진 관리 노드만 삭제해야 전체 구간이 보존된다.</td></tr></tbody></table><p id="404b06d2-63bc-8113-aaa9-d3109a7fb4cb" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-8160-af4e-c235a2abf217" class="" dir="auto">destroy_list</h2><p id="404b06d2-63bc-81ea-8b68-cffe4340dee7" class="" dir="auto">제공 함수</p><table id="404b06d2-63bc-81f9-8a19-de1f9aa64165" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8179-a423-dbca3df7ba99" dir="ltr"><th id="tTu@" class="simple-table-header-color simple-table-header" style="width: 36.2745%;">소스코드</th><th id="@iD~" class="simple-table-header-color simple-table-header" style="width: 63.7255%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-816d-80fb-fa58c6a11137" dir="ltr"><td id="tTu@" class="" style="width: 36.2745%;">void destroy_list(MemoryList *list)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;if (list == NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;while (list-&gt;head.next != &amp;list-&gt;head)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove_block(list-&gt;head.next);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;head.prev = &amp;list-&gt;head;<br>&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;head.next = &amp;list-&gt;head;<br>&nbsp;&nbsp;&nbsp;&nbsp;list-&gt;total_size = 0;<br>}</td><td id="@iD~" class="" style="width: 63.7255%;">인자: 정리할 리스트. 반환값: 없음. 변경 상태: 모든 실제 노드를 해제하고 헤드 연결과 total_size를 초기 상태로 정리한다.<br><br>헤드 다음 노드가 헤드 자체가 될 때까지 첫 실제 노드를 반복해서 제거한다. 삭제된 노드의 next를 따라가지 않고 매번 list-&gt;head.next를 다시 읽기 때문에 해제된 노드를 다음 반복에서 참조하지 않는다.<br><br>헤드는 MemoryList 내부에 포함된 객체이므로 free하지 않는다. 실제 노드를 모두 없앤 뒤 prev·next를 헤드 자신으로 맞추고 total_size를 0으로 설정한다. 노드 수를 n이라 하면 전체 정리에는 O(n)이 필요하다.</td></tr></tbody></table><p id="404b06d2-63bc-812c-9afa-c5d2ea2d7dcb" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-8189-b7c8-c255c6c25e99" class="" dir="auto">print_memory_map</h2><p id="404b06d2-63bc-8146-a40d-c9f3f029e81e" class="" dir="auto">제공 함수</p><table id="404b06d2-63bc-81a0-bb57-c4c548727ccf" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8151-983e-f0b61e03a83e" dir="ltr"><th id="eub|" class="simple-table-header-color simple-table-header" style="width: 48.7522%;">소스코드</th><th id="Hx@[" class="simple-table-header-color simple-table-header" style="width: 51.2478%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-816c-8ee9-e8dc4f86b19a" dir="ltr"><td id="eub|" class="" style="width: 48.7522%;">void print_memory_map(const MemoryList *list)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;const MemoryBlock *block;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if (list == NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;printf("Memory map: ");<br>&nbsp;&nbsp;&nbsp;&nbsp;block = list-&gt;head.next;<br>&nbsp;&nbsp;&nbsp;&nbsp;while (block != &amp;list-&gt;head)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("[%d-%d, ", block-&gt;start, block-&gt;start + block-&gt;size - 1);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (block-&gt;pid == FREE_PID)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("FREE]");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("P%d]", block-&gt;pid);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;block = block-&gt;next;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (block != &amp;list-&gt;head)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(" &lt;-&gt; ");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;printf("\n");<br>}</td><td id="Hx@[" class="" style="width: 51.2478%;">인자: 읽기 전용 리스트 포인터. 반환값: 없음. 변경 상태: 리스트를 변경하지 않고 표준 출력에 메모리 지도를 쓴다.<br><br>헤드 다음부터 실제 블록을 순회한다. 시작 주소 20에서 크기가 10이면 20~29까지 사용한다. 시작 주소도 한 칸에 포함되므로 마지막 주소는 start + size가 아니라 start + size - 1이다.<br><br>FREE_PID이면 FREE, 아니면 P와 PID를 출력한다. 다음 노드가 헤드가 아닐 때만 연결 표시를 넣어 마지막에 불필요한 구분자가 남지 않게 한다. 탐색 중 노드가 헤드로 돌아오면 한 바퀴를 마친 것이다. 노드 수에 비례해 O(n)의 순회가 필요하다.</td></tr></tbody></table><p id="404b06d2-63bc-8162-b664-cbe133359fd1" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-819c-b97e-e6c25eeaa5d2" class="" dir="auto">find_first_fit</h2><p id="404b06d2-63bc-81e8-ac70-dc4cac06260d" class="" dir="auto">구현 대상 함수</p><table id="404b06d2-63bc-81f2-8d71-e1bae2a2f0dd" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-81ac-87be-ec77a1b1ccd2" dir="ltr"><th id="fvZl" class="simple-table-header-color simple-table-header" style="width: 47.148%;">소스코드</th><th id=";VP\" class="simple-table-header-color simple-table-header" style="width: 52.852%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-8138-a52a-eee4097f4272" dir="ltr"><td id="fvZl" class="" style="width: 47.148%;">MemoryBlock *find_first_fit(MemoryList *list, int size)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock *current;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if (list == NULL || size &lt;= 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return NULL;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;current = list-&gt;head.next;<br>&nbsp;&nbsp;&nbsp;&nbsp;while (current != &amp;list-&gt;head)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (current-&gt;pid == FREE_PID &amp;&amp; current-&gt;size &gt;= size)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return current;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current = current-&gt;next;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;return NULL;<br>}</td><td id=";VP\" class="" style="width: 52.852%;">인자: 리스트와 요청 크기. 반환값: 조건을 만족하는 첫 FREE 블록의 포인터, 없거나 인자가 잘못되면 NULL. 변경 상태: 없음.<br><br>head.next부터 시작해서 헤드로 돌아올 때까지 탐색한다. pid가 FREE_PID이고 크기가 요청 크기 이상이면 그 블록을 바로 반환하고, 아니면 next로 이동한다. 끝까지 없으면 NULL을 반환한다. 조건을 만족하는 즉시 반환하므로 주소 순서상 첫 적합 블록이 선택된다.<br><br>원형 리스트에서는 마지막 노드의 next가 NULL이 아니라 헤드다. 따라서 current != &amp;list-&gt;head로 종료하며 헤드를 실제 후보로 검사하지 않는다. 최악에는 모든 실제 블록을 확인하므로 O(n)이다. 크기 15와 10의 빈 블록이 이 순서로 있고 8칸을 요청하면 앞의 15칸을 선택한다.</td></tr></tbody></table><p id="404b06d2-63bc-81a8-af8e-ce3833151c7b" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-816d-8b07-c808c8c3a1d4" class="" dir="auto">find_process_block</h2><p id="404b06d2-63bc-81e3-83a7-eb6281108d55" class="" dir="auto">구현 대상 함수</p><table id="404b06d2-63bc-81ce-aa04-e2b286cc5774" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-819a-b90e-eff18cc0e093" dir="ltr"><th id="qw;=" class="simple-table-header-color simple-table-header" style="width: 44.6524%;">소스코드</th><th id="TEtb" class="simple-table-header-color simple-table-header" style="width: 55.3476%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-8127-8e79-de86448a0af0" dir="ltr"><td id="qw;=" class="" style="width: 44.6524%;">MemoryBlock *find_process_block(MemoryList *list, int pid)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock *current;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if (list == NULL || pid &lt;= 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return NULL;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;current = list-&gt;head.next;<br>&nbsp;&nbsp;&nbsp;&nbsp;while (current != &amp;list-&gt;head)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (current-&gt;pid == pid)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return current;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current = current-&gt;next;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;return NULL;<br>}</td><td id="TEtb" class="" style="width: 55.3476%;">인자: 리스트와 양의 PID. 반환값: 해당 PID를 가진 블록 포인터, 없거나 인자가 잘못되면 NULL. 변경 상태: 없음.<br><br>헤드 다음부터 한 바퀴 동안 pid가 입력과 같은 노드를 탐색한다. PID가 양수인 경우만 찾으므로 FREE_PID(-1)와 HEAD_PID(-2)를 프로세스로 반환하지 않는다.<br><br>할당에서는 같은 PID가 이미 존재하는지 확인하는 데, 반납에서는 반납할 블록을 찾는 데 재사용한다. 현재 구현은 PID 한 개에 블록 한 개를 대응시키며 중복 할당을 거부한다. 최악의 탐색 시간은 O(n)이다.</td></tr></tbody></table><p id="404b06d2-63bc-8104-bec9-d6b0399961c9" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-8123-9bbf-fe54a89d663e" class="" dir="auto">allocate_memory</h2><p id="404b06d2-63bc-8167-b5e2-d9474b8d5e44" class="" dir="auto">구현 대상 함수</p><table id="404b06d2-63bc-818d-b788-ca8cface6eb3" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8195-bf50-e73652d94891" dir="ltr"><th id="wmZ\" class="simple-table-header-color simple-table-header" style="width: 46.9697%;">소스코드</th><th id="?;@c" class="simple-table-header-color simple-table-header" style="width: 53.0303%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-81b3-a2b4-e76f6c7d819f" dir="ltr"><td id="wmZ\" class="" style="width: 46.9697%;">int allocate_memory(MemoryList *list, int pid, int size)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;if (list == NULL || pid &lt;= 0 || size &lt;= 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;if (find_process_block(list, pid) != NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock *block = find_first_fit(list, size);<br>&nbsp;&nbsp;&nbsp;&nbsp;if (block == NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;if (block-&gt;size == size)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;pid = pid;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 1;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br></td><td id="?;@c" class="" style="width: 53.0303%;">인자: 리스트, PID, 요청 크기. 반환값: 성공 1, 실패 0. 변경 상태: 성공 시 선택한 블록의 소유자와 필요에 따른 크기·리스트 연결. 실패 시 기존 지도 유지.<br><br>먼저 잘못된 입력, 중복 PID, 적합한 빈 블록의 부재를 검사한다. 이때는 기존 블록을 변경하지 않는다. 찾은 블록 크기와 요청 크기가 같으면 분할 없이 PID만 바꾸고 1을 반환한다. 중복 PID 검사와 First-Fit 탐색이 각각 O(n)이지만 순서대로 한 번씩 실행하므로 전체는 O(n)이다.</td></tr><tr id="404b06d2-63bc-8163-be47-da6bef8e0fec" dir="ltr"><td id="wmZ\" class="" style="width: 46.9697%;">&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock *remaining = create_block(block-&gt;start + size,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;size - size, FREE_PID);<br>&nbsp;&nbsp;&nbsp;&nbsp;if (remaining == NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;size = size;<br>&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;pid = pid;<br>&nbsp;&nbsp;&nbsp;&nbsp;insert_after(block, remaining);<br>&nbsp;&nbsp;&nbsp;&nbsp;return 1;<br>}</td><td id="?;@c" class="" style="width: 53.0303%;">선택한 블록이 더 크면 남는 블록의 시작 주소는 block-&gt;start + size, 크기는 block-&gt;size - size다. 새 노드 생성에 실패하면 기존 메모리 지도를 그대로 유지해야 한다. 기존 블록을 먼저 바꾸면 남는 공간을 기록할 노드가 없는 상태가 될 수 있으므로, 새 노드 생성에 성공한 뒤 크기와 PID를 변경한다.<br><br>남은 FREE 노드는 insert_after로 할당 블록 바로 뒤에 연결한다. 두 구간의 주소 순서와 원래 크기의 합이 유지되고, 성공 시 1을 반환한다.</td></tr></tbody></table><p id="404b06d2-63bc-81a0-a3e8-c4f6603140a5" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-810d-9141-c5ce8939ac73" class="" dir="auto">merge_free_blocks</h2><p id="404b06d2-63bc-8120-ab45-eb74421474f5" class="" dir="auto">구현 대상 함수</p><table id="404b06d2-63bc-8100-822e-d73d1e51fc70" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-818f-96da-f9f5f0ce6acc" dir="ltr"><th id="Y^M|" class="simple-table-header-color simple-table-header" style="width: 51.5152%;">소스코드</th><th id="WA_m" class="simple-table-header-color simple-table-header" style="width: 48.4848%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-816a-92a8-ee78c0896536" dir="ltr"><td id="Y^M|" class="" style="width: 51.5152%;">MemoryBlock *merge_free_blocks(MemoryList *list, MemoryBlock *current)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock *previous;<br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock *next;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if (list == NULL || current == NULL ||<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current == &amp;list-&gt;head || current-&gt;pid != FREE_PID)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return current;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;previous = current-&gt;prev;<br>&nbsp;&nbsp;&nbsp;&nbsp;if (previous != &amp;list-&gt;head &amp;&amp; previous-&gt;pid == FREE_PID)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;previous-&gt;size += current-&gt;size;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove_block(current);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* current가 삭제되었으므로 살아 있는 이전 노드를 기준으로 바꾼다. */<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current = previous;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br></td><td id="WA_m" class="" style="width: 48.4848%;">인자: 리스트와 병합 기준 FREE 노드. 반환값: 병합 후 살아 있는 기준 노드. 변경 상태: 인접 FREE 구간의 크기와 링크, 중복 관리 노드의 삭제.<br><br>잘못된 인자, 헤드, 사용 중 블록은 병합하지 않는다. 왼쪽이 실제 FREE 블록이면 previous의 크기에 current의 크기를 더한 뒤 current를 삭제한다. remove_block(current)에서 current가 가리키던 노드가 해제되므로, 그대로 current-&gt;next에 접근하면 해제된 메모리를 사용하는 문제가 생긴다. 그래서 살아 있는 previous를 current로 지정한 뒤 오른쪽 병합을 계속해야 한다.</td></tr><tr id="404b06d2-63bc-81bc-9b7a-ce67eef95690" dir="ltr"><td id="Y^M|" class="" style="width: 51.5152%;">&nbsp;&nbsp;&nbsp;&nbsp;next = current-&gt;next;<br>&nbsp;&nbsp;&nbsp;&nbsp;if (next != &amp;list-&gt;head &amp;&amp; next-&gt;pid == FREE_PID)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current-&gt;size += next-&gt;size;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remove_block(next);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;return current;<br>}</td><td id="WA_m" class="" style="width: 48.4848%;">왼쪽 병합 후 current-&gt;next를 다시 읽어 오른쪽 FREE 블록도 합친다. 헤드는 실제 메모리 구간이 아니라 리스트의 시작과 끝을 표시하는 노드다. 마지막 블록의 next가 head를 가리켜도 실제 주소가 이어지는 것은 아니므로 병합하면 안 된다.<br><br>정상적인 할당·반납 뒤에는 인접 FREE 블록이 남지 않는 상태가 유지된다. 이 전제에서 한 블록을 반납할 때 양옆만 검사하면 되므로 이 함수 자체는 O(1)이다. 예를 들어 [0~19 FREE], [20~49 FREE], [50~99 FREE]는 시작 0·크기 100인 한 블록으로 합쳐진다.</td></tr></tbody></table><p id="404b06d2-63bc-8131-9156-ed67b2c9a8ca" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-814a-bb95-f03c34a9c11a" class="" dir="auto">release_memory</h2><p id="404b06d2-63bc-81f0-88fd-ee4941c18634" class="" dir="auto">구현 대상 함수</p><table id="404b06d2-63bc-816a-8337-c7ab1e0998a2" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-81a3-b0fc-e8c9a85a5010" dir="ltr"><th id="aO:n" class="simple-table-header-color simple-table-header" style="width: 46.6132%;">소스코드</th><th id="ofv:" class="simple-table-header-color simple-table-header" style="width: 53.3868%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-81dd-ac29-e1bfcdd3ad81" dir="ltr"><td id="aO:n" class="" style="width: 46.6132%;">int release_memory(MemoryList *list, int pid)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;if (list == NULL || pid &lt;= 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryBlock *block = find_process_block(list, pid);<br>&nbsp;&nbsp;&nbsp;&nbsp;if (block == NULL)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;block-&gt;pid = FREE_PID;<br>&nbsp;&nbsp;&nbsp;&nbsp;merge_free_blocks(list, block);<br>&nbsp;&nbsp;&nbsp;&nbsp;return 1;<br>}</td><td id="ofv:" class="" style="width: 53.3868%;">인자: 리스트와 반납할 PID. 반환값: 해당 블록 반납 성공 시 1, 찾지 못하면 0. 변경 상태: 블록을 FREE로 표시하고 가능한 이웃 FREE 블록과 병합한다.<br><br>PID를 찾지 못하면 리스트를 변경하지 않고 실패한다. 찾으면 pid를 FREE_PID로 바꾼다. 이는 프로세스에 배정한 가상 구간을 사용 가능한 공간으로 돌려놓는 처리다.<br><br>그 노드는 해당 메모리 구간의 시작 주소와 크기를 기록하므로, 삭제하면 빈 공간의 정보가 사라진다. 따라서 노드는 유지하고 pid만 FREE_PID로 바꿔야 나중에 다시 할당할 수 있다. 이후 merge_free_blocks로 이웃과 합칠 때만 중복 노드를 제거한다. 병합 후 block을 다시 사용하지 않으므로 반환 포인터를 저장하지 않아도 된다. PID 탐색 O(n)과 병합 O(1)을 합쳐 최악 시간은 O(n)이다.</td></tr></tbody></table><p id="404b06d2-63bc-8157-ad04-c3030dcca4ea" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-8125-8346-e022392dd1ad" class="" dir="auto">main</h2><p id="404b06d2-63bc-8154-9c78-fff9decd2b2e" class="" dir="auto">제공 함수</p><table id="404b06d2-63bc-8113-91c6-d207b12c8552" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-813f-b9e5-eabfd89e2bb3" dir="ltr"><th id="&lt;iyy" class="simple-table-header-color simple-table-header" style="width: 52.0499%;">소스코드</th><th id="][AL" class="simple-table-header-color simple-table-header" style="width: 47.9501%;">기능 명세와 분석</th></tr></thead><tbody><tr id="404b06d2-63bc-812b-80dc-f6f45f6db4ee" dir="ltr"><td id="&lt;iyy" class="" style="width: 52.0499%;"><mark class="highlight-default" data-notion-highlight="default">int main(void)<br>{<br>&nbsp;&nbsp;&nbsp;&nbsp;MemoryList memory;<br>&nbsp;&nbsp;&nbsp;&nbsp;char command[COMMAND_LENGTH];<br>&nbsp;&nbsp;&nbsp;&nbsp;int total_size;<br>&nbsp;&nbsp;&nbsp;&nbsp;int command_count;<br>&nbsp;&nbsp;&nbsp;&nbsp;int i;<br>&nbsp;&nbsp;&nbsp;&nbsp;int pid;<br>&nbsp;&nbsp;&nbsp;&nbsp;int size;<br>&nbsp;&nbsp;&nbsp;&nbsp;int result;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;printf("전체 메모리 크기를 입력하세요: ");<br>&nbsp;&nbsp;&nbsp;&nbsp;if (scanf("%d", &amp;total_size) != 1 || total_size &lt;= 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("잘못된 전체 메모리 크기입니다.\n");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;if (!init_list(&amp;memory, total_size))<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("메모리 리스트를 초기화할 수 없습니다.\n");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;printf("명령의 개수를 입력하세요: ");<br>&nbsp;&nbsp;&nbsp;&nbsp;if (scanf("%d", &amp;command_count) != 1 ||<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;command_count &lt; 0 || command_count &gt; MAX_COMMANDS)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("잘못된 명령 개수입니다.\n");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destroy_list(&amp;memory);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br></mark></td><td id="][AL" class="" style="width: 47.9501%;"><mark class="highlight-default" data-notion-highlight="default">인자: 없음. 반환값: 종료 경로에서 0. 참조 데이터: 표준 입력의 크기·명령 개수·명령. 변경 상태: 지역 변수 memory가 보관하는 리스트와 표준 출력.<br><br>전체 크기를 읽고 init_list를 호출한다. 이어 명령 개수를 0~MAX_COMMANDS 범위에서 확인한다. 리스트 생성 뒤 명령 개수가 잘못되면 destroy_list로 생성한 노드를 정리한 후 종료한다. 입력이 올바르면 각 명령을 순서대로 처리한다.</mark></td></tr><tr id="404b06d2-63bc-8112-865c-f89d11e614b0" dir="ltr"><td id="&lt;iyy" class="" style="width: 52.0499%;">&nbsp;&nbsp;&nbsp;&nbsp;for (i = 0; i &lt; command_count; ++i)<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (scanf("%15s", command) != 1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("명령을 읽을 수 없습니다.\n");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (strcmp(command, "ALLOC") == 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (scanf("%d %d", &amp;pid, &amp;size) != 2)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("ALLOC 명령 형식이 잘못되었습니다.\n");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = allocate_memory(&amp;memory, pid, size);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("ALLOC P%d %d: %s\n",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pid, size, result ? "SUCCESS" : "FAIL");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br></td><td id="][AL" class="" style="width: 47.9501%;">명령을 최대 15문자로 읽어 16바이트 배열의 끝에 널 문자를 둘 공간을 남긴다. ALLOC이면 PID와 크기를 읽어 allocate_memory를 호출하고, 반환값이 1인지 0인지에 따라 SUCCESS 또는 FAIL을 출력한다. 형식이 맞지 않으면 반복문을 종료한다.</td></tr><tr id="404b06d2-63bc-8169-a983-f819002a2294" dir="ltr"><td id="&lt;iyy" class="" style="width: 52.0499%;"><mark class="highlight-default" data-notion-highlight="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else if (strcmp(command, "FREE") == 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (scanf("%d", &amp;pid) != 1)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("FREE 명령 형식이 잘못되었습니다.\n");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result = release_memory(&amp;memory, pid);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("FREE P%d: %s\n",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pid, result ? "SUCCESS" : "FAIL");<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("알 수 없는 명령입니다: %s\n", command);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_memory_map(&amp;memory);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;destroy_list(&amp;memory);<br>&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>}</mark></td><td id="][AL" class="" style="width: 47.9501%;"><mark class="highlight-default" data-notion-highlight="default">FREE이면 PID를 읽어 release_memory를 호출하고 결과를 출력한다. 인식하지 못한 명령은 안내 문구를 출력한다. 정상적으로 해석한 명령에서 기능이 실패해도 현재 지도를 출력하므로 상태 유지 여부를 비교할 수 있다. 반복문 종료 뒤 destroy_list로 남은 관리 노드를 해제한다. 명령마다 기능 실행과 지도 출력에 최악 O(n)이 든다. 입출력과 할당·해제 처리를 분리하면 입력 방식이 바뀌어도 같은 함수를 재사용할 수 있고, 각 함수를 따로 호출해 기능이 올바른지 검사하기 쉽다.</mark></td></tr></tbody></table><p id="404b06d2-63bc-813a-8bec-db5a9bf6c1a8" class="" dir="auto">
+</p><p id="404b06d2-63bc-8117-baba-cdca00444c0a" class="" dir="auto">
+</p><h1 id="404b06d2-63bc-81ed-8095-f2ba8f10d249" class="" dir="auto">실행결과 및 분석</h1><p id="404b06d2-63bc-813e-b652-d3bdebacbf4f" class="" dir="auto"><mark class="highlight-default" data-notion-highlight="default">과제에 제시된 예제 3건과 정확한 크기의 할당, First-Fit 선택, 외부 단편화를 확인하는 실행 사례 3건을 정리했다. 각 사례에서 입력과 실제 출력, 실행 화면을 제시하고 메모리 지도가 변하는 이유를 분석한다.</mark></p><p id="404b06d2-63bc-8031-81d7-c4b4e679a020" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-814e-9981-eab5ab4be166" class="chapter-first-section" dir="auto">공식 예제 1: 연속 할당과 분할</h2><p id="404b06d2-63bc-8193-bc6a-e5696c03773c" class="" dir="auto"><strong>입력</strong></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerpolicy="no-referrer"><pre id="404b06d2-63bc-819b-81e9-d89165f2d7e0" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">100
+2
+ALLOC 1 20
+ALLOC 2 30
+</code></pre><p id="404b06d2-63bc-80d5-b411-d76fc5367c66" class="" dir="auto">
+</p><p id="404b06d2-63bc-819b-b907-d989cf6059f8" class="" dir="auto"><strong>실제 출력 (표준 출력 원문)</strong></p><pre id="404b06d2-63bc-8184-a988-d19fcb24239f" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 20: SUCCESS
+Memory map: [0-19, P1] &lt;-&gt; [20-99, FREE]
+ALLOC P2 30: SUCCESS
+Memory map: [0-19, P1] &lt;-&gt; [20-49, P2] &lt;-&gt; [50-99, FREE]
+</code></pre><table id="404b06d2-63bc-81c6-9c76-ee7b4dfc0e8d" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-81c7-b24b-e822863567a8" dir="ltr"><th id="X&gt;cW" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">입력 명령과 결과</th><th id="ua`=" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">관찰한 메모리 지도</th><th id="rUPO" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">상태 변화의 이유</th></tr></thead><tbody><tr id="404b06d2-63bc-8190-b864-f471f1befec7" dir="ltr"><td id="X&gt;cW" class="" style="width: 33.3333%;">ALLOC 1 20 / SUCCESS</td><td id="ua`=" class="" style="width: 33.3333%;">[0-19, P1] &lt;-&gt; [20-99, FREE]</td><td id="rUPO" class="" style="width: 33.3333%;">시작 0·크기 100의 빈 블록에서 앞 20칸을 P1에 배정한다. 남는 블록은 시작 20·크기 80이다.</td></tr><tr id="404b06d2-63bc-8128-a1d2-defbeef9973f" dir="ltr"><td id="X&gt;cW" class="" style="width: 33.3333%;">ALLOC 2 30 / SUCCESS</td><td id="ua`=" class="" style="width: 33.3333%;">[0-19, P1] &lt;-&gt; [20-49, P2] &lt;-&gt; [50-99, FREE]</td><td id="rUPO" class="" style="width: 33.3333%;">P1은 사용 중이므로 건너뛴다. 시작 20인 FREE 블록 앞 30칸이 P2가 되고 시작 50·크기 50이 남는다.</td></tr></tbody></table><p id="404b06d2-63bc-81f0-8ed9-f854b990d431" class="" dir="auto">결과 분석: 첫 요청의 끝 주소는 0 + 20 - 1 = 19이고, 두 번째 요청은 남은 빈 블록의 시작인 20에서 출발한다. 두 번의 분할 뒤 구간 크기는 20 + 30 + 50 = 100으로 보존된다. 각 요청은 요청량 이상인 첫 빈 블록에서 처리된다.</p><p id="404b06d2-63bc-8093-87a9-f65331a3cd2a" class="" dir="auto">
+</p><p id="404b06d2-63bc-81e2-ae42-dc5b10e5fce8" class="" dir="auto"><strong>실제 터미널 실행 화면</strong></p><figure id="404b06d2-63bc-8146-9280-e5c34c1b9b98" class="image" data-notion-image="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-01.png" dir="ltr"><a href="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-01.png"><img src="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-01.png"></a><figcaption><mark class="highlight-default" data-notion-highlight="default">터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.</mark></figcaption></figure><p id="404b06d2-63bc-819e-91e4-ea672fcfdd9b" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-8194-974d-c7a8ab3ca887" class="" dir="auto">공식 예제 2: 반납과 양쪽 병합</h2><p id="404b06d2-63bc-8115-b4a3-f0aad7041d08" class="" dir="auto"><strong>입력</strong></p><pre id="404b06d2-63bc-811b-b100-f63e79ee2090" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">100
+6
+ALLOC 1 20
+ALLOC 2 30
+ALLOC 3 10
+FREE 2
+FREE 1
+FREE 3
+</code></pre><p id="404b06d2-63bc-80c2-a966-d1d94953e764" class="" dir="auto">
+</p><p id="404b06d2-63bc-8129-aa29-ce69ebc3a04e" class="" dir="auto"><strong>실제 출력 (표준 출력 원문)</strong></p><pre id="404b06d2-63bc-81b4-b551-e1eba9b959ef" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 20: SUCCESS
+Memory map: [0-19, P1] &lt;-&gt; [20-99, FREE]
+ALLOC P2 30: SUCCESS
+Memory map: [0-19, P1] &lt;-&gt; [20-49, P2] &lt;-&gt; [50-99, FREE]
+ALLOC P3 10: SUCCESS
+Memory map: [0-19, P1] &lt;-&gt; [20-49, P2] &lt;-&gt; [50-59, P3] &lt;-&gt; [60-99, FREE]
+FREE P2: SUCCESS
+Memory map: [0-19, P1] &lt;-&gt; [20-49, FREE] &lt;-&gt; [50-59, P3] &lt;-&gt; [60-99, FREE]
+FREE P1: SUCCESS
+Memory map: [0-49, FREE] &lt;-&gt; [50-59, P3] &lt;-&gt; [60-99, FREE]
+FREE P3: SUCCESS
+Memory map: [0-99, FREE]
+</code></pre><table id="404b06d2-63bc-81d9-84e6-e7e1b932c9ac" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-81aa-8252-d2575cd4c488" dir="ltr"><th id="X;iu" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">입력 명령과 결과</th><th id="\kXe" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">관찰한 메모리 지도</th><th id="HUBM" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">상태 변화의 이유</th></tr></thead><tbody><tr id="404b06d2-63bc-81f4-9516-e4b338bca6b2" dir="ltr"><td id="X;iu" class="" style="width: 33.3333%;">ALLOC 1 20 / SUCCESS</td><td id="\kXe" class="" style="width: 33.3333%;">[0-19, P1] &lt;-&gt; [20-99, FREE]</td><td id="HUBM" class="" style="width: 33.3333%;">P1에 0~19를 배정하고 20~99를 FREE로 남긴다.</td></tr><tr id="404b06d2-63bc-8188-bf6f-d48712c27dfc" dir="ltr"><td id="X;iu" class="" style="width: 33.3333%;">ALLOC 2 30 / SUCCESS</td><td id="\kXe" class="" style="width: 33.3333%;">[0-19, P1] &lt;-&gt; [20-49, P2] &lt;-&gt; [50-99, FREE]</td><td id="HUBM" class="" style="width: 33.3333%;">P2에 20~49를 배정하고 50~99를 FREE로 남긴다.</td></tr><tr id="404b06d2-63bc-81c4-b68f-f344f12f8bd9" dir="ltr"><td id="X;iu" class="" style="width: 33.3333%;">ALLOC 3 10 / SUCCESS</td><td id="\kXe" class="" style="width: 33.3333%;">[0-19, P1] &lt;-&gt; [20-49, P2] &lt;-&gt; [50-59, P3] &lt;-&gt; [60-99, FREE]</td><td id="HUBM" class="" style="width: 33.3333%;">P3에 50~59를 배정하고 60~99를 FREE로 남긴다.</td></tr><tr id="404b06d2-63bc-8111-8665-df2eb9da21e0" dir="ltr"><td id="X;iu" class="" style="width: 33.3333%;">FREE 2 / SUCCESS</td><td id="\kXe" class="" style="width: 33.3333%;">[0-19, P1] &lt;-&gt; [20-49, FREE] &lt;-&gt; [50-59, P3] &lt;-&gt; [60-99, FREE]</td><td id="HUBM" class="" style="width: 33.3333%;">P2의 구간 20~49를 FREE로 바꾼다. 양옆 P1·P3가 사용 중이어서 병합하지 않는다.</td></tr><tr id="404b06d2-63bc-81c7-843c-fa55d462efc5" dir="ltr"><td id="X;iu" class="" style="width: 33.3333%;">FREE 1 / SUCCESS</td><td id="\kXe" class="" style="width: 33.3333%;">[0-49, FREE] &lt;-&gt; [50-59, P3] &lt;-&gt; [60-99, FREE]</td><td id="HUBM" class="" style="width: 33.3333%;">P1을 반납하면 오른쪽 FREE 20~49와 합쳐 0~49가 된다.</td></tr><tr id="404b06d2-63bc-814b-8ae2-dcf9f85c31fd" dir="ltr"><td id="X;iu" class="" style="width: 33.3333%;">FREE 3 / SUCCESS</td><td id="\kXe" class="" style="width: 33.3333%;">[0-99, FREE]</td><td id="HUBM" class="" style="width: 33.3333%;">P3를 반납하면 왼쪽 0~49, 현재 50~59, 오른쪽 60~99가 모두 빈 공간이 되어 0~99로 합쳐진다.</td></tr></tbody></table><p id="404b06d2-63bc-8148-9687-fd0d2b9bc415" class="" dir="auto">결과 분석: FREE 2는 노드를 삭제하는 대신 소유자 표시만 바꾸는 경우이고, FREE 1은 오른쪽 병합, FREE 3은 양쪽 병합을 보여 준다. 마지막에는 크기 100의 FREE 노드 하나가 남는다. 이 순서에서 해제되지 않은 프로세스의 주소는 이동하지 않는다.</p><p id="404b06d2-63bc-8072-8a40-f88e8c03ba69" class="" dir="auto">
+</p><p id="404b06d2-63bc-81bd-9a77-db48f1a00aba" class="" dir="auto"><strong>실제 터미널 실행 화면</strong></p><figure id="404b06d2-63bc-81f1-b087-e6852fe7aad0" class="image" data-notion-image="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-02.png" dir="ltr"><a href="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-02.png"><img src="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-02.png"></a><figcaption><mark class="highlight-default" data-notion-highlight="default">터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.</mark></figcaption></figure><p id="404b06d2-63bc-813b-89d6-d8030c530a4a" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-819f-80fb-e86d03d8892d" class="" dir="auto">공식 예제 3: 할당 실패와 예외 처리</h2><p id="404b06d2-63bc-8146-93b9-cae8434e3ab3" class="" dir="auto"><strong>입력</strong></p><pre id="404b06d2-63bc-8172-b847-ead3bfb149c4" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">50
+4
+ALLOC 1 30
+ALLOC 2 30
+FREE 7
+ALLOC 1 10
+</code></pre><p id="404b06d2-63bc-804e-9ac1-ebf2c83d31bd" class="" dir="auto">
+</p><p id="404b06d2-63bc-81f6-9733-dae1e218ba96" class="" dir="auto"><strong>실제 출력 (표준 출력 원문)</strong></p><pre id="404b06d2-63bc-8158-9e24-ce47e6525ce8" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 30: SUCCESS
+Memory map: [0-29, P1] &lt;-&gt; [30-49, FREE]
+ALLOC P2 30: FAIL
+Memory map: [0-29, P1] &lt;-&gt; [30-49, FREE]
+FREE P7: FAIL
+Memory map: [0-29, P1] &lt;-&gt; [30-49, FREE]
+ALLOC P1 10: FAIL
+Memory map: [0-29, P1] &lt;-&gt; [30-49, FREE]
+</code></pre><table id="404b06d2-63bc-814f-845d-fdae229deb7f" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8151-9642-d0e2684e7014" dir="ltr"><th id="sk:]" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">입력 명령과 결과</th><th id="tIfk" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">관찰한 메모리 지도</th><th id="ecD|" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">상태 변화의 이유</th></tr></thead><tbody><tr id="404b06d2-63bc-8170-a0aa-dd29f6bda26a" dir="ltr"><td id="sk:]" class="" style="width: 33.3333%;">ALLOC 1 30 / SUCCESS</td><td id="tIfk" class="" style="width: 33.3333%;">[0-29, P1] &lt;-&gt; [30-49, FREE]</td><td id="ecD|" class="" style="width: 33.3333%;">P1에 30칸을 배정해 30~49의 20칸이 남는다.</td></tr><tr id="404b06d2-63bc-81d9-b4cd-e977f389f5d9" dir="ltr"><td id="sk:]" class="" style="width: 33.3333%;">ALLOC 2 30 / FAIL</td><td id="tIfk" class="" style="width: 33.3333%;">[0-29, P1] &lt;-&gt; [30-49, FREE]</td><td id="ecD|" class="" style="width: 33.3333%;">요청 30보다 남은 연속 빈 공간 20이 작아 실패한다.</td></tr><tr id="404b06d2-63bc-81ad-9ea8-cd4a31585c38" dir="ltr"><td id="sk:]" class="" style="width: 33.3333%;">FREE 7 / FAIL</td><td id="tIfk" class="" style="width: 33.3333%;">[0-29, P1] &lt;-&gt; [30-49, FREE]</td><td id="ecD|" class="" style="width: 33.3333%;">PID 7이 존재하지 않아 반납에 실패한다.</td></tr><tr id="404b06d2-63bc-8154-b551-d71b7aca06d6" dir="ltr"><td id="sk:]" class="" style="width: 33.3333%;">ALLOC 1 10 / FAIL</td><td id="tIfk" class="" style="width: 33.3333%;">[0-29, P1] &lt;-&gt; [30-49, FREE]</td><td id="ecD|" class="" style="width: 33.3333%;">10칸을 담을 공간은 있지만 PID 1이 이미 존재하므로 할당에 실패한다.</td></tr></tbody></table><p id="404b06d2-63bc-8178-b5ce-ed1704259f60" class="" dir="auto">결과 분석: 성공한 첫 요청 이후 세 요청이 모두 실패했고, 각 실패 뒤 지도는 [0-29, P1] &lt;-&gt; [30-49, FREE]로 같았다. 이는 공간 부족, 존재하지 않는 PID, 중복 PID를 서로 다른 원인으로 구분하면서도 기존 상태를 보존한 결과다. 실패 명령 실행 전후의 메모리 지도가 같아야 한다. 기존 P1의 시작 주소와 크기, 다른 블록들의 상태와 연결 순서가 그대로 유지되는지 확인한다.</p><p id="404b06d2-63bc-8076-af12-f7ee9c8dec91" class="" dir="auto">
+</p><p id="404b06d2-63bc-811f-92cb-e6c4d02d6caf" class="" dir="auto"><strong>실제 터미널 실행 화면</strong></p><figure id="404b06d2-63bc-81e7-92b1-fbd66662e83e" class="image" data-notion-image="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-03.png" dir="ltr"><a href="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-03.png"><img src="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-03.png"></a><figcaption><mark class="highlight-default" data-notion-highlight="default">터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.</mark></figcaption></figure><p id="404b06d2-63bc-810b-b590-c2ec8aec5d50" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-81ec-96e1-f205d1ebbe21" class="" dir="auto">경계 사례: 정확한 크기와 최소 크기</h2><p id="404b06d2-63bc-8183-8b3a-feb206a181be" class="" dir="auto"><strong>입력</strong></p><pre id="404b06d2-63bc-81c4-9552-cee2e75c1e88" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">1
+4
+ALLOC 1 1
+ALLOC 2 1
+FREE 1
+ALLOC 2 1
+</code></pre><p id="404b06d2-63bc-802a-a751-f9899c3a6490" class="" dir="auto">
+</p><p id="404b06d2-63bc-818e-a0d6-d1290043a06b" class="" dir="auto"><strong>실제 출력 (표준 출력 원문)</strong></p><pre id="404b06d2-63bc-8178-afd4-ddb5d2a876f1" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 1: SUCCESS
+Memory map: [0-0, P1]
+ALLOC P2 1: FAIL
+Memory map: [0-0, P1]
+FREE P1: SUCCESS
+Memory map: [0-0, FREE]
+ALLOC P2 1: SUCCESS
+Memory map: [0-0, P2]
+</code></pre><table id="404b06d2-63bc-81e4-9bcd-f087c48ac342" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8171-9ffa-ce104aef6582" dir="ltr"><th id="Qk&lt;N" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">입력 명령과 결과</th><th id="OcE~" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">관찰한 메모리 지도</th><th id="Fam{" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">상태 변화의 이유</th></tr></thead><tbody><tr id="404b06d2-63bc-819c-b3d8-d2e99375c869" dir="ltr"><td id="Qk&lt;N" class="" style="width: 33.3333%;">ALLOC 1 1 / SUCCESS</td><td id="OcE~" class="" style="width: 33.3333%;">[0-0, P1]</td><td id="Fam{" class="" style="width: 33.3333%;">유일한 1칸을 전부 배정하므로 남는 FREE 노드를 만들지 않는다.</td></tr><tr id="404b06d2-63bc-8158-b60e-c47a8a17bf54" dir="ltr"><td id="Qk&lt;N" class="" style="width: 33.3333%;">ALLOC 2 1 / FAIL</td><td id="OcE~" class="" style="width: 33.3333%;">[0-0, P1]</td><td id="Fam{" class="" style="width: 33.3333%;">사용 가능한 빈 블록이 없어 실패하며 P1의 상태가 유지된다.</td></tr><tr id="404b06d2-63bc-8192-9b09-f8ac6eae6add" dir="ltr"><td id="Qk&lt;N" class="" style="width: 33.3333%;">FREE 1 / SUCCESS</td><td id="OcE~" class="" style="width: 33.3333%;">[0-0, FREE]</td><td id="Fam{" class="" style="width: 33.3333%;">P1이 사용하던 노드는 0~0의 FREE 노드가 된다. 헤드와는 병합하지 않는다.</td></tr><tr id="404b06d2-63bc-814e-a850-ebf829ff0414" dir="ltr"><td id="Qk&lt;N" class="" style="width: 33.3333%;">ALLOC 2 1 / SUCCESS</td><td id="OcE~" class="" style="width: 33.3333%;">[0-0, P2]</td><td id="Fam{" class="" style="width: 33.3333%;">반납된 1칸을 P2가 다시 배정받는다.</td></tr></tbody></table><p id="404b06d2-63bc-813a-942b-df41df7c6182" class="" dir="auto">결과 분석: 블록 크기와 요청 크기가 같으면 분할 없이 PID만 바꾸는 분기가 실행된다. 이때 크기 0인 FREE 노드가 생기지 않고 기존 블록 전체가 할당되는지 확인하기 위해 검사한다. 이 사례에서는 주소 0~0의 한 칸을 할당하고, 공간 부족 실패 후 반납과 재할당까지 확인했다.</p><p id="404b06d2-63bc-80b2-9be2-eed98168ecb1" class="" dir="auto">
+</p><p id="404b06d2-63bc-8114-9d45-f1999254885f" class="" dir="auto"><strong>실제 터미널 실행 화면</strong></p><figure id="404b06d2-63bc-81b9-87cd-ee8fd287d29b" class="image" data-notion-image="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-04.png" dir="ltr"><a href="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-04.png"><img src="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-04.png"></a><figcaption><mark class="highlight-default" data-notion-highlight="default">터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.</mark></figcaption></figure><p id="404b06d2-63bc-81d3-a528-d4d951b6bbbd" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-8154-9a0c-df474ff85185" class="" dir="auto">선택 사례: First-Fit과 작은 빈 블록의 구분</h2><p id="404b06d2-63bc-81a7-a087-f87497a273ed" class="" dir="auto"><strong>입력</strong></p><pre id="404b06d2-63bc-81dd-b385-e2f9c20281a2" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">40
+7
+ALLOC 1 15
+ALLOC 2 5
+ALLOC 3 10
+ALLOC 4 10
+FREE 1
+FREE 3
+ALLOC 5 8
+</code></pre><p id="404b06d2-63bc-8048-9832-ed0bfda984f5" class="" dir="auto">
+</p><p id="404b06d2-63bc-8172-9a1e-c9f3099cb8ca" class="" dir="auto"><strong>실제 출력 (표준 출력 원문)</strong></p><pre id="404b06d2-63bc-818f-a495-d339eab0418e" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 15: SUCCESS
+Memory map: [0-14, P1] &lt;-&gt; [15-39, FREE]
+ALLOC P2 5: SUCCESS
+Memory map: [0-14, P1] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-39, FREE]
+ALLOC P3 10: SUCCESS
+Memory map: [0-14, P1] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, P3] &lt;-&gt; [30-39, FREE]
+ALLOC P4 10: SUCCESS
+Memory map: [0-14, P1] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, P3] &lt;-&gt; [30-39, P4]
+FREE P1: SUCCESS
+Memory map: [0-14, FREE] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, P3] &lt;-&gt; [30-39, P4]
+FREE P3: SUCCESS
+Memory map: [0-14, FREE] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, FREE] &lt;-&gt; [30-39, P4]
+ALLOC P5 8: SUCCESS
+Memory map: [0-7, P5] &lt;-&gt; [8-14, FREE] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, FREE] &lt;-&gt; [30-39, P4]
+</code></pre><table id="404b06d2-63bc-81b7-aec7-e5f8d399eb4d" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8116-b6f2-d658ed1df817" dir="ltr"><th id="EM|K" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">입력 명령과 결과</th><th id="UVNW" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">관찰한 메모리 지도</th><th id="qAgT" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">상태 변화의 이유</th></tr></thead><tbody><tr id="404b06d2-63bc-8100-b294-da4514129e8b" dir="ltr"><td id="EM|K" class="" style="width: 33.3333%;">ALLOC 1 15 / SUCCESS</td><td id="UVNW" class="" style="width: 33.3333%;">[0-14, P1] &lt;-&gt; [15-39, FREE]</td><td id="qAgT" class="" style="width: 33.3333%;">P1에 앞 15칸을 배정한다.</td></tr><tr id="404b06d2-63bc-81f2-9047-e0473c4ea414" dir="ltr"><td id="EM|K" class="" style="width: 33.3333%;">ALLOC 2 5 / SUCCESS</td><td id="UVNW" class="" style="width: 33.3333%;">[0-14, P1] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-39, FREE]</td><td id="qAgT" class="" style="width: 33.3333%;">P2에 다음 5칸을 배정한다.</td></tr><tr id="404b06d2-63bc-818d-946d-e6fd7b524d49" dir="ltr"><td id="EM|K" class="" style="width: 33.3333%;">ALLOC 3 10 / SUCCESS</td><td id="UVNW" class="" style="width: 33.3333%;">[0-14, P1] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, P3] &lt;-&gt; [30-39, FREE]</td><td id="qAgT" class="" style="width: 33.3333%;">P3에 다음 10칸을 배정한다.</td></tr><tr id="404b06d2-63bc-8174-b949-ed4ff8d1f298" dir="ltr"><td id="EM|K" class="" style="width: 33.3333%;">ALLOC 4 10 / SUCCESS</td><td id="UVNW" class="" style="width: 33.3333%;">[0-14, P1] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, P3] &lt;-&gt; [30-39, P4]</td><td id="qAgT" class="" style="width: 33.3333%;">P4에 마지막 10칸을 배정한다.</td></tr><tr id="404b06d2-63bc-8176-93af-eb943a3a2c8d" dir="ltr"><td id="EM|K" class="" style="width: 33.3333%;">FREE 1 / SUCCESS</td><td id="UVNW" class="" style="width: 33.3333%;">[0-14, FREE] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, P3] &lt;-&gt; [30-39, P4]</td><td id="qAgT" class="" style="width: 33.3333%;">앞쪽 0~14를 빈 공간으로 만든다.</td></tr><tr id="404b06d2-63bc-8162-b0cc-c48ffbe424c9" dir="ltr"><td id="EM|K" class="" style="width: 33.3333%;">FREE 3 / SUCCESS</td><td id="UVNW" class="" style="width: 33.3333%;">[0-14, FREE] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, FREE] &lt;-&gt; [30-39, P4]</td><td id="qAgT" class="" style="width: 33.3333%;">P2와 P4 사이 20~29도 빈 공간으로 만든다. 두 빈 블록은 P2 때문에 분리되어 있다.</td></tr><tr id="404b06d2-63bc-8158-8d94-d858672ea5ef" dir="ltr"><td id="EM|K" class="" style="width: 33.3333%;">ALLOC 5 8 / SUCCESS</td><td id="UVNW" class="" style="width: 33.3333%;">[0-7, P5] &lt;-&gt; [8-14, FREE] &lt;-&gt; [15-19, P2] &lt;-&gt; [20-29, FREE] &lt;-&gt; [30-39, P4]</td><td id="qAgT" class="" style="width: 33.3333%;">8칸은 앞쪽 15칸 블록에서 배정된다. 뒤쪽 10칸이 더 작더라도 먼저 맞는 블록을 선택한다.</td></tr></tbody></table><p id="404b06d2-63bc-81fa-8677-f3e311c56159" class="" dir="auto">결과 분석: First-Fit은 앞에서부터 요청을 만족하는 첫 블록인 15칸을 선택하고, Best-Fit은 요청을 만족하는 블록 중 가장 작은 10칸을 선택한다. 선택 결과가 다르므로 First-Fit으로 구현됐는지 확인할 수 있다. P5에는 0~7을 할당하고, 남은 8~14는 크기 7의 FREE 블록으로 유지한다. 뒤쪽 20~29의 FREE 블록은 그대로 남는다.</p><p id="404b06d2-63bc-80e9-a3e7-d4033e7f8c12" class="" dir="auto">
+</p><p id="404b06d2-63bc-816b-b91e-f46ab9702a80" class="" dir="auto"><strong>실제 터미널 실행 화면</strong></p><figure id="404b06d2-63bc-818c-923f-c94137b59470" class="image" data-notion-image="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-05.png" dir="ltr"><a href="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-05.png"><img src="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-05.png"></a><figcaption><mark class="highlight-default" data-notion-highlight="default">터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.</mark></figcaption></figure><p id="404b06d2-63bc-8186-8fe8-f03e54e2e5e9" class="" dir="auto">
+</p><h2 id="404b06d2-63bc-8188-b328-c00978c641d6" class="" dir="auto">실패 사례: 외부 단편화와 병합 후 재시도</h2><p id="404b06d2-63bc-81c3-a84d-d4d29e4a7926" class="" dir="auto"><strong>입력</strong></p><pre id="404b06d2-63bc-81e4-b000-e81d7e79a46f" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">30
+8
+ALLOC 1 10
+ALLOC 2 10
+ALLOC 3 10
+FREE 1
+FREE 3
+ALLOC 4 15
+FREE 2
+ALLOC 4 30
+</code></pre><p id="404b06d2-63bc-81a4-8ab4-ecf396cc92f9" class="" dir="auto">
+</p><p id="404b06d2-63bc-81c0-aa1b-c0c33c7f78c1" class="" dir="auto"><strong>실제 출력 (표준 출력 원문)</strong></p><pre id="404b06d2-63bc-8194-bbdc-ff762fefe47a" class="code code-wrap"><code style="white-space:pre-wrap;word-break:break-all">전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 10: SUCCESS
+Memory map: [0-9, P1] &lt;-&gt; [10-29, FREE]
+ALLOC P2 10: SUCCESS
+Memory map: [0-9, P1] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, FREE]
+ALLOC P3 10: SUCCESS
+Memory map: [0-9, P1] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, P3]
+FREE P1: SUCCESS
+Memory map: [0-9, FREE] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, P3]
+FREE P3: SUCCESS
+Memory map: [0-9, FREE] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, FREE]
+ALLOC P4 15: FAIL
+Memory map: [0-9, FREE] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, FREE]
+FREE P2: SUCCESS
+Memory map: [0-29, FREE]
+ALLOC P4 30: SUCCESS
+Memory map: [0-29, P4]
+</code></pre><table id="404b06d2-63bc-81f5-af50-f5ddcc071554" class="simple-table" dir="ltr"><thead class="simple-table-header"><tr id="404b06d2-63bc-8151-897c-db98b6418483" dir="ltr"><th id="^gNQ" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">입력 명령과 결과</th><th id="mc_D" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">관찰한 메모리 지도</th><th id="SfwH" class="simple-table-header-color simple-table-header" style="width: 33.3333%;">상태 변화의 이유</th></tr></thead><tbody><tr id="404b06d2-63bc-81ec-b709-c92734e5faf9" dir="ltr"><td id="^gNQ" class="" style="width: 33.3333%;">ALLOC 1 10 / SUCCESS</td><td id="mc_D" class="" style="width: 33.3333%;">[0-9, P1] &lt;-&gt; [10-29, FREE]</td><td id="SfwH" class="" style="width: 33.3333%;">P1에 0~9를 배정한다.</td></tr><tr id="404b06d2-63bc-81e9-b1ac-e5f2c2a24554" dir="ltr"><td id="^gNQ" class="" style="width: 33.3333%;">ALLOC 2 10 / SUCCESS</td><td id="mc_D" class="" style="width: 33.3333%;">[0-9, P1] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, FREE]</td><td id="SfwH" class="" style="width: 33.3333%;">P2에 10~19를 배정한다.</td></tr><tr id="404b06d2-63bc-813e-ae74-fa77de1134e0" dir="ltr"><td id="^gNQ" class="" style="width: 33.3333%;">ALLOC 3 10 / SUCCESS</td><td id="mc_D" class="" style="width: 33.3333%;">[0-9, P1] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, P3]</td><td id="SfwH" class="" style="width: 33.3333%;">P3에 20~29를 배정해 전체 공간이 사용 중이 된다.</td></tr><tr id="404b06d2-63bc-8176-bc58-efaf6bf0beae" dir="ltr"><td id="^gNQ" class="" style="width: 33.3333%;">FREE 1 / SUCCESS</td><td id="mc_D" class="" style="width: 33.3333%;">[0-9, FREE] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, P3]</td><td id="SfwH" class="" style="width: 33.3333%;">앞쪽 10칸을 반납한다.</td></tr><tr id="404b06d2-63bc-8127-85c2-d6a9624760ff" dir="ltr"><td id="^gNQ" class="" style="width: 33.3333%;">FREE 3 / SUCCESS</td><td id="mc_D" class="" style="width: 33.3333%;">[0-9, FREE] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, FREE]</td><td id="SfwH" class="" style="width: 33.3333%;">뒤쪽 10칸을 반납한다. 가운데 P2 때문에 빈 공간은 합쳐지지 않는다.</td></tr><tr id="404b06d2-63bc-81a8-9146-ca0ad009f84b" dir="ltr"><td id="^gNQ" class="" style="width: 33.3333%;">ALLOC 4 15 / FAIL</td><td id="mc_D" class="" style="width: 33.3333%;">[0-9, FREE] &lt;-&gt; [10-19, P2] &lt;-&gt; [20-29, FREE]</td><td id="SfwH" class="" style="width: 33.3333%;">빈 공간의 합은 20이지만 가장 큰 연속 빈 블록은 10이므로 15칸 요청이 실패한다.</td></tr><tr id="404b06d2-63bc-8133-9e51-d802490181c0" dir="ltr"><td id="^gNQ" class="" style="width: 33.3333%;">FREE 2 / SUCCESS</td><td id="mc_D" class="" style="width: 33.3333%;">[0-29, FREE]</td><td id="SfwH" class="" style="width: 33.3333%;">P2를 반납하면서 양쪽 FREE와 병합되어 연속된 30칸이 된다.</td></tr><tr id="404b06d2-63bc-8117-9e88-daaba16205a2" dir="ltr"><td id="^gNQ" class="" style="width: 33.3333%;">ALLOC 4 30 / SUCCESS</td><td id="mc_D" class="" style="width: 33.3333%;">[0-29, P4]</td><td id="SfwH" class="" style="width: 33.3333%;">병합된 30칸과 요청 30칸이 정확히 같아 전체 구간을 P4에 배정한다.</td></tr></tbody></table><p id="404b06d2-63bc-81a2-993f-c1fed7db3be2" class="" dir="auto">결과 분석: 전체 빈 공간은 20칸이지만 P2가 사이에 있어서 각각 10칸씩 나뉘어 있다. 15칸 이상의 연속된 빈 블록이 없으므로 할당에 실패한다. 이후 P2도 해제하면 세 구간이 합쳐져 연속된 30칸이 되며, 마지막 30칸 요청이 성공한다.</p><p id="404b06d2-63bc-809b-bee1-d66b1db7dca0" class="" dir="auto">
+</p><p id="404b06d2-63bc-81d6-b08d-ff10d6ed2256" class="" dir="auto"><strong>실제 터미널 실행 화면</strong></p><figure id="404b06d2-63bc-8148-889e-d80bfb1cbfca" class="image" data-notion-image="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-06.png" dir="ltr"><a href="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-06.png"><img src="HW2%20%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4%20%EB%A9%94%EB%AA%A8%EB%A6%AC%20%EA%B4%80%EB%A6%AC%20%EB%B3%B4%EA%B3%A0%EC%84%9C/hw2-case-06.png"></a><figcaption><mark class="highlight-default" data-notion-highlight="default">터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다.</mark></figcaption></figure><p id="404b06d2-63bc-8111-81e8-e5ee39dac2c1" class="" dir="auto">
+</p><p id="404b06d2-63bc-8149-bd45-e2211d324f64" class="" dir="auto">
+</p><h1 id="404b06d2-63bc-819d-9051-ec655ad663b9" class="" dir="auto">전체 소스코드</h1><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js" integrity="sha512-8VrjxGFLIkS0mgEmO3p46A5OkqATHhrNVwyv2V7yUeZrk1jmSDuI3SOEpC9XHEHUWEOsfzzcJeBlUkee9lKGrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><pre id="404b06d2-63bc-81aa-a4d7-dc17865bb140" class="code code-wrap language-c" data-notion-code-syntax="c" tabindex="0"><code class="language-c" style="white-space:pre-wrap;word-break:break-all"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">_CRT_SECURE_NO_WARNINGS</span></span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">FREE_PID</span> <span class="token expression"><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">HEAD_PID</span> <span class="token expression"><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">)</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">MAX_COMMANDS</span> <span class="token expression"><span class="token number">10000</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">COMMAND_LENGTH</span> <span class="token expression"><span class="token number">16</span></span></span>
+
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> <span class="token class-name">MemoryBlock</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">int</span> start<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> size<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> pid<span class="token punctuation">;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">MemoryBlock</span> <span class="token operator">*</span>prev<span class="token punctuation">;</span>
+    <span class="token keyword">struct</span> <span class="token class-name">MemoryBlock</span> <span class="token operator">*</span>next<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> MemoryBlock<span class="token punctuation">;</span>
+
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span>
+<span class="token punctuation">{</span>
+    MemoryBlock head<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> total_size<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> MemoryList<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">init_list</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> total_size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+MemoryBlock <span class="token operator">*</span><span class="token function">create_block</span><span class="token punctuation">(</span><span class="token keyword">int</span> start<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">,</span> <span class="token keyword">int</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">insert_after</span><span class="token punctuation">(</span>MemoryBlock <span class="token operator">*</span>position<span class="token punctuation">,</span> MemoryBlock <span class="token operator">*</span>new_block<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">remove_block</span><span class="token punctuation">(</span>MemoryBlock <span class="token operator">*</span>removed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">destroy_list</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">void</span> <span class="token function">print_memory_map</span><span class="token punctuation">(</span><span class="token keyword">const</span> MemoryList <span class="token operator">*</span>list<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">/* 학생 구현 함수 */</span>
+MemoryBlock <span class="token operator">*</span><span class="token function">find_first_fit</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+MemoryBlock <span class="token operator">*</span><span class="token function">find_process_block</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">allocate_memory</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> pid<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+MemoryBlock <span class="token operator">*</span><span class="token function">merge_free_blocks</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> MemoryBlock <span class="token operator">*</span>current<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> <span class="token function">release_memory</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">init_list</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> total_size<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    MemoryBlock <span class="token operator">*</span>initial_block<span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>list <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> total_size <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>start <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>pid <span class="token operator">=</span> HEAD_PID<span class="token punctuation">;</span>
+    list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>prev <span class="token operator">=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">;</span>
+    list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>next <span class="token operator">=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">;</span>
+    list<span class="token operator">-&gt;</span>total_size <span class="token operator">=</span> total_size<span class="token punctuation">;</span>
+
+    initial_block <span class="token operator">=</span> <span class="token function">create_block</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> total_size<span class="token punctuation">,</span> FREE_PID<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>initial_block <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        list<span class="token operator">-&gt;</span>total_size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">insert_after</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">,</span> initial_block<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+MemoryBlock <span class="token operator">*</span><span class="token function">create_block</span><span class="token punctuation">(</span><span class="token keyword">int</span> start<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">,</span> <span class="token keyword">int</span> pid<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    MemoryBlock <span class="token operator">*</span>block<span class="token punctuation">;</span>
+
+    block <span class="token operator">=</span> <span class="token punctuation">(</span>MemoryBlock <span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">malloc</span><span class="token punctuation">(</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>MemoryBlock<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>block <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    block<span class="token operator">-&gt;</span>start <span class="token operator">=</span> start<span class="token punctuation">;</span>
+    block<span class="token operator">-&gt;</span>size <span class="token operator">=</span> size<span class="token punctuation">;</span>
+    block<span class="token operator">-&gt;</span>pid <span class="token operator">=</span> pid<span class="token punctuation">;</span>
+    block<span class="token operator">-&gt;</span>prev <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    block<span class="token operator">-&gt;</span>next <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> block<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">insert_after</span><span class="token punctuation">(</span>MemoryBlock <span class="token operator">*</span>position<span class="token punctuation">,</span> MemoryBlock <span class="token operator">*</span>new_block<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>position <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> new_block <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    new_block<span class="token operator">-&gt;</span>prev <span class="token operator">=</span> position<span class="token punctuation">;</span>
+    new_block<span class="token operator">-&gt;</span>next <span class="token operator">=</span> position<span class="token operator">-&gt;</span>next<span class="token punctuation">;</span>
+    position<span class="token operator">-&gt;</span>next<span class="token operator">-&gt;</span>prev <span class="token operator">=</span> new_block<span class="token punctuation">;</span>
+    position<span class="token operator">-&gt;</span>next <span class="token operator">=</span> new_block<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">remove_block</span><span class="token punctuation">(</span>MemoryBlock <span class="token operator">*</span>removed<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>removed <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> removed<span class="token operator">-&gt;</span>pid <span class="token operator">==</span> HEAD_PID <span class="token operator">||</span>
+        removed<span class="token operator">-&gt;</span>prev <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> removed<span class="token operator">-&gt;</span>next <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    removed<span class="token operator">-&gt;</span>prev<span class="token operator">-&gt;</span>next <span class="token operator">=</span> removed<span class="token operator">-&gt;</span>next<span class="token punctuation">;</span>
+    removed<span class="token operator">-&gt;</span>next<span class="token operator">-&gt;</span>prev <span class="token operator">=</span> removed<span class="token operator">-&gt;</span>prev<span class="token punctuation">;</span>
+    removed<span class="token operator">-&gt;</span>prev <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    removed<span class="token operator">-&gt;</span>next <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token function">free</span><span class="token punctuation">(</span>removed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">destroy_list</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>list <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>next <span class="token operator">!=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">remove_block</span><span class="token punctuation">(</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>next<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>prev <span class="token operator">=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">;</span>
+    list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>next <span class="token operator">=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">;</span>
+    list<span class="token operator">-&gt;</span>total_size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">print_memory_map</span><span class="token punctuation">(</span><span class="token keyword">const</span> MemoryList <span class="token operator">*</span>list<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">const</span> MemoryBlock <span class="token operator">*</span>block<span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>list <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Memory map: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    block <span class="token operator">=</span> list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>block <span class="token operator">!=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[%d-%d, "</span><span class="token punctuation">,</span> block<span class="token operator">-&gt;</span>start<span class="token punctuation">,</span> block<span class="token operator">-&gt;</span>start <span class="token operator">+</span> block<span class="token operator">-&gt;</span>size <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>block<span class="token operator">-&gt;</span>pid <span class="token operator">==</span> FREE_PID<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"FREE]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"P%d]"</span><span class="token punctuation">,</span> block<span class="token operator">-&gt;</span>pid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        block <span class="token operator">=</span> block<span class="token operator">-&gt;</span>next<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>block <span class="token operator">!=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">" &lt;-&gt; "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+MemoryBlock <span class="token operator">*</span><span class="token function">find_first_fit</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    MemoryBlock <span class="token operator">*</span>current<span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>list <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> size <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    current <span class="token operator">=</span> list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>current <span class="token operator">!=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>current<span class="token operator">-&gt;</span>pid <span class="token operator">==</span> FREE_PID <span class="token operator">&amp;&amp;</span> current<span class="token operator">-&gt;</span>size <span class="token operator">&gt;=</span> size<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> current<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        current <span class="token operator">=</span> current<span class="token operator">-&gt;</span>next<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+MemoryBlock <span class="token operator">*</span><span class="token function">find_process_block</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> pid<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    MemoryBlock <span class="token operator">*</span>current<span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>list <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> pid <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    current <span class="token operator">=</span> list<span class="token operator">-&gt;</span>head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>current <span class="token operator">!=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>current<span class="token operator">-&gt;</span>pid <span class="token operator">==</span> pid<span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> current<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        current <span class="token operator">=</span> current<span class="token operator">-&gt;</span>next<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">allocate_memory</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> pid<span class="token punctuation">,</span> <span class="token keyword">int</span> size<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>list <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> pid <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> size <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">find_process_block</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> pid<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    MemoryBlock <span class="token operator">*</span>block <span class="token operator">=</span> <span class="token function">find_first_fit</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>block <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>block<span class="token operator">-&gt;</span>size <span class="token operator">==</span> size<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        block<span class="token operator">-&gt;</span>pid <span class="token operator">=</span> pid<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    MemoryBlock <span class="token operator">*</span>remaining <span class="token operator">=</span> <span class="token function">create_block</span><span class="token punctuation">(</span>block<span class="token operator">-&gt;</span>start <span class="token operator">+</span> size<span class="token punctuation">,</span>
+                                          block<span class="token operator">-&gt;</span>size <span class="token operator">-</span> size<span class="token punctuation">,</span> FREE_PID<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>remaining <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    block<span class="token operator">-&gt;</span>size <span class="token operator">=</span> size<span class="token punctuation">;</span>
+    block<span class="token operator">-&gt;</span>pid <span class="token operator">=</span> pid<span class="token punctuation">;</span>
+    <span class="token function">insert_after</span><span class="token punctuation">(</span>block<span class="token punctuation">,</span> remaining<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+MemoryBlock <span class="token operator">*</span><span class="token function">merge_free_blocks</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> MemoryBlock <span class="token operator">*</span>current<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    MemoryBlock <span class="token operator">*</span>previous<span class="token punctuation">;</span>
+    MemoryBlock <span class="token operator">*</span>next<span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>list <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> current <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span>
+        current <span class="token operator">==</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head <span class="token operator">||</span> current<span class="token operator">-&gt;</span>pid <span class="token operator">!=</span> FREE_PID<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> current<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    previous <span class="token operator">=</span> current<span class="token operator">-&gt;</span>prev<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>previous <span class="token operator">!=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head <span class="token operator">&amp;&amp;</span> previous<span class="token operator">-&gt;</span>pid <span class="token operator">==</span> FREE_PID<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        previous<span class="token operator">-&gt;</span>size <span class="token operator">+=</span> current<span class="token operator">-&gt;</span>size<span class="token punctuation">;</span>
+        <span class="token function">remove_block</span><span class="token punctuation">(</span>current<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">/* current가 삭제되었으므로 살아 있는 이전 노드를 기준으로 바꾼다. */</span>
+        current <span class="token operator">=</span> previous<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    next <span class="token operator">=</span> current<span class="token operator">-&gt;</span>next<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>next <span class="token operator">!=</span> <span class="token operator">&amp;</span>list<span class="token operator">-&gt;</span>head <span class="token operator">&amp;&amp;</span> next<span class="token operator">-&gt;</span>pid <span class="token operator">==</span> FREE_PID<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        current<span class="token operator">-&gt;</span>size <span class="token operator">+=</span> next<span class="token operator">-&gt;</span>size<span class="token punctuation">;</span>
+        <span class="token function">remove_block</span><span class="token punctuation">(</span>next<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> current<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">release_memory</span><span class="token punctuation">(</span>MemoryList <span class="token operator">*</span>list<span class="token punctuation">,</span> <span class="token keyword">int</span> pid<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>list <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> pid <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    MemoryBlock <span class="token operator">*</span>block <span class="token operator">=</span> <span class="token function">find_process_block</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>block <span class="token operator">==</span> <span class="token constant">NULL</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    block<span class="token operator">-&gt;</span>pid <span class="token operator">=</span> FREE_PID<span class="token punctuation">;</span>
+    <span class="token function">merge_free_blocks</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> block<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    MemoryList memory<span class="token punctuation">;</span>
+    <span class="token keyword">char</span> command<span class="token punctuation">[</span>COMMAND_LENGTH<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> total_size<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> command_count<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> pid<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> size<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> result<span class="token punctuation">;</span>
+
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"전체 메모리 크기를 입력하세요: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>total_size<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">1</span> <span class="token operator">||</span> total_size <span class="token operator">&lt;=</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"잘못된 전체 메모리 크기입니다.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">init_list</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>memory<span class="token punctuation">,</span> total_size<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"메모리 리스트를 초기화할 수 없습니다.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"명령의 개수를 입력하세요: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>command_count<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">1</span> <span class="token operator">||</span>
+        command_count <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token operator">||</span> command_count <span class="token operator">&gt;</span> MAX_COMMANDS<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"잘못된 명령 개수입니다.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">destroy_list</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>memory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> command_count<span class="token punctuation">;</span> <span class="token operator">++</span>i<span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%15s"</span><span class="token punctuation">,</span> command<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"명령을 읽을 수 없습니다.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>command<span class="token punctuation">,</span> <span class="token string">"ALLOC"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d %d"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>pid<span class="token punctuation">,</span> <span class="token operator">&amp;</span>size<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">2</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"ALLOC 명령 형식이 잘못되었습니다.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            result <span class="token operator">=</span> <span class="token function">allocate_memory</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>memory<span class="token punctuation">,</span> pid<span class="token punctuation">,</span> size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"ALLOC P%d %d: %s\n"</span><span class="token punctuation">,</span>
+                   pid<span class="token punctuation">,</span> size<span class="token punctuation">,</span> result <span class="token operator">?</span> <span class="token string">"SUCCESS"</span> <span class="token operator">:</span> <span class="token string">"FAIL"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>command<span class="token punctuation">,</span> <span class="token string">"FREE"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">scanf</span><span class="token punctuation">(</span><span class="token string">"%d"</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>pid<span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+            <span class="token punctuation">{</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"FREE 명령 형식이 잘못되었습니다.\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">break</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+            result <span class="token operator">=</span> <span class="token function">release_memory</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>memory<span class="token punctuation">,</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"FREE P%d: %s\n"</span><span class="token punctuation">,</span>
+                   pid<span class="token punctuation">,</span> result <span class="token operator">?</span> <span class="token string">"SUCCESS"</span> <span class="token operator">:</span> <span class="token string">"FAIL"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">else</span>
+        <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"알 수 없는 명령입니다: %s\n"</span><span class="token punctuation">,</span> command<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">print_memory_map</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>memory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">destroy_list</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>memory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

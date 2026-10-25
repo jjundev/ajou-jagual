@@ -1,0 +1,848 @@
+[
+  {
+    "id": "404b06d2-63bc-8073-b39f-c604d4a16374",
+    "tag": "NAV",
+    "cls": "block-color-gray table_of_contents",
+    "text": "구현 목적소스코드 분석헤더·상수·구조체·함수 원형init_listcreate_blockinsert_afterremove_blo"
+  },
+  {
+    "id": "404b06d2-63bc-8132-8282-f9bd802147e7",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81bc-85e4-ffa036352a13",
+    "tag": "H1",
+    "cls": "",
+    "text": "구현 목적"
+  },
+  {
+    "id": "404b06d2-63bc-81b9-8ff6-c8e872304b12",
+    "tag": "P",
+    "cls": "",
+    "text": "메모리를 원형 이중 연결 리스트로 표현하며 각 노드는 한 구간을 기록한다. 할당 시 First-Fit으로 요청 크기 이상인 첫"
+  },
+  {
+    "id": "404b06d2-63bc-8186-8af9-cae822300b33",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8132-98a9-c48ea66658d3",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81e5-b913-e0f7841438a3",
+    "tag": "H1",
+    "cls": "",
+    "text": "소스코드 분석"
+  },
+  {
+    "id": "404b06d2-63bc-812c-b16b-e3204935286f",
+    "tag": "P",
+    "cls": "",
+    "text": "HW2_skeleton.c의 헤더·상수·구조체·함수 원형과 제공 함수 6개 및 main을 유지하고, TODO였던 함수 5개를 "
+  },
+  {
+    "id": "404b06d2-63bc-81e6-b095-c53866b5c759",
+    "tag": "H2",
+    "cls": "",
+    "text": "헤더·상수·구조체·함수 원형"
+  },
+  {
+    "id": "404b06d2-63bc-818f-a1df-d403256ef4a9",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석#define _CRT_SECURE_NO_WARNINGS#include <stdio.h>#include"
+  },
+  {
+    "id": "404b06d2-63bc-8159-8d59-efab5d899c8f",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81cc-8cd5-c5872f1b1281",
+    "tag": "H2",
+    "cls": "",
+    "text": "init_list"
+  },
+  {
+    "id": "404b06d2-63bc-8153-8a1e-ddbc28070e95",
+    "tag": "P",
+    "cls": "",
+    "text": "제공 함수"
+  },
+  {
+    "id": "404b06d2-63bc-81c8-b19c-e4a5570a3aca",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석int init_list(MemoryList *list, int total_size){    Memor"
+  },
+  {
+    "id": "404b06d2-63bc-816d-a786-c9c3f19f7f37",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8157-b92e-d65ebaa8e8d0",
+    "tag": "H2",
+    "cls": "",
+    "text": "create_block"
+  },
+  {
+    "id": "404b06d2-63bc-818e-bae2-e455219eef72",
+    "tag": "P",
+    "cls": "",
+    "text": "제공 함수"
+  },
+  {
+    "id": "404b06d2-63bc-8157-bd19-f5a0485e2478",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석MemoryBlock *create_block(int start, int size, int pid){ "
+  },
+  {
+    "id": "404b06d2-63bc-8125-8755-ecdc9d68d401",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-816b-bda1-c537763f0304",
+    "tag": "H2",
+    "cls": "",
+    "text": "insert_after"
+  },
+  {
+    "id": "404b06d2-63bc-81ce-b6f2-f4aa4b70a504",
+    "tag": "P",
+    "cls": "",
+    "text": "제공 함수"
+  },
+  {
+    "id": "404b06d2-63bc-8145-a20b-eb7cf74142d4",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석void insert_after(MemoryBlock *position, MemoryBlock *new"
+  },
+  {
+    "id": "404b06d2-63bc-8117-9e19-c043b4dc29fd",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8148-be56-da73379beb1f",
+    "tag": "H2",
+    "cls": "",
+    "text": "remove_block"
+  },
+  {
+    "id": "404b06d2-63bc-819c-b0bd-deaec81c1adc",
+    "tag": "P",
+    "cls": "",
+    "text": "제공 함수"
+  },
+  {
+    "id": "404b06d2-63bc-8127-8759-e909487b77e6",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석void remove_block(MemoryBlock *removed){    if (removed ="
+  },
+  {
+    "id": "404b06d2-63bc-8113-aaa9-d3109a7fb4cb",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8160-af4e-c235a2abf217",
+    "tag": "H2",
+    "cls": "",
+    "text": "destroy_list"
+  },
+  {
+    "id": "404b06d2-63bc-81ea-8b68-cffe4340dee7",
+    "tag": "P",
+    "cls": "",
+    "text": "제공 함수"
+  },
+  {
+    "id": "404b06d2-63bc-81f9-8a19-de1f9aa64165",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석void destroy_list(MemoryList *list){    if (list == NULL)"
+  },
+  {
+    "id": "404b06d2-63bc-812c-9afa-c5d2ea2d7dcb",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8189-b7c8-c255c6c25e99",
+    "tag": "H2",
+    "cls": "",
+    "text": "print_memory_map"
+  },
+  {
+    "id": "404b06d2-63bc-8146-a40d-c9f3f029e81e",
+    "tag": "P",
+    "cls": "",
+    "text": "제공 함수"
+  },
+  {
+    "id": "404b06d2-63bc-81a0-bb57-c4c548727ccf",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석void print_memory_map(const MemoryList *list){    const M"
+  },
+  {
+    "id": "404b06d2-63bc-8162-b664-cbe133359fd1",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-819c-b97e-e6c25eeaa5d2",
+    "tag": "H2",
+    "cls": "",
+    "text": "find_first_fit"
+  },
+  {
+    "id": "404b06d2-63bc-81e8-ac70-dc4cac06260d",
+    "tag": "P",
+    "cls": "",
+    "text": "구현 대상 함수"
+  },
+  {
+    "id": "404b06d2-63bc-81f2-8d71-e1bae2a2f0dd",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석MemoryBlock *find_first_fit(MemoryList *list, int size){ "
+  },
+  {
+    "id": "404b06d2-63bc-81a8-af8e-ce3833151c7b",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-816d-8b07-c808c8c3a1d4",
+    "tag": "H2",
+    "cls": "",
+    "text": "find_process_block"
+  },
+  {
+    "id": "404b06d2-63bc-81e3-83a7-eb6281108d55",
+    "tag": "P",
+    "cls": "",
+    "text": "구현 대상 함수"
+  },
+  {
+    "id": "404b06d2-63bc-81ce-aa04-e2b286cc5774",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석MemoryBlock *find_process_block(MemoryList *list, int pid"
+  },
+  {
+    "id": "404b06d2-63bc-8104-bec9-d6b0399961c9",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8123-9bbf-fe54a89d663e",
+    "tag": "H2",
+    "cls": "",
+    "text": "allocate_memory"
+  },
+  {
+    "id": "404b06d2-63bc-8167-b5e2-d9474b8d5e44",
+    "tag": "P",
+    "cls": "",
+    "text": "구현 대상 함수"
+  },
+  {
+    "id": "404b06d2-63bc-818d-b788-ca8cface6eb3",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석int allocate_memory(MemoryList *list, int pid, int size){"
+  },
+  {
+    "id": "404b06d2-63bc-81a0-a3e8-c4f6603140a5",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-810d-9141-c5ce8939ac73",
+    "tag": "H2",
+    "cls": "",
+    "text": "merge_free_blocks"
+  },
+  {
+    "id": "404b06d2-63bc-8120-ab45-eb74421474f5",
+    "tag": "P",
+    "cls": "",
+    "text": "구현 대상 함수"
+  },
+  {
+    "id": "404b06d2-63bc-8100-822e-d73d1e51fc70",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석MemoryBlock *merge_free_blocks(MemoryList *list, MemoryBl"
+  },
+  {
+    "id": "404b06d2-63bc-8131-9156-ed67b2c9a8ca",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-814a-bb95-f03c34a9c11a",
+    "tag": "H2",
+    "cls": "",
+    "text": "release_memory"
+  },
+  {
+    "id": "404b06d2-63bc-81f0-88fd-ee4941c18634",
+    "tag": "P",
+    "cls": "",
+    "text": "구현 대상 함수"
+  },
+  {
+    "id": "404b06d2-63bc-816a-8337-c7ab1e0998a2",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석int release_memory(MemoryList *list, int pid){    if (lis"
+  },
+  {
+    "id": "404b06d2-63bc-8157-ad04-c3030dcca4ea",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8125-8346-e022392dd1ad",
+    "tag": "H2",
+    "cls": "",
+    "text": "main"
+  },
+  {
+    "id": "404b06d2-63bc-8154-9c78-fff9decd2b2e",
+    "tag": "P",
+    "cls": "",
+    "text": "제공 함수"
+  },
+  {
+    "id": "404b06d2-63bc-8113-91c6-d207b12c8552",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "소스코드기능 명세와 분석int main(void){    MemoryList memory;    char command[COM"
+  },
+  {
+    "id": "404b06d2-63bc-813a-8bec-db5a9bf6c1a8",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8117-baba-cdca00444c0a",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81ed-8095-f2ba8f10d249",
+    "tag": "H1",
+    "cls": "",
+    "text": "실행결과 및 분석"
+  },
+  {
+    "id": "404b06d2-63bc-813e-b652-d3bdebacbf4f",
+    "tag": "P",
+    "cls": "",
+    "text": "과제에 제시된 예제 3건과 정확한 크기의 할당, First-Fit 선택, 외부 단편화를 확인하는 실행 사례 3건을 정리했다. "
+  },
+  {
+    "id": "404b06d2-63bc-8031-81d7-c4b4e679a020",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-814e-9981-eab5ab4be166",
+    "tag": "H2",
+    "cls": "",
+    "text": "공식 예제 1: 연속 할당과 분할"
+  },
+  {
+    "id": "404b06d2-63bc-8193-bc6a-e5696c03773c",
+    "tag": "P",
+    "cls": "",
+    "text": "입력"
+  },
+  {
+    "id": "",
+    "tag": "SCRIPT",
+    "cls": "",
+    "text": ""
+  },
+  {
+    "id": "",
+    "tag": "LINK",
+    "cls": "",
+    "text": ""
+  },
+  {
+    "id": "404b06d2-63bc-819b-81e9-d89165f2d7e0",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "100\n2\nALLOC 1 20\nALLOC 2 30\n"
+  },
+  {
+    "id": "404b06d2-63bc-80d5-b411-d76fc5367c66",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-819b-b907-d989cf6059f8",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 출력 (표준 출력 원문)"
+  },
+  {
+    "id": "404b06d2-63bc-8184-a988-d19fcb24239f",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 20: SUCCESS\nMemory map: [0-1"
+  },
+  {
+    "id": "404b06d2-63bc-81c6-9c76-ee7b4dfc0e8d",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "입력 명령과 결과관찰한 메모리 지도상태 변화의 이유ALLOC 1 20 / SUCCESS[0-19, P1] <-> [20-99,"
+  },
+  {
+    "id": "404b06d2-63bc-81f0-8ed9-f854b990d431",
+    "tag": "P",
+    "cls": "",
+    "text": "결과 분석: 첫 요청의 끝 주소는 0 + 20 - 1 = 19이고, 두 번째 요청은 남은 빈 블록의 시작인 20에서 출발한다."
+  },
+  {
+    "id": "404b06d2-63bc-8093-87a9-f65331a3cd2a",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81e2-ae42-dc5b10e5fce8",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 터미널 실행 화면"
+  },
+  {
+    "id": "404b06d2-63bc-8146-9280-e5c34c1b9b98",
+    "tag": "FIGURE",
+    "cls": "image",
+    "text": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다."
+  },
+  {
+    "id": "404b06d2-63bc-819e-91e4-ea672fcfdd9b",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8194-974d-c7a8ab3ca887",
+    "tag": "H2",
+    "cls": "",
+    "text": "공식 예제 2: 반납과 양쪽 병합"
+  },
+  {
+    "id": "404b06d2-63bc-8115-b4a3-f0aad7041d08",
+    "tag": "P",
+    "cls": "",
+    "text": "입력"
+  },
+  {
+    "id": "404b06d2-63bc-811b-b100-f63e79ee2090",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "100\n6\nALLOC 1 20\nALLOC 2 30\nALLOC 3 10\nFREE 2\nFREE 1\nFREE 3\n"
+  },
+  {
+    "id": "404b06d2-63bc-80c2-a966-d1d94953e764",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8129-aa29-ce69ebc3a04e",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 출력 (표준 출력 원문)"
+  },
+  {
+    "id": "404b06d2-63bc-81b4-b551-e1eba9b959ef",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 20: SUCCESS\nMemory map: [0-1"
+  },
+  {
+    "id": "404b06d2-63bc-81d9-84e6-e7e1b932c9ac",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "입력 명령과 결과관찰한 메모리 지도상태 변화의 이유ALLOC 1 20 / SUCCESS[0-19, P1] <-> [20-99,"
+  },
+  {
+    "id": "404b06d2-63bc-8148-9687-fd0d2b9bc415",
+    "tag": "P",
+    "cls": "",
+    "text": "결과 분석: FREE 2는 노드를 삭제하는 대신 소유자 표시만 바꾸는 경우이고, FREE 1은 오른쪽 병합, FREE 3은 양"
+  },
+  {
+    "id": "404b06d2-63bc-8072-8a40-f88e8c03ba69",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81bd-9a77-db48f1a00aba",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 터미널 실행 화면"
+  },
+  {
+    "id": "404b06d2-63bc-81f1-b087-e6852fe7aad0",
+    "tag": "FIGURE",
+    "cls": "image",
+    "text": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다."
+  },
+  {
+    "id": "404b06d2-63bc-813b-89d6-d8030c530a4a",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-819f-80fb-e86d03d8892d",
+    "tag": "H2",
+    "cls": "",
+    "text": "공식 예제 3: 할당 실패와 예외 처리"
+  },
+  {
+    "id": "404b06d2-63bc-8146-93b9-cae8434e3ab3",
+    "tag": "P",
+    "cls": "",
+    "text": "입력"
+  },
+  {
+    "id": "404b06d2-63bc-8172-b847-ead3bfb149c4",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "50\n4\nALLOC 1 30\nALLOC 2 30\nFREE 7\nALLOC 1 10\n"
+  },
+  {
+    "id": "404b06d2-63bc-804e-9ac1-ebf2c83d31bd",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81f6-9733-dae1e218ba96",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 출력 (표준 출력 원문)"
+  },
+  {
+    "id": "404b06d2-63bc-8158-9e24-ce47e6525ce8",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 30: SUCCESS\nMemory map: [0-2"
+  },
+  {
+    "id": "404b06d2-63bc-814f-845d-fdae229deb7f",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "입력 명령과 결과관찰한 메모리 지도상태 변화의 이유ALLOC 1 30 / SUCCESS[0-29, P1] <-> [30-49,"
+  },
+  {
+    "id": "404b06d2-63bc-8178-b5ce-ed1704259f60",
+    "tag": "P",
+    "cls": "",
+    "text": "결과 분석: 성공한 첫 요청 이후 세 요청이 모두 실패했고, 각 실패 뒤 지도는 [0-29, P1] <-> [30-49, FR"
+  },
+  {
+    "id": "404b06d2-63bc-8076-af12-f7ee9c8dec91",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-811f-92cb-e6c4d02d6caf",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 터미널 실행 화면"
+  },
+  {
+    "id": "404b06d2-63bc-81e7-92b1-fbd66662e83e",
+    "tag": "FIGURE",
+    "cls": "image",
+    "text": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다."
+  },
+  {
+    "id": "404b06d2-63bc-810b-b590-c2ec8aec5d50",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81ec-96e1-f205d1ebbe21",
+    "tag": "H2",
+    "cls": "",
+    "text": "경계 사례: 정확한 크기와 최소 크기"
+  },
+  {
+    "id": "404b06d2-63bc-8183-8b3a-feb206a181be",
+    "tag": "P",
+    "cls": "",
+    "text": "입력"
+  },
+  {
+    "id": "404b06d2-63bc-81c4-9552-cee2e75c1e88",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "1\n4\nALLOC 1 1\nALLOC 2 1\nFREE 1\nALLOC 2 1\n"
+  },
+  {
+    "id": "404b06d2-63bc-802a-a751-f9899c3a6490",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-818e-a0d6-d1290043a06b",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 출력 (표준 출력 원문)"
+  },
+  {
+    "id": "404b06d2-63bc-8178-afd4-ddb5d2a876f1",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 1: SUCCESS\nMemory map: [0-0,"
+  },
+  {
+    "id": "404b06d2-63bc-81e4-9bcd-f087c48ac342",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "입력 명령과 결과관찰한 메모리 지도상태 변화의 이유ALLOC 1 1 / SUCCESS[0-0, P1]유일한 1칸을 전부 배정하"
+  },
+  {
+    "id": "404b06d2-63bc-813a-942b-df41df7c6182",
+    "tag": "P",
+    "cls": "",
+    "text": "결과 분석: 블록 크기와 요청 크기가 같으면 분할 없이 PID만 바꾸는 분기가 실행된다. 이때 크기 0인 FREE 노드가 생기"
+  },
+  {
+    "id": "404b06d2-63bc-80b2-9be2-eed98168ecb1",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8114-9d45-f1999254885f",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 터미널 실행 화면"
+  },
+  {
+    "id": "404b06d2-63bc-81b9-87cd-ee8fd287d29b",
+    "tag": "FIGURE",
+    "cls": "image",
+    "text": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다."
+  },
+  {
+    "id": "404b06d2-63bc-81d3-a528-d4d951b6bbbd",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8154-9a0c-df474ff85185",
+    "tag": "H2",
+    "cls": "",
+    "text": "선택 사례: First-Fit과 작은 빈 블록의 구분"
+  },
+  {
+    "id": "404b06d2-63bc-81a7-a087-f87497a273ed",
+    "tag": "P",
+    "cls": "",
+    "text": "입력"
+  },
+  {
+    "id": "404b06d2-63bc-81dd-b385-e2f9c20281a2",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "40\n7\nALLOC 1 15\nALLOC 2 5\nALLOC 3 10\nALLOC 4 10\nFREE 1\nFREE 3\nALLOC 5 "
+  },
+  {
+    "id": "404b06d2-63bc-8048-9832-ed0bfda984f5",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8172-9a1e-c9f3099cb8ca",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 출력 (표준 출력 원문)"
+  },
+  {
+    "id": "404b06d2-63bc-818f-a495-d339eab0418e",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 15: SUCCESS\nMemory map: [0-1"
+  },
+  {
+    "id": "404b06d2-63bc-81b7-aec7-e5f8d399eb4d",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "입력 명령과 결과관찰한 메모리 지도상태 변화의 이유ALLOC 1 15 / SUCCESS[0-14, P1] <-> [15-39,"
+  },
+  {
+    "id": "404b06d2-63bc-81fa-8677-f3e311c56159",
+    "tag": "P",
+    "cls": "",
+    "text": "결과 분석: First-Fit은 앞에서부터 요청을 만족하는 첫 블록인 15칸을 선택하고, Best-Fit은 요청을 만족하는 블"
+  },
+  {
+    "id": "404b06d2-63bc-80e9-a3e7-d4033e7f8c12",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-816b-b91e-f46ab9702a80",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 터미널 실행 화면"
+  },
+  {
+    "id": "404b06d2-63bc-818c-923f-c94137b59470",
+    "tag": "FIGURE",
+    "cls": "image",
+    "text": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다."
+  },
+  {
+    "id": "404b06d2-63bc-8186-8fe8-f03e54e2e5e9",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8188-b328-c00978c641d6",
+    "tag": "H2",
+    "cls": "",
+    "text": "실패 사례: 외부 단편화와 병합 후 재시도"
+  },
+  {
+    "id": "404b06d2-63bc-81c3-a84d-d4d29e4a7926",
+    "tag": "P",
+    "cls": "",
+    "text": "입력"
+  },
+  {
+    "id": "404b06d2-63bc-81e4-b000-e81d7e79a46f",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "30\n8\nALLOC 1 10\nALLOC 2 10\nALLOC 3 10\nFREE 1\nFREE 3\nALLOC 4 15\nFREE 2\n"
+  },
+  {
+    "id": "404b06d2-63bc-81a4-8ab4-ecf396cc92f9",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81c0-aa1b-c0c33c7f78c1",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 출력 (표준 출력 원문)"
+  },
+  {
+    "id": "404b06d2-63bc-8194-bbdc-ff762fefe47a",
+    "tag": "PRE",
+    "cls": "code code-wrap",
+    "text": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 10: SUCCESS\nMemory map: [0-9"
+  },
+  {
+    "id": "404b06d2-63bc-81f5-af50-f5ddcc071554",
+    "tag": "TABLE",
+    "cls": "simple-table",
+    "text": "입력 명령과 결과관찰한 메모리 지도상태 변화의 이유ALLOC 1 10 / SUCCESS[0-9, P1] <-> [10-29, "
+  },
+  {
+    "id": "404b06d2-63bc-81a2-993f-c1fed7db3be2",
+    "tag": "P",
+    "cls": "",
+    "text": "결과 분석: 전체 빈 공간은 20칸이지만 P2가 사이에 있어서 각각 10칸씩 나뉘어 있다. 15칸 이상의 연속된 빈 블록이 없"
+  },
+  {
+    "id": "404b06d2-63bc-809b-bee1-d66b1db7dca0",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-81d6-b08d-ff10d6ed2256",
+    "tag": "P",
+    "cls": "",
+    "text": "실제 터미널 실행 화면"
+  },
+  {
+    "id": "404b06d2-63bc-8148-889e-d80bfb1cbfca",
+    "tag": "FIGURE",
+    "cls": "image",
+    "text": "터미널의 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다."
+  },
+  {
+    "id": "404b06d2-63bc-8111-81e8-e5ee39dac2c1",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-8149-bd45-e2211d324f64",
+    "tag": "P",
+    "cls": "",
+    "text": "\n"
+  },
+  {
+    "id": "404b06d2-63bc-819d-9051-ec655ad663b9",
+    "tag": "H1",
+    "cls": "",
+    "text": "전체 소스코드"
+  },
+  {
+    "id": "",
+    "tag": "SCRIPT",
+    "cls": "",
+    "text": ""
+  },
+  {
+    "id": "404b06d2-63bc-81aa-a4d7-dc17865bb140",
+    "tag": "PRE",
+    "cls": "code code-wrap language-c",
+    "text": "#define _CRT_SECURE_NO_WARNINGS\n\n#include <stdio.h>\n#include <stdlib.h"
+  }
+]

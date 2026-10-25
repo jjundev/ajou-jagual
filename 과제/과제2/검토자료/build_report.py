@@ -99,7 +99,7 @@ ANALYSIS = {
         "origin": "제공 함수",
         "spec": "인자: 없음. 반환값: 종료 경로에서 0. 참조 데이터: 표준 입력의 크기·명령 개수·명령. 변경 상태: 지역 변수 memory가 보관하는 리스트와 표준 출력.",
         "markers": ["    for (i = 0; i < command_count; ++i)", "        else if (strcmp(command, \"FREE\") == 0)"],
-        "parts": ["전체 크기를 읽고 init_list를 호출한다. 이어 명령 개수를 0~MAX_COMMANDS 범위에서 확인한다. 리스트 생성 뒤 명령 개수가 잘못되면 destroy_list로 생성한 노드를 정리한 후 종료한다. 입력 실패와 프로그램 종료 코드는 별개이며, 이 제공 코드의 해당 경로도 0을 반환한다.", "명령을 최대 15문자로 읽어 16바이트 배열의 끝에 널 문자를 둘 공간을 남긴다. ALLOC이면 PID와 크기를 읽어 allocate_memory를 호출하고, 반환값이 1인지 0인지에 따라 SUCCESS 또는 FAIL을 출력한다. 형식이 맞지 않으면 반복문을 종료한다.", "FREE이면 PID를 읽어 release_memory를 호출하고 결과를 출력한다. 인식하지 못한 명령은 안내 문구를 출력한다. 정상적으로 해석한 명령에서 기능이 실패해도 현재 지도를 출력하므로 상태 유지 여부를 비교할 수 있다. 반복문 종료 뒤 destroy_list로 남은 관리 노드를 해제한다. 명령마다 기능 실행과 지도 출력에 최악 O(n)이 들며, 잘못된 모든 입력 형식을 완전하게 검증하는 파서라고 볼 수는 없다."],
+        "parts": ["전체 크기를 읽고 init_list를 호출한다. 이어 명령 개수를 0~MAX_COMMANDS 범위에서 확인한다. 리스트 생성 뒤 명령 개수가 잘못되면 destroy_list로 생성한 노드를 정리한 후 종료한다. 입력이 올바르면 각 명령을 순서대로 처리한다.", "명령을 최대 15문자로 읽어 16바이트 배열의 끝에 널 문자를 둘 공간을 남긴다. ALLOC이면 PID와 크기를 읽어 allocate_memory를 호출하고, 반환값이 1인지 0인지에 따라 SUCCESS 또는 FAIL을 출력한다. 형식이 맞지 않으면 반복문을 종료한다.", "FREE이면 PID를 읽어 release_memory를 호출하고 결과를 출력한다. 인식하지 못한 명령은 안내 문구를 출력한다. 정상적으로 해석한 명령에서 기능이 실패해도 현재 지도를 출력하므로 상태 유지 여부를 비교할 수 있다. 반복문 종료 뒤 destroy_list로 남은 관리 노드를 해제한다. 명령마다 기능 실행과 지도 출력에 최악 O(n)이 든다."],
     },
 }
 
@@ -243,19 +243,7 @@ for name, record in ANALYSIS.items():
     source_table(rows)
 
 heading(1, "실행결과 및 분석")
-paragraph("현재 HW2.c를 macOS arm64의 Apple clang으로 빌드하여 아래 입력을 실행했다. 각 출력은 실행 기록의 표준 출력 원문이며, 따로 제시한 입력이 표준 출력에 자동으로 섞여 들어가는 것은 아니다. 이어 동일한 소스를 별도로 빌드해 Antigravity IDE의 내장 터미널에서 대표 사례를 한 줄씩 직접 입력하고, 실제 입력·출력·프로세스 종료 코드가 보이는 화면을 캡처했다.")
-paragraph(f"검증 기록은 총 {RUNS['total']}건이며 {RUNS['passed']}건이 통과했다. 아래 상세 분석에 수록한 사례는 {len(CASE_DATA)}건이다. 전체 검증 건수와 보고서의 대표 사례 수를 구분한다. 실행 파일은 저장소 밖 임시 디렉터리에 만들었고, 현재 소스의 해시와 입력·출력·종료 코드는 별도 실행 기록에 보관했다.")
-paragraph(f"실제 IDE 터미널에서 재실행하고 캡처한 사례는 {len(CAPTURES)}건이다. 캡처용 빌드는 C11과 -Wall -Wextra -Wpedantic -Werror를 사용했다. 각 화면의 ./run은 현재 실행 파일을 대화형으로 실행하고 대화 로그 및 실제 종료 코드를 기록하는 래퍼다. 캡처 이미지에서는 창 장식과 빈 여백만 잘랐으며 입력·출력 텍스트를 수정하지 않았다.")
-table(["구분", "확인 내용", "관찰 결과"], [
-    ["공식 예제", "HW2.pdf 16~18쪽의 입력", "세 예제의 명령 결과와 매 단계 지도가 일치"],
-    ["경계·분기", "정확한 크기, First-Fit 선택, 왼쪽·오른쪽·양쪽 병합, 단편화, PID 예외, 명령 0개", "기록된 사례에서 기대 결과와 일치"],
-    ["명령 시퀀스", "20개 고정 시드에서 각각 80개 명령", "주소별 배열 모델과 매 명령 결과·지도를 대조하여 일치"],
-    ["실패 주입", "분할 노드 malloc 실패, 정확한 크기의 무분할 할당, 원형 양방향 링크", "테스트 하네스에서 기존 상태 보존 및 링크 확인"],
-    ["빌드·실행 진단", "C11, -Wall -Wextra -Wpedantic, AddressSanitizer·UndefinedBehaviorSanitizer", "해당 빌드와 실행에서 진단 없음, 모든 실행 종료 코드 0"],
-])
-paragraph("malloc 실패는 테스트 하네스에서만 의도적으로 주입했다. 실제 컴퓨터의 메모리가 고갈되는 현상을 관측한 것은 아니다. 또한 실행 종료 코드 0은 ALLOC·FREE의 성공과 같지 않다. 명령별 성공 여부는 각 함수의 반환값과 SUCCESS·FAIL 출력으로 따로 판단했다.")
-paragraph("준비한 테스트는 가능한 입력과 실행 순서 중 일부만 확인한 것이므로, 통과했더라도 검사하지 않은 경우에 오류가 있을 수 있다. 따라서 검증한 범위에서 정상 동작했다고 설명해야 한다.")
-paragraph("범위의 한계: 양의 정수라는 과제 입력 계약 안의 기록된 사례를 확인했다. 모든 가능한 입력, 정수 범위를 벗어난 입력, 다른 운영체제의 동작을 검증한 결과는 아니다. 음수·실수 등은 과제에서 필수 예외 처리 대상으로 요구하지 않으며, 현재 코드를 모든 잘못된 입력을 거르는 파서라고 서술하지 않는다.")
+paragraph('과제에 제시된 예제 3건과 정확한 크기의 할당, First-Fit 선택, 외부 단편화를 확인하는 실행 사례 3건을 정리했다. 각 사례에서 입력과 실제 출력, 실행 화면을 제시하고 메모리 지도가 변하는 이유를 분석한다.')
 
 selected_runs = []
 for key, (title, reasons, interpretation) in CASE_DATA.items():
@@ -271,7 +259,6 @@ for key, (title, reasons, interpretation) in CASE_DATA.items():
         for command, result, memory_map, reason in zip(commands, case["expected_results"], maps, reasons)
     ])
     paragraph("결과 분석: " + interpretation)
-    paragraph(f"관찰한 종료 코드: {case['returncode']}. 표준 오류 출력: 없음.")
     capture = CAPTURES[key]
     assert capture["stdin"] == case["stdin"]
     assert capture["observed_maps"] == case["expected_maps"]
@@ -335,6 +322,7 @@ pre{margin:0;font-size:8pt;line-height:1.3;white-space:pre-wrap;overflow-wrap:an
 .toc .sub{padding-left:12pt}
 .purpose{margin-top:18pt}
 .case-start{break-before:page;margin-top:0}
+.chapter + p + .case-start{break-before:auto;margin-top:16pt}
 .execution-grid{display:grid;grid-template-columns:20% 1fr;gap:12pt;margin:0 0 8pt;break-inside:avoid}
 .execution-grid h3{font-size:9pt;margin:0 0 5pt}
 .execution-grid pre{font-size:7.8pt;line-height:1.32;background:#f6f6f3;padding:8pt;border:0.55pt solid #e3e3df}
@@ -403,7 +391,7 @@ def build():
             _, title, capture = block
             image_path = Path(capture["screenshot"])
             assert capture["crop"]["output_sha256"] == hashlib.sha256(image_path.read_bytes()).hexdigest()
-            caption = "Antigravity IDE 내장 터미널의 실제 실행 화면. 위 사례와 같은 입력을 순서대로 입력했고, 명령별 결과·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면을 보존하고 창 장식·빈 여백만 잘랐다."
+            caption = "위 입력에 대한 실제 실행 화면. 명령별 처리 결과와 메모리 지도를 보여 준다."
             parts.append('<section class="terminal-evidence"><h2>실제 터미널 실행 화면</h2><p class="case-label">' + H(title) + '</p><figure><img src="' + H(image_path.as_uri(), quote=True) + '" alt="' + H(title, quote=True) + '"><figcaption>' + H(caption) + '</figcaption></figure></section>')
             md += ["### 실제 터미널 실행 화면", "", f"![{title}]({image_path})", "", caption, ""]
         elif kind == "appendix":
