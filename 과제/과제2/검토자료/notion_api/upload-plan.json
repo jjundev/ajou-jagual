@@ -1,0 +1,3865 @@
+[
+  {
+    "object": "block",
+    "type": "table_of_contents",
+    "table_of_contents": {
+      "color": "default"
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": []
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "작성자 코드·설명 반영본. 최초 AI 참고 초안에 작성자가 대화에서 작성한 코드와 설명을 반영하고 AI가 통합·검증했다. 기존 AI 보충 설명도 포함하며, 과제의 본인 구현·직접 작성 요건 충족을 인증한 제출본은 아니다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_1",
+    "heading_1": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "구현 목적"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "메모리를 원형 이중 연결 리스트로 표현하며 각 노드는 한 구간을 기록한다. 할당 시 First-Fit으로 요청 크기 이상인 첫 빈 블록을 찾는다. 공간이 더 크면 할당 부분과 남는 부분으로 나눈다. 해제 시 FREE로 바꾸고 인접한 빈 블록과 합친다. 실패하면 기존 메모리 지도를 유지한다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_1",
+    "heading_1": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "소스코드 분석"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "HW2_skeleton.c의 헤더·상수·구조체·함수 원형과 제공 함수 6개 및 main을 유지하고, TODO였던 함수 5개를 채운 HW2.c를 분석한다. 리스트가 나타내는 주소는 관리 대상의 가상 주소이며, 실제 동적 메모리는 이를 기록하는 노드에 사용된다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "헤더·상수·구조체·함수 원형"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "#define _CRT_SECURE_NO_WARNINGS\n\n#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define FREE_PID (-1)\n#define HEAD_PID (-2)\n#define MAX_COMMANDS 10000\n#define COMMAND_LENGTH 16\n\n"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석\n\nstdio.h는 scanf와 printf를 사용해 입력을 받고 결과를 출력하기 위해 필요하다. stdlib.h는 malloc과 free로 노드를 생성하고 해제하는 데 필요하고, string.h는 strcmp로 입력 명령이 ALLOC인지 FREE인지 비교하는 데 필요하다.\n\n_CRT_SECURE_NO_WARNINGS는 MSVC의 관련 보안 경고를 억제하는 매크로이며 입력을 검증하거나 안전성을 보장하는 기능은 아니다.\n\nFREE_PID(-1)는 빈 블록, HEAD_PID(-2)는 헤드의 표식이다. 실제 PID는 양수다. MAX_COMMANDS(10000)는 명령 개수 상한이고, COMMAND_LENGTH(16)는 명령 문자열의 저장 공간이다. scanf의 %15s와 결합해 널 문자 한 칸을 남긴다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "typedef struct MemoryBlock\n{\n    int start;\n    int size;\n    int pid;\n    struct MemoryBlock *prev;\n    struct MemoryBlock *next;\n} MemoryBlock;\n\n"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석\n\n제공된 MemoryBlock에서 start는 블록의 시작 주소, size는 크기, pid는 사용 중인 프로세스 번호나 FREE 상태를 나타낸다. prev와 next는 이전·다음 노드를 가리켜 리스트를 양방향으로 연결한다. 끝 주소는 start + size - 1이다.\n\n노드의 앞뒤 순서는 주소 순서와 일치한다. 빈 구간도 FREE_PID를 가진 노드로 기록하므로 사용 중인 구간과 빈 구간을 모두 리스트에서 추적할 수 있다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "typedef struct\n{\n    MemoryBlock head;\n    int total_size;\n} MemoryList;\n\n"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석\n\n제공된 MemoryList는 기준 노드 head 자체와 전체 크기 total_size를 포함한다. head는 실제 할당 대상이 아니고 원형 리스트의 시작과 끝을 구분한다.\n\n실제 노드가 하나도 없을 때 head.prev와 head.next는 head 자신을 가리킨다. 별도의 파일 범위 전역 상태 변수는 없으며 main의 지역 변수 memory를 포인터로 전달해 상태를 공유한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "int init_list(MemoryList *list, int total_size);\nMemoryBlock *create_block(int start, int size, int pid);\nvoid insert_after(MemoryBlock *position, MemoryBlock *new_block);\nvoid remove_block(MemoryBlock *removed);\nvoid destroy_list(MemoryList *list);\nvoid print_memory_map(const MemoryList *list);\n\n/* 학생 구현 함수 */\nMemoryBlock *find_first_fit(MemoryList *list, int size);\nMemoryBlock *find_process_block(MemoryList *list, int pid);\nint allocate_memory(MemoryList *list, int pid, int size);\nMemoryBlock *merge_free_blocks(MemoryList *list, MemoryBlock *current);\nint release_memory(MemoryList *list, int pid);\n\n"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석\n\n앞의 6개는 리스트 생성·삽입·삭제·정리·출력을 담당하는 제공 함수다. 뒤의 5개는 탐색·할당·병합·반납을 담당하는 구현 대상 함수다. 선언한 함수 형식과 자료구조는 유지하고 추가 함수는 만들지 않았다.\n\n리스트 포인터를 받은 함수가 같은 상태를 참조한다. print_memory_map의 const는 출력 함수가 전달받은 리스트를 수정하지 않는 용도를 나타낸다. 각 함수의 실제 변경 상태와 반환값은 다음 항목에서 구분한다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "init_list"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "제공 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "int init_list(MemoryList *list, int total_size)\n{\n    MemoryBlock *initial_block;\n\n    if (list == NULL || total_size <= 0)\n    {\n        return 0;\n    }\n\n    list->head.start = -1;\n    list->head.size = 0;\n    list->head.pid = HEAD_PID;\n    list->head.prev = &list->head;\n    list->head.next = &list->head;\n    list->total_size = total_size;\n\n    initial_block = create_block(0, total_size, FREE_PID);\n    if (initial_block == NULL)\n    {\n        list->total_size = 0;\n        return 0;\n    }\n\n    insert_after(&list->head, initial_block);\n    return 1;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 초기화할 MemoryList 포인터와 전체 크기. 반환값: 성공 1, 잘못된 인자나 초기 노드 생성 실패 시 0. 변경 상태: 헤드의 연결, total_size, 초기 FREE 블록.\n\n헤드는 실제 주소 구간을 나타내지 않는 기준 노드다. 먼저 prev와 next를 자기 자신으로 설정해 빈 원형 리스트를 만든다. 아직 어떤 프로세스에도 할당하지 않았으므로 전체 메모리가 하나의 연속된 빈 공간이다. 따라서 시작 주소 0, 크기 total_size인 FREE 블록 하나로 표현한다.\n\n초기 블록을 만들지 못하면 total_size를 0으로 되돌리고 실패를 반환한다. 헤드만 자기 자신을 가리키는 상태이므로 불완전한 실제 블록이 리스트에 남지 않는다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "create_block"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "제공 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "MemoryBlock *create_block(int start, int size, int pid)\n{\n    MemoryBlock *block;\n\n    block = (MemoryBlock *)malloc(sizeof(MemoryBlock));\n    if (block == NULL)\n    {\n        return NULL;\n    }\n\n    block->start = start;\n    block->size = size;\n    block->pid = pid;\n    block->prev = NULL;\n    block->next = NULL;\n    return block;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 시작 주소, 크기, PID. 반환값: 생성한 MemoryBlock 포인터 또는 NULL. 변경 상태: 성공 시 노드 한 개를 동적 생성한다. 리스트 연결은 변경하지 않는다.\n\nmalloc으로 확보하는 것은 프로세스가 사용할 size칸의 실제 RAM이 아니라, start·size·pid와 링크를 보관하는 관리 노드의 저장 공간이다. 따라서 요청량과 관계없이 sizeof(MemoryBlock)만큼 생성한다.\n\nmalloc이 메모리 확보에 실패하면 NULL을 반환하므로 먼저 확인해야 한다. NULL인 상태에서 노드의 필드에 접근하면 유효하지 않은 메모리에 접근하는 문제가 생기며, C에서는 정의되지 않은 동작이다. 생성 성공 후 prev와 next는 NULL로 초기화하고, 실제 리스트 연결은 insert_after가 담당한다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "insert_after"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "제공 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "void insert_after(MemoryBlock *position, MemoryBlock *new_block)\n{\n    if (position == NULL || new_block == NULL)\n    {\n        return;\n    }\n\n    new_block->prev = position;\n    new_block->next = position->next;\n    position->next->prev = new_block;\n    position->next = new_block;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 삽입 기준 노드 position과 새 노드 new_block. 반환값: 없음. 변경 상태: 두 노드와 기존 다음 노드의 prev·next 연결.\n\nposition과 원래 다음 노드 사이에 새 노드를 넣는다. 새 노드의 prev는 position, next는 원래 다음 노드를 가리키게 한다. 이어서 원래 다음 노드의 prev와 position의 next를 새 노드로 바꾼다.\n\n이중 연결 리스트는 앞뒤로 이동하므로 next뿐 아니라 prev도 새 연결에 맞게 바꿔야 한다. prev를 갱신하지 않으면 뒤로 이동할 때 새 노드를 건너뛰거나 잘못된 노드를 가리킬 수 있다. position->next를 마지막에 바꾸므로 원래 다음 노드를 잃지 않는다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "remove_block"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "제공 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "void remove_block(MemoryBlock *removed)\n{\n    if (removed == NULL || removed->pid == HEAD_PID ||\n        removed->prev == NULL || removed->next == NULL)\n    {\n        return;\n    }\n\n    removed->prev->next = removed->next;\n    removed->next->prev = removed->prev;\n    removed->prev = NULL;\n    removed->next = NULL;\n    free(removed);\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 제거할 노드 removed. 반환값: 없음. 변경 상태: 양옆 노드를 직접 연결하고 removed의 동적 저장 공간을 해제한다.\n\nNULL, 헤드 PID, 연결되지 않은 노드는 제거하지 않는다. 정상 노드는 이전 노드의 next와 다음 노드의 prev를 서로 연결한 뒤 free한다. 헤드가 있어서 첫 블록의 prev와 마지막 블록의 next도 NULL이 아니라 헤드를 가리킨다. 그래서 처음이나 끝의 블록을 삭제할 때도 양옆 노드를 연결하는 같은 코드로 처리할 수 있다.\n\n이 함수 호출 후 기존 removed 포인터로 노드 멤버를 읽으면 안 된다. 또한 이 함수 자체는 가상 주소 구간을 이웃 블록에 합치지 않는다. 병합 함수가 먼저 크기를 합산한 뒤 불필요해진 관리 노드만 삭제해야 전체 구간이 보존된다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "destroy_list"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "제공 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "void destroy_list(MemoryList *list)\n{\n    if (list == NULL)\n    {\n        return;\n    }\n\n    while (list->head.next != &list->head)\n    {\n        remove_block(list->head.next);\n    }\n\n    list->head.prev = &list->head;\n    list->head.next = &list->head;\n    list->total_size = 0;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 정리할 리스트. 반환값: 없음. 변경 상태: 모든 실제 노드를 해제하고 헤드 연결과 total_size를 초기 상태로 정리한다.\n\n헤드 다음 노드가 헤드 자체가 될 때까지 첫 실제 노드를 반복해서 제거한다. 삭제된 노드의 next를 따라가지 않고 매번 list->head.next를 다시 읽기 때문에 해제된 노드를 다음 반복에서 참조하지 않는다.\n\n헤드는 MemoryList 내부에 포함된 객체이므로 free하지 않는다. 실제 노드를 모두 없앤 뒤 prev·next를 헤드 자신으로 맞추고 total_size를 0으로 설정한다. 노드 수를 n이라 하면 전체 정리에는 O(n)이 필요하다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "print_memory_map"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "제공 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "void print_memory_map(const MemoryList *list)\n{\n    const MemoryBlock *block;\n\n    if (list == NULL)\n    {\n        return;\n    }\n\n    printf(\"Memory map: \");\n    block = list->head.next;\n    while (block != &list->head)\n    {\n        printf(\"[%d-%d, \", block->start, block->start + block->size - 1);\n        if (block->pid == FREE_PID)\n        {\n            printf(\"FREE]\");\n        }\n        else\n        {\n            printf(\"P%d]\", block->pid);\n        }\n\n        block = block->next;\n        if (block != &list->head)\n        {\n            printf(\" <-> \");\n        }\n    }\n    printf(\"\\n\");\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 읽기 전용 리스트 포인터. 반환값: 없음. 변경 상태: 리스트를 변경하지 않고 표준 출력에 메모리 지도를 쓴다.\n\n헤드 다음부터 실제 블록을 순회한다. 시작 주소 20에서 크기가 10이면 20~29까지 사용한다. 시작 주소도 한 칸에 포함되므로 마지막 주소는 start + size가 아니라 start + size - 1이다.\n\nFREE_PID이면 FREE, 아니면 P와 PID를 출력한다. 다음 노드가 헤드가 아닐 때만 연결 표시를 넣어 마지막에 불필요한 구분자가 남지 않게 한다. 탐색 중 노드가 헤드로 돌아오면 한 바퀴를 마친 것이다. 노드 수에 비례해 O(n)의 순회가 필요하다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "find_first_fit"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "구현 대상 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "MemoryBlock *find_first_fit(MemoryList *list, int size)\n{\n    MemoryBlock *current;\n\n    if (list == NULL || size <= 0)\n    {\n        return NULL;\n    }\n\n    current = list->head.next;\n    while (current != &list->head)\n    {\n        if (current->pid == FREE_PID && current->size >= size)\n        {\n            return current;\n        }\n        current = current->next;\n    }\n    return NULL;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 리스트와 요청 크기. 반환값: 조건을 만족하는 첫 FREE 블록의 포인터, 없거나 인자가 잘못되면 NULL. 변경 상태: 없음.\n\nhead.next부터 시작해서 헤드로 돌아올 때까지 탐색한다. pid가 FREE_PID이고 크기가 요청 크기 이상이면 그 블록을 바로 반환하고, 아니면 next로 이동한다. 끝까지 없으면 NULL을 반환한다. 조건을 만족하는 즉시 반환하므로 주소 순서상 첫 적합 블록이 선택된다.\n\n원형 리스트에서는 마지막 노드의 next가 NULL이 아니라 헤드다. 따라서 current != &list->head로 종료하며 헤드를 실제 후보로 검사하지 않는다. 최악에는 모든 실제 블록을 확인하므로 O(n)이다. 크기 15와 10의 빈 블록이 이 순서로 있고 8칸을 요청하면 앞의 15칸을 선택한다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "find_process_block"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "구현 대상 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "MemoryBlock *find_process_block(MemoryList *list, int pid)\n{\n    MemoryBlock *current;\n\n    if (list == NULL || pid <= 0)\n    {\n        return NULL;\n    }\n\n    current = list->head.next;\n    while (current != &list->head)\n    {\n        if (current->pid == pid)\n        {\n            return current;\n        }\n        current = current->next;\n    }\n    return NULL;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 리스트와 양의 PID. 반환값: 해당 PID를 가진 블록 포인터, 없거나 인자가 잘못되면 NULL. 변경 상태: 없음.\n\n헤드 다음부터 한 바퀴 동안 pid가 입력과 같은 노드를 탐색한다. PID가 양수인 경우만 찾으므로 FREE_PID(-1)와 HEAD_PID(-2)를 프로세스로 반환하지 않는다.\n\n할당에서는 같은 PID가 이미 존재하는지 확인하는 데, 반납에서는 반납할 블록을 찾는 데 재사용한다. 현재 구현은 PID 한 개에 블록 한 개를 대응시키며 중복 할당을 거부한다. 최악의 탐색 시간은 O(n)이다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "allocate_memory"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "구현 대상 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "int allocate_memory(MemoryList *list, int pid, int size)\n{\n    if (list == NULL || pid <= 0 || size <= 0)\n    {\n        return 0;\n    }\n    if (find_process_block(list, pid) != NULL)\n    {\n        return 0;\n    }\n\n    MemoryBlock *block = find_first_fit(list, size);\n    if (block == NULL)\n    {\n        return 0;\n    }\n    if (block->size == size)\n    {\n        block->pid = pid;\n        return 1;\n    }\n\n"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 리스트, PID, 요청 크기. 반환값: 성공 1, 실패 0. 변경 상태: 성공 시 선택한 블록의 소유자와 필요에 따른 크기·리스트 연결. 실패 시 기존 지도 유지.\n\n먼저 잘못된 입력, 중복 PID, 적합한 빈 블록의 부재를 검사한다. 이때는 기존 블록을 변경하지 않는다. 찾은 블록 크기와 요청 크기가 같으면 분할 없이 PID만 바꾸고 1을 반환한다. 중복 PID 검사와 First-Fit 탐색이 각각 O(n)이지만 순서대로 한 번씩 실행하므로 전체는 O(n)이다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "    MemoryBlock *remaining = create_block(block->start + size,\n                                          block->size - size, FREE_PID);\n    if (remaining == NULL)\n    {\n        return 0;\n    }\n    block->size = size;\n    block->pid = pid;\n    insert_after(block, remaining);\n    return 1;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "분석 (계속)\n\n선택한 블록이 더 크면 남는 블록의 시작 주소는 block->start + size, 크기는 block->size - size다. 새 노드 생성에 실패하면 기존 메모리 지도를 그대로 유지해야 한다. 기존 블록을 먼저 바꾸면 남는 공간을 기록할 노드가 없는 상태가 될 수 있으므로, 새 노드 생성에 성공한 뒤 크기와 PID를 변경한다.\n\n남은 FREE 노드는 insert_after로 할당 블록 바로 뒤에 연결한다. 두 구간의 주소 순서와 원래 크기의 합이 유지되고, 성공 시 1을 반환한다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "merge_free_blocks"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "구현 대상 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "MemoryBlock *merge_free_blocks(MemoryList *list, MemoryBlock *current)\n{\n    MemoryBlock *previous;\n    MemoryBlock *next;\n\n    if (list == NULL || current == NULL ||\n        current == &list->head || current->pid != FREE_PID)\n    {\n        return current;\n    }\n\n    previous = current->prev;\n    if (previous != &list->head && previous->pid == FREE_PID)\n    {\n        previous->size += current->size;\n        remove_block(current);\n        /* current가 삭제되었으므로 살아 있는 이전 노드를 기준으로 바꾼다. */\n        current = previous;\n    }\n\n"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 리스트와 병합 기준 FREE 노드. 반환값: 병합 후 살아 있는 기준 노드. 변경 상태: 인접 FREE 구간의 크기와 링크, 중복 관리 노드의 삭제.\n\n잘못된 인자, 헤드, 사용 중 블록은 병합하지 않는다. 왼쪽이 실제 FREE 블록이면 previous의 크기에 current의 크기를 더한 뒤 current를 삭제한다. remove_block(current)에서 current가 가리키던 노드가 해제되므로, 그대로 current->next에 접근하면 해제된 메모리를 사용하는 문제가 생긴다. 그래서 살아 있는 previous를 current로 지정한 뒤 오른쪽 병합을 계속해야 한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "    next = current->next;\n    if (next != &list->head && next->pid == FREE_PID)\n    {\n        current->size += next->size;\n        remove_block(next);\n    }\n\n    return current;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "분석 (계속)\n\n왼쪽 병합 후 current->next를 다시 읽어 오른쪽 FREE 블록도 합친다. 헤드는 실제 메모리 구간이 아니라 리스트의 시작과 끝을 표시하는 노드다. 마지막 블록의 next가 head를 가리켜도 실제 주소가 이어지는 것은 아니므로 병합하면 안 된다.\n\n정상적인 할당·반납 뒤에는 인접 FREE 블록이 남지 않는 상태가 유지된다. 이 전제에서 한 블록을 반납할 때 양옆만 검사하면 되므로 이 함수 자체는 O(1)이다. 예를 들어 [0~19 FREE], [20~49 FREE], [50~99 FREE]는 시작 0·크기 100인 한 블록으로 합쳐진다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "release_memory"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "구현 대상 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "int release_memory(MemoryList *list, int pid)\n{\n    if (list == NULL || pid <= 0)\n    {\n        return 0;\n    }\n    MemoryBlock *block = find_process_block(list, pid);\n    if (block == NULL)\n    {\n        return 0;\n    }\n    block->pid = FREE_PID;\n    merge_free_blocks(list, block);\n    return 1;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 리스트와 반납할 PID. 반환값: 해당 블록 반납 성공 시 1, 찾지 못하면 0. 변경 상태: 블록을 FREE로 표시하고 가능한 이웃 FREE 블록과 병합한다.\n\nPID를 찾지 못하면 리스트를 변경하지 않고 실패한다. 찾으면 pid를 FREE_PID로 바꾼다. 이는 프로세스에 배정한 가상 구간을 사용 가능한 공간으로 돌려놓는 처리다.\n\n그 노드는 해당 메모리 구간의 시작 주소와 크기를 기록하므로, 삭제하면 빈 공간의 정보가 사라진다. 따라서 노드는 유지하고 pid만 FREE_PID로 바꿔야 나중에 다시 할당할 수 있다. 이후 merge_free_blocks로 이웃과 합칠 때만 중복 노드를 제거한다. 병합 후 block을 다시 사용하지 않으므로 반환 포인터를 저장하지 않아도 된다. PID 탐색 O(n)과 병합 O(1)을 합쳐 최악 시간은 O(n)이다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "main"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "제공 함수"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 2,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "소스코드"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세와 분석"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "int main(void)\n{\n    MemoryList memory;\n    char command[COMMAND_LENGTH];\n    int total_size;\n    int command_count;\n    int i;\n    int pid;\n    int size;\n    int result;\n\n    printf(\"전체 메모리 크기를 입력하세요: \");\n    if (scanf(\"%d\", &total_size) != 1 || total_size <= 0)\n    {\n        printf(\"잘못된 전체 메모리 크기입니다.\\n\");\n        return 0;\n    }\n\n    if (!init_list(&memory, total_size))\n    {\n        printf(\"메모리 리스트를 초기화할 수 없습니다.\\n\");\n        return 0;\n    }\n\n    printf(\"명령의 개수를 입력하세요: \");\n    if (scanf(\"%d\", &command_count) != 1 ||\n        command_count < 0 || command_count > MAX_COMMANDS)\n    {\n        printf(\"잘못된 명령 개수입니다.\\n\");\n        destroy_list(&memory);\n        return 0;\n    }\n\n"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기능 명세\n\n인자: 없음. 반환값: 종료 경로에서 0. 참조 데이터: 표준 입력의 크기·명령 개수·명령. 변경 상태: 지역 변수 memory가 보관하는 리스트와 표준 출력.\n\n전체 크기를 읽고 init_list를 호출한다. 이어 명령 개수를 0~MAX_COMMANDS 범위에서 확인한다. 리스트 생성 뒤 명령 개수가 잘못되면 destroy_list로 생성한 노드를 정리한 후 종료한다. 입력 실패와 프로그램 종료 코드는 별개이며, 이 제공 코드의 해당 경로도 0을 반환한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "    for (i = 0; i < command_count; ++i)\n    {\n        if (scanf(\"%15s\", command) != 1)\n        {\n            printf(\"명령을 읽을 수 없습니다.\\n\");\n            break;\n        }\n\n        if (strcmp(command, \"ALLOC\") == 0)\n        {\n            if (scanf(\"%d %d\", &pid, &size) != 2)\n            {\n                printf(\"ALLOC 명령 형식이 잘못되었습니다.\\n\");\n                break;\n            }\n            result = allocate_memory(&memory, pid, size);\n            printf(\"ALLOC P%d %d: %s\\n\",\n                   pid, size, result ? \"SUCCESS\" : \"FAIL\");\n        }\n"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "분석 (계속)\n\n명령을 최대 15문자로 읽어 16바이트 배열의 끝에 널 문자를 둘 공간을 남긴다. ALLOC이면 PID와 크기를 읽어 allocate_memory를 호출하고, 반환값이 1인지 0인지에 따라 SUCCESS 또는 FAIL을 출력한다. 형식이 맞지 않으면 반복문을 종료한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "        else if (strcmp(command, \"FREE\") == 0)\n        {\n            if (scanf(\"%d\", &pid) != 1)\n            {\n                printf(\"FREE 명령 형식이 잘못되었습니다.\\n\");\n                break;\n            }\n            result = release_memory(&memory, pid);\n            printf(\"FREE P%d: %s\\n\",\n                   pid, result ? \"SUCCESS\" : \"FAIL\");\n        }\n        else\n        {\n            printf(\"알 수 없는 명령입니다: %s\\n\", command);\n        }\n        print_memory_map(&memory);\n    }\n\n    destroy_list(&memory);\n    return 0;\n}"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "분석 (계속)\n\nFREE이면 PID를 읽어 release_memory를 호출하고 결과를 출력한다. 인식하지 못한 명령은 안내 문구를 출력한다. 정상적으로 해석한 명령에서 기능이 실패해도 현재 지도를 출력하므로 상태 유지 여부를 비교할 수 있다. 반복문 종료 뒤 destroy_list로 남은 관리 노드를 해제한다. 명령마다 기능 실행과 지도 출력에 최악 O(n)이 들며, 잘못된 모든 입력 형식을 완전하게 검증하는 파서라고 볼 수는 없다. 입출력과 할당·해제 처리를 분리하면 입력 방식이 바뀌어도 같은 함수를 재사용할 수 있고, 각 함수를 따로 호출해 기능이 올바른지 검사하기 쉽다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_1",
+    "heading_1": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실행결과 및 분석"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "현재 HW2.c를 macOS arm64의 Apple clang으로 빌드하여 아래 입력을 실행했다. 각 출력은 실행 기록의 표준 출력 원문이며, 따로 제시한 입력이 표준 출력에 자동으로 섞여 들어가는 것은 아니다. 이어 동일한 소스를 별도로 빌드해 Antigravity IDE의 내장 터미널에서 대표 사례를 한 줄씩 직접 입력하고, 실제 입력·출력·프로세스 종료 코드가 보이는 화면을 캡처했다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "검증 기록은 총 32건이며 32건이 통과했다. 아래 상세 분석에 수록한 사례는 6건이다. 전체 검증 건수와 보고서의 대표 사례 수를 구분한다. 실행 파일은 저장소 밖 임시 디렉터리에 만들었고, 현재 소스의 해시와 입력·출력·종료 코드는 별도 실행 기록에 보관했다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 IDE 터미널에서 재실행하고 캡처한 사례는 6건이다. 캡처용 빌드는 C11과 -Wall -Wextra -Wpedantic -Werror를 사용했다. 각 화면의 ./run은 현재 실행 파일을 대화형으로 실행하고 대화 로그 및 실제 종료 코드를 기록하는 래퍼다. 캡처 이미지에서는 창 장식과 빈 여백만 잘랐으며 입력·출력 텍스트를 수정하지 않았다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 3,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "구분"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "확인 내용"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "관찰 결과"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "공식 예제"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "HW2.pdf 16~18쪽의 입력"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "세 예제의 명령 결과와 매 단계 지도가 일치"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "경계·분기"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "정확한 크기, First-Fit 선택, 왼쪽·오른쪽·양쪽 병합, 단편화, PID 예외, 명령 0개"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "기록된 사례에서 기대 결과와 일치"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "명령 시퀀스"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "20개 고정 시드에서 각각 80개 명령"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "주소별 배열 모델과 매 명령 결과·지도를 대조하여 일치"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "실패 주입"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "분할 노드 malloc 실패, 정확한 크기의 무분할 할당, 원형 양방향 링크"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "테스트 하네스에서 기존 상태 보존 및 링크 확인"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "빌드·실행 진단"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "C11, -Wall -Wextra -Wpedantic, AddressSanitizer·UndefinedBehaviorSanitizer"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "해당 빌드와 실행에서 진단 없음, 모든 실행 종료 코드 0"
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "malloc 실패는 테스트 하네스에서만 의도적으로 주입했다. 실제 컴퓨터의 메모리가 고갈되는 현상을 관측한 것은 아니다. 또한 실행 종료 코드 0은 ALLOC·FREE의 성공과 같지 않다. 명령별 성공 여부는 각 함수의 반환값과 SUCCESS·FAIL 출력으로 따로 판단했다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "준비한 테스트는 가능한 입력과 실행 순서 중 일부만 확인한 것이므로, 통과했더라도 검사하지 않은 경우에 오류가 있을 수 있다. 따라서 검증한 범위에서 정상 동작했다고 설명해야 한다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "범위의 한계: 양의 정수라는 과제 입력 계약 안의 기록된 사례를 확인했다. 모든 가능한 입력, 정수 범위를 벗어난 입력, 다른 운영체제의 동작을 검증한 결과는 아니다. 음수·실수 등은 과제에서 필수 예외 처리 대상으로 요구하지 않으며, 현재 코드를 모든 잘못된 입력을 거르는 파서라고 서술하지 않는다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "공식 예제 1: 연속 할당과 분할"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "입력"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "100\n2\nALLOC 1 20\nALLOC 2 30\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 출력 (표준 출력 원문)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 20: SUCCESS\nMemory map: [0-19, P1] <-> [20-99, FREE]\nALLOC P2 30: SUCCESS\nMemory map: [0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 3,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "입력 명령과 결과"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "관찰한 메모리 지도"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "상태 변화의 이유"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 1 20 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-19, P1] <-> [20-99, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "시작 0·크기 100의 빈 블록에서 앞 20칸을 P1에 배정한다. 남는 블록은 시작 20·크기 80이다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 2 30 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P1은 사용 중이므로 건너뛴다. 시작 20인 FREE 블록 앞 30칸이 P2가 되고 시작 50·크기 50이 남는다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "결과 분석: 첫 요청의 끝 주소는 0 + 20 - 1 = 19이고, 두 번째 요청은 남은 빈 블록의 시작인 20에서 출발한다. 두 번의 분할 뒤 구간 크기는 20 + 30 + 50 = 100으로 보존된다. 각 요청은 요청량 이상인 첫 빈 블록에서 처리된다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "관찰한 종료 코드: 0. 표준 오류 출력: 없음."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 터미널 실행 화면"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "공식 예제 1: 연속 할당과 분할"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "image",
+    "image": {
+      "type": "file_upload",
+      "file_upload": {
+        "id": "404b06d2-63bc-8136-a3bf-00b2a73ff863"
+      },
+      "caption": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Antigravity IDE 내장 터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "공식 예제 2: 반납과 양쪽 병합"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "입력"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "100\n6\nALLOC 1 20\nALLOC 2 30\nALLOC 3 10\nFREE 2\nFREE 1\nFREE 3\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 출력 (표준 출력 원문)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 20: SUCCESS\nMemory map: [0-19, P1] <-> [20-99, FREE]\nALLOC P2 30: SUCCESS\nMemory map: [0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]\nALLOC P3 10: SUCCESS\nMemory map: [0-19, P1] <-> [20-49, P2] <-> [50-59, P3] <-> [60-99, FREE]\nFREE P2: SUCCESS\nMemory map: [0-19, P1] <-> [20-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]\nFREE P1: SUCCESS\nMemory map: [0-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]\nFREE P3: SUCCESS\nMemory map: [0-99, FREE]\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 3,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "입력 명령과 결과"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "관찰한 메모리 지도"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "상태 변화의 이유"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 1 20 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-19, P1] <-> [20-99, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P1에 0~19를 배정하고 20~99를 FREE로 남긴다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 2 30 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-19, P1] <-> [20-49, P2] <-> [50-99, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P2에 20~49를 배정하고 50~99를 FREE로 남긴다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 3 10 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-19, P1] <-> [20-49, P2] <-> [50-59, P3] <-> [60-99, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P3에 50~59를 배정하고 60~99를 FREE로 남긴다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 2 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-19, P1] <-> [20-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P2의 구간 20~49를 FREE로 바꾼다. 양옆 P1·P3가 사용 중이어서 병합하지 않는다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 1 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-49, FREE] <-> [50-59, P3] <-> [60-99, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P1을 반납하면 오른쪽 FREE 20~49와 합쳐 0~49가 된다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 3 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-99, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P3를 반납하면 왼쪽 0~49, 현재 50~59, 오른쪽 60~99가 모두 빈 공간이 되어 0~99로 합쳐진다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "결과 분석: FREE 2는 노드를 삭제하는 대신 소유자 표시만 바꾸는 경우이고, FREE 1은 오른쪽 병합, FREE 3은 양쪽 병합을 보여 준다. 마지막에는 크기 100의 FREE 노드 하나가 남는다. 이 순서에서 해제되지 않은 프로세스의 주소는 이동하지 않는다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "관찰한 종료 코드: 0. 표준 오류 출력: 없음."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 터미널 실행 화면"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "공식 예제 2: 반납과 양쪽 병합"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "image",
+    "image": {
+      "type": "file_upload",
+      "file_upload": {
+        "id": "404b06d2-63bc-819f-a9bc-00b24dee6486"
+      },
+      "caption": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Antigravity IDE 내장 터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "공식 예제 3: 할당 실패와 예외 처리"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "입력"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "50\n4\nALLOC 1 30\nALLOC 2 30\nFREE 7\nALLOC 1 10\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 출력 (표준 출력 원문)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 30: SUCCESS\nMemory map: [0-29, P1] <-> [30-49, FREE]\nALLOC P2 30: FAIL\nMemory map: [0-29, P1] <-> [30-49, FREE]\nFREE P7: FAIL\nMemory map: [0-29, P1] <-> [30-49, FREE]\nALLOC P1 10: FAIL\nMemory map: [0-29, P1] <-> [30-49, FREE]\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 3,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "입력 명령과 결과"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "관찰한 메모리 지도"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "상태 변화의 이유"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 1 30 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-29, P1] <-> [30-49, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P1에 30칸을 배정해 30~49의 20칸이 남는다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 2 30 / FAIL"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-29, P1] <-> [30-49, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "요청 30보다 남은 연속 빈 공간 20이 작아 실패한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 7 / FAIL"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-29, P1] <-> [30-49, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "PID 7이 존재하지 않아 반납에 실패한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 1 10 / FAIL"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-29, P1] <-> [30-49, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "10칸을 담을 공간은 있지만 PID 1이 이미 존재하므로 할당에 실패한다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "결과 분석: 성공한 첫 요청 이후 세 요청이 모두 실패했고, 각 실패 뒤 지도는 [0-29, P1] <-> [30-49, FREE]로 같았다. 이는 공간 부족, 존재하지 않는 PID, 중복 PID를 서로 다른 원인으로 구분하면서도 기존 상태를 보존한 결과다. 실패 명령 실행 전후의 메모리 지도가 같아야 한다. 기존 P1의 시작 주소와 크기, 다른 블록들의 상태와 연결 순서가 그대로 유지되는지 확인한다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "관찰한 종료 코드: 0. 표준 오류 출력: 없음."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 터미널 실행 화면"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "공식 예제 3: 할당 실패와 예외 처리"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "image",
+    "image": {
+      "type": "file_upload",
+      "file_upload": {
+        "id": "404b06d2-63bc-8105-b00f-00b25bd00e6d"
+      },
+      "caption": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Antigravity IDE 내장 터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "경계 사례: 정확한 크기와 최소 크기"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "입력"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "1\n4\nALLOC 1 1\nALLOC 2 1\nFREE 1\nALLOC 2 1\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 출력 (표준 출력 원문)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 1: SUCCESS\nMemory map: [0-0, P1]\nALLOC P2 1: FAIL\nMemory map: [0-0, P1]\nFREE P1: SUCCESS\nMemory map: [0-0, FREE]\nALLOC P2 1: SUCCESS\nMemory map: [0-0, P2]\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 3,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "입력 명령과 결과"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "관찰한 메모리 지도"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "상태 변화의 이유"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 1 1 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-0, P1]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "유일한 1칸을 전부 배정하므로 남는 FREE 노드를 만들지 않는다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 2 1 / FAIL"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-0, P1]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "사용 가능한 빈 블록이 없어 실패하며 P1의 상태가 유지된다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 1 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-0, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P1이 사용하던 노드는 0~0의 FREE 노드가 된다. 헤드와는 병합하지 않는다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 2 1 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-0, P2]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "반납된 1칸을 P2가 다시 배정받는다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "결과 분석: 블록 크기와 요청 크기가 같으면 분할 없이 PID만 바꾸는 분기가 실행된다. 이때 크기 0인 FREE 노드가 생기지 않고 기존 블록 전체가 할당되는지 확인하기 위해 검사한다. 이 사례에서는 주소 0~0의 한 칸을 할당하고, 공간 부족 실패 후 반납과 재할당까지 확인했다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "관찰한 종료 코드: 0. 표준 오류 출력: 없음."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 터미널 실행 화면"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "경계 사례: 정확한 크기와 최소 크기"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "image",
+    "image": {
+      "type": "file_upload",
+      "file_upload": {
+        "id": "404b06d2-63bc-81d8-89ad-00b2c590ca1b"
+      },
+      "caption": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Antigravity IDE 내장 터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "선택 사례: First-Fit과 작은 빈 블록의 구분"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "입력"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "40\n7\nALLOC 1 15\nALLOC 2 5\nALLOC 3 10\nALLOC 4 10\nFREE 1\nFREE 3\nALLOC 5 8\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 출력 (표준 출력 원문)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 15: SUCCESS\nMemory map: [0-14, P1] <-> [15-39, FREE]\nALLOC P2 5: SUCCESS\nMemory map: [0-14, P1] <-> [15-19, P2] <-> [20-39, FREE]\nALLOC P3 10: SUCCESS\nMemory map: [0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, FREE]\nALLOC P4 10: SUCCESS\nMemory map: [0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]\nFREE P1: SUCCESS\nMemory map: [0-14, FREE] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]\nFREE P3: SUCCESS\nMemory map: [0-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]\nALLOC P5 8: SUCCESS\nMemory map: [0-7, P5] <-> [8-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 3,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "입력 명령과 결과"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "관찰한 메모리 지도"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "상태 변화의 이유"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 1 15 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-14, P1] <-> [15-39, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P1에 앞 15칸을 배정한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 2 5 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-14, P1] <-> [15-19, P2] <-> [20-39, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P2에 다음 5칸을 배정한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 3 10 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P3에 다음 10칸을 배정한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 4 10 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-14, P1] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P4에 마지막 10칸을 배정한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 1 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-14, FREE] <-> [15-19, P2] <-> [20-29, P3] <-> [30-39, P4]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "앞쪽 0~14를 빈 공간으로 만든다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 3 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P2와 P4 사이 20~29도 빈 공간으로 만든다. 두 빈 블록은 P2 때문에 분리되어 있다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 5 8 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-7, P5] <-> [8-14, FREE] <-> [15-19, P2] <-> [20-29, FREE] <-> [30-39, P4]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "8칸은 앞쪽 15칸 블록에서 배정된다. 뒤쪽 10칸이 더 작더라도 먼저 맞는 블록을 선택한다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "결과 분석: First-Fit은 앞에서부터 요청을 만족하는 첫 블록인 15칸을 선택하고, Best-Fit은 요청을 만족하는 블록 중 가장 작은 10칸을 선택한다. 선택 결과가 다르므로 First-Fit으로 구현됐는지 확인할 수 있다. P5에는 0~7을 할당하고, 남은 8~14는 크기 7의 FREE 블록으로 유지한다. 뒤쪽 20~29의 FREE 블록은 그대로 남는다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "관찰한 종료 코드: 0. 표준 오류 출력: 없음."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 터미널 실행 화면"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "선택 사례: First-Fit과 작은 빈 블록의 구분"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "image",
+    "image": {
+      "type": "file_upload",
+      "file_upload": {
+        "id": "404b06d2-63bc-8139-9019-00b239093a74"
+      },
+      "caption": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Antigravity IDE 내장 터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_2",
+    "heading_2": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실패 사례: 외부 단편화와 병합 후 재시도"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "입력"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "30\n8\nALLOC 1 10\nALLOC 2 10\nALLOC 3 10\nFREE 1\nFREE 3\nALLOC 4 15\nFREE 2\nALLOC 4 30\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 출력 (표준 출력 원문)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "전체 메모리 크기를 입력하세요: 명령의 개수를 입력하세요: ALLOC P1 10: SUCCESS\nMemory map: [0-9, P1] <-> [10-29, FREE]\nALLOC P2 10: SUCCESS\nMemory map: [0-9, P1] <-> [10-19, P2] <-> [20-29, FREE]\nALLOC P3 10: SUCCESS\nMemory map: [0-9, P1] <-> [10-19, P2] <-> [20-29, P3]\nFREE P1: SUCCESS\nMemory map: [0-9, FREE] <-> [10-19, P2] <-> [20-29, P3]\nFREE P3: SUCCESS\nMemory map: [0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]\nALLOC P4 15: FAIL\nMemory map: [0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]\nFREE P2: SUCCESS\nMemory map: [0-29, FREE]\nALLOC P4 30: SUCCESS\nMemory map: [0-29, P4]\n"
+          }
+        }
+      ],
+      "language": "plain text"
+    }
+  },
+  {
+    "object": "block",
+    "type": "table",
+    "table": {
+      "table_width": 3,
+      "has_column_header": true,
+      "has_row_header": false,
+      "children": [
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "입력 명령과 결과"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "관찰한 메모리 지도"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "상태 변화의 이유"
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 1 10 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-9, P1] <-> [10-29, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P1에 0~9를 배정한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 2 10 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-9, P1] <-> [10-19, P2] <-> [20-29, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P2에 10~19를 배정한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 3 10 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-9, P1] <-> [10-19, P2] <-> [20-29, P3]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P3에 20~29를 배정해 전체 공간이 사용 중이 된다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 1 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-9, FREE] <-> [10-19, P2] <-> [20-29, P3]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "앞쪽 10칸을 반납한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 3 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "뒤쪽 10칸을 반납한다. 가운데 P2 때문에 빈 공간은 합쳐지지 않는다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 4 15 / FAIL"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-9, FREE] <-> [10-19, P2] <-> [20-29, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "빈 공간의 합은 20이지만 가장 큰 연속 빈 블록은 10이므로 15칸 요청이 실패한다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "FREE 2 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-29, FREE]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "P2를 반납하면서 양쪽 FREE와 병합되어 연속된 30칸이 된다."
+                  }
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "object": "block",
+          "type": "table_row",
+          "table_row": {
+            "cells": [
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "ALLOC 4 30 / SUCCESS"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "[0-29, P4]"
+                  }
+                }
+              ],
+              [
+                {
+                  "type": "text",
+                  "text": {
+                    "content": "병합된 30칸과 요청 30칸이 정확히 같아 전체 구간을 P4에 배정한다."
+                  }
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "결과 분석: 전체 빈 공간은 20칸이지만 P2가 사이에 있어서 각각 10칸씩 나뉘어 있다. 15칸 이상의 연속된 빈 블록이 없으므로 할당에 실패한다. 이후 P2도 해제하면 세 구간이 합쳐져 연속된 30칸이 되며, 마지막 30칸 요청이 성공한다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "관찰한 종료 코드: 0. 표준 오류 출력: 없음."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_3",
+    "heading_3": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실제 터미널 실행 화면"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "실패 사례: 외부 단편화와 병합 후 재시도"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "image",
+    "image": {
+      "type": "file_upload",
+      "file_upload": {
+        "id": "404b06d2-63bc-815a-8aef-00b29d097a9a"
+      },
+      "caption": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Antigravity IDE 내장 터미널의 실제 실행 화면. 입력·출력·메모리 지도 및 EXIT_STATUS: 0을 확인했다. 원본 화면에서 창 장식과 빈 여백만 잘랐다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "heading_1",
+    "heading_1": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "전체 소스코드"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "paragraph",
+    "paragraph": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "Mac 사용자용 전체 코드 부록이다. 분석 표와 동일한 HW2.c의 원문이며, 제공 코드와 참고 구현의 출처 머리말도 그대로 포함한다."
+          }
+        }
+      ]
+    }
+  },
+  {
+    "object": "block",
+    "type": "code",
+    "code": {
+      "rich_text": [
+        {
+          "type": "text",
+          "text": {
+            "content": "/*\n * 제공 코드: HW2_skeleton.c. 최초 참고 구현은 Codex가 작성했습니다.\n * 이후 작성자가 대화에서 작성한 함수 코드·절차를 바탕으로 재검토·통합했습니다.\n * 탐색·병합의 기존 방어 조건은 유지했고, 할당·해제 본문은 작성자 코드로 갱신했습니다.\n * AI의 힌트·검토·통합 지원을 받은 버전이며 독립 구현으로 인증하지 않습니다.\n */\n\n#define _CRT_SECURE_NO_WARNINGS\n\n#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define FREE_PID (-1)\n#define HEAD_PID (-2)\n#define MAX_COMMANDS 10000\n#define COMMAND_LENGTH 16\n\ntypedef struct MemoryBlock\n{\n    int start;\n    int size;\n    int pid;\n    struct MemoryBlock *prev;\n    struct MemoryBlock *next;\n} MemoryBlock;\n\ntypedef struct\n{\n    MemoryBlock head;\n    int total_size;\n} MemoryList;\n\nint init_list(MemoryList *list, int total_size);\nMemoryBlock *create_block(int start, int size, int pid);\nvoid insert_after(MemoryBlock *position, MemoryBlock *new_block);\nvoid remove_block(MemoryBlock *removed);\nvoid destroy_list(MemoryList *list);\nvoid print_memory_map(const MemoryList *list);\n\n/* 학생 구현 함수 */\nMemoryBlock *find_first_fit(MemoryList *list, int size);\nMemoryBlock *find_process_block(MemoryList *list, int pid);\nint allocate_memory(MemoryList *list, int pid, int size);\nMemoryBlock *merge_free_blocks(MemoryList *list, MemoryBlock *current);\nint release_memory(MemoryList *list, int pid);\n\nint init_list(MemoryList *list, int total_size)\n{\n    MemoryBlock *initial_block;\n\n    if (list == NULL || total_size <= 0)\n    {\n        return 0;\n    }\n\n    list->head.start = -1;\n    list->head.size = 0;\n    list->head.pid = HEAD_PID;\n    list->head.prev = &list->head;\n    list->head.next = &list->head;\n    list->total_size = total_size;\n\n    initial_block = create_block(0, total_size, FREE_PID);\n    if (initial_block == NULL)\n    {\n        list->total_size = 0;\n        return 0;\n    }\n\n    insert_after(&list->head, initial_block);\n    return 1;\n}\n\nMemoryBlock *create_block(int start, int size, int pid)\n{\n    MemoryBlock *block;\n\n    block = (MemoryBlock *)malloc("
+          }
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "sizeof(MemoryBlock));\n    if (block == NULL)\n    {\n        return NULL;\n    }\n\n    block->start = start;\n    block->size = size;\n    block->pid = pid;\n    block->prev = NULL;\n    block->next = NULL;\n    return block;\n}\n\nvoid insert_after(MemoryBlock *position, MemoryBlock *new_block)\n{\n    if (position == NULL || new_block == NULL)\n    {\n        return;\n    }\n\n    new_block->prev = position;\n    new_block->next = position->next;\n    position->next->prev = new_block;\n    position->next = new_block;\n}\n\nvoid remove_block(MemoryBlock *removed)\n{\n    if (removed == NULL || removed->pid == HEAD_PID ||\n        removed->prev == NULL || removed->next == NULL)\n    {\n        return;\n    }\n\n    removed->prev->next = removed->next;\n    removed->next->prev = removed->prev;\n    removed->prev = NULL;\n    removed->next = NULL;\n    free(removed);\n}\n\nvoid destroy_list(MemoryList *list)\n{\n    if (list == NULL)\n    {\n        return;\n    }\n\n    while (list->head.next != &list->head)\n    {\n        remove_block(list->head.next);\n    }\n\n    list->head.prev = &list->head;\n    list->head.next = &list->head;\n    list->total_size = 0;\n}\n\nvoid print_memory_map(const MemoryList *list)\n{\n    const MemoryBlock *block;\n\n    if (list == NULL)\n    {\n        return;\n    }\n\n    printf(\"Memory map: \");\n    block = list->head.next;\n    while (block != &list->head)\n    {\n        printf(\"[%d-%d, \", block->start, block->start + block->size - 1);\n        if (block->pid == FREE_PID)\n        {\n            printf(\"FREE]\");\n        }\n        else\n        {\n            printf(\"P%d]\", block->pid);\n        }\n\n        block = block->next;\n        if (block != &list->head)\n        {\n            printf(\" <-> \");\n        }\n    }\n    printf(\"\\n\");\n}\n\nMemoryBlock *find_first_fit(MemoryList *list, int size)\n{\n    MemoryBlock *current;\n\n    if (list == NULL || size <= 0)\n    {\n        return NULL;\n    }\n\n    current = list->h"
+          }
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "ead.next;\n    while (current != &list->head)\n    {\n        if (current->pid == FREE_PID && current->size >= size)\n        {\n            return current;\n        }\n        current = current->next;\n    }\n    return NULL;\n}\n\nMemoryBlock *find_process_block(MemoryList *list, int pid)\n{\n    MemoryBlock *current;\n\n    if (list == NULL || pid <= 0)\n    {\n        return NULL;\n    }\n\n    current = list->head.next;\n    while (current != &list->head)\n    {\n        if (current->pid == pid)\n        {\n            return current;\n        }\n        current = current->next;\n    }\n    return NULL;\n}\n\nint allocate_memory(MemoryList *list, int pid, int size)\n{\n    if (list == NULL || pid <= 0 || size <= 0)\n    {\n        return 0;\n    }\n    if (find_process_block(list, pid) != NULL)\n    {\n        return 0;\n    }\n\n    MemoryBlock *block = find_first_fit(list, size);\n    if (block == NULL)\n    {\n        return 0;\n    }\n    if (block->size == size)\n    {\n        block->pid = pid;\n        return 1;\n    }\n\n    MemoryBlock *remaining = create_block(block->start + size,\n                                          block->size - size, FREE_PID);\n    if (remaining == NULL)\n    {\n        return 0;\n    }\n    block->size = size;\n    block->pid = pid;\n    insert_after(block, remaining);\n    return 1;\n}\n\nMemoryBlock *merge_free_blocks(MemoryList *list, MemoryBlock *current)\n{\n    MemoryBlock *previous;\n    MemoryBlock *next;\n\n    if (list == NULL || current == NULL ||\n        current == &list->head || current->pid != FREE_PID)\n    {\n        return current;\n    }\n\n    previous = current->prev;\n    if (previous != &list->head && previous->pid == FREE_PID)\n    {\n        previous->size += current->size;\n        remove_block(current);\n        /* current가 삭제되었으므로 살아 있는 이전 노드를 기준으로 바꾼다. */\n        current = previous;\n    }\n\n    next = current->next;\n    if (next != &list->head && next->pid == FREE_PID)\n    {\n    "
+          }
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "    current->size += next->size;\n        remove_block(next);\n    }\n\n    return current;\n}\n\nint release_memory(MemoryList *list, int pid)\n{\n    if (list == NULL || pid <= 0)\n    {\n        return 0;\n    }\n    MemoryBlock *block = find_process_block(list, pid);\n    if (block == NULL)\n    {\n        return 0;\n    }\n    block->pid = FREE_PID;\n    merge_free_blocks(list, block);\n    return 1;\n}\n\nint main(void)\n{\n    MemoryList memory;\n    char command[COMMAND_LENGTH];\n    int total_size;\n    int command_count;\n    int i;\n    int pid;\n    int size;\n    int result;\n\n    printf(\"전체 메모리 크기를 입력하세요: \");\n    if (scanf(\"%d\", &total_size) != 1 || total_size <= 0)\n    {\n        printf(\"잘못된 전체 메모리 크기입니다.\\n\");\n        return 0;\n    }\n\n    if (!init_list(&memory, total_size))\n    {\n        printf(\"메모리 리스트를 초기화할 수 없습니다.\\n\");\n        return 0;\n    }\n\n    printf(\"명령의 개수를 입력하세요: \");\n    if (scanf(\"%d\", &command_count) != 1 ||\n        command_count < 0 || command_count > MAX_COMMANDS)\n    {\n        printf(\"잘못된 명령 개수입니다.\\n\");\n        destroy_list(&memory);\n        return 0;\n    }\n\n    for (i = 0; i < command_count; ++i)\n    {\n        if (scanf(\"%15s\", command) != 1)\n        {\n            printf(\"명령을 읽을 수 없습니다.\\n\");\n            break;\n        }\n\n        if (strcmp(command, \"ALLOC\") == 0)\n        {\n            if (scanf(\"%d %d\", &pid, &size) != 2)\n            {\n                printf(\"ALLOC 명령 형식이 잘못되었습니다.\\n\");\n                break;\n            }\n            result = allocate_memory(&memory, pid, size);\n            printf(\"ALLOC P%d %d: %s\\n\",\n                   pid, size, result ? \"SUCCESS\" : \"FAIL\");\n        }\n        else if (strcmp(command, \"FREE\") == 0)\n        {\n            if (scanf(\"%d\", &pid) != 1)\n            {\n                printf(\"FREE 명령 형식이 잘못되었습니다.\\n\");\n                break;\n            }\n            result = release_memory(&memory, pid);\n            printf(\"FREE P%d: %s\\n\",\n "
+          }
+        },
+        {
+          "type": "text",
+          "text": {
+            "content": "                  pid, result ? \"SUCCESS\" : \"FAIL\");\n        }\n        else\n        {\n            printf(\"알 수 없는 명령입니다: %s\\n\", command);\n        }\n        print_memory_map(&memory);\n    }\n\n    destroy_list(&memory);\n    return 0;\n}\n"
+          }
+        }
+      ],
+      "language": "c"
+    }
+  }
+]
