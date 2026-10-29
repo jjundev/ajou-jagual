@@ -9,7 +9,9 @@ description: Create a one-page A4 landscape assignment-report cover PDF using th
 
 ## 필요한 값
 
-`course`, `assignment_label`, `assignment_topic`, `student_id`, `student_name` 문자열 다섯 개가 필요하다. 사용자 말이나 현재 과제 원문에서 확인된 값을 사용한다. 이전 산출물의 학번·이름이나 템플릿의 예시 값을 새 표지에 재사용하지 않는다. 확인할 수 없는 값은 묻고, 제출일·교수명·페이지 번호는 사용자가 별도로 요청하지 않는 한 추가하지 않는다.
+`course`, `assignment_label`, `assignment_topic`, `student_id`, `student_name` 문자열 다섯 개가 필요하다. 사용자 말이나 현재 과제 원문에서 확인된 값을 사용한다.
+
+이 저장소의 작성자 학번·이름은 `student_id` `202220953`, `student_name` `신현준`으로 고정한다(2026-10-29 사용자 지시). 다시 묻지 않고 이 값을 쓴다. 사용자가 다른 값을 직접 말하면 그 값을 우선한다. 템플릿의 예시 값은 새 표지에 재사용하지 않는다. 나머지 값 중 확인할 수 없는 것은 묻고, 제출일·교수명·페이지 번호는 사용자가 별도로 요청하지 않는 한 추가하지 않는다.
 
 ## 생성
 
