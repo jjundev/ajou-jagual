@@ -1,0 +1,190 @@
+{
+ "app": "Antigravity IDE",
+ "bundle_id": "com.google.antigravity-ide",
+ "window": "통합 터미널 패널(새로 만든 zsh, 패널 최대화)",
+ "workdir": "/var/folders/t7/zhvnpb1j4tb2pszpcnhlnt2h0000gn/T/hw3-evidence.EaGMYvEOtq",
+ "source": "과제/과제3/HW3.c",
+ "source_sha256": "7dc3d64e29ae258f899839a7be75111f4e0f8f43c7c45f17baa9c2725a6487ea",
+ "build_command": [
+  "clang",
+  "-std=c11",
+  "-Wall",
+  "-Wextra",
+  "-Wpedantic",
+  "-Werror",
+  "HW3.c",
+  "-o",
+  "/var/folders/t7/zhvnpb1j4tb2pszpcnhlnt2h0000gn/T/hw3-evidence.EaGMYvEOtq/HW3"
+ ],
+ "build_exit_status": 0,
+ "binary_sha256": "3f53710f1ed5fc26deb16f27488da065fa1b70f538474f1523fa81eb29e239e2",
+ "runner": "#!/bin/sh\ncase \"$1\" in\n  01) case_name=official-example ;;\n  02) case_name=triple-nested-interrupts ;;\n  03) case_name=finish-and-quantum-same-tick ;;\n  04) case_name=interrupt-while-idle ;;\n  05) case_name=interrupt-after-processes ;;\n  *) exit 2 ;;\nesac\nprintf 'HW3 | CASE %s | %s\\n' \"$1\" \"$case_name\"\nexec /usr/bin/script -q \"case-$1.tty\" /bin/sh -c './HW3; program_status=$?; printf \"\\nEXIT_STATUS: %d\\n\" \"$program_status\"; exit \"$program_status\"'\n",
+ "notes": [
+  "clear 직후 run 스크립트가 찍는 \"HW3 | CASE\" 머리줄은 IDE 터미널 화면에 남지 않았다. 명령줄 ./run NN 으로 사례를 식별한다.",
+  "입력은 한 줄씩 보내고 매번 화면을 확대해 확인했다.",
+  "01·02·04 화면에는 마우스 포인터가 함께 찍혔다. 01은 마지막 프롬프트 줄 일부를 가리지만 결과·EXIT_STATUS 줄은 가리지 않는다."
+ ],
+ "screenshot_count": 5,
+ "cases": [
+  {
+   "case_number": "01",
+   "title": "공식 예시: 중첩 인터럽트와 라운드로빈",
+   "command": "clear; ./run 01",
+   "stdin": "2 2\n3\n1\n1 2\n2 1\n",
+   "terminal_transcript": "검토자료/터미널_대화로그/01.tty",
+   "terminal_text": "2 2\n3\n1\n1 2\n2 1\nT  1 P 1 R 2 Q 1\nT  2 I 1 R 1\nT  3 I 2 R 0\nT  4 I 1 R 0\nT  5 P 1 R 1 Q 0\nT  6 P 2 R 0 Q 1\nT  7 P 1 R 0 Q 1\nFINISHED 2 INTERRUPTS 2 TICKS 7\n\nEXIT_STATUS: 0\n",
+   "exit_status": 0,
+   "passed": true,
+   "original_capture": "터미널_스크린샷/원본/01.jpg",
+   "original_capture_format": "JPEG",
+   "original_capture_sha256": "210054ad9a072735c05d225676e24abd4b4449cd798bc8e4935c85b396445fc8",
+   "png_conversion_pixel_identical": true,
+   "final_png": "터미널_스크린샷/01-공식예시.png",
+   "crop": {
+    "source": "터미널_스크린샷/원본/01-pixels.png",
+    "source_sha256": "1188ced774fdebb60b110950072ee6407d917000c34f44c1f878fd97c9c3f2be",
+    "output": "터미널_스크린샷/01-공식예시.png",
+    "output_sha256": "057352378615be16b90040a9fb71464da941d3b81a1672e01ad86d02aa35ac2c",
+    "box": [
+     44,
+     68,
+     1036,
+     312
+    ],
+    "size": [
+     992,
+     244
+    ],
+    "pixel_identical": true
+   }
+  },
+  {
+   "case_number": "02",
+   "title": "추가 사례 1: 세 겹 중첩 인터럽트",
+   "command": "clear; ./run 02",
+   "stdin": "1 3\n4\n1 3\n2 3\n3 1\n",
+   "terminal_transcript": "검토자료/터미널_대화로그/02.tty",
+   "terminal_text": "1 3\n4\n1 3\n2 3\n3 1\nT  1 P 1 R 3 Q 1\nT  2 I 1 R 2\nT  3 I 2 R 2\nT  4 I 3 R 0\nT  5 I 2 R 1\nT  6 I 2 R 0\nT  7 I 1 R 1\nT  8 I 1 R 0\nT  9 P 1 R 2 Q 0\nT 10 P 1 R 1 Q 1\nT 11 P 1 R 0 Q 0\nFINISHED 1 INTERRUPTS 3 TICKS 11\n\nEXIT_STATUS: 0\n",
+   "exit_status": 0,
+   "passed": true,
+   "original_capture": "터미널_스크린샷/원본/02.jpg",
+   "original_capture_format": "JPEG",
+   "original_capture_sha256": "274c2044e7a187fff3d47d1016c9271d83357804e8db185b10e082604531dff7",
+   "png_conversion_pixel_identical": true,
+   "final_png": "터미널_스크린샷/02-세겹중첩.png",
+   "crop": {
+    "source": "터미널_스크린샷/원본/02-pixels.png",
+    "source_sha256": "c7d03ae125b17f129176b592603b3150ed9c4c1c1cb9d4f4a67a9e222b77f13e",
+    "output": "터미널_스크린샷/02-세겹중첩.png",
+    "output_sha256": "b5b5ec11299c2e450972f182d3b90d05b4a6dab2ca6bd7b325de91fc1535462c",
+    "box": [
+     44,
+     68,
+     1036,
+     366
+    ],
+    "size": [
+     992,
+     298
+    ],
+    "pixel_identical": true
+   }
+  },
+  {
+   "case_number": "03",
+   "title": "추가 사례 2: 완료와 퀀텀 소진이 같은 tick",
+   "command": "clear; ./run 03",
+   "stdin": "2 0\n2\n1\n",
+   "terminal_transcript": "검토자료/터미널_대화로그/03.tty",
+   "terminal_text": "2 0\n2\n1\nT  1 P 1 R 1 Q 1\nT  2 P 1 R 0 Q 0\nT  3 P 2 R 0 Q 1\nFINISHED 2 INTERRUPTS 0 TICKS 3\n\nEXIT_STATUS: 0\n",
+   "exit_status": 0,
+   "passed": true,
+   "original_capture": "터미널_스크린샷/원본/03.jpg",
+   "original_capture_format": "JPEG",
+   "original_capture_sha256": "6321fbccaea0002aecd8bd49df12289dd30ed3ce235668395366fab28017688d",
+   "png_conversion_pixel_identical": true,
+   "final_png": "터미널_스크린샷/03-완료와퀀텀동시.png",
+   "crop": {
+    "source": "터미널_스크린샷/원본/03-pixels.png",
+    "source_sha256": "5409156517cfc3aa8737a2c81f7ac67601d03ea313b0915404c708b2dba8a40d",
+    "output": "터미널_스크린샷/03-완료와퀀텀동시.png",
+    "output_sha256": "04d8460bded93623beb920bc8675f180a3403aaebf66d0fba949df12cbd37dfd",
+    "box": [
+     44,
+     68,
+     1036,
+     231
+    ],
+    "size": [
+     992,
+     163
+    ],
+    "pixel_identical": true
+   }
+  },
+  {
+   "case_number": "04",
+   "title": "추가 사례 3: CPU가 빈 순간에 도착한 인터럽트",
+   "command": "clear; ./run 04",
+   "stdin": "2 1\n3\n2\n2 1\n",
+   "terminal_transcript": "검토자료/터미널_대화로그/04.tty",
+   "terminal_text": "2 1\n3\n2\n2 1\nT  1 P 1 R 2 Q 1\nT  2 P 1 R 1 Q 0\nT  3 I 1 R 0\nT  4 P 2 R 1 Q 1\nT  5 P 2 R 0 Q 0\nT  6 P 1 R 0 Q 1\nFINISHED 2 INTERRUPTS 1 TICKS 6\n\nEXIT_STATUS: 0\n",
+   "exit_status": 0,
+   "passed": true,
+   "original_capture": "터미널_스크린샷/원본/04.jpg",
+   "original_capture_format": "JPEG",
+   "original_capture_sha256": "dffe45dad6a2295eb9a25d7f782fe1a6da758be2efe571a0f375defa2cabe6f6",
+   "png_conversion_pixel_identical": true,
+   "final_png": "터미널_스크린샷/04-IDLE중인터럽트.png",
+   "crop": {
+    "source": "터미널_스크린샷/원본/04-pixels.png",
+    "source_sha256": "4fde8b2e621c69ed6ee9ecba48467bb9ff658a8ffaa0d4f1382a8844f2d79ab8",
+    "output": "터미널_스크린샷/04-IDLE중인터럽트.png",
+    "output_sha256": "3182061dfb85101bbf77f4ff9464104f71560264beb259cd64aff179eb56cf94",
+    "box": [
+     44,
+     68,
+     1036,
+     285
+    ],
+    "size": [
+     992,
+     217
+    ],
+    "pixel_identical": true
+   }
+  },
+  {
+   "case_number": "05",
+   "title": "추가 사례 4: 프로세스가 모두 끝난 뒤의 인터럽트",
+   "command": "clear; ./run 05",
+   "stdin": "1 1\n1\n3 2\n",
+   "terminal_transcript": "검토자료/터미널_대화로그/05.tty",
+   "terminal_text": "1 1\n1\n3 2\nT  1 P 1 R 0 Q 1\nT  2 IDLE\nT  3 IDLE\nT  4 I 1 R 1\nT  5 I 1 R 0\nFINISHED 1 INTERRUPTS 1 TICKS 5\n\nEXIT_STATUS: 0\n",
+   "exit_status": 0,
+   "passed": true,
+   "original_capture": "터미널_스크린샷/원본/05.jpg",
+   "original_capture_format": "JPEG",
+   "original_capture_sha256": "b90aa9e5ae0c344aaa3e179f69cf378336db76cee7719b6fffa2c9f2baf4b265",
+   "png_conversion_pixel_identical": true,
+   "final_png": "터미널_스크린샷/05-프로세스종료후인터럽트.png",
+   "crop": {
+    "source": "터미널_스크린샷/원본/05-pixels.png",
+    "source_sha256": "b371271e612c018361bea5a75fbbc3dd86ce3a4893501b8a217aecff5c4827fe",
+    "output": "터미널_스크린샷/05-프로세스종료후인터럽트.png",
+    "output_sha256": "96914917723d8ef7dd200545176326d192242a700d4fa606a423cf727388a3f1",
+    "box": [
+     44,
+     68,
+     1036,
+     258
+    ],
+    "size": [
+     992,
+     190
+    ],
+    "pixel_identical": true
+   }
+  }
+ ]
+}
