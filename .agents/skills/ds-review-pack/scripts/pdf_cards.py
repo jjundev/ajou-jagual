@@ -170,11 +170,14 @@ def to_payload(pack: Pack, mode: str, pages: tuple[PageSlice,...], assets: Path)
         code = ''.join(b.html for b in page.problem if b.kind == 'code')
         workspace = ''.join(b.html for b in page.problem if b.kind == 'table') if worksheet and mode == 'problems' else ''
         body = ''.join(b.html for b in page.problem if b.kind != 'code' and not (workspace and b.kind == 'table'))
-        cond = ''
+        cond, cond_figures = '', []
         if c.kind == '강의 코드':
             cond, prose = split_lecture_problem(tuple(b for b in page.problem if b.kind == 'prose'))
             body = prose + ''.join(b.html for b in page.problem if b.kind not in ('code', 'prose'))
+            # A <figure> wrapper is prose, so its SVG lands in the conditions; freeze it like any other figure.
+            cond, cond_figures = figures_from(cond, pack.source, assets)
         ask,figures=figures_from(body,pack.source,assets)
+        figures=cond_figures+figures
         number=c.id[1:]+(f' (계속 {page.continuation})' if page.continuation>1 else '')
         p={'id':page.physical_id,'kind':c.kind,'number':number,'title':c.title,'section':c.source,
            'book_page':None,'difficulty':0,'sol':False,'original_lang':'ko',

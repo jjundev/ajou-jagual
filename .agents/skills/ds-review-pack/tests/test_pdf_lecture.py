@@ -108,6 +108,19 @@ def test_lecture_figure_still_extracted(tmp_path):
     assert len(p['figures']) == 1 and '<svg' not in p['html']['ask'] and '<li>' in p['html']['ask']
     assert p['html']['conditions'] == '<p>상황이에요.</p>' and '강의 예제 기반' not in json.dumps(p, ensure_ascii=False)
 
+def test_lecture_wrapped_figure_in_conditions_extracted(tmp_path):
+    src = tmp_path / '복습문제_0907_Test.html'
+    src.write_text('<article class="card" id="p1" data-source="lecture-s01-p1-x" data-source-kind="lecture-code"><h3>P1. Fig</h3>'
+                   '<div class="problem"><p><span class="badge">강의 예제 기반 자체 출제</span> S1 p1</p><p>상황이에요.</p>'
+                   '<figure class="figure"><svg viewBox="0 0 80 40"><circle class="fig-ink" cx="9" cy="9" r="5"/></svg>'
+                   '<figcaption>그림 설명이에요.</figcaption></figure><ol><li>(a) 값을 쓰세요.</li></ol></div>'
+                   '<details class="solution"><summary>S</summary><p class="answer">A</p></details></article>', encoding='utf-8')
+    pack = read_pack(src); c = pack.cards[0]
+    p = to_payload(pack, 'problems', (PageSlice(c.id, c.id, 1, c.problem, c.solution, True, True),), tmp_path / 'assets')['problems'][0]
+    assert len(p['figures']) == 1 and '<svg' not in p['html']['conditions'] + p['html']['ask']
+    assert '그림 설명이에요.' in p['html']['conditions'] and '<li>' in p['html']['ask']
+    assert '.fig-ink' in Path(p['figures'][0]['src'].removeprefix('file://')).read_text(encoding='utf-8')
+
 def test_lecture_long_card_renders(tmp_path):
     import pdf_render
     from pdf_layout import plan_pages, check_coverage
