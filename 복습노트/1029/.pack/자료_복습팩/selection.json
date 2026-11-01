@@ -1,0 +1,263 @@
+{
+ "range": "1029",
+ "mode": "new",
+ "policy_version": "review-questions-2026-10-17",
+ "taught_evidence": {
+  "stt": "STT/1029 자구알.md",
+  "stt_sha256": "6cb261fd9a19794106360f12c9cb401ed7dc702f32ec4b257ea42ae258dc5bd3",
+  "slides": "S7 p1–7 다룸, p8 노드 번호만(일부), p9 이후 안 다룸",
+  "lecture_sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde"
+ },
+ "concept_overrides": {},
+ "coverage": {
+  "트리의 필요성·응용(계층·포함, 파일 시스템)": [
+   "p2"
+  ],
+  "구조 용어(루트·서브트리·단말/비단말)": [
+   "p1",
+   "p6"
+  ],
+  "관계·측정 용어(형제·자손·레벨·높이·차수)": [
+   "p1",
+   "p4",
+   "p7"
+  ],
+  "이진 트리 정의(자식 2개 이하, 기타 이진 트리)": [
+   "p10"
+  ],
+  "간선 n-1, 높이 h의 노드 수 h~2^h-1": [
+   "p8",
+   "p9"
+  ],
+  "노드 n개의 높이 범위 n ~ ceil(log2(n+1))": [
+   "p9"
+  ],
+  "포화·완전 이진 트리 판정": [
+   "p3",
+   "p5",
+   "p10"
+  ],
+  "레벨 순서 채우기(다음 노드 자리)": [
+   "p10"
+  ]
+ },
+ "selected": [
+  {
+   "id": "p1",
+   "source": "2017-mid-c050-q8",
+   "source_kind": "past-exam",
+   "original_id": "2017-mid-c050-q8",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2017-mid-c050-q8",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "(a) v4, v5, v6, v7, v8, v9 (b) v7, v9 (c) v16, v17, v18 (d) 5 (e) 2",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p2",
+   "source": "2017-mid-c050-q3",
+   "source_kind": "past-exam",
+   "original_id": "2017-mid-c050-q3",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2017-mid-c050-q3",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "트리",
+   "verification": {
+    "method": "lecture-reference",
+    "reference": "S7 p2·p3·p7 정의 대조 + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p3",
+   "source": "2017-mid-c050-q4",
+   "source_kind": "past-exam",
+   "original_id": "2017-mid-c050-q4",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2017-mid-c050-q4",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "완전이진트리",
+   "verification": {
+    "method": "lecture-reference",
+    "reference": "S7 p2·p3·p7 정의 대조 + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p4",
+   "source": "2018-mid-c102-q4",
+   "source_kind": "past-exam",
+   "original_id": "2018-mid-c102-q4",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2018-mid-c102-q4",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "높이",
+   "verification": {
+    "method": "lecture-reference",
+    "reference": "S7 p2·p3·p7 정의 대조 + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p5",
+   "source": "2019-mid-q5",
+   "source_kind": "past-exam",
+   "original_id": "2019-mid-q5",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2019-mid-q5",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "X",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p6",
+   "source": "textbook-ch08-q04",
+   "source_kind": "textbook",
+   "original_id": "ch08-q04",
+   "prerequisites": [],
+   "evidence": {
+    "path": "교과서/08_트리_연습문제.json",
+    "locator": "ch08-q04",
+    "sha256": "ec6fcdcc25a12533816c1cd99219026860e55fd8f6b623654b1dbb8fa34990cf"
+   },
+   "answer": "③ 4 (D, F, G, H)",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p7",
+   "source": "textbook-ch08-q05",
+   "source_kind": "textbook",
+   "original_id": "ch08-q05",
+   "prerequisites": [],
+   "evidence": {
+    "path": "교과서/08_트리_연습문제.json",
+    "locator": "ch08-q05",
+    "sha256": "ec6fcdcc25a12533816c1cd99219026860e55fd8f6b623654b1dbb8fa34990cf"
+   },
+   "answer": "① 3",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p8",
+   "source": "textbook-ch08-q07",
+   "source_kind": "textbook",
+   "original_id": "ch08-q07",
+   "prerequisites": [],
+   "evidence": {
+    "path": "교과서/08_트리_연습문제.json",
+    "locator": "ch08-q07",
+    "sha256": "ec6fcdcc25a12533816c1cd99219026860e55fd8f6b623654b1dbb8fa34990cf"
+   },
+   "answer": "(4) 31개",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p9",
+   "source": "lecture-s07-p5-binary-tree-bounds",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s07-p5-binary-tree-bounds",
+   "prerequisites": [],
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+    "locator": "pdf_page 5",
+    "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde"
+   },
+   "answer": "(a) 11 (b) 최대 12, 최소 4 (c) 최소 4, 최대 15",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p10",
+   "source": "lecture-s07-p7-complete-binary-tree",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s07-p7-complete-binary-tree",
+   "prerequisites": [],
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+    "locator": "pdf_page 7",
+    "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde"
+   },
+   "answer": "(a) 완전 이진 트리(포화 이진 트리는 아님) (b) E의 오른쪽 자식 (c) 이진 트리는 맞지만 완전 이진 트리는 아님 → 기타 이진 트리",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  }
+ ],
+ "excluded": [
+  {
+   "id": "2018-mid-c024-q3",
+   "reason": "후위 순회 필요(S7 p12, 1029 미학습)"
+  },
+  {
+   "id": "2017-mid-c050-q5",
+   "reason": "전위 순회 필요(S7 p9–10, 미학습)"
+  },
+  {
+   "id": "2019-mid-q1",
+   "reason": "이진 탐색 트리 필요(S7 p18 이후, 미학습)"
+  },
+  {
+   "id": "2017-mid-c050-q9, 2018-mid-c024-q11~q14, 2019-mid-q10~q12, 2021-mock1-q6, 2015-ljw-q2, unk-final-ltk-q4",
+   "reason": "순회·배열 표현·이진 탐색 트리 필요(미학습)"
+  },
+  {
+   "id": "2019-final-q9, unk-final-ltk-q10",
+   "reason": "B-tree(미학습)"
+  },
+  {
+   "id": "2019-mid-q13",
+   "reason": "문제 글 없음(은행 unverified), 스레드 이진 트리 미학습"
+  },
+  {
+   "id": "textbook-ch08-q01~q03, q06, q08~q22",
+   "reason": "순회·수식 표기·스레드 트리·이진 탐색 트리·코드 작성 필요(미학습)"
+  }
+ ],
+ "required_exam_sources": [
+  "2017-mid-c050-q8",
+  "2017-mid-c050-q3",
+  "2017-mid-c050-q4",
+  "2018-mid-c102-q4",
+  "2019-mid-q5"
+ ]
+}
