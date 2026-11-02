@@ -1,0 +1,361 @@
+{
+ "range": "1102",
+ "mode": "new",
+ "policy_version": "review-questions-2026-10-17",
+ "taught_evidence": {
+  "stt": "STT/1102 자구알.md",
+  "summary": "stt-summary.md",
+  "slides": "S7 p7–17 다룸/일부, p18 예고만, p19–25 안 다룸"
+ },
+ "concept_overrides": {},
+ "coverage": [
+  {
+   "objective": "배열 표현법: 루트=1, 부모 i/2, 자식 2i·2i+1, 빈칸 유지 (S7 p8)",
+   "questions": [
+    "p1",
+    "p3"
+   ]
+  },
+  {
+   "objective": "링크 표현법 TreeNode(left/right, NULL) (S7 p8)",
+   "questions": [
+    "p12"
+   ]
+  },
+  {
+   "objective": "전위 순회 VLR (S7 p9–10)",
+   "questions": [
+    "p1",
+    "p6",
+    "p8",
+    "p11"
+   ]
+  },
+  {
+   "objective": "중위 순회 LVR, 수식 a*b+c/d (S7 p11)",
+   "questions": [
+    "p1",
+    "p4",
+    "p7",
+    "p11"
+   ]
+  },
+  {
+   "objective": "후위 순회 LRV, 디렉토리 용량 (S7 p12)",
+   "questions": [
+    "p1",
+    "p2",
+    "p5",
+    "p11"
+   ]
+  },
+  {
+   "objective": "두 순회 결과로 트리 복원(순회 정의 응용)",
+   "questions": [
+    "p2",
+    "p3",
+    "p4"
+   ]
+  },
+  {
+   "objective": "레벨 순회와 큐 (S7 p13)",
+   "questions": [
+    "p11"
+   ]
+  },
+  {
+   "objective": "수식 트리의 전위·중위·후위 (S7 p14)",
+   "questions": [
+    "p9",
+    "p11"
+   ]
+  },
+  {
+   "objective": "수식 트리 계산 evaluate — 후위 순회로 서브트리 값 계산 (S7 p15)",
+   "questions": [
+    "p10"
+   ],
+   "note": "evaluate 자체를 묻는 기출·교과서 원문이 없음. p10 의 재귀 반환값 추적(단말에서 값, 비단말에서 두 서브트리 결과 결합)이 같은 LRV 계산 구조를 평가. 정리노트 s2-evaluate 로 보완."
+  },
+  {
+   "objective": "get_node_count (S7 p16)",
+   "questions": [
+    "p12"
+   ]
+  },
+  {
+   "objective": "get_height max+1 (S7 p17)",
+   "questions": [
+    "p12",
+    "p10"
+   ]
+  }
+ ],
+ "selected": [
+  {
+   "id": "p1",
+   "source": "2018-mid-c024-q11",
+   "source_kind": "past-exam",
+   "original_id": "2018-mid-c024-q11",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2018-mid-c024-q11",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "(1) [1]=A, [2]=B, [3]=F, [4]=C, [5]=D, [6]=G, [11]=E, [12]=H (2) A, B, C, D, E, F, G, H (3) C, E, D, B, H, G, F, A (4) C, B, D, E, A, H, G, F",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p2",
+   "source": "2021-mock1-q6",
+   "source_kind": "past-exam",
+   "original_id": "2021-mock1-q6",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2021-mock1-q6",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "루트 H, 레벨 순서 H G K D E M F N P T S R",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p3",
+   "source": "2019-mid-q11",
+   "source_kind": "past-exam",
+   "original_id": "2019-mid-q11",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2019-mid-q11",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "[1]=B, [2]=C, [3]=D, [4]=E, [7]=M, [8]=F, [9]=K, [14]=O, [15]=P, [16]=G, [17]=H, [30]=R, [31]=T",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p4",
+   "source": "2018-mid-c024-q12",
+   "source_kind": "past-exam",
+   "original_id": "2018-mid-c024-q12",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2018-mid-c024-q12",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "루트 A, 레벨 순서 A B C D E F G H",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p5",
+   "source": "2018-mid-c024-q3",
+   "source_kind": "past-exam",
+   "original_id": "2018-mid-c024-q3",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2018-mid-c024-q3",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "후위 순회",
+   "verification": {
+    "method": "lecture-reference",
+    "reference": "answers.py + independent_verify.py (S7 p12 디렉토리 용량 = 후위)",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p6",
+   "source": "2017-mid-c050-q5",
+   "source_kind": "past-exam",
+   "original_id": "2017-mid-c050-q5",
+   "prerequisites": [],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2017-mid-c050-q5",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "전위 순회",
+   "verification": {
+    "method": "lecture-reference",
+    "reference": "answers.py + independent_verify.py (S7 p9 전위: 자손보다 루트 먼저)",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p7",
+   "source": "textbook-ch08-q01",
+   "source_kind": "textbook",
+   "original_id": "ch08-q01",
+   "prerequisites": [],
+   "evidence": {
+    "path": "교과서/08_트리_연습문제.json",
+    "locator": "ch08-q01",
+    "sha256": "ec6fcdcc25a12533816c1cd99219026860e55fd8f6b623654b1dbb8fa34990cf"
+   },
+   "answer": "④ D B A E C F",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p8",
+   "source": "textbook-ch08-q02",
+   "source_kind": "textbook",
+   "original_id": "ch08-q02",
+   "prerequisites": [],
+   "evidence": {
+    "path": "교과서/08_트리_연습문제.json",
+    "locator": "ch08-q02",
+    "sha256": "ec6fcdcc25a12533816c1cd99219026860e55fd8f6b623654b1dbb8fa34990cf"
+   },
+   "answer": "② E",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p9",
+   "source": "textbook-ch08-q03",
+   "source_kind": "textbook",
+   "original_id": "ch08-q03",
+   "prerequisites": [],
+   "evidence": {
+    "path": "교과서/08_트리_연습문제.json",
+    "locator": "ch08-q03",
+    "sha256": "ec6fcdcc25a12533816c1cd99219026860e55fd8f6b623654b1dbb8fa34990cf"
+   },
+   "answer": "④ A B / C * D * E +",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p10",
+   "source": "textbook-ch08-q12",
+   "source_kind": "textbook",
+   "original_id": "ch08-q12",
+   "prerequisites": [],
+   "evidence": {
+    "path": "교과서/08_트리_연습문제.json",
+    "locator": "ch08-q12",
+    "sha256": "ec6fcdcc25a12533816c1cd99219026860e55fd8f6b623654b1dbb8fa34990cf"
+   },
+   "answer": "8",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p11",
+   "source": "lecture-s07-p13-level-order",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s07-p13-level-order",
+   "prerequisites": [],
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+    "locator": "pdf_page 13",
+    "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde"
+   },
+   "answer": "(a) + * / a b c d (b) [/ a b] (c) 전위 + * a b / c d, 중위 a * b + c / d, 후위 a b * c d / +",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p12",
+   "source": "lecture-s07-p16-count-height",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s07-p16-count-height",
+   "prerequisites": [],
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+    "locator": "pdf_page 16",
+    "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde"
+   },
+   "answer": "(a) X 3, Y 2, R 6 (b) 3 (c) 1은 지금 노드(루트) 자신이 차지하는 한 층",
+   "verification": {
+    "method": "c-run",
+    "reference": "answers.py + independent_verify.py",
+    "result": "pass"
+   }
+  }
+ ],
+ "excluded": [
+  {
+   "id": "2017-mid-c050-q9",
+   "reason": "(d)(e) 소문항이 이진 탐색 트리 탐색·삭제 필요(S7 p18 이후, 1102 예고만)"
+  },
+  {
+   "id": "2015-ljw-q2, 2019-mid-q10, 2019-mid-q12, 2018-mid-c024-q13, 2018-mid-c024-q14, unk-final-ltk-q4, 2019-mid-q1",
+   "reason": "이진 탐색 트리 삽입·삭제·정의 필요(미학습)"
+  },
+  {
+   "id": "2019-final-q9, unk-final-ltk-q10",
+   "reason": "B-tree(미학습)"
+  },
+  {
+   "id": "2019-mid-q13",
+   "reason": "문제 글 없음(은행 unverified), 스레드 이진 트리 미학습"
+  },
+  {
+   "id": "2018-mid-c024-q5",
+   "reason": "이진 트리 높이 범위(1029 범위, S7 p5) OX — 1102 핵심 목표가 아니고 1029 팩이 같은 개념을 다룸"
+  },
+  {
+   "id": "textbook-ch08-q06",
+   "reason": "보기 4개 중 정답(A B * C D / +)이 없음 — 보기 1 'A * B C D / +'가 오식으로 보여 의미가 불확실(source-error)"
+  },
+  {
+   "id": "textbook-ch08-q10",
+   "reason": "소문항 6이 이진 탐색 트리 판정 필요(미학습). 소문항 1~5는 p1(2018-mid-c024-q11)과 같은 평가 목표"
+  },
+  {
+   "id": "textbook-ch08-q08",
+   "reason": "스레드 이진 트리(미학습)"
+  },
+  {
+   "id": "textbook-ch08-q09, q11, q18~q22",
+   "reason": "이진 탐색 트리 필요(미학습)"
+  },
+  {
+   "id": "textbook-ch08-q13~q17",
+   "reason": "코드 작성 과제(균형 검사·합·조건 출력·자식 하나·최대최소) — 개념은 범위 안이지만 카드형 검증 문제로 부적합, p12 가 같은 재귀 패턴을 평가"
+  }
+ ],
+ "required_exam_sources": [
+  "2017-mid-c050-q8",
+  "2017-mid-c050-q3",
+  "2017-mid-c050-q4",
+  "2018-mid-c102-q4",
+  "2019-mid-q5"
+ ]
+}

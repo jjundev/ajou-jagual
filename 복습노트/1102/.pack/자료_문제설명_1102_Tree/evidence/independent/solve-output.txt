@@ -1,0 +1,95 @@
+=== p1 ===
+배열: {1: 'A', 2: 'B', 3: 'F', 4: 'C', 5: 'D', 6: 'G', 11: 'E', 12: 'H'}
+전위: A B C D E F G H
+후위: C E D B H G F A
+중위: C B D E A H G F
+
+=== p2 ===
+[p2 중위+후위] 일관 트리 수 = 1
+  재순회 일치: True
+레벨: H / G K / D E M / F N P / T S / R
+H: L=G R=K
+G: L=D R=E
+K: L=M R=-
+D: L=- R=F
+E: L=- R=-
+M: L=N R=P
+F: L=- R=-
+N: L=T R=S
+P: L=- R=-
+T: L=R R=-
+S: L=- R=-
+R: L=- R=-
+전위: H G D F E K M N T R S P
+
+=== p3 ===
+원문 그대로(P 두 번): 0 트리
+후위 3번째 자리 P->F: G H F K E C O R T P M D B => 일관 트리 1개
+  재순회 일치: True
+  배열: {1: 'B', 2: 'C', 3: 'D', 4: 'E', 7: 'M', 8: 'F', 9: 'K', 14: 'O', 15: 'P', 16: 'G', 17: 'H', 30: 'R', 31: 'T'}  최대 칸: 31
+  레벨: B / C D / E M / F K O P / G H R T
+  B: L=C R=D
+  C: L=E R=-
+  D: L=- R=M
+  E: L=F R=K
+  M: L=O R=P
+  F: L=G R=H
+  K: L=- R=-
+  O: L=- R=-
+  P: L=R R=T
+  G: L=- R=-
+  H: L=- R=-
+  R: L=- R=-
+  T: L=- R=-
+후위 10번째 자리 P->F: G H P K E C O R T F M D B => 일관 트리 0개
+
+=== p4 ===
+첫 줄=pre, 둘째 줄=in: 일관 트리 1개
+   레벨: D / B / A / E / G C / F / H | D: L=- R=B; B: L=- R=A; A: L=E R=-; E: L=G R=C; G: L=- R=-; C: L=F R=-; F: L=H R=-; H: L=- R=-
+첫 줄=pre, 둘째 줄=post: 일관 트리 0개
+첫 줄=in, 둘째 줄=pre: 일관 트리 0개
+첫 줄=in, 둘째 줄=post: 일관 트리 1개
+   레벨: A / B C / D E F / G H | A: L=B R=C; B: L=D R=-; C: L=E R=F; D: L=- R=-; E: L=- R=G; F: L=- R=H; G: L=- R=-; H: L=- R=-
+첫 줄=post, 둘째 줄=pre: 일관 트리 0개
+첫 줄=post, 둘째 줄=in: 일관 트리 0개
+채택(중위+후위): 전위 = A B D C E G F H  재순회 일치: True
+
+=== p5 ===
+후위 순회: 폴더 용량 = 하위 폴더(자식) 용량을 모두 구한 뒤 자기 크기를 더하므로 자식 먼저, 루트 나중(LRV).
+
+=== p6 ===
+전위 순회(preorder): VLR — 루트를 자손보다 먼저 방문.
+
+=== p7 ===
+중위: D B A E C F
+  보기1 A B D C E F: ['전위']
+  보기2 A B C D E F: ['레벨']
+  보기3 D B E C F A: 어느 순회와도 불일치
+  보기4 D B A E C F: ['중위']
+
+=== p8 ===
+전위: A B D C E G H F  5번째: E
+  보기: 1 C, 2 E, 3 G, 4 H -> 각 노드의 전위 위치: {'C': 4, 'E': 5, 'G': 6, 'H': 7}
+
+=== p9 ===
+후위: A B / C * D * E +
+  보기1 + * * / A B C D E: ['전위']
+  보기2 A / B * C * D + E: ['중위']
+  보기3 + * A B / * C D E: 어느 순회와도 불일치
+  보기4 A B / C * D * E +: ['후위']
+
+=== p10 (파이썬 교차 확인) ===
+mystery(root) = 8
+
+=== p11 ===
+(a) 레벨: + * / a b c d
+단계 | 꺼낸 노드 | 자식 넣은 뒤 큐(앞->뒤)
+  1 | + | * /
+  2 | * | / a b
+  3 | / | a b c d
+  4 | a | b c d
+  5 | b | c d
+  6 | c | d
+  7 | d | (빈 큐)
+(b) / a b
+(c) 전위: + * a b / c d | 중위: a * b + c / d | 후위: a b * c d / +

@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>자료구조및알고리즘이해 복습문제 1102</title>
+  <meta name="description" content="복습문제 12선 — 1102 수업 범위">
+  <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']})"></script>
+  <style>
+    /* ---------- 토큰 ---------- */
+    :root {
+      color-scheme: light;
+      --bg: #ffffff; --surface: #f7f8fa; --ink: #111111; --ink-2: #6b7280; --line: #d9dee7;
+      --accent: #1677ff; --accent-ink: #1b64da; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #b54708; --prof: #6941c6; --supp: #067647; --danger: #d92d20;
+      --font: 'Pretendard', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --fs-body: 17px; --fs-lead: 20px; --fs-small: 14px; --fs-label: 13px; --fs-fig: 12px;
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+      --radius: 8px; --measure: 680px; --tap: 48px; --btn-min: 160px;
+      --dur: 220ms; --dur-exit: 150ms; --ease-out: cubic-bezier(.2, .8, .2, 1);
+      /* 예전 조각이 참조할 수 있는 이름 */
+      --surface-2: var(--surface); --accent-soft: var(--surface); --warn-soft: var(--surface);
+      --prof-soft: var(--surface); --supp-soft: var(--surface); --eli5: var(--accent-ink); --eli5-soft: var(--surface);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+        --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+        --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+      --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+    }
+
+    /* ---------- 기본 ---------- */
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+      background: var(--bg); color: var(--ink); font-family: var(--font); font-size: var(--fs-body); line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+    a { color: var(--accent-ink); text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    [hidden] { display: none !important; }
+
+    /* ---------- 상단 바 ---------- */
+    .topbar { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s2) var(--s4); display: flex; align-items: center; gap: var(--s3); min-height: 56px; }
+    .brand { flex: 1 1 auto; min-width: 0; font-size: var(--fs-body); font-weight: 700; white-space: nowrap; }
+    .text-btn { flex: none; min-height: 44px; min-width: 44px; padding: 0 var(--s3); border: 0; border-radius: var(--radius);
+      background: transparent; color: var(--ink); font: 600 var(--fs-small)/1 var(--font); cursor: pointer; }
+    .bar { height: 2px; background: var(--line); overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+
+    /* ---------- 본문 ---------- */
+    main { flex: 1 0 auto; width: 100%; max-width: var(--measure); margin: 0 auto; padding: var(--s6) var(--s5) var(--s7); }
+    .hero h1 { font-size: clamp(28px, 6vw, 36px); line-height: 1.3; margin: 0 0 var(--s3); letter-spacing: -0.02em; }
+    .hero p { color: var(--ink-2); margin: 0; }
+    section { margin-top: var(--s7); }
+    section > h2 { font-size: 22px; line-height: 1.4; margin: 0 0 var(--s4); }
+    .topic { padding: var(--s6) 0; border-top: 1px solid var(--line); }
+    .topic h3 { margin: 0 0 var(--s2); font-size: clamp(24px, 5vw, 28px); line-height: 1.35; letter-spacing: -0.01em; }
+    .tags { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); }
+    .tag { font-size: var(--fs-label); line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); white-space: nowrap; }
+
+    /* 레이어: 배경 없이 라벨과 구분선으로 나눈다 */
+    .layer { margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); }
+    .layer.eli5 { margin-top: 0; padding-top: 0; border-top: 0; }
+    .layer > :first-child { margin-top: 0; }
+    .layer > :last-child { margin-bottom: 0; }
+    .layer-title { display: block; font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); margin-bottom: var(--s2); }
+    .layer.eli5 .layer-title { color: var(--accent-ink); }
+    .layer.eli5 .lead { font-size: var(--fs-lead); font-weight: 700; line-height: 1.5; margin: 0 0 var(--s3); }
+    .layer.prof .layer-title { color: var(--prof); }
+    .layer.warn { background: var(--surface); border-top: 0; border-radius: var(--radius); padding: var(--s4); }
+    .layer.warn .layer-title { color: var(--warn); }
+    .layer.supp .badge.supp { margin-bottom: var(--s2); }
+    .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
+    .badge.supp { color: var(--supp); }
+    blockquote { margin: var(--s2) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
+    pre { margin: var(--s3) 0; padding: var(--s3) var(--s4); overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      font: var(--fs-small)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; white-space: pre; word-break: normal; overflow-wrap: normal; tab-size: 4; }
+    code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: .92em; }
+    pre code { font-size: inherit; }
+    ol.steps { padding-left: 1.4em; }
+    ol.steps li { margin: var(--s2) 0; }
+
+    /* 그림 · 수식 · 표 */
+    .figure { margin: var(--s4) 0; text-align: center; }
+    .figure svg { width: 100%; height: auto; max-width: 560px; color: var(--ink); }
+    .figure figcaption { font-size: var(--fs-small); color: var(--ink-2); margin-top: var(--s1); }
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: var(--s1) 0; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
+    th, td { border-bottom: 1px solid var(--line); padding: var(--s2); text-align: left; vertical-align: top; }
+    th { color: var(--ink-2); font-weight: 600; }
+    td:first-child, th:first-child { min-width: 6em; }
+
+    /* 위젯 */
+    .widget { background: var(--surface); border-radius: var(--radius); padding: var(--s4); margin: var(--s5) 0; }
+    .widget h4 { margin: 0 0 var(--s1); font-size: var(--fs-body); }
+    .widget-help { font-size: var(--fs-small); color: var(--ink-2); margin: 0 0 var(--s3); }
+    .controls { display: grid; gap: var(--s2); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: var(--s2); font-size: var(--fs-small); }
+    .controls label { display: flex; align-items: center; gap: var(--s2); min-height: 44px; }
+    .controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+    .widget svg { width: 100%; height: auto; background: var(--bg); border-radius: var(--radius); }
+    .readout { font-size: var(--fs-small); margin-top: var(--s2); }
+    .legend { font-size: var(--fs-label); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: var(--s3); }
+    .sw { display: inline-block; width: 14px; height: 4px; vertical-align: middle; margin-right: var(--s1); border-radius: 2px; }
+    .sw.truth { background: var(--ink-2); } .sw.fit { background: var(--accent); } .sw.train { background: var(--accent); height: 10px; width: 10px; border-radius: 50%; }
+    .sw.test { background: var(--warn); height: 10px; width: 10px; border-radius: 50%; } .sw.like { background: var(--accent); } .sw.prior { background: var(--prof); } .sw.post { background: var(--supp); }
+    .axis { stroke: var(--line); stroke-width: 1.5; }
+    .tick { fill: var(--ink-2); font-size: 11px; }
+    .plot-truth { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .plot-fit { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+    .pt-train { fill: var(--accent); }
+    .pt-test { fill: var(--warn); }
+    .plot-like { fill: none; stroke: var(--accent); stroke-width: 2; }
+    .plot-prior { fill: none; stroke: var(--prof); stroke-width: 2; stroke-dasharray: 6 4; }
+    .plot-post { fill: none; stroke: var(--supp); stroke-width: 3; }
+    .mark-ml { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .mark-map { stroke: var(--supp); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .fig-ink { stroke: currentColor; fill: none; stroke-width: 2; }
+    .fig-accent { stroke: var(--accent); fill: none; stroke-width: 2.5; }
+    .fig-danger { stroke: var(--danger); fill: none; stroke-width: 2.5; }
+    .fig-dot { fill: var(--accent); }
+    .fig-text { fill: currentColor; font-size: 13px; font-family: inherit; }
+    .fig-muted { fill: var(--ink-2); font-size: var(--fs-fig); font-family: inherit; }
+
+    footer { width: 100%; max-width: var(--measure); margin: 0 auto; padding: 0 var(--s5) var(--s6); color: var(--ink-2); font-size: var(--fs-small); }
+
+    /* ---------- 문제 카드 ---------- */
+    .card { padding: var(--s6) 0; border-top: 1px solid var(--line); }
+    .card h3 { margin: 0 0 var(--s4); font-size: clamp(22px, 5vw, 26px); line-height: 1.4; letter-spacing: -0.01em; }
+    .problem { margin: 0 0 var(--s5); }
+    .problem ol { padding-left: 1.4em; }
+    details { border-top: 1px solid var(--line); }
+    .card details:last-of-type { border-bottom: 1px solid var(--line); }
+    details[open] { padding-bottom: var(--s4); }
+    details > summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: var(--s3);
+      min-height: var(--tap); cursor: pointer; font-weight: 600; }
+    details > summary::-webkit-details-marker { display: none; }
+    details > summary::after { content: ""; flex: none; width: 8px; height: 8px; margin-right: var(--s1);
+      border-right: 2px solid var(--ink-2); border-bottom: 2px solid var(--ink-2); transform: rotate(45deg); transition: transform 150ms ease-out; }
+    details[open] > summary::after { transform: rotate(-135deg); }
+    details.original { color: var(--ink-2); font-size: var(--fs-small); }
+    details.original > summary { color: var(--ink); font-size: var(--fs-body); }
+    .answer { font-weight: 700; background: var(--surface); border-radius: var(--radius); padding: var(--s3) var(--s4); }
+    .link-back { font-size: var(--fs-small); color: var(--ink-2); margin: var(--s5) 0 var(--s4); }
+    .top-link { flex: none; display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--s2);
+      font-size: var(--fs-small); font-weight: 600; text-decoration: none; }
+    .js .card { padding: 0; border-top: 0; }
+    @media (prefers-reduced-motion: reduce) { details > summary::after { transition: none; } }
+
+    /* ---------- 하단 이동 바 ---------- */
+    .pager { position: sticky; bottom: 0; z-index: 10; background: var(--bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+    .pager-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s3) var(--s4); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--s3); }
+    .pager-count { font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; min-width: 4em; }
+    .btn { min-height: var(--tap); min-width: var(--btn-min); padding: 0 var(--s6); border-radius: var(--radius); border: 0; font: 700 var(--fs-body)/1 var(--font); cursor: pointer; white-space: nowrap;
+      transition: background-color 150ms ease-out, opacity 150ms ease-out; }
+    .btn-ghost { justify-self: start; background: var(--surface); color: var(--ink); }
+    .btn-primary { justify-self: end; background: var(--btn-bg); color: var(--on-btn); }
+    .btn:disabled { opacity: .4; cursor: default; }
+    @media (hover: hover) {
+      .text-btn:hover, .btn-ghost:not(:disabled):hover { background: var(--line); }
+      .btn-primary:not(:disabled):hover { box-shadow: inset 0 0 0 100px rgba(0, 0, 0, .14); }
+    }
+
+    /* ---------- 목차 시트 ---------- */
+    .sheet { width: min(100%, var(--measure)); max-width: 100%; max-height: 80dvh; margin: auto auto 0; padding: 0; border: 0;
+      border-radius: 16px 16px 0 0; background: var(--bg); color: var(--ink); }
+    .sheet::backdrop { background: rgba(0, 0, 0, .4); }
+    .sheet-inner { padding: var(--s4) var(--s5) calc(var(--s5) + env(safe-area-inset-bottom)); }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    .sheet-head h2 { margin: 0; font-size: var(--fs-lead); }
+    .toc { display: flex; flex-direction: column; }
+    .toc > a, .toc-group > a { display: block; padding: var(--s3) 0 var(--s1); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); text-decoration: none; }
+    .toc-list { list-style: none; margin: 0 0 var(--s2); padding: 0; }
+    .toc-list a { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); padding: var(--s2) var(--s3); margin: 0 calc(-1 * var(--s3));
+      border-radius: var(--radius); color: var(--ink); text-decoration: none; line-height: 1.4; }
+    .toc-list a[aria-current="true"] { background: var(--surface); font-weight: 700; color: var(--accent-ink); }
+    .toc-list .toc-title { flex: 1 1 0; min-width: 0; }
+    @media (hover: hover) { .toc-list a:hover { background: var(--surface); } }
+
+    /* ---------- 한 화면에 하나씩 (JS가 켤 때만) ---------- */
+    html:not(.js) .pager, html:not(.js) #toc-open { display: none; }
+    html:not(.js) .sheet { display: block; position: static; width: 100%; max-height: none; margin: 0 auto; border-radius: 0; border-bottom: 1px solid var(--line); }
+    html:not(.js) .sheet-close { display: none; }
+    .js main > .hero:not(.is-current), .js main > section:not(.is-on), .js .screen:not(.is-current) { display: none; }
+    .js main > section { margin-top: 0; }
+    .js main > section > h2 { font-size: var(--fs-label); font-weight: 600; color: var(--accent-ink); margin: 0 0 var(--s2); }
+    .js .topic { padding: 0; border-top: 0; }
+    .js .hero { padding-top: 12vh; }
+    .js footer { display: none; }
+    .js body.at-end footer { display: block; }
+    .screen.enter-next { animation: enter-next var(--dur) var(--ease-out); }
+    .screen.enter-prev { animation: enter-prev var(--dur) var(--ease-out); }
+    @keyframes enter-next { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    @keyframes enter-prev { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .screen.enter-next, .screen.enter-prev { animation: none; }
+      .bar > span, .btn { transition: none; }
+    }
+    @media (max-width: 480px) {
+      main { padding: var(--s5) var(--s4) var(--s6); }
+      footer { padding: 0 var(--s4) var(--s5); }
+      .btn { min-width: 120px; padding: 0 var(--s5); }
+    }
+    @media print {
+      .topbar, .pager, .sheet { display: none !important; }
+      .js main > .hero, .js main > section, .js .screen, .js footer { display: block !important; }
+    }
+
+    /* ---------- 좌우 패널 (drawer) ---------- */
+    :root { --panel-l: clamp(240px, 18vw, 320px); --panel-r-min: 320px; --panel-r-max: 720px; --scrollbar: 16px; --drawer-l: 304px; --drawer-r: 360px; --fs-panel: 16px; --scrim: rgba(0, 0, 0, .4); }
+    body { height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+    .topbar-inner { max-width: none; padding: var(--s2) var(--s3); gap: var(--s2); }
+    .panel-toggle { display: inline-flex; align-items: center; gap: var(--s1); padding: 0 var(--s2); }
+    .panel-toggle svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .panel-toggle .strip { fill: transparent; stroke: none; transition: fill 150ms ease-out; }
+    .panel-toggle[aria-expanded="true"] { color: var(--accent-ink); }
+    .panel-toggle[aria-expanded="true"] .strip { fill: currentColor; }
+    .theme-toggle { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+    .theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .theme-toggle .i-sun { display: none; }
+    :root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+    :root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .i-sun { display: block; }
+      :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+    }
+
+    .layout { display: grid; grid-template-columns: auto minmax(320px, 1fr) auto; min-height: 0; }
+    .content { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding-top: var(--s4); }
+    .panel { position: relative; display: flex; flex-direction: column; min-height: 0; overflow: hidden; background: var(--bg); color: var(--ink); font-size: var(--fs-panel); line-height: 1.6; }
+    .panel-left { grid-column: 1; border-right: 1px solid var(--line); }
+    .content { grid-column: 2; }
+    .panel-right { grid-column: 3; border-left: 1px solid var(--line); }
+    .panel-inner { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s4) var(--s4) var(--s6); }
+    :root { --scroll: #c9d0db; --scroll-hover: #9aa3b2; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --scroll: #3f414b; --scroll-hover: #5b5e6a; } }
+    :root[data-theme="dark"] { --scroll: #3f414b; --scroll-hover: #5b5e6a; }
+    .content::-webkit-scrollbar, .panel-inner::-webkit-scrollbar { width: 8px; }
+    :is(pre, .table-wrap, .katex-display)::-webkit-scrollbar { height: 8px; }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display)::-webkit-scrollbar-track { background: transparent; }
+    :is(.content, .panel-inner, .table-wrap, .katex-display)::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--bg); }
+    pre::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--surface); }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display)::-webkit-scrollbar-thumb:hover { background: var(--scroll-hover); }
+    @supports (scrollbar-color: auto) { :is(.content, .panel-inner, pre, .table-wrap, .katex-display) { scrollbar-width: thin; scrollbar-color: var(--scroll) transparent; } }
+    .panel-resize { display: none; }
+    .panel-head { display: flex; align-items: center; gap: var(--s2); min-height: 44px; margin-bottom: var(--s2); }
+    .panel-head h2 { flex: 1 1 0; min-width: 0; margin: 0; font-size: var(--fs-lead); line-height: 1.4; }
+    .panel-sub { margin: 0 0 var(--s4); font-weight: 700; line-height: 1.45; }
+    .panel-empty { margin: 0; color: var(--ink-2); }
+    .panel-label { display: block; margin: var(--s5) 0 var(--s2); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+
+    /* 진행 상태 */
+    .panel-meta { margin: 0 0 var(--s2); font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+    .panel-meta b { color: var(--ink); }
+    .progress { height: 4px; margin-bottom: var(--s3); border-radius: 2px; background: var(--line); overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+    .panel .toc-list a { margin: 0 calc(-1 * var(--s2)); padding: var(--s2); font-size: var(--fs-panel); }
+    .toc-mark { flex: none; display: block; width: 20px; height: 20px; color: var(--ink-2); }
+    .toc-mark svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .toc-mark.is-done { color: var(--accent-ink); }
+
+    /* 복습문제: 원문 · 힌트 · 풀이 */
+    .aid details:last-of-type { border-bottom: 1px solid var(--line); }
+    .aid details.original > summary { font-size: var(--fs-panel); }
+    .solved-btn { display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%; min-height: var(--tap); margin-top: var(--s5); padding: 0 var(--s4);
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 700 var(--fs-panel)/1.2 var(--font); cursor: pointer; }
+    .solved-btn svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .solved-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); }
+
+    /* 정리노트: 섹션 요약 */
+    .eq-list { list-style: none; margin: 0; padding: 0; }
+    .eq-list li { padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+    .eq-list li:first-child { padding-top: 0; }
+    .eq-name { display: block; font-size: var(--fs-small); font-weight: 600; color: var(--ink-2); }
+    .eq-list .katex-display { margin: var(--s1) 0 0; text-align: left; }
+    .eq-list .katex-display > .katex { text-align: left; }
+    .terms { margin: 0; }
+    .terms dt { font-weight: 700; margin-top: var(--s3); }
+    .terms dt:first-child { margin-top: 0; }
+    .terms dd { margin: var(--s1) 0 0; }
+    .flow { margin: 0; padding-left: 1.4em; }
+    .flow li { margin: var(--s2) 0; }
+
+    @media (hover: hover) { .solved-btn:hover { background: var(--surface); } }
+
+    /* 넓은 화면: 본문 옆에 붙는 패널 */
+    @media (min-width: 1024px) {
+      .layout { --l: var(--panel-l-user, var(--panel-l)); }
+      .layout[data-left="closed"] { --l: 0px; }
+      .panel-left { width: var(--l); }
+      /* 기본값: 왼쪽 패널과 본문 폭을 뺀 나머지를 오른쪽 패널이 차지 → 본문 옆 빈 여백이 생기지 않는다 */
+      .panel-right { width: var(--panel-r-user, clamp(var(--panel-r-min), calc(100vw - var(--l) - var(--measure) - var(--scrollbar)), var(--panel-r-max))); }
+      .panel-resize { display: block; position: absolute; top: 0; bottom: 0; z-index: 2; width: 12px; padding: 0; border: 0; background: transparent; cursor: col-resize; touch-action: none; }
+      .panel-left .panel-resize { right: 0; }
+      .panel-right .panel-resize { left: 0; }
+      .panel-resize::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: 0; transition: opacity 150ms ease-out; }
+      .panel-left .panel-resize::after { right: 0; }
+      .panel-right .panel-resize::after { left: 0; }
+      .panel-resize:focus-visible { outline: none; }
+      .panel-resize:focus-visible::after, .is-resizing .panel-resize:active::after { opacity: 1; }
+      @media (hover: hover) { .panel-resize:hover::after { opacity: 1; } }
+      body.is-resizing { cursor: col-resize; user-select: none; }
+      .layout[data-left="closed"] .panel-left, .layout[data-right="closed"] .panel-right { display: none; }
+      .panel.is-shown { animation: panel-fade var(--dur) var(--ease-out); }
+      .scrim, .panel-close { display: none; }
+    }
+    @keyframes panel-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* 좁은 화면: 가장자리에서 밀려 나오는 drawer */
+    @media (max-width: 1023.98px) {
+      .panel { position: fixed; top: 0; bottom: 0; z-index: 40; visibility: hidden;
+        transition: transform var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .panel-left { left: 0; width: min(var(--drawer-l), 88vw); transform: translateX(-100%); }
+      .panel-right { right: 0; width: min(var(--drawer-r), 88vw); transform: translateX(100%); }
+      .panel.is-open { visibility: visible; transform: none; transition: transform var(--dur) var(--ease-out); }
+      .panel-inner { padding-top: calc(var(--s3) + env(safe-area-inset-top)); padding-bottom: calc(var(--s6) + env(safe-area-inset-bottom)); }
+      .scrim { position: fixed; inset: 0; z-index: 35; background: var(--scrim); opacity: 0; visibility: hidden;
+        transition: opacity var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .scrim.is-on { opacity: 1; visibility: visible; transition: opacity var(--dur) var(--ease-out); }
+      html:not(.js) .panel-left { display: none; }
+    }
+    @media (max-width: 480px) { .panel-toggle { padding: 0 var(--s1); } }
+    html:not(.js) .panel-toggle, html:not(.js) .panel-right, html:not(.js) .scrim { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .panel.is-open, .scrim, .scrim.is-on, .progress > span, .panel-toggle .strip { transition: none; }
+      .panel.is-shown { animation: none; }
+      .panel-resize::after { transition: none; }
+    }
+    @media print {
+      body { display: block; height: auto; overflow: visible; }
+      .layout { display: block; }
+      .content { overflow: visible; }
+      .panel, .scrim { display: none !important; }
+    }
+  </style>
+</head>
+<body data-revision="fdc0cf61670724ff66f0" data-screens="article.card" data-panels="review" data-range="1102">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
+      <strong class="brand">복습문제</strong>
+      <a class="top-link" href="정리노트_1102_Tree.html">정리노트</a>
+      <button class="text-btn theme-toggle" id="theme-toggle" type="button" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="text-btn panel-toggle" id="toggle-right" type="button" aria-controls="panel-right" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="15" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span>풀이</span></button>
+    </div>
+    <div class="bar" aria-hidden="true"><span id="pager-bar"></span></div>
+  </header>
+  <div class="layout" data-left="open" data-right="closed">
+    <aside class="panel panel-left" id="panel-left" aria-labelledby="panel-left-title">
+      <div class="panel-resize" data-side="left" role="separator" aria-orientation="vertical" aria-controls="panel-left" aria-label="왼쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-left-title">문제 목록</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-meta">푼 문제 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+        <nav class="toc" aria-label="목차"><a href="#partB">A 기출</a><a href="#partD">B 교과서</a><a href="#partL">C 강의 예제</a></nav>
+      </div>
+    </aside>
+    <div class="content">
+  <main>
+    <div class="hero">
+      <h1>복습문제 12선 — 1102 수업 범위</h1>
+      <p>다른 기출 6개, 교과서 연습문제 4개, 강의 예제 기반 자체 출제 2개로 <b>이진 트리의 배열 표현</b>과 <b>네 가지 순회</b>, <b>순회로 계산하기</b>를 복습해요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.</p>
+    </div>
+    <section id="partB"><h2>A. 기출 문제</h2>
+<article class="card" id="p1" data-source="2018-mid-c024-q11">
+  <h3>P1. 8노드 이진 트리의 배열 표현과 세 순회</h3>
+  <div class="problem">
+    <p>다음 이진 트리로 물음에 답해 보세요.</p>
+    <figure class="figure"><svg id="fig-p1-tree" viewBox="0 0 424 246" role="img" aria-label="이진 트리: 루트 A, A의 왼쪽 B 오른쪽 F, B의 왼쪽 C 오른쪽 D, D의 오른쪽 E, F의 왼쪽 G, G의 왼쪽 H"><line class="fig-ink" x1="238" y1="47" x2="82" y2="75"/><line class="fig-ink" x1="238" y1="47" x2="394" y2="75"/><line class="fig-ink" x1="82" y1="109" x2="30" y2="137"/><line class="fig-ink" x1="82" y1="109" x2="134" y2="137"/><line class="fig-ink" x1="134" y1="171" x2="186" y2="199"/><line class="fig-ink" x1="394" y1="109" x2="342" y2="137"/><line class="fig-ink" x1="342" y1="171" x2="290" y2="199"/><circle class="fig-ink" cx="238" cy="30" r="17"/><text class="fig-text" x="238" y="35" text-anchor="middle" font-size="14">A</text><circle class="fig-ink" cx="82" cy="92" r="17"/><text class="fig-text" x="82" y="97" text-anchor="middle" font-size="14">B</text><circle class="fig-ink" cx="30" cy="154" r="17"/><text class="fig-text" x="30" y="159" text-anchor="middle" font-size="14">C</text><circle class="fig-ink" cx="134" cy="154" r="17"/><text class="fig-text" x="134" y="159" text-anchor="middle" font-size="14">D</text><circle class="fig-ink" cx="186" cy="216" r="17"/><text class="fig-text" x="186" y="221" text-anchor="middle" font-size="14">E</text><circle class="fig-ink" cx="394" cy="92" r="17"/><text class="fig-text" x="394" y="97" text-anchor="middle" font-size="14">F</text><circle class="fig-ink" cx="342" cy="154" r="17"/><text class="fig-text" x="342" y="159" text-anchor="middle" font-size="14">G</text><circle class="fig-ink" cx="290" cy="216" r="17"/><text class="fig-text" x="290" y="221" text-anchor="middle" font-size="14">H</text></svg><figcaption>루트는 A예요. D는 오른쪽 자식 E만, F와 G는 왼쪽 자식만 있어요.</figcaption></figure>
+    <ol>
+      <li>(1) 위의 트리를 1차원 배열로 표현해 보세요. 배열 칸은 아래처럼 0~19번이에요.
+<div class="table-wrap"><table><tr><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table></div></li>
+      <li>(2) 위의 트리를 전위 순회한 결과를 써 보세요.</li>
+      <li>(3) 위의 트리를 후위 순회한 결과를 써 보세요.</li>
+      <li>(4) 위의 트리를 중위 순회한 결과를 써 보세요.</li>
+    </ol>
+  </div>
+  <details class="original"><summary>기출 원문 보기</summary>
+    <p>2018 중간 11번 · 8점 · 출제자 미상</p>
+    <blockquote>"다음의 이진트리를 이용한 문제들에 대해서 답을 작성하시오. [8 points]"</blockquote>
+    <p>(그림은 문제의 트리와 같아요: A → B, F / B → C, D / D → 오른쪽 E / F → 왼쪽 G / G → 왼쪽 H)</p>
+    <blockquote>"(1) 위의 트리를 1차원 배열로 표현하시오. [2 points]"</blockquote>
+    <p>(인덱스 0~19의 빈 1차원 배열 칸이 있어요.)</p>
+    <blockquote>"(2) 위의 트리를 전위 순회한 결과를 쓰시오. [2 points]<br>(3) 위의 트리를 후위 순회한 결과를 쓰시오. [2 points]<br>(4) 위의 트리를 중위 순회한 결과를 쓰시오. [2 points]"</blockquote>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>배열은 0번을 비우고 루트를 1번에 둬요. i번 노드의 왼쪽 자식은 2i번, 오른쪽 자식은 2i+1번이에요. 순회는 V(루트)가 어디에 오는지만 기억하면 돼요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>(1) 0번은 비우고 루트 A를 1번에 둬요. $i$번 노드의 왼쪽 자식은 $2i$번, 오른쪽 자식은 $2i+1$번이에요.</li>
+      <li>A(1) → 왼쪽 B는 2, 오른쪽 F는 3이에요. B(2) → C는 4, D는 5예요. F(3) → 왼쪽 G는 6, 오른쪽 7은 빈칸이에요.</li>
+      <li>D(5) → 왼쪽 10은 빈칸, 오른쪽 E는 11이에요. G(6) → 왼쪽 H는 12, 오른쪽 13은 빈칸이에요. C(4)는 자식이 없어 8, 9가 빈칸이에요.</li>
+      <li>그래서 [1]=A, [2]=B, [3]=F, [4]=C, [5]=D, [6]=G, [11]=E, [12]=H이고 나머지는 빈칸이에요. 원본 모범답안은 [12]=F로 적었지만, [12]는 G([6])의 왼쪽 자식 자리라 H가 들어가요(F는 이미 [3]에 있어요).</li>
+      <li>(2) 전위 순회(VLR)는 루트를 먼저 찍어요. A → 왼쪽 B 서브트리(B, C, D, E) → 오른쪽 F 서브트리(F, G, H)라서 A, B, C, D, E, F, G, H예요.</li>
+      <li>(3) 후위 순회(LRV)는 루트를 맨 끝에 찍어요. B 서브트리는 C, E, D, B, F 서브트리는 H, G, F, 마지막에 A라서 C, E, D, B, H, G, F, A예요.</li>
+      <li>(4) 중위 순회(LVR)는 루트를 가운데 찍어요. B 서브트리는 C, B, D, E, 그다음 A, F 서브트리는 H, G, F라서 C, B, D, E, A, H, G, F예요.</li>
+      <li>수업과의 연결: 1102 수업의 배열 표현법(0번을 비우고 왼쪽 $2i$, 오른쪽 $2i+1$, 빈 자리는 빈칸)과 VLR·LRV·LVR 순서를 그대로 써요.</li>
+    </ol>
+    <figure class="figure"><svg id="fig-p1-index" viewBox="0 0 464 246" role="img" aria-label="같은 트리의 노드 옆에 배열 칸 번호 1, 2, 3, 4, 5, 6, 11, 12를 적은 그림"><line class="fig-ink" x1="258" y1="47" x2="102" y2="75"/><line class="fig-ink" x1="258" y1="47" x2="414" y2="75"/><line class="fig-ink" x1="102" y1="109" x2="50" y2="137"/><line class="fig-ink" x1="102" y1="109" x2="154" y2="137"/><line class="fig-ink" x1="154" y1="171" x2="206" y2="199"/><line class="fig-ink" x1="414" y1="109" x2="362" y2="137"/><line class="fig-ink" x1="362" y1="171" x2="310" y2="199"/><circle class="fig-ink" cx="258" cy="30" r="17"/><text class="fig-text" x="258" y="35" text-anchor="middle" font-size="14">A</text><text class="fig-muted" x="237" y="15" text-anchor="end" font-size="12">1</text><circle class="fig-ink" cx="102" cy="92" r="17"/><text class="fig-text" x="102" y="97" text-anchor="middle" font-size="14">B</text><text class="fig-muted" x="81" y="77" text-anchor="end" font-size="12">2</text><circle class="fig-ink" cx="50" cy="154" r="17"/><text class="fig-text" x="50" y="159" text-anchor="middle" font-size="14">C</text><text class="fig-muted" x="29" y="139" text-anchor="end" font-size="12">4</text><circle class="fig-ink" cx="154" cy="154" r="17"/><text class="fig-text" x="154" y="159" text-anchor="middle" font-size="14">D</text><text class="fig-muted" x="133" y="139" text-anchor="end" font-size="12">5</text><circle class="fig-ink" cx="206" cy="216" r="17"/><text class="fig-text" x="206" y="221" text-anchor="middle" font-size="14">E</text><text class="fig-muted" x="185" y="201" text-anchor="end" font-size="12">11</text><circle class="fig-ink" cx="414" cy="92" r="17"/><text class="fig-text" x="414" y="97" text-anchor="middle" font-size="14">F</text><text class="fig-muted" x="393" y="77" text-anchor="end" font-size="12">3</text><circle class="fig-ink" cx="362" cy="154" r="17"/><text class="fig-text" x="362" y="159" text-anchor="middle" font-size="14">G</text><text class="fig-muted" x="341" y="139" text-anchor="end" font-size="12">6</text><circle class="fig-ink" cx="310" cy="216" r="17"/><text class="fig-text" x="310" y="221" text-anchor="middle" font-size="14">H</text><text class="fig-muted" x="289" y="201" text-anchor="end" font-size="12">12</text></svg><figcaption>노드 왼쪽 위의 작은 숫자가 배열 칸 번호예요.</figcaption></figure>
+    <p class="answer">정답: (1) [1]=A, [2]=B, [3]=F, [4]=C, [5]=D, [6]=G, [11]=E, [12]=H (2) A, B, C, D, E, F, G, H (3) C, E, D, B, H, G, F, A (4) C, B, D, E, A, H, G, F</p>
+  </details>
+</article>
+<article class="card" id="p2" data-source="2021-mock1-q6">
+  <h3>P2. 후위·중위 순회로 12노드 트리 그리기</h3>
+  <div class="problem">
+    <p>아래의 후위순회와 중위순회 결과를 만들 수 있는 이진트리 하나를 그려 보세요.</p>
+    <p>후위순회: F, D, E, G, R, T, S, N, P, M, K, H<br>중위순회: D, F, G, E, H, R, T, N, S, M, P, K</p>
+  </div>
+  <details class="original"><summary>기출 원문 보기</summary>
+    <p>2021 기말 모의 1회 6번 · 10점 · 출제자 미상</p>
+    <blockquote>"아래의 후위순회와 중위순회 결과를 생성할 수 있는 하나의 이진트리를 그리시오. (10점) [2016-1 기출]<br><br>후위순회: F, D, E, G, R, T, S, N, P, M, K, H<br>중위순회: D, F, G, E, H, R, T, N, S, M, P, K"</blockquote>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>후위순회의 맨 끝이 루트예요. 그 루트를 중위순회에서 찾으면 왼쪽 무리와 오른쪽 무리로 나뉘어요. 이걸 무리마다 되풀이해요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>후위순회(LRV)의 맨 끝 H가 루트예요. 중위순회에서 H를 찾으면 왼쪽은 D, F, G, E, 오른쪽은 R, T, N, S, M, P, K예요.</li>
+      <li>왼쪽 무리의 후위는 F, D, E, G라 루트는 G예요. 중위 D, F | G | E로 나뉘어 G의 왼쪽은 {D, F}, 오른쪽은 E예요.</li>
+      <li>{D, F}의 후위는 F, D라 루트는 D예요. 중위가 D, F라 F는 D의 오른쪽 자식이에요.</li>
+      <li>오른쪽 무리의 후위는 R, T, S, N, P, M, K라 루트는 K예요. 중위에서 K가 맨 끝이니 K의 오른쪽은 비고 왼쪽이 R, T, N, S, M, P예요.</li>
+      <li>후위 R, T, S, N, P, M → 루트 M이에요. 중위 R, T, N, S | M | P라 P는 M의 오른쪽이에요.</li>
+      <li>후위 R, T, S, N → 루트 N이에요. 중위 R, T | N | S라 S는 N의 오른쪽이에요. 남은 R, T는 후위 R, T라 루트 T, 중위 R, T라 R은 T의 왼쪽이에요.</li>
+      <li>그린 트리를 층마다 왼쪽부터 읽으면(레벨 순서) H G K D E M F N P T S R이에요. 다시 후위로 돌리면 F, D, E, G, R, T, S, N, P, M, K, H가 나와 맞아요.</li>
+      <li>수업과의 연결: 1102 수업의 후위 순회 LRV(루트가 맨 끝)와 중위 순회 LVR(루트가 가운데)을 거꾸로 써서 트리를 되살려요.</li>
+    </ol>
+    <figure class="figure"><svg id="fig-p2-answer" viewBox="0 0 632 370" role="img" aria-label="답 트리: 루트 H, H의 왼쪽 G 오른쪽 K, G의 왼쪽 D 오른쪽 E, D의 오른쪽 F, K의 왼쪽 M, M의 왼쪽 N 오른쪽 P, N의 왼쪽 T 오른쪽 S, T의 왼쪽 R"><line class="fig-ink" x1="238" y1="47" x2="134" y2="75"/><line class="fig-ink" x1="238" y1="47" x2="602" y2="75"/><line class="fig-ink" x1="134" y1="109" x2="30" y2="137"/><line class="fig-ink" x1="134" y1="109" x2="186" y2="137"/><line class="fig-ink" x1="30" y1="171" x2="82" y2="199"/><line class="fig-ink" x1="602" y1="109" x2="498" y2="137"/><line class="fig-ink" x1="498" y1="171" x2="394" y2="199"/><line class="fig-ink" x1="498" y1="171" x2="550" y2="199"/><line class="fig-ink" x1="394" y1="233" x2="342" y2="261"/><line class="fig-ink" x1="394" y1="233" x2="446" y2="261"/><line class="fig-ink" x1="342" y1="295" x2="290" y2="323"/><circle class="fig-ink" cx="238" cy="30" r="17"/><text class="fig-text" x="238" y="35" text-anchor="middle" font-size="14">H</text><circle class="fig-ink" cx="134" cy="92" r="17"/><text class="fig-text" x="134" y="97" text-anchor="middle" font-size="14">G</text><circle class="fig-ink" cx="30" cy="154" r="17"/><text class="fig-text" x="30" y="159" text-anchor="middle" font-size="14">D</text><circle class="fig-ink" cx="82" cy="216" r="17"/><text class="fig-text" x="82" y="221" text-anchor="middle" font-size="14">F</text><circle class="fig-ink" cx="186" cy="154" r="17"/><text class="fig-text" x="186" y="159" text-anchor="middle" font-size="14">E</text><circle class="fig-ink" cx="602" cy="92" r="17"/><text class="fig-text" x="602" y="97" text-anchor="middle" font-size="14">K</text><circle class="fig-ink" cx="498" cy="154" r="17"/><text class="fig-text" x="498" y="159" text-anchor="middle" font-size="14">M</text><circle class="fig-ink" cx="394" cy="216" r="17"/><text class="fig-text" x="394" y="221" text-anchor="middle" font-size="14">N</text><circle class="fig-ink" cx="342" cy="278" r="17"/><text class="fig-text" x="342" y="283" text-anchor="middle" font-size="14">T</text><circle class="fig-ink" cx="290" cy="340" r="17"/><text class="fig-text" x="290" y="345" text-anchor="middle" font-size="14">R</text><circle class="fig-ink" cx="446" cy="278" r="17"/><text class="fig-text" x="446" y="283" text-anchor="middle" font-size="14">S</text><circle class="fig-ink" cx="550" cy="216" r="17"/><text class="fig-text" x="550" y="221" text-anchor="middle" font-size="14">P</text></svg><figcaption>답 트리예요. 레벨 순서는 H / G K / D E M / F N P / T S / R이에요.</figcaption></figure>
+    <p class="answer">정답: 루트 H, 레벨 순서 H G K D E M F N P T S R</p>
+  </details>
+</article>
+<article class="card" id="p3" data-source="2019-mid-q11">
+  <h3>P3. 중위·후위 순회로 만든 트리를 배열로</h3>
+  <div class="problem">
+    <p>아래의 중위순회와 후위순회 결과를 만들 수 있는 이진트리 하나를 배열로 표현해 보세요. 트리는 그리지 않고 배열로만 나타내면 돼요.</p>
+    <p>중위순회 : G, F, H, E, K, C, B, D, O, M, R, P, T<br>후위순회 : G, H, P, K, E, C, O, R, T, P, M, D, B</p>
+    <p>(후위순회의 셋째 P는 F의 오기로 보고 풀어요.)</p>
+<div class="table-wrap"><table><tr><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th>21</th><th>22</th><th>23</th><th>24</th><th>25</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><th>31</th><th>32</th><th>33</th><th>34</th><th>35</th><th>36</th><th>37</th><th>38</th><th>39</th><th>40</th></tr><tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table></div>
+  </div>
+  <details class="original"><summary>기출 원문 보기</summary>
+    <p>2019 중간 11번 · 13점 · 출제자 미상</p>
+    <blockquote>"아래의 중위순회와 후위순회 결과를 생성할 수 있는 하나의 이진트리를 배열로 표현하시오.<br>(트리를 그릴 필요가 없으며 배열로 표현만 하면 됨) (13점)<br><br>중위순회 : G, F, H, E, K, C, B, D, O, M, R, P, T<br>후위순회 : G, H, P, K, E, C, O, R, T, P, M, D, B"</blockquote>
+    <p>(이어서 1~40번 빈 칸 배열이 있어요. 문제의 표와 같아요.)</p>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>먼저 두 순회에 같은 글자가 들어 있는지 맞춰 봐요. 그다음 후위의 맨 끝을 루트로 잡아 중위를 나누고, 루트는 1번 칸, i번의 왼쪽 자식은 2i번, 오른쪽 자식은 2i+1번에 넣어요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>오기 확인: 중위순회에는 서로 다른 글자 13개가 있고 F도 있어요. 그런데 후위순회에는 P가 두 번 나오고 F가 없어요. 두 순회는 같은 노드를 담아야 하니 P 하나는 F의 오기예요. 셋째 자리를 F로 읽으면 앞의 G, H, F가 중위 G, F, H와 맞는 작은 서브트리(F 아래 G, H)가 되고, 열째 P는 R, T 바로 뒤라 중위 R, P, T와 맞아요. 그래서 후위를 G, H, F, K, E, C, O, R, T, P, M, D, B로 읽어요.</li>
+      <li>후위의 맨 끝 B가 루트예요. 중위에서 B 왼쪽은 G, F, H, E, K, C, 오른쪽은 D, O, M, R, P, T예요.</li>
+      <li>왼쪽: 후위 G, H, F, K, E, C → 루트 C예요. 중위에서 C가 맨 끝이라 C는 왼쪽 자식만 있어요. 후위 G, H, F, K, E → 루트 E, 중위 G, F, H | E | K예요. 후위 G, H, F → 루트 F, 왼쪽 G, 오른쪽 H예요.</li>
+      <li>오른쪽: 후위 O, R, T, P, M, D → 루트 D예요. 중위에서 D가 맨 앞이라 D는 오른쪽 자식만 있어요. 후위 O, R, T, P, M → 루트 M, 중위 O | M | R, P, T예요. 후위 R, T, P → 루트 P, 왼쪽 R, 오른쪽 T예요.</li>
+      <li>배열에 넣어요. 루트 B는 1번이에요. B(1) → C 2, D 3 / C(2) → 왼쪽 E 4 / D(3) → 오른쪽 M 7 / E(4) → F 8, K 9 / M(7) → O 14, P 15 / F(8) → G 16, H 17 / P(15) → R 30, T 31</li>
+      <li>나머지 5, 6, 10~13, 18~29, 32~40번은 빈칸이에요. 경사진 가지(C, D 쪽) 때문에 노드는 13개인데 31번 칸까지 써요.</li>
+      <li>수업과의 연결: 1102 수업에서 배열만 보고도 트리를 "그릴 수 있어야" 한다고 했어요. 여기서는 거꾸로 되살린 트리를 배열 칸 번호(왼쪽 $2i$, 오른쪽 $2i+1$)로 옮겨요.</li>
+    </ol>
+    <figure class="figure"><svg id="fig-p3-answer" viewBox="0 0 724 308" role="img" aria-label="되살린 트리와 배열 칸 번호: B 1, C 2, D 3, E 4, M 7, F 8, K 9, O 14, P 15, G 16, H 17, R 30, T 31"><line class="fig-ink" x1="362" y1="47" x2="310" y2="75"/><line class="fig-ink" x1="362" y1="47" x2="414" y2="75"/><line class="fig-ink" x1="310" y1="109" x2="206" y2="137"/><line class="fig-ink" x1="206" y1="171" x2="102" y2="199"/><line class="fig-ink" x1="206" y1="171" x2="258" y2="199"/><line class="fig-ink" x1="102" y1="233" x2="50" y2="261"/><line class="fig-ink" x1="102" y1="233" x2="154" y2="261"/><line class="fig-ink" x1="414" y1="109" x2="518" y2="137"/><line class="fig-ink" x1="518" y1="171" x2="466" y2="199"/><line class="fig-ink" x1="518" y1="171" x2="622" y2="199"/><line class="fig-ink" x1="622" y1="233" x2="570" y2="261"/><line class="fig-ink" x1="622" y1="233" x2="674" y2="261"/><circle class="fig-ink" cx="362" cy="30" r="17"/><text class="fig-text" x="362" y="35" text-anchor="middle" font-size="14">B</text><text class="fig-muted" x="341" y="15" text-anchor="end" font-size="12">1</text><circle class="fig-ink" cx="310" cy="92" r="17"/><text class="fig-text" x="310" y="97" text-anchor="middle" font-size="14">C</text><text class="fig-muted" x="289" y="77" text-anchor="end" font-size="12">2</text><circle class="fig-ink" cx="206" cy="154" r="17"/><text class="fig-text" x="206" y="159" text-anchor="middle" font-size="14">E</text><text class="fig-muted" x="185" y="139" text-anchor="end" font-size="12">4</text><circle class="fig-ink" cx="102" cy="216" r="17"/><text class="fig-text" x="102" y="221" text-anchor="middle" font-size="14">F</text><text class="fig-muted" x="81" y="201" text-anchor="end" font-size="12">8</text><circle class="fig-ink" cx="50" cy="278" r="17"/><text class="fig-text" x="50" y="283" text-anchor="middle" font-size="14">G</text><text class="fig-muted" x="29" y="263" text-anchor="end" font-size="12">16</text><circle class="fig-ink" cx="154" cy="278" r="17"/><text class="fig-text" x="154" y="283" text-anchor="middle" font-size="14">H</text><text class="fig-muted" x="133" y="263" text-anchor="end" font-size="12">17</text><circle class="fig-ink" cx="258" cy="216" r="17"/><text class="fig-text" x="258" y="221" text-anchor="middle" font-size="14">K</text><text class="fig-muted" x="237" y="201" text-anchor="end" font-size="12">9</text><circle class="fig-ink" cx="414" cy="92" r="17"/><text class="fig-text" x="414" y="97" text-anchor="middle" font-size="14">D</text><text class="fig-muted" x="393" y="77" text-anchor="end" font-size="12">3</text><circle class="fig-ink" cx="518" cy="154" r="17"/><text class="fig-text" x="518" y="159" text-anchor="middle" font-size="14">M</text><text class="fig-muted" x="497" y="139" text-anchor="end" font-size="12">7</text><circle class="fig-ink" cx="466" cy="216" r="17"/><text class="fig-text" x="466" y="221" text-anchor="middle" font-size="14">O</text><text class="fig-muted" x="445" y="201" text-anchor="end" font-size="12">14</text><circle class="fig-ink" cx="622" cy="216" r="17"/><text class="fig-text" x="622" y="221" text-anchor="middle" font-size="14">P</text><text class="fig-muted" x="601" y="201" text-anchor="end" font-size="12">15</text><circle class="fig-ink" cx="570" cy="278" r="17"/><text class="fig-text" x="570" y="283" text-anchor="middle" font-size="14">R</text><text class="fig-muted" x="549" y="263" text-anchor="end" font-size="12">30</text><circle class="fig-ink" cx="674" cy="278" r="17"/><text class="fig-text" x="674" y="283" text-anchor="middle" font-size="14">T</text><text class="fig-muted" x="653" y="263" text-anchor="end" font-size="12">31</text></svg><figcaption>되살린 트리예요. 노드 왼쪽 위의 작은 숫자가 배열 칸 번호예요.</figcaption></figure>
+    <p class="answer">정답: [1]=B, [2]=C, [3]=D, [4]=E, [7]=M, [8]=F, [9]=K, [14]=O, [15]=P, [16]=G, [17]=H, [30]=R, [31]=T</p>
+  </details>
+</article>
+<article class="card" id="p4" data-source="2018-mid-c024-q12">
+  <h3>P4. 중위·후위 순회로 8노드 트리 그리기</h3>
+  <div class="problem">
+    <p>다음 중위순회와 후위순회 결과를 만들 수 있는 이진트리를 그려 보세요.</p>
+    <p>중위순회: D, B, A, E, G, C, F, H<br>후위순회: D, B, G, E, H, F, C, A</p>
+    <p>(원문 머리말의 '전위순회'는 주어진 두 줄에 맞춰 '후위순회'로 보고 풀어요.)</p>
+  </div>
+  <details class="original"><summary>기출 원문 보기</summary>
+    <p>2018 중간 12번 · 7점 · 출제자 미상</p>
+    <blockquote>"다음의 전위순회와 중위순회 결과를 생성할 수 있는 이진트리를 그리시오. [7 points]<br>중위순회: D, B, A, E, G, C, F, H<br>후위순회: D, B, G, E, H, F, C, A"</blockquote>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>후위순회의 맨 끝이 루트예요. 중위순회에서 그 루트의 왼쪽과 오른쪽을 나눠 같은 일을 되풀이해요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>원문 머리말은 "전위순회와 중위순회"라고 적었지만, 실제로 주어진 두 줄은 중위순회와 후위순회예요. 주어진 대로 중위·후위로 풀어요.</li>
+      <li>후위의 맨 끝 A가 루트예요. 중위에서 A 왼쪽은 D, B, 오른쪽은 E, G, C, F, H예요.</li>
+      <li>왼쪽: 후위 D, B → 루트 B, 중위 D, B라 D는 B의 왼쪽 자식이에요.</li>
+      <li>오른쪽: 후위 G, E, H, F, C → 루트 C예요. 중위 E, G | C | F, H로 나뉘어요.</li>
+      <li>C의 왼쪽: 후위 G, E → 루트 E, 중위 E, G라 G는 E의 오른쪽이에요. C의 오른쪽: 후위 H, F → 루트 F, 중위 F, H라 H는 F의 오른쪽이에요.</li>
+      <li>층마다 왼쪽부터 읽으면(레벨 순서) A B C D E F G H예요. 다시 중위로 돌리면 D, B, A, E, G, C, F, H가 나와 맞아요.</li>
+      <li>수업과의 연결: 1102 수업의 중위 순회 LVR(루트가 가운데)과 후위 순회 LRV(루트가 맨 끝)를 거꾸로 써요.</li>
+    </ol>
+    <figure class="figure"><svg id="fig-p4-answer" viewBox="0 0 424 246" role="img" aria-label="답 트리: 루트 A, A의 왼쪽 B 오른쪽 C, B의 왼쪽 D, C의 왼쪽 E 오른쪽 F, E의 오른쪽 G, F의 오른쪽 H"><line class="fig-ink" x1="134" y1="47" x2="82" y2="75"/><line class="fig-ink" x1="134" y1="47" x2="290" y2="75"/><line class="fig-ink" x1="82" y1="109" x2="30" y2="137"/><line class="fig-ink" x1="290" y1="109" x2="186" y2="137"/><line class="fig-ink" x1="290" y1="109" x2="342" y2="137"/><line class="fig-ink" x1="186" y1="171" x2="238" y2="199"/><line class="fig-ink" x1="342" y1="171" x2="394" y2="199"/><circle class="fig-ink" cx="134" cy="30" r="17"/><text class="fig-text" x="134" y="35" text-anchor="middle" font-size="14">A</text><circle class="fig-ink" cx="82" cy="92" r="17"/><text class="fig-text" x="82" y="97" text-anchor="middle" font-size="14">B</text><circle class="fig-ink" cx="30" cy="154" r="17"/><text class="fig-text" x="30" y="159" text-anchor="middle" font-size="14">D</text><circle class="fig-ink" cx="290" cy="92" r="17"/><text class="fig-text" x="290" y="97" text-anchor="middle" font-size="14">C</text><circle class="fig-ink" cx="186" cy="154" r="17"/><text class="fig-text" x="186" y="159" text-anchor="middle" font-size="14">E</text><circle class="fig-ink" cx="238" cy="216" r="17"/><text class="fig-text" x="238" y="221" text-anchor="middle" font-size="14">G</text><circle class="fig-ink" cx="342" cy="154" r="17"/><text class="fig-text" x="342" y="159" text-anchor="middle" font-size="14">F</text><circle class="fig-ink" cx="394" cy="216" r="17"/><text class="fig-text" x="394" y="221" text-anchor="middle" font-size="14">H</text></svg><figcaption>답 트리예요. 레벨 순서는 A / B C / D E F / G H예요.</figcaption></figure>
+    <p class="answer">정답: 루트 A, 레벨 순서 A B C D E F G H</p>
+  </details>
+</article>
+<article class="card" id="p5" data-source="2018-mid-c024-q3">
+  <h3>P5. 폴더 용량 계산에 맞는 순회</h3>
+  <div class="problem">
+    <p>컴퓨터 디렉토리 폴더의 용량 계산에 가장 알맞은 이진트리 순회는 (          )예요. 빈칸을 채워 보세요.</p>
+  </div>
+  <details class="original"><summary>기출 원문 보기</summary>
+    <p>2018 중간 3번 · 2점 · 출제자 미상</p>
+    <blockquote>"컴퓨터 디렉토리 폴더의 용량 계산에 가장 적합한 이진트리순회는 (          ) 이다.[2 points]"</blockquote>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>폴더 용량은 그 안의 하위 폴더 용량을 다 알아야 구할 수 있어요. 자식과 부모 중 누구를 먼저 계산해야 할까요?</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>폴더 하나의 용량은 하위 폴더들의 용량을 모두 더한 값에 자기 파일 크기를 더한 거예요.</li>
+      <li>그래서 하위 폴더(왼쪽·오른쪽 서브트리)를 먼저 다 계산하고, 마지막에 지금 폴더(루트)를 계산해야 해요.</li>
+      <li>자식을 먼저, 루트를 맨 끝에 방문하는 순서는 LRV, 곧 후위 순회예요.</li>
+      <li>수업과의 연결: 1102 수업에서 후위 순회 LRV의 예로 디렉토리 용량 계산을 들었어요.</li>
+    </ol>
+    <p class="answer">정답: 후위 순회</p>
+  </details>
+</article>
+<article class="card" id="p6" data-source="2017-mid-c050-q5">
+  <h3>P6. 루트를 먼저 방문하는 순회</h3>
+  <div class="problem">
+    <p>트리의 모든 노드를 체계적으로 방문하는 순회에서 자손 노드들보다 루트 노드를 먼저 방문하는 순회를 (          )라고 해요. 빈칸을 채워 보세요.</p>
+  </div>
+  <details class="original"><summary>기출 원문 보기</summary>
+    <p>2017 중간 5번 · 2점 · 출제자 미상</p>
+    <blockquote>"5. 트리의 모든 노드들을 체계적으로 방문하는 순회에서 자손노드들 보다 루트노드를 먼저 방문하는 순회를 (          )라고 한다. [2 points]"</blockquote>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>세 순회는 루트(V)를 언제 방문하는지로 이름이 갈려요. 앞(전), 가운데(중), 뒤(후)를 떠올려 보세요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>세 가지 표준 순회는 왼쪽(L)을 오른쪽(R)보다 먼저 돌고, 루트(V)의 자리만 달라요.</li>
+      <li>VLR은 루트를 맨 앞에, LVR은 가운데에, LRV는 맨 뒤에 방문해요.</li>
+      <li>자손보다 루트를 먼저 방문하는 VLR이 전위 순회(preorder traversal)예요.</li>
+      <li>수업과의 연결: 1102 수업에서 전위 순회를 VLR로 정리하고, 책 목차 트리를 출력하는 예로 따라갔어요.</li>
+    </ol>
+    <p class="answer">정답: 전위 순회</p>
+  </details>
+</article>
+    </section>
+    <section id="partD"><h2>B. 교과서 연습문제</h2>
+<article class="card" id="p7" data-source="textbook-ch08-q01" data-source-kind="textbook">
+  <h3>P7. 6노드 트리의 중위 순회</h3>
+  <div class="problem">
+    <p>다음 트리를 중위 순회한 결과는 무엇인가요?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: A, B, C, D, E, F" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: A, B, C, D, E, F</title><g id="p7-prob-1-ch08-q01-tree-edge-A-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p7-prob-1-ch08-q01-tree-edge-A-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p7-prob-1-ch08-q01-tree-edge-B-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p7-prob-1-ch08-q01-tree-edge-C-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p7-prob-1-ch08-q01-tree-edge-C-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p7-prob-1-ch08-q01-tree-A"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p7-prob-1-ch08-q01-tree-B"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p7-prob-1-ch08-q01-tree-C"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p7-prob-1-ch08-q01-tree-D"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p7-prob-1-ch08-q01-tree-E"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p7-prob-1-ch08-q01-tree-F"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g></svg></div><figcaption>원문의 트리: A, B, C, D, E, F · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>A B D C E F</p></div><div class="option"><p>(②)</p><p>A B C D E F</p></div><div class="option"><p>(③)</p><p>D B E C F A</p></div><div class="option"><p>(④)</p><p>D B A E C F</p></div></div>
+  </div>
+  <details class="original"><summary>교과서 원문 보기</summary>
+    <p>교과서 8장 트리 01번 · 316쪽</p>
+    <p>다음 트리에 대한 중위 순회 결과는? [정보처리기사 기출문제]</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: A, B, C, D, E, F" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: A, B, C, D, E, F</title><g id="p7-orig-1-ch08-q01-tree-edge-A-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p7-orig-1-ch08-q01-tree-edge-A-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p7-orig-1-ch08-q01-tree-edge-B-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p7-orig-1-ch08-q01-tree-edge-C-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p7-orig-1-ch08-q01-tree-edge-C-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p7-orig-1-ch08-q01-tree-A"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p7-orig-1-ch08-q01-tree-B"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p7-orig-1-ch08-q01-tree-C"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p7-orig-1-ch08-q01-tree-D"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p7-orig-1-ch08-q01-tree-E"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p7-orig-1-ch08-q01-tree-F"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g></svg></div><figcaption>원문의 트리: A, B, C, D, E, F · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>A B D C E F</p></div><div class="option"><p>(②)</p><p>A B C D E F</p></div><div class="option"><p>(③)</p><p>D B E C F A</p></div><div class="option"><p>(④)</p><p>D B A E C F</p></div></div>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>중위 순회는 LVR이에요. 왼쪽 서브트리를 다 돈 다음에 루트를 찍고, 그다음 오른쪽 서브트리를 돌아요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>트리 모양을 적어요. A → B, C / B → 왼쪽 D / C → E, F</li>
+      <li>A의 왼쪽 서브트리(B 아래)를 LVR로 돌면 D, B예요. B는 오른쪽 자식이 없어요.</li>
+      <li>그다음 루트 A를 찍어요.</li>
+      <li>A의 오른쪽 서브트리(C 아래)를 LVR로 돌면 E, C, F예요.</li>
+      <li>이어 붙이면 D B A E C F라서 ④예요. ①은 전위 순회(VLR), ②는 층마다 왼쪽부터 읽은 순서예요.</li>
+      <li>수업과의 연결: 1102 수업에서 중위 순회를 LVR, 곧 "레프트가 우선"하고 루트를 가운데 찍는 순서로 정리했어요.</li>
+    </ol>
+    <p class="answer">정답: ④ D B A E C F</p>
+  </details>
+</article>
+<article class="card" id="p8" data-source="textbook-ch08-q02" data-source-kind="textbook">
+  <h3>P8. 전위 순회의 다섯 번째 노드</h3>
+  <div class="problem">
+    <p>다음 트리를 전위 순회로 돌 때 다섯 번째로 방문하는 노드는 무엇인가요?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: A, B, C, D, E, F, G, H" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: A, B, C, D, E, F, G, H</title><g id="p8-prob-1-ch08-q02-tree-edge-A-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p8-prob-1-ch08-q02-tree-edge-A-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p8-prob-1-ch08-q02-tree-edge-B-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p8-prob-1-ch08-q02-tree-edge-C-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p8-prob-1-ch08-q02-tree-edge-C-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p8-prob-1-ch08-q02-tree-edge-E-left"><line x1="500.0" y1="215" x2="450.0" y2="300" stroke="#26394a" stroke-width="2" /></g><g id="p8-prob-1-ch08-q02-tree-edge-E-right"><line x1="500.0" y1="215" x2="550.0" y2="300" stroke="#26394a" stroke-width="2" /></g><g id="p8-prob-1-ch08-q02-tree-A"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p8-prob-1-ch08-q02-tree-B"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p8-prob-1-ch08-q02-tree-C"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p8-prob-1-ch08-q02-tree-D"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p8-prob-1-ch08-q02-tree-E"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p8-prob-1-ch08-q02-tree-F"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g><g id="p8-prob-1-ch08-q02-tree-G"><circle cx="450.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="450.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">G</text></g><g id="p8-prob-1-ch08-q02-tree-H"><circle cx="550.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="550.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">H</text></g></svg></div><figcaption>원문의 트리: A, B, C, D, E, F, G, H · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>C</p></div><div class="option"><p>(②)</p><p>E</p></div><div class="option"><p>(③)</p><p>G</p></div><div class="option"><p>(④)</p><p>H</p></div></div>
+  </div>
+  <details class="original"><summary>교과서 원문 보기</summary>
+    <p>교과서 8장 트리 02번 · 316쪽</p>
+    <p>다음 트리를 전위 순회로 운행할 경우 다섯 번째로 탐색되는 것은? [정보처리기사 기출문제]</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: A, B, C, D, E, F, G, H" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: A, B, C, D, E, F, G, H</title><g id="p8-orig-1-ch08-q02-tree-edge-A-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p8-orig-1-ch08-q02-tree-edge-A-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p8-orig-1-ch08-q02-tree-edge-B-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p8-orig-1-ch08-q02-tree-edge-C-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p8-orig-1-ch08-q02-tree-edge-C-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p8-orig-1-ch08-q02-tree-edge-E-left"><line x1="500.0" y1="215" x2="450.0" y2="300" stroke="#26394a" stroke-width="2" /></g><g id="p8-orig-1-ch08-q02-tree-edge-E-right"><line x1="500.0" y1="215" x2="550.0" y2="300" stroke="#26394a" stroke-width="2" /></g><g id="p8-orig-1-ch08-q02-tree-A"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p8-orig-1-ch08-q02-tree-B"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p8-orig-1-ch08-q02-tree-C"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p8-orig-1-ch08-q02-tree-D"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p8-orig-1-ch08-q02-tree-E"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p8-orig-1-ch08-q02-tree-F"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g><g id="p8-orig-1-ch08-q02-tree-G"><circle cx="450.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="450.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">G</text></g><g id="p8-orig-1-ch08-q02-tree-H"><circle cx="550.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="550.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">H</text></g></svg></div><figcaption>원문의 트리: A, B, C, D, E, F, G, H · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>C</p></div><div class="option"><p>(②)</p><p>E</p></div><div class="option"><p>(③)</p><p>G</p></div><div class="option"><p>(④)</p><p>H</p></div></div>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>전위 순회는 VLR이에요. 루트를 먼저 찍고 왼쪽 서브트리를 끝까지 내려간 다음 오른쪽으로 가요. 순서를 끝까지 적어 보세요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>트리 모양을 적어요. A → B, C / B → 왼쪽 D / C → E, F / E → G, H</li>
+      <li>루트 A를 찍고 왼쪽 B 서브트리로 가요. B, D 순서예요. 여기까지 A, B, D예요.</li>
+      <li>오른쪽 C 서브트리로 가요. C를 찍고, 왼쪽 E 서브트리(E, G, H), 그다음 F예요.</li>
+      <li>전체 전위 순서는 A B D C E G H F예요.</li>
+      <li>다섯 번째는 E라서 ②예요.</li>
+      <li>수업과의 연결: 1102 수업에서 책 목차 트리를 전위 순회(VLR)로 출력하며 루트 먼저, 왼쪽 끝까지 내려가는 순서를 따라갔어요.</li>
+    </ol>
+    <p class="answer">정답: ② E</p>
+  </details>
+</article>
+<article class="card" id="p9" data-source="textbook-ch08-q03" data-source-kind="textbook">
+  <h3>P9. 수식 트리의 후위 순회</h3>
+  <div class="problem">
+    <p>다음 이진 트리를 후위 순회(postorder traversal)한 결과는 무엇인가요?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: +, *, *, /, A, B, C, D, E" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: +, *, *, /, A, B, C, D, E</title><g id="p9-prob-1-ch08-q03-expression-edge-plus-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p9-prob-1-ch08-q03-expression-edge-plus-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p9-prob-1-ch08-q03-expression-edge-mul1-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p9-prob-1-ch08-q03-expression-edge-mul1-right"><line x1="200.0" y1="130" x2="300.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p9-prob-1-ch08-q03-expression-edge-mul2-left"><line x1="100.0" y1="215" x2="50.0" y2="300" stroke="#26394a" stroke-width="2" /></g><g id="p9-prob-1-ch08-q03-expression-edge-mul2-right"><line x1="100.0" y1="215" x2="150.0" y2="300" stroke="#26394a" stroke-width="2" /></g><g id="p9-prob-1-ch08-q03-expression-edge-div-left"><line x1="50.0" y1="300" x2="25.0" y2="385" stroke="#26394a" stroke-width="2" /></g><g id="p9-prob-1-ch08-q03-expression-edge-div-right"><line x1="50.0" y1="300" x2="75.0" y2="385" stroke="#26394a" stroke-width="2" /></g><g id="p9-prob-1-ch08-q03-expression-plus"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">+</text></g><g id="p9-prob-1-ch08-q03-expression-mul1"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">*</text></g><g id="p9-prob-1-ch08-q03-expression-mul2"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">*</text></g><g id="p9-prob-1-ch08-q03-expression-div"><circle cx="50.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="50.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">/</text></g><g id="p9-prob-1-ch08-q03-expression-A"><circle cx="25.0" cy="385" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="25.0" y="385" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p9-prob-1-ch08-q03-expression-B"><circle cx="75.0" cy="385" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="75.0" y="385" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p9-prob-1-ch08-q03-expression-C"><circle cx="150.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="150.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p9-prob-1-ch08-q03-expression-D"><circle cx="300.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="300.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p9-prob-1-ch08-q03-expression-E"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g></svg></div><figcaption>원문의 트리: +, *, *, /, A, B, C, D, E · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>+ * * / A B C D E</p></div><div class="option"><p>(②)</p><p>A / B * C * D + E</p></div><div class="option"><p>(③)</p><p>+ * A B / * C D E</p></div><div class="option"><p>(④)</p><p>A B / C * D * E +</p></div></div>
+  </div>
+  <details class="original"><summary>교과서 원문 보기</summary>
+    <p>교과서 8장 트리 03번 · 316쪽</p>
+    <p>다음 그림과 같은 이진트리를 후위 순회(postorder traversal)한 결과는? [정보처리기사 기출문제]</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: +, *, *, /, A, B, C, D, E" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: +, *, *, /, A, B, C, D, E</title><g id="p9-orig-1-ch08-q03-expression-edge-plus-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p9-orig-1-ch08-q03-expression-edge-plus-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p9-orig-1-ch08-q03-expression-edge-mul1-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p9-orig-1-ch08-q03-expression-edge-mul1-right"><line x1="200.0" y1="130" x2="300.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p9-orig-1-ch08-q03-expression-edge-mul2-left"><line x1="100.0" y1="215" x2="50.0" y2="300" stroke="#26394a" stroke-width="2" /></g><g id="p9-orig-1-ch08-q03-expression-edge-mul2-right"><line x1="100.0" y1="215" x2="150.0" y2="300" stroke="#26394a" stroke-width="2" /></g><g id="p9-orig-1-ch08-q03-expression-edge-div-left"><line x1="50.0" y1="300" x2="25.0" y2="385" stroke="#26394a" stroke-width="2" /></g><g id="p9-orig-1-ch08-q03-expression-edge-div-right"><line x1="50.0" y1="300" x2="75.0" y2="385" stroke="#26394a" stroke-width="2" /></g><g id="p9-orig-1-ch08-q03-expression-plus"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">+</text></g><g id="p9-orig-1-ch08-q03-expression-mul1"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">*</text></g><g id="p9-orig-1-ch08-q03-expression-mul2"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">*</text></g><g id="p9-orig-1-ch08-q03-expression-div"><circle cx="50.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="50.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">/</text></g><g id="p9-orig-1-ch08-q03-expression-A"><circle cx="25.0" cy="385" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="25.0" y="385" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p9-orig-1-ch08-q03-expression-B"><circle cx="75.0" cy="385" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="75.0" y="385" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p9-orig-1-ch08-q03-expression-C"><circle cx="150.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="150.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p9-orig-1-ch08-q03-expression-D"><circle cx="300.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="300.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p9-orig-1-ch08-q03-expression-E"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g></svg></div><figcaption>원문의 트리: +, *, *, /, A, B, C, D, E · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>+ * * / A B C D E</p></div><div class="option"><p>(②)</p><p>A / B * C * D + E</p></div><div class="option"><p>(③)</p><p>+ * A B / * C D E</p></div><div class="option"><p>(④)</p><p>A B / C * D * E +</p></div></div>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>후위 순회는 LRV예요. 가장 깊은 왼쪽 서브트리부터 "왼쪽, 오른쪽, 연산자" 묶음으로 읽어 올라가요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>트리 모양을 적어요. + → *(위), E / *(위) → *(아래), D / *(아래) → /, C / / → A, B</li>
+      <li>가장 깊은 / 서브트리를 LRV로 읽으면 A B /예요.</li>
+      <li>한 층 올라가 *(아래)는 왼쪽(A B /), 오른쪽 C, 자기 자신 순이라 A B / C *예요.</li>
+      <li>*(위)는 A B / C * 다음에 D, 그다음 *라 A B / C * D *예요.</li>
+      <li>루트 +는 왼쪽 결과 뒤에 E, 마지막에 +라서 A B / C * D * E +, 곧 ④예요. ①은 전위, ②는 중위 순회 결과예요.</li>
+      <li>수업과의 연결: 1102 수업의 수식 트리에서 후위 순회 결과가 a b c × -처럼 연산자가 피연산자 뒤에 오는 표기가 됐던 것과 같아요.</li>
+    </ol>
+    <p class="answer">정답: ④ A B / C * D * E +</p>
+  </details>
+</article>
+<article class="card" id="p10" data-source="textbook-ch08-q12" data-source-kind="textbook">
+  <h3>P10. 재귀 함수 mystery의 반환값</h3>
+  <div class="problem">
+    <p>다음 함수를 아래 이진 트리의 루트 노드로 부르면 어떤 값을 돌려주나요? <code>max</code>는 두 값 중 큰 값을 돌려준다고 봐요.</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: 3, 5, 1, 4, 2, 8, 6" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: 3, 5, 1, 4, 2, 8, 6</title><g id="p10-prob-1-ch08-q12-tree-edge-3-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p10-prob-1-ch08-q12-tree-edge-3-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p10-prob-1-ch08-q12-tree-edge-5-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p10-prob-1-ch08-q12-tree-edge-5-right"><line x1="200.0" y1="130" x2="300.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p10-prob-1-ch08-q12-tree-edge-1-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p10-prob-1-ch08-q12-tree-edge-1-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p10-prob-1-ch08-q12-tree-3"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">3</text></g><g id="p10-prob-1-ch08-q12-tree-5"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">5</text></g><g id="p10-prob-1-ch08-q12-tree-1"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">1</text></g><g id="p10-prob-1-ch08-q12-tree-4"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">4</text></g><g id="p10-prob-1-ch08-q12-tree-2"><circle cx="300.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="300.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">2</text></g><g id="p10-prob-1-ch08-q12-tree-8"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">8</text></g><g id="p10-prob-1-ch08-q12-tree-6"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g></svg></div><figcaption>원문의 트리: 3, 5, 1, 4, 2, 8, 6 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><pre><code class="language-c">int mystery(TreeNode* p) {
+    if (p == NULL) return 0;
+    else if (p-&gt;left == NULL &amp;&amp; p-&gt;right == NULL)
+        return p-&gt;data;
+    else
+        return max(mystery(p-&gt;left), mystery(p-&gt;right));
+}</code></pre><div class="options"></div>
+  </div>
+  <details class="original"><summary>교과서 원문 보기</summary>
+    <p>교과서 8장 트리 12번 · PDF 4쪽</p>
+    <p>다음과 같은 함수가 아래에 표시된 이진트리의 루트 노드에 대해 호출된다고 하자. 함수가 반환하는 값은 무엇인가?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: 3, 5, 1, 4, 2, 8, 6" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: 3, 5, 1, 4, 2, 8, 6</title><g id="p10-orig-1-ch08-q12-tree-edge-3-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p10-orig-1-ch08-q12-tree-edge-3-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2" /></g><g id="p10-orig-1-ch08-q12-tree-edge-5-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p10-orig-1-ch08-q12-tree-edge-5-right"><line x1="200.0" y1="130" x2="300.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p10-orig-1-ch08-q12-tree-edge-1-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p10-orig-1-ch08-q12-tree-edge-1-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2" /></g><g id="p10-orig-1-ch08-q12-tree-3"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">3</text></g><g id="p10-orig-1-ch08-q12-tree-5"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">5</text></g><g id="p10-orig-1-ch08-q12-tree-1"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">1</text></g><g id="p10-orig-1-ch08-q12-tree-4"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">4</text></g><g id="p10-orig-1-ch08-q12-tree-2"><circle cx="300.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="300.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">2</text></g><g id="p10-orig-1-ch08-q12-tree-8"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">8</text></g><g id="p10-orig-1-ch08-q12-tree-6"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2" /><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g></svg></div><figcaption>원문의 트리: 3, 5, 1, 4, 2, 8, 6 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><pre><code>int mystery(TreeNode* p) {
+    if (p == NULL) return 0;
+    else if (p-&gt;left == NULL &amp;&amp; p-&gt;right == NULL)
+        return p-&gt;data;
+    else
+        return max(mystery(p-&gt;left), mystery(p-&gt;right));
+}</code></pre><div class="options"></div>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>자식이 없는 노드에서는 자기 값을 돌려주고, 아니면 두 서브트리 결과 중 큰 값을 돌려줘요. 아래에서부터 값을 올려 보세요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>트리 모양을 적어요. 3 → 5, 1 / 5 → 4, 2 / 1 → 8, 6</li>
+      <li><code>p == NULL</code>이면 <code>0</code>, 단말 노드(자식이 없는 노드)면 자기 <code>data</code>를 돌려줘요. 단말 노드는 4, 2, 8, 6이에요.</li>
+      <li>노드 5: <code>max(4, 2)</code> = 4. 노드 1: <code>max(8, 6)</code> = 8</li>
+      <li>루트 3: <code>max(4, 8)</code> = 8. 루트 3, 5, 1 자신의 값은 비교에 들어가지 않아요.</li>
+      <li>결국 이 함수는 단말 노드 값 중 가장 큰 값을 돌려줘요. 답은 8이에요.</li>
+      <li>수업과의 연결: 1102 수업의 <code>get_height</code>처럼 두 서브트리를 먼저 재귀 호출하고 <code>max</code>로 합치는, 후위 순회 꼴의 계산이에요.</li>
+    </ol>
+    <p class="answer">정답: 8</p>
+  </details>
+</article>
+    </section>
+    <section id="partL"><h2>C. 강의 예제 기반 자체 출제</h2>
+<article class="card" id="p11" data-source="lecture-s07-p13-level-order" data-source-kind="lecture-code">
+  <h3>P11. 수식 트리의 레벨 순회와 큐</h3>
+  <div class="problem">
+    <p><span class="badge">강의 예제 기반 자체 출제</span> S7 p13</p>
+    <p>수식 a * b + c / d를 나타내는 이진 트리가 있어요. 루트는 <code>+</code>이고, <code>+</code>의 왼쪽 자식은 <code>*</code>, 오른쪽 자식은 <code>/</code>예요. <code>*</code>의 왼쪽·오른쪽 자식은 <code>a</code>, <code>b</code>이고, <code>/</code>의 왼쪽·오른쪽 자식은 <code>c</code>, <code>d</code>예요.</p>
+    <figure class="figure"><svg id="fig-p11-tree" viewBox="0 0 372 184" role="img" aria-label="수식 a * b + c / d의 트리: 루트 +, 왼쪽 *, 오른쪽 /, *의 자식 a와 b, /의 자식 c와 d"><line class="fig-ink" x1="186" y1="47" x2="82" y2="75"/><line class="fig-ink" x1="186" y1="47" x2="290" y2="75"/><line class="fig-ink" x1="82" y1="109" x2="30" y2="137"/><line class="fig-ink" x1="82" y1="109" x2="134" y2="137"/><line class="fig-ink" x1="290" y1="109" x2="238" y2="137"/><line class="fig-ink" x1="290" y1="109" x2="342" y2="137"/><circle class="fig-ink" cx="186" cy="30" r="17"/><text class="fig-text" x="186" y="35" text-anchor="middle" font-size="14">+</text><circle class="fig-ink" cx="82" cy="92" r="17"/><text class="fig-text" x="82" y="97" text-anchor="middle" font-size="14">*</text><circle class="fig-ink" cx="290" cy="92" r="17"/><text class="fig-text" x="290" y="97" text-anchor="middle" font-size="14">/</text><circle class="fig-ink" cx="30" cy="154" r="17"/><text class="fig-text" x="30" y="159" text-anchor="middle" font-size="14">a</text><circle class="fig-ink" cx="134" cy="154" r="17"/><text class="fig-text" x="134" y="159" text-anchor="middle" font-size="14">b</text><circle class="fig-ink" cx="238" cy="154" r="17"/><text class="fig-text" x="238" y="159" text-anchor="middle" font-size="14">c</text><circle class="fig-ink" cx="342" cy="154" r="17"/><text class="fig-text" x="342" y="159" text-anchor="middle" font-size="14">d</text></svg><figcaption>수식 a * b + c / d의 트리예요. 연산자는 안쪽 노드, 피연산자는 단말 노드예요.</figcaption></figure>
+    <p>레벨 순회는 큐로 돌아요. 먼저 큐에 루트를 넣어요. 큐 앞에서 노드 하나를 꺼내 방문하고, 그 노드의 왼쪽 자식과 오른쪽 자식을 차례로 큐 뒤에 넣어요(없는 자식은 넣지 않아요). 큐가 빌 때까지 이것을 되풀이해요.</p>
+    <p>전위 순회는 VLR(루트 → 왼쪽 → 오른쪽), 중위 순회는 LVR, 후위 순회는 LRV 순서로 방문해요.</p>
+    <ol>
+      <li>(a) 레벨 순회의 방문 순서를 적어 보세요.</li>
+      <li>(b) <code>*</code>를 꺼내 방문하고 그 자식을 큐에 넣은 직후, 큐의 내용을 앞에서 뒤 순서로 적어 보세요.</li>
+      <li>(c) 같은 트리의 전위·중위·후위 순회 결과를 각각 적어 보세요.</li>
+    </ol>
+  </div>
+  <details class="original"><summary>강의 예제 보기</summary>
+    <p>S7 p13 · Software_7_Tree.pdf · 추가 근거 S7 p11, p14</p>
+    <p>이 쪽에는 코드가 없어요. 아래는 슬라이드 내용을 옮긴 것이고, 세 질문과 큐 상태를 묻는 방식은 자체 출제예요.</p>
+    <ul>
+      <li>p13: 레벨 순회(Level-order traversal)는 표준 순회 방법이 아니고, 아래로 왼쪽에서 오른쪽으로 돌며 Queue를 사용한다고 적혀 있어요. 수식 트리 a*b + c/d에 방문 번호 1~7을 붙인 그림과, 노드를 하나 꺼낼 때마다 큐 내용이 바뀌는 모습을 줄마다 그린 그림이 있어요.</li>
+      <li>p11: 같은 트리 a*b + c/d로 중위 순회(LVR)와 <code>inorder</code> 코드를 보여 줘요.</li>
+      <li>p14: 수식 트리에서 비단말 노드는 연산자, 단말 노드는 피연산자이고, a + b, a - (b × c) 같은 식의 전위·중위·후위 표기를 표로 비교해요.</li>
+    </ul>
+    <figure class="figure"><svg id="fig-p11-orig-tree" viewBox="0 0 412 184" role="img" aria-label="같은 수식 트리에 레벨 순서 번호 1~7을 붙인 그림"><line class="fig-ink" x1="206" y1="47" x2="102" y2="75"/><line class="fig-ink" x1="206" y1="47" x2="310" y2="75"/><line class="fig-ink" x1="102" y1="109" x2="50" y2="137"/><line class="fig-ink" x1="102" y1="109" x2="154" y2="137"/><line class="fig-ink" x1="310" y1="109" x2="258" y2="137"/><line class="fig-ink" x1="310" y1="109" x2="362" y2="137"/><circle class="fig-ink" cx="206" cy="30" r="17"/><text class="fig-text" x="206" y="35" text-anchor="middle" font-size="14">+</text><text class="fig-muted" x="185" y="15" text-anchor="end" font-size="12">1</text><circle class="fig-ink" cx="102" cy="92" r="17"/><text class="fig-text" x="102" y="97" text-anchor="middle" font-size="14">*</text><text class="fig-muted" x="81" y="77" text-anchor="end" font-size="12">2</text><circle class="fig-ink" cx="310" cy="92" r="17"/><text class="fig-text" x="310" y="97" text-anchor="middle" font-size="14">/</text><text class="fig-muted" x="289" y="77" text-anchor="end" font-size="12">3</text><circle class="fig-ink" cx="50" cy="154" r="17"/><text class="fig-text" x="50" y="159" text-anchor="middle" font-size="14">a</text><text class="fig-muted" x="29" y="139" text-anchor="end" font-size="12">4</text><circle class="fig-ink" cx="154" cy="154" r="17"/><text class="fig-text" x="154" y="159" text-anchor="middle" font-size="14">b</text><text class="fig-muted" x="133" y="139" text-anchor="end" font-size="12">5</text><circle class="fig-ink" cx="258" cy="154" r="17"/><text class="fig-text" x="258" y="159" text-anchor="middle" font-size="14">c</text><text class="fig-muted" x="237" y="139" text-anchor="end" font-size="12">6</text><circle class="fig-ink" cx="362" cy="154" r="17"/><text class="fig-text" x="362" y="159" text-anchor="middle" font-size="14">d</text><text class="fig-muted" x="341" y="139" text-anchor="end" font-size="12">7</text></svg><figcaption>슬라이드 트리를 다시 그린 그림이에요. 노드 왼쪽 위 숫자가 방문 번호예요.</figcaption></figure>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>큐는 먼저 넣은 것이 먼저 나와요. 한 층의 노드를 꺼내는 동안 그 자식들, 곧 다음 층이 큐 뒤에 차례로 쌓여요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li>시작할 때 큐에는 루트 <code>+</code> 하나만 있어요. 노드를 꺼낼 때마다 큐가 어떻게 바뀌는지 표로 따라가요.
+<div class="table-wrap"><table><tr><th>꺼내 방문한 노드</th><th>뒤에 넣은 자식</th><th>큐 (앞 → 뒤)</th></tr><tr><td>시작</td><td>-</td><td>+</td></tr><tr><td>+</td><td>*, /</td><td>* /</td></tr><tr><td>*</td><td>a, b</td><td>/ a b</td></tr><tr><td>/</td><td>c, d</td><td>a b c d</td></tr><tr><td>a</td><td>없음</td><td>b c d</td></tr><tr><td>b</td><td>없음</td><td>c d</td></tr><tr><td>c</td><td>없음</td><td>d</td></tr><tr><td>d</td><td>없음</td><td>(빈 큐)</td></tr></table></div></li>
+      <li>(a) 꺼낸 순서를 그대로 읽으면 + * / a b c d예요. 위층부터, 같은 층에서는 왼쪽부터 방문해요.</li>
+      <li>(b) <code>*</code>를 꺼낼 때 큐에는 <code>/</code>가 남아 있었고, 뒤에 <code>a</code>, <code>b</code>가 붙어요. 그래서 큐는 [/ a b]예요.</li>
+      <li>(c) 전위(VLR): + 다음 왼쪽 서브트리 * a b, 오른쪽 서브트리 / c d라서 + * a b / c d예요.</li>
+      <li>(c) 중위(LVR): a * b, 그다음 +, 그다음 c / d라서 a * b + c / d예요. 원래 수식과 같은 모양이에요.</li>
+      <li>(c) 후위(LRV): a b *, c d /, 마지막에 +라서 a b * c d / +예요.</li>
+      <li>수업과의 연결: 1102 수업에서 레벨 순회는 표준 순회 방법이 아니고 큐를 써서 위에서 아래로 돈다고 했고, 같은 수식 트리로 + * / a b c d를 따라갔어요.</li>
+    </ol>
+    <p class="answer">정답: (a) + * / a b c d (b) [/ a b] (c) 전위 + * a b / c d, 중위 a * b + c / d, 후위 a b * c d / +</p>
+  </details>
+</article>
+<article class="card" id="p12" data-source="lecture-s07-p16-count-height" data-source-kind="lecture-code">
+  <h3>P12. 노드 개수와 높이를 재귀로 구하기</h3>
+  <div class="problem">
+    <p><span class="badge">강의 예제 기반 자체 출제</span> S7 p16</p>
+    <p>이진 트리 노드 <code>TreeNode</code>와 두 함수 <code>get_node_count</code>, <code>get_height</code>가 아래처럼 정의돼 있어요. <code>max</code>는 C 표준 함수가 아니어서 함께 정의했어요. 빈 자리는 <code>NULL</code>이에요.</p>
+    <pre><code class="language-c">typedef struct TreeNode {
+    char data;
+    struct TreeNode *left, *right;
+} TreeNode;
+
+int max(int a, int b) { return a &gt; b ? a : b; }
+
+int get_node_count(TreeNode *node)
+{
+    int count=0;
+    if( node != NULL )
+        count = 1 + get_node_count(node-&gt;left)+
+                get_node_count(node-&gt;right);
+    return count;
+}
+
+int get_height(TreeNode *node)
+{
+    int height=0;
+    if( node != NULL )
+        height = 1 + max(get_height(node-&gt;left),
+                         get_height(node-&gt;right));
+    return height;
+}</code></pre>
+    <p>트리는 노드 6개예요. 루트 <code>R</code>의 왼쪽 자식은 <code>X</code>, 오른쪽 자식은 <code>Y</code>예요. <code>X</code>의 왼쪽·오른쪽 자식은 <code>L1</code>, <code>L2</code>이고, <code>Y</code>는 왼쪽 자식 <code>L3</code>만 있어요.</p>
+    <figure class="figure"><svg id="fig-p12-tree" viewBox="0 0 320 184" role="img" aria-label="노드 6개 트리: 루트 R, R의 왼쪽 X 오른쪽 Y, X의 왼쪽 L1 오른쪽 L2, Y의 왼쪽 L3"><line class="fig-ink" x1="186" y1="47" x2="82" y2="75"/><line class="fig-ink" x1="186" y1="47" x2="290" y2="75"/><line class="fig-ink" x1="82" y1="109" x2="30" y2="137"/><line class="fig-ink" x1="82" y1="109" x2="134" y2="137"/><line class="fig-ink" x1="290" y1="109" x2="238" y2="137"/><circle class="fig-ink" cx="186" cy="30" r="17"/><text class="fig-text" x="186" y="35" text-anchor="middle" font-size="14">R</text><circle class="fig-ink" cx="82" cy="92" r="17"/><text class="fig-text" x="82" y="97" text-anchor="middle" font-size="14">X</text><circle class="fig-ink" cx="290" cy="92" r="17"/><text class="fig-text" x="290" y="97" text-anchor="middle" font-size="14">Y</text><circle class="fig-ink" cx="30" cy="154" r="17"/><text class="fig-text" x="30" y="159" text-anchor="middle" font-size="14">L1</text><circle class="fig-ink" cx="134" cy="154" r="17"/><text class="fig-text" x="134" y="159" text-anchor="middle" font-size="14">L2</text><circle class="fig-ink" cx="238" cy="154" r="17"/><text class="fig-text" x="238" y="159" text-anchor="middle" font-size="14">L3</text></svg><figcaption>노드 6개 트리예요. Y는 오른쪽 자식이 없어요.</figcaption></figure>
+    <ol>
+      <li>(a) <code>get_node_count</code>를 노드 <code>X</code>, <code>Y</code>, <code>R</code>에서 각각 부르면 얼마를 돌려주나요?</li>
+      <li>(b) <code>get_height</code>를 루트 <code>R</code>에서 부르면 얼마를 돌려주나요?</li>
+      <li>(c) <code>get_height</code>에서 <code>max(...)</code>에 <code>1</code>을 더하는 이유를 한 문장으로 적어 보세요.</li>
+    </ol>
+  </div>
+  <details class="original"><summary>강의 예제 보기</summary>
+    <p>S7 p16 · Software_7_Tree.pdf · 추가 근거 S7 p17</p>
+    <ul>
+      <li>p16: <code>get_node_count</code> 코드와 "각각의 서브트리에 대하여 순환 호출한 다음, 반환되는 값에 1을 더하여 반환"이라는 설명이 있어요. 노드 6개 트리 그림에 돌아오는 값이 단말 노드 1, 1, 1, 그 위 3, 2, 루트 6으로 적혀 있어요.</li>
+      <li>p17: <code>get_height</code> 코드와, 두 서브트리 높이 중 큰 값에 1을 더하는 그림(h = max(h_left, h_right))이 있어요.</li>
+    </ul>
+    <p>두 함수 몸체는 슬라이드 코드를 그대로 옮겼어요. <code>TreeNode</code> 구조체와 <code>max</code> 정의는 슬라이드에 없어서 컴파일되게 보충한 것이고, 노드 이름 R, X, Y, L1~L3와 세 질문은 자체 출제예요. 이 코드에 위 트리를 만들어 C11(<code>cc -std=c11 -Wall</code>)로 컴파일·실행하면 경고 없이 개수 X 3, Y 2, R 6, 높이 R 3이 나와요.</p>
+  </details>
+  <details class="hint"><summary>힌트 보기</summary>
+    <p>NULL에서는 0이 돌아와요. 단말 노드부터 값을 구해 위로 올라가요. 개수는 "왼쪽 + 오른쪽 + 나 1개", 높이는 "더 높은 쪽 + 나 1층"이에요.</p>
+  </details>
+  <details class="solution"><summary>풀이 보기</summary>
+    <ol class="steps">
+      <li><code>node == NULL</code>이면 <code>count</code>와 <code>height</code>가 <code>0</code>인 채로 돌아와요. 그래서 단말 노드 L1, L2, L3는 개수 <code>1 + 0 + 0 = 1</code>, 높이 <code>1 + max(0, 0) = 1</code>이에요.</li>
+      <li>(a) <code>X</code>: <code>1 + 1 + 1 = 3</code>. <code>Y</code>: 오른쪽이 <code>NULL</code>이라 <code>1 + 1 + 0 = 2</code>. <code>R</code>: <code>1 + 3 + 2 = 6</code>이에요.</li>
+      <li>(b) <code>X</code>: <code>1 + max(1, 1) = 2</code>. <code>Y</code>: <code>1 + max(1, 0) = 2</code>. <code>R</code>: <code>1 + max(2, 2) = 3</code>이에요.</li>
+      <li>(c) <code>max</code>는 두 서브트리 중 더 높은 쪽의 높이만 알려 줘요. 지금 노드 자신도 한 층을 차지하니 1을 더해야 해요. 1을 빼면 모든 호출이 <code>0</code>만 돌려줘요.</li>
+      <li>확인: 위 코드에 이 트리를 만들어 C11로 실행하면 X 3, Y 2, R 6, 높이 3이 나와요.</li>
+      <li>수업과의 연결: 1102 수업에서 노드 6개 트리로 맨 아래는 1, 그 위는 1+1+1=3과 1+0+1=2(이 카드의 Y는 1 + 1 + 0으로, 왼쪽·오른쪽 순서만 달라요), 루트는 3+2+1=6처럼 돌아오는 값을 더해 올라갔고, 높이의 +1은 루트의 높이도 더해 줘야 해서라고 했어요.</li>
+    </ol>
+    <p class="answer">정답: (a) X 3, Y 2, R 6 (b) 3 (c) 1은 지금 노드(루트) 자신이 차지하는 한 층</p>
+  </details>
+</article>
+    </section>
+  </main>
+  <footer>출처: 자료구조및알고리즘(이해) 기출 — 2017 중간(출제자 미상), 2018 중간(출제자 미상), 2019 중간(출제자 미상), 2021 기말 모의 1회(출제자 미상). 교과서 8장 트리 연습문제 1·2·3·12번. 강의 예제 기반 자체 출제는 Software_7 Tree p13·p16 근거입니다. 풀이는 자체 작성이며 답은 Python 시뮬레이션(answers.py)·C11 실행과 강의 근거 대조로 검증했습니다.</footer>
+    </div>
+    <aside class="panel panel-right" id="panel-right" aria-labelledby="panel-right-title">
+      <div class="panel-resize" data-side="right" role="separator" aria-orientation="vertical" aria-controls="panel-right" aria-label="오른쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-right-title">풀이 도움</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-empty">문제로 넘어가면 그 문제의 원문, 힌트, 풀이가 여기에 나옵니다. 먼저 스스로 풀어 본 뒤 여세요.</p>
+        <div class="aids"></div>
+        <button class="solved-btn" id="solved-btn" type="button" aria-pressed="false" hidden><span>푼 문제로 표시</span></button>
+      </div>
+    </aside>
+  </div>
+  <div class="scrim" id="panel-scrim" aria-hidden="true"></div>
+  <nav class="pager" aria-label="화면 이동">
+    <div class="pager-inner">
+      <button class="btn btn-ghost" id="pager-prev" type="button">이전</button>
+      <span class="pager-count" id="pager-count"></span>
+      <button class="btn btn-primary" id="pager-next" type="button">시작하기</button>
+    </div>
+  </nav>
+  <p class="sr-only" id="pager-status" aria-live="polite"></p>
+
+  <script id="theme-ui">
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const sysDark = matchMedia('(prefers-color-scheme: dark)');
+      const KEY = 'od-theme';
+      const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : sysDark.matches;
+      function label() {
+        const next = isDark() ? '라이트 모드로 전환' : '다크 모드로 전환';
+        btn.setAttribute('aria-label', next);
+        btn.title = next;
+      }
+      btn.addEventListener('click', () => {
+        const t = isDark() ? 'light' : 'dark';
+        // 시스템 설정과 같아지면 저장을 지워 다시 시스템을 따른다
+        if ((t === 'dark') === sysDark.matches) { delete root.dataset.theme; try { localStorage.removeItem(KEY); } catch (e) {} }
+        else { root.dataset.theme = t; try { localStorage.setItem(KEY, t); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+        label();
+      });
+      sysDark.addEventListener('change', label);
+      window.addEventListener('storage', (e) => {
+        if (e.key !== KEY) return;
+        if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue; else delete root.dataset.theme;
+        label();
+      });
+      label();
+    })();
+  </script>
+  <script id="panels-ui">
+    (function () {
+      const body = document.body;
+      const layout = document.querySelector('.layout');
+      const kind = body.dataset.panels;
+      const panels = { left: document.getElementById('panel-left'), right: document.getElementById('panel-right') };
+      const toggles = { left: document.getElementById('toggle-left'), right: document.getElementById('toggle-right') };
+      const scrim = document.getElementById('panel-scrim');
+      const blockers = [document.querySelector('.topbar'), document.querySelector('.content'), document.querySelector('.pager')];
+      const wideMq = matchMedia('(min-width: 1024px)');
+      const roomyMq = matchMedia('(min-width: 1280px)');
+      const store = {
+        get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+      };
+      const PREF = 'od-panels:' + kind;
+      // 팩마다 문제·토픽 id가 p1, s1-…로 겹치므로 진행 기록은 기간별로 나눈다
+      const RANGE = body.dataset.range || '';
+      const ICON_TODO = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>';
+      const ICON_DONE = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 10"/></svg>';
+      let overlay = null;
+
+      // ---------- 열고 닫기 ----------
+      function docked() {
+        const pref = store.get(PREF, {});
+        return { left: pref.left ?? true, right: pref.right ?? roomyMq.matches };
+      }
+      function sync() {
+        const wide = wideMq.matches;
+        const d = docked();
+        ['left', 'right'].forEach((side) => {
+          const open = wide ? d[side] : overlay === side;
+          const p = panels[side];
+          layout.dataset[side] = open ? 'open' : 'closed';
+          p.classList.toggle('is-open', !wide && open);
+          p.inert = !open;
+          if (!wide && open) { p.setAttribute('role', 'dialog'); p.setAttribute('aria-modal', 'true'); }
+          else { p.removeAttribute('role'); p.removeAttribute('aria-modal'); }
+          toggles[side].setAttribute('aria-expanded', String(open));
+        });
+        const drawer = !wide && overlay !== null;
+        scrim.classList.toggle('is-on', drawer);
+        body.classList.toggle('drawer-open', drawer);
+        blockers.forEach((el) => { el.inert = drawer; });
+      }
+      function openDrawer(side) {
+        overlay = side;
+        sync();
+        requestAnimationFrame(() => panels[side].querySelector('[data-panel-close]').focus());
+      }
+      function closeDrawer(refocus) {
+        if (overlay === null) return;
+        const side = overlay;
+        overlay = null;
+        sync();
+        if (refocus) toggles[side].focus();
+      }
+      function toggle(side) {
+        if (wideMq.matches) {
+          const d = docked();
+          d[side] = !d[side];
+          store.set(PREF, d);
+          sync();
+          if (d[side]) { const p = panels[side]; p.classList.remove('is-shown'); void p.offsetWidth; p.classList.add('is-shown'); }
+        } else if (overlay === side) closeDrawer(true);
+        else openDrawer(side);
+      }
+
+      toggles.left.addEventListener('click', () => toggle('left'));
+      toggles.right.addEventListener('click', () => toggle('right'));
+      scrim.addEventListener('click', () => closeDrawer(true));
+      document.querySelectorAll('[data-panel-close]').forEach((b) => b.addEventListener('click', () => closeDrawer(true)));
+      panels.left.addEventListener('click', (e) => { if (e.target.closest('.toc a')) closeDrawer(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay !== null) { e.preventDefault(); closeDrawer(true); } });
+
+      // ---------- 패널 너비: 기본은 화면 폭에 맞춰 자동, 경계를 끌면 직접 조절 ----------
+      const WIDTH = { left: { min: 220, max: 480, prop: '--panel-l-user' }, right: { min: 280, max: 720, prop: '--panel-r-user' } };
+      function applyWidths() {
+        const w = store.get(PREF + ':w', {});
+        ['left', 'right'].forEach((side) => {
+          if (w[side]) layout.style.setProperty(WIDTH[side].prop, w[side] + 'px');
+          else layout.style.removeProperty(WIDTH[side].prop);
+        });
+      }
+      function maxFor(side) {
+        const other = side === 'left' ? panels.right : panels.left;
+        const otherW = layout.dataset[side === 'left' ? 'right' : 'left'] === 'open' ? other.getBoundingClientRect().width : 0;
+        return Math.max(WIDTH[side].min, Math.min(WIDTH[side].max, window.innerWidth - otherW - 400));
+      }
+      function setWidth(side, px, save) {
+        const v = Math.round(Math.min(Math.max(px, WIDTH[side].min), maxFor(side)));
+        layout.style.setProperty(WIDTH[side].prop, v + 'px');
+        panels[side].querySelector('.panel-resize').setAttribute('aria-valuenow', String(v));
+        if (save) { const w = store.get(PREF + ':w', {}); w[side] = v; store.set(PREF + ':w', w); }
+      }
+      function resetWidth(side) {
+        const w = store.get(PREF + ':w', {});
+        delete w[side];
+        store.set(PREF + ':w', w);
+        layout.style.removeProperty(WIDTH[side].prop);
+      }
+      document.querySelectorAll('.panel-resize').forEach((handle) => {
+        const side = handle.dataset.side;
+        const dir = side === 'left' ? 1 : -1;
+        handle.setAttribute('aria-valuemin', String(WIDTH[side].min));
+        handle.setAttribute('aria-valuemax', String(WIDTH[side].max));
+        handle.addEventListener('pointerdown', (e) => {
+          if (!wideMq.matches || e.button !== 0) return;
+          e.preventDefault();
+          const startX = e.clientX;
+          const startW = panels[side].getBoundingClientRect().width;
+          handle.setPointerCapture(e.pointerId);
+          body.classList.add('is-resizing');
+          const move = (ev) => setWidth(side, startW + dir * (ev.clientX - startX), false);
+          const up = () => {
+            handle.removeEventListener('pointermove', move);
+            handle.removeEventListener('pointerup', up);
+            handle.removeEventListener('pointercancel', up);
+            body.classList.remove('is-resizing');
+            setWidth(side, panels[side].getBoundingClientRect().width, true);
+          };
+          handle.addEventListener('pointermove', move);
+          handle.addEventListener('pointerup', up);
+          handle.addEventListener('pointercancel', up);
+        });
+        handle.addEventListener('dblclick', () => resetWidth(side));
+        handle.addEventListener('keydown', (e) => {
+          const step = e.shiftKey ? 64 : 16;
+          const cur = panels[side].getBoundingClientRect().width;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            e.stopPropagation();
+            setWidth(side, cur + (e.key === 'ArrowRight' ? step : -step) * dir, true);
+          } else if (e.key === 'Home') { e.preventDefault(); resetWidth(side); }
+        });
+      });
+      applyWidths();
+      const onMq = () => { overlay = null; sync(); };
+      wideMq.addEventListener('change', onMq);
+      roomyMq.addEventListener('change', onMq);
+
+      // ---------- 목차의 진행 표시 ----------
+      const progressN = document.getElementById('progress-n');
+      const progressBar = document.getElementById('progress-bar');
+      const progressTotal = document.getElementById('progress-total');
+      function markToc(done, total, doneLabel) {
+        panels.left.querySelectorAll('.toc-list a').forEach((a) => {
+          const id = decodeURIComponent(a.getAttribute('href').slice(1));
+          let mark = a.querySelector('.toc-mark');
+          if (!mark) {
+            mark = document.createElement('span');
+            mark.className = 'toc-mark';
+            mark.setAttribute('aria-hidden', 'true');
+            const state = document.createElement('span');
+            state.className = 'sr-only toc-state';
+            a.append(mark, state);
+          }
+          const isDone = done.has(id);
+          mark.classList.toggle('is-done', isDone);
+          mark.innerHTML = isDone ? ICON_DONE : ICON_TODO;
+          a.querySelector('.toc-state').textContent = isDone ? ' (' + doneLabel + ')' : '';
+        });
+        progressN.textContent = String(done.size);
+        progressTotal.textContent = String(total);
+        progressBar.style.transform = 'scaleX(' + (total ? done.size / total : 0) + ')';
+      }
+      function revealCurrent() {
+        const link = panels.left.querySelector('.toc-list a[aria-current="true"]');
+        if (link && layout.dataset.left === 'open') link.scrollIntoView({ block: 'nearest' });
+      }
+
+      // ---------- 복습문제: 오른쪽 = 원문 · 힌트 · 풀이 ----------
+      function setupReview() {
+        const KEY = 'od-review-solved:' + RANGE + ':' + document.body.dataset.revision;
+        const cards = Array.from(document.querySelectorAll('main article.card'));
+        const aids = panels.right.querySelector('.aids');
+        const empty = panels.right.querySelector('.panel-empty');
+        const btn = document.getElementById('solved-btn');
+        const groups = {};
+        const solved = new Set(store.get(KEY, []).filter((id) => cards.some((c) => c.id === id)));
+        cards.forEach((card) => {
+          const g = document.createElement('div');
+          g.className = 'aid';
+          g.hidden = true;
+          card.querySelectorAll(':scope > details').forEach((d) => g.appendChild(d));
+          aids.appendChild(g);
+          groups[card.id] = g;
+        });
+        let curId = null;
+        function paintBtn() {
+          const on = solved.has(curId);
+          btn.setAttribute('aria-pressed', String(on));
+          btn.innerHTML = (on ? ICON_DONE : ICON_TODO) + '<span>' + (on ? '푼 문제 · 표시 해제' : '푼 문제로 표시') + '</span>';
+        }
+        btn.addEventListener('click', () => {
+          if (!curId) return;
+          if (solved.has(curId)) solved.delete(curId); else solved.add(curId);
+          store.set(KEY, Array.from(solved));
+          paintBtn();
+          markToc(solved, cards.length, '푼 문제');
+        });
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          curId = s.matches('article.card') ? s.id : null;
+          Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
+          empty.hidden = Boolean(curId);
+          btn.hidden = !curId;
+          if (curId) paintBtn();
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(solved, cards.length, '푼 문제');
+          revealCurrent();
+        });
+      }
+
+      // ---------- 정리노트: 오른쪽 = 페이지(토픽)별 요약 ----------
+      function setupNote() {
+        const KEY = 'od-note-read:' + RANGE;
+        const topics = Array.from(document.querySelectorAll('main article.topic'));
+        const read = new Set(store.get(KEY, []).filter((id) => topics.some((t) => t.id === id)));
+        // 조각의 <div class="sum" hidden> 을 오른쪽 패널로 옮긴다. 없으면 안내 문구만 보인다.
+        const box = panels.right.querySelector('.sums');
+        const sums = {};
+        topics.forEach((t) => {
+          const el = t.querySelector(':scope > .sum');
+          if (!el) return;
+          el.hidden = true;
+          box.appendChild(el);
+          sums[t.id] = el;
+        });
+        const empty = document.getElementById('sum-empty');
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          const key = s.matches('article.topic') ? s.id : 'intro';
+          Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
+          empty.hidden = Boolean(sums[key]);
+          if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(read, topics.length, '읽음');
+          revealCurrent();
+        });
+      }
+
+      if (kind === 'review') setupReview();
+      if (kind === 'note') setupNote();
+      sync();
+    })();
+  </script>
+  <script id="pager-ui">
+    (function () {
+      const root = document.documentElement;
+      const main = document.querySelector('main');
+      const hero = main.querySelector('.hero');
+      const screens = [hero].concat(Array.from(main.querySelectorAll(document.body.dataset.screens)));
+      if (screens.length < 2) { root.classList.remove('js'); return; }
+      screens.forEach((s) => s.classList.add('screen'));
+
+      const last = screens.length - 1;
+      const prevBtn = document.getElementById('pager-prev');
+      const nextBtn = document.getElementById('pager-next');
+      const count = document.getElementById('pager-count');
+      const bar = document.getElementById('pager-bar');
+      const status = document.getElementById('pager-status');
+      const toc = document.querySelector('#panel-left .toc');
+      const scroller = document.querySelector('.content');
+      const titleOf = (s) => ((s.querySelector('h3') || s.querySelector('h1') || {}).textContent || '').trim();
+      let cur = -1;
+
+      // 목차: 섹션 링크 아래에 화면(토픽·카드) 목록을 붙인다
+      const tocLinks = [];
+      Array.from(toc.querySelectorAll(':scope > a')).forEach((a) => {
+        const sec = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+        const group = document.createElement('div');
+        group.className = 'toc-group';
+        a.replaceWith(group);
+        group.appendChild(a);
+        if (!sec) return;
+        const list = document.createElement('ol');
+        list.className = 'toc-list';
+        screens.forEach((s, i) => {
+          if (!sec.contains(s)) return;
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#' + s.id;
+          link.innerHTML = '<span class="toc-title"></span>';
+          link.firstChild.textContent = titleOf(s);
+          li.appendChild(link);
+          list.appendChild(li);
+          tocLinks[i] = link;
+        });
+        group.appendChild(list);
+      });
+
+      function indexFor(hash) {
+        const id = decodeURIComponent((hash || '').replace(/^#/, ''));
+        const el = id && document.getElementById(id);
+        if (!el || !main.contains(el)) return { i: 0 };
+        const i = screens.findIndex((s) => s.contains(el) || el.contains(s));
+        return { i: Math.max(i, 0), target: i >= 0 && screens[i].contains(el) && screens[i] !== el ? el : null };
+      }
+
+      function render(i, target) {
+        const dir = cur < 0 ? '' : i > cur ? 'enter-next' : 'enter-prev';
+        if (i !== cur) {
+          if (cur >= 0) screens[cur].classList.remove('is-current', 'enter-next', 'enter-prev');
+          main.querySelectorAll(':scope > section.is-on').forEach((sec) => sec.classList.remove('is-on'));
+          const s = screens[i];
+          const sec = s.closest('section');
+          if (sec) sec.classList.add('is-on');
+          s.classList.add('is-current');
+          if (dir) { s.classList.remove('enter-next', 'enter-prev'); void s.offsetWidth; s.classList.add(dir); }
+          cur = i;
+          document.body.classList.toggle('at-end', i === last);
+          prevBtn.disabled = i === 0;
+          nextBtn.textContent = i === 0 ? '시작하기' : i === last ? '처음으로' : '다음';
+          count.textContent = i === 0 ? '' : i + ' / ' + last;
+          bar.style.transform = 'scaleX(' + (i / last) + ')';
+          status.textContent = i === 0 ? titleOf(s) : i + ' / ' + last + ', ' + titleOf(s);
+          tocLinks.forEach((link, k) => link && link.setAttribute('aria-current', String(k === i)));
+          document.dispatchEvent(new CustomEvent('od:screen', { detail: { index: i, screen: s } }));
+        }
+        if (target) target.scrollIntoView({ block: 'start' });
+        else scroller.scrollTo(0, 0);
+      }
+
+      function go(i) {
+        i = Math.min(Math.max(i, 0), last);
+        if (i === cur) return;
+        const url = i === 0 ? location.pathname + location.search : '#' + screens[i].id;
+        history.pushState(null, '', url);
+        render(i);
+      }
+
+      prevBtn.addEventListener('click', () => go(cur - 1));
+      nextBtn.addEventListener('click', () => go(cur === last ? 0 : cur + 1));
+      const fromUrl = () => { const r = indexFor(location.hash); render(r.i, r.target); };
+      window.addEventListener('hashchange', fromUrl);
+      window.addEventListener('popstate', fromUrl);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || document.body.classList.contains('drawer-open')) return;
+        if (e.target.closest('input, select, textarea, [contenteditable="true"]')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+      });
+
+      // 좌우로 밀어서 넘기기 (가로로 스크롤되는 영역은 제외)
+      let sx = 0, sy = 0, skip = true;
+      main.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY;
+        skip = e.touches.length > 1 || Boolean(e.target.closest('.widget, .katex-display, .table-wrap, pre, svg, input, details'));
+      }, { passive: true });
+      main.addEventListener('touchend', (e) => {
+        if (skip) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        if (Math.abs(dx) > 64 && Math.abs(dx) > 2 * Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      fromUrl();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>자료구조및알고리즘이해 정리노트 1102</title>
+  <meta name="description" content="이정원 교수님 자료구조및알고리즘이해 · 1102 수업 (Software_7 Tree)">
+  <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']})"></script>
+  <style>
+    /* ---------- 토큰 ---------- */
+    :root {
+      color-scheme: light;
+      --bg: #ffffff; --surface: #f7f8fa; --ink: #111111; --ink-2: #6b7280; --line: #d9dee7;
+      --accent: #1677ff; --accent-ink: #1b64da; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #b54708; --prof: #6941c6; --supp: #067647; --danger: #d92d20;
+      --font: 'Pretendard', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --fs-title: clamp(28px, 6vw, 36px); --fs-h3: clamp(26px, 5.4vw, 32px); --fs-layer: 19px; --fs-lead: 22px; --fs-body: 17px; --fs-sub: 15px; --fs-small: 14px; --fs-label: 13px; --fs-fig: 12px;
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+      --radius: 8px; --measure: 680px; --tap: 48px; --btn-min: 160px;
+      --dur: 220ms; --dur-exit: 150ms; --ease-out: cubic-bezier(.2, .8, .2, 1);
+      /* 예전 조각이 참조할 수 있는 이름 */
+      --surface-2: var(--surface); --accent-soft: var(--surface); --warn-soft: var(--surface);
+      --prof-soft: var(--surface); --supp-soft: var(--surface); --eli5: var(--accent-ink); --eli5-soft: var(--surface);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+        --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+        --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+      --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+    }
+
+    /* ---------- 기본 ---------- */
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+      background: var(--bg); color: var(--ink); font-family: var(--font); font-size: var(--fs-body); line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+    a { color: var(--accent-ink); text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    [hidden] { display: none !important; }
+
+    /* ---------- 상단 바 ---------- */
+    .topbar { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s2) var(--s4); display: flex; align-items: center; gap: var(--s3); min-height: 56px; }
+    .brand { flex: 1 1 auto; min-width: 0; font-size: var(--fs-body); font-weight: 700; white-space: nowrap; }
+    .text-btn { flex: none; min-height: 44px; min-width: 44px; padding: 0 var(--s3); border: 0; border-radius: var(--radius);
+      background: transparent; color: var(--ink); font: 600 var(--fs-small)/1 var(--font); cursor: pointer; }
+    .bar { height: 2px; background: var(--line); overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+
+    /* ---------- 본문 ---------- */
+    main { flex: 1 0 auto; width: 100%; max-width: var(--measure); margin: 0 auto; padding: var(--s6) var(--s5) var(--s7); }
+    .hero h1 { font-size: var(--fs-title); line-height: 1.3; margin: 0 0 var(--s3); letter-spacing: -0.02em; }
+    .hero p { color: var(--ink-2); margin: 0; }
+    section { margin-top: var(--s7); }
+    section > h2 { font-size: 22px; line-height: 1.4; margin: 0 0 var(--s4); }
+    .topic { padding: var(--s6) 0; border-top: 1px solid var(--line); }
+    .topic h3 { margin: 0 0 var(--s2); font-size: var(--fs-h3); font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; }
+    .tags { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); }
+    .tag { font-size: var(--fs-label); line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); white-space: nowrap; }
+
+    /* 레이어: 배경 없이 라벨과 구분선으로 나눈다 */
+    .layer { margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); }
+    .layer.eli5 { margin-top: 0; padding-top: 0; border-top: 0; }
+    .layer > :first-child { margin-top: 0; }
+    .layer > :last-child { margin-bottom: 0; }
+    .layer-title { display: block; font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; color: var(--ink); margin-bottom: var(--s3); }
+    .layer.eli5 .layer-title { color: var(--accent-ink); }
+    .layer.eli5 .lead { font-size: var(--fs-lead); font-weight: 700; line-height: 1.5; letter-spacing: -0.01em; margin: 0 0 var(--s4); }
+    /* 정확히 말하면: 본문 크기 그대로, 굵은 첫머리만 진하게 */
+    .layer.formal b { font-weight: 700; color: var(--ink); }
+    /* 교수님 말씀 · 주의: 보조 정보는 한 단계 작게 */
+    .layer.prof, .layer.warn { font-size: var(--fs-sub); line-height: 1.7; }
+    .layer.prof blockquote { font-size: var(--fs-sub); }
+    .layer.prof .layer-title { color: var(--prof); }
+    .layer.warn { background: var(--surface); border-top: 0; border-radius: var(--radius); padding: var(--s4); }
+    .layer.warn .layer-title { color: var(--warn); font-size: var(--fs-body); }
+    .layer.supp .badge.supp { margin-bottom: var(--s2); }
+    .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
+    .badge.supp { color: var(--supp); }
+    blockquote { margin: var(--s3) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
+    pre { margin: var(--s3) 0; padding: var(--s3) var(--s4); overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      font: var(--fs-small)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; white-space: pre; word-break: normal; overflow-wrap: normal; tab-size: 4; }
+    code { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; font-size: .92em; }
+    pre code { font-size: inherit; }
+    ol.steps { padding-left: 1.4em; }
+    ol.steps li { margin: var(--s2) 0; }
+
+    /* 그림 · 수식 · 표 */
+    .figure { margin: var(--s4) 0; text-align: center; }
+    .figure svg { width: 100%; height: auto; max-width: 560px; color: var(--ink); }
+    .figure figcaption { font-size: var(--fs-small); color: var(--ink-2); margin-top: var(--s1); }
+    .katex-display { overflow-x: auto; overflow-y: hidden; padding: var(--s1) 0; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
+    th, td { border-bottom: 1px solid var(--line); padding: var(--s2); text-align: left; vertical-align: top; }
+    th { color: var(--ink-2); font-weight: 600; }
+    td:first-child, th:first-child { min-width: 6em; }
+
+    /* 위젯 */
+    .widget { background: var(--surface); border-radius: var(--radius); padding: var(--s4); margin: var(--s5) 0; }
+    .widget h4 { margin: 0 0 var(--s1); font-size: var(--fs-layer); line-height: 1.4; }
+    .widget-help { font-size: var(--fs-small); color: var(--ink-2); margin: 0 0 var(--s3); }
+    .controls { display: grid; gap: var(--s2); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: var(--s2); font-size: var(--fs-small); }
+    .controls label { display: flex; align-items: center; gap: var(--s2); min-height: 44px; }
+    .controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+    .widget svg { width: 100%; height: auto; background: var(--bg); border-radius: var(--radius); }
+    .readout { font-size: var(--fs-small); margin-top: var(--s2); }
+    .legend { font-size: var(--fs-label); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: var(--s3); }
+    .sw { display: inline-block; width: 14px; height: 4px; vertical-align: middle; margin-right: var(--s1); border-radius: 2px; }
+    .sw.truth { background: var(--ink-2); } .sw.fit { background: var(--accent); } .sw.train { background: var(--accent); height: 10px; width: 10px; border-radius: 50%; }
+    .sw.test { background: var(--warn); height: 10px; width: 10px; border-radius: 50%; } .sw.like { background: var(--accent); } .sw.prior { background: var(--prof); } .sw.post { background: var(--supp); }
+    .axis { stroke: var(--line); stroke-width: 1.5; }
+    .tick { fill: var(--ink-2); font-size: 11px; }
+    .plot-truth { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .plot-fit { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+    .pt-train { fill: var(--accent); }
+    .pt-test { fill: var(--warn); }
+    .plot-like { fill: none; stroke: var(--accent); stroke-width: 2; }
+    .plot-prior { fill: none; stroke: var(--prof); stroke-width: 2; stroke-dasharray: 6 4; }
+    .plot-post { fill: none; stroke: var(--supp); stroke-width: 3; }
+    .mark-ml { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .mark-map { stroke: var(--supp); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .fig-ink { stroke: currentColor; fill: none; stroke-width: 2; }
+    .fig-accent { stroke: var(--accent); fill: none; stroke-width: 2.5; }
+    .fig-danger { stroke: var(--danger); fill: none; stroke-width: 2.5; }
+    .fig-dot { fill: var(--accent); }
+    .fig-text { fill: currentColor; font-size: 13px; font-family: inherit; }
+    .fig-muted { fill: var(--ink-2); font-size: var(--fs-fig); font-family: inherit; }
+
+    footer { width: 100%; max-width: var(--measure); margin: 0 auto; padding: 0 var(--s5) var(--s6); color: var(--ink-2); font-size: var(--fs-small); }
+
+    /* ---------- 하단 이동 바 ---------- */
+    .pager { position: sticky; bottom: 0; z-index: 10; background: var(--bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+    .pager-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s3) var(--s4); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--s3); }
+    .pager-count { font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; min-width: 4em; }
+    .btn { min-height: var(--tap); min-width: var(--btn-min); padding: 0 var(--s6); border-radius: var(--radius); border: 0; font: 700 var(--fs-body)/1 var(--font); cursor: pointer; white-space: nowrap;
+      transition: background-color 150ms ease-out, opacity 150ms ease-out; }
+    .btn-ghost { justify-self: start; background: var(--surface); color: var(--ink); }
+    .btn-primary { justify-self: end; background: var(--btn-bg); color: var(--on-btn); }
+    .btn:disabled { opacity: .4; cursor: default; }
+    @media (hover: hover) {
+      .text-btn:hover, .btn-ghost:not(:disabled):hover { background: var(--line); }
+      .btn-primary:not(:disabled):hover { box-shadow: inset 0 0 0 100px rgba(0, 0, 0, .14); }
+    }
+
+    /* ---------- 목차 시트 ---------- */
+    .sheet { width: min(100%, var(--measure)); max-width: 100%; max-height: 80dvh; margin: auto auto 0; padding: 0; border: 0;
+      border-radius: 16px 16px 0 0; background: var(--bg); color: var(--ink); }
+    .sheet::backdrop { background: rgba(0, 0, 0, .4); }
+    .sheet-inner { padding: var(--s4) var(--s5) calc(var(--s5) + env(safe-area-inset-bottom)); }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    .sheet-head h2 { margin: 0; font-size: var(--fs-lead); }
+    .toc { display: flex; flex-direction: column; }
+    .toc > a, .toc-group > a { display: block; padding: var(--s3) 0 var(--s1); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); text-decoration: none; }
+    .toc-list { list-style: none; margin: 0 0 var(--s2); padding: 0; }
+    .toc-list a { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); padding: var(--s2) var(--s3); margin: 0 calc(-1 * var(--s3));
+      border-radius: var(--radius); color: var(--ink); text-decoration: none; line-height: 1.4; }
+    .toc-list a[aria-current="true"] { background: var(--surface); font-weight: 700; color: var(--accent-ink); }
+    .toc-list .toc-title { flex: 1 1 0; min-width: 0; }
+    @media (hover: hover) { .toc-list a:hover { background: var(--surface); } }
+
+    /* ---------- 한 화면에 하나씩 (JS가 켤 때만) ---------- */
+    html:not(.js) .pager, html:not(.js) #toc-open { display: none; }
+    html:not(.js) .sheet { display: block; position: static; width: 100%; max-height: none; margin: 0 auto; border-radius: 0; border-bottom: 1px solid var(--line); }
+    html:not(.js) .sheet-close { display: none; }
+    .js main > .hero:not(.is-current), .js main > section:not(.is-on), .js .screen:not(.is-current) { display: none; }
+    .js main > section { margin-top: 0; }
+    .js main > section > h2 { font-size: var(--fs-small); font-weight: 600; color: var(--accent-ink); margin: 0 0 var(--s2); }
+    .js .topic { padding: 0; border-top: 0; }
+    .js .hero { padding-top: 12vh; }
+    .js footer { display: none; }
+    .js body.at-end footer { display: block; }
+    .screen.enter-next { animation: enter-next var(--dur) var(--ease-out); }
+    .screen.enter-prev { animation: enter-prev var(--dur) var(--ease-out); }
+    @keyframes enter-next { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    @keyframes enter-prev { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .screen.enter-next, .screen.enter-prev { animation: none; }
+      .bar > span, .btn { transition: none; }
+    }
+    @media (max-width: 480px) {
+      main { padding: var(--s5) var(--s4) var(--s6); }
+      footer { padding: 0 var(--s4) var(--s5); }
+      .btn { min-width: 120px; padding: 0 var(--s5); }
+    }
+    @media print {
+      .topbar, .pager, .sheet { display: none !important; }
+      .js main > .hero, .js main > section, .js .screen, .js footer { display: block !important; }
+    }
+
+    /* ---------- 좌우 패널 (drawer) ---------- */
+    :root { --panel-l: clamp(240px, 18vw, 320px); --panel-r-min: 320px; --panel-r-max: 720px; --scrollbar: 16px; --drawer-l: 304px; --drawer-r: 360px; --fs-panel: 16px; --scrim: rgba(0, 0, 0, .4); }
+    body { height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+    .topbar-inner { max-width: none; padding: var(--s2) var(--s3); gap: var(--s2); }
+    .panel-toggle { display: inline-flex; align-items: center; gap: var(--s1); padding: 0 var(--s2); }
+    .panel-toggle svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .panel-toggle .strip { fill: transparent; stroke: none; transition: fill 150ms ease-out; }
+    .panel-toggle[aria-expanded="true"] { color: var(--accent-ink); }
+    .panel-toggle[aria-expanded="true"] .strip { fill: currentColor; }
+    .theme-toggle { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+    .theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .theme-toggle .i-sun { display: none; }
+    :root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+    :root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .i-sun { display: block; }
+      :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+    }
+
+    .layout { display: grid; grid-template-columns: auto minmax(320px, 1fr) auto; min-height: 0; }
+    .content { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding-top: var(--s4); }
+    .panel { position: relative; display: flex; flex-direction: column; min-height: 0; overflow: hidden; background: var(--bg); color: var(--ink); font-size: var(--fs-panel); line-height: 1.6; }
+    .panel-left { grid-column: 1; border-right: 1px solid var(--line); }
+    .content { grid-column: 2; }
+    .panel-right { grid-column: 3; border-left: 1px solid var(--line); }
+    .panel-inner { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s4) var(--s4) var(--s6); }
+    :root { --scroll: #c9d0db; --scroll-hover: #9aa3b2; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --scroll: #3f414b; --scroll-hover: #5b5e6a; } }
+    :root[data-theme="dark"] { --scroll: #3f414b; --scroll-hover: #5b5e6a; }
+    .content::-webkit-scrollbar, .panel-inner::-webkit-scrollbar { width: 8px; }
+    :is(pre, .table-wrap, .katex-display)::-webkit-scrollbar { height: 8px; }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display)::-webkit-scrollbar-track { background: transparent; }
+    :is(.content, .panel-inner, .table-wrap, .katex-display)::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--bg); }
+    pre::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--surface); }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display)::-webkit-scrollbar-thumb:hover { background: var(--scroll-hover); }
+    @supports (scrollbar-color: auto) { :is(.content, .panel-inner, pre, .table-wrap, .katex-display) { scrollbar-width: thin; scrollbar-color: var(--scroll) transparent; } }
+    .panel-resize { display: none; }
+    .panel-head { display: flex; align-items: center; gap: var(--s2); min-height: 44px; margin-bottom: var(--s2); }
+    .panel-head h2 { flex: 1 1 0; min-width: 0; margin: 0; font-size: var(--fs-lead); line-height: 1.4; }
+    .panel-sub { margin: 0 0 var(--s4); font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
+    .panel-empty { margin: 0; color: var(--ink-2); }
+    .panel-label { display: block; margin: var(--s5) 0 var(--s2); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+
+    /* 진행 상태 */
+    .panel-meta { margin: 0 0 var(--s2); font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+    .panel-meta b { color: var(--ink); }
+    .progress { height: 4px; margin-bottom: var(--s3); border-radius: 2px; background: var(--line); overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+    .panel .toc-list a { margin: 0 calc(-1 * var(--s2)); padding: var(--s2); font-size: var(--fs-panel); }
+    .toc-mark { flex: none; display: block; width: 20px; height: 20px; color: var(--ink-2); }
+    .toc-mark svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .toc-mark.is-done { color: var(--accent-ink); }
+
+    /* 복습문제: 원문 · 힌트 · 풀이 */
+    .aid details:last-of-type { border-bottom: 1px solid var(--line); }
+    .aid details.original > summary { font-size: var(--fs-panel); }
+    .solved-btn { display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%; min-height: var(--tap); margin-top: var(--s5); padding: 0 var(--s4);
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 700 var(--fs-panel)/1.2 var(--font); cursor: pointer; }
+    .solved-btn svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .solved-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); }
+
+    /* 정리노트: 페이지 요약 */
+    .sum-lead { margin: 0; font-size: var(--fs-body); font-weight: 700; line-height: 1.6; }
+    .eq-list { list-style: none; margin: 0; padding: 0; }
+    .eq-list li { padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+    .eq-list li:first-child { padding-top: 0; }
+    .eq-name { display: block; font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+    .eq-list .katex-display { margin: var(--s1) 0 0; text-align: left; }
+    .eq-list .katex-display > .katex { text-align: left; }
+    .terms { margin: 0; }
+    .terms dt { font-size: var(--fs-panel); font-weight: 700; margin-top: var(--s4); }
+    .terms dt:first-child { margin-top: 0; }
+    .terms dd { margin: var(--s1) 0 0; font-size: var(--fs-sub); line-height: 1.6; color: var(--ink-2); }
+    .flow { margin: 0; padding-left: 1.4em; font-size: var(--fs-sub); }
+    .flow li { margin: var(--s2) 0; }
+
+    @media (hover: hover) { .solved-btn:hover { background: var(--surface); } }
+
+    /* 넓은 화면: 본문 옆에 붙는 패널 */
+    @media (min-width: 1024px) {
+      .layout { --l: var(--panel-l-user, var(--panel-l)); }
+      .layout[data-left="closed"] { --l: 0px; }
+      .panel-left { width: var(--l); }
+      /* 기본값: 왼쪽 패널과 본문 폭을 뺀 나머지를 오른쪽 패널이 차지 → 본문 옆 빈 여백이 생기지 않는다 */
+      .panel-right { width: var(--panel-r-user, clamp(var(--panel-r-min), calc(100vw - var(--l) - var(--measure) - var(--scrollbar)), var(--panel-r-max))); }
+      .panel-resize { display: block; position: absolute; top: 0; bottom: 0; z-index: 2; width: 12px; padding: 0; border: 0; background: transparent; cursor: col-resize; touch-action: none; }
+      .panel-left .panel-resize { right: 0; }
+      .panel-right .panel-resize { left: 0; }
+      .panel-resize::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: 0; transition: opacity 150ms ease-out; }
+      .panel-left .panel-resize::after { right: 0; }
+      .panel-right .panel-resize::after { left: 0; }
+      .panel-resize:focus-visible { outline: none; }
+      .panel-resize:focus-visible::after, .is-resizing .panel-resize:active::after { opacity: 1; }
+      @media (hover: hover) { .panel-resize:hover::after { opacity: 1; } }
+      body.is-resizing { cursor: col-resize; user-select: none; }
+      .layout[data-left="closed"] .panel-left, .layout[data-right="closed"] .panel-right { display: none; }
+      .panel.is-shown { animation: panel-fade var(--dur) var(--ease-out); }
+      .scrim, .panel-close { display: none; }
+    }
+    @keyframes panel-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* 좁은 화면: 가장자리에서 밀려 나오는 drawer */
+    @media (max-width: 1023.98px) {
+      .panel { position: fixed; top: 0; bottom: 0; z-index: 40; visibility: hidden;
+        transition: transform var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .panel-left { left: 0; width: min(var(--drawer-l), 88vw); transform: translateX(-100%); }
+      .panel-right { right: 0; width: min(var(--drawer-r), 88vw); transform: translateX(100%); }
+      .panel.is-open { visibility: visible; transform: none; transition: transform var(--dur) var(--ease-out); }
+      .panel-inner { padding-top: calc(var(--s3) + env(safe-area-inset-top)); padding-bottom: calc(var(--s6) + env(safe-area-inset-bottom)); }
+      .scrim { position: fixed; inset: 0; z-index: 35; background: var(--scrim); opacity: 0; visibility: hidden;
+        transition: opacity var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .scrim.is-on { opacity: 1; visibility: visible; transition: opacity var(--dur) var(--ease-out); }
+      html:not(.js) .panel-left { display: none; }
+    }
+    @media (max-width: 480px) { .panel-toggle { padding: 0 var(--s1); } }
+    html:not(.js) .panel-toggle, html:not(.js) .panel-right, html:not(.js) .scrim { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .panel.is-open, .scrim, .scrim.is-on, .progress > span, .panel-toggle .strip { transition: none; }
+      .panel.is-shown { animation: none; }
+      .panel-resize::after { transition: none; }
+    }
+    @media print {
+      body { display: block; height: auto; overflow: visible; }
+      .layout { display: block; }
+      .content { overflow: visible; }
+      .panel, .scrim { display: none !important; }
+    }
+  </style>
+</head>
+<body data-screens="article.topic" data-panels="note" data-range="1102">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
+      <strong class="brand">정리노트</strong>
+      <button class="text-btn theme-toggle" id="theme-toggle" type="button" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="text-btn panel-toggle" id="toggle-right" type="button" aria-controls="panel-right" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="15" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span>요약</span></button>
+    </div>
+    <div class="bar" aria-hidden="true"><span id="pager-bar"></span></div>
+  </header>
+  <div class="layout" data-left="open" data-right="closed">
+    <aside class="panel panel-left" id="panel-left" aria-labelledby="panel-left-title">
+      <div class="panel-resize" data-side="left" role="separator" aria-orientation="vertical" aria-controls="panel-left" aria-label="왼쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-left-title">목차</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-meta">읽은 토픽 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+        <nav class="toc" aria-label="목차"><a href="#s0">1 트리 표현</a><a href="#s1">2 순회</a><a href="#s2">3 순회 응용</a><a href="#s3">4 요약·예고</a></nav>
+      </div>
+    </aside>
+    <div class="content">
+  <main>
+    <div class="hero">
+      <h1>이진 트리의 표현과 순회 — 5살도 이해하는 정리노트</h1>
+      <p>이정원 교수님 자료구조및알고리즘이해 · 1102 수업 (Software_7 Tree)</p>
+    </div>
+    <section id="s0"><h2>1. 이진 트리를 컴퓨터에 담는 법</h2>
+<article class="topic" id="s0-array"><h3>1. 배열 표현법</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p7–8</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">나무의 자리마다 번호를 붙이고, 그 번호가 적힌 사물함에 하나씩 넣어요.</p>
+    <figure class="figure"><svg id="fig-array-locker" viewBox="0 0 540 190" role="img" aria-label="테두리 동그라미 여섯 개로 된 나무 그림. 위에서 아래로, 왼쪽에서 오른쪽으로 1부터 6까지 번호가 붙어 있고, 오른쪽의 네모 칸 일곱 개에 같은 번호대로 들어가 있다. 7번 칸은 비어 있다.">
+      <line class="fig-ink" x1="130" y1="44" x2="78" y2="78"/>
+      <line class="fig-ink" x1="140" y1="44" x2="192" y2="78"/>
+      <line class="fig-ink" x1="62" y1="104" x2="44" y2="134"/>
+      <line class="fig-ink" x1="78" y1="104" x2="96" y2="134"/>
+      <line class="fig-ink" x1="192" y1="104" x2="174" y2="134"/>
+      <circle class="fig-ink" cx="135" cy="30" r="17"/><text class="fig-text" x="135" y="35" text-anchor="middle" font-size="14">가</text>
+      <circle class="fig-ink" cx="70" cy="90" r="17"/><text class="fig-text" x="70" y="95" text-anchor="middle" font-size="14">나</text>
+      <circle class="fig-ink" cx="200" cy="90" r="17"/><text class="fig-text" x="200" y="95" text-anchor="middle" font-size="14">다</text>
+      <circle class="fig-ink" cx="38" cy="150" r="17"/><text class="fig-text" x="38" y="155" text-anchor="middle" font-size="14">라</text>
+      <circle class="fig-ink" cx="102" cy="150" r="17"/><text class="fig-text" x="102" y="155" text-anchor="middle" font-size="14">마</text>
+      <circle class="fig-ink" cx="168" cy="150" r="17"/><text class="fig-text" x="168" y="155" text-anchor="middle" font-size="14">바</text>
+      <text class="fig-muted" x="160" y="20" font-size="12">1</text>
+      <text class="fig-muted" x="40" y="86" font-size="12">2</text>
+      <text class="fig-muted" x="224" y="86" font-size="12">3</text>
+      <text class="fig-muted" x="12" y="178" font-size="12">4</text>
+      <text class="fig-muted" x="122" y="178" font-size="12">5</text>
+      <text class="fig-muted" x="188" y="178" font-size="12">6</text>
+      <rect class="fig-ink" x="280" y="80" width="34" height="34"/><text class="fig-text" x="297" y="102" text-anchor="middle" font-size="14">가</text><text class="fig-muted" x="297" y="72" text-anchor="middle" font-size="12">1</text>
+      <rect class="fig-ink" x="314" y="80" width="34" height="34"/><text class="fig-text" x="331" y="102" text-anchor="middle" font-size="14">나</text><text class="fig-muted" x="331" y="72" text-anchor="middle" font-size="12">2</text>
+      <rect class="fig-ink" x="348" y="80" width="34" height="34"/><text class="fig-text" x="365" y="102" text-anchor="middle" font-size="14">다</text><text class="fig-muted" x="365" y="72" text-anchor="middle" font-size="12">3</text>
+      <rect class="fig-ink" x="382" y="80" width="34" height="34"/><text class="fig-text" x="399" y="102" text-anchor="middle" font-size="14">라</text><text class="fig-muted" x="399" y="72" text-anchor="middle" font-size="12">4</text>
+      <rect class="fig-ink" x="416" y="80" width="34" height="34"/><text class="fig-text" x="433" y="102" text-anchor="middle" font-size="14">마</text><text class="fig-muted" x="433" y="72" text-anchor="middle" font-size="12">5</text>
+      <rect class="fig-ink" x="450" y="80" width="34" height="34"/><text class="fig-text" x="467" y="102" text-anchor="middle" font-size="14">바</text><text class="fig-muted" x="467" y="72" text-anchor="middle" font-size="12">6</text>
+      <rect class="fig-accent" x="484" y="80" width="34" height="34"/><text class="fig-muted" x="501" y="72" text-anchor="middle" font-size="12">7</text>
+      <text class="fig-muted" x="501" y="134" text-anchor="middle" font-size="12">빈 칸</text>
+    </svg><figcaption>아직 아무도 없는 자리의 사물함은 비워 둬요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>트리도 스택·큐·리스트처럼 결국 배열(array) 아니면 연결 리스트(linked list)로 구현해야 해요. 그래서 "어떻게 담을지"에 대한 약속을 먼저 정해요.</p>
+    <p>먼저 복습할 두 가지 트리예요(S7 p7).</p>
+    <ul>
+      <li><b>포화 이진 트리(full binary tree)</b>: 모든 레벨에 노드가 꽉 차 있는 이진 트리예요.</li>
+      <li><b>완전 이진 트리(complete binary tree)</b>: 높이가 $h$일 때 레벨 1부터 $h-1$까지는 꽉 차 있고, 마지막 레벨 $h$는 왼쪽부터 순서대로 채워진 이진 트리예요. 포화 이진 트리로 가는 과정에 있는 트리라고 볼 수 있어요.</li>
+      <li>둘 다 아니어도 자식이 둘 이하라는 조건만 맞으면 그냥 이진 트리예요.</li>
+    </ul>
+    <p><b>배열 표현법</b>은 모든 이진 트리를 <b>포화 이진 트리</b>라고 가정하고, 각 자리에 번호를 붙여 그 번호를 배열 인덱스로 삼아 노드의 데이터를 저장하는 방법이에요.</p>
+    <ul>
+      <li>번호는 위에서 아래로, 같은 레벨에서는 왼쪽에서 오른쪽으로 매겨요.</li>
+      <li>루트가 1, 그 아래가 2·3, 다음 레벨이 4~7, 그다음이 8~15, 16~31 순이에요.</li>
+      <li><b>0번</b> 인덱스는 쓰지 않아요. 루트를 1번으로 가정하기 때문이에요.</li>
+    </ul>
+    <p>노드 $i$의 부모와 자식은 계산으로 바로 찾아요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>찾는 노드</th><th>인덱스</th><th>예</th></tr></thead>
+      <tbody>
+        <tr><td>부모</td><td>$\lfloor i/2 \rfloor$</td><td>$5/2 = 2.5 \to 2$, $8/2 = 4$</td></tr>
+        <tr><td>왼쪽 자식</td><td>$2i$</td><td>1의 왼쪽 자식은 2</td></tr>
+        <tr><td>오른쪽 자식</td><td>$2i+1$</td><td>1의 오른쪽 자식은 3</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li>계산한 자리가 비어 있으면 그 자식은 없어요. 2의 오른쪽 자식 자리 5가 비어 있으면 "오른쪽 자식은 NULL"이라고 말해요.</li>
+      <li>부모 찾기를 거듭하면(재귀적으로) 어느 노드에서든 루트까지 올라갈 수 있어요.</li>
+    </ul>
+    <p><b>완전 이진 트리 예</b>(S7 p8 (a)): 1:A, 2:B, 3:C, 4:D, 5:E, 6:F이고 7번은 비어 있어요. 나중에 G가 들어오면 7번 자리에 들어가요.</p>
+    <p><b>경사 이진 트리 예</b>(S7 p8 (b)): A–B–C–D가 왼쪽으로만 이어진 트리예요.</p>
+    <figure class="figure"><svg id="fig-array-skewed" viewBox="0 0 560 170" role="img" aria-label="테두리 동그라미 A, B, C, D가 왼쪽 아래로만 이어진 경사 이진 트리와, 0번부터 8번까지의 네모 칸. 1번 A, 2번 B, 4번 C, 8번 D만 차 있고 0번은 쓰지 않으며 3, 5, 6, 7번은 빈칸으로 남아 있다.">
+      <line class="fig-ink" x1="112" y1="34" x2="88" y2="58"/>
+      <line class="fig-ink" x1="72" y1="80" x2="52" y2="104"/>
+      <line class="fig-ink" x1="34" y1="126" x2="22" y2="140"/>
+      <circle class="fig-ink" cx="122" cy="24" r="15"/><text class="fig-text" x="122" y="29" text-anchor="middle" font-size="14">A</text>
+      <circle class="fig-ink" cx="80" cy="70" r="15"/><text class="fig-text" x="80" y="75" text-anchor="middle" font-size="14">B</text>
+      <circle class="fig-ink" cx="42" cy="116" r="15"/><text class="fig-text" x="42" y="121" text-anchor="middle" font-size="14">C</text>
+      <circle class="fig-ink" cx="18" cy="152" r="13"/><text class="fig-text" x="18" y="157" text-anchor="middle" font-size="13">D</text>
+      <text class="fig-muted" x="144" y="20" font-size="12">1</text>
+      <text class="fig-muted" x="102" y="66" font-size="12">2</text>
+      <text class="fig-muted" x="64" y="112" font-size="12">4</text>
+      <text class="fig-muted" x="38" y="160" font-size="12">8</text>
+      <rect class="fig-ink" x="200" y="60" width="38" height="36"/><text class="fig-muted" x="219" y="83" text-anchor="middle" font-size="12">안 씀</text><text class="fig-muted" x="219" y="52" text-anchor="middle" font-size="12">0</text>
+      <rect class="fig-ink" x="238" y="60" width="38" height="36"/><text class="fig-text" x="257" y="83" text-anchor="middle" font-size="14">A</text><text class="fig-muted" x="257" y="52" text-anchor="middle" font-size="12">1</text>
+      <rect class="fig-ink" x="276" y="60" width="38" height="36"/><text class="fig-text" x="295" y="83" text-anchor="middle" font-size="14">B</text><text class="fig-muted" x="295" y="52" text-anchor="middle" font-size="12">2</text>
+      <rect class="fig-accent" x="314" y="60" width="38" height="36"/><text class="fig-muted" x="333" y="52" text-anchor="middle" font-size="12">3</text>
+      <rect class="fig-ink" x="352" y="60" width="38" height="36"/><text class="fig-text" x="371" y="83" text-anchor="middle" font-size="14">C</text><text class="fig-muted" x="371" y="52" text-anchor="middle" font-size="12">4</text>
+      <rect class="fig-accent" x="390" y="60" width="38" height="36"/><text class="fig-muted" x="409" y="52" text-anchor="middle" font-size="12">5</text>
+      <rect class="fig-accent" x="428" y="60" width="38" height="36"/><text class="fig-muted" x="447" y="52" text-anchor="middle" font-size="12">6</text>
+      <rect class="fig-accent" x="466" y="60" width="38" height="36"/><text class="fig-muted" x="485" y="52" text-anchor="middle" font-size="12">7</text>
+      <rect class="fig-ink" x="504" y="60" width="38" height="36"/><text class="fig-text" x="523" y="83" text-anchor="middle" font-size="14">D</text><text class="fig-muted" x="523" y="52" text-anchor="middle" font-size="12">8</text>
+      <text class="fig-muted" x="409" y="118" text-anchor="middle" font-size="12">빈칸은 당기지 않아요</text>
+    </svg><figcaption>강조색 테두리 칸이 빈칸이에요. 3번과 5~7번을 비워 둔 채로 8번에 D가 들어가요.</figcaption></figure>
+    <p>배열만 보고 트리를 다시 그리는 순서예요.</p>
+    <ol class="steps">
+      <li>1번 A → 루트</li>
+      <li>2번 B → $\lfloor 2/2 \rfloor = 1$, A의 왼쪽 자식</li>
+      <li>3번 빈칸 → 통과(A의 오른쪽 자식은 NULL)</li>
+      <li>4번 C → $\lfloor 4/2 \rfloor = 2$, B의 왼쪽 자식</li>
+      <li>5, 6, 7번 빈칸 → 통과</li>
+      <li>8번 D → $\lfloor 8/2 \rfloor = 4$, C의 왼쪽 자식</li>
+    </ol>
+    <ul>
+      <li><b>빈칸을 당기지 않아요.</b> 자리가 번호로 고정돼 있어서, 빈칸을 당겨 채우면 8번 노드가 5번 자리로 가 버려요. 그러면 부모·자식 관계가 틀어져요.</li>
+      <li>희소행렬처럼 다른 표현법으로 바꾸지 않고, 빈칸은 그대로 비워 둬요.</li>
+    </ul>
+    <p>이렇게 자리를 고정해 두는 이유는 부모와 자식을 쉽게 찾기 위해서예요. 선형 자료구조는 인덱스를 따라가면(스택은 top에서 bottom, 큐는 front에서 rear) 언젠가 모든 데이터를 만나요. 트리는 왼쪽으로 내려가면 오른쪽 데이터를 못 만날 수도 있어서, 어느 갈래로 가는지가 중요해요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>배열을 보고 트리 그림을 되살리는 연습을 강조하셨어요.</p>
+    <blockquote>"요 array만 보고서도 … 트리 그림을 그려 봐라, 그럼 그릴 수 있어야 돼요." (1102 Part 01)</blockquote>
+    <blockquote>"3번은 없으니까 통과, 4번에 C, 5, 6, 7 통과, 그다음에 8번에 D" (1102 Part 01)</blockquote>
+    <p>"0번은 왜 안 써요?"라는 질문을 스스로 던지고, 루트를 1번으로 가정하기 때문이라고 답하셨어요(1102 Part 01).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">포화 이진 트리라고 가정하고 자리 번호를 배열 인덱스로 써요. 루트는 1번, 0번은 안 쓰고, 빈칸은 당기지 않아요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list">
+      <li><span class="eq-name">부모</span>$$\lfloor i/2 \rfloor$$</li>
+      <li><span class="eq-name">왼쪽 자식</span>$$2i$$</li>
+      <li><span class="eq-name">오른쪽 자식</span>$$2i+1$$</li>
+    </ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>배열 표현법</dt><dd>자리 번호를 배열 인덱스로 삼아 노드를 저장하는 방법</dd>
+      <dt>포화 이진 트리(full binary tree)</dt><dd>모든 레벨에 노드가 꽉 찬 이진 트리</dd>
+      <dt>완전 이진 트리(complete binary tree)</dt><dd>마지막 레벨만 왼쪽부터 채워지는 중인 이진 트리</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s0-link"><h3>2. 링크 표현법</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p8</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span>
+    <p class="lead">번호 대신, 각 칸이 왼손과 오른손으로 자기 아이를 직접 가리켜요.</p>
+    <figure class="figure"><svg id="fig-link-hands" viewBox="0 0 460 170" role="img" aria-label="세 칸으로 나뉜 테두리 상자 세 개. 위 상자의 왼쪽 칸에서 왼쪽 아래 상자로, 오른쪽 칸에서 오른쪽 아래 상자로 화살표가 이어진다. 아래 두 상자의 양쪽 칸에는 없음이라고 적혀 있다.">
+      <rect class="fig-ink" x="170" y="14" width="120" height="34"/>
+      <line class="fig-ink" x1="210" y1="14" x2="210" y2="48"/><line class="fig-ink" x1="250" y1="14" x2="250" y2="48"/>
+      <text class="fig-text" x="230" y="36" text-anchor="middle" font-size="14">가</text>
+      <rect class="fig-ink" x="20" y="110" width="150" height="34"/>
+      <line class="fig-ink" x1="70" y1="110" x2="70" y2="144"/><line class="fig-ink" x1="120" y1="110" x2="120" y2="144"/>
+      <text class="fig-muted" x="45" y="132" text-anchor="middle" font-size="12">없음</text>
+      <text class="fig-text" x="95" y="132" text-anchor="middle" font-size="14">나</text>
+      <text class="fig-muted" x="145" y="132" text-anchor="middle" font-size="12">없음</text>
+      <rect class="fig-ink" x="290" y="110" width="150" height="34"/>
+      <line class="fig-ink" x1="340" y1="110" x2="340" y2="144"/><line class="fig-ink" x1="390" y1="110" x2="390" y2="144"/>
+      <text class="fig-muted" x="315" y="132" text-anchor="middle" font-size="12">없음</text>
+      <text class="fig-text" x="365" y="132" text-anchor="middle" font-size="14">다</text>
+      <text class="fig-muted" x="415" y="132" text-anchor="middle" font-size="12">없음</text>
+      <line class="fig-accent" x1="190" y1="31" x2="99" y2="104"/>
+      <path class="fig-accent" d="M95 108 L99 96 L106 104"/>
+      <line class="fig-accent" x1="270" y1="31" x2="361" y2="104"/>
+      <path class="fig-accent" d="M365 108 L354 104 L361 96"/>
+    </svg><figcaption>가리킬 아이가 없는 손은 아무것도 가리키지 않아요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><b>링크 표현법</b>은 포인터를 이용해 부모 노드가 자식 노드를 가리키게 하는 방법이에요. 노드마다 데이터와 왼쪽·오른쪽 자식을 가리키는 링크 두 개를 둬요.</p>
+    <pre><code class="language-c">typedef struct TreeNode {
+    int data;
+    struct TreeNode *left, *right;
+} TreeNode;</code></pre>
+    <p class="footnote">슬라이드에는 <code>Typedef</code>로 적혀 있지만 C 키워드는 소문자 <code>typedef</code>여서 고쳐 실었어요.</p>
+    <ul>
+      <li><code>data</code>는 노드의 값, <code>left</code>는 왼쪽 자식, <code>right</code>는 오른쪽 자식을 가리켜요. 교수님은 링크가 두 개라 "더블 링크", llink·rlink라고도 부르셨는데, 슬라이드 코드의 필드 이름은 <code>left</code>, <code>right</code>예요.</li>
+      <li>인덱스가 없어요. 루트에서 시작해 조건에 따라 <code>left</code>나 <code>right</code>를 따라 내려가요.</li>
+      <li>자식이 없으면 그 링크는 <code>NULL</code>이에요.</li>
+    </ul>
+    <p><b>완전 이진 트리 예</b>(S7 p8 (a)): A의 <code>left</code>는 B, <code>right</code>는 C예요. B는 D와 E를 가리키고, C는 <code>left</code>로 F를 가리키며 <code>right</code>는 NULL이에요. D, E, F는 양쪽 다 NULL이에요.</p>
+    <p><b>경사 이진 트리</b>(skewed tree) 예(S7 p8 (b)): <code>left</code> 링크만 A → B → C → D로 이어지고, <code>right</code>는 계속 NULL이에요.</p>
+    <figure class="figure"><svg id="fig-link-skewed" viewBox="0 0 520 210" role="img" aria-label="left, data, right 세 칸으로 나뉜 테두리 상자 A, B, C, D가 왼쪽 아래로 계단처럼 놓여 있다. 각 상자의 left 칸에서 다음 상자로 화살표가 이어지고, right 칸에는 모두 NULL이 적혀 있으며 D는 left 칸도 NULL이다.">
+      <text class="fig-muted" x="330" y="14" text-anchor="middle" font-size="12">left · data · right</text>
+      <rect class="fig-ink" x="270" y="20" width="120" height="30"/><line class="fig-ink" x1="310" y1="20" x2="310" y2="50"/><line class="fig-ink" x1="350" y1="20" x2="350" y2="50"/>
+      <text class="fig-text" x="330" y="40" text-anchor="middle" font-size="14">A</text><text class="fig-muted" x="370" y="40" text-anchor="middle" font-size="12">NULL</text>
+      <rect class="fig-ink" x="190" y="70" width="120" height="30"/><line class="fig-ink" x1="230" y1="70" x2="230" y2="100"/><line class="fig-ink" x1="270" y1="70" x2="270" y2="100"/>
+      <text class="fig-text" x="250" y="90" text-anchor="middle" font-size="14">B</text><text class="fig-muted" x="290" y="90" text-anchor="middle" font-size="12">NULL</text>
+      <rect class="fig-ink" x="110" y="120" width="120" height="30"/><line class="fig-ink" x1="150" y1="120" x2="150" y2="150"/><line class="fig-ink" x1="190" y1="120" x2="190" y2="150"/>
+      <text class="fig-text" x="170" y="140" text-anchor="middle" font-size="14">C</text><text class="fig-muted" x="210" y="140" text-anchor="middle" font-size="12">NULL</text>
+      <rect class="fig-ink" x="30" y="170" width="120" height="30"/><line class="fig-ink" x1="70" y1="170" x2="70" y2="200"/><line class="fig-ink" x1="110" y1="170" x2="110" y2="200"/>
+      <text class="fig-muted" x="50" y="190" text-anchor="middle" font-size="12">NULL</text><text class="fig-text" x="90" y="190" text-anchor="middle" font-size="14">D</text><text class="fig-muted" x="130" y="190" text-anchor="middle" font-size="12">NULL</text>
+      <line class="fig-accent" x1="290" y1="35" x2="252" y2="64"/><path class="fig-accent" d="M248 67 L252 57 L258 64"/>
+      <line class="fig-accent" x1="210" y1="85" x2="172" y2="114"/><path class="fig-accent" d="M168 117 L172 107 L178 114"/>
+      <line class="fig-accent" x1="130" y1="135" x2="92" y2="164"/><path class="fig-accent" d="M88 167 L92 157 L98 164"/>
+    </svg><figcaption>경사 이진 트리는 left 링크만 이어지고 right 칸은 모두 NULL이에요.</figcaption></figure>
+    <p><b>왜 높이가 중요할까요?</b> 트리는 부모와 자식을 따라 루트로 올라가거나 리프로 내려가는 과정을 빠르게 하려고 만든 자료구조예요.</p>
+    <ul>
+      <li>데이터가 4개뿐인 높이 4 경사 이진 트리는 최악의 경우 4번을 따라가야 찾아요.</li>
+      <li>노드가 6개여도 고르게 퍼진 트리는 1~3번 만에 찾을 수 있어요.</li>
+    </ul>
+    <p><b>배열과 링크 중 무엇을 쓸까요?</b></p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>상황</th><th>고를 표현법</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td>레벨 3 정도 안에서만 움직이고 더 커지지 않는 트리</td><td>배열 표현법</td><td>단순해요</td></tr>
+        <tr><td>입력에 따라 깊이가 10, 20으로 동적으로 늘어나는 트리</td><td>링크 표현법</td><td>배열을 크게 잡아 두지 않고 노드를 만들면서 연결해요</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>"페어런트와 차일드를 얼마나 빨리 찾아 나가느냐가 굉장히 중요합니다. 제가 높이가 중요하다고 했잖아요?" (1102 Part 02)</blockquote>
+    <p>노드가 더 많아도 1~2번 만에 찾을 수 있는 까닭은 "뒤에 설명을 해 줄 건데"라며 다음 내용으로 미루셨어요(1102 Part 02).</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">부모 노드가 포인터로 자식을 직접 가리키고, 자식이 없으면 NULL이에요. 트리가 동적으로 깊어지면 링크 표현법이 나아요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>링크 표현법</dt><dd>포인터로 부모 노드가 자식 노드를 가리키게 하는 방법</dd>
+      <dt>NULL</dt><dd>가리킬 자식이 없을 때 링크에 두는 값</dd>
+      <dt>경사 이진 트리(skewed tree)</dt><dd>left 링크만 이어지고 right는 계속 NULL인 트리</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s1"><h2>2. 이진 트리의 순회</h2>
+<article class="topic" id="s1-traversal"><h3>3. 순회와 VLR·LVR·LRV</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p9</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">나무의 동그라미를 정해진 규칙대로 빠짐없이 하나씩 들러요.</p>
+    <figure class="figure"><svg id="fig-s1-vlr-eli5" viewBox="0 0 600 190" role="img" aria-label="같은 모양 세 개. 각각 강조색 테두리 동그라미 맨 위 하나 아래에 선 테두리 삼각형 왼쪽과 오른쪽이 있고 들르는 순서 번호가 적혀 있음. 첫째는 맨 위 1, 왼쪽 2, 오른쪽 3. 둘째는 왼쪽 1, 맨 위 2, 오른쪽 3. 셋째는 왼쪽 1, 오른쪽 2, 맨 위 3"><circle class="fig-accent" cx="100" cy="38" r="18"/><text class="fig-text" x="100" y="43" text-anchor="middle" style="font-size:15px">1</text><line class="fig-ink" x1="87" y1="51" x2="59" y2="78"/><line class="fig-ink" x1="113" y1="51" x2="141" y2="78"/><path class="fig-ink" d="M55,76 L91,146 L19,146 Z"/><path class="fig-ink" d="M145,76 L181,146 L109,146 Z"/><text class="fig-text" x="55" y="120" text-anchor="middle" style="font-size:15px">2</text><text class="fig-text" x="145" y="120" text-anchor="middle" style="font-size:15px">3</text><text class="fig-muted" x="55" y="140" text-anchor="middle">왼쪽</text><text class="fig-muted" x="145" y="140" text-anchor="middle">오른쪽</text><text class="fig-text" x="100" y="176" text-anchor="middle" style="font-size:14px">맨 위 먼저</text><circle class="fig-accent" cx="300" cy="38" r="18"/><text class="fig-text" x="300" y="43" text-anchor="middle" style="font-size:15px">2</text><line class="fig-ink" x1="287" y1="51" x2="259" y2="78"/><line class="fig-ink" x1="313" y1="51" x2="341" y2="78"/><path class="fig-ink" d="M255,76 L291,146 L219,146 Z"/><path class="fig-ink" d="M345,76 L381,146 L309,146 Z"/><text class="fig-text" x="255" y="120" text-anchor="middle" style="font-size:15px">1</text><text class="fig-text" x="345" y="120" text-anchor="middle" style="font-size:15px">3</text><text class="fig-muted" x="255" y="140" text-anchor="middle">왼쪽</text><text class="fig-muted" x="345" y="140" text-anchor="middle">오른쪽</text><text class="fig-text" x="300" y="176" text-anchor="middle" style="font-size:14px">맨 위 가운데</text><circle class="fig-accent" cx="500" cy="38" r="18"/><text class="fig-text" x="500" y="43" text-anchor="middle" style="font-size:15px">3</text><line class="fig-ink" x1="487" y1="51" x2="459" y2="78"/><line class="fig-ink" x1="513" y1="51" x2="541" y2="78"/><path class="fig-ink" d="M455,76 L491,146 L419,146 Z"/><path class="fig-ink" d="M545,76 L581,146 L509,146 Z"/><text class="fig-text" x="455" y="120" text-anchor="middle" style="font-size:15px">1</text><text class="fig-text" x="545" y="120" text-anchor="middle" style="font-size:15px">2</text><text class="fig-muted" x="455" y="140" text-anchor="middle">왼쪽</text><text class="fig-muted" x="545" y="140" text-anchor="middle">오른쪽</text><text class="fig-text" x="500" y="176" text-anchor="middle" style="font-size:14px">맨 위 마지막</text></svg><figcaption>맨 위를 먼저, 가운데, 마지막 중 언제 들르느냐로 세 가지 방법이 나뉘어요. 왼쪽은 언제나 오른쪽보다 먼저예요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><strong>순회</strong>(traversal)는 트리의 노드들을 <strong>체계적</strong>으로 방문하는 연산이에요. 이진 트리의 중요한 연산이고, 내장(built-in) 함수는 아니에요.</p>
+    <ul>
+      <li>traverse는 '배회하다'라는 뜻이에요. 찾을 타깃 없이, 트리에 어떤 노드들이 있는지 훑어보는 거예요.</li>
+      <li>"체계적"이란 반드시 규칙이 있고 그 규칙을 따른다는 뜻이에요. A, F, C, B처럼 아무 순서로 다 보는 것은 순회가 아니에요.</li>
+      <li>스택(stack)과 큐(queue)의 순회는 선형 방법이에요(top에서 bottom으로, front에서 rear로).</li>
+    </ul>
+    <figure class="figure"><svg id="fig-s1-vlr" viewBox="0 0 520 245" role="img" aria-label="강조색 테두리 원 V가 루트이고 그 아래 선 테두리 삼각형 L과 R이 있다. L 삼각형 안은 다시 작은 테두리 원 V와 작은 삼각형 L, R로 나뉘어 있음"><circle class="fig-accent" cx="260" cy="34" r="20"/><text class="fig-text" x="260" y="39" text-anchor="middle" style="font-size:15px">V</text><line class="fig-ink" x1="244" y1="46" x2="146" y2="72"/><line class="fig-ink" x1="276" y1="46" x2="374" y2="72"/><path class="fig-ink" d="M140,70 L240,210 L40,210 Z"/><path class="fig-ink" d="M380,70 L480,210 L280,210 Z"/><circle class="fig-ink" cx="140" cy="106" r="14"/><text class="fig-text" x="140" y="111" text-anchor="middle" style="font-size:13px">V</text><line class="fig-ink" x1="131" y1="117" x2="110" y2="136"/><line class="fig-ink" x1="149" y1="117" x2="170" y2="136"/><path class="fig-ink" d="M105,135 L140,195 L70,195 Z"/><path class="fig-ink" d="M175,135 L210,195 L140,195 Z"/><text class="fig-text" x="105" y="184" text-anchor="middle" style="font-size:13px">L</text><text class="fig-text" x="175" y="184" text-anchor="middle" style="font-size:13px">R</text><text class="fig-text" x="380" y="165" text-anchor="middle" style="font-size:18px">R</text><text class="fig-muted" x="140" y="232" text-anchor="middle">왼쪽 서브트리 L</text><text class="fig-muted" x="380" y="232" text-anchor="middle">오른쪽 서브트리 R</text><text class="fig-muted" x="300" y="34" text-anchor="start">루트</text></svg><figcaption>모든 이진 트리는 루트 V, 왼쪽 서브트리 L, 오른쪽 서브트리 R로 볼 수 있어요. L 안도 다시 V, L, R로 나뉘어요.</figcaption></figure>
+    <p>V는 vertex로, 여기서는 루트예요. L은 왼쪽 서브트리(left subtree), R은 오른쪽 서브트리(right subtree)예요. 이진 트리의 기본 순회 세 가지는 루트 V를 언제 방문하느냐로 갈려요.</p>
+    <div class="table-wrap"><table>
+      <tr><th>순회</th><th>순서</th><th>슬라이드 설명</th></tr>
+      <tr><td>전위 순회(preorder traversal)</td><td>VLR</td><td>자손 노드보다 루트 노드를 먼저 방문</td></tr>
+      <tr><td>중위 순회(inorder traversal)</td><td>LVR</td><td>왼쪽 자손, 루트, 오른쪽 자손 순으로 방문</td></tr>
+      <tr><td>후위 순회(postorder traversal)</td><td>LRV</td><td>루트 노드보다 자손을 먼저 방문</td></tr>
+    </table></div>
+    <ul>
+      <li><strong>L과 R의 순서는 바뀌지 않아요.</strong> 세 순회 모두 레프트가 우선이에요. 바뀌는 것은 V의 자리뿐이에요.</li>
+      <li>스택 단원의 전위·중위·후위 표기법(prefix·infix·postfix)과 같은 구조예요.</li>
+      <li>재귀적 추상화: 모든 이진 트리는 "V + L + R"로 볼 수 있어요. L을 다시 쪼개면 또 V, L, R이 되고, 이렇게 계속 내려가요.</li>
+      <li>빈 트리(NULL)도 서브트리 조건을 만족해요. 하지만 루트 자체는 NULL일 수 없어요. 루트에서 끊어진 것은 트리가 아니라 나뭇가지예요.</li>
+      <li>슬라이드는 세 순회가 "모두 내부적으로 Stack 구조를 이용"한다고 적어요. 트리는 배열이나 링크로 표현하는데, 순회 함수가 재귀 호출(recursive call)을 할 때마다 <strong>내부 스택</strong>이 호출을 차곡차곡 쌓아 기억해 주기 때문이에요. 자세한 동작은 <a href="#s1-preorder">4. 전위 순회와 목차</a>에서 이어져요.</li>
+    </ul>
+    <div class="widget" id="widget-travorder"><h4>직접 해 보기: 전위·중위·후위 순서 찍기</h4>
+      <p class="widget-help">순회를 고르고 "다음"을 누를 때마다 다음으로 방문하는 노드에 번호가 붙고, 아래 칸에 찍힌 순서가 하나씩 쌓여요.</p>
+      <div class="controls" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <label>순회 <select id="travorder-mode"><option value="pre">전위(VLR)</option><option value="in">중위(LVR)</option><option value="post">후위(LRV)</option></select></label>
+        <button class="btn btn-ghost" id="travorder-reset" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">처음부터</button>
+        <button class="btn btn-ghost" id="travorder-prev" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">이전</button>
+        <button class="btn btn-primary" id="travorder-next" type="button" style="justify-self:auto;min-width:0;padding:0 16px">다음</button>
+      </div>
+      <svg id="travorder-plot" viewBox="0 0 600 305" role="img" aria-label="수식 a*b + c/d 트리를 전위(VLR)로 0번째 노드까지 방문한 상태. 방문한 노드는 강조색 테두리 원에 방문 순서 번호가 붙고, 방금 방문한 노드는 강조색 테두리 원이 한 겹 더 둘러져 있음. 아래 칸에 찍힌 순서: 없음."><text class="fig-muted" x="12" y="20">전위(VLR) · 0/7</text><line class="fig-ink" x1="282.4" y1="55.5" x2="187.6" y2="106.5"/><line class="fig-ink" x1="317.6" y1="55.5" x2="412.4" y2="106.5"/><line class="fig-ink" x1="156.4" y1="130.7" x2="118.6" y2="171.3"/><line class="fig-ink" x1="183.6" y1="130.7" x2="221.4" y2="171.3"/><line class="fig-ink" x1="416.4" y1="130.7" x2="378.6" y2="171.3"/><line class="fig-ink" x1="443.6" y1="130.7" x2="481.4" y2="171.3"/><circle class="fig-ink" cx="300" cy="46" r="20"/><text class="fig-text" x="300" y="51" text-anchor="middle" style="font-size:16px">+</text><circle class="fig-ink" cx="170" cy="116" r="20"/><text class="fig-text" x="170" y="121" text-anchor="middle" style="font-size:16px">*</text><circle class="fig-ink" cx="430" cy="116" r="20"/><text class="fig-text" x="430" y="121" text-anchor="middle" style="font-size:16px">/</text><circle class="fig-ink" cx="105" cy="186" r="20"/><text class="fig-text" x="105" y="191" text-anchor="middle" style="font-size:16px">a</text><circle class="fig-ink" cx="235" cy="186" r="20"/><text class="fig-text" x="235" y="191" text-anchor="middle" style="font-size:16px">b</text><circle class="fig-ink" cx="365" cy="186" r="20"/><text class="fig-text" x="365" y="191" text-anchor="middle" style="font-size:16px">c</text><circle class="fig-ink" cx="495" cy="186" r="20"/><text class="fig-text" x="495" y="191" text-anchor="middle" style="font-size:16px">d</text><text class="fig-muted" x="12" y="262">찍힌 순서</text><rect class="fig-ink" x="90" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="118" y="294" text-anchor="middle">1</text><rect class="fig-ink" x="154" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="182" y="294" text-anchor="middle">2</text><rect class="fig-ink" x="218" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="246" y="294" text-anchor="middle">3</text><rect class="fig-ink" x="282" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="310" y="294" text-anchor="middle">4</text><rect class="fig-ink" x="346" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="374" y="294" text-anchor="middle">5</text><rect class="fig-ink" x="410" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="438" y="294" text-anchor="middle">6</text><rect class="fig-ink" x="474" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="502" y="294" text-anchor="middle">7</text></svg>
+      <p class="readout">지금 상태: <b id="travorder-out">전위(VLR) 0/7 · 방금 방문: 아직 없음 · 지금까지: (비어 있음)</b></p>
+      <p class="legend"><span><span class="sw fit"></span>강조색 테두리: 방문한 노드(번호 = 방문 순서)</span><span><span class="sw fit"></span>한 겹 더 두른 원·강조색 칸: 방금 방문한 노드</span></p>
+      <div class="widget-static" hidden>
+        <figure class="figure"><svg id="widget-travorder-static-1" viewBox="0 0 600 305" role="img" aria-label="수식 a*b + c/d 트리를 전위(VLR)로 7번째 노드까지 방문한 상태. 방문한 노드는 강조색 테두리 원에 방문 순서 번호가 붙고, 방금 방문한 노드는 강조색 테두리 원이 한 겹 더 둘러져 있음. 아래 칸에 찍힌 순서: + * a b / c d."><text class="fig-muted" x="12" y="20">전위(VLR) · 7/7</text><line class="fig-ink" x1="282.4" y1="55.5" x2="187.6" y2="106.5"/><line class="fig-ink" x1="317.6" y1="55.5" x2="412.4" y2="106.5"/><line class="fig-ink" x1="156.4" y1="130.7" x2="118.6" y2="171.3"/><line class="fig-ink" x1="183.6" y1="130.7" x2="221.4" y2="171.3"/><line class="fig-ink" x1="416.4" y1="130.7" x2="378.6" y2="171.3"/><line class="fig-ink" x1="443.6" y1="130.7" x2="481.4" y2="171.3"/><circle class="fig-accent" cx="300" cy="46" r="20"/><text class="fig-text" x="300" y="51" text-anchor="middle" style="font-size:16px">+</text><text class="fig-text" x="270" y="28" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><circle class="fig-accent" cx="170" cy="116" r="20"/><text class="fig-text" x="170" y="121" text-anchor="middle" style="font-size:16px">*</text><text class="fig-text" x="140" y="98" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><circle class="fig-accent" cx="430" cy="116" r="20"/><text class="fig-text" x="430" y="121" text-anchor="middle" style="font-size:16px">/</text><text class="fig-text" x="460" y="98" text-anchor="middle" style="font-size:14px;font-weight:700">5</text><circle class="fig-accent" cx="105" cy="186" r="20"/><text class="fig-text" x="105" y="191" text-anchor="middle" style="font-size:16px">a</text><text class="fig-text" x="75" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">3</text><circle class="fig-accent" cx="235" cy="186" r="20"/><text class="fig-text" x="235" y="191" text-anchor="middle" style="font-size:16px">b</text><text class="fig-text" x="265" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">4</text><circle class="fig-accent" cx="365" cy="186" r="20"/><text class="fig-text" x="365" y="191" text-anchor="middle" style="font-size:16px">c</text><text class="fig-text" x="335" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">6</text><circle class="fig-accent" cx="495" cy="186" r="20"/><circle class="fig-accent" cx="495" cy="186" r="26"/><text class="fig-text" x="495" y="191" text-anchor="middle" style="font-size:16px">d</text><text class="fig-text" x="525" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">7</text><text class="fig-muted" x="12" y="262">찍힌 순서</text><rect class="fig-ink" x="90" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="118" y="294" text-anchor="middle">1</text><text class="fig-text" x="118" y="264" text-anchor="middle" style="font-size:16px">+</text><rect class="fig-ink" x="154" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="182" y="294" text-anchor="middle">2</text><text class="fig-text" x="182" y="264" text-anchor="middle" style="font-size:16px">*</text><rect class="fig-ink" x="218" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="246" y="294" text-anchor="middle">3</text><text class="fig-text" x="246" y="264" text-anchor="middle" style="font-size:16px">a</text><rect class="fig-ink" x="282" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="310" y="294" text-anchor="middle">4</text><text class="fig-text" x="310" y="264" text-anchor="middle" style="font-size:16px">b</text><rect class="fig-ink" x="346" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="374" y="294" text-anchor="middle">5</text><text class="fig-text" x="374" y="264" text-anchor="middle" style="font-size:16px">/</text><rect class="fig-ink" x="410" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="438" y="294" text-anchor="middle">6</text><text class="fig-text" x="438" y="264" text-anchor="middle" style="font-size:16px">c</text><rect class="fig-accent" x="474" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="502" y="294" text-anchor="middle">7</text><text class="fig-text" x="502" y="264" text-anchor="middle" style="font-size:16px">d</text></svg><figcaption>전위(VLR) 7단계까지 누른 결과예요.</figcaption></figure>
+        <figure class="figure"><svg id="widget-travorder-static-2" viewBox="0 0 600 305" role="img" aria-label="수식 a*b + c/d 트리를 중위(LVR)로 7번째 노드까지 방문한 상태. 방문한 노드는 강조색 테두리 원에 방문 순서 번호가 붙고, 방금 방문한 노드는 강조색 테두리 원이 한 겹 더 둘러져 있음. 아래 칸에 찍힌 순서: a * b + c / d."><text class="fig-muted" x="12" y="20">중위(LVR) · 7/7</text><line class="fig-ink" x1="282.4" y1="55.5" x2="187.6" y2="106.5"/><line class="fig-ink" x1="317.6" y1="55.5" x2="412.4" y2="106.5"/><line class="fig-ink" x1="156.4" y1="130.7" x2="118.6" y2="171.3"/><line class="fig-ink" x1="183.6" y1="130.7" x2="221.4" y2="171.3"/><line class="fig-ink" x1="416.4" y1="130.7" x2="378.6" y2="171.3"/><line class="fig-ink" x1="443.6" y1="130.7" x2="481.4" y2="171.3"/><circle class="fig-accent" cx="300" cy="46" r="20"/><text class="fig-text" x="300" y="51" text-anchor="middle" style="font-size:16px">+</text><text class="fig-text" x="270" y="28" text-anchor="middle" style="font-size:14px;font-weight:700">4</text><circle class="fig-accent" cx="170" cy="116" r="20"/><text class="fig-text" x="170" y="121" text-anchor="middle" style="font-size:16px">*</text><text class="fig-text" x="140" y="98" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><circle class="fig-accent" cx="430" cy="116" r="20"/><text class="fig-text" x="430" y="121" text-anchor="middle" style="font-size:16px">/</text><text class="fig-text" x="460" y="98" text-anchor="middle" style="font-size:14px;font-weight:700">6</text><circle class="fig-accent" cx="105" cy="186" r="20"/><text class="fig-text" x="105" y="191" text-anchor="middle" style="font-size:16px">a</text><text class="fig-text" x="75" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><circle class="fig-accent" cx="235" cy="186" r="20"/><text class="fig-text" x="235" y="191" text-anchor="middle" style="font-size:16px">b</text><text class="fig-text" x="265" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">3</text><circle class="fig-accent" cx="365" cy="186" r="20"/><text class="fig-text" x="365" y="191" text-anchor="middle" style="font-size:16px">c</text><text class="fig-text" x="335" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">5</text><circle class="fig-accent" cx="495" cy="186" r="20"/><circle class="fig-accent" cx="495" cy="186" r="26"/><text class="fig-text" x="495" y="191" text-anchor="middle" style="font-size:16px">d</text><text class="fig-text" x="525" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">7</text><text class="fig-muted" x="12" y="262">찍힌 순서</text><rect class="fig-ink" x="90" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="118" y="294" text-anchor="middle">1</text><text class="fig-text" x="118" y="264" text-anchor="middle" style="font-size:16px">a</text><rect class="fig-ink" x="154" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="182" y="294" text-anchor="middle">2</text><text class="fig-text" x="182" y="264" text-anchor="middle" style="font-size:16px">*</text><rect class="fig-ink" x="218" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="246" y="294" text-anchor="middle">3</text><text class="fig-text" x="246" y="264" text-anchor="middle" style="font-size:16px">b</text><rect class="fig-ink" x="282" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="310" y="294" text-anchor="middle">4</text><text class="fig-text" x="310" y="264" text-anchor="middle" style="font-size:16px">+</text><rect class="fig-ink" x="346" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="374" y="294" text-anchor="middle">5</text><text class="fig-text" x="374" y="264" text-anchor="middle" style="font-size:16px">c</text><rect class="fig-ink" x="410" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="438" y="294" text-anchor="middle">6</text><text class="fig-text" x="438" y="264" text-anchor="middle" style="font-size:16px">/</text><rect class="fig-accent" x="474" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="502" y="294" text-anchor="middle">7</text><text class="fig-text" x="502" y="264" text-anchor="middle" style="font-size:16px">d</text></svg><figcaption>중위(LVR) 7단계까지 누른 결과예요.</figcaption></figure>
+        <figure class="figure"><svg id="widget-travorder-static-3" viewBox="0 0 600 305" role="img" aria-label="수식 a*b + c/d 트리를 후위(LRV)로 7번째 노드까지 방문한 상태. 방문한 노드는 강조색 테두리 원에 방문 순서 번호가 붙고, 방금 방문한 노드는 강조색 테두리 원이 한 겹 더 둘러져 있음. 아래 칸에 찍힌 순서: a b * c d / +."><text class="fig-muted" x="12" y="20">후위(LRV) · 7/7</text><line class="fig-ink" x1="282.4" y1="55.5" x2="187.6" y2="106.5"/><line class="fig-ink" x1="317.6" y1="55.5" x2="412.4" y2="106.5"/><line class="fig-ink" x1="156.4" y1="130.7" x2="118.6" y2="171.3"/><line class="fig-ink" x1="183.6" y1="130.7" x2="221.4" y2="171.3"/><line class="fig-ink" x1="416.4" y1="130.7" x2="378.6" y2="171.3"/><line class="fig-ink" x1="443.6" y1="130.7" x2="481.4" y2="171.3"/><circle class="fig-accent" cx="300" cy="46" r="20"/><circle class="fig-accent" cx="300" cy="46" r="26"/><text class="fig-text" x="300" y="51" text-anchor="middle" style="font-size:16px">+</text><text class="fig-text" x="270" y="28" text-anchor="middle" style="font-size:14px;font-weight:700">7</text><circle class="fig-accent" cx="170" cy="116" r="20"/><text class="fig-text" x="170" y="121" text-anchor="middle" style="font-size:16px">*</text><text class="fig-text" x="140" y="98" text-anchor="middle" style="font-size:14px;font-weight:700">3</text><circle class="fig-accent" cx="430" cy="116" r="20"/><text class="fig-text" x="430" y="121" text-anchor="middle" style="font-size:16px">/</text><text class="fig-text" x="460" y="98" text-anchor="middle" style="font-size:14px;font-weight:700">6</text><circle class="fig-accent" cx="105" cy="186" r="20"/><text class="fig-text" x="105" y="191" text-anchor="middle" style="font-size:16px">a</text><text class="fig-text" x="75" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><circle class="fig-accent" cx="235" cy="186" r="20"/><text class="fig-text" x="235" y="191" text-anchor="middle" style="font-size:16px">b</text><text class="fig-text" x="265" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><circle class="fig-accent" cx="365" cy="186" r="20"/><text class="fig-text" x="365" y="191" text-anchor="middle" style="font-size:16px">c</text><text class="fig-text" x="335" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">4</text><circle class="fig-accent" cx="495" cy="186" r="20"/><text class="fig-text" x="495" y="191" text-anchor="middle" style="font-size:16px">d</text><text class="fig-text" x="525" y="168" text-anchor="middle" style="font-size:14px;font-weight:700">5</text><text class="fig-muted" x="12" y="262">찍힌 순서</text><rect class="fig-ink" x="90" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="118" y="294" text-anchor="middle">1</text><text class="fig-text" x="118" y="264" text-anchor="middle" style="font-size:16px">a</text><rect class="fig-ink" x="154" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="182" y="294" text-anchor="middle">2</text><text class="fig-text" x="182" y="264" text-anchor="middle" style="font-size:16px">b</text><rect class="fig-ink" x="218" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="246" y="294" text-anchor="middle">3</text><text class="fig-text" x="246" y="264" text-anchor="middle" style="font-size:16px">*</text><rect class="fig-ink" x="282" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="310" y="294" text-anchor="middle">4</text><text class="fig-text" x="310" y="264" text-anchor="middle" style="font-size:16px">c</text><rect class="fig-ink" x="346" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="374" y="294" text-anchor="middle">5</text><text class="fig-text" x="374" y="264" text-anchor="middle" style="font-size:16px">d</text><rect class="fig-ink" x="410" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="438" y="294" text-anchor="middle">6</text><text class="fig-text" x="438" y="264" text-anchor="middle" style="font-size:16px">/</text><rect class="fig-accent" x="474" y="240" width="56" height="36" rx="4"/><text class="fig-muted" x="502" y="294" text-anchor="middle">7</text><text class="fig-text" x="502" y="264" text-anchor="middle" style="font-size:16px">+</text></svg><figcaption>후위(LRV) 7단계까지 누른 결과예요.</figcaption></figure>
+        <div class="table-wrap"><table><tr><th>순회</th><th>찍힌 순서</th></tr><tr><td>전위(VLR)</td><td>+ * a b / c d</td></tr><tr><td>중위(LVR)</td><td>a * b + c / d</td></tr><tr><td>후위(LRV)</td><td>a b * c d / +</td></tr></table></div>
+      </div>
+    </div>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>여기에 이제 체계적으로라는 말이 중요한데요 (1102 Part 02)</blockquote>
+    <blockquote>L, R의 순서는 바뀌지 않습니다. 그래서 항상 레프트가 우선순위가 있다 (1102 Part 02)</blockquote>
+    <ul>
+      <li>교수님이 학교 다닐 때는 트리의 동그라미를 노드가 아니라 vertex라고 불렀어요. 그래서 루트를 V로 적어요.</li>
+      <li>"트리인데 스택을 이용한다고?"라는 의문을 먼저 던지고, 답은 재귀 호출을 쌓는 내부 스택이라고 뒤에서 풀었어요.</li>
+    </ul>
+    <blockquote>루트가 없는 트리는 나뭇가지에 불과합니다. (1102 Part 02)</blockquote>
+    <p>루트가 있고 루트로부터 연결돼야 트리가 된다는 뜻이에요.</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">순회는 트리의 노드를 규칙대로 빠짐없이 방문하는 연산이고, 루트 V를 언제 방문하느냐로 VLR·LVR·LRV가 갈려요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>순회(traversal)</dt><dd>트리의 노드들을 체계적으로 방문하는 것</dd>
+      <dt>전위 순회(preorder)</dt><dd>VLR, 루트를 먼저 방문</dd>
+      <dt>중위 순회(inorder)</dt><dd>LVR, 루트를 가운데에 방문</dd>
+      <dt>후위 순회(postorder)</dt><dd>LRV, 루트를 맨 나중에 방문</dd>
+      <dt>L과 R의 순서</dt><dd>바뀌지 않아요. 레프트가 우선</dd>
+      <dt>내부 스택</dt><dd>재귀 호출을 쌓아 기억해 주는 스택</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s1-preorder"><h3>4. 전위 순회와 목차</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p10</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">목차는 큰 장을 먼저 적고, 그 장 안의 작은 절을 차례로 적어요.</p>
+    <figure class="figure"><svg id="fig-s1-toc-eli5" viewBox="0 0 520 205" role="img" aria-label="책 상자 아래 1장·2장 상자, 각 장 아래 절 상자 두 개가 선으로 이어진 그림. 들르는 순서 번호는 책 1, 1장 2, 1장 1절 3, 1장 2절 4, 2장 5, 2장 1절 6, 2장 2절 7"><line class="fig-ink" x1="260" y1="48" x2="140" y2="84"/><line class="fig-ink" x1="260" y1="48" x2="380" y2="84"/><line class="fig-ink" x1="140" y1="116" x2="80" y2="154"/><line class="fig-ink" x1="140" y1="116" x2="200" y2="154"/><line class="fig-ink" x1="380" y1="116" x2="320" y2="154"/><line class="fig-ink" x1="380" y1="116" x2="440" y2="154"/><rect class="fig-ink" x="220" y="16" width="80" height="32" rx="4"/><text class="fig-text" x="260" y="36.6" text-anchor="middle" style="font-size:13px">책</text><text class="fig-text" x="208" y="37" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><rect class="fig-ink" x="100" y="84" width="80" height="32" rx="4"/><text class="fig-text" x="140" y="104.6" text-anchor="middle" style="font-size:13px">1장</text><text class="fig-text" x="88" y="105" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><rect class="fig-ink" x="340" y="84" width="80" height="32" rx="4"/><text class="fig-text" x="380" y="104.6" text-anchor="middle" style="font-size:13px">2장</text><text class="fig-text" x="328" y="105" text-anchor="middle" style="font-size:14px;font-weight:700">5</text><rect class="fig-ink" x="40" y="154" width="80" height="32" rx="4"/><text class="fig-text" x="80" y="174.6" text-anchor="middle" style="font-size:13px">1장 1절</text><text class="fig-text" x="80" y="202" text-anchor="middle" style="font-size:14px;font-weight:700">3</text><rect class="fig-ink" x="160" y="154" width="80" height="32" rx="4"/><text class="fig-text" x="200" y="174.6" text-anchor="middle" style="font-size:13px">1장 2절</text><text class="fig-text" x="200" y="202" text-anchor="middle" style="font-size:14px;font-weight:700">4</text><rect class="fig-ink" x="280" y="154" width="80" height="32" rx="4"/><text class="fig-text" x="320" y="174.6" text-anchor="middle" style="font-size:13px">2장 1절</text><text class="fig-text" x="320" y="202" text-anchor="middle" style="font-size:14px;font-weight:700">6</text><rect class="fig-ink" x="400" y="154" width="80" height="32" rx="4"/><text class="fig-text" x="440" y="174.6" text-anchor="middle" style="font-size:13px">2장 2절</text><text class="fig-text" x="440" y="202" text-anchor="middle" style="font-size:14px;font-weight:700">7</text></svg><figcaption>번호 순서대로 읽으면 책 목차가 그대로 나와요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><strong>전위 순회</strong>(preorder traversal, VLR)는 루트를 먼저 방문하는 순회예요. 루트, 왼쪽 서브트리, 오른쪽 서브트리 순으로 방문해요. 응용 분야는 구조화된 문서 출력이고, 예는 책의 <strong>목차</strong>예요.</p>
+    <figure class="figure"><svg id="fig-s1-toc" viewBox="0 0 680 235" role="img" aria-label="강의록 S7 p10의 목차 트리. 자료구조 아래 1, 2, 3장 상자, 그 아래 절 상자들이 선으로 이어져 있고 상자 옆 숫자가 전위 순회 방문 순서 1부터 11"><line class="fig-ink" x1="340" y1="45" x2="120" y2="80"/><line class="fig-ink" x1="340" y1="45" x2="340" y2="80"/><line class="fig-ink" x1="340" y1="45" x2="560" y2="80"/><line class="fig-ink" x1="120" y1="120" x2="70" y2="165"/><line class="fig-ink" x1="120" y1="120" x2="170" y2="165"/><line class="fig-ink" x1="340" y1="120" x2="260" y2="165"/><line class="fig-ink" x1="340" y1="120" x2="340" y2="165"/><line class="fig-ink" x1="340" y1="120" x2="420" y2="165"/><line class="fig-ink" x1="560" y1="120" x2="510" y2="165"/><line class="fig-ink" x1="560" y1="120" x2="610" y2="165"/><rect class="fig-ink" x="290" y="15" width="100" height="30" rx="4"/><text class="fig-text" x="340" y="34.2" text-anchor="middle" style="font-size:12px">자료구조</text><text class="fig-text" x="278" y="35" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><rect class="fig-ink" x="45" y="80" width="150" height="40" rx="4"/><text class="fig-text" x="120" y="97.2" text-anchor="middle" style="font-size:12px">1. 자료구조와</text><text class="fig-text" x="120" y="111.2" text-anchor="middle" style="font-size:12px">알고리즘이란?</text><text class="fig-text" x="33" y="105" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><rect class="fig-ink" x="265" y="80" width="150" height="40" rx="4"/><text class="fig-text" x="340" y="97.2" text-anchor="middle" style="font-size:12px">2. 기초적인</text><text class="fig-text" x="340" y="111.2" text-anchor="middle" style="font-size:12px">자료구조</text><text class="fig-text" x="253" y="105" text-anchor="middle" style="font-size:14px;font-weight:700">5</text><rect class="fig-ink" x="485" y="80" width="150" height="40" rx="4"/><text class="fig-text" x="560" y="104.2" text-anchor="middle" style="font-size:12px">3. 고급자료구조</text><text class="fig-text" x="473" y="105" text-anchor="middle" style="font-size:14px;font-weight:700">9</text><rect class="fig-ink" x="32" y="165" width="76" height="30" rx="4"/><text class="fig-text" x="70" y="183.9" text-anchor="middle" style="font-size:11px">1.1 자료구조</text><text class="fig-text" x="70" y="214" text-anchor="middle" style="font-size:14px;font-weight:700">3</text><rect class="fig-ink" x="132" y="165" width="76" height="30" rx="4"/><text class="fig-text" x="170" y="183.9" text-anchor="middle" style="font-size:11px">1.2 알고리즘</text><text class="fig-text" x="170" y="214" text-anchor="middle" style="font-size:14px;font-weight:700">4</text><rect class="fig-ink" x="222" y="165" width="76" height="30" rx="4"/><text class="fig-text" x="260" y="184.2" text-anchor="middle" style="font-size:12px">2.1 스택</text><text class="fig-text" x="260" y="214" text-anchor="middle" style="font-size:14px;font-weight:700">6</text><rect class="fig-ink" x="302" y="165" width="76" height="30" rx="4"/><text class="fig-text" x="340" y="184.2" text-anchor="middle" style="font-size:12px">2.2 큐</text><text class="fig-text" x="340" y="214" text-anchor="middle" style="font-size:14px;font-weight:700">7</text><rect class="fig-ink" x="382" y="165" width="76" height="30" rx="4"/><text class="fig-text" x="420" y="184.2" text-anchor="middle" style="font-size:12px">2.3 리스트</text><text class="fig-text" x="420" y="214" text-anchor="middle" style="font-size:14px;font-weight:700">8</text><rect class="fig-ink" x="472" y="165" width="76" height="30" rx="4"/><text class="fig-text" x="510" y="184.2" text-anchor="middle" style="font-size:12px">3.1 트리</text><text class="fig-text" x="510" y="214" text-anchor="middle" style="font-size:14px;font-weight:700">10</text><rect class="fig-ink" x="572" y="165" width="76" height="30" rx="4"/><text class="fig-text" x="610" y="184.2" text-anchor="middle" style="font-size:12px">3.2 그래프</text><text class="fig-text" x="610" y="214" text-anchor="middle" style="font-size:14px;font-weight:700">11</text></svg><figcaption>강의록 S7 p10의 목차 트리예요. 숫자는 전위 순회로 방문하는 순서예요.</figcaption></figure>
+    <p>이 목차 트리는 자식이 셋인 노드가 있어서 이진 트리는 아니에요. 이진 트리로 바꿔 생각하는 방법도 있다고만 언급했어요.</p>
+    <p>추적(번호 = 방문 순서):</p>
+    <ol class="steps">
+      <li>자료구조(V) 방문 → 1</li>
+      <li>L로 재귀: "1. 자료구조와 알고리즘이란?"(V) 방문 → 2. 끝나지 않고 다시 L로 재귀</li>
+      <li>1.1 자료구조 방문 → 3. L은 NULL, R도 NULL. 바닥을 쳤으니 돌아옴</li>
+      <li>1.2 알고리즘 → 4</li>
+      <li>"2. 기초적인 자료구조" → 5. 아직 6번은 못 가요. 다시 L로 재귀</li>
+      <li>2.1 스택 → 6, 2.2 큐 → 7, 2.3 리스트 → 8</li>
+      <li>"3. 고급자료구조" → 9, 3.1 트리 → 10, 3.2 그래프 → 11</li>
+    </ol>
+    <p>순서대로 찍으면 공부할 챕터 순서가 나와요. "VLR이니까 2, 3, 4가 한 번에 찍힌다"고 생각하면 안 돼요. V를 방문한 다음 L이나 R로 가는 순간 무조건 재귀로 내려가고, NULL로 바닥을 쳐야 올라와요.</p>
+    <p>슬라이드 코드(S7 p10):</p>
+<pre><code class="language-c">// 전위 순회
+void preorder( TreeNode *root ){
+    if ( root ){
+        printf("%d", root-&gt;data );  // 노드 방문
+        preorder( root-&gt;left );// 왼쪽서브트리 순회
+        preorder( root-&gt;right );// 오른쪽서브트리 순회
+    }
+}</code></pre>
+    <p>슬라이드는 반환형을 생략했지만 C11에서는 오류라 <code>void</code>를 보충했어요. 예제 데이터가 글자이므로, 글자 데이터라면 <code>%d</code> 대신 <code>%c</code>(또는 <code>%s</code>)로 찍어야 해요.</p>
+    <ul>
+      <li>"방문"이 출력만 뜻하지는 않아요. 계산 같은, 방문해서 할 일을 해요. 이 프로그램에서는 목차를 찍는 것이 할 일이에요.</li>
+      <li>V, L, R이므로 자기 자신을 두 번 호출해요. 그동안 본 재귀는 대개 한 번 호출했지만, 피보나치처럼 두 번, 필요하면 세 번도 호출할 수 있어요.</li>
+      <li>중위·후위 코드는 <code>printf</code> 줄의 위치만 옮기면 돼요(<a href="#s1-inorder">5. 중위 순회와 수식 a*b + c/d</a>, <a href="#s1-postorder">6. 후위 순회와 디렉토리 용량</a>).</li>
+    </ul>
+    <p>재귀 함수의 두 조건(2장 복습):</p>
+    <ol>
+      <li><strong>종결 조건</strong>: 바닥을 치는 조건이에요. 여기서는 <code>root</code>가 NULL인 경우예요. if문에 들어가지 않고 그냥 나가요.</li>
+      <li><strong>수렴</strong>: 종결 조건으로 가야 해요. 서브셋이 작아지면 되고, 한 칸씩 작아질 필요는 없어요. 여기서는 left·right로 내려가는 것이 수렴이에요. 레벨을 따라 내려가면 후보가 그 서브트리로 국한돼서, $n$개로 시작해도 $n - m$개로 줄어요. 트리의 높이는 유한하므로 언젠가 끝나요.</li>
+    </ol>
+    <p>재귀 호출을 하는 순간 내부 스택이 호출을 차곡차곡 쌓아 줘요. 슬라이드의 "모두 내부적으로 Stack 구조를 이용"이 이 뜻이에요. 트리, 힙, 그래프는 모두 재귀 함수를 쓰고, 재귀를 쓰지 않으면 구현이 훨씬 어려워요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>인간이 더 위대한 거죠. 우리는 이게 바닥인지 알잖아요. (1102 Part 03)</blockquote>
+    <blockquote>컴퓨터는 바닥이라는 걸 확인해야 바닥인지 압니다. (1102 Part 03)</blockquote>
+    <p>NULL 종결 조건이 왜 필요한지에 대한 비유예요. 사람은 그림만 보고 끝을 알지만, 프로그램은 NULL을 직접 확인해야 돌아올 수 있어요.</p>
+    <ul>
+      <li>수렴에 대해: 이 코드에는 "-1, 나누기 2 이런 거" 안 보이지만, left·right로 내려가는 것 자체가 줄어드는 방향이에요.</li>
+      <li>재귀는 반복문으로도 되는데 왜 쓰나 싶어 "필요악"처럼 느껴져요. 그 효과가 드러나는 자료구조를 만나면 반드시 필요한 개념으로 느껴진다고 했어요.</li>
+      <li>옛날에는 설명이 간단하고 프로그램이 길었는데, 지금은 이 짧은 프로그램을 방문 순서를 따라가며 오래 설명한다고 했어요.</li>
+    </ul>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">전위 순회는 V, L, R 순서로 방문해서 목차처럼 구조화된 문서를 출력할 때 써요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>전위 순회(preorder traversal)</dt><dd>루트, 왼쪽 서브트리, 오른쪽 서브트리 순으로 방문</dd>
+      <dt>종결 조건</dt><dd>바닥을 치는 조건. 여기서는 <code>root</code>가 NULL</dd>
+      <dt>수렴</dt><dd>종결 조건으로 가도록 서브셋이 작아지는 것. 여기서는 left·right로 내려가기</dd>
+      <dt>내부 스택</dt><dd>재귀 호출을 차곡차곡 쌓아 주는 스택</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s1-inorder"><h3>5. 중위 순회와 수식 a*b + c/d</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p11</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">왼쪽 끝까지 내려갔다가 올라오면서 가운데를 들르고, 그다음 오른쪽으로 가요.</p>
+    <figure class="figure"><svg id="fig-s1-in-eli5" viewBox="0 0 480 222" role="img" aria-label="테두리 동그라미 일곱 개로 된 나무. 동그라미 안 번호는 위에서부터 4, 그 아래 2와 6, 맨 아래 1, 3, 5, 7. 맨 아래 점선은 왼쪽에서 오른쪽 방향"><line class="fig-ink" x1="222.4" y1="43.4" x2="137.6" y2="88.6"/><line class="fig-ink" x1="257.6" y1="43.4" x2="342.4" y2="88.6"/><line class="fig-ink" x1="106.3" y1="112.6" x2="73.7" y2="147.4"/><line class="fig-ink" x1="133.7" y1="112.6" x2="166.3" y2="147.4"/><line class="fig-ink" x1="346.3" y1="112.6" x2="313.7" y2="147.4"/><line class="fig-ink" x1="373.7" y1="112.6" x2="406.3" y2="147.4"/><circle class="fig-ink" cx="240" cy="34" r="20"/><text class="fig-text" x="240" y="39" text-anchor="middle" style="font-size:15px">4</text><circle class="fig-ink" cx="120" cy="98" r="20"/><text class="fig-text" x="120" y="103" text-anchor="middle" style="font-size:15px">2</text><circle class="fig-ink" cx="360" cy="98" r="20"/><text class="fig-text" x="360" y="103" text-anchor="middle" style="font-size:15px">6</text><circle class="fig-ink" cx="60" cy="162" r="20"/><text class="fig-text" x="60" y="167" text-anchor="middle" style="font-size:15px">1</text><circle class="fig-ink" cx="180" cy="162" r="20"/><text class="fig-text" x="180" y="167" text-anchor="middle" style="font-size:15px">3</text><circle class="fig-ink" cx="300" cy="162" r="20"/><text class="fig-text" x="300" y="167" text-anchor="middle" style="font-size:15px">5</text><circle class="fig-ink" cx="420" cy="162" r="20"/><text class="fig-text" x="420" y="167" text-anchor="middle" style="font-size:15px">7</text><line class="fig-ink" x1="40" y1="194" x2="440" y2="194" stroke-dasharray="4 4"/><path class="fig-ink" d="M432,189 L440,194 L432,199"/><text class="fig-muted" x="440" y="214" text-anchor="end">왼쪽에서 오른쪽</text></svg><figcaption>번호가 왼쪽에서 오른쪽으로 차례대로 늘어서요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><strong>중위 순회</strong>(inorder traversal, LVR)는 왼쪽 서브트리, 루트, 오른쪽 서브트리 순으로 방문해요. 예는 수식 a*b + c/d의 트리예요. 루트 <code>+</code>, 왼쪽 <code>*</code>(자식 a, b), 오른쪽 <code>/</code>(자식 c, d)예요.</p>
+    <figure class="figure"><svg id="fig-s1-expr-in" viewBox="0 0 480 230" role="img" aria-label="수식 a*b + c/d 트리. 루트 +, 왼쪽 *, 오른쪽 /, *의 자식 a·b, /의 자식 c·d가 모두 테두리 원이고, 옆 숫자는 중위 순회 방문 순서 a 1, * 2, b 3, + 4, c 5, / 6, d 7"><line class="fig-ink" x1="222.7" y1="50.1" x2="137.3" y2="99.9"/><line class="fig-ink" x1="257.3" y1="50.1" x2="342.7" y2="99.9"/><line class="fig-ink" x1="107" y1="125.2" x2="73" y2="164.8"/><line class="fig-ink" x1="133" y1="125.2" x2="167" y2="164.8"/><line class="fig-ink" x1="347" y1="125.2" x2="313" y2="164.8"/><line class="fig-ink" x1="373" y1="125.2" x2="407" y2="164.8"/><circle class="fig-ink" cx="240" cy="40" r="20"/><text class="fig-text" x="240" y="45" text-anchor="middle" style="font-size:15px">+</text><text class="fig-text" x="210" y="22" text-anchor="middle" style="font-size:14px;font-weight:700">4</text><circle class="fig-ink" cx="120" cy="110" r="20"/><text class="fig-text" x="120" y="115" text-anchor="middle" style="font-size:15px">*</text><text class="fig-text" x="90" y="92" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><circle class="fig-ink" cx="360" cy="110" r="20"/><text class="fig-text" x="360" y="115" text-anchor="middle" style="font-size:15px">/</text><text class="fig-text" x="390" y="92" text-anchor="middle" style="font-size:14px;font-weight:700">6</text><circle class="fig-ink" cx="60" cy="180" r="20"/><text class="fig-text" x="60" y="185" text-anchor="middle" style="font-size:15px">a</text><text class="fig-text" x="30" y="162" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><circle class="fig-ink" cx="180" cy="180" r="20"/><text class="fig-text" x="180" y="185" text-anchor="middle" style="font-size:15px">b</text><text class="fig-text" x="210" y="162" text-anchor="middle" style="font-size:14px;font-weight:700">3</text><circle class="fig-ink" cx="300" cy="180" r="20"/><text class="fig-text" x="300" y="185" text-anchor="middle" style="font-size:15px">c</text><text class="fig-text" x="270" y="162" text-anchor="middle" style="font-size:14px;font-weight:700">5</text><circle class="fig-ink" cx="420" cy="180" r="20"/><text class="fig-text" x="420" y="185" text-anchor="middle" style="font-size:15px">d</text><text class="fig-text" x="450" y="162" text-anchor="middle" style="font-size:14px;font-weight:700">7</text><text class="fig-text" x="240" y="222" text-anchor="middle" style="font-size:15px">a * b + c / d</text></svg><figcaption>강의록 S7 p11의 수식 트리예요. 숫자는 중위 순회로 방문하는 순서예요.</figcaption></figure>
+    <p>추적(기억은 프로그래머가 아니라 내부 스택이 해요):</p>
+    <ol class="steps">
+      <li><code>+</code>(V)를 내부 스택에 기억하고 L로 내려가요</li>
+      <li><code>*</code>를 기억하고 L로 내려가요</li>
+      <li>a에서 다시 L로 가면 NULL. 올라와서 a 출력 → 1</li>
+      <li>a의 R도 NULL. 바닥을 치고 올라오면 LVR 한 세트 완성</li>
+      <li><code>*</code> 출력 → 2</li>
+      <li>R로 가서 b의 L은 NULL, b 출력 → 3, b의 R은 NULL</li>
+      <li><code>+</code> 출력 → 4</li>
+      <li>오른쪽 서브트리: <code>/</code>를 기억하고 L로. c → 5, <code>/</code> → 6, d → 7</li>
+    </ol>
+    <p>출력은 <code>a * b + c / d</code>예요. 중위 순회를 하면 우리에게 익숙한 중위 표기법으로 출력돼요.</p>
+    <p>슬라이드 코드(S7 p11):</p>
+<pre><code class="language-c">// 중위 순회
+void inorder( TreeNode *root ){
+    if ( root ){
+        inorder( root-&gt;left );// 왼쪽서브트리 순회
+        printf("%d", root-&gt;data );  // 노드 방문
+        inorder( root-&gt;right );// 오른쪽서브트리 순회
+    }
+}</code></pre>
+    <p>슬라이드는 반환형을 생략했지만 C11에서는 오류라 <code>void</code>를 보충했어요. 예제 데이터가 글자이므로, 글자 데이터라면 <code>%d</code> 대신 <code>%c</code>(또는 <code>%s</code>)로 찍어야 해요.</p>
+    <ul>
+      <li>L과 R은 링크를 따라가는 역할만 하고, 출력이나 계산 같은 실제 일은 항상 V에서 해요.</li>
+      <li>그림으로는 "L, V, R" 하고 끝내도 되지만, 그렇게 말하면 바닥을 치지 않은 설명이라 엄밀히는 틀려요. 컴퓨터에서는 반드시 NULL 조건을 만나 리턴돼야 해요.</li>
+      <li>트리에는 사이클(cycle, closed loop)이 없지만 그래프에는 있어요. 바닥 조건을 명확히 해 두지 않으면 그래프에서 매우 헷갈려요.</li>
+    </ul>
+    <p>전위·중위·후위 순서를 한 단계씩 찍어 보려면 <a href="#s1-traversal">3. 순회와 VLR·LVR·LRV</a>의 위젯을 써요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>기억합니다. 내가? 아니 내부 스택이. (1102 Part 04)</blockquote>
+    <blockquote>엄밀히 얘기하면 틀리는 겁니다. 왜? 바닥을 치지 않았습니다. (1102 Part 04)</blockquote>
+    <blockquote>L, L, L 바닥 찍고 V, R 바닥 찍고 올라와서 하나의 서브트리 완성. (1102 Part 04)</blockquote>
+    <p>나뭇가지끼리 붙어서 closed loop가 생긴 나무는 이상하다고 했어요. 트리는 그런 고리가 없지만, 그래프는 이리저리 연결돼 사이클이 있어서 바닥 조건을 분명히 알아야 한다는 뜻이에요.</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">중위 순회는 L, V, R 순서로 방문해서, 수식 트리를 익숙한 중위 표기법 a * b + c / d로 출력해요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>중위 순회(inorder traversal)</dt><dd>왼쪽 서브트리, 루트, 오른쪽 서브트리 순으로 방문</dd>
+      <dt>바닥</dt><dd>NULL을 만나 리턴하는 지점. 이걸 거쳐야 한 세트가 끝나요</dd>
+      <dt>사이클(cycle)</dt><dd>closed loop. 트리에는 없고 그래프에는 있어요</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s1-postorder"><h3>6. 후위 순회와 디렉토리 용량</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p12</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">큰 상자에 든 물건의 양은 안의 작은 상자를 다 재 봐야 알 수 있어요.</p>
+    <figure class="figure"><svg id="fig-s1-post-eli5" viewBox="0 0 480 205" role="img" aria-label="큰 상자 아래 상자 둘, 오른쪽 상자 아래 작은 상자 둘이 선으로 이어진 테두리 상자 그림. 재는 순서 번호는 왼쪽 상자 1, 작은 상자 2와 3, 오른쪽 상자 4, 큰 상자 5"><line class="fig-ink" x1="240" y1="49" x2="120" y2="85"/><line class="fig-ink" x1="240" y1="49" x2="360" y2="85"/><line class="fig-ink" x1="360" y1="119" x2="290" y2="155"/><line class="fig-ink" x1="360" y1="119" x2="430" y2="155"/><rect class="fig-ink" x="195" y="15" width="90" height="34" rx="4"/><text class="fig-text" x="240" y="36.6" text-anchor="middle" style="font-size:13px">큰 상자</text><text class="fig-text" x="183" y="37" text-anchor="middle" style="font-size:14px;font-weight:700">5</text><rect class="fig-ink" x="75" y="85" width="90" height="34" rx="4"/><text class="fig-text" x="120" y="106.6" text-anchor="middle" style="font-size:13px">상자</text><text class="fig-text" x="63" y="107" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><rect class="fig-ink" x="315" y="85" width="90" height="34" rx="4"/><text class="fig-text" x="360" y="106.6" text-anchor="middle" style="font-size:13px">상자</text><text class="fig-text" x="303" y="107" text-anchor="middle" style="font-size:14px;font-weight:700">4</text><rect class="fig-ink" x="245" y="155" width="90" height="34" rx="4"/><text class="fig-text" x="290" y="176.6" text-anchor="middle" style="font-size:13px">작은 상자</text><text class="fig-text" x="233" y="177" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><rect class="fig-ink" x="385" y="155" width="90" height="34" rx="4"/><text class="fig-text" x="430" y="176.6" text-anchor="middle" style="font-size:13px">작은 상자</text><text class="fig-text" x="430" y="202" text-anchor="middle" style="font-size:14px;font-weight:700">3</text></svg><figcaption>아래 상자부터 번호 순서대로 재고, 맨 위 큰 상자는 마지막에 재요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><strong>후위 순회</strong>(postorder traversal, LRV)는 왼쪽 서브트리, 오른쪽 서브트리, 루트 순으로 방문해요. 루트 V를 맨 나중에 방문해요. 예는 <strong>디렉토리 용량</strong> 계산이에요.</p>
+    <ul>
+      <li>탐색기의 디렉토리는 트리 구조예요. C: 안에 Program Files 같은 폴더가 묶이고, 그 안에 또 묶이는 계층·포함 관계가 맨 위 루트까지 이어져요.</li>
+      <li>폴더 하나만 봐서는 그 폴더의 전체 용량을 알 수 없어요. 속성에서 보이는 용량도 LRV 순으로 방문하면서 값을 기억해야 나오는 값이에요.</li>
+    </ul>
+    <figure class="figure"><svg id="fig-s1-dir" viewBox="0 0 520 220" role="img" aria-label="강의록 S7 p12의 디렉토리 트리. 나의 문서 아래 음악(50KB)과 그림(100KB), 그림 아래 정지영상(200KB)과 동영상(500KB)이 테두리 상자로 이어져 있고, 옆 숫자는 후위 순회 방문 순서 음악 1, 정지영상 2, 동영상 3, 그림 4, 나의 문서 5"><line class="fig-ink" x1="230" y1="50" x2="110" y2="94"/><line class="fig-ink" x1="230" y1="50" x2="350" y2="94"/><line class="fig-ink" x1="350" y1="126" x2="280" y2="170"/><line class="fig-ink" x1="350" y1="126" x2="420" y2="170"/><rect class="fig-ink" x="180" y="18" width="100" height="32" rx="4"/><text class="fig-text" x="230" y="38.2" text-anchor="middle" style="font-size:12px">나의 문서</text><text class="fig-text" x="168" y="39" text-anchor="middle" style="font-size:14px;font-weight:700">5</text><rect class="fig-ink" x="65" y="94" width="90" height="32" rx="4"/><text class="fig-text" x="110" y="114.2" text-anchor="middle" style="font-size:12px">음악</text><text class="fig-text" x="53" y="115" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><text class="fig-muted" x="110" y="144" text-anchor="middle">50KB</text><rect class="fig-ink" x="305" y="94" width="90" height="32" rx="4"/><text class="fig-text" x="350" y="114.2" text-anchor="middle" style="font-size:12px">그림</text><text class="fig-text" x="293" y="115" text-anchor="middle" style="font-size:14px;font-weight:700">4</text><text class="fig-muted" x="405" y="105" text-anchor="start">100KB</text><rect class="fig-ink" x="235" y="170" width="90" height="32" rx="4"/><text class="fig-text" x="280" y="190.2" text-anchor="middle" style="font-size:12px">정지영상</text><text class="fig-text" x="223" y="191" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><text class="fig-muted" x="280" y="216" text-anchor="middle">200KB</text><rect class="fig-ink" x="375" y="170" width="90" height="32" rx="4"/><text class="fig-text" x="420" y="190.2" text-anchor="middle" style="font-size:12px">동영상</text><text class="fig-text" x="363" y="191" text-anchor="middle" style="font-size:14px;font-weight:700">3</text><text class="fig-muted" x="420" y="216" text-anchor="middle">500KB</text></svg><figcaption>강의록 S7 p12의 디렉토리 트리예요. 숫자는 후위 순회로 방문하는 순서이고, KB 값은 슬라이드에 적힌 그대로예요.</figcaption></figure>
+    <p>추적(번호 = 방문 순서, 괄호 = 지금까지 기억한 용량). 그림의 100KB는 그림 폴더 자신에 든 파일 크기로, 나의 문서 자신에 든 파일은 없다고 가정해요(슬라이드에 따로 적혀 있지 않아요).</p>
+    <ol class="steps">
+      <li>나의 문서에서 L로: 음악. 음악의 L은 NULL, R도 NULL. 그다음 V에서 음악 방문 → 1 (50KB)</li>
+      <li>나의 문서의 R로: 그림. 그림의 L로 내려가 정지영상 방문 → 2 (50 + 200 = 250KB)</li>
+      <li>그림의 R로: 동영상 방문 → 3 (250 + 500 = 750KB)<sup>*</sup></li>
+      <li>그림의 두 자식이 끝났으니 그림 방문 → 4 (750 + 100 = 850KB)</li>
+      <li>나의 문서의 L, R이 모두 끝났으니 나의 문서 방문 → 5. 총량 850KB를 출력해요</li>
+    </ol>
+    <p><sup>*</sup>(수업 중 "500이 돼요"로 말했다가 정정: 250KB에 동영상 500KB를 더하면 750KB예요.)</p>
+    <p>슬라이드 코드(S7 p12):</p>
+<pre><code class="language-c">// 후위 순회
+void postorder( TreeNode *root ){
+    if ( root ){
+        postorder( root-&gt;left );// 왼쪽서브트리 순회
+        postorder( root-&gt;right );// 오른쪽서브트리순회
+        printf("%d", root-&gt;data );  // 노드 방문
+    }
+}</code></pre>
+    <p>슬라이드는 반환형을 생략했지만 C11에서는 오류라 <code>void</code>를 보충했어요. 예제 데이터가 글자이므로, 글자 데이터라면 <code>%d</code> 대신 <code>%c</code>(또는 <code>%s</code>)로 찍어야 해요.</p>
+    <p>세 코드는 <code>printf</code> 줄의 위치만 달라요. 지금까지는 값을 찍기만 했고, 방문하면서 실제로 계산하는 것은 <a href="#s2-evaluate">9. 수식 트리 계산 evaluate</a>에서 다뤄요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>도대체 V를 맨 나중에 방문할 일이 있을까? 예, 있습니다. (1102 Part 04)</blockquote>
+    <blockquote>LRV 순으로 방문하면서 그 값을 기억해야만 알 수 있는 겁니다. (1102 Part 04)</blockquote>
+    <p>폴더에서 오른쪽을 눌러 속성을 보면 용량이 나오지만, 그 폴더만 보고 나오는 값이 아니라는 설명이에요.</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">후위 순회는 L, R, V 순서로 방문해서, 자식을 다 본 뒤에야 알 수 있는 디렉토리 용량 같은 값을 구할 때 써요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>후위 순회(postorder traversal)</dt><dd>LRV. 왼쪽 서브트리, 오른쪽 서브트리, 루트 순으로 방문</dd>
+      <dt>디렉토리 용량</dt><dd>하위 폴더를 모두 방문하며 값을 기억해야 나오는 값. 예: 50 → 250 → 750 → 850KB</dd>
+    </dl>
+  </div>
+</article>
+
+<article class="topic" id="s1-levelorder"><h3>7. 레벨 순회와 큐</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p13</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">위층부터 한 층씩 차례로 들러요.</p>
+    <figure class="figure"><svg id="fig-s1-level-eli5" viewBox="0 0 480 205" role="img" aria-label="테두리 동그라미 일곱 개로 된 나무. 1층에 1, 2층에 왼쪽부터 2와 3, 3층에 왼쪽부터 4, 5, 6, 7"><line class="fig-ink" x1="222.7" y1="44.1" x2="137.3" y2="93.9"/><line class="fig-ink" x1="257.3" y1="44.1" x2="342.7" y2="93.9"/><line class="fig-ink" x1="107" y1="119.2" x2="73" y2="158.8"/><line class="fig-ink" x1="133" y1="119.2" x2="167" y2="158.8"/><line class="fig-ink" x1="347" y1="119.2" x2="313" y2="158.8"/><line class="fig-ink" x1="373" y1="119.2" x2="407" y2="158.8"/><circle class="fig-ink" cx="240" cy="34" r="20"/><text class="fig-text" x="240" y="39" text-anchor="middle" style="font-size:15px">1</text><circle class="fig-ink" cx="120" cy="104" r="20"/><text class="fig-text" x="120" y="109" text-anchor="middle" style="font-size:15px">2</text><circle class="fig-ink" cx="360" cy="104" r="20"/><text class="fig-text" x="360" y="109" text-anchor="middle" style="font-size:15px">3</text><circle class="fig-ink" cx="60" cy="174" r="20"/><text class="fig-text" x="60" y="179" text-anchor="middle" style="font-size:15px">4</text><circle class="fig-ink" cx="180" cy="174" r="20"/><text class="fig-text" x="180" y="179" text-anchor="middle" style="font-size:15px">5</text><circle class="fig-ink" cx="300" cy="174" r="20"/><text class="fig-text" x="300" y="179" text-anchor="middle" style="font-size:15px">6</text><circle class="fig-ink" cx="420" cy="174" r="20"/><text class="fig-text" x="420" y="179" text-anchor="middle" style="font-size:15px">7</text><text class="fig-muted" x="470" y="39" text-anchor="end">1층</text><text class="fig-muted" x="470" y="109" text-anchor="end">2층</text><text class="fig-muted" x="470" y="179" text-anchor="end">3층</text></svg><figcaption>1층부터 한 층씩, 왼쪽에서 오른쪽으로 번호 순서대로 들러요. 들를 곳은 줄을 세워 두고 먼저 선 것부터 들러요.</figcaption></figure>
+  </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><strong>레벨 순회</strong>(level-order traversal)는 배열 표현법에서 매긴 번호 1, 2, 3, … 순서대로 방문해요. 위에서 아래로, 같은 레벨에서는 왼쪽에서 오른쪽으로 가요. <strong>큐</strong>(queue)를 사용한 순회예요.</p>
+    <p>"왜 자꾸 내려갔다 올라왔다 재귀로만 해야 하나, 이미 매겨 놓은 자리 번호대로 방문할 수는 없을까"라는 물음에서 나온 방법이에요.</p>
+    <p>큐 추적(수식 a*b + c/d 트리):</p>
+    <ol class="steps">
+      <li>루트 <code>+</code>를 큐에 넣음 → 큐 [+]</li>
+      <li><code>+</code>를 꺼내 방문, 자식 <code>*</code>, <code>/</code>를 넣음 → [* /]</li>
+      <li><code>*</code>를 꺼내 방문, a, b를 넣음 → [/ a b]</li>
+      <li><code>/</code>를 꺼내 방문, c, d를 넣음 → [a b c d]</li>
+      <li>a 꺼내 방문 → [b c d]</li>
+      <li>b 꺼내 방문 → [c d]</li>
+      <li>c 꺼내 방문 → [d]</li>
+      <li>d 꺼내 방문 → []</li>
+    </ol>
+    <p>방문 순서는 <code>+ * / a b c d</code>예요.</p>
+    <div class="widget" id="widget-levelq"><h4>직접 해 보기: 큐로 레벨 순회하기</h4>
+      <p class="widget-help">"다음"을 누를 때마다 큐 앞에서 노드 하나를 꺼내 방문하고, 그 자식을 큐 뒤에 넣는 과정이 보여요.</p>
+      <div class="controls" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+        <button class="btn btn-ghost" id="levelq-reset" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">처음부터</button>
+        <button class="btn btn-ghost" id="levelq-prev" type="button" style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)">이전</button>
+        <button class="btn btn-primary" id="levelq-next" type="button" style="justify-self:auto;min-width:0;padding:0 16px">다음</button>
+      </div>
+      <svg id="levelq-plot" viewBox="0 0 640 315" role="img" aria-label="레벨 순회 0단계. 루트 +를 큐에 넣었어요. 큐 앞에서 뒤로 +. 방문한 노드는 강조색 테두리 원에 방문 번호가 붙고, 방금 꺼낸 노드는 강조색 테두리 원이 한 겹 더 둘러져 있으며, 방금 큐에 넣은 칸은 강조색 테두리. 방문 순서: 없음."><text class="fig-muted" x="12" y="20">레벨 순회 · 0/7</text><line class="fig-ink" x1="147.3" y1="58.7" x2="102.7" y2="103.3"/><line class="fig-ink" x1="172.7" y1="58.7" x2="217.3" y2="103.3"/><line class="fig-ink" x1="82" y1="132.1" x2="63" y2="169.9"/><line class="fig-ink" x1="98" y1="132.1" x2="117" y2="169.9"/><line class="fig-ink" x1="222" y1="132.1" x2="203" y2="169.9"/><line class="fig-ink" x1="238" y1="132.1" x2="257" y2="169.9"/><circle class="fig-ink" cx="160" cy="46" r="18"/><text class="fig-text" x="160" y="51" text-anchor="middle" style="font-size:16px">+</text><circle class="fig-ink" cx="90" cy="116" r="18"/><text class="fig-text" x="90" y="121" text-anchor="middle" style="font-size:16px">*</text><circle class="fig-ink" cx="230" cy="116" r="18"/><text class="fig-text" x="230" y="121" text-anchor="middle" style="font-size:16px">/</text><circle class="fig-ink" cx="55" cy="186" r="18"/><text class="fig-text" x="55" y="191" text-anchor="middle" style="font-size:16px">a</text><circle class="fig-ink" cx="125" cy="186" r="18"/><text class="fig-text" x="125" y="191" text-anchor="middle" style="font-size:16px">b</text><circle class="fig-ink" cx="195" cy="186" r="18"/><text class="fig-text" x="195" y="191" text-anchor="middle" style="font-size:16px">c</text><circle class="fig-ink" cx="265" cy="186" r="18"/><text class="fig-text" x="265" y="191" text-anchor="middle" style="font-size:16px">d</text><text class="fig-muted" x="360" y="82">큐</text><text class="fig-muted" x="360" y="158">앞(front)</text><text class="fig-muted" x="590" y="158" text-anchor="end">뒤(rear)</text><line class="fig-ink" x1="360" y1="96" x2="590" y2="96"/><line class="fig-ink" x1="360" y1="136" x2="590" y2="136"/><rect class="fig-accent" x="363" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="383" y="122" text-anchor="middle" style="font-size:16px">+</text><rect class="fig-ink" x="409" y="99" width="40" height="34" rx="3"/><rect class="fig-ink" x="455" y="99" width="40" height="34" rx="3"/><rect class="fig-ink" x="501" y="99" width="40" height="34" rx="3"/><rect class="fig-ink" x="547" y="99" width="40" height="34" rx="3"/><path class="fig-ink" d="M354,116 H326 M334,111 L326,116 L334,121"/><path class="fig-ink" d="M626,116 H596 M604,111 L596,116 L604,121"/><text class="fig-muted" x="296" y="82" text-anchor="middle">꺼냄</text><rect class="fig-ink" x="276" y="99" width="40" height="34" rx="3"/><text class="fig-muted" x="12" y="272">방문 순서</text><rect class="fig-ink" x="100" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="128" y="304" text-anchor="middle">1</text><rect class="fig-ink" x="164" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="192" y="304" text-anchor="middle">2</text><rect class="fig-ink" x="228" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="256" y="304" text-anchor="middle">3</text><rect class="fig-ink" x="292" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="320" y="304" text-anchor="middle">4</text><rect class="fig-ink" x="356" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="384" y="304" text-anchor="middle">5</text><rect class="fig-ink" x="420" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="448" y="304" text-anchor="middle">6</text><rect class="fig-ink" x="484" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="512" y="304" text-anchor="middle">7</text></svg>
+      <p class="readout">지금 상태: <b id="levelq-out">0/7 · 루트 +를 큐에 넣었어요 · 큐 [+] · 방문 순서: (비어 있음)</b></p>
+      <p class="legend"><span><span class="sw fit"></span>강조색 테두리 원: 방문한 노드(번호 = 방문 순서)</span><span><span class="sw fit"></span>강조색 테두리 칸: 방금 꺼낸 노드, 방금 큐에 넣은 노드</span></p>
+      <div class="widget-static" hidden>
+        <figure class="figure"><svg id="widget-levelq-static-1" viewBox="0 0 640 315" role="img" aria-label="레벨 순회 1단계. +를 꺼내 방문하고 자식 *, /를 뒤에 넣었어요. 큐 앞에서 뒤로 * /. 방문한 노드는 강조색 테두리 원에 방문 번호가 붙고, 방금 꺼낸 노드는 강조색 테두리 원이 한 겹 더 둘러져 있으며, 방금 큐에 넣은 칸은 강조색 테두리. 방문 순서: +."><text class="fig-muted" x="12" y="20">레벨 순회 · 1/7</text><line class="fig-ink" x1="147.3" y1="58.7" x2="102.7" y2="103.3"/><line class="fig-ink" x1="172.7" y1="58.7" x2="217.3" y2="103.3"/><line class="fig-ink" x1="82" y1="132.1" x2="63" y2="169.9"/><line class="fig-ink" x1="98" y1="132.1" x2="117" y2="169.9"/><line class="fig-ink" x1="222" y1="132.1" x2="203" y2="169.9"/><line class="fig-ink" x1="238" y1="132.1" x2="257" y2="169.9"/><circle class="fig-accent" cx="160" cy="46" r="18"/><circle class="fig-accent" cx="160" cy="46" r="24"/><text class="fig-text" x="160" y="51" text-anchor="middle" style="font-size:16px">+</text><text class="fig-text" x="128" y="26" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><circle class="fig-ink" cx="90" cy="116" r="18"/><text class="fig-text" x="90" y="121" text-anchor="middle" style="font-size:16px">*</text><circle class="fig-ink" cx="230" cy="116" r="18"/><text class="fig-text" x="230" y="121" text-anchor="middle" style="font-size:16px">/</text><circle class="fig-ink" cx="55" cy="186" r="18"/><text class="fig-text" x="55" y="191" text-anchor="middle" style="font-size:16px">a</text><circle class="fig-ink" cx="125" cy="186" r="18"/><text class="fig-text" x="125" y="191" text-anchor="middle" style="font-size:16px">b</text><circle class="fig-ink" cx="195" cy="186" r="18"/><text class="fig-text" x="195" y="191" text-anchor="middle" style="font-size:16px">c</text><circle class="fig-ink" cx="265" cy="186" r="18"/><text class="fig-text" x="265" y="191" text-anchor="middle" style="font-size:16px">d</text><text class="fig-muted" x="360" y="82">큐</text><text class="fig-muted" x="360" y="158">앞(front)</text><text class="fig-muted" x="590" y="158" text-anchor="end">뒤(rear)</text><line class="fig-ink" x1="360" y1="96" x2="590" y2="96"/><line class="fig-ink" x1="360" y1="136" x2="590" y2="136"/><rect class="fig-accent" x="363" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="383" y="122" text-anchor="middle" style="font-size:16px">*</text><rect class="fig-accent" x="409" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="429" y="122" text-anchor="middle" style="font-size:16px">/</text><rect class="fig-ink" x="455" y="99" width="40" height="34" rx="3"/><rect class="fig-ink" x="501" y="99" width="40" height="34" rx="3"/><rect class="fig-ink" x="547" y="99" width="40" height="34" rx="3"/><path class="fig-ink" d="M354,116 H326 M334,111 L326,116 L334,121"/><path class="fig-ink" d="M626,116 H596 M604,111 L596,116 L604,121"/><text class="fig-muted" x="296" y="82" text-anchor="middle">꺼냄</text><rect class="fig-accent" x="276" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="296" y="122" text-anchor="middle" style="font-size:16px">+</text><text class="fig-muted" x="12" y="272">방문 순서</text><rect class="fig-accent" x="100" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="128" y="304" text-anchor="middle">1</text><text class="fig-text" x="128" y="274" text-anchor="middle" style="font-size:16px">+</text><rect class="fig-ink" x="164" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="192" y="304" text-anchor="middle">2</text><rect class="fig-ink" x="228" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="256" y="304" text-anchor="middle">3</text><rect class="fig-ink" x="292" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="320" y="304" text-anchor="middle">4</text><rect class="fig-ink" x="356" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="384" y="304" text-anchor="middle">5</text><rect class="fig-ink" x="420" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="448" y="304" text-anchor="middle">6</text><rect class="fig-ink" x="484" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="512" y="304" text-anchor="middle">7</text></svg><figcaption>1단계: +를 꺼내 방문한 뒤 큐 [* /]</figcaption></figure>
+        <figure class="figure"><svg id="widget-levelq-static-2" viewBox="0 0 640 315" role="img" aria-label="레벨 순회 3단계. /를 꺼내 방문하고 자식 c, d를 뒤에 넣었어요. 큐 앞에서 뒤로 a b c d. 방문한 노드는 강조색 테두리 원에 방문 번호가 붙고, 방금 꺼낸 노드는 강조색 테두리 원이 한 겹 더 둘러져 있으며, 방금 큐에 넣은 칸은 강조색 테두리. 방문 순서: + * /."><text class="fig-muted" x="12" y="20">레벨 순회 · 3/7</text><line class="fig-ink" x1="147.3" y1="58.7" x2="102.7" y2="103.3"/><line class="fig-ink" x1="172.7" y1="58.7" x2="217.3" y2="103.3"/><line class="fig-ink" x1="82" y1="132.1" x2="63" y2="169.9"/><line class="fig-ink" x1="98" y1="132.1" x2="117" y2="169.9"/><line class="fig-ink" x1="222" y1="132.1" x2="203" y2="169.9"/><line class="fig-ink" x1="238" y1="132.1" x2="257" y2="169.9"/><circle class="fig-accent" cx="160" cy="46" r="18"/><text class="fig-text" x="160" y="51" text-anchor="middle" style="font-size:16px">+</text><text class="fig-text" x="128" y="26" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><circle class="fig-accent" cx="90" cy="116" r="18"/><text class="fig-text" x="90" y="121" text-anchor="middle" style="font-size:16px">*</text><text class="fig-text" x="58" y="96" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><circle class="fig-accent" cx="230" cy="116" r="18"/><circle class="fig-accent" cx="230" cy="116" r="24"/><text class="fig-text" x="230" y="121" text-anchor="middle" style="font-size:16px">/</text><text class="fig-text" x="262" y="96" text-anchor="middle" style="font-size:14px;font-weight:700">3</text><circle class="fig-ink" cx="55" cy="186" r="18"/><text class="fig-text" x="55" y="191" text-anchor="middle" style="font-size:16px">a</text><circle class="fig-ink" cx="125" cy="186" r="18"/><text class="fig-text" x="125" y="191" text-anchor="middle" style="font-size:16px">b</text><circle class="fig-ink" cx="195" cy="186" r="18"/><text class="fig-text" x="195" y="191" text-anchor="middle" style="font-size:16px">c</text><circle class="fig-ink" cx="265" cy="186" r="18"/><text class="fig-text" x="265" y="191" text-anchor="middle" style="font-size:16px">d</text><text class="fig-muted" x="360" y="82">큐</text><text class="fig-muted" x="360" y="158">앞(front)</text><text class="fig-muted" x="590" y="158" text-anchor="end">뒤(rear)</text><line class="fig-ink" x1="360" y1="96" x2="590" y2="96"/><line class="fig-ink" x1="360" y1="136" x2="590" y2="136"/><rect class="fig-ink" x="363" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="383" y="122" text-anchor="middle" style="font-size:16px">a</text><rect class="fig-ink" x="409" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="429" y="122" text-anchor="middle" style="font-size:16px">b</text><rect class="fig-accent" x="455" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="475" y="122" text-anchor="middle" style="font-size:16px">c</text><rect class="fig-accent" x="501" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="521" y="122" text-anchor="middle" style="font-size:16px">d</text><rect class="fig-ink" x="547" y="99" width="40" height="34" rx="3"/><path class="fig-ink" d="M354,116 H326 M334,111 L326,116 L334,121"/><path class="fig-ink" d="M626,116 H596 M604,111 L596,116 L604,121"/><text class="fig-muted" x="296" y="82" text-anchor="middle">꺼냄</text><rect class="fig-accent" x="276" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="296" y="122" text-anchor="middle" style="font-size:16px">/</text><text class="fig-muted" x="12" y="272">방문 순서</text><rect class="fig-ink" x="100" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="128" y="304" text-anchor="middle">1</text><text class="fig-text" x="128" y="274" text-anchor="middle" style="font-size:16px">+</text><rect class="fig-ink" x="164" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="192" y="304" text-anchor="middle">2</text><text class="fig-text" x="192" y="274" text-anchor="middle" style="font-size:16px">*</text><rect class="fig-accent" x="228" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="256" y="304" text-anchor="middle">3</text><text class="fig-text" x="256" y="274" text-anchor="middle" style="font-size:16px">/</text><rect class="fig-ink" x="292" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="320" y="304" text-anchor="middle">4</text><rect class="fig-ink" x="356" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="384" y="304" text-anchor="middle">5</text><rect class="fig-ink" x="420" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="448" y="304" text-anchor="middle">6</text><rect class="fig-ink" x="484" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="512" y="304" text-anchor="middle">7</text></svg><figcaption>3단계: /를 꺼내 방문한 뒤 큐 [a b c d]</figcaption></figure>
+        <figure class="figure"><svg id="widget-levelq-static-3" viewBox="0 0 640 315" role="img" aria-label="레벨 순회 7단계. d를 꺼내 방문했어요(자식 없음). 큐 앞에서 뒤로 비어 있음. 방문한 노드는 강조색 테두리 원에 방문 번호가 붙고, 방금 꺼낸 노드는 강조색 테두리 원이 한 겹 더 둘러져 있으며, 방금 큐에 넣은 칸은 강조색 테두리. 방문 순서: + * / a b c d."><text class="fig-muted" x="12" y="20">레벨 순회 · 7/7</text><line class="fig-ink" x1="147.3" y1="58.7" x2="102.7" y2="103.3"/><line class="fig-ink" x1="172.7" y1="58.7" x2="217.3" y2="103.3"/><line class="fig-ink" x1="82" y1="132.1" x2="63" y2="169.9"/><line class="fig-ink" x1="98" y1="132.1" x2="117" y2="169.9"/><line class="fig-ink" x1="222" y1="132.1" x2="203" y2="169.9"/><line class="fig-ink" x1="238" y1="132.1" x2="257" y2="169.9"/><circle class="fig-accent" cx="160" cy="46" r="18"/><text class="fig-text" x="160" y="51" text-anchor="middle" style="font-size:16px">+</text><text class="fig-text" x="128" y="26" text-anchor="middle" style="font-size:14px;font-weight:700">1</text><circle class="fig-accent" cx="90" cy="116" r="18"/><text class="fig-text" x="90" y="121" text-anchor="middle" style="font-size:16px">*</text><text class="fig-text" x="58" y="96" text-anchor="middle" style="font-size:14px;font-weight:700">2</text><circle class="fig-accent" cx="230" cy="116" r="18"/><text class="fig-text" x="230" y="121" text-anchor="middle" style="font-size:16px">/</text><text class="fig-text" x="262" y="96" text-anchor="middle" style="font-size:14px;font-weight:700">3</text><circle class="fig-accent" cx="55" cy="186" r="18"/><text class="fig-text" x="55" y="191" text-anchor="middle" style="font-size:16px">a</text><text class="fig-text" x="23" y="166" text-anchor="middle" style="font-size:14px;font-weight:700">4</text><circle class="fig-accent" cx="125" cy="186" r="18"/><text class="fig-text" x="125" y="191" text-anchor="middle" style="font-size:16px">b</text><text class="fig-text" x="157" y="166" text-anchor="middle" style="font-size:14px;font-weight:700">5</text><circle class="fig-accent" cx="195" cy="186" r="18"/><text class="fig-text" x="195" y="191" text-anchor="middle" style="font-size:16px">c</text><text class="fig-text" x="163" y="166" text-anchor="middle" style="font-size:14px;font-weight:700">6</text><circle class="fig-accent" cx="265" cy="186" r="18"/><circle class="fig-accent" cx="265" cy="186" r="24"/><text class="fig-text" x="265" y="191" text-anchor="middle" style="font-size:16px">d</text><text class="fig-text" x="297" y="166" text-anchor="middle" style="font-size:14px;font-weight:700">7</text><text class="fig-muted" x="360" y="82">큐</text><text class="fig-muted" x="360" y="158">앞(front)</text><text class="fig-muted" x="590" y="158" text-anchor="end">뒤(rear)</text><line class="fig-ink" x1="360" y1="96" x2="590" y2="96"/><line class="fig-ink" x1="360" y1="136" x2="590" y2="136"/><rect class="fig-ink" x="363" y="99" width="40" height="34" rx="3"/><rect class="fig-ink" x="409" y="99" width="40" height="34" rx="3"/><rect class="fig-ink" x="455" y="99" width="40" height="34" rx="3"/><rect class="fig-ink" x="501" y="99" width="40" height="34" rx="3"/><rect class="fig-ink" x="547" y="99" width="40" height="34" rx="3"/><path class="fig-ink" d="M354,116 H326 M334,111 L326,116 L334,121"/><path class="fig-ink" d="M626,116 H596 M604,111 L596,116 L604,121"/><text class="fig-muted" x="296" y="82" text-anchor="middle">꺼냄</text><rect class="fig-accent" x="276" y="99" width="40" height="34" rx="3"/><text class="fig-text" x="296" y="122" text-anchor="middle" style="font-size:16px">d</text><text class="fig-muted" x="12" y="272">방문 순서</text><rect class="fig-ink" x="100" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="128" y="304" text-anchor="middle">1</text><text class="fig-text" x="128" y="274" text-anchor="middle" style="font-size:16px">+</text><rect class="fig-ink" x="164" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="192" y="304" text-anchor="middle">2</text><text class="fig-text" x="192" y="274" text-anchor="middle" style="font-size:16px">*</text><rect class="fig-ink" x="228" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="256" y="304" text-anchor="middle">3</text><text class="fig-text" x="256" y="274" text-anchor="middle" style="font-size:16px">/</text><rect class="fig-ink" x="292" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="320" y="304" text-anchor="middle">4</text><text class="fig-text" x="320" y="274" text-anchor="middle" style="font-size:16px">a</text><rect class="fig-ink" x="356" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="384" y="304" text-anchor="middle">5</text><text class="fig-text" x="384" y="274" text-anchor="middle" style="font-size:16px">b</text><rect class="fig-ink" x="420" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="448" y="304" text-anchor="middle">6</text><text class="fig-text" x="448" y="274" text-anchor="middle" style="font-size:16px">c</text><rect class="fig-accent" x="484" y="250" width="56" height="36" rx="4"/><text class="fig-muted" x="512" y="304" text-anchor="middle">7</text><text class="fig-text" x="512" y="274" text-anchor="middle" style="font-size:16px">d</text></svg><figcaption>7단계: d를 꺼내 방문한 뒤 큐 []</figcaption></figure>
+        <div class="table-wrap"><table><tr><th>단계</th><th>꺼내 방문한 노드</th><th>큐(앞에서 뒤로)</th><th>방문 순서</th></tr><tr><td>0</td><td>(없음, 루트를 넣음)</td><td>[+]</td><td>(없음)</td></tr><tr><td>1</td><td>+</td><td>[* /]</td><td>+</td></tr><tr><td>2</td><td>*</td><td>[/ a b]</td><td>+ *</td></tr><tr><td>3</td><td>/</td><td>[a b c d]</td><td>+ * /</td></tr><tr><td>4</td><td>a</td><td>[b c d]</td><td>+ * / a</td></tr><tr><td>5</td><td>b</td><td>[c d]</td><td>+ * / a b</td></tr><tr><td>6</td><td>c</td><td>[d]</td><td>+ * / a b c</td></tr><tr><td>7</td><td>d</td><td>[]</td><td>+ * / a b c d</td></tr></table></div>
+      </div>
+    </div>
+    <p>레벨 순회는 <strong>표준 순회 방법이 아니</strong>에요. 트리의 장점을 살리기 어렵기 때문이에요.</p>
+    <ul>
+      <li>트리에서는 높이가 가장 중요해요. 가장 높은 곳에 가려면 가지 하나만 타고 가면 되지, 전부 훑을 이유가 없어요.</li>
+      <li>왼쪽 서브트리로 가는 순간 오른쪽 서브트리의 데이터는 후보 셋(candidate set)에서 빠져요. 타깃을 찾을 때는 이렇게 아래로 파고드는(drill-down) 편이 훨씬 효과적이에요.</li>
+      <li>큐를 쓰는 순간 선형 자료구조이고 순차 탐색(sequential search)이 돼요. 그래서 이득이 없어요. 그래도 편하면 쓸 수 있다는 것을 보여 주는 방법이에요.</li>
+      <li>여기서 "이득이 없다"는 타깃을 찾을 때 후보를 줄이지 못한다는 뜻이에요. 순회 자체는 전위·중위·후위와 똑같이 모든 노드를 한 번씩 방문해요.</li>
+    </ul>
+    <p>이것으로 순회 방법 네 가지(전위, 중위, 후위, 레벨)를 모두 봤어요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>이거 표준 순회 방법이 아닙니다. 왜냐면 트리의 장점을 살리기가 어렵습니다. (1102 Part 05)</blockquote>
+    <blockquote>트리는 높이라고 하는 terminology가 제일 중요하다고 그랬어요. (1102 Part 05)</blockquote>
+    <p><strong>업다운 게임</strong> 비유: 0부터 100 사이의 수를 맞힐 때 50을 불렀는데 "다운"이면 51부터 100이 한 번에 날아가요. 계산하고 탐색해야 할 후보 셋을 반으로 줄여 주는 거예요. 다음에는 25를 불러야 효과적이에요. 100, 99, 98, …처럼 하나씩 부르면 순차 탐색이고, 답이 0이면 100번을 찾아야 해요.</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">레벨 순회는 큐에서 하나 꺼내 방문하고 자식을 뒤에 넣으며 위층부터 방문하지만, 트리의 장점을 못 살려 표준 순회는 아니에요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>레벨 순회(level-order traversal)</dt><dd>번호 1, 2, 3, … 순, 위에서 아래로 왼쪽에서 오른쪽으로 방문. 큐 사용</dd>
+      <dt>방문 순서(a*b + c/d 트리)</dt><dd>+ * / a b c d</dd>
+      <dt>후보 셋(candidate set)</dt><dd>탐색해야 할 데이터 범위. 왼쪽으로 가면 오른쪽이 빠져요</dd>
+      <dt>순차 탐색(sequential search)</dt><dd>하나씩 차례로 보는 탐색. 큐를 쓰면 이렇게 돼요</dd>
+    </dl>
+  </div>
+</article>
+    </section>
+    <section id="s2"><h2>3. 순회로 계산하기</h2>
+<article class="topic" id="s2-expr-tree"><h3>8. 수식 트리</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p14</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">계산식을 나무 모양으로 그린 그림이에요.</p><figure class="figure"><svg id="fig-expr-shape" viewBox="0 0 360 210" role="img" aria-label="맨 위 강조색 테두리 네모 빼기 아래로 왼쪽에 테두리 동그라미 9, 오른쪽에 강조색 테두리 네모 곱하기가 선으로 이어지고, 곱하기 아래로 테두리 동그라미 2와 3이 이어진 나무 그림"><line class="fig-ink" x1="180" y1="46" x2="90" y2="96" fill="none"/><line class="fig-ink" x1="180" y1="46" x2="270" y2="96" fill="none"/><line class="fig-ink" x1="270" y1="126" x2="220" y2="164" fill="none"/><line class="fig-ink" x1="270" y1="126" x2="320" y2="164" fill="none"/><rect class="fig-accent" x="146" y="16" width="68" height="30" rx="8" fill="none"/><text class="fig-text" x="180" y="36" text-anchor="middle" font-size="14">빼기</text><circle class="fig-ink" cx="90" cy="112" r="17" fill="none"/><text class="fig-text" x="90" y="117" text-anchor="middle" font-size="14">9</text><rect class="fig-accent" x="236" y="96" width="68" height="30" rx="8" fill="none"/><text class="fig-text" x="270" y="116" text-anchor="middle" font-size="14">곱하기</text><circle class="fig-ink" cx="220" cy="180" r="17" fill="none"/><text class="fig-text" x="220" y="185" text-anchor="middle" font-size="14">2</text><circle class="fig-ink" cx="320" cy="180" r="17" fill="none"/><text class="fig-text" x="320" y="185" text-anchor="middle" font-size="14">3</text></svg><figcaption>갈림길 네모에는 계산 방법이, 맨 끝 동그라미에는 수가 들어가요.</figcaption></figure></div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><strong>수식 트리</strong>(expression tree)는 산술식을 트리 형태로 표현한 것이에요(S7 p14).</p>
+    <ul>
+      <li>비단말 노드(non-terminal node)에는 <strong>연산자</strong>(operator)가 와요.</li>
+      <li>단말 노드(terminal node), 곧 리프에는 <strong>피연산자</strong>(operand)가 와요. 단말 노드에는 피연산자만 와요.</li>
+    </ul>
+    <p>수식 트리를 전위·중위·후위로 순회하면 그 수식의 전위·중위·후위 표기가 바로 나와요(슬라이드 표).</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>수식</th><th>전위 순회</th><th>중위 순회</th><th>후위 순회</th></tr></thead>
+      <tbody>
+        <tr><td>a + b</td><td>+ a b</td><td>a + b</td><td>a b +</td></tr>
+        <tr><td>a - (b × c)</td><td>- a × b c</td><td>a - b × c</td><td>a b c × -</td></tr>
+        <tr><td>(a &lt; b) or (c &lt; d)</td><td>or &lt; a b &lt; c d</td><td>a &lt; b or c &lt; d</td><td>a b &lt; c d &lt; or</td></tr>
+      </tbody>
+    </table></div>
+    <p>슬라이드 그림의 트리 모양은 이래요.</p>
+    <ul>
+      <li>(a) a + b: 루트 <code>+</code>, 왼쪽 자식 a, 오른쪽 자식 b.</li>
+      <li>(b) a - (b × c): 루트 <code>-</code>, 왼쪽 자식 a, 오른쪽 자식 <code>×</code>. <code>×</code>의 자식은 b와 c.</li>
+      <li>(c) (a &lt; b) or (c &lt; d): 루트 <code>or</code>, 양쪽 자식이 모두 <code>&lt;</code>. 왼쪽 <code>&lt;</code>의 자식은 a·b, 오른쪽 <code>&lt;</code>의 자식은 c·d.</li>
+    </ul>
+    <p>수업에서 짚은 추적은 다음과 같아요.</p>
+    <ol class="steps">
+      <li>a + b 전위(VLR): V <code>+</code> → L a → R b, 결과 + a b</li>
+      <li>(a &lt; b) or (c &lt; d) 중위(LVR): L(a &lt; b) → V <code>or</code> → R(c &lt; d)</li>
+      <li>a - (b × c) 후위(LRV), L: a</li>
+      <li>R 서브트리로 내려가 L: b, R: c, V: ×</li>
+      <li>마지막으로 루트 V: -, 결과 a b c × -</li>
+    </ol>
+    <p>스택 단원에서 본 전위·중위·후위 표기법과 같은 구조이고, 이 내용은 그 단원의 연장선이에요.</p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>스택에서 중위 표기법을 후위 표기법으로 바꾸고 계산한 과정이 수식 트리와 이어진다고 했어요. 이미 치른 시험의 전위·중위·후위 표기 문제가 이 순회로 쉽게 풀린다는 뜻이에요.</p>
+    <blockquote>진작에 알았으면 시험 볼 때 이 페이지 마지막 거 맞았을 텐데. 이어져 있는 연장선이에요. (1102 Part 07)</blockquote>
+    <p>단말 노드에는 "주로가 아니라 100%" 피연산자만 온다고 못 박았어요. (1102 Part 05)</p>
+    <p>수식 트리, 중위→후위 변환과 계산은 C 프로그램이 메모리에 탑재되는 과정(어셈블러·링커·로더)과 이어지고, 그 부분은 컴퓨터시스템프로그래밍 같은 과목에서 배운다고 했어요. 여담으로 고장 전에 미리 예측해 유지보수하는 예지보전(predictive maintenance)과, 온도 센서 없이 전류와 온도의 상관관계를 학습한 모델이 센서 노릇을 하는 가상 센서(virtual sensor) 이야기도 들려줬어요. (1102 Part 05–07)</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">수식 트리는 산술식을 트리로 나타내고, 순회하면 전위·중위·후위 표기가 그대로 나와요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>수식 트리(expression tree)</dt><dd>산술식을 트리 형태로 표현한 것이에요.</dd>
+      <dt>연산자(operator)</dt><dd>비단말 노드에 와요.</dd>
+      <dt>피연산자(operand)</dt><dd>단말 노드에 와요. 단말 노드에는 피연산자만 와요.</dd>
+    </dl>
+    <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>a - (b × c)의 전위는 - a × b c, 후위는 a b c × -예요.</li><li>스택 단원의 전위·중위·후위 표기법의 연장선이에요.</li></ul></div>
+  </div>
+</article>
+<article class="topic" id="s2-evaluate"><h3>9. 수식 트리 계산 evaluate</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p15</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">맨 아래 수부터 계산해서 답을 위로 올려 보내요.</p><figure class="figure"><svg id="fig-eval-up" viewBox="0 0 400 220" role="img" aria-label="맨 위 강조색 테두리 네모 더하기 아래로 강조색 테두리 네모 곱하기 두 개가 있고, 왼쪽 곱하기 아래 테두리 동그라미 3과 2, 오른쪽 곱하기 아래 테두리 동그라미 5와 6이 선으로 이어진 그림. 왼쪽 곱하기 옆에 6, 오른쪽 곱하기 옆에 30, 더하기 옆에 36이 적혀 있다"><line class="fig-ink" x1="200" y1="46" x2="110" y2="96" fill="none"/><line class="fig-ink" x1="200" y1="46" x2="290" y2="96" fill="none"/><line class="fig-ink" x1="110" y1="126" x2="65" y2="166" fill="none"/><line class="fig-ink" x1="110" y1="126" x2="155" y2="166" fill="none"/><line class="fig-ink" x1="290" y1="126" x2="245" y2="166" fill="none"/><line class="fig-ink" x1="290" y1="126" x2="335" y2="166" fill="none"/><rect class="fig-accent" x="166" y="16" width="68" height="30" rx="8" fill="none"/><text class="fig-text" x="200" y="36" text-anchor="middle" font-size="14">더하기</text><text class="fig-text" x="246" y="36" font-size="14" font-weight="700">36</text><rect class="fig-accent" x="76" y="96" width="68" height="30" rx="8" fill="none"/><text class="fig-text" x="110" y="116" text-anchor="middle" font-size="14">곱하기</text><text class="fig-text" x="40" y="116" text-anchor="middle" font-size="14" font-weight="700">6</text><rect class="fig-accent" x="256" y="96" width="68" height="30" rx="8" fill="none"/><text class="fig-text" x="290" y="116" text-anchor="middle" font-size="14">곱하기</text><text class="fig-text" x="352" y="116" text-anchor="middle" font-size="14" font-weight="700">30</text><circle class="fig-ink" cx="65" cy="184" r="17" fill="none"/><text class="fig-text" x="65" y="189" text-anchor="middle" font-size="14">3</text><circle class="fig-ink" cx="155" cy="184" r="17" fill="none"/><text class="fig-text" x="155" y="189" text-anchor="middle" font-size="14">2</text><circle class="fig-ink" cx="245" cy="184" r="17" fill="none"/><text class="fig-text" x="245" y="189" text-anchor="middle" font-size="14">5</text><circle class="fig-ink" cx="335" cy="184" r="17" fill="none"/><text class="fig-text" x="335" y="189" text-anchor="middle" font-size="14">6</text></svg><figcaption>아래 두 수를 먼저 계산하고, 맨 위에서 전체 답 36이 나와요.</figcaption></figure></div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>수식 트리 계산은 <strong>후위 순회</strong>(postorder, LRV)를 사용해요(S7 p15).</p>
+    <ul>
+      <li>서브트리의 값을 순환 호출, 곧 <strong>재귀 호출</strong>(recursive call)로 계산해요.</li>
+      <li>비단말 노드를 방문할 때 양쪽 서브트리의 값에 그 노드에 저장된 연산자를 적용해 계산해요. 방문만 하는 게 아니라 실제로 계산해요.</li>
+    </ul>
+    <p>슬라이드의 의사코드예요.</p>
+<pre><code class="language-c">evaluate(exp)
+
+if exp = NULL
+    then return 0;
+    else x←evaluate(exp-&gt;left);
+         y←evaluate(exp-&gt;right);
+         op←exp-&gt;data;
+         return (x op y);</code></pre>
+    <ul>
+      <li>종결 조건은 <code>exp = NULL</code>이에요. 이때 0을 반환해요.</li>
+      <li>수렴은 <code>exp-&gt;left</code>, <code>exp-&gt;right</code>로 내려가는 것이라 재귀가 제대로 끝나요.</li>
+      <li>왼쪽(x), 오른쪽(y), 그다음 연산자(op) 순서이므로 LRV, 곧 후위 순회예요.</li>
+      <li>슬라이드 의사코드에는 단말 노드를 따로 처리하는 갈래가 없어요(그대로 따라가면 x = 0, y = 0). 단말 노드는 자기 값을 반환한다고 보충해서 읽어요(보충).</li>
+    </ul>
+    <p>슬라이드 그림은 루트 <code>+</code>, 왼쪽 자식 곱하기(슬라이드에는 <code>*</code>), 오른쪽 자식 <code>×</code>이고, 단말 노드는 3, 2, 5, 6이에요. 노드 옆 번호가 방문 순서예요.</p>
+    <ol class="steps">
+      <li>1번: 단말 3 → 3</li>
+      <li>2번: 단말 2 → 2</li>
+      <li>3번: 곱하기 노드, x = 3, y = 2, <code>(x op y)</code> = 3 × 2 = 6</li>
+      <li>4번: 단말 5 → 5</li>
+      <li>5번: 단말 6 → 6</li>
+      <li>6번: × 노드, x = 5, y = 6 → 30</li>
+      <li>7번: + 루트, x = 6, y = 30 → 36</li>
+    </ol>
+    <p>수업에서는 1~3번(x = 3, y = 2를 받아 그 노드의 연산자를 적용하는 단계)까지 짚었어요. 연산자가 ×면 6, +면 5가 돼요.</p>
+    <p><small>(수업 중 "곱하기를 찍게 되는 거예요. 그래서 더하기, 3 + 2"로 연산자를 섞어 말했어요. 바른 형태: 그 노드의 op를 적용한 <code>(x op y)</code>예요.)</small></p>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <blockquote>이게 재귀 호출의 효과예요. 트리는 무조건 재귀 호출을 이용합니다. (1102 Part 07)</blockquote>
+    <p>종결 조건(NULL이면 반환)과 수렴(left·right로 내려감)을 갖췄으니 재귀가 제대로 돈다고 확인하고 넘어갔어요. (1102 Part 07)</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">evaluate는 후위 순회로 왼쪽 값 x, 오른쪽 값 y를 먼저 구하고 노드의 연산자로 (x op y)를 계산해요.</p>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>evaluate</dt><dd>수식 트리를 계산하는 재귀 함수예요. <code>exp = NULL</code>이면 0을 반환해요.</dd>
+      <dt>후위 순회(postorder, LRV)</dt><dd>왼쪽, 오른쪽을 먼저 계산하고 연산자를 마지막에 적용하는 순서예요.</dd>
+      <dt>재귀 호출(recursive call)</dt><dd>서브트리의 값을 같은 함수로 계산해요.</dd>
+    </dl>
+    <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>x = 3, y = 2일 때 연산자가 ×면 6, +면 5예요.</li><li>슬라이드 그림 전체 값은 36이에요.</li></ul></div>
+  </div>
+</article>
+<article class="topic" id="s2-count"><h3>10. 노드 개수 get_node_count</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p16</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">아래 친구부터 나까지 몇 명인지 세어 위로 알려 줘요.</p><figure class="figure"><svg id="fig-count-up" viewBox="0 0 360 210" role="img" aria-label="테두리 동그라미 여섯 개로 된 나무 그림. 맨 위 동그라미 옆에 6, 왼쪽 가운데 동그라미 옆에 3, 오른쪽 가운데 동그라미 옆에 2, 맨 아래 동그라미 세 개 옆에 각각 1이 적혀 있다"><line class="fig-ink" x1="180" y1="48" x2="100" y2="94" fill="none"/><line class="fig-ink" x1="180" y1="48" x2="270" y2="94" fill="none"/><line class="fig-ink" x1="100" y1="126" x2="60" y2="166" fill="none"/><line class="fig-ink" x1="100" y1="126" x2="140" y2="166" fill="none"/><line class="fig-ink" x1="270" y1="126" x2="230" y2="166" fill="none"/><circle class="fig-ink" cx="180" cy="32" r="16" fill="none"/><text class="fig-text" x="210" y="22" font-size="14" font-weight="700">6</text><circle class="fig-ink" cx="100" cy="110" r="16" fill="none"/><text class="fig-text" x="72" y="100" text-anchor="middle" font-size="14" font-weight="700">3</text><circle class="fig-ink" cx="270" cy="110" r="16" fill="none"/><text class="fig-text" x="298" y="100" text-anchor="middle" font-size="14" font-weight="700">2</text><circle class="fig-ink" cx="60" cy="182" r="16" fill="none"/><text class="fig-text" x="32" y="172" text-anchor="middle" font-size="14" font-weight="700">1</text><circle class="fig-ink" cx="140" cy="182" r="16" fill="none"/><text class="fig-text" x="168" y="172" text-anchor="middle" font-size="14" font-weight="700">1</text><circle class="fig-ink" cx="230" cy="182" r="16" fill="none"/><text class="fig-text" x="202" y="172" text-anchor="middle" font-size="14" font-weight="700">1</text></svg><figcaption>맨 위는 아래에서 받은 3과 2에 자기 몫 1을 더해 6이에요.</figcaption></figure></div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>트리 안의 <strong>노드의 개수</strong>를 순회하면서 동시에 세요(S7 p16). 각각의 서브트리에 대하여 순환 호출한 다음, 반환되는 값에 1(자기 자신)을 더하여 반환해요.</p>
+<pre><code class="language-c">int get_node_count(TreeNode *node)
+{
+    int count=0;
+    if( node != NULL )
+        count = 1 + get_node_count(node-&gt;left)+
+                    get_node_count(node-&gt;right);
+    return count;
+}</code></pre>
+    <ul>
+      <li><code>node != NULL</code>일 때만 더해요. NULL이면 <code>count</code>가 0인 채로 반환돼요.</li>
+      <li>더하려면 원하는 값을 리턴해 줘야 해요. 재귀가 빠져나오는 이유는 NULL이기 때문이에요.</li>
+      <li>식으로 쓰면 $\text{count}(T) = 1 + \text{count}(L) + \text{count}(R)$, $\text{count}(\text{NULL}) = 0$이에요.</li>
+    </ul>
+    <p>슬라이드 그림의 수 1, 1, 3, 1, 2, 6을 따라가요. 루트의 왼쪽 자식은 리프 둘을, 오른쪽 자식은 리프 하나를 자식으로 둬요.</p>
+    <ol class="steps">
+      <li>리프: left·right 모두 NULL이라 0, 0을 받음 → $1 + 0 + 0 = 1$</li>
+      <li>리프 둘을 둔 왼쪽 자식 → $1 + 1 + 1 = 3$</li>
+      <li>자식이 하나인 오른쪽 자식 → $1 + 1 + 0 = 2$</li>
+      <li>루트: 왼쪽 3, 오른쪽 2, 자기 1 → $3 + 2 + 1 = 6$</li>
+    </ol>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>밑에서부터 1, 1을 받아 3, 한쪽만 있는 노드는 2, 마지막으로 루트가 3 + 2 + 1로 6이 된다고 슬라이드 수를 하나씩 짚었어요. 더하려면 원하는 값을 리턴해 줘야 하고, 빠져나오는 건 NULL이기 때문이라고 했어요. (1102 Part 07)</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">get_node_count는 왼쪽·오른쪽 서브트리의 개수를 재귀로 받아 자기 자신 1을 더해 반환해요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">노드 개수</span>$$\text{count}(T) = 1 + \text{count}(L) + \text{count}(R)$$</li><li><span class="eq-name">빈 트리</span>$$\text{count}(\text{NULL}) = 0$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>노드의 개수</dt><dd>각 서브트리에 순환 호출한 다음, 반환값에 1을 더해 구해요.</dd>
+    </dl>
+    <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>슬라이드 그림의 루트는 $3 + 2 + 1 = 6$이에요.</li></ul></div>
+  </div>
+</article>
+<article class="topic" id="s2-height"><h3>11. 높이 get_height</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p17</span></div>
+  <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">왼쪽과 오른쪽 가지 중 더 긴 쪽을 골라 재요.</p><figure class="figure"><svg id="fig-height-tall" viewBox="0 0 360 220" role="img" aria-label="맨 위 강조색으로 색칠된 동그라미 아래 왼쪽에 긴 삼각형, 오른쪽에 짧은 삼각형이 선으로 그려져 있고, 왼쪽 삼각형 옆에 위아래 화살표로 길이를 잰 그림"><circle class="fig-dot" cx="180" cy="30" r="13"/><line class="fig-ink" x1="172" y1="40" x2="130" y2="66" fill="none"/><line class="fig-ink" x1="188" y1="40" x2="240" y2="66" fill="none"/><polygon class="fig-ink" points="130,66 100,200 160,200" fill="none"/><polygon class="fig-ink" points="240,66 210,130 270,130" fill="none"/><line class="fig-accent" x1="70" y1="70" x2="70" y2="196" fill="none"/><path class="fig-accent" d="M64,80 L70,68 L76,80" fill="none"/><path class="fig-accent" d="M64,186 L70,198 L76,186" fill="none"/><text class="fig-text" x="60" y="138" text-anchor="end" font-size="13">더 긴 쪽</text><text class="fig-muted" x="290" y="104" font-size="13">짧은 쪽</text></svg><figcaption>더 긴 쪽 길이에 맨 위 동그라미 한 칸을 더하면 나무의 키예요.</figcaption></figure></div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p>높이(height)는 가장 높이 뻗은 가지까지의 높이예요(S7 p17). 서브트리에 대하여 순환 호출하고, 서브트리들의 반환값 중에서 최대값을 구하여 반환해요.</p>
+<pre><code class="language-c">int get_height(TreeNode *node)
+{
+    int height=0;
+    if( node != NULL )
+        height = 1 + max(get_height(node-&gt;left),
+                         get_height(node-&gt;right));
+    return height;
+}</code></pre>
+    <ul>
+      <li>left와 right를 재귀로 따라간 뒤, 노드 개수와 달리 더하지 않고 <code>max</code>로 둘 중 큰 값을 골라요.</li>
+      <li>왼쪽에서 x, 오른쪽에서 y가 리턴되면 $\max(x, y) + 1$을 반환해요. +1은 루트 때문이에요(루트 자신의 높이).</li>
+      <li>식으로 쓰면 $h(T) = 1 + \max(h(L), h(R))$, $h(\text{NULL}) = 0$이에요.</li>
+      <li>슬라이드 그림은 루트 위에 h = max(h_left, h_right)를 적고, 왼쪽·오른쪽 서브트리의 높이 h_left, h_right를 삼각형 옆에 표시해요. 코드는 여기에 1을 더해요.</li>
+      <li>반복문이 필요 없어요. 재귀 호출이 쌓이는 내부 스택이 모든 것을 관리해요.</li>
+      <li>(보충, 슬라이드 밖) <code>max</code>는 C 표준 라이브러리 함수가 아니라서 직접 정의해야 해요(예: <code>int max(int a, int b) { return a &gt; b ? a : b; }</code>).</li>
+    </ul>
+  </div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span>
+    <p>높이는 "무성한 가지"가 아니라 가장 위로 뻗은 가지가 기준이라고 했어요. +1을 하는 이유를 묻고 스스로 답했어요.</p>
+    <blockquote>루트 때문에요. 루트의 높이도 더해줘야죠. (1102 Part 07)</blockquote>
+    <p>반복문 없이 내부 스택이 모든 것을 관리해 연산하는 것이 트리의 장점이라고 정리했어요. (1102 Part 07)</p>
+  </div>
+  <div class="sum" hidden>
+    <p class="sum-lead">get_height는 왼쪽·오른쪽 높이 중 큰 값에 루트 몫 1을 더해 반환해요.</p>
+    <p class="panel-label">핵심 식</p>
+    <ul class="eq-list"><li><span class="eq-name">높이</span>$$h(T) = 1 + \max(h(L), h(R))$$</li><li><span class="eq-name">빈 트리</span>$$h(\text{NULL}) = 0$$</li></ul>
+    <p class="panel-label">용어</p>
+    <dl class="terms">
+      <dt>높이(height)</dt><dd>가장 높이 뻗은 가지까지의 높이예요.</dd>
+      <dt>max</dt><dd>둘 중 큰 값을 고르는 함수예요. (보충) C 표준 함수가 아니라 직접 정의해요.</dd>
+    </dl>
+    <div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>노드 개수는 더하고, 높이는 max로 골라요. +1은 루트 때문이에요.</li><li>반복문 없이 내부 스택이 관리해요.</li></ul></div>
+  </div>
+</article>
+    </section>
+    <section id="s3"><h2>4. 요약 · 예고</h2>
+<article class="topic" id="s3-cheatsheet"><h3>한눈에 보는 이진 트리 표현과 순회</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p8–17</span></div>
+  <p>1102 수업에서 다룬 표현법, 순회 네 가지, 순회로 계산하는 함수를 한 줄씩 모았어요. 노드 번호 $i$는 루트가 1번이에요.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>항목</th><th>핵심 한 줄</th><th>예 · 코드</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#s0-array">배열 표현법</a></td><td>포화 이진 트리로 가정해 번호를 인덱스로 써요. 0번은 비우고, 빈 자리는 당기지 않아요.</td><td>부모 $\lfloor i/2 \rfloor$, 왼쪽 자식 $2i$, 오른쪽 자식 $2i+1$</td></tr>
+      <tr><td><a href="#s0-link">링크 표현법</a></td><td>부모가 포인터로 두 자식을 가리키고, 자식이 없으면 <code>NULL</code>이에요.</td><td><code>struct TreeNode *left, *right;</code></td></tr>
+      <tr><td><a href="#s1-traversal">순회(traversal)</a></td><td>노드를 규칙에 따라 체계적으로 모두 방문해요. L이 R보다 항상 먼저이고, V(루트)를 언제 방문하느냐로만 갈려요.</td><td>재귀 호출이 쌓이는 내부 스택을 이용해요</td></tr>
+      <tr><td><a href="#s1-preorder">전위 순회(preorder)</a></td><td>VLR: 루트를 먼저 방문하고 왼쪽, 오른쪽 서브트리로 내려가요.</td><td>책 목차 출력</td></tr>
+      <tr><td><a href="#s1-inorder">중위 순회(inorder)</a></td><td>LVR: 왼쪽 서브트리, 루트, 오른쪽 서브트리 순서예요.</td><td>수식 트리 → <code>a * b + c / d</code></td></tr>
+      <tr><td><a href="#s1-postorder">후위 순회(postorder)</a></td><td>LRV: 두 서브트리를 다 본 뒤 마지막에 루트를 방문해요.</td><td>디렉토리 용량 계산</td></tr>
+      <tr><td><a href="#s1-levelorder">레벨 순회(level order)</a></td><td>큐를 써서 번호 순서(위에서 아래, 왼쪽에서 오른쪽)로 방문해요. 표준 순회 방법은 아니에요.</td><td><code>+ * / a b c d</code></td></tr>
+      <tr><td><a href="#s2-expr-tree">수식 트리(expression tree)</a></td><td>비단말 노드는 연산자, 단말 노드는 피연산자예요. 전위·중위·후위 순회가 곧 전위·중위·후위 표기예요.</td><td><code>a - (b × c)</code> 후위 → <code>a b c × -</code></td></tr>
+      <tr><td><a href="#s2-evaluate">evaluate</a></td><td>후위 순회로 왼쪽 값 x, 오른쪽 값 y를 구한 뒤 루트의 연산자를 적용해요. <code>exp = NULL</code>이면 0을 돌려줘요.</td><td><code>return (x op y);</code></td></tr>
+      <tr><td><a href="#s2-count">get_node_count</a></td><td>두 서브트리의 노드 개수에 자기 자신 1을 더해요.</td><td><code>count = 1 + get_node_count(node-&gt;left) + get_node_count(node-&gt;right);</code></td></tr>
+      <tr><td><a href="#s2-height">get_height</a></td><td>두 서브트리 높이 중 큰 값에 루트 한 층 1을 더해요. 반복문 없이 재귀로 끝나요.</td><td>$1 + \max(h(L), h(R))$</td></tr>
+    </tbody>
+  </table></div>
+</article>
+<article class="topic" id="s3-next"><h3>다음 시간 예고</h3><div class="tags"><span class="tag date">1102 수업</span><span class="tag slide">S7 p18</span></div>
+  <p>다음 시간에는 탐색에 특화된 이진 트리인 이진 탐색 트리(binary search tree)를 배워요. 이번 시간에는 제목만 소개했어요.</p>
+  <ul>
+    <li>이진 탐색 트리의 정의 (S7 p18–19)</li>
+    <li>이진 탐색 트리에서의 탐색 연산 (S7 p20)</li>
+    <li>이진 탐색 트리에서의 삽입 연산 (S7 p21)</li>
+    <li>이진 탐색 트리에서의 삭제 연산 (S7 p22–24)</li>
+    <li>이진 탐색 트리의 분석 (S7 p25)</li>
+  </ul>
+  <blockquote>"서치에 특화되어 있는 바이너리 서치 트리라는 게 있어요." (1102 Part 07)</blockquote>
+  <p>레벨 순회 때 든 <a href="#s1-levelorder">업다운 게임</a> 비유가 이 탐색의 효율을 미리 보여 줘요.</p>
+</article>
+<article class="topic" id="s3-links"><h3>함께 보면 좋은 자료</h3>
+  <ul>
+    <li><a href="복습문제_1102_Tree.html">복습문제 12선 — 1102 수업 범위</a></li>
+    <li><a href="../../자료구조_강의록_2026/Software_7_Tree.pdf">강의록 Software_7 Tree (이번 범위 p8–17)</a></li>
+    <li><a href="../1029/정리노트_1029_Tree.html#s2-numbering">지난 수업: 이진 트리의 번호 매기기 — 배열 표현법의 바탕</a></li>
+    <li><a href="../1012/정리노트_1012_Queue.html#s1-notation">스택 단원의 전위·중위·후위 표기 — 수식 트리는 그 연장선</a></li>
+    <li><a href="../0914/정리노트_0914_Recursion.html#s4-two-conditions">재귀의 두 조건 — 순회 코드의 종결 조건과 수렴</a></li>
+  </ul>
+</article>
+    </section>
+  </main>
+  <footer>출처: 이정원 교수님 강의록(Software_7 Tree p7–18) · 수업 녹음 전사(1102). 전사에 시각 정보가 없어 인용은 Part 기준이에요.</footer>
+    </div>
+    <aside class="panel panel-right" id="panel-right" aria-labelledby="panel-right-title">
+      <div class="panel-resize" data-side="right" role="separator" aria-orientation="vertical" aria-controls="panel-right" aria-label="오른쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-right-title">페이지 요약</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
+        <div class="sums" id="sum-for"></div>
+      </div>
+    </aside>
+  </div>
+  <div class="scrim" id="panel-scrim" aria-hidden="true"></div>
+  <nav class="pager" aria-label="화면 이동">
+    <div class="pager-inner">
+      <button class="btn btn-ghost" id="pager-prev" type="button">이전</button>
+      <span class="pager-count" id="pager-count"></span>
+      <button class="btn btn-primary" id="pager-next" type="button">시작하기</button>
+    </div>
+  </nav>
+  <p class="sr-only" id="pager-status" aria-live="polite"></p>
+  <script id="widget-travorder-ui">(function () {
+function travorderModel() {
+    /* 수식 a*b + c/d 트리: 루트 +, 왼쪽 *, 오른쪽 /, *의 자식 a·b, /의 자식 c·d */
+    var T = {
+        '+': { l: '*', r: '/', x: 300, y: 46 },
+        '*': { l: 'a', r: 'b', x: 170, y: 116 },
+        '/': { l: 'c', r: 'd', x: 430, y: 116 },
+        'a': { l: null, r: null, x: 105, y: 186 },
+        'b': { l: null, r: null, x: 235, y: 186 },
+        'c': { l: null, r: null, x: 365, y: 186 },
+        'd': { l: null, r: null, x: 495, y: 186 }
+    };
+    var ROOT = '+';
+    var NAME = { pre: '전위(VLR)', 'in': '중위(LVR)', post: '후위(LRV)' };
+    var N = 7, RAD = 20;
+    var RIGHT = { '/': 1, 'b': 1, 'd': 1 }; /* 오른쪽 자식은 번호를 오른쪽 위에 */
+    function order(mode) {
+        var out = [];
+        function go(v) {
+            if (v === null) return; /* 바닥(NULL)을 치면 돌아온다 */
+            if (mode === 'pre') out.push(v);
+            go(T[v].l);
+            if (mode === 'in') out.push(v);
+            go(T[v].r);
+            if (mode === 'post') out.push(v);
+        }
+        go(ROOT);
+        return out;
+    }
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function f(v) { return Math.round(v * 10) / 10; }
+    function edge(p, c) {
+        var a = T[p], b = T[c], dx = b.x - a.x, dy = b.y - a.y, L = Math.sqrt(dx * dx + dy * dy);
+        var ux = dx / L, uy = dy / L;
+        return '<line class="fig-ink" x1="' + f(a.x + ux * RAD) + '" y1="' + f(a.y + uy * RAD) + '" x2="' + f(b.x - ux * RAD) + '" y2="' + f(b.y - uy * RAD) + '"/>';
+    }
+    function render(mode, step) {
+        var ord = order(mode), seen = ord.slice(0, step), cur = step > 0 ? ord[step - 1] : null;
+        var s = '';
+        s += '<text class="fig-muted" x="12" y="20">' + esc(NAME[mode]) + ' · ' + step + '/' + N + '</text>';
+        for (var k in T) {
+            if (T[k].l) s += edge(k, T[k].l);
+            if (T[k].r) s += edge(k, T[k].r);
+        }
+        for (var v in T) {
+            var idx = seen.indexOf(v), n = T[v];
+            s += '<circle class="' + (idx >= 0 ? 'fig-accent' : 'fig-ink') + '" cx="' + n.x + '" cy="' + n.y + '" r="' + RAD + '"/>';
+            if (v === cur) s += '<circle class="fig-accent" cx="' + n.x + '" cy="' + n.y + '" r="' + (RAD + 6) + '"/>';
+            s += '<text class="fig-text" x="' + n.x + '" y="' + (n.y + 5) + '" text-anchor="middle" style="font-size:16px">' + esc(v) + '</text>';
+            if (idx >= 0) s += '<text class="fig-text" x="' + (n.x + (RIGHT[v] ? 30 : -30)) + '" y="' + (n.y - 18) + '" text-anchor="middle" style="font-size:14px;font-weight:700">' + (idx + 1) + '</text>';
+        }
+        s += '<text class="fig-muted" x="12" y="262">찍힌 순서</text>';
+        for (var i = 0; i < N; i++) {
+            var x = 90 + i * 64;
+            s += '<rect class="' + (i === step - 1 ? 'fig-accent' : 'fig-ink') + '" x="' + x + '" y="240" width="56" height="36" rx="4"/>';
+            s += '<text class="fig-muted" x="' + (x + 28) + '" y="294" text-anchor="middle">' + (i + 1) + '</text>';
+            if (i < step) s += '<text class="fig-text" x="' + (x + 28) + '" y="264" text-anchor="middle" style="font-size:16px">' + esc(ord[i]) + '</text>';
+        }
+        var out = NAME[mode] + ' ' + step + '/' + N + ' · 방금 방문: ' + (cur === null ? '아직 없음' : cur) + ' · 지금까지: ' + (step ? seen.join(' ') : '(비어 있음)');
+        var aria = '수식 a*b + c/d 트리를 ' + NAME[mode] + '로 ' + step + '번째 노드까지 방문한 상태. 방문한 노드는 강조색 테두리 원에 방문 순서 번호가 붙고, 방금 방문한 노드는 강조색 테두리 원이 한 겹 더 둘러져 있음. 아래 칸에 찍힌 순서: ' + (step ? seen.join(' ') : '없음') + '.';
+        return { inner: s, aria: aria, out: out, seq: seen };
+    }
+    return { N: N, order: order, render: render, NAME: NAME };
+}
+    var M = travorderModel();
+    var svg = document.getElementById('travorder-plot');
+    var out = document.getElementById('travorder-out');
+    var sel = document.getElementById('travorder-mode');
+    if (!svg || !out || !sel) return;
+    var mode = 'pre', step = 0;
+    function draw() {
+        var r = M.render(mode, step);
+        svg.innerHTML = r.inner;
+        svg.setAttribute('aria-label', r.aria);
+        out.textContent = r.out;
+    }
+    sel.addEventListener('change', function () { mode = sel.value; step = 0; draw(); });
+    document.getElementById('travorder-next').addEventListener('click', function () { if (step < M.N) { step++; draw(); } });
+    document.getElementById('travorder-prev').addEventListener('click', function () { if (step > 0) { step--; draw(); } });
+    document.getElementById('travorder-reset').addEventListener('click', function () { step = 0; draw(); });
+    sel.value = mode;
+    draw();
+})();</script>
+  <script id="widget-levelq-ui">(function () {
+function levelqModel() {
+    /* 수식 a*b + c/d 트리: 루트 +, 왼쪽 *, 오른쪽 /, *의 자식 a·b, /의 자식 c·d */
+    var T = {
+        '+': { l: '*', r: '/', x: 160, y: 46 },
+        '*': { l: 'a', r: 'b', x: 90, y: 116 },
+        '/': { l: 'c', r: 'd', x: 230, y: 116 },
+        'a': { l: null, r: null, x: 55, y: 186 },
+        'b': { l: null, r: null, x: 125, y: 186 },
+        'c': { l: null, r: null, x: 195, y: 186 },
+        'd': { l: null, r: null, x: 265, y: 186 }
+    };
+    var RIGHT = { '/': 1, 'b': 1, 'd': 1 }; /* 오른쪽 자식은 번호를 오른쪽 위에 */
+    var ROOT = '+', N = 7, RAD = 18, CELLS = 5, CW = 46, QX = 360, QY = 96;
+    /* 단계 0: 루트를 큐에 넣은 상태. 단계 k: 앞에서 하나 꺼내 방문하고 자식을 뒤에 넣은 상태 */
+    function states() {
+        var q = [ROOT], seen = [], list = [{ q: q.slice(), seen: [], cur: null, added: [ROOT] }];
+        while (q.length) {
+            var v = q.shift(), added = [];
+            seen.push(v);
+            if (T[v].l) { q.push(T[v].l); added.push(T[v].l); }
+            if (T[v].r) { q.push(T[v].r); added.push(T[v].r); }
+            list.push({ q: q.slice(), seen: seen.slice(), cur: v, added: added });
+        }
+        return list;
+    }
+    var ST = states();
+    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function f(v) { return Math.round(v * 10) / 10; }
+    function edge(p, c) {
+        var a = T[p], b = T[c], dx = b.x - a.x, dy = b.y - a.y, L = Math.sqrt(dx * dx + dy * dy);
+        var ux = dx / L, uy = dy / L;
+        return '<line class="fig-ink" x1="' + f(a.x + ux * RAD) + '" y1="' + f(a.y + uy * RAD) + '" x2="' + f(b.x - ux * RAD) + '" y2="' + f(b.y - uy * RAD) + '"/>';
+    }
+    function arrowLeft(x1, x2, y) { return '<path class="fig-ink" d="M' + x1 + ',' + y + ' H' + x2 + ' M' + (x2 + 8) + ',' + (y - 5) + ' L' + x2 + ',' + y + ' L' + (x2 + 8) + ',' + (y + 5) + '"/>'; }
+    function qs(list) { return '[' + list.join(' ') + ']'; }
+    function render(step) {
+        var st = ST[step], s = '';
+        s += '<text class="fig-muted" x="12" y="20">레벨 순회 · ' + step + '/' + N + '</text>';
+        for (var k in T) {
+            if (T[k].l) s += edge(k, T[k].l);
+            if (T[k].r) s += edge(k, T[k].r);
+        }
+        for (var v in T) {
+            var idx = st.seen.indexOf(v), n = T[v];
+            s += '<circle class="' + (idx >= 0 ? 'fig-accent' : 'fig-ink') + '" cx="' + n.x + '" cy="' + n.y + '" r="' + RAD + '"/>';
+            if (v === st.cur) s += '<circle class="fig-accent" cx="' + n.x + '" cy="' + n.y + '" r="' + (RAD + 6) + '"/>';
+            s += '<text class="fig-text" x="' + n.x + '" y="' + (n.y + 5) + '" text-anchor="middle" style="font-size:16px">' + esc(v) + '</text>';
+            if (idx >= 0) s += '<text class="fig-text" x="' + (n.x + (RIGHT[v] ? 32 : -32)) + '" y="' + (n.y - 20) + '" text-anchor="middle" style="font-size:14px;font-weight:700">' + (idx + 1) + '</text>';
+        }
+        /* 큐 칸 */
+        var qEnd = QX + CELLS * CW;
+        s += '<text class="fig-muted" x="' + QX + '" y="' + (QY - 14) + '">큐</text>';
+        s += '<text class="fig-muted" x="' + QX + '" y="' + (QY + 62) + '">앞(front)</text>';
+        s += '<text class="fig-muted" x="' + qEnd + '" y="' + (QY + 62) + '" text-anchor="end">뒤(rear)</text>';
+        s += '<line class="fig-ink" x1="' + QX + '" y1="' + QY + '" x2="' + qEnd + '" y2="' + QY + '"/>';
+        s += '<line class="fig-ink" x1="' + QX + '" y1="' + (QY + 40) + '" x2="' + qEnd + '" y2="' + (QY + 40) + '"/>';
+        var firstNew = st.q.length - st.added.length;
+        for (var i = 0; i < CELLS; i++) {
+            var x = QX + i * CW;
+            s += '<rect class="' + (i < st.q.length && i >= firstNew ? 'fig-accent' : 'fig-ink') + '" x="' + (x + 3) + '" y="' + (QY + 3) + '" width="' + (CW - 6) + '" height="34" rx="3"/>';
+            if (i < st.q.length) s += '<text class="fig-text" x="' + (x + CW / 2) + '" y="' + (QY + 26) + '" text-anchor="middle" style="font-size:16px">' + esc(st.q[i]) + '</text>';
+        }
+        s += arrowLeft(QX - 6, QX - 34, QY + 20);
+        s += arrowLeft(qEnd + 36, qEnd + 6, QY + 20);
+        /* 방금 꺼낸 노드 */
+        s += '<text class="fig-muted" x="' + (QX - 64) + '" y="' + (QY - 14) + '" text-anchor="middle">꺼냄</text>';
+        s += '<rect class="' + (st.cur ? 'fig-accent' : 'fig-ink') + '" x="' + (QX - 84) + '" y="' + (QY + 3) + '" width="40" height="34" rx="3"/>';
+        if (st.cur) s += '<text class="fig-text" x="' + (QX - 64) + '" y="' + (QY + 26) + '" text-anchor="middle" style="font-size:16px">' + esc(st.cur) + '</text>';
+        /* 방문 순서 */
+        s += '<text class="fig-muted" x="12" y="272">방문 순서</text>';
+        for (var j = 0; j < N; j++) {
+            var cx = 100 + j * 64;
+            s += '<rect class="' + (j === step - 1 ? 'fig-accent' : 'fig-ink') + '" x="' + cx + '" y="250" width="56" height="36" rx="4"/>';
+            s += '<text class="fig-muted" x="' + (cx + 28) + '" y="304" text-anchor="middle">' + (j + 1) + '</text>';
+            if (j < step) s += '<text class="fig-text" x="' + (cx + 28) + '" y="274" text-anchor="middle" style="font-size:16px">' + esc(st.seen[j]) + '</text>';
+        }
+        var act = st.cur === null ? '루트 +를 큐에 넣었어요'
+            : st.cur + '를 꺼내 방문' + (st.added.length ? '하고 자식 ' + st.added.join(', ') + '를 뒤에 넣었어요' : '했어요(자식 없음)');
+        var out = step + '/' + N + ' · ' + act + ' · 큐 ' + qs(st.q) + ' · 방문 순서: ' + (st.seen.length ? st.seen.join(' ') : '(비어 있음)');
+        var aria = '레벨 순회 ' + step + '단계. ' + act + '. 큐 앞에서 뒤로 ' + (st.q.length ? st.q.join(' ') : '비어 있음') + '. 방문한 노드는 강조색 테두리 원에 방문 번호가 붙고, 방금 꺼낸 노드는 강조색 테두리 원이 한 겹 더 둘러져 있으며, 방금 큐에 넣은 칸은 강조색 테두리. 방문 순서: ' + (st.seen.length ? st.seen.join(' ') : '없음') + '.';
+        return { inner: s, aria: aria, out: out, q: st.q, seen: st.seen, cur: st.cur };
+    }
+    return { N: N, render: render, states: ST };
+}
+    var M = levelqModel();
+    var svg = document.getElementById('levelq-plot');
+    var out = document.getElementById('levelq-out');
+    if (!svg || !out) return;
+    var step = 0;
+    function draw() {
+        var r = M.render(step);
+        svg.innerHTML = r.inner;
+        svg.setAttribute('aria-label', r.aria);
+        out.textContent = r.out;
+    }
+    document.getElementById('levelq-next').addEventListener('click', function () { if (step < M.N) { step++; draw(); } });
+    document.getElementById('levelq-prev').addEventListener('click', function () { if (step > 0) { step--; draw(); } });
+    document.getElementById('levelq-reset').addEventListener('click', function () { step = 0; draw(); });
+    draw();
+})();</script>
+  <script id="theme-ui">
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const sysDark = matchMedia('(prefers-color-scheme: dark)');
+      const KEY = 'od-theme';
+      const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : sysDark.matches;
+      function label() {
+        const next = isDark() ? '라이트 모드로 전환' : '다크 모드로 전환';
+        btn.setAttribute('aria-label', next);
+        btn.title = next;
+      }
+      btn.addEventListener('click', () => {
+        const t = isDark() ? 'light' : 'dark';
+        // 시스템 설정과 같아지면 저장을 지워 다시 시스템을 따른다
+        if ((t === 'dark') === sysDark.matches) { delete root.dataset.theme; try { localStorage.removeItem(KEY); } catch (e) {} }
+        else { root.dataset.theme = t; try { localStorage.setItem(KEY, t); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+        label();
+      });
+      sysDark.addEventListener('change', label);
+      window.addEventListener('storage', (e) => {
+        if (e.key !== KEY) return;
+        if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue; else delete root.dataset.theme;
+        label();
+      });
+      label();
+    })();
+  </script>
+  <script id="panels-ui">
+    (function () {
+      const body = document.body;
+      const layout = document.querySelector('.layout');
+      const kind = body.dataset.panels;
+      const panels = { left: document.getElementById('panel-left'), right: document.getElementById('panel-right') };
+      const toggles = { left: document.getElementById('toggle-left'), right: document.getElementById('toggle-right') };
+      const scrim = document.getElementById('panel-scrim');
+      const blockers = [document.querySelector('.topbar'), document.querySelector('.content'), document.querySelector('.pager')];
+      const wideMq = matchMedia('(min-width: 1024px)');
+      const roomyMq = matchMedia('(min-width: 1280px)');
+      const store = {
+        get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+      };
+      const PREF = 'od-panels:' + kind;
+      // 팩마다 문제·토픽 id가 p1, s1-…로 겹치므로 진행 기록은 기간별로 나눈다
+      const RANGE = body.dataset.range || '';
+      const ICON_TODO = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>';
+      const ICON_DONE = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 10"/></svg>';
+      let overlay = null;
+
+      // ---------- 열고 닫기 ----------
+      function docked() {
+        const pref = store.get(PREF, {});
+        return { left: pref.left ?? true, right: pref.right ?? roomyMq.matches };
+      }
+      function sync() {
+        const wide = wideMq.matches;
+        const d = docked();
+        ['left', 'right'].forEach((side) => {
+          const open = wide ? d[side] : overlay === side;
+          const p = panels[side];
+          layout.dataset[side] = open ? 'open' : 'closed';
+          p.classList.toggle('is-open', !wide && open);
+          p.inert = !open;
+          if (!wide && open) { p.setAttribute('role', 'dialog'); p.setAttribute('aria-modal', 'true'); }
+          else { p.removeAttribute('role'); p.removeAttribute('aria-modal'); }
+          toggles[side].setAttribute('aria-expanded', String(open));
+        });
+        const drawer = !wide && overlay !== null;
+        scrim.classList.toggle('is-on', drawer);
+        body.classList.toggle('drawer-open', drawer);
+        blockers.forEach((el) => { el.inert = drawer; });
+      }
+      function openDrawer(side) {
+        overlay = side;
+        sync();
+        requestAnimationFrame(() => panels[side].querySelector('[data-panel-close]').focus());
+      }
+      function closeDrawer(refocus) {
+        if (overlay === null) return;
+        const side = overlay;
+        overlay = null;
+        sync();
+        if (refocus) toggles[side].focus();
+      }
+      function toggle(side) {
+        if (wideMq.matches) {
+          const d = docked();
+          d[side] = !d[side];
+          store.set(PREF, d);
+          sync();
+          if (d[side]) { const p = panels[side]; p.classList.remove('is-shown'); void p.offsetWidth; p.classList.add('is-shown'); }
+        } else if (overlay === side) closeDrawer(true);
+        else openDrawer(side);
+      }
+
+      toggles.left.addEventListener('click', () => toggle('left'));
+      toggles.right.addEventListener('click', () => toggle('right'));
+      scrim.addEventListener('click', () => closeDrawer(true));
+      document.querySelectorAll('[data-panel-close]').forEach((b) => b.addEventListener('click', () => closeDrawer(true)));
+      panels.left.addEventListener('click', (e) => { if (e.target.closest('.toc a')) closeDrawer(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay !== null) { e.preventDefault(); closeDrawer(true); } });
+
+      // ---------- 패널 너비: 기본은 화면 폭에 맞춰 자동, 경계를 끌면 직접 조절 ----------
+      const WIDTH = { left: { min: 220, max: 480, prop: '--panel-l-user' }, right: { min: 280, max: 720, prop: '--panel-r-user' } };
+      function applyWidths() {
+        const w = store.get(PREF + ':w', {});
+        ['left', 'right'].forEach((side) => {
+          if (w[side]) layout.style.setProperty(WIDTH[side].prop, w[side] + 'px');
+          else layout.style.removeProperty(WIDTH[side].prop);
+        });
+      }
+      function maxFor(side) {
+        const other = side === 'left' ? panels.right : panels.left;
+        const otherW = layout.dataset[side === 'left' ? 'right' : 'left'] === 'open' ? other.getBoundingClientRect().width : 0;
+        return Math.max(WIDTH[side].min, Math.min(WIDTH[side].max, window.innerWidth - otherW - 400));
+      }
+      function setWidth(side, px, save) {
+        const v = Math.round(Math.min(Math.max(px, WIDTH[side].min), maxFor(side)));
+        layout.style.setProperty(WIDTH[side].prop, v + 'px');
+        panels[side].querySelector('.panel-resize').setAttribute('aria-valuenow', String(v));
+        if (save) { const w = store.get(PREF + ':w', {}); w[side] = v; store.set(PREF + ':w', w); }
+      }
+      function resetWidth(side) {
+        const w = store.get(PREF + ':w', {});
+        delete w[side];
+        store.set(PREF + ':w', w);
+        layout.style.removeProperty(WIDTH[side].prop);
+      }
+      document.querySelectorAll('.panel-resize').forEach((handle) => {
+        const side = handle.dataset.side;
+        const dir = side === 'left' ? 1 : -1;
+        handle.setAttribute('aria-valuemin', String(WIDTH[side].min));
+        handle.setAttribute('aria-valuemax', String(WIDTH[side].max));
+        handle.addEventListener('pointerdown', (e) => {
+          if (!wideMq.matches || e.button !== 0) return;
+          e.preventDefault();
+          const startX = e.clientX;
+          const startW = panels[side].getBoundingClientRect().width;
+          handle.setPointerCapture(e.pointerId);
+          body.classList.add('is-resizing');
+          const move = (ev) => setWidth(side, startW + dir * (ev.clientX - startX), false);
+          const up = () => {
+            handle.removeEventListener('pointermove', move);
+            handle.removeEventListener('pointerup', up);
+            handle.removeEventListener('pointercancel', up);
+            body.classList.remove('is-resizing');
+            setWidth(side, panels[side].getBoundingClientRect().width, true);
+          };
+          handle.addEventListener('pointermove', move);
+          handle.addEventListener('pointerup', up);
+          handle.addEventListener('pointercancel', up);
+        });
+        handle.addEventListener('dblclick', () => resetWidth(side));
+        handle.addEventListener('keydown', (e) => {
+          const step = e.shiftKey ? 64 : 16;
+          const cur = panels[side].getBoundingClientRect().width;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            e.stopPropagation();
+            setWidth(side, cur + (e.key === 'ArrowRight' ? step : -step) * dir, true);
+          } else if (e.key === 'Home') { e.preventDefault(); resetWidth(side); }
+        });
+      });
+      applyWidths();
+      const onMq = () => { overlay = null; sync(); };
+      wideMq.addEventListener('change', onMq);
+      roomyMq.addEventListener('change', onMq);
+
+      // ---------- 목차의 진행 표시 ----------
+      const progressN = document.getElementById('progress-n');
+      const progressBar = document.getElementById('progress-bar');
+      const progressTotal = document.getElementById('progress-total');
+      function markToc(done, total, doneLabel) {
+        panels.left.querySelectorAll('.toc-list a').forEach((a) => {
+          const id = decodeURIComponent(a.getAttribute('href').slice(1));
+          let mark = a.querySelector('.toc-mark');
+          if (!mark) {
+            mark = document.createElement('span');
+            mark.className = 'toc-mark';
+            mark.setAttribute('aria-hidden', 'true');
+            const state = document.createElement('span');
+            state.className = 'sr-only toc-state';
+            a.append(mark, state);
+          }
+          const isDone = done.has(id);
+          mark.classList.toggle('is-done', isDone);
+          mark.innerHTML = isDone ? ICON_DONE : ICON_TODO;
+          a.querySelector('.toc-state').textContent = isDone ? ' (' + doneLabel + ')' : '';
+        });
+        progressN.textContent = String(done.size);
+        progressTotal.textContent = String(total);
+        progressBar.style.transform = 'scaleX(' + (total ? done.size / total : 0) + ')';
+      }
+      function revealCurrent() {
+        const link = panels.left.querySelector('.toc-list a[aria-current="true"]');
+        if (link && layout.dataset.left === 'open') link.scrollIntoView({ block: 'nearest' });
+      }
+
+      // ---------- 복습문제: 오른쪽 = 원문 · 힌트 · 풀이 ----------
+      function setupReview() {
+        const KEY = 'od-review-solved:' + RANGE;
+        const cards = Array.from(document.querySelectorAll('main article.card'));
+        const aids = panels.right.querySelector('.aids');
+        const empty = panels.right.querySelector('.panel-empty');
+        const btn = document.getElementById('solved-btn');
+        const groups = {};
+        const solved = new Set(store.get(KEY, []).filter((id) => cards.some((c) => c.id === id)));
+        cards.forEach((card) => {
+          const g = document.createElement('div');
+          g.className = 'aid';
+          g.hidden = true;
+          card.querySelectorAll(':scope > details').forEach((d) => g.appendChild(d));
+          aids.appendChild(g);
+          groups[card.id] = g;
+        });
+        let curId = null;
+        function paintBtn() {
+          const on = solved.has(curId);
+          btn.setAttribute('aria-pressed', String(on));
+          btn.innerHTML = (on ? ICON_DONE : ICON_TODO) + '<span>' + (on ? '푼 문제 · 표시 해제' : '푼 문제로 표시') + '</span>';
+        }
+        btn.addEventListener('click', () => {
+          if (!curId) return;
+          if (solved.has(curId)) solved.delete(curId); else solved.add(curId);
+          store.set(KEY, Array.from(solved));
+          paintBtn();
+          markToc(solved, cards.length, '푼 문제');
+        });
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          curId = s.matches('article.card') ? s.id : null;
+          Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
+          empty.hidden = Boolean(curId);
+          btn.hidden = !curId;
+          if (curId) paintBtn();
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(solved, cards.length, '푼 문제');
+          revealCurrent();
+        });
+      }
+
+      // ---------- 정리노트: 오른쪽 = 페이지(토픽)별 요약 ----------
+      function setupNote() {
+        const KEY = 'od-note-read:' + RANGE;
+        const topics = Array.from(document.querySelectorAll('main article.topic'));
+        const read = new Set(store.get(KEY, []).filter((id) => topics.some((t) => t.id === id)));
+        // 조각의 <div class="sum" hidden> 을 오른쪽 패널로 옮긴다. 없으면 안내 문구만 보인다.
+        const box = panels.right.querySelector('.sums');
+        const sums = {};
+        topics.forEach((t) => {
+          const el = t.querySelector(':scope > .sum');
+          if (!el) return;
+          el.hidden = true;
+          box.appendChild(el);
+          sums[t.id] = el;
+        });
+        const empty = document.getElementById('sum-empty');
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          const key = s.matches('article.topic') ? s.id : 'intro';
+          Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
+          empty.hidden = Boolean(sums[key]);
+          if (s.matches('article.topic') && !read.has(s.id)) { read.add(s.id); store.set(KEY, Array.from(read)); }
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(read, topics.length, '읽음');
+          revealCurrent();
+        });
+      }
+
+      if (kind === 'review') setupReview();
+      if (kind === 'note') setupNote();
+      sync();
+    })();
+  </script>
+  <script id="pager-ui">
+    (function () {
+      const root = document.documentElement;
+      const main = document.querySelector('main');
+      const hero = main.querySelector('.hero');
+      const screens = [hero].concat(Array.from(main.querySelectorAll(document.body.dataset.screens)));
+      if (screens.length < 2) { root.classList.remove('js'); return; }
+      screens.forEach((s) => s.classList.add('screen'));
+
+      const last = screens.length - 1;
+      const prevBtn = document.getElementById('pager-prev');
+      const nextBtn = document.getElementById('pager-next');
+      const count = document.getElementById('pager-count');
+      const bar = document.getElementById('pager-bar');
+      const status = document.getElementById('pager-status');
+      const toc = document.querySelector('#panel-left .toc');
+      const scroller = document.querySelector('.content');
+      const titleOf = (s) => ((s.querySelector('h3') || s.querySelector('h1') || {}).textContent || '').trim();
+      let cur = -1;
+
+      // 목차: 섹션 링크 아래에 화면(토픽·카드) 목록을 붙인다
+      const tocLinks = [];
+      Array.from(toc.querySelectorAll(':scope > a')).forEach((a) => {
+        const sec = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+        const group = document.createElement('div');
+        group.className = 'toc-group';
+        a.replaceWith(group);
+        group.appendChild(a);
+        if (!sec) return;
+        const list = document.createElement('ol');
+        list.className = 'toc-list';
+        screens.forEach((s, i) => {
+          if (!sec.contains(s)) return;
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#' + s.id;
+          link.innerHTML = '<span class="toc-title"></span>';
+          link.firstChild.textContent = titleOf(s);
+          li.appendChild(link);
+          list.appendChild(li);
+          tocLinks[i] = link;
+        });
+        group.appendChild(list);
+      });
+
+      function indexFor(hash) {
+        const id = decodeURIComponent((hash || '').replace(/^#/, ''));
+        const el = id && document.getElementById(id);
+        if (!el || !main.contains(el)) return { i: 0 };
+        const i = screens.findIndex((s) => s.contains(el) || el.contains(s));
+        return { i: Math.max(i, 0), target: i >= 0 && screens[i].contains(el) && screens[i] !== el ? el : null };
+      }
+
+      function render(i, target) {
+        const dir = cur < 0 ? '' : i > cur ? 'enter-next' : 'enter-prev';
+        if (i !== cur) {
+          if (cur >= 0) screens[cur].classList.remove('is-current', 'enter-next', 'enter-prev');
+          main.querySelectorAll(':scope > section.is-on').forEach((sec) => sec.classList.remove('is-on'));
+          const s = screens[i];
+          const sec = s.closest('section');
+          if (sec) sec.classList.add('is-on');
+          s.classList.add('is-current');
+          if (dir) { s.classList.remove('enter-next', 'enter-prev'); void s.offsetWidth; s.classList.add(dir); }
+          cur = i;
+          document.body.classList.toggle('at-end', i === last);
+          prevBtn.disabled = i === 0;
+          nextBtn.textContent = i === 0 ? '시작하기' : i === last ? '처음으로' : '다음';
+          count.textContent = i === 0 ? '' : i + ' / ' + last;
+          bar.style.transform = 'scaleX(' + (i / last) + ')';
+          status.textContent = i === 0 ? titleOf(s) : i + ' / ' + last + ', ' + titleOf(s);
+          tocLinks.forEach((link, k) => link && link.setAttribute('aria-current', String(k === i)));
+          document.dispatchEvent(new CustomEvent('od:screen', { detail: { index: i, screen: s } }));
+        }
+        if (target) target.scrollIntoView({ block: 'start' });
+        else scroller.scrollTo(0, 0);
+      }
+
+      function go(i) {
+        i = Math.min(Math.max(i, 0), last);
+        if (i === cur) return;
+        const url = i === 0 ? location.pathname + location.search : '#' + screens[i].id;
+        history.pushState(null, '', url);
+        render(i);
+      }
+
+      prevBtn.addEventListener('click', () => go(cur - 1));
+      nextBtn.addEventListener('click', () => go(cur === last ? 0 : cur + 1));
+      const fromUrl = () => { const r = indexFor(location.hash); render(r.i, r.target); };
+      window.addEventListener('hashchange', fromUrl);
+      window.addEventListener('popstate', fromUrl);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || document.body.classList.contains('drawer-open')) return;
+        if (e.target.closest('input, select, textarea, [contenteditable="true"]')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+      });
+
+      // 좌우로 밀어서 넘기기 (가로로 스크롤되는 영역은 제외)
+      let sx = 0, sy = 0, skip = true;
+      main.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY;
+        skip = e.touches.length > 1 || Boolean(e.target.closest('.widget, .katex-display, .table-wrap, pre, svg, input, details'));
+      }, { passive: true });
+      main.addEventListener('touchend', (e) => {
+        if (skip) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        if (Math.abs(dx) > 64 && Math.abs(dx) > 2 * Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      fromUrl();
+    })();
+  </script>
+</body>
+</html>
