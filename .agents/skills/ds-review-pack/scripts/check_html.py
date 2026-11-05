@@ -41,6 +41,13 @@ SLOT_RE = re.compile(r"\{\{[A-Z_]+\}\}")
 REMOTE_PREFIXES = ("http://", "https://", "//")
 # CSS 안의 url(...) 과 @import "..." 대상
 CSS_URL_RE = re.compile(r"""url\(\s*['"]?([^'")\s]+)|@import\s+['"]([^'"]+)['"]""", re.IGNORECASE)
+# 녹음 위치는 내부 STT 근거에만 둔다. 시각은 괄호/수업 날짜 문맥으로 제한해 C 코드를 오인하지 않는다.
+RECORDING_LOCATOR_RE = re.compile(
+    r"\bPart\s+\d+|(?:시각|시간)\s*(?:미제공|정보\s*없음)"
+    r"|[（(]\s*(?:\d{4}\s+)?\d{1,2}:\d{2}(?::\d{2})?"
+    r"|(?<!\d)\d{4}\s+\d{1,2}:\d{2}(?::\d{2})?",
+    re.IGNORECASE,
+)
 
 
 def is_remote(url: str) -> bool:
@@ -241,6 +248,10 @@ class Problem:
 def check_common(doc: Doc, source: str, path: Path) -> list[Problem]:
     name = Path(path).name
     out: list[Problem] = []
+    is_note = name.startswith("정리노트_") or any("topic" in c.classes for c in doc.containers.values())
+    if is_note:
+        out += [Problem("recording-locator", name, match.group(0))
+                for match in RECORDING_LOCATOR_RE.finditer(doc.body_text)]
     if doc.lang != "ko":
         out.append(Problem("lang", name, f"<html lang> = {doc.lang!r}"))
     out += [Problem("duplicate-id", name, i) for i in sorted(doc.duplicate_ids)]

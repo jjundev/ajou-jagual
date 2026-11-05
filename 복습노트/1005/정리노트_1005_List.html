@@ -393,8 +393,8 @@ if L = NULL
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>학생 1번, 2번, 3번이 서 있고 1번과 2번 사이에 새 학생을 넣는다고 해 봐요. 1번만 데려오면 돼요. 1번이 이미 2번을 가리키고 있기 때문이에요.</p>
     <p>자기를 가리키던 손이 끊어진 노드는 사람 눈에는 그림에 보여도 메모리에서는 쓰레기 값으로 떠돌아다닌다고 설명했어요.</p>
-    <blockquote>“순서가 굉장히 중요해요. … 얘를 먼저 하고 얘를 하라는 얘기입니다.” (1005 Part 01)</blockquote>
-    <blockquote>“항상 새로 들어오는 애의 링크를 먼저 연결을 해 주고 나서 업데이트해라” (1005 Part 01)</blockquote>
+    <blockquote>“순서가 굉장히 중요해요. … 얘를 먼저 하고 얘를 하라는 얘기입니다.”</blockquote>
+    <blockquote>“항상 새로 들어오는 애의 링크를 먼저 연결을 해 주고 나서 업데이트해라”</blockquote>
     <p>1번, 2번 순서를 그림에 꼭 표시하라고 했어요. 그림이 사라지고 코드만 남으면 헷갈리기 쉬워서 대각선 규칙을 팁으로 줬어요.</p>
   </div>
   <div class="sum" hidden>
@@ -426,7 +426,7 @@ if L ≠ NULL
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>삽입 때 얻은 힌트를 그대로 쓰면 된다고 했어요. 자기를 가리키는 포인터를 잃은 노드는 메모리를 비우든 말든 낙동강 오리알이 돼요.</p>
     <p>removed를 가리키던 노드가 갑자기 “변심”해서 다른 노드를 가리키면 그걸로 삭제가 끝난다고 비유했어요.</p>
-    <blockquote>“삽입보다 삭제 연산이 훨씬 더 간단하죠?” (1005 Part 01)</blockquote>
+    <blockquote>“삽입보다 삭제 연산이 훨씬 더 간단하죠?”</blockquote>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">선행 노드의 링크가 removed 다음 노드를 가리키게 바꾼 뒤 removed의 메모리를 반납해요.</p>
@@ -471,8 +471,8 @@ p1-&gt;link = p2;</code></pre>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>포인터는 국그릇이고, 앞의 타입은 앞으로 가리킬 그릇이 int 밥그릇인지 float 밥그릇인지 알려 준다고 비유했어요.</p>
     <p>구조체는 철가방과 같다고 했어요. 단무지와 짜장면처럼 단순해도 늘 같이 다녀야 하면 한데 묶어요. 노드에서는 항목과 포인터가 늘 같이 다녀요.</p>
-    <blockquote>“요 형식은 여러분들이 그냥 외우는 게 좋아요.” (1005 Part 02, malloc 형식)</blockquote>
-    <blockquote>“헤드 포인터가 그래서 중요해요.” (1005 Part 02)</blockquote>
+    <blockquote>“요 형식은 여러분들이 그냥 외우는 게 좋아요.”</blockquote>
+    <blockquote>“헤드 포인터가 그래서 중요해요.”</blockquote>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">노드는 링크가 자기 타입을 가리키는 구조체이고, malloc으로 하나씩 만들어 링크로 이어요.</p>
@@ -570,9 +570,9 @@ void insert_node(ListNode **phead, ListNode *p, ListNode *new_node)
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>추상 데이터 타입에서 연산 이름만 보라고 했을 때도 사실 매개변수를 같이 봤다고 짚었어요. 프로토타입을 보면 이 함수는 리턴할 게 없으니 “그냥 삽입하고 끝나나 봐요”라고 읽었어요.</p>
-    <p>이중 포인터 이야기는 Part 02에서 “뒤에서 그림으로 다시 설명하겠다”고 미뤘고, Part 03의 경우 2 그림에서 설명했어요.</p>
-    <blockquote>“1번, 2번 이렇게 해야 되죠. … 순서가 중요하니까.” (1005 Part 03)</blockquote>
-    <blockquote>“이것 때문에 헤드 포인터가 이중 포인터로 관리가 돼야 되는 겁니다.” (1005 Part 03)</blockquote>
+    <p>이중 포인터 이야기는 “뒤에서 그림으로 다시 설명하겠다”고 미뤘고, 이후 경우 2 그림에서 설명했어요.</p>
+    <blockquote>“1번, 2번 이렇게 해야 되죠. … 순서가 중요하니까.”</blockquote>
+    <blockquote>“이것 때문에 헤드 포인터가 이중 포인터로 관리가 돼야 되는 겁니다.”</blockquote>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">헤드 포인터가 바뀔 수 있어서 그 주소를 이중 포인터로 받고, 세 경우 모두 새 노드의 링크부터 이어요.</p>
@@ -623,7 +623,7 @@ void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p><code>*phead = (*phead)-&gt;link;</code>를 “한 칸 점프하라”는 뜻으로 설명했어요. 헤드가 손을 끊어 버렸으니 첫 노드는 사라진다고 했어요.</p>
     <p>더블 포인팅 부분이 헷갈릴 수 있다면서, 포인팅을 하나씩 더 해 준다는 것을 팁으로 가져가라고 했어요.</p>
-    <blockquote>“삭제 연산 코드는 되게 간단하죠.” (1005 Part 03)</blockquote>
+    <blockquote>“삭제 연산 코드는 되게 간단하죠.”</blockquote>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">p가 NULL이면 헤드를 한 칸 옮기고, 아니면 선행 노드의 링크를 removed 다음으로 바꾼 뒤 free해요.</p>
@@ -665,9 +665,9 @@ void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
 <ul><li>바닥 조건(종결 조건): p가 NULL이면 아무것도 하지 않고 돌아와요.</li><li>수렴: <code>display_recur(p-&gt;link);</code>는 남은 노드가 3개 → 2개 → 1개 → 0개로 줄어드는 방향으로 불려요.</li></ul>
 <ol class="steps"><li><code>display_recur(10 노드)</code> → <code>10-&gt;</code> 출력</li><li><code>display_recur(20 노드)</code> → <code>20-&gt;</code> 출력</li><li><code>display_recur(30 노드)</code> → <code>30-&gt;</code> 출력</li><li><code>display_recur(NULL)</code> → 바닥 조건, 그대로 돌아옴</li></ol>
 <p>두 버전 모두 노드 $n$개를 한 번씩 방문하므로 시간복잡도는 $O(n)$이에요.</p></div>
-  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 리스트의 연산은 얼마든지 만들어 낼 수 있다고 했어요. 지금까지 is_empty, is_full, insert, delete를 봤고, display는 리스트에 무엇이 있는지 쭉 보며 출력하는 연산이라고 소개했어요. p를 "템퍼러리 헤드"라고 불렀어요. (1005 Part 03)</p>
-<blockquote>노드를 하나씩 건너뛰는 문장이다, 이렇게 기억을 하시면 됩니다. (1005 Part 03)</blockquote>
-<blockquote>링크드 리스트는 recursive 펑션을 많이 이용해서 코딩을 합니다. (1005 Part 04)</blockquote></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 리스트의 연산은 얼마든지 만들어 낼 수 있다고 했어요. 지금까지 is_empty, is_full, insert, delete를 봤고, display는 리스트에 무엇이 있는지 쭉 보며 출력하는 연산이라고 소개했어요. p를 "템퍼러리 헤드"라고 불렀어요.</p>
+<blockquote>노드를 하나씩 건너뛰는 문장이다, 이렇게 기억을 하시면 됩니다.</blockquote>
+<blockquote>링크드 리스트는 recursive 펑션을 많이 이용해서 코딩을 합니다.</blockquote></div>
   <div class="sum" hidden><p class="sum-lead">임시 포인터 p를 한 칸씩 옮기며 NULL을 만날 때까지 출력해요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">display 시간복잡도</span>$$O(n)$$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>방문 연산(display)</dt><dd>노드를 처음부터 순차적으로 방문해 출력하는 연산</dd><dt>바닥 조건(종결 조건)</dt><dd>p가 NULL이면 재귀를 멈추는 조건</dd></dl><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>재귀 버전은 현재 data 출력 뒤 p-&gt;link로 호출해 남은 노드 수를 줄이고 NULL에서 멈춰요. 지역 p만 옮겨 호출자의 head는 유지해요.</li></ul></div></div>
 </article>
 
@@ -690,8 +690,8 @@ void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
 <p>리스트 10→20→30에서 추적하면 다음과 같아요.</p>
 <ol class="steps"><li><code>search(head, 20)</code>: p는 10 노드 → 10 ≠ 20 → p는 20 노드</li><li>20 == 20 → 20 노드 리턴(탐색 성공)</li><li><code>search(head, 40)</code>: 10, 20, 30 모두 불일치 → p는 NULL</li><li>while 종료 → NULL 리턴(탐색 실패)</li></ol>
 <p>찾는 값이 마지막 노드에 있거나 없으면 $n$개를 모두 비교하므로 최악의 시간복잡도는 $O(n)$이에요.</p></div>
-  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 x를 "10을 찾고 싶어, 30이 이 리스트에 있는지 찾고 싶어"의 타깃값이라고 설명했어요. 노드가 리턴되면 찾은 것이고, NULL이 리턴되면 그 값이 리스트에 없다는 뜻이에요. (1005 Part 04)</p>
-<blockquote>이 리스트에는 너가 찾는 값은 없어, 이렇게 되는 거겠죠. (1005 Part 04)</blockquote></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 x를 "10을 찾고 싶어, 30이 이 리스트에 있는지 찾고 싶어"의 타깃값이라고 설명했어요. 노드가 리턴되면 찾은 것이고, NULL이 리턴되면 그 값이 리스트에 없다는 뜻이에요.</p>
+<blockquote>이 리스트에는 너가 찾는 값은 없어, 이렇게 되는 거겠죠.</blockquote></div>
   <div class="sum" hidden><p class="sum-lead">값이 맞는 노드를 만나면 그 노드를, 끝까지 없으면 NULL을 돌려줘요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">search 최악 시간복잡도</span>$$O(n)$$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>탐색 연산(search)</dt><dd>특정한 데이터 값을 갖는 노드를 찾는 연산</dd><dt>NULL 리턴</dt><dd>찾는 값이 리스트에 없다는 뜻</dd></dl></div>
 </article>
 
@@ -717,8 +717,8 @@ void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
 <p>head1 = 10→20, head2 = 30→40으로 추적하면 다음과 같아요.</p>
 <ol class="steps"><li>두 리스트 모두 비어 있지 않음 → p는 10 노드</li><li><code>p-&gt;link</code>가 20 노드(NULL 아님) → p는 20 노드</li><li><code>p-&gt;link</code>가 NULL → while 종료</li><li><code>p-&gt;link = head2;</code> → 10→20→30→40</li><li>head1 리턴</li></ol>
 <p>head1 리스트의 길이를 $n$이라 하면 끝 노드를 찾는 데 $O(n)$이 걸려요. head2의 길이와는 상관없어요. 꼬리를 찾아가는 이 비용이 <a href="#s2-circular">헤드 포인터를 꼬리에 두는 트릭</a>의 동기가 돼요.</p></div>
-  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 합병을 "머지(merge)한다"는 뜻이라고 했어요. 머지 연산도 많이 사용한다고 했어요. 하나하나의 알고리즘보다 큰 그림을 보라고 당부했어요. 가장 많이 쓰는 연산은 insert와 delete이고, 방문·탐색·합병도 같은 방식으로 하나씩 함수로 만들어 보는 중이라고 했어요. (1005 Part 04)</p>
-<blockquote>리스트에서 사용할 수 있는 여러 오퍼레이션을 함수로 디자인하고 있는 중 (1005 Part 04)</blockquote></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 합병을 "머지(merge)한다"는 뜻이라고 했어요. 머지 연산도 많이 사용한다고 했어요. 하나하나의 알고리즘보다 큰 그림을 보라고 당부했어요. 가장 많이 쓰는 연산은 insert와 delete이고, 방문·탐색·합병도 같은 방식으로 하나씩 함수로 만들어 보는 중이라고 했어요.</p>
+<blockquote>리스트에서 사용할 수 있는 여러 오퍼레이션을 함수로 디자인하고 있는 중</blockquote></div>
   <div class="sum" hidden><p class="sum-lead">head1의 끝 노드를 찾아 그 링크를 head2에 이어 주면 합병돼요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">concat 시간복잡도(head1 길이 n)</span>$$O(n)$$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>합병 연산(concat)</dt><dd>두 리스트를 하나로 합하는 연산</dd><dt>끝 노드</dt><dd>링크가 NULL인 노드</dd></dl><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>head1이 NULL이면 head2, head2가 NULL이면 head1을 반환해요. 둘 다 있으면 p-&gt;link==NULL에서 멈춰 head2를 잇고 head1을 반환해요.</li></ul></div></div>
 </article>
 
@@ -742,9 +742,9 @@ void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
     return q;    // q는 역순으로 된 리스트의 헤드 포인터
 }</code></pre>
 <ul><li>p: 아직 뒤집지 않은 나머지 리스트의 첫 노드예요.</li><li>q: 이번에 링크 방향을 바꿀 노드예요.</li><li>r: 이미 역순으로 된 리스트예요.</li><li>한 번 돌 때마다 r은 q를, q는 p를 차례로 따라가고, p는 다음 노드로 가요.</li><li><code>q-&gt;link =r;</code>로 q의 링크 방향을 바꿔요.</li><li>반복이 끝나면 q가 역순으로 된 리스트의 헤드 포인터예요. 그래서 <code>return q;</code>로 돌려줘요.</li></ul></div>
-  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 링크 포인터들을 복잡하게 바꾸는 연산이라 임시 포인터 하나만으로는 안 되고, q와 r을 더 두고 유지해야 한다고 했어요. 코드 추적은 직접 해 보라고 넘겼어요. (1005 Part 04)</p>
-<blockquote>실제로 노드를 그려서 한번 쫓아가 보면 좋을 텐데요 (1005 Part 04)</blockquote>
-<blockquote>그렇게 많이 쓰는 연산이라고 보긴 어렵습니다. (1005 Part 04)</blockquote></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>교수님은 링크 포인터들을 복잡하게 바꾸는 연산이라 임시 포인터 하나만으로는 안 되고, q와 r을 더 두고 유지해야 한다고 했어요. 코드 추적은 직접 해 보라고 넘겼어요.</p>
+<blockquote>실제로 노드를 그려서 한번 쫓아가 보면 좋을 텐데요</blockquote>
+<blockquote>그렇게 많이 쓰는 연산이라고 보긴 어렵습니다.</blockquote></div>
   <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span><p>수업에서 "따라가 보세요"로 넘긴 추적을 리스트 10→20→30으로 해 보면 다음과 같아요. 각 줄은 반복 한 번이 끝난 뒤의 상태예요.</p>
 <ol class="steps"><li>시작: p는 10 노드, q는 NULL, 원래 리스트 10→20→30</li><li>1회차: <code>r = q</code> → r은 NULL, <code>q = p</code> → q는 10 노드, <code>p = p-&gt;link</code> → p는 20 노드, <code>q-&gt;link =r;</code> → 10의 링크는 NULL. 역순 부분 10, 남은 부분 20→30</li><li>2회차: r은 10 노드, q는 20 노드, p는 30 노드, 20의 링크는 10. 역순 부분 20→10, 남은 부분 30</li><li>3회차: r은 20 노드, q는 30 노드, p는 NULL, 30의 링크는 20. 역순 부분 30→20→10</li><li><code>p != NULL</code>이 거짓 → 반복 종료, <code>return q;</code> → 30 노드를 돌려줌. 결과 30→20→10</li></ol>
 <ul><li><code>p = p-&gt;link;</code>가 <code>q-&gt;link =r;</code>보다 먼저 와요. 링크를 먼저 바꾸면 나머지 리스트로 가는 길을 잃기 때문이에요. 삽입에서 본 <a href="#s0-insert-order">연결 순서</a>와 같은 이유예요.</li><li>노드를 새로 만들지 않고 기존 노드의 <code>link</code>를 직접 덮어쓰므로, 실행이 끝나면 맨 처음 순서(10→20→30)의 리스트는 사라지고 역순 리스트(30→20→10)만 남아요.</li><li>바깥의 <code>head</code> 변수는 값으로 전달되어 여전히 10 노드를 가리켜요. 첫 회차에 <code>10-&gt;link = NULL</code>이 되므로, 반환값을 받지 않으면 <code>head</code>로는 10→NULL만 남아요. 반드시 <code>head = reverse(head);</code>처럼 반환값 <code>q</code>를 받아 써야 해요.</li><li>빈 리스트면 반복을 한 번도 돌지 않고 q의 초깃값 NULL을 돌려줘요.</li></ul>
@@ -758,7 +758,7 @@ void remove_node(ListNode **phead, ListNode *p, ListNode *removed)
     <figure class="figure"><svg id="fig-circular-ring" viewBox="0 0 520 110" role="img" aria-label="가, 나, 다, 라 네 테두리 상자가 화살표로 이어지고 마지막 라에서 처음 가로 되돌아가는 선이 있으며, 색칠된 점의 깃발이 마지막 라를 가리키는 그림"><text x="8" y="61" class="fig-text" font-size="13">둥근 줄</text><rect x="90" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="115" y="61" class="fig-text" font-size="14" text-anchor="middle">가</text><rect x="180" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="205" y="61" class="fig-text" font-size="14" text-anchor="middle">나</text><rect x="270" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="295" y="61" class="fig-text" font-size="14" text-anchor="middle">다</text><rect x="360" y="40" width="50" height="32" class="fig-ink" fill="none"/><text x="385" y="61" class="fig-text" font-size="14" text-anchor="middle">라</text><path d="M140 56 L177 56 M170 50 L177 56 L170 62 M230 56 L267 56 M260 50 L267 56 L260 62 M320 56 L357 56 M350 50 L357 56 L350 62 M410 56 L430 56 L430 86 L115 86 L115 75 M109 81 L115 75 L121 81" class="fig-accent" fill="none"/><circle cx="385" cy="24" r="5" class="fig-dot"/><path d="M385 29 L385 37 M380 32 L385 37 L390 32" class="fig-ink" fill="none"/><text x="395" y="28" class="fig-muted" font-size="12">깃발</text></svg><figcaption>끝 친구의 손이 맨 앞 친구를 잡고 있어요.</figcaption></figure>
   </div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span><p>연결 리스트는 크게 단순(single), 원형(circular), 이중(double) 세 가지예요. <strong>원형 연결 리스트</strong>(circular linked list)는 <strong>마지막 노드</strong>의 링크가 <code>NULL</code>이 아니라 첫 번째 노드를 가리키는 리스트예요(S4 p33).</p><p>그래서 한 노드에서 다른 모든 노드로 갈 수 있어요. 단순 연결 리스트는 끝(<code>NULL</code>)에 닿으면 더 갈 수 없어서 B에서 A로 돌아갈 방법이 없어요. 원형 연결 리스트는 추가 데이터 없이도 끝까지 간 다음 처음으로 돌아와 A에 닿아요.</p><p><strong>트릭</strong>: 원형 연결 리스트는 보통 헤드 포인터가 첫 노드가 아니라 마지막 노드(꼬리)를 가리키게 구성해요(S4 p33). 꼭 그래야 하는 규칙은 아니고, 이렇게 구성하면 처음이나 마지막에 넣기가 쉬워져서 흔히 쓰는 방식이에요. 마지막 노드의 링크는 항상 첫 노드를 가리키므로 두 끝을 바로 찾을 수 있어요.</p><ul><li>꼬리: <code>head</code>가 곧 마지막 노드예요. 한 번에 가요.</li><li>머리: <code>head-&gt;link</code>가 첫 노드예요. 두 번 만에 가요.</li></ul><p>단순 연결 리스트에서 꼬리를 찾으려면 <code>p = p-&gt;link</code>를 노드 수만큼 되풀이해야 해요. 노드가 백만 개면 대입이 백만 번 일어나서 $O(n)$이에요(<a href="#s1-concat">합병 연산 concat</a>이 이렇게 꼬리를 찾아갔어요). 헤드 포인터를 꼬리에 두면 머리와 꼬리를 모두 상수 시간 $O(1)$에 찾아요. 그래서 리스트의 처음이나 마지막에 노드를 넣는 연산이 단순 연결 리스트보다 쉬워요.</p><div class="table-wrap"><table><thead><tr><th scope="col">찾는 곳</th><th scope="col">단순 연결 리스트(헤드 = 머리)</th><th scope="col">원형 연결 리스트(헤드 = 꼬리)</th></tr></thead><tbody><tr><th scope="row">첫 노드</th><td><code>head</code>, $O(1)$</td><td><code>head-&gt;link</code>, $O(1)$</td></tr><tr><th scope="row">마지막 노드</th><td>끝까지 따라가기, $O(n)$</td><td><code>head</code>, $O(1)$</td></tr></tbody></table></div><p>원형 연결 리스트의 삭제는 수업에서 다음 시간으로 미뤘고 슬라이드에도 없어요.</p></div>
-  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>극장 매표소 앞 줄을 예로 들었어요. 새로 온 사람은 줄 맨 뒤에 서니까 꼬리를 찾을 일이 많다는 거예요.</p><p>포인터 이름이 head라고 해서 꼭 머리에 둘 필요는 없다고 했어요. 이렇게 구조를 살짝 바꿔 효율을 얻는 것을 "트리키한 자료구조"라고 불렀고, 이런 트릭에서 약간의 희열을 느낀다고 했어요.</p><blockquote>“이런 게 바로 소프트웨어의 묘미예요.” (1005 Part 05)</blockquote></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>극장 매표소 앞 줄을 예로 들었어요. 새로 온 사람은 줄 맨 뒤에 서니까 꼬리를 찾을 일이 많다는 거예요.</p><p>포인터 이름이 head라고 해서 꼭 머리에 둘 필요는 없다고 했어요. 이렇게 구조를 살짝 바꿔 효율을 얻는 것을 "트리키한 자료구조"라고 불렀고, 이런 트릭에서 약간의 희열을 느낀다고 했어요.</p><blockquote>“이런 게 바로 소프트웨어의 묘미예요.”</blockquote></div>
   <div class="sum" hidden><p class="sum-lead">헤드 포인터가 마지막 노드를 가리키면 머리와 꼬리를 모두 바로 찾아요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">단순 리스트의 꼬리 찾기</span>$O(n)$</li><li><span class="eq-name">원형 리스트의 머리·꼬리 찾기</span>$O(1)$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>원형 연결 리스트(circular linked list)</dt><dd>마지막 노드의 링크가 첫 번째 노드를 가리키는 리스트예요.</dd><dt>head-&gt;link</dt><dd>헤드가 꼬리를 가리킬 때 첫 노드의 주소예요.</dd></dl><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>마지막 링크가 첫 노드를 가리켜 어느 노드에서든 전체로 돌아갈 수 있어요. head를 꼬리에 두는 것은 필수 규칙이 아닌 이 구현의 트릭이에요.</li></ul></div></div>
 </article>
 
@@ -781,7 +781,7 @@ void insert_first(ListNode **phead,
         (*phead)-&gt;link = node;
     }
 }</code></pre><p><strong>공백 리스트</strong>(<code>*phead == NULL</code>): 새 노드가 처음이자 마지막 노드예요. <code>*phead = node;</code>로 헤드가 새 노드를 가리키고, <code>node-&gt;link = node;</code>로 새 노드가 자기 자신을 가리켜요.</p><p><strong>비어 있지 않은 리스트</strong>: 리스트 A, B, C, D에 E를 넣어요. 헤드는 D를 가리켜요.</p><ol class="steps"><li>처음: <code>head → D</code>, <code>A → B → C → D → A</code></li><li>(1) <code>node-&gt;link = (*phead)-&gt;link;</code> → <code>E → A</code> (헤드가 가리키는 노드 D의 링크가 가리키던 곳, 즉 첫 노드 A)</li><li>(2) <code>(*phead)-&gt;link = node;</code> → <code>D → E</code></li><li>결과: <code>E → A → B → C → D → E</code>, <code>head → D</code> (그대로)</li></ol><p>새 노드의 링크를 먼저 연결해요. 순서를 바꾸면 D의 링크가 먼저 E로 덮여 A의 주소를 잃어요. 앞 줄 오른쪽의 <code>(*phead)-&gt;link</code>가 다음 줄 왼쪽에 나오는 대각선 모양도 <a href="#s0-insert-order">삽입의 연결 순서와 대각선 규칙</a>과 같아요.</p><p>헤드 포인터는 움직이지 않아요. 마지막 노드의 링크는 항상 맨 앞 노드를 가리켜야 하므로 그 링크만 E로 바꿔요. 반복문이 없으므로 시간복잡도는 $O(1)$이에요.</p></div>
-  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>두 번째 녹화를 "33페이지서부터" 다시 시작하며 원형 리스트를 복습했어요. 단순 리스트는 끝에 닿으면 더 갈 수 없지만, 원형 리스트는 끝에서 처음으로 돌아갈 수 있다고 했어요. (1005 Part 05)</p><p>새 노드의 링크를 먼저 잇고, 여기서도 대각선 방향이 같다고 짚었어요. 헤드는 여전히 마지막 노드를 가리키고, 마지막 노드의 링크만 바꿔 준다고 강조했어요. (1005 Part 06)</p></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>두 번째 녹화를 "33페이지서부터" 다시 시작하며 원형 리스트를 복습했어요. 단순 리스트는 끝에 닿으면 더 갈 수 없지만, 원형 리스트는 끝에서 처음으로 돌아갈 수 있다고 했어요.</p><p>새 노드의 링크를 먼저 잇고, 여기서도 대각선 방향이 같다고 짚었어요. 헤드는 여전히 마지막 노드를 가리키고, 마지막 노드의 링크만 바꿔 준다고 강조했어요.</p></div>
   <div class="sum" hidden><p class="sum-lead">새 노드가 첫 노드를 먼저 가리키고, 꼬리의 링크를 새 노드로 바꿔요. 헤드는 그대로예요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">insert_first</span>$O(1)$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>(*phead)-&gt;link</dt><dd>마지막 노드의 링크, 곧 맨 앞 노드를 가리키는 링크예요.</dd><dt>node-&gt;link = node;</dt><dd>공백 리스트에 넣을 때 새 노드가 자기 자신을 가리키게 해요.</dd></dl><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>공백일 때는 *phead=node와 node-&gt;link=node로 노드 하나의 고리를 만들어요. 헤드 유지는 비공백 분기의 설명이에요.</li></ul></div></div>
 </article>
 
@@ -804,7 +804,7 @@ void insert_last(ListNode **phead, ListNode *node)
         *phead = node;
     }
 }</code></pre><p><strong>공백 리스트</strong>: 노드가 하나뿐이라 처음이자 마지막이에요. 그래서 <code>insert_first</code>와 똑같이 처리해요.</p><p><strong>비어 있지 않은 리스트</strong>: 리스트 A, B, C, D에 E를 넣어요. 헤드는 D를 가리켜요.</p><ol class="steps"><li>처음: <code>head → D</code>, <code>A → B → C → D → A</code></li><li>(1) <code>node-&gt;link = (*phead)-&gt;link;</code> → <code>E → A</code></li><li>(2) <code>(*phead)-&gt;link = node;</code> → <code>D → E</code> (여기까지 <code>insert_first</code>와 같아요: <code>E → A → B → C → D → E</code>)</li><li>(3) <code>*phead = node;</code> → <code>head → E</code></li><li>결과: <code>A → B → C → D → E → A</code>, <code>head → E</code></li></ol><p>헤드가 E로 옮겨 가면 E가 마지막 노드가 되고, E의 링크가 가리키는 A가 그대로 첫 노드로 남아요. 같은 고리라도 헤드가 어디를 가리키느냐에 따라 맨 앞과 맨 뒤가 정해져요.</p><p>헤드가 꼬리를 가리키므로 꼬리를 찾아갈 필요가 없어요. 시간복잡도는 $O(1)$이에요. 단순 연결 리스트에서 끝에 넣으려면 꼬리를 찾는 데 $O(n)$이 들었어요.</p></div>
-  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>앞의 두 문장은 맨 앞 삽입과 같고, 헤드를 새 노드로 옮기는 한 줄만 더하면 된다고 했어요. 헤드를 옮기는 것은 새 노드에게 마지막이라고 알려 주는 일이에요.</p><blockquote>“네가 꼴찌야, 네가 라스트야” (1005 Part 06)</blockquote></div>
+  <div class="layer prof"><span class="layer-title">교수님 말씀</span><p>앞의 두 문장은 맨 앞 삽입과 같고, 헤드를 새 노드로 옮기는 한 줄만 더하면 된다고 했어요. 헤드를 옮기는 것은 새 노드에게 마지막이라고 알려 주는 일이에요.</p><blockquote>“네가 꼴찌야, 네가 라스트야”</blockquote></div>
   <div class="sum" hidden><p class="sum-lead">맨 앞에 넣는 두 줄 뒤에 헤드를 새 노드로 옮기면 맨 뒤 삽입이 돼요.</p><p class="panel-label">핵심 식</p><ul class="eq-list"><li><span class="eq-name">insert_last</span>$O(1)$</li></ul><p class="panel-label">용어</p><dl class="terms"><dt>*phead = node;</dt><dd>헤드가 새 노드를 가리켜 새 노드를 마지막 노드로 만들어요.</dd></dl><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>공백은 새 노드를 헤드로 두고 자기 자신에 연결해요. 비공백은 node-&gt;link=옛 첫 노드, 옛 꼬리-&gt;link=node 뒤 *phead=node로 새 꼬리를 정해요.</li></ul></div></div>
 </article>
     </section>
@@ -841,10 +841,10 @@ typedef struct DlistNode {
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>이중 연결 리스트는 팔이 양쪽에 있는 모양이라고 했어요. 양팔로 앞 노드와 뒤 노드를 가리켜요.</p>
-    <blockquote>"팔이 양쪽에 있다고 생각을 하시면 돼요." (1005 Part 06)</blockquote>
-    <blockquote>"사실 더블 링크드 리스트 굉장히 많이 씁니다." (1005 Part 06)</blockquote>
-    <p>양팔을 가져야 하니까 헤드 포인터만으로는 부족하고, 헤드 노드를 두어 맨 앞과 맨 뒤를 함께 잡는다고 설명했어요. (1005 Part 06)</p>
-    <blockquote>"이거는 컨셉인 거고요. 여러분들이 이거 순서 바꾸셔도 상관없어요." (1005 Part 07)</blockquote>
+    <blockquote>"팔이 양쪽에 있다고 생각을 하시면 돼요."</blockquote>
+    <blockquote>"사실 더블 링크드 리스트 굉장히 많이 씁니다."</blockquote>
+    <p>양팔을 가져야 하니까 헤드 포인터만으로는 부족하고, 헤드 노드를 두어 맨 앞과 맨 뒤를 함께 잡는다고 설명했어요.</p>
+    <blockquote>"이거는 컨셉인 거고요. 여러분들이 이거 순서 바꾸셔도 상관없어요."</blockquote>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">노드마다 llink와 rlink 두 링크로 앞뒤를 모두 가리키고, 데이터 없는 헤드 노드가 리스트의 처음과 끝을 잡아요.</p>
@@ -917,9 +917,9 @@ void dinsert_node(DlistNode *before, DlistNode *new_node)
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>단순 연결 리스트에서도, 원형 연결 리스트에서도 새로 들어오는 노드의 링크부터 연결했다는 점을 다시 짚었어요.</p>
-    <blockquote>"항상 새로 들어오는 아이에 링크를 연결해 줘야 돼요." (1005 Part 07)</blockquote>
-    <blockquote>"반드시 3번하고 4번하고는 순서를 지켜야 됩니다. 1, 2번은 누가 먼저 하든 상관없어요." (1005 Part 07)</blockquote>
-    <p>4번을 먼저 하면 <code>before-&gt;rlink-&gt;llink</code>가 가리키는 대상이 바뀌어서, 3번이 전혀 다른 칸을 고치게 된다고 했어요. (1005 Part 07)</p>
+    <blockquote>"항상 새로 들어오는 아이에 링크를 연결해 줘야 돼요."</blockquote>
+    <blockquote>"반드시 3번하고 4번하고는 순서를 지켜야 됩니다. 1, 2번은 누가 먼저 하든 상관없어요."</blockquote>
+    <p>4번을 먼저 하면 <code>before-&gt;rlink-&gt;llink</code>가 가리키는 대상이 바뀌어서, 3번이 전혀 다른 칸을 고치게 된다고 했어요.</p>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">new_node의 두 링크를 먼저 잇고, 3번을 4번보다 먼저 실행해야 after의 llink를 제대로 고쳐요.</p>
@@ -963,9 +963,9 @@ void dremove_node(DlistNode *phead_node,
     <p class="note">수업 중 "NULL을 return"이라고 말했지만, <code>dremove_node</code>는 void 함수라 값 없이 <code>return;</code>으로 끝나요.</p>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
-    <p>삭제는 언제나 삽입보다 쉬웠다고 했어요. 지울 노드를 사이에 둔 두 링크를 서로 가리키게 바꾸면 끝이에요. (1005 Part 07)</p>
+    <p>삭제는 언제나 삽입보다 쉬웠다고 했어요. 지울 노드를 사이에 둔 두 링크를 서로 가리키게 바꾸면 끝이에요.</p>
     <p>(1)과 (2)를 "removed의 llink의 rlink가 removed의 rlink가 가리키는 곳을 가리키게"처럼 말로 풀어 설명해 보였어요.</p>
-    <blockquote>"이렇게 링크가 많을 때 말로 여러분들이 설명할 수 있어야 돼요." (1005 Part 07)</blockquote>
+    <blockquote>"이렇게 링크가 많을 때 말로 여러분들이 설명할 수 있어야 돼요."</blockquote>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">removed의 양옆 노드가 서로를 가리키게 두 링크를 고친 뒤 free하고, 헤드 노드는 지우지 않아요.</p>
@@ -1039,12 +1039,12 @@ ListNode *A, *B;</code></pre>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>배열로 다항식을 다룰 때 0인 계수 때문에 고민했던 일을 떠올리게 하셨어요. 리스트를 쓰기로 마음먹으면 그 고민이 사라진다고 하셨어요.</p>
-    <blockquote>"리스트 같은 경우엔 … 이런 고민을 안 할 수 있게 해 줍니다." (1005 Part 07)</blockquote>
+    <blockquote>"리스트 같은 경우엔 … 이런 고민을 안 할 수 있게 해 줍니다."</blockquote>
     <p>노드의 데이터 필드 수는 정해져 있지 않다고 하셨어요.</p>
-    <blockquote>"데이터를 세 개를 두고 링크를 하나만 둬도 상관없습니다." (1005 Part 07)</blockquote>
-    <p>손으로 더할 때와 같은 순서라고 하셨어요. 먼저 최고차항을 짚고, 12와 12가 같으니 3과 8을 더해 11을 만든다는 식이에요. (1005 Part 07–08)</p>
+    <blockquote>"데이터를 세 개를 두고 링크를 하나만 둬도 상관없습니다."</blockquote>
+    <p>손으로 더할 때와 같은 순서라고 하셨어요. 먼저 최고차항을 짚고, 12와 12가 같으니 3과 8을 더해 11을 만든다는 식이에요.</p>
     <p>q가 NULL을 만난 뒤에는 남은 꼬리를 앞에서 배운 합병으로 붙이면 된다고 하셨어요. 뒤에 여러 개가 딸려 올 수 있기 때문이에요.</p>
-    <blockquote>"우리 앞에서 배웠던 머지 기억나세요? 싱글 링크드 리스트 머지하는 연산." (1005 Part 08)</blockquote>
+    <blockquote>"우리 앞에서 배웠던 머지 기억나세요? 싱글 링크드 리스트 머지하는 연산."</blockquote>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">두 다항식 리스트를 최고차항부터 비교하며 지수가 같으면 계수를 더하고, 다르면 큰 쪽 항을 C에 붙여요.</p>
@@ -1091,12 +1091,12 @@ int get_length(ListType *list)
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>리스트 단원이 거의 끝나 가는 시점에서 S4 p44를 특히 강조하셨어요.</p>
-    <blockquote>"이제 여기 이 페이지가 굉장히 중요한 얘기를 하고 있습니다." (1005 Part 08)</blockquote>
+    <blockquote>"이제 여기 이 페이지가 굉장히 중요한 얘기를 하고 있습니다."</blockquote>
     <p>위치를 받는 add와 delete를 처음부터 완전히 새로 만드는 것은 "맨땅에 헤딩"이라고 하셨어요. 이미 잘 만들어 둔 insert_node와 remove_node를 어떻게 합성해서 쓸지 고민하라는 뜻이에요.</p>
-    <blockquote>"완전히 애드하고 딜리트라고 하는 그런 함수를 만든다면 이건 맨땅에 헤딩하는 거예요." (1005 Part 08)</blockquote>
+    <blockquote>"완전히 애드하고 딜리트라고 하는 그런 함수를 만든다면 이건 맨땅에 헤딩하는 거예요."</blockquote>
     <p>length 필드를 추가한 것에 대해서는 리스트의 모양에 정해진 규칙이 없다고 하셨어요.</p>
-    <blockquote>"리스트는 반드시 데이터 필드가 하나여야 된다든지 이런 규칙은 전혀 없어요." (1005 Part 08)</blockquote>
-    <p>get_length를 보고 나면 "이러려고 헤드 포인터만 주지 않고 구조체로 헤드 포인터와 렝스를 줬구나" 하고 생각하면 된다고 하셨어요. (1005 Part 08)</p>
+    <blockquote>"리스트는 반드시 데이터 필드가 하나여야 된다든지 이런 규칙은 전혀 없어요."</blockquote>
+    <p>get_length를 보고 나면 "이러려고 헤드 포인터만 주지 않고 구조체로 헤드 포인터와 렝스를 줬구나" 하고 생각하면 된다고 하셨어요.</p>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">ListType은 헤드 포인터와 노드 개수 length를 함께 들고 있어서 길이를 바로 돌려줄 수 있어요.</p>
@@ -1162,11 +1162,11 @@ void delete(ListType *list, int pos)
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>add 안에서 insert_node를 그대로 부르는 줄을 가리키며 강조하셨어요. get_node_at이 찾아 준 p가 곧 선행 노드라는 점이에요.</p>
-    <blockquote>"자 이거 되게 중요합니다, 여기 보세요. 인서트 노드 하고서 … p 노드를 썼습니다." (1005 Part 09)</blockquote>
+    <blockquote>"자 이거 되게 중요합니다, 여기 보세요. 인서트 노드 하고서 … p 노드를 썼습니다."</blockquote>
     <p>알고 있는 함수가 있으면 그것을 조금 변형해서 쓰라고 하셨어요. 말도 안 되는 것을 변형할 수는 없지만, 선행 노드만 알아내면 insert_node로 삽입할 수 있다는 식으로 가진 코드를 늘 재사용(reuse)하라는 뜻이에요.</p>
-    <blockquote>"이런 게 소프트웨어를 개발하는 굉장히 중요한 프린서플 중에 하나예요." (1005 Part 09)</blockquote>
-    <blockquote>"리유저빌리티를 극대화시키면서 함수를 모듈화해 가지고 컴포지션해서 만들고 있습니다." (1005 Part 09)</blockquote>
-    <p>재사용성(reusability)을 극대화하고 함수를 모듈화해 합성(composition)하는 방식이 프로그래밍의 최신 트렌드라고 하셨어요. (1005 Part 09)</p>
+    <blockquote>"이런 게 소프트웨어를 개발하는 굉장히 중요한 프린서플 중에 하나예요."</blockquote>
+    <blockquote>"리유저빌리티를 극대화시키면서 함수를 모듈화해 가지고 컴포지션해서 만들고 있습니다."</blockquote>
+    <p>재사용성(reusability)을 극대화하고 함수를 모듈화해 합성(composition)하는 방식이 프로그래밍의 최신 트렌드라고 하셨어요.</p>
   </div>
   <div class="sum" hidden>
     <p class="sum-lead">add와 delete는 get_node_at으로 선행 노드를 구한 뒤 이미 있는 insert_node와 remove_node를 재사용해요.</p>

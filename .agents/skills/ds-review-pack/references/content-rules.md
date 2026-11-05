@@ -27,12 +27,13 @@
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">한 문장 비유</p> …그림… </div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span> …정의·C 코드(pre)·동작 추적(ol.steps)·시간복잡도… </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span> …비유·일화, 원문은 blockquote… </div>
-  <div class="layer warn"><span class="layer-title">꼭 기억해요</span> …원문 인용 + (MMDD MM:SS)… </div>   ← 강조 발언이 있을 때만
+  <div class="layer warn"><span class="layer-title">꼭 기억해요</span> …원문 인용… </div>   ← 강조 발언이 있을 때만
   <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span> … </div>             ← manifest supp=true만
   <div class="sum" hidden>…페이지 요약(아래)…</div>                                                    ← layers가 빈 목록이 아닌 토픽만, 맨 끝
 </article>
 ```
 - 슬라이드 태그는 `S<강의록 번호> p<쪽>`(예: `S2 p7`, 여러 쪽이면 `S2 p7–9`). 다음 팩이 이 태그로 이전 범위를 찾는다.
+- 독자용 HTML에는 인용 내용만 싣고 녹음 위치 표시는 넣지 않는다. `(0907 01:11)`, `(1012 Part 02–03)`, `(1105 Part 05 · 시각 미제공)`, `시간 정보 없음`과 Part 표기 안내 문장은 모두 금지한다. 수업 날짜 태그·강의록 페이지·일반 출처는 유지한다. 시각·Part 근거는 내부 STT 요약에만 보관한다. 자기 검사에 이 항목을 포함하며 `check_html.py`의 `recording-locator`가 있으면 수정한다.
 - 레이어 제목과 배지 글자는 위와 글자 그대로 쓴다. 이모지, 장식 기호(★, ↗, → 같은 화살표 아이콘), "아래를 보세요" 같은 안내 문장은 쓰지 않는다.
 - 템플릿이 토픽 하나를 한 화면에 보여 준다. 토픽은 그것만 읽어도 이해되게 쓰고, "위에서 본 것처럼"처럼 앞 토픽의 위치에 기대는 말 대신 `<a href="#토픽id">토픽 제목</a>`으로 잇는다.
 - 요약·예고 섹션: 치트시트는 표(`<div class="table-wrap"><table>`), 예고는 `<ul>`, 링크는 `<ul><li><a>`.

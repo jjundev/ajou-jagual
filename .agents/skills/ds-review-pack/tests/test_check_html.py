@@ -13,6 +13,37 @@ import check_html
 
 
 class TestPrimitives(unittest.TestCase):
+    def test_note_rejects_recording_locators(self):
+        for locator in (
+            '(1105 Part 05 · 시각 미제공)', '(0907 01:11)',
+            '(0921 00:14–01:47)', '(1012 Part 02–03)',
+            '(1001 수업 Part 02–03)', '(1015 Part 01, 시간 정보 없음)',
+            '(1029 Part 01 앞)', 'Part 05', '시각 미제공',
+            '시간 미제공', '시간 정보 없음', '(01:11)',
+            '(1105 <span>Part 05</span>)',
+        ):
+            with self.subTest(locator=locator):
+                src = f'<html lang="ko"><body><article class="topic" id="t"><p>{locator}</p></article></body></html>'
+                codes = [p.code for p in check_html.check_common(check_html.parse_html(src), src, Path('note.html'))]
+                self.assertIn('recording-locator', codes)
+
+    def test_named_note_without_topics_rejects_recording_locator(self):
+        src = '<html lang="ko"><body>(1105 Part 05)</body></html>'
+        codes = [p.code for p in check_html.check_common(check_html.parse_html(src), src, Path('정리노트_1105_Tree.html'))]
+        self.assertIn('recording-locator', codes)
+
+    def test_note_allows_dates_sources_and_algorithm_content(self):
+        src = ('<html lang="ko"><body><article class="topic" id="t">'
+               '<p>1105 수업 · S7 p19–28 · 수업 녹음 전사(1105)</p>'
+               '<p>시간복잡도 O(h), 도착 시각, 시간 정보가 필요해요.</p>'
+               '<pre><code>case 1:11; int Part = 5;</code></pre>'
+               '</article></body></html>')
+        self.assertEqual(check_html.check_common(check_html.parse_html(src), src, Path('note.html')), [])
+
+    def test_review_is_not_subject_to_note_recording_policy(self):
+        src = '<html lang="ko"><body><article class="card" id="p1">(1105 Part 05)</article></body></html>'
+        self.assertEqual(check_html.check_common(check_html.parse_html(src), src, Path('review.html')), [])
+
     def test_adjacent_inline_math_in_list_items_is_not_display_math(self):
         doc = check_html.parse_html('<html lang="ko"><body><ol><li>$a$</li><li>$b$</li></ol></body></html>')
         self.assertEqual(check_html.math_delimiter_errors(doc.body_text), [])
@@ -84,7 +115,7 @@ class TestPack(unittest.TestCase):
         self.assertEqual(self.codes(), ["forbidden-term"])
 
     def test_missing_layer(self):
-        self.edit("sections/s1.html", '<div class="layer prof"><span class="layer-title">교수님 말씀</span><p>"평균부터 봐요." (0101 01:00)</p></div>', "")
+        self.edit("sections/s1.html", '<div class="layer prof"><span class="layer-title">교수님 말씀</span><p>"평균부터 봐요."</p></div>', "")
         self.assertEqual(self.codes(), ["missing-layer"])
 
     def test_missing_supp_badge(self):
