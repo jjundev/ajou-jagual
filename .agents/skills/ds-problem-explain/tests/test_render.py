@@ -205,3 +205,19 @@ def test_template_is_ds_branded():
     t=(Path(__file__).resolve().parents[1]/'assets/note-template.html').read_text()
     assert 'bio-' not in t and "const TAB = 'ds-problem-explain-tab';" in t
     assert '.verdict-card {' in t  # 판정 카드 코드는 비활성 상태로 남는다
+
+
+def test_review_scroll_figure_without_white_background_is_preserved(tmp_path):
+    pack,fragments=make(tmp_path)
+    figure='<figure><div class="figure-scroll" style="max-width:100%;overflow-x:auto"><svg viewBox="0 0 800 300" style="width:800px;max-width:none;height:auto"><text x="700" y="20">원문 끝 노드</text></svg></div></figure>'
+    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+figure)
+    art=build_explanation(replace(pack,problems=(p,)),fragments,tmp_path/'stage',tmp_path/'repo')
+    assert figure in art.html.read_text()
+
+
+def test_original_preformatted_paragraph_preserves_its_lines(tmp_path):
+    pack,fragments=make(tmp_path)
+    original='<p style="white-space:pre-wrap">첫 문장\n둘째 문장</p>'
+    p=replace(pack.problems[0],original_html=original)
+    art=build_explanation(replace(pack,problems=(p,)),fragments,tmp_path/'stage',tmp_path/'repo')
+    assert original in art.html.read_text()

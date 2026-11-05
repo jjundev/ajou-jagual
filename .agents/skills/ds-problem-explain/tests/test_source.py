@@ -100,3 +100,19 @@ def test_labeled_asks_only_when_every_item_has_label():
     assert labeled_asks('<ol><li>(a) 첫째</li><li>(b) <code>p</code> 둘째</li></ol>')
     assert not labeled_asks('<ol><li>(a) 첫째</li><li>둘째</li></ol>')
     assert not labeled_asks('')
+
+
+def test_preserved_multiline_original_keeps_each_question_label():
+    ask = '<ol><li>(a) 첫 값을 구하라</li><li>(b) 둘째 값을 구하라</li></ol>'
+    original = '<p style="white-space:pre-wrap">(a) 첫 값을 구하라\n(b) 둘째 값을 구하라</p>'
+    assert subparts(ask, original) == ('a', 'b')
+
+
+def test_textbook_numbered_subquestions_keep_original_labels():
+    source = '<div class="subquestions"><div><p>(1)</p><p>배열을 쓰시오.</p></div><div><p>(2)</p><p>중위 순회를 쓰시오.</p></div></div>'
+    assert subparts(source, source) == ('1', '2')
+
+
+def test_numbered_options_and_operation_lists_remain_single_question():
+    assert subparts('<div class="options"><p>(1) 보기</p><p>(2) 보기</p></div>', '') == ('main',)
+    assert subparts('<ol><li>(1) insert(5)</li><li>(2) delete(3)</li></ol><p>최종 상태는?</p>', '') == ('main',)

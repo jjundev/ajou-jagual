@@ -128,7 +128,7 @@ def ancestors(node, root):
         node = node.parent
 
 def operation_item(text):
-    return bool(re.fullmatch(r'\s*\([a-z]\)\s*(?:push|pop|enqueue|dequeue|insert|delete|append|remove)\s*\([^)]*\)\s*[;.]?\s*', text, re.I))
+    return bool(re.fullmatch(r'\s*\((?:[a-z]|[1-9]\d*)\)\s*(?:push|pop|enqueue|dequeue|insert|delete|append|remove)\s*\([^)]*\)\s*[;.]?\s*', text, re.I))
 
 def choice_container(node, root):
     return bool({'choices','options'} & set(node.classes)) or any({'choices','options'} & set(a.classes) for a in ancestors(node,root))
@@ -142,18 +142,20 @@ def subparts(ask: str, original: str) -> tuple[str, ...]:
             raise ExplainError('질문·원문 소문항 표지 불일치')
         return actual
     root = parse(ask or original)
-    marked = [n for n in root.find_all(lambda n: 'part' in n.classes or (n.tag == 'p' and re.match(r'\s*\(([a-z])\)', n.text())))
+    label_pattern = r'\s*\(([a-z]|[1-9]\d*)\)'
+    marked = [n for n in root.find_all(lambda n: 'part' in n.classes or (n.tag == 'p' and re.match(label_pattern, n.text())))
               if not choice_container(n,root) and not any('part' in a.classes or a.tag in ('li', 'pre', 'code') for a in ancestors(n, root))]
     labels = []
     for node in marked:
-        match = re.match(r'\s*\(([a-z])\)', node.text())
-        if not match: raise ExplainError('소문항 표지 모호함')
-        labels.append(match[1])
+        # Transcribed originals can preserve several labelled lines in one paragraph.
+        matches = re.findall(r'(?m)^' + label_pattern, node.text())
+        if not matches: raise ExplainError('소문항 표지 모호함')
+        labels.extend(matches)
     lists = [n for n in root.find_all(lambda n: n.tag in ('ol','ul'))
              if not choice_container(n,root) and not any(a.tag in ('li','ol','ul') for a in ancestors(n,root))]
     for node in lists:
         items = [c for c in node.children if isinstance(c,Node) and c.tag=='li']
-        matches = [re.match(r'\s*\(([a-z])\)', c.text()) for c in items]
+        matches = [re.match(label_pattern, c.text()) for c in items]
         if any(matches):
             if not all(matches): raise ExplainError('소문항 표지 누락 또는 모호함')
             operations = [operation_item(c.text()) for c in items]

@@ -1,0 +1,580 @@
+{
+  "review_policy_version": "problem-explain-2026-10-15",
+  "input_hash": "a040baf688785f47277311401a252e68a077f57c01fccb7c7ab33196c7f53fe0",
+  "references": [
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/.agents/skills/ds-problem-explain/references/authoring.md",
+      "sha256": "9410752ce242a83846fda07e1306e1d53963143304cd1e226196084aabdc6e22"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/.agents/skills/ds-problem-explain/references/verification.md",
+      "sha256": "b64064e36738cc949dcb737b3b4bdfae3b70b922913e4ad41f2ca084f9153f1b"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/교과서/assets/ch08-q09-complexity.svg",
+      "sha256": "a5a60df436abdf53326495e73e0938785400b7938325a193fda6b4470ec5dbb5"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/교과서/assets/ch08-q10-tree.svg",
+      "sha256": "1cd3023ee1f0f55fa25676991388c2bb1973992362c4f482968236ca3f624424"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/교과서/origin/08_트리_연습문제.pdf",
+      "sha256": "951979ea3c17e2d63af83e7500ec3e8f6e3f7f8a039694c63efa593bd3b288fb"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/answers.py",
+      "sha256": "e17cea7f10239fe1bc0d5baf37ddc5fc4f1d9cb9952e644e1a2418d772fa05a6"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/2018-mid-c024-original-hwp-text.txt",
+      "sha256": "c322d7bf51db935fdbac2151bd35db231ab8e3ab440db338e444e965420d3a59"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/answer-data.json",
+      "sha256": "d9f001e671cac0c3fd4376eca7f6cc98a92941868a6880c31fa00dca73f1a842"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/answers-output.json",
+      "sha256": "30957a81dfa5123af122ee21e8cefd1ae91f54cd13e6c6792ca211490a398ef3"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/browser-check.json",
+      "sha256": "7bbed0c173aa6904059c26d07e8b1f6132926cd0a111fe2c100112ac302dcfca"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/card-author-verification.json",
+      "sha256": "565ba431f5f160ca091afcc1173227cf57212086c4f975156fe85eeb065e16f1"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/compare_independent.py",
+      "sha256": "64095db4aae42b8d9a5732b13ee6fd425daa6db2963c87c5a01a376d1b6b8c06"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/explain-author-p1-p4.json",
+      "sha256": "2741a3d6b35e695c0a62d5bca4c64dcbe7f1505d7954581896a1a09522d43d0c"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/explain-author-p5-p8.json",
+      "sha256": "2da2f689c4fb5bafcd6948f42e3146bf3161e973fdd794836614f9a20f040998"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/explain-author-p9-p12.json",
+      "sha256": "fcb68223f99392a50c1ddeed27a1d197480bd17f3754db49d45e1bb442ac0c4c"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/explain-browser.json",
+      "sha256": "e0a5a2c3c2f539efbfa66464a373a8063f5661b146845327fccfd2108c405391"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/explain-content-review.json",
+      "sha256": "4262e1cc42b55d8523e72e9546a072625e19161e63ed61d4eaa7fdc44d831fa6"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/explain-tests-final.txt",
+      "sha256": "d2c16ff6af6343e0c83a0e15e69aa7f166afe69572843a681964eeb30c32e1de"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/independent-comparison.json",
+      "sha256": "b3fff228d5611507e45077771b4b286de4bbe48463a6a0875e491895cb103a0c"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/independent-output.txt",
+      "sha256": "3a8a9fd6e647acdf08d1e19d4c9ac9ef7f30edf16c60d53dbafc7ab801f4a200"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/independent-results.json",
+      "sha256": "02a00eec61a82c4d919afef7247613b9e1231805cd7217367165a23ce2985f8c"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/independent_verify.py",
+      "sha256": "26f9eb39f6533c8d39887f72a1c00c4ca14bddb61b19c761a8c0c56534054263"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/panel-checks.json",
+      "sha256": "ceaf105816bbdfb4e068bbfe24bacfd1cbfe14b3762b3838f3f0787dd6148d41"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/read_hwp_text.py",
+      "sha256": "2adc924c8d75a71f7333ea4bd450186b9918d5805d84435c0b66b19be00a9868"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/review.md",
+      "sha256": "446bfe38ca74f38be09caf10681b4ccdae0b024f1cdf6ab26dd82008e116ac12"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/semantic-summary-audit.json",
+      "sha256": "bd2733922b687acd29996ecb55acac9e3df36f5670b406c191ab5aa7d74dec93"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/verify_lecture-output.txt",
+      "sha256": "071e5a85c173addaca3a0c33862f13de4546637e1548ad71ff4a4e39fe623303"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/.pack/자료_복습팩/evidence/verify_lecture.c",
+      "sha256": "7faa75ee39667a13a64acfbd5081dbf8f7e732cc00cfe261c342c95c16fcabf7"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/복습문제_1105_Tree.html",
+      "sha256": "0d237d290bbca02459263aecbecd7dfa5cb2a5af4f217c208d7af0d34c368c7c"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/복습노트/1105/정리노트_1105_Tree.html",
+      "sha256": "f0a57739a9c7df69c924e412b8822e807354cf59f017b091216ea2cf807b1305"
+    },
+    {
+      "path": "/Users/hyunjun_macbook_pro/Documents/Univ/자구알/자료구조_강의록_2026/Software_7_Tree.pdf",
+      "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde"
+    }
+  ],
+  "source_visual": {
+    "status": "pass",
+    "reviewer": "author_s0 independent content/source reviewer; not a new blind solver",
+    "evidence": "Same source question bytes as previously reviewed pack. Actual2015p2scan and2017p3scan, textbookPDFp3and bothsourceSVG renders, S7p18–21images inspected in this session; exact source.json conditions/asks re-read. Text-only2019source read withCP949 andHWPq13/q14/q5 extracted paragraphs directly re-read; no HWP visual-page rendering claimed. p9 typo harmless and disclosed; p10 all6numericquestions and8under10/9.right preserved; source visual fidelity is distinct from answer verification.; full source references and hashes in pack evidence/explain-content-review.json."
+  },
+  "browser": {
+    "status": "pass",
+    "reviewer": "Codex main actual Chrome stage review",
+    "evidence": "Actual current stage served via HTTP: all12questions in1280x900,1024x900,375x812 light/dark; all25solve/verify units preserved; content+summary+original tabs/TOC/pager/theme/solved-read keys, left/right/float dock, move/resize/reload/clamp/breakpoint, zoom and print checked. Zero page/console/KaTeX/resource/external-request/document overflow errors. Six full-page contact sheets and selected source/summary screenshots visually reviewed in work/explain-browser. JSON persisted as pack evidence/explain-browser.json."
+  },
+  "content": {
+    "status": "pass",
+    "reviewer": "author_s0 independent content/source reviewer; not a new blind solver",
+    "evidence": "All12fragments and25subparts actually read;116semantic rows and body/summary snapshots recorded in pack evidence/explain-content-review.json; official-answer absence and supplement boundaries retained.",
+    "items": {
+      "p1:main": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p1 actual understand/recall/start/solve[main]/verify[main]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. Consecutive13/16/5 deletion:13 leaf,16→20 preserving18/23,5 successor6 reattaches7 to10.left or predecessor3 preserves6.right7;9 unique remaining keys; both original-source alternatives match independent states."
+      },
+      "p2:main": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p2 actual understand/recall/start/solve[main]/verify[main]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. All12 insertion path/links correct,250→280 relocates17→8,610→580 relocates26→13; final10 occupied slots and all30 array cells correct, no compaction; independent arrays and sorted inorder agree."
+      },
+      "p3:main": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p3 actual understand/recall/start/solve[main]/verify[main]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. Complete20-slot shape fixed before inorder keys;12left slots→13thkey230,root children180/270;all20 inorder assignments/final cells correct;lower-bound4impossible plus actualheight5 proves minimum; alternative insertion sequences distinguished from unique target array."
+      },
+      "p4:main": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p4 actual understand/recall/start/solve[main]/verify[main]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. Root5,mirror pairs3↔7,2↔8,4↔6,1↔9 including null links;all9 insertion paths correct;parent-first level/preorder alternatives valid;sorted inorder and height4 attaining lower bound prove requirements. Complete-tree condition not invented."
+      },
+      "p5:main": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p5 actual understand/recall/start/solve[main]/verify[main]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. Complete slots1..16;left8keys→root9,subroots5/13,last1at2.left;given insertion sequence exactly builds target;eachkeyonce,sorted inorder,height5 and occupiedpositions independently match;minimum height and complete shape distinguished."
+      },
+      "p6:a": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p6 actual understand/recall/start/solve[a]/verify[a]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 55 16 4 29 30 92 60 75;all8 once,parent-before-descendants and subtree order match independent traversal."
+      },
+      "p6:b": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p6 actual understand/recall/start/solve[b]/verify[b]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 4 16 29 30 55 60 75 92;left subtree complete before55 and60.right75 before92;strict sorted keys match independent inorder."
+      },
+      "p6:c": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p6 actual understand/recall/start/solve[c]/verify[c]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 4 30 29 16 75 60 92 55;30before29 and75before60;each8keyonce and rootlast match independent postorder."
+      },
+      "p6:d": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p6 actual understand/recall/start/solve[d]/verify[d]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 55 92 60 75;allfour comparisons including success node;search distinct from traversal;original edges and independent path agree."
+      },
+      "p6:e": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p6 actual understand/recall/start/solve[e]/verify[e]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. Successor60 replaces55 and92.left becomes75;alternative predecessor30 removes29.right;all7remainingkeys and parent/child relations correct;both inorder and independent deletion trees match. No data loss or duplicate60."
+      },
+      "p7:main": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p7 actual understand/recall/start/solve[main]/verify[main]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. X supported by two valid unique-key BSTs:root2children1/3 height2 versus1→right2→right3 height3;scope conditions verified;counterexample refutes universal claim rather than examples proving general theorem."
+      },
+      "p8:main": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p8 actual understand/recall/start/solve[main]/verify[main]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. X supported by same3nodes height2/3 and atmost2children;no extraBST or complete-shape assumption;counterexample logic and independent height checks valid."
+      },
+      "p9:main": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p9 actual understand/recall/start/solve[main]/verify[main]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. Insertion blanks avgO(logn) only under distinct-key random-order model, worstO(n) attained by sorted-key chain;small3→4example only verifies worst, does not prove average;source header typo retained without inventing deletionrow;official key unavailable disclosed."
+      },
+      "p10:1": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p10 actual understand/recall/start/solve[1]/verify[1]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. All15 positions correct including10..13empty,14:8,15:11 and0unused;reverse-parent check and11occupied nodes match independent array. Full mapping now also in sum."
+      },
+      "p10:2": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p10 actual understand/recall/start/solve[2]/verify[2]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 6 4 2 1 3 5 9 7 10 8 11;root-left-right grouping andeach11once match independent traversal."
+      },
+      "p10:3": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p10 actual understand/recall/start/solve[3]/verify[3]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 1 3 2 5 4 7 8 11 10 9 6;children-before-parent,6last andeach11once match independent traversal."
+      },
+      "p10:4": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p10 actual understand/recall/start/solve[4]/verify[4]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 1 2 3 4 5 6 7 9 8 10 11;retains9then8 because source notBST;independent inorder agrees;source picture never rearranged."
+      },
+      "p10:5": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p10 actual understand/recall/start/solve[5]/verify[5]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 6 4 9 2 5 7 10 1 3 8 11;levels1/2/4/4nodes and nonemptyarray-index read agree with independent queue walk."
+      },
+      "p10:6": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p10 actual understand/recall/start/solve[6]/verify[6]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. NotBST:8<9 despitebeingin9.right,while8<10parentconditionholds;global ancestor interval9<8<10 and unsorted inorder independently expose same violation. First actual judgment line now explicit."
+      },
+      "p11:a": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p11 actual understand/recall/start/solve[a]/verify[a]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. Record/field/primarykey definitions connect to concreteconditions:studentIDs distinct, names mayrepeat;studentID qualifies, name not guaranteed;source theory and independent qualitative answer agree."
+      },
+      "p11:b": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p11 actual understand/recall/start/solve[b]/verify[b]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 20>7localconditiondoesnotrescue20<18globalfailure;duplicate7forbiddenbyunique-key premise;independent range check confirms."
+      },
+      "p11:c": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p11 actual understand/recall/start/solve[c]/verify[c]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 12compares18,7,12returnsnodeaddress;20compares18,26thenNULL failure;NULLnotkeycomparison;Coutput12isreturnednodekey,notintegerreturnorindex;source signature/independent trace/Coutputagree."
+      },
+      "p12:a": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p12 actual understand/recall/start/solve[a]/verify[a]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. Loopentries(NULL,18),(18,7),(7,12),exit(12,NULL);3bodyexecutions,not4;12.left=zand7<9<12<18preservesglobalorder. Independent trace and translatedC result agree."
+      },
+      "p12:b": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p12 actual understand/recall/start/solve[b]/verify[b]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. Equalkey exits before parent/linkchanges;8nodesandalllinksunchanged;translationstatus0explicitlynotoriginalreturncontract;independent trace/countagree."
+      },
+      "p12:c": {
+        "status": "pass",
+        "reviewer": "author_s0 independent content/source reviewer",
+        "evidence": "p12 actual understand/recall/start/solve[c]/verify[c]/pitfall/retry and final direct .sum read against source.json, source material and independent-results/comparison. Detailed conclusion and first-line evidence follow. 0bodyiterations;rootbecomesnew9nodeaddresswithNULLchildren;printedroot9isnodekey,notstoredinteger;translationstatus1disclosedasaddedharnessconvention;independentemptycaseagrees."
+      }
+    }
+  },
+  "independent": {
+    "status": "pass",
+    "reviewer": "independent_verifier blind solver; main controller comparison",
+    "evidence": "Before explanations, independent_verify.py solved all12questions from blind-input only; independent-results.json and 28-comparison report match source answers; separate C11 translated harness checks search/insertion. Evidence persisted without byte changes.",
+    "items": {
+      "p1:main": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "Consecutive13/16/5 deletion:13 leaf,16→20 preserving18/23,5 successor6 reattaches7 to10.left or predecessor3 preserves6.right7;9 unique remaining keys; both original-source alternatives match independent states.",
+        "evidence": "pack evidence/independent-results.json: p1; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p2:main": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "All12 insertion path/links correct,250→280 relocates17→8,610→580 relocates26→13; final10 occupied slots and all30 array cells correct, no compaction; independent arrays and sorted inorder agree.",
+        "evidence": "pack evidence/independent-results.json: p2; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p3:main": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "proof",
+        "conclusion": "Complete20-slot shape fixed before inorder keys;12left slots→13thkey230,root children180/270;all20 inorder assignments/final cells correct;lower-bound4impossible plus actualheight5 proves minimum; alternative insertion sequences distinguished from unique target array.",
+        "evidence": "pack evidence/independent-results.json: p3; independent-comparison.json; original question only used before author/reference answer comparison. Minimal-height lower bound n<=2^h-1 and actual construction/shape checked."
+      },
+      "p4:main": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "proof",
+        "conclusion": "Root5,mirror pairs3↔7,2↔8,4↔6,1↔9 including null links;all9 insertion paths correct;parent-first level/preorder alternatives valid;sorted inorder and height4 attaining lower bound prove requirements. Complete-tree condition not invented.",
+        "evidence": "pack evidence/independent-results.json: p4; independent-comparison.json; original question only used before author/reference answer comparison. Minimal-height lower bound n<=2^h-1 and actual construction/shape checked."
+      },
+      "p5:main": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "proof",
+        "conclusion": "Complete slots1..16;left8keys→root9,subroots5/13,last1at2.left;given insertion sequence exactly builds target;eachkeyonce,sorted inorder,height5 and occupiedpositions independently match;minimum height and complete shape distinguished.",
+        "evidence": "pack evidence/independent-results.json: p5; independent-comparison.json; original question only used before author/reference answer comparison. Minimal-height lower bound n<=2^h-1 and actual construction/shape checked."
+      },
+      "p6:a": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "55 16 4 29 30 92 60 75;all8 once,parent-before-descendants and subtree order match independent traversal.",
+        "evidence": "pack evidence/independent-results.json: p6; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p6:b": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "4 16 29 30 55 60 75 92;left subtree complete before55 and60.right75 before92;strict sorted keys match independent inorder.",
+        "evidence": "pack evidence/independent-results.json: p6; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p6:c": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "4 30 29 16 75 60 92 55;30before29 and75before60;each8keyonce and rootlast match independent postorder.",
+        "evidence": "pack evidence/independent-results.json: p6; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p6:d": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "55 92 60 75;allfour comparisons including success node;search distinct from traversal;original edges and independent path agree.",
+        "evidence": "pack evidence/independent-results.json: p6; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p6:e": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "Successor60 replaces55 and92.left becomes75;alternative predecessor30 removes29.right;all7remainingkeys and parent/child relations correct;both inorder and independent deletion trees match. No data loss or duplicate60.",
+        "evidence": "pack evidence/independent-results.json: p6; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p7:main": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "proof",
+        "conclusion": "X supported by two valid unique-key BSTs:root2children1/3 height2 versus1→right2→right3 height3;scope conditions verified;counterexample refutes universal claim rather than examples proving general theorem.",
+        "evidence": "pack evidence/independent-results.json: p7; independent-comparison.json; original question only used before author/reference answer comparison. Same-n counterexample disproves constant height."
+      },
+      "p8:main": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "proof",
+        "conclusion": "X supported by same3nodes height2/3 and atmost2children;no extraBST or complete-shape assumption;counterexample logic and independent height checks valid.",
+        "evidence": "pack evidence/independent-results.json: p8; independent-comparison.json; original question only used before author/reference answer comparison. Same-n counterexample disproves constant height."
+      },
+      "p9:main": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "qualitative",
+        "conclusion": "Insertion blanks avgO(logn) only under distinct-key random-order model, worstO(n) attained by sorted-key chain;small3→4example only verifies worst, does not prove average;source header typo retained without inventing deletionrow;official key unavailable disclosed.",
+        "evidence": "pack evidence/independent-results.json: p9; independent-comparison.json; original question only used before author/reference answer comparison. Random distinct insertion model stated; O(h) descent and worst skew bound checked."
+      },
+      "p10:1": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "All15 positions correct including10..13empty,14:8,15:11 and0unused;reverse-parent check and11occupied nodes match independent array. Full mapping now also in sum.",
+        "evidence": "pack evidence/independent-results.json: p10; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p10:2": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "6 4 2 1 3 5 9 7 10 8 11;root-left-right grouping andeach11once match independent traversal.",
+        "evidence": "pack evidence/independent-results.json: p10; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p10:3": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "1 3 2 5 4 7 8 11 10 9 6;children-before-parent,6last andeach11once match independent traversal.",
+        "evidence": "pack evidence/independent-results.json: p10; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p10:4": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "1 2 3 4 5 6 7 9 8 10 11;retains9then8 because source notBST;independent inorder agrees;source picture never rearranged.",
+        "evidence": "pack evidence/independent-results.json: p10; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p10:5": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "6 4 9 2 5 7 10 1 3 8 11;levels1/2/4/4nodes and nonemptyarray-index read agree with independent queue walk.",
+        "evidence": "pack evidence/independent-results.json: p10; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p10:6": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "NotBST:8<9 despitebeingin9.right,while8<10parentconditionholds;global ancestor interval9<8<10 and unsorted inorder independently expose same violation. First actual judgment line now explicit.",
+        "evidence": "pack evidence/independent-results.json: p10; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p11:a": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "Record/field/primarykey definitions connect to concreteconditions:studentIDs distinct, names mayrepeat;studentID qualifies, name not guaranteed;source theory and independent qualitative answer agree.",
+        "evidence": "pack evidence/independent-results.json: p11; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p11:b": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "20>7localconditiondoesnotrescue20<18globalfailure;duplicate7forbiddenbyunique-key premise;independent range check confirms.",
+        "evidence": "pack evidence/independent-results.json: p11; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p11:c": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "12compares18,7,12returnsnodeaddress;20compares18,26thenNULL failure;NULLnotkeycomparison;Coutput12isreturnednodekey,notintegerreturnorindex;source signature/independent trace/Coutputagree.",
+        "evidence": "pack evidence/independent-results.json: p11; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p12:a": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "Loopentries(NULL,18),(18,7),(7,12),exit(12,NULL);3bodyexecutions,not4;12.left=zand7<9<12<18preservesglobalorder. Independent trace and translatedC result agree.",
+        "evidence": "pack evidence/independent-results.json: p12; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p12:b": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "Equalkey exits before parent/linkchanges;8nodesandalllinksunchanged;translationstatus0explicitlynotoriginalreturncontract;independent trace/countagree.",
+        "evidence": "pack evidence/independent-results.json: p12; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      },
+      "p12:c": {
+        "status": "pass",
+        "reviewer": "independent_verifier + main blind-result comparison",
+        "method": "exact",
+        "conclusion": "0bodyiterations;rootbecomesnew9nodeaddresswithNULLchildren;printedroot9isnodekey,notstoredinteger;translationstatus1disclosedasaddedharnessconvention;independentemptycaseagrees.",
+        "evidence": "pack evidence/independent-results.json: p12; independent-comparison.json; original question only used before author/reference answer comparison. All actual state/traversal/array/Boolean values agree."
+      }
+    }
+  },
+  "artifact_hashes": {
+    ".pack/figures_문제설명_1105_Tree/explain-fig-1.svg": "21007cfb1807d1bee6e47d4a9ccc512b44a624edcba899ac75f92282705d4b78",
+    ".pack/figures_문제설명_1105_Tree/explain-fig-2.svg": "7ac5a707cd59fdeec53d7d1cf4812ac51ff44c8abe2993d807cc1a23be59a9e3",
+    ".pack/figures_문제설명_1105_Tree/explain-fig-3.svg": "c637c3a9d9b017ecc582977f927971f2108b25393ef27ee65a3ab8ef947d34fa",
+    ".pack/figures_문제설명_1105_Tree/explain-fig-4.svg": "86966bbb7fd64908ff2dbc499cc5c3ce35260285a9040ca5c888e1aa22abcfda",
+    ".pack/figures_문제설명_1105_Tree/p1-original-fig-p1-original.svg": "25b7f88c07820f615de3365ea15e45d86dfcfa2b5126cdd2b135b9927fb916a2",
+    ".pack/figures_문제설명_1105_Tree/p1-source-fig-p1-question.svg": "2d42b91313e4c7c1ab383bfcfdff4d43e2b9ef2b4325752830956a32448ccc06",
+    ".pack/figures_문제설명_1105_Tree/p11-source-fig-p11-question.svg": "5374864349963b7c746ad984e23394eca594a962af35aadef4116ab80c193442",
+    ".pack/figures_문제설명_1105_Tree/p12-source-fig-p12-question.svg": "7787efba89b502f1d98e16066c77277c50feabf74e3820dcfbff1bd249c56f9e",
+    ".pack/figures_문제설명_1105_Tree/p6-original-fig-p6-original.svg": "a8fc0f0031b46bba17c40a96f61569c406fdf8b5f7726a95f19cd2116199cf0e",
+    ".pack/figures_문제설명_1105_Tree/p6-source-fig-p6-question.svg": "2f07fadb2e53f5f36080caaf9e45fc83c4c31831d7f46565be5d49e9149fc5c8",
+    ".pack/figures_문제설명_1105_Tree/p7-explain-fig-explain-p7-heights.svg": "ac6505bc4d53640c5a8a7b54a729c68fd7449a45d8b362dc1c508edd7871c2dd",
+    ".pack/figures_문제설명_1105_Tree/p8-explain-fig-explain-p8-heights.svg": "ac6505bc4d53640c5a8a7b54a729c68fd7449a45d8b362dc1c508edd7871c2dd",
+    ".pack/문제설명_1105_Tree.md": "9d98c28501b657e9aa7074ec719d449c9d0de1fd36925dded5c13f5bde36478e",
+    ".pack/자료_문제설명_1105_Tree/evidence/answer-data.json": "d9f001e671cac0c3fd4376eca7f6cc98a92941868a6880c31fa00dca73f1a842",
+    ".pack/자료_문제설명_1105_Tree/evidence/answers-output.json": "30957a81dfa5123af122ee21e8cefd1ae91f54cd13e6c6792ca211490a398ef3",
+    ".pack/자료_문제설명_1105_Tree/evidence/answers.py": "e17cea7f10239fe1bc0d5baf37ddc5fc4f1d9cb9952e644e1a2418d772fa05a6",
+    ".pack/자료_문제설명_1105_Tree/evidence/author-p1-p4-hwp-extracted.txt": "bd4787b598044420b7de3f02d00b46507cdf6b571f3be041fc4295a7bbb7f066",
+    ".pack/자료_문제설명_1105_Tree/evidence/author-p1-p4.py": "47005f9e30ed7c724a00f5bb67d711077c95c2592e0f9e2875a8cde103ad8197",
+    ".pack/자료_문제설명_1105_Tree/evidence/independent-comparison.json": "b3fff228d5611507e45077771b4b286de4bbe48463a6a0875e491895cb103a0c",
+    ".pack/자료_문제설명_1105_Tree/evidence/independent-output.txt": "3a8a9fd6e647acdf08d1e19d4c9ac9ef7f30edf16c60d53dbafc7ab801f4a200",
+    ".pack/자료_문제설명_1105_Tree/evidence/independent-results.json": "02a00eec61a82c4d919afef7247613b9e1231805cd7217367165a23ce2985f8c",
+    ".pack/자료_문제설명_1105_Tree/evidence/independent_verify.py": "26f9eb39f6533c8d39887f72a1c00c4ca14bddb61b19c761a8c0c56534054263",
+    ".pack/자료_문제설명_1105_Tree/evidence/verify_lecture-output.txt": "071e5a85c173addaca3a0c33862f13de4546637e1548ad71ff4a4e39fe623303",
+    ".pack/자료_문제설명_1105_Tree/evidence/verify_lecture.c": "7faa75ee39667a13a64acfbd5081dbf8f7e732cc00cfe261c342c95c16fcabf7",
+    ".pack/자료_문제설명_1105_Tree/fragments/p1.html": "d8b8b880fab1851cc4f4f625ae9597485aa4099d32f2a48194224d2a7b86f1e1",
+    ".pack/자료_문제설명_1105_Tree/fragments/p10.html": "1b7f2b6b1572135343fde2e46ea0ddc2558b3cf1439f24b3566875366f330abf",
+    ".pack/자료_문제설명_1105_Tree/fragments/p11.html": "347984464e0574cbb7fe228f6391dd5f69352897f2f1cadf2bd055486e5f5705",
+    ".pack/자료_문제설명_1105_Tree/fragments/p12.html": "92dfa4aef5cd4064d879653d34b6f70ea2302a44119e4800b3fdf2752710b5a9",
+    ".pack/자료_문제설명_1105_Tree/fragments/p2.html": "a5444535b77b186376d2a0b178596c69820218605a0cd950cb16a37482554a15",
+    ".pack/자료_문제설명_1105_Tree/fragments/p3.html": "0e8ce7a5d9bd043434174552aa64a2fdde313f3aba2e14415cc30ad5a48e2a2c",
+    ".pack/자료_문제설명_1105_Tree/fragments/p4.html": "9e3d4dd68fd11c864b5b34b28176885b18621ad837a23975a30df69ed1603837",
+    ".pack/자료_문제설명_1105_Tree/fragments/p5.html": "a41cc11a6c1951c9832a3d9a5167c4a3ab132ec9bb4526e49e88dbcdec2851eb",
+    ".pack/자료_문제설명_1105_Tree/fragments/p6.html": "6fcb8ba568b0f047d140ded1c7ae8766a66c4e57a0d54fc9fb42e56cc97f5456",
+    ".pack/자료_문제설명_1105_Tree/fragments/p7.html": "e4c666019423e1e44322f1c936a35d2d5fe414dd3e671a52431e291d440f610b",
+    ".pack/자료_문제설명_1105_Tree/fragments/p8.html": "8952adb75e72080eb34dbbf82539c6ab0d71068dc89dfd84ff77e116b6adf5cb",
+    ".pack/자료_문제설명_1105_Tree/fragments/p9.html": "f831d04e2de527cbcd67e588fc0b5fbd463a33df04072dccadaaf1aaf9889753",
+    ".pack/자료_문제설명_1105_Tree/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/LICENSE": "766ccc1f306c885aa45542a9846bbd0a505b27a0374f146778171c2254ce18e3",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/contrib/auto-render.min.js": "7b57d427ac6270677daf8d8380ded2cc73336f9149a167b8e1fe0d6ef66604ae",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_AMS-Regular.ttf": "68534840bcfdd2bffb6f0e8deb48684dd01e7f04ea2813267577afb906de1d13",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_AMS-Regular.woff": "30da91e84c893f875e252689faebdc590b2871145e8adc7f9a9d4dbd8ce0b251",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_AMS-Regular.woff2": "0cdd387c9590a1a9f9794560022dbb59654a7d86f187aa0c81495ad42d3a7308",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Caligraphic-Bold.ttf": "07d8e303ce4fc12b4bb54f1004170dd190a1f3db45d400fe68060df3e0897268",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Caligraphic-Bold.woff": "1ae6bd7475590e97e7f145a89e09ccde322f7a6bc0b91607b1c8b8ee28290fed",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Caligraphic-Bold.woff2": "de7701e42cf1f4cf0b766c03fb27977207eee2f4fd5d76fa82188406da43ea4c",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Caligraphic-Regular.ttf": "ed0b74372feefcbb9c0666b2e210da37b7e49fa7fbbf3eeb11db5f693dacfbb7",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Caligraphic-Regular.woff": "3398dd02302557a793f2863f88e02d96ce10df2abffa07c8e9fa90775116e65c",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Caligraphic-Regular.woff2": "5d53e70ad607c2352162dec9e0923fb54ecdafaccbf604cd8dcf7d00facb989b",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Fraktur-Bold.ttf": "9163df9c7122432e6495b4229fa9071cf9ae86a758ae5efc4924ec2e1a6dbce1",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Fraktur-Bold.woff": "9be7ceb88004ab8ad124082246fbfcca4091e36385d4ec6ed1df67375dad50fb",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Fraktur-Bold.woff2": "74444efd593c005e3f4573b44524704c0af0a937fe911cca9e94068d0d140d3f",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Fraktur-Regular.ttf": "1e6f9579e90e2cac37f8f60a597c436e075c114385652b7cbeb0dec0421291b3",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Fraktur-Regular.woff": "5e28753be717dac97f559f49bc10be9cf3c124ddcabda6659d11cb68febc6463",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Fraktur-Regular.woff2": "51814d270d06ff0255dba0799994fa4d8c84d11f09951d47595f4abb1f3602dc",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-Bold.ttf": "138ac28d1663b3037e9c5f52371fa5c63d8324f4a38d22cd573e6ea3a3fd0cf8",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-Bold.woff": "c76c5d696297d51b9cb1639c7da4334f0e7dec81b42b11213b5e25ef671bb822",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-Bold.woff2": "0f60d1b897938ec918c8ce073092411baf9438f6739465693ff18b0f9d20b021",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-BoldItalic.ttf": "70ee1f64a20f2048c21940ef46d0144fd215baa953ca69afd1e31e98544f708f",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-BoldItalic.woff": "a6f7ec0d846ac7ad975adb8959c37ed49b94acbc4ae436db9ce9e20287e4a64c",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-BoldItalic.woff2": "99cd42a3c072d918f2f44984a807cf7aa16e13545fd0875fc07c6c65f99e715b",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-Italic.ttf": "0d85ae7cc30f23790a7f1a58c4a112fdca8aae769b6ba11429af1d98b1b6cb3a",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-Italic.woff": "f1d6ef86f3b11a528bd5185199bd2443ecb2b0dead96d88674b5a2c12be24bdf",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-Italic.woff2": "97479ca6cce906abc961ecac96faa5f9ca2e61b8e7670d475826bcdee9a7c267",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-Regular.ttf": "d0332f52868370fd83ae7fa46470f90c8f2eab2fcf12bc4f88080b340c95a830",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-Regular.woff": "c6368d87e8a1a3a5d337623d83d8dc4b868f242a9ad476237d6f8d1e0f168cdc",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Main-Regular.woff2": "c2342cd8b869e01752a9321dc17213fc40d4d04c79688c1d43f2cf316abd7866",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Math-BoldItalic.ttf": "f9377ab0271cda59af24bcffbd46a4d0c8a3572ffafdbb38de2ad5ea7b0d5ee5",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Math-BoldItalic.woff": "850c0af5c2238497febaf5e461d880bf458c341f42f4f330f1b1ab5698b1998e",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Math-BoldItalic.woff2": "dc47344dbb6cb5b655c8460d561f4df5f501b90c804ad3c6cec65fe322351ab1",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Math-Italic.ttf": "08ce98e51b04d58945a301e639e02b6998af29fdfd61a7b8afdd07bbfc479d4a",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Math-Italic.woff": "8a8d244581371912b8f3f5a23e2437cb2a59cd9bcaebb0346e722c05737a2571",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Math-Italic.woff2": "7af58c5ec8f132a2ddde9027c6d7814decce4d3b822a11192a42a20e2e973264",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_SansSerif-Bold.ttf": "1ece03f79f95277d57dc7f6b435a74e1379b0d46104a8530286b60ff49369ea0",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_SansSerif-Bold.woff": "ece03cfd83e22c212cdef66feb8442d25a083beb988db3f1883f3f9738d750ba",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_SansSerif-Bold.woff2": "e99ae51144bf1232efcc1bfe5add36262c6866b0faab24fa75740e1b98577a62",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_SansSerif-Italic.ttf": "3931dd81faed86ba021bb2bbdc36f5bed9a38d6b4f4077aca59b265aa1b02083",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_SansSerif-Italic.woff": "91ee67500cc0129aa0ace3ac5c61ff1692102f0f31d02b69347fba35dcb75bf2",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_SansSerif-Italic.woff2": "00b26ac825e2095056396e0553b8ac26d3f8ad158c3826e28b4c45b385c4714a",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_SansSerif-Regular.ttf": "f36ea897e19f4a2e571d1e900e4e3710e438deb05a842486045ba0a3e616a4ad",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_SansSerif-Regular.woff": "11e4dc8a6471ff6d6ee561d53d10fde8f7489e798257ff449c5d37c197435605",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_SansSerif-Regular.woff2": "68e8c73ef42afd3ccec58bf0fba302cce448938e7fc020a5e31f8a952eee1342",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Script-Regular.ttf": "1c67f068fea8bb09bf099c088b1cf64bd27516a6e07f4684344873564bb66a67",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Script-Regular.woff": "d96cdf2b3bdd4d64a8fd5f74a4c467f123a8a73931cd435889f08ffaf9bf947a",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Script-Regular.woff2": "036d4e95149b69ff9bcc0cd55771efeb25ffa3947293e69acd78d5ac328c684b",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size1-Regular.ttf": "95b6d2f1a50173bfedb8c63e1d1c99b10427d0a4df4201cb44513b226951a22b",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size1-Regular.woff": "c943cc986384f59e86bea5fd7dc50a9c4dfe567a7c05eb40d6790720dead97c9",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size1-Regular.woff2": "6b47c40166b6dbe21a5dfca7718413f2147fd2399be1ba605d8ad39cedf25dfe",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size2-Regular.ttf": "a6b2099fb555c60e3a0db3a08842ebf1d732c6eb4e4bf44913613bed4fc4e39b",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size2-Regular.woff": "2014c523c3210bcc166648c4d4cc57f05b747df07a24277bf71c51e67dc79e3d",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size2-Regular.woff2": "d04c54219f9eaec6d4d4fd42dfb28785975a4794d6b2fc71e566b9cd6db842dd",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size3-Regular.ttf": "500e04d54f0d51666332c9d2089aa803be22aa878eca539e59fa53c6e522b082",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size3-Regular.woff": "6ab6b62e9b62dae2c00dd90f791bd10950be0ecc3490d7d6045f51c2e8fe0949",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size3-Regular.woff2": "73d591271b1604960cb10bb90fee021670af7297017e0e98480b332d11f51995",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size4-Regular.ttf": "c647367d1dd4e162468717d020e1fc0f1dc5c26ebfdffbe55261713bf88c5877",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size4-Regular.woff": "99f9c6750b489c9462bf04900bd3f939df9b829339daaaaa99ef5495cdddea58",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Size4-Regular.woff2": "a4af7d414440a1c1790825cfb700cf9cf43b0f2c4b04f0ebc523011ad9853ec0",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Typewriter-Regular.ttf": "f01f3e87d9c6a61c0c081ceb577abd864eb00a612f7ac1620dd6915fad2ef5aa",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Typewriter-Regular.woff": "e14fed02b1aba7ce9f5afd5844b5d0321b22351febc720e0de8b8723527609f7",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/fonts/KaTeX_Typewriter-Regular.woff2": "71d517d67827787cfabdf186914cc3358eda539e37931941f2b2fd4a21f68c0b",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/katex.min.css": "717bc9ae7853b61f0f76455dddf0ecd4f527a783f42de2ac24684899c1c46258",
+    ".pack/자료_문제설명_1105_Tree/vendor/katex/katex.min.js": "e6bfe5deebd4c7ccd272055bab63bd3ab2c73b907b6e6a22d352740a81381fd4",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/LICENSE": "85fce85e25260b03777bf10373d3bd9363b9da96d9e0ca86a280dd37ed7667a0",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/pretendard.css": "74dbf94c1ab3cb1d166346878e03572d8004ac88d21ac84332a32b28a088f2bd",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff/Pretendard-Black.woff": "d8511e03d73b848d3df45d6f3d1166bb9532f7547b68da5f768d7b60df76faaa",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff/Pretendard-Bold.woff": "b02e6d7d8606f13f12682bc4d43575d403a9cbb2d662f6f4f137dba384633267",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff/Pretendard-ExtraBold.woff": "1f43803fe4cb56b82061c7392eae37a9123e839b39cc0aa3c3f5b22edcb170d3",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff/Pretendard-ExtraLight.woff": "f8c8f64cec9d0c4b2c675a5cac99b2cef9d34f4b485caf9ec47901314ff8c460",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff/Pretendard-Light.woff": "744e50b9780722eada9afc308712c7d1dc5176d8b46c315d010fa42fffb76fe6",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff/Pretendard-Medium.woff": "6231269ba695835ca13b03cf411b4e68379993039b4033c373e4e9940ee5370d",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff/Pretendard-Regular.woff": "3214d4fdb5bd41e10c9f0b5fa8c6ff2f1096b249665cdbf34948434ee7c51934",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff/Pretendard-SemiBold.woff": "e476f124e88472078cf472ac09768331f93f76063a52183ff303a192adea800a",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff/Pretendard-Thin.woff": "1c760324692f0d4bdd46f6f2378ce73aaa37056b8673163d1463adaee8b3dee1",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff2/Pretendard-Black.woff2": "c5fd0c3568fc1368a3edc0d0fbb36df029935954276e3573451b3bae09e27296",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff2/Pretendard-Bold.woff2": "4609c3356e536fafe38f4add0daeceb3d8595d3057bce13c428c33ddbd43d362",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff2/Pretendard-ExtraBold.woff2": "dd7c1e156f508eb962acc7a33a7a1896d1e0b71e11156fad96e731689ceb6dc3",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff2/Pretendard-ExtraLight.woff2": "df43dc9165dff4542114674bcd8b79b7daae6dec004004586d5d076fec6fe2aa",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff2/Pretendard-Light.woff2": "b7426635cce2ea2b95c9c802e43fba1c620e0dafaf25f737c069b8b4e09fa841",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff2/Pretendard-Medium.woff2": "d03481330eeba0659ab5b87f25ceb504a35de377dd90a0d0aba2982eb2d05e2c",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff2/Pretendard-Regular.woff2": "fad853f7f47c6c8b103171e7193fa095708cdcd70850a71d93aa5379e8a61d63",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff2/Pretendard-SemiBold.woff2": "c863f76a7de5c1ddc1ed8b2fa794964530774592c4f31407a84e2a2ae93f17f0",
+    ".pack/자료_문제설명_1105_Tree/vendor/pretendard/woff2/Pretendard-Thin.woff2": "1539755224a64719d5b18406762c476db74fcc299b9e4641ca1e9812fbc7a09b",
+    ".pack/자료_문제설명_1105_Tree/vendor/provenance.json": "c953ecb4573b74379b1599a52f234b195bb335cf119fd9b35997c2a98b6abfeb",
+    "문제설명_1105_Tree.html": "db86a672b11344920b6b4eb77aa43c164df56e0afd85c70b0ac00f2f7b91ed7c",
+    ".pack/자료_문제설명_1105_Tree/manifest.json": "434a6d3b45e3ea2670328740a6fdbb77b8e32dd8446e9478128545204ee5e7d7"
+  }
+}

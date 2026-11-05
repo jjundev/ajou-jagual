@@ -70,3 +70,25 @@ class CliTests(unittest.TestCase):
    p.with_name(p.stem+'-문제.pdf').write_bytes(b'old')
    with patch('review_pdf.check_stage',return_value=['final check failed']):report=json.loads(build_pack(p,folder/'run').read_text())
    self.assertEqual(report['status'],'stale');self.assertEqual(p.with_name(p.stem+'-문제.pdf').read_bytes(),b'old')
+
+class PerModePageTests(unittest.TestCase):
+ def test_long_solution_does_not_add_blank_question_sheets(self):
+  from review_pdf import pages_for_mode
+  from pdf_types import Block,PageSlice
+  q=Block('prose','<p>키 5를 삭제한 트리를 그리세요.</p>','키 5를 삭제한 트리를 그리세요.')
+  s1=Block('prose','<p>첫 삭제 단계</p>','첫 삭제 단계')
+  s2=Block('prose','<p>남은 자식의 재연결</p>','남은 자식의 재연결')
+  pages=(PageSlice('p1','p1',1,(q,),(s1,),False,True),PageSlice('p1','p1-c2',2,(),(s2,),True,False))
+  question_pages=pages_for_mode(pages,'problems')
+  self.assertEqual([p.physical_id for p in question_pages],['p1'])
+  self.assertEqual(tuple(b for p in question_pages for b in p.problem),(q,))
+  answer_pages=pages_for_mode(pages,'answers')
+  self.assertEqual(tuple(b for p in answer_pages for b in p.solution),(s1,s2))
+  self.assertTrue(answer_pages[-1].show_answer)
+
+ def test_question_continuation_is_preserved(self):
+  from review_pdf import pages_for_mode
+  from pdf_types import Block,PageSlice
+  code=Block('code','<pre><code>return 5;</code></pre>','return 5;')
+  page=PageSlice('p1','p1-c2',2,(code,),(),True,False)
+  self.assertEqual(pages_for_mode((page,),'problems'),(page,))

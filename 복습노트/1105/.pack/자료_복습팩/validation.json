@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "range": "1105",
+  "status": "pass",
+  "run": "/private/tmp/ds-review-pack-1105-20261105",
+  "checks": {
+    "bank": "pass (11sources/118questions)",
+    "textbook": "pass (213verified-source questions catalog)",
+    "manifest": "pass",
+    "source_provenance": "pass",
+    "html_contract": "pass",
+    "global_audit": "pass (0blocking/0candidates)",
+    "content": "pass (96note semantic rows;116explanation rows)",
+    "independent": "pass (12questions/25units;28result comparisons;C11)",
+    "browser": "pass (note/review8viewport-theme combos;explanation6;0errors)",
+    "html_to_md": "pass (3MDs,36note/reviewSVGs)",
+    "problem_explanation": "published",
+    "pdf": "published (12problem/15answer pages;all27pages reviewed)",
+    "layout": "pass"
+  },
+  "counts": {
+    "existing": 0,
+    "added": 12,
+    "total": 12,
+    "subparts": 25
+  },
+  "unresolved": [],
+  "repository_test_notes": {
+    "explanation": "141passed;2baseline tests deselected after installed-Chrome/favicon test fixture adaptation",
+    "deselected": [
+      "Unchanged vendor/html2md.py provenance digest differs from stored source copy (same mismatch at HEAD)",
+      "APFS normalizes NFC/NFD names, so Linux-only distinct-sibling test cannot create both directories"
+    ],
+    "pdf": "17targeted regression/CLI/publish checks passed (16+1); final production build/check and all-page QA passed",
+    "preexisting_pdf_tests": "5broader card tests read older packs whose saved PDF reports use previous filenames; excluded from final targeted proof; earlier pack reports were not changed"
+  },
+  "tooling_repairs": [
+    "multiline alphabetic and numeric subquestion labels preserved; options/operation lists excluded",
+    "existing source-only figure scroll/prewrapped paragraph styles accepted through exact allowlist",
+    "question PDF omits solution-only empty continuation pages",
+    "inline SVGs fit their printed solution columns without changing source viewBoxes/nodes"
+  ],
+  "preserved": {
+    "source_review_sha256": "0d237d290bbca02459263aecbecd7dfa5cb2a5af4f217c208d7af0d34c368c7c",
+    "bank_sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0",
+    "stt_sha256": "76b7852b78fd4cbad7fd705b2acbec2c424dfaa006f32523fc43a20bfa1ff823",
+    "lecture_sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde"
+  },
+  "explain_run": "/private/tmp/ds-problem-explain-1105-20261105-v2",
+  "pdf_run": "/private/tmp/ds-review-pdf-1105-20261105-v3",
+  "backups": {
+    "previous_pack": null,
+    "explanation": "/private/tmp/ds-problem-explain-1105-20261105-v2/review-1105-Tree/backups",
+    "pdf": "/private/tmp/ds-review-pdf-1105-20261105-v3/backups/b07814c69e8247838a02c1ec2b4f93a2"
+  }
+}

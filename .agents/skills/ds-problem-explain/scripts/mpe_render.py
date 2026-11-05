@@ -85,13 +85,15 @@ def resources(markup, problem, pack, repo, stage, fig_name, destination, scope):
         for node in nodes:
             value = node.attrs.get('style', '')
             allowed = (node.tag == 'figure' and value == 'margin:16px 0') or (
+                node.tag == 'p' and value == 'white-space:pre-wrap') or (
                 node.tag == 'div' and 'table-wrap' in node.classes and
                 value == 'overflow-x:auto') or (
                 node.tag == 'table' and re.fullmatch(r'min-width:[1-9][0-9]{0,3}px', value)) or (
                 node.tag == 'div' and 'figure-scroll' in node.classes and
-                value == 'max-width:100%;overflow-x:auto;background:white') or (
+                value in ('max-width:100%;overflow-x:auto',
+                          'max-width:100%;overflow-x:auto;background:white')) or (
                 node.tag == 'svg' and re.fullmatch(
-                    r'background:white;width:[1-9][0-9]{0,3}px;max-width:none;height:auto', value))
+                    r'(?:background:white;)?width:[1-9][0-9]{0,3}px;max-width:none;height:auto', value))
             if allowed:
                 errors.remove('허용하지 않는 속성: style')
     for node in nodes:

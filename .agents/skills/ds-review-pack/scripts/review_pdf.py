@@ -37,6 +37,14 @@ def _pages(value):
               tuple(Block(**b) for b in v['problem']),tuple(Block(**b) for b in v['solution']),v['show_answer'],v['show_hint']) for v in value)
 
 
+def pages_for_mode(pages, mode):
+    # Keep the shared coverage plan, but solution-only continuations have no
+    # content to print on a question sheet. Actual question continuations stay.
+    if mode == 'problems':
+        return tuple(page for page in pages if page.problem or page.continuation == 1)
+    return tuple(pages)
+
+
 def check_stage(run):
     import fitz
     run=Path(run);r=json.loads((run/'report.json').read_text());errors=[]
@@ -119,7 +127,7 @@ def build_pack(review,run):
             report['coverage']={'status':'pass','errors':check_coverage(pack,pages)}
             report['pdfs']=[pack.source.stem+'-문제.pdf',pack.source.stem+'-답안.pdf']
             for mode,name in zip(('problems','answers'),report['pdfs']):
-                data=to_payload(pack,mode,pages,stage/'assets');dump(stage/f'{mode}.json',data)
+                data=to_payload(pack,mode,pages_for_mode(pages,mode),stage/'assets');dump(stage/f'{mode}.json',data)
                 result=render(data,mode,run/mode,stage/name);report['probes'][mode]=asdict(result)
                 if result.errors or result.overflow:raise PdfError(mode+': '+str(result.errors or result.overflow))
                 import fitz

@@ -156,6 +156,9 @@ def freeze_inline_html(raw, source, assets):
         img.attrs['src']='data:'+mime+';base64,'+base64.b64encode(blob).decode('ascii')
     for svg in svgs:
         svg.attrs.setdefault('xmlns','http://www.w3.org/2000/svg')
+        # Web figures can deliberately scroll at a fixed width. A printed
+        # solution has no scrollbar, so fit the complete viewBox to its column.
+        svg.attrs['style'] = svg.attrs.get('style', '').rstrip(';') + ';width:100%;max-width:100%;height:auto'
         style=Node('style');style.children=[SVG_CSS];svg.children.insert(0,style)
     return ''.join(markup(c) for c in builder.root.children)
 

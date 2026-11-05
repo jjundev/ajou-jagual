@@ -1,0 +1,538 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "1105",
+  "slug": "Tree",
+  "note_title": "이진 탐색 트리 — 5살도 이해하는 정리노트",
+  "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1105 수업 (Software_7 Tree)",
+  "review_title": "복습문제 12선 — 1105 수업 범위",
+  "review_intro": "이정원 교수님 기출 1개, 다른 기출 7개, 교과서 2개와 강의 예제 기반 자체 문제 2개예요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
+  "footer_note": "출처: 이정원 교수님 강의록(Software_7) · 수업 녹음 전사(1105). 전사에 시각 정보가 없어 발언 위치는 Part로 표시합니다.",
+  "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2015(이정원), 2017·2018·2019 중간(출제자 미상) · 교과서 8장 9·10번 · Software_7 강의 예제. 풀이는 자체 작성하며 Python 시뮬레이션·C11 실행·강의 근거 대조로 검증합니다.",
+  "sessions": [
+    {
+      "date": "1105",
+      "stt": "STT/1105 자구알.md",
+      "summary": "summaries/stt-1105.md",
+      "slides": "S7 p18–25"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "title": "1. 찾기 좋게 정리한 트리",
+      "short": "1 정의·정렬",
+      "topics": [
+        {
+          "id": "s0-record",
+          "title": "레코드·필드·고유 키",
+          "required_terms": [
+            "레코드",
+            "필드",
+            "고유 키",
+            "학번"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-bst",
+          "title": "이진 탐색 트리의 네 가지 조건",
+          "required_terms": [
+            "이진 탐색 트리",
+            "유일",
+            "왼쪽 서브트리",
+            "오른쪽 서브트리"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-inorder",
+          "title": "중위 순회가 오름차순이 되는 이유",
+          "required_terms": [
+            "중위 순회",
+            "LVR",
+            "3, 7, 12, 18, 26, 27, 31",
+            "책상"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 탐색과 삽입",
+      "short": "2 탐색·삽입",
+      "topics": [
+        {
+          "id": "s1-search",
+          "title": "가지 하나만 따라가는 탐색",
+          "required_terms": [
+            "NULL",
+            "search",
+            "18, 7, 12",
+            "18, 26"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-insert",
+          "title": "실패한 탐색 위치에 삽입하기",
+          "required_terms": [
+            "삽입",
+            "p",
+            "t",
+            "9",
+            "중복"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "3. 삭제와 시간복잡도",
+      "short": "3 삭제·비용",
+      "topics": [
+        {
+          "id": "s2-delete-leaf",
+          "title": "삭제: 자식이 없거나 하나일 때",
+          "required_terms": [
+            "단말 노드",
+            "부모",
+            "NULL",
+            "서브트리",
+            "데이터 손실"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-delete-two",
+          "title": "삭제: 자식이 둘일 때",
+          "required_terms": [
+            "왼쪽 서브트리",
+            "최댓값",
+            "오른쪽 서브트리",
+            "최솟값",
+            "12",
+            "22"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-complexity",
+          "title": "트리 모양이 탐색 비용을 결정해요",
+          "required_terms": [
+            "O(h)",
+            "O(\\log n)",
+            "O(n)",
+            "높이",
+            "경사"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 요약 · 예고",
+      "short": "4 요약·예고",
+      "topics": [
+        {
+          "id": "s3-cheatsheet",
+          "title": "한 장 요약",
+          "required_terms": [
+            "탐색",
+            "삽입",
+            "삭제"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-next",
+          "title": "다음 시간과 이후의 예고",
+          "required_terms": [
+            "힙",
+            "AVL",
+            "B-tree"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "복습문제",
+            "강의록"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s3-next",
+  "forbidden_outside_preview": [
+    "AVL",
+    "B-tree",
+    "B+",
+    "2-3 트리",
+    "힙"
+  ],
+  "parts": [
+    {
+      "id": "partA",
+      "title": "A. 이정원 교수님 기출",
+      "short": "A 이정원 기출"
+    },
+    {
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B 다른 기출"
+    },
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    },
+    {
+      "id": "partL",
+      "title": "E. 강의 예제 기반 자체 문제",
+      "short": "E 강의 예제"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "part": "partA",
+      "source": "2015-ljw-q2",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-delete-two",
+      "level": 3,
+      "date": "1105",
+      "terms": [
+        "15 6 20 3 12 18 23 10 7",
+        "15 3 20 12 18 23 10 6 7"
+      ],
+      "answer": "후계자 사용 레벨 순서 15 6 20 3 12 18 23 10 7; 선행자 사용 레벨 순서 15 3 20 12 18 23 10 6 7",
+      "objectives": [
+        "BST 세 가지 삭제와 대체 노드의 자식 연결"
+      ],
+      "task_family": "2015-ljw-q2"
+    },
+    {
+      "id": "p2",
+      "part": "partB",
+      "source": "2019-mid-q10",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s1-insert",
+      "level": 3,
+      "date": "1105",
+      "terms": [
+        "1:520",
+        "2:490",
+        "3:650",
+        "4:380",
+        "6:570",
+        "8:280",
+        "9:450",
+        "13:580",
+        "18:430",
+        "19:460"
+      ],
+      "answer": "1:520, 2:490, 3:650, 4:380, 6:570, 8:280, 9:450, 13:580, 18:430, 19:460 (나머지 빈칸)",
+      "objectives": [
+        "삽입·한 자식 삭제·배열 표현"
+      ],
+      "task_family": "2019-mid-q10"
+    },
+    {
+      "id": "p3",
+      "part": "partB",
+      "source": "2019-mid-q12",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-complexity",
+      "level": 3,
+      "date": "1105",
+      "terms": [
+        "230 180 270 140 210 250 290 120 160 200 220 240 260 280 300 110 130 150 170 190"
+      ],
+      "answer": "230 180 270 140 210 250 290 120 160 200 220 240 260 280 300 110 130 150 170 190",
+      "objectives": [
+        "최소 높이 완전 BST 구성"
+      ],
+      "task_family": "2019-mid-q12"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "2018-mid-c024-q13",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-complexity",
+      "level": 3,
+      "date": "1105",
+      "terms": [
+        "5 3 7 2 4 6 8 1 9"
+      ],
+      "answer": "5 3 7 2 4 6 8 1 9",
+      "objectives": [
+        "최소 높이 좌우대칭 BST 구성"
+      ],
+      "task_family": "2018-mid-c024-q13"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "2018-mid-c024-q14",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-complexity",
+      "level": 3,
+      "date": "1105",
+      "terms": [
+        "9 5 13 3 7 11 15 2 4 6 8 10 12 14 16 1"
+      ],
+      "answer": "9 5 13 3 7 11 15 2 4 6 8 10 12 14 16 1",
+      "objectives": [
+        "완전 BST 입력 순서 설계"
+      ],
+      "task_family": "2018-mid-c024-q14"
+    },
+    {
+      "id": "p6",
+      "part": "partB",
+      "source": "2017-mid-c050-q9",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-delete-two",
+      "level": 3,
+      "date": "1105",
+      "terms": [
+        "55 16 4 29 30 92 60 75",
+        "4 16 29 30 55 60 75 92",
+        "4 30 29 16 75 60 92 55",
+        "55 92 60 75",
+        "60 16 92 4 29 75 30",
+        "30 16 92 4 29 60 75"
+      ],
+      "answer": "(a) 55 16 4 29 30 92 60 75; (b) 4 16 29 30 55 60 75 92; (c) 4 30 29 16 75 60 92 55; (d) 55 92 60 75; (e) 후계자 60 또는 선행자 30",
+      "objectives": [
+        "세 순회·탐색 경로·루트 삭제"
+      ],
+      "task_family": "2017-mid-c050-q9"
+    },
+    {
+      "id": "p7",
+      "part": "partB",
+      "source": "2019-mid-q1",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-complexity",
+      "level": 1,
+      "date": "1105",
+      "terms": [
+        "X",
+        "2 1 3",
+        "1 2 3"
+      ],
+      "answer": "X",
+      "objectives": [
+        "BST 높이의 형태 의존성"
+      ],
+      "task_family": "2019-mid-q1"
+    },
+    {
+      "id": "p8",
+      "part": "partB",
+      "source": "2018-mid-c024-q5",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-complexity",
+      "level": 1,
+      "date": "1105",
+      "terms": [
+        "X",
+        "2 1 3",
+        "1 2 3"
+      ],
+      "answer": "X",
+      "objectives": [
+        "이진 트리 높이 반례"
+      ],
+      "task_family": "2018-mid-c024-q5"
+    },
+    {
+      "id": "p9",
+      "part": "partD",
+      "source": "textbook-ch08-q09",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s2-complexity",
+      "level": 2,
+      "date": "1105",
+      "terms": [
+        "O(log n)",
+        "O(n)"
+      ],
+      "answer": "삽입연산: 평균 O(log n), 최악 O(n).",
+      "objectives": [
+        "삽입 평균·최악 복잡도의 조건"
+      ],
+      "task_family": "textbook-ch08-q09"
+    },
+    {
+      "id": "p10",
+      "part": "partD",
+      "source": "textbook-ch08-q10",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-bst",
+      "level": 3,
+      "date": "1105",
+      "terms": [
+        "6 4 2 1 3 5 9 7 10 8 11",
+        "1 3 2 5 4 7 8 11 10 9 6",
+        "1 2 3 4 5 6 7 9 8 10 11",
+        "6 4 9 2 5 7 10 1 3 8 11",
+        "8 < 9",
+        "14:8",
+        "15:11"
+      ],
+      "answer": "배열 1:6, 2:4, 3:9, 4:2, 5:5, 6:7, 7:10, 8:1, 9:3, 10:∅, 11:∅, 12:∅, 13:∅, 14:8, 15:11; 전위 6 4 2 1 3 5 9 7 10 8 11; 후위 1 3 2 5 4 7 8 11 10 9 6; 중위 1 2 3 4 5 6 7 9 8 10 11; 레벨 6 4 9 2 5 7 10 1 3 8 11; BST 아님(9의 오른쪽 서브트리의 8)",
+      "objectives": [
+        "트리 표현·순회·전역 BST 판정"
+      ],
+      "task_family": "textbook-ch08-q10"
+    },
+    {
+      "id": "p11",
+      "part": "partL",
+      "source": "lecture-s07-p20-bst-search",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-search",
+      "level": 2,
+      "date": "1105",
+      "terms": [
+        "레코드",
+        "필드",
+        "학번",
+        "18, 7, 12",
+        "18, 26",
+        "NULL",
+        "주소"
+      ],
+      "answer": "(a) 레코드·필드·학번 (b) 20이 18의 왼쪽 서브트리여서 위반, 중복 불가 (c) 12: 18, 7, 12 뒤 노드 주소 / 20: 18, 26 뒤 NULL, 정수 인덱스 아님",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+        "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+        "pdf_page": 20,
+        "extra_pages": [
+          18,
+          19
+        ],
+        "example": "bst-search",
+        "taught_on": "1105"
+      },
+      "objectives": [
+        "레코드·필드·고유 키 구분",
+        "BST의 유일성·전역 순서 판단",
+        "성공·실패 탐색·NULL 종료·반환 주소"
+      ],
+      "task_family": "lecture-s07-p20-bst-search"
+    },
+    {
+      "id": "p12",
+      "part": "partL",
+      "source": "lecture-s07-p21-insert-boundaries",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-insert",
+      "level": 2,
+      "date": "1105",
+      "terms": [
+        "(NULL, 18)",
+        "(18, 7)",
+        "(7, 12)",
+        "(12, NULL)",
+        "8",
+        "0"
+      ],
+      "answer": "(a) (NULL, 18), (18, 7), (7, 12), 종료 (12, NULL), 12의 왼쪽에 9 (b) 8개 유지, 링크 변경 없음 (c) 0회, root가 키 9 노드",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+        "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+        "pdf_page": 21,
+        "extra_pages": [
+          20
+        ],
+        "example": "bst-insertion-boundaries",
+        "taught_on": "1105"
+      },
+      "objectives": [
+        "삽입 p·t 상태와 새 링크 추적",
+        "중복 키 삽입 거절",
+        "빈 트리 삽입 경계"
+      ],
+      "task_family": "lecture-s07-p21-insert-boundaries"
+    }
+  ],
+  "links": [
+    {
+      "topic": "s3-links",
+      "href": "복습문제_1105_Tree.html"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../../자료구조_강의록_2026/Software_7_Tree.pdf"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../1102/정리노트_1102_Tree.html#s1-inorder"
+    }
+  ]
+}

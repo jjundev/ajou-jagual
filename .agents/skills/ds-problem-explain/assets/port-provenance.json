@@ -1806,6 +1806,62 @@
           "new": "        assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')\n    finally:\n        context.close()\n\n\n@pytest.mark.parametrize('width,height',[(1280,900),(375,812)])\n@pytest.mark.parametrize('theme',['light','dark'])\ndef test_summary_switch_with_math_title(browser,stage_url,width,height,theme):\n    context=browser.new_context(viewport={'width':width,'height':height},color_scheme=theme)\n    page=context.new_page();errors=[]\n    page.on('pageerror',lambda e:errors.append(str(e)))\n    try:\n        page.goto(stage_url,wait_until='networkidle')\n        page.locator('#toggle-right').click()\n        for topic in ['p1','p2','p1']:\n            page.evaluate('(id)=>{location.hash=id}',topic)\n            page.wait_for_timeout(80)\n            title=page.locator(f'main #{topic} h3').text_content()\n            assert page.locator('main h3',has_text=title).is_visible()\n            assert page.locator('#panel-right').get_by_text(title,exact=True).count()==0\n            assert page.locator('#sum-for.sums').count()==1\n            assert page.locator('#panel-right .sum:not([hidden])').count()==1\n            assert page.locator('#panel-right .sum:not([hidden])').inner_text()==('첫 문항 요약' if topic=='p1' else '둘째 문항 요약')\n            assert page.locator('.katex-error').count()==0\n        assert errors==[]\n    finally: context.close()\n"
         }
       ]
+    },
+    {
+      "destination": "scripts/mpe_source.py",
+      "base_sha256": "6fe0d6db184596864cac192c281fb96e8540e9357668f014465f572d58f7e1c4",
+      "current_sha256": "aa75a50b265c5b9b11e9a45ce1bebe709fcc57c828cdfaac6bfdfb07f497f723",
+      "reason": "1105 pack: preserve multiline exam and numbered textbook subquestion labels; retain options/operation-list exclusion",
+      "replacements": [
+        {
+          "old": "def operation_item(text):\n    return bool(re.fullmatch(r'\\s*\\([a-z]\\)\\s*(?:push|pop|enqueue|dequeue|insert|delete|append|remove)\\s*\\([^)]*\\)\\s*[;.]?\\s*', text, re.I))\n",
+          "new": "def operation_item(text):\n    return bool(re.fullmatch(r'\\s*\\((?:[a-z]|[1-9]\\d*)\\)\\s*(?:push|pop|enqueue|dequeue|insert|delete|append|remove)\\s*\\([^)]*\\)\\s*[;.]?\\s*', text, re.I))\n"
+        },
+        {
+          "old": "    marked = [n for n in root.find_all(lambda n: 'part' in n.classes or (n.tag == 'p' and re.match(r'\\s*\\(([a-z])\\)', n.text())))\n              if not choice_container(n,root) and not any('part' in a.classes or a.tag in ('li', 'pre', 'code') for a in ancestors(n, root))]\n    labels = []\n    for node in marked:\n        match = re.match(r'\\s*\\(([a-z])\\)', node.text())\n        if not match: raise ExplainError('소문항 표지 모호함')\n        labels.append(match[1])\n",
+          "new": "    label_pattern = r'\\s*\\(([a-z]|[1-9]\\d*)\\)'\n    marked = [n for n in root.find_all(lambda n: 'part' in n.classes or (n.tag == 'p' and re.match(label_pattern, n.text())))\n              if not choice_container(n,root) and not any('part' in a.classes or a.tag in ('li', 'pre', 'code') for a in ancestors(n, root))]\n    labels = []\n    for node in marked:\n        # Transcribed originals can preserve several labelled lines in one paragraph.\n        matches = re.findall(r'(?m)^' + label_pattern, node.text())\n        if not matches: raise ExplainError('소문항 표지 모호함')\n        labels.extend(matches)\n"
+        },
+        {
+          "old": "        matches = [re.match(r'\\s*\\(([a-z])\\)', c.text()) for c in items]",
+          "new": "        matches = [re.match(label_pattern, c.text()) for c in items]"
+        }
+      ]
+    },
+    {
+      "destination": "tests/test_source.py",
+      "base_sha256": "3cf256a885f220224aed2503ef296ddb169216079ed24e89b3d28542b6e653e5",
+      "current_sha256": "93510d3efcf5c9932d27eaf7d299c9640ecefcb8002ee0075fcd95b79e6be2b8",
+      "reason": "1105 pack: preserve multiline exam and numbered textbook subquestion labels; retain options/operation-list exclusion",
+      "replacements": [
+        {
+          "old": "mport labeled_asks\n    assert labeled_asks('<ol><li>(a) 첫째</li><li>(b) <code>p</code> 둘째</li></ol>')\n    assert not labeled_asks('<ol><li>(a) 첫째</li><li>둘째</li></ol>')\n    assert not labeled_asks('')\n",
+          "new": "mport labeled_asks\n    assert labeled_asks('<ol><li>(a) 첫째</li><li>(b) <code>p</code> 둘째</li></ol>')\n    assert not labeled_asks('<ol><li>(a) 첫째</li><li>둘째</li></ol>')\n    assert not labeled_asks('')\n\n\ndef test_preserved_multiline_original_keeps_each_question_label():\n    ask = '<ol><li>(a) 첫 값을 구하라</li><li>(b) 둘째 값을 구하라</li></ol>'\n    original = '<p style=\"white-space:pre-wrap\">(a) 첫 값을 구하라\\n(b) 둘째 값을 구하라</p>'\n    assert subparts(ask, original) == ('a', 'b')\n\n\ndef test_textbook_numbered_subquestions_keep_original_labels():\n    source = '<div class=\"subquestions\"><div><p>(1)</p><p>배열을 쓰시오.</p></div><div><p>(2)</p><p>중위 순회를 쓰시오.</p></div></div>'\n    assert subparts(source, source) == ('1', '2')\n\n\ndef test_numbered_options_and_operation_lists_remain_single_question():\n    assert subparts('<div class=\"options\"><p>(1) 보기</p><p>(2) 보기</p></div>', '') == ('main',)\n    assert subparts('<ol><li>(1) insert(5)</li><li>(2) delete(3)</li></ol><p>최종 상태는?</p>', '') == ('main',)\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/mpe_render.py",
+      "base_sha256": "f75d77b4de5892e66febe1a6b05bdf1dc4300c258690014a1d568bb06b6f8022",
+      "current_sha256": "5a1165b5f1d1c4d5b81fea2029cc7443a66682f8c64efc38a4123eda20c26c0b",
+      "reason": "1105 pack: preserve existing source-only scroll figures and prewrapped original text without permitting authored or arbitrary CSS",
+      "replacements": [
+        {
+          "old": "    # Existing figures/tables carry static presentation; authored styles stay forbidden.\n    if scope in ('source', 'original'):\n        for node in nodes:\n            value = node.attrs.get('style', '')\n            allowed = (node.tag == 'figure' and value == 'margin:16px 0') or (\n                node.tag == 'div' and 'table-wrap' in node.classes and\n                value == 'overflow-x:auto') or (\n                node.tag == 'table' and re.fullmatch(r'min-width:[1-9][0-9]{0,3}px', value)) or (\n                node.tag == 'div' and 'figure-scroll' in node.classes and\n                value == 'max-width:100%;overflow-x:auto;background:white') or (\n                node.tag == 'svg' and re.fullmatch(\n                    r'background:white;width:[1-9][0-9]{0,3}px;max-width:none;height:auto', value))\n            if allowed:\n                errors.remove('허용하지 않는 속성: style')\n",
+          "new": "    # Existing figures/tables carry static presentation; authored styles stay forbidden.\n    if scope in ('source', 'original'):\n        for node in nodes:\n            value = node.attrs.get('style', '')\n            allowed = (node.tag == 'figure' and value == 'margin:16px 0') or (\n                node.tag == 'p' and value == 'white-space:pre-wrap') or (\n                node.tag == 'div' and 'table-wrap' in node.classes and\n                value == 'overflow-x:auto') or (\n                node.tag == 'table' and re.fullmatch(r'min-width:[1-9][0-9]{0,3}px', value)) or (\n                node.tag == 'div' and 'figure-scroll' in node.classes and\n                value in ('max-width:100%;overflow-x:auto',\n                          'max-width:100%;overflow-x:auto;background:white')) or (\n                node.tag == 'svg' and re.fullmatch(\n                    r'(?:background:white;)?width:[1-9][0-9]{0,3}px;max-width:none;height:auto', value))\n            if allowed:\n                errors.remove('허용하지 않는 속성: style')\n"
+        }
+      ]
+    },
+    {
+      "destination": "tests/test_render.py",
+      "base_sha256": "091b2bf52b7109f65ae0fc6be4fe09b5df46d0855e5440bf72f7b4cc7455cf27",
+      "current_sha256": "cf8f0b255d430c273bad54faeab8cb7e1b4842a58a47df290330b6849e13d513",
+      "reason": "1105 pack: preserve existing source-only scroll figures and prewrapped original text without permitting authored or arbitrary CSS",
+      "replacements": [
+        {
+          "old": "_).resolve().parents[1]/'assets/note-template.html').read_text()\n    assert 'bio-' not in t and \"const TAB = 'ds-problem-explain-tab';\" in t\n    assert '.verdict-card {' in t  # 판정 카드 코드는 비활성 상태로 남는다\n",
+          "new": "_).resolve().parents[1]/'assets/note-template.html').read_text()\n    assert 'bio-' not in t and \"const TAB = 'ds-problem-explain-tab';\" in t\n    assert '.verdict-card {' in t  # 판정 카드 코드는 비활성 상태로 남는다\n\n\ndef test_review_scroll_figure_without_white_background_is_preserved(tmp_path):\n    pack,fragments=make(tmp_path)\n    figure='<figure><div class=\"figure-scroll\" style=\"max-width:100%;overflow-x:auto\"><svg viewBox=\"0 0 800 300\" style=\"width:800px;max-width:none;height:auto\"><text x=\"700\" y=\"20\">원문 끝 노드</text></svg></div></figure>'\n    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+figure)\n    art=build_explanation(replace(pack,problems=(p,)),fragments,tmp_path/'stage',tmp_path/'repo')\n    assert figure in art.html.read_text()\n\n\ndef test_original_preformatted_paragraph_preserves_its_lines(tmp_path):\n    pack,fragments=make(tmp_path)\n    original='<p style=\"white-space:pre-wrap\">첫 문장\\n둘째 문장</p>'\n    p=replace(pack.problems[0],original_html=original)\n    art=build_explanation(replace(pack,problems=(p,)),fragments,tmp_path/'stage',tmp_path/'repo')\n    assert original in art.html.read_text()\n"
+        }
+      ]
     }
   ],
   "common_sync": {
