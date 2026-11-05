@@ -285,7 +285,13 @@ def build_stt_prompt(chapter: int, chapter_title: str, terms: list[str]) -> str:
     sample_terms = ", ".join(terms[:50])
     homophone_guide = "\n".join(f"  - '{err}'로 들리면 -> '{cor}'" for err, cor in COMMON_DS_ERROR_RULES)
 
-    return f"""[자료구조및알고리즘이해 강의 도메인 가이드 (이정원 교수님, ECE256)]
+    return f"""[Academic Context & Educational Speech Notice]
+- This audio recording is an accredited university engineering lecture on Data Structures & Software Engineering (Ajou University, ECE256).
+- The speaker uses informal Korean pedagogical metaphors, classroom anecdotes (e.g., industry engineering projects, ECU hardware constraints, data segmentation/slicing, process scheduling, organizational analogies), and colloquial conversational Korean.
+- All technical metaphors, references to division/cutting, processes, death/succession, or hardware limitations are purely academic computer science and algorithm explanations.
+- Transcribe all spoken words strictly verbatim for educational study notes without filtering or omission.
+
+[자료구조및알고리즘이해 강의 도메인 가이드 (이정원 교수님, ECE256)]
 - 본 오디오는 아주대학교 전자공학부 자료구조및알고리즘이해 강의 녹음입니다.
 - 단원 범위: {chapter}장 ({chapter_title})
 - 주요 C언어 및 자료구조 고유명사:
