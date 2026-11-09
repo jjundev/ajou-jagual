@@ -1,0 +1,456 @@
+{
+ "range": "1109",
+ "mode": "new",
+ "policy_version": "review-questions-2026-10-17",
+ "taught_evidence": {
+  "range_ch": [
+   8
+  ],
+  "taught": "1-8",
+  "slides": "S8 p1–14 (p14 일부)",
+  "summary": "summaries/stt-1109.md",
+  "not_taught": "S8 p15–19(예고만/안 다룸), S9"
+ },
+ "concept_overrides": {},
+ "selected": [
+  {
+   "id": "p1",
+   "source": "2015-ljw-q4",
+   "source_kind": "past-exam",
+   "original_id": "2015-ljw-q4",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "삽입마다 upheap 추적",
+    "루트 반복 삭제로 정렬"
+   ],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2015-ljw-q4",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "1) 삽입마다 [15] → [16,15] → [18,15,16] → [18,17,16,15] → [19,18,16,15,17] → [20,18,19,15,17,16] → 20 18 19 15 17 16 12; 2) 삭제마다 19 18 16 15 17 12 → 18 17 16 15 12 → 17 15 16 12 → 16 15 12 → 15 12 → 12 → 빈 힙, 제거 순서 20, 19, 18, 17, 16, 15, 12 → 정렬 12, 15, 16, 17, 18, 19, 20",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p2",
+   "source": "2017-final-kdh-q1",
+   "source_kind": "past-exam",
+   "original_id": "2017-final-kdh-q1",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "삽입·삭제·1번부터 배열 표현"
+   ],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2017-final-kdh-q1",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "(a) 41 25 28 16 20 (b) 41 25 30 16 20 28 (c) 30 25 28 16 20 (d) [0] 비움, [1]=30, [2]=25, [3]=28, [4]=16, [5]=20, [6]~[12] 비움",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p3",
+   "source": "2017-final2-q1",
+   "source_kind": "past-exam",
+   "original_id": "2017-final2-q1",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "8개 삽입 upheap",
+    "한 번 삭제 downheap"
+   ],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2017-final2-q1",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "(a) 60 15 40 12 10 6 30 5 (b) 40 15 30 12 10 6 5",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p4",
+   "source": "2019-final-q6",
+   "source_kind": "past-exam",
+   "original_id": "2019-final-q6",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "삽입·삭제가 섞인 순서 추적"
+   ],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2019-final-q6",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "64 53 48 50 24 16 31 9 41 (중간: 7개 삽입 50 48 31 9 41 16 24, 삭제 1번 48 41 31 9 24 16, 5개 삽입 71 68 48 50 64 16 31 9 41 24 53, 삭제 2번 71·68)",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p5",
+   "source": "unk-final-ltk-q5",
+   "source_kind": "past-exam",
+   "original_id": "unk-final-ltk-q5",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "최소 힙 삽입·삭제"
+   ],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "unk-final-ltk-q5",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "answer": "삽입 후 65 75 70 90 80 85, 한 번 삭제 후 70 75 85 90 80",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p6",
+   "source": "textbook-ch09-q02",
+   "source_kind": "textbook",
+   "original_id": "ch09-q02",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "완전 이진 트리와 빈칸 없는 배열"
+   ],
+   "evidence": {
+    "path": "교과서/09_우선순위 큐_연습문제.json",
+    "locator": "ch09-q02",
+    "sha256": "700b10a8a7da3f8a848f0016d1bed2167cdea68ebfccaa13c63a1b70c63b4f8f"
+   },
+   "answer": "① 완전 이진 트리이기 때문에",
+   "verification": {
+    "method": "lecture-reference",
+    "reference": "answers.py, work/answers-output.txt ; S8 p7 완전 이진 트리 근거",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p7",
+   "source": "textbook-ch09-q07",
+   "source_kind": "textbook",
+   "original_id": "ch09-q07",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "노드 수와 높이"
+   ],
+   "evidence": {
+    "path": "교과서/09_우선순위 큐_연습문제.json",
+    "locator": "ch09-q07",
+    "sha256": "700b10a8a7da3f8a848f0016d1bed2167cdea68ebfccaa13c63a1b70c63b4f8f"
+   },
+   "answer": "4 (깊이 1~3에 1+2+4=7개, 깊이 4에 3개)",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p8",
+   "source": "textbook-ch09-q12",
+   "source_kind": "textbook",
+   "original_id": "ch09-q12",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "최소 힙 조건의 재귀 판정"
+   ],
+   "evidence": {
+    "path": "교과서/09_우선순위 큐_연습문제.json",
+    "locator": "ch09-q12",
+    "sha256": "700b10a8a7da3f8a848f0016d1bed2167cdea68ebfccaa13c63a1b70c63b4f8f"
+   },
+   "answer": "아니다. 6의 왼쪽 자식 5가 6보다 작아 부모 ≤ 자식 조건을 어긴다",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p9",
+   "source": "textbook-ch09-q13",
+   "source_kind": "textbook",
+   "original_id": "ch09-q13",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "최소 힙 연산 순서 추적"
+   ],
+   "evidence": {
+    "path": "교과서/09_우선순위 큐_연습문제.json",
+    "locator": "ch09-q13",
+    "sha256": "700b10a8a7da3f8a848f0016d1bed2167cdea68ebfccaa13c63a1b70c63b4f8f"
+   },
+   "answer": "레벨 순서 1 5 12 20 16 (is_empty() 결과는 거짓)",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p10",
+   "source": "lecture-s08-p04-pq-implementations",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s08-p04-pq-implementations",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "구현별 삽입·삭제 복잡도",
+    "O(log n) 선택 이유",
+    "배열 인덱스 식"
+   ],
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+    "locator": "S8 p4",
+    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492"
+   },
+   "answer": "(a) 순서 없는 배열·연결 리스트 삽입 O(1)·삭제 O(n), 정렬된 배열·연결 리스트 삽입 O(n)·삭제 O(1), 히프 삽입·삭제 O(log n) (b) 예측 가능성: 히프는 최악에도 높이 O(log n)만큼만 움직인다 (c) 왼쪽 10, 오른쪽 없음, 부모 2",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p11",
+   "source": "lecture-s08-p13-delete-max-heap",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s08-p13-delete-max-heap",
+   "prerequisites": [
+    "S8 p1–14 (1109) 및 1029 완전 이진 트리·1102 배열 표현"
+   ],
+   "objectives": [
+    "delete_max_heap의 i·largest 추적",
+    "오른쪽 자식 없는 경계의 결함과 수정"
+   ],
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+    "locator": "S8 p13",
+    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492"
+   },
+   "answer": "(a) (i=2, largest=2, 교환) → (4, 4, 교환) → (8, 8, break), 결과 7 5 6 3 4 3 2 2 1, 리턴 9 (b) 글자 그대로면 40 10 30 20으로 최대 힙 아님(i == heap_size 일 때 largest ← i+1 이 힙 밖 칸을 읽음). 오른쪽 자식이 없으면 왼쪽 i를 고르게 고치면 40 20 30 10",
+   "verification": {
+    "method": "c-run",
+    "reference": "answers.py, work/answers-output.txt, work/verify_lecture.c 출력",
+    "result": "pass"
+   }
+  }
+ ],
+ "excluded": [
+  {
+   "source": "2016-final-ljw-q4",
+   "reason": "허프만 코딩은 S8 p17–19로 1109에는 예고만(안 다룸)"
+  },
+  {
+   "source": "2021-mock1-q5",
+   "reason": "허프만 코딩, 예고만"
+  },
+  {
+   "source": "2016-final-ljw-q3",
+   "reason": "5)·6)이 AVL 트리(미학습)를 요구 — 한 단계라도 미학습 개념이 필요해 제외"
+  },
+  {
+   "source": "2015-ljw-q1",
+   "reason": "해싱·AVL·정렬(미학습) 소문항 혼재"
+  },
+  {
+   "source": "2021-mock1-q2",
+   "reason": "2015-ljw-q4와 원문 동일한 재수록(duplicate_of) — 대표 출처 2015-ljw-q4로 한 번만 수록"
+  },
+  {
+   "source": "textbook-ch09-q08",
+   "reason": "원문 배열 a[1..8]=2 9 18 6 15 7 3 14가 최소 히프 조건을 어김(9의 자식 6, 18의 자식 7·3) — 삭제·삽입 결과가 정의되지 않아 source-error로 제외"
+  },
+  {
+   "source": "textbook-ch09-q09",
+   "reason": "2)가 원래 트리에 대한 삭제인지 1) 이후인지 모호; 같은 목표는 p2·p5·p9로 충족"
+  },
+  {
+   "source": "textbook-ch09-q04",
+   "reason": "'가장 큰 값 몇 개만 필요할 때' 문장은 S8 p14에 있으나 수업에서 설명하지 않음(일부)"
+  },
+  {
+   "source": "textbook-ch09-q17",
+   "reason": "허프만 코드, 예고만"
+  },
+  {
+   "source": "textbook-ch09-q11, q14, q15, q16",
+   "reason": "전체 프로그램 작성(파일 입출력·임의 위치 삭제) — 수업은 의사코드 추적까지, 구현 과제 수준이라 제외"
+  },
+  {
+   "source": "textbook-ch09-q01, q03, q05, q06, q10",
+   "reason": "q01·q03·q05는 p2·p6·p10과 같은 개념의 단순 확인이라 개념 균형상 제외(서로 다른 기출이 아닌 교과서 후보), q06은 답이 노드 위치 집합으로 모호, q10은 p3(2017-final2-q1)와 같은 연산 목표"
+  }
+ ],
+ "coverage": [
+  {
+   "id": "pq-concept",
+   "objective": "우선순위 큐의 정의와 스택·큐와의 차이",
+   "evidence": "S8 p2; STT 1절",
+   "questions": [
+    "p10"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "pq-adt-minmax",
+   "objective": "ADT 연산(insert/delete 핵심)과 최소·최대 우선순위 큐",
+   "evidence": "S8 p3; STT 2절",
+   "questions": [
+    "p5",
+    "p9",
+    "p10"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "impl-table",
+   "objective": "배열·연결 리스트·히프 구현별 삽입·삭제 복잡도와 O(log n)의 예측 가능성",
+   "evidence": "S8 p4; STT 4절",
+   "questions": [
+    "p10"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "heap-def",
+   "objective": "최대/최소 힙 조건과 완전 이진 트리, 같은 값 허용",
+   "evidence": "S8 p5; STT 3·5절",
+   "questions": [
+    "p5",
+    "p6",
+    "p8"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "heap-height",
+   "objective": "높이 O(log n), 레벨별 노드 수",
+   "evidence": "S8 p6; STT 6절",
+   "questions": [
+    "p7"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "array-index",
+   "objective": "1번부터의 배열 표현과 부모·자식 인덱스 식",
+   "evidence": "S8 p7; STT 7절",
+   "questions": [
+    "p2",
+    "p6",
+    "p10",
+    "p11"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "upheap",
+   "objective": "말단 삽입 후 부모와만 비교·교환(upheap)",
+   "evidence": "S8 p8–10; STT 8절",
+   "questions": [
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "p5",
+    "p9"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "downheap",
+   "objective": "루트 삭제·말단을 루트로·큰 자식과 교환(downheap)과 의사코드 i·largest",
+   "evidence": "S8 p11–13; STT 9절",
+   "questions": [
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "p5",
+    "p9",
+    "p11"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "heapsort",
+   "objective": "n번 삽입 후 n번 삭제로 정렬, O(n log n)",
+   "evidence": "S8 p14 일부, 칠판 예제; STT 11절",
+   "questions": [
+    "p1"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "readability",
+   "objective": "CHILD 함수와 readability(교수님 강조, 평가 비핵심)",
+   "evidence": "STT 10절",
+   "questions": [],
+   "status": "excluded-non-assessable",
+   "reason": "코딩 태도 강조로 정리노트에만 싣고 문항화하지 않음"
+  }
+ ],
+ "required_exam_sources": [
+  "2015-ljw-q4",
+  "2017-final-kdh-q1",
+  "2017-final2-q1",
+  "2019-final-q6",
+  "unk-final-ltk-q5"
+ ],
+ "duplicate_decisions": [
+  {
+   "left": "2015-ljw-q4",
+   "right": "2021-mock1-q2",
+   "decision": "duplicate",
+   "reason": "은행 duplicate_of, 문제 글에 [2015-1 기출] 표기·숫자·소문항 동일"
+  }
+ ],
+ "widget_decision": {
+  "topic": "s2-heapsort",
+  "reason": "칠판의 1, 23, 7, 8, 20 삽입·삭제를 한 단계씩 넘기며 트리·배열·꺼낸 값을 함께 보여 줌"
+ },
+ "scope_exclusions": [
+  "허프만 코드",
+  "이산 이벤트 시뮬레이션",
+  "heap_sort C 프로그램(S8 p15)",
+  "AVL",
+  "정렬 장(S9)"
+ ]
+}

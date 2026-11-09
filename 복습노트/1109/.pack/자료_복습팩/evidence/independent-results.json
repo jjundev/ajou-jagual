@@ -1,0 +1,110 @@
+[
+ {
+  "item": "p1:main",
+  "method": "exact",
+  "answer": "1) 삽입: 15→[15]; 16(16↔15)→[16,15]; 18(18↔16)→[18,15,16]; 17(17↔15)→[18,17,16,15]; 19(19↔17,19↔18)→[19,18,16,15,17]; 20(20↔16,20↔19)→[20,18,19,15,17,16]; 12(교환 없음)→최종 [20,18,19,15,17,16,12] (레벨 20 / 18 19 / 15 17 16 12). 2) 힙정렬(루트 삭제 7회, 마지막 노드를 루트로 올려 downheap): 20 제거→[19,18,16,15,17,12]; 19→[18,17,16,15,12]; 18→[17,15,16,12]; 17→[16,15,12]; 16→[15,12]; 15→[12]; 12→[]. 제거 순서 20,19,18,17,16,15,12, 뒤에서부터 채운 결과 오름차순 12,15,16,17,18,19,20 (제자리 힙정렬로 루트·끝을 맞바꿔도 힙 부분 상태는 같음)",
+  "evidence": "independent_verify.py -> independent-output.txt p1 섹션, 손 추적 일치; S8 p8~p9(upheap), p11~p13(downheap), p14~p15(heap_sort가 a[n-1]부터 채움)"
+ },
+ {
+  "item": "p2:a",
+  "method": "exact",
+  "answer": "[41,25,28,16,20] (레벨 41 / 25 28 / 16 20). 교환 28↔16, 41↔28, 20↔16, 25↔20. [다른 해석: 한꺼번에 bottom-up heapify하면 [41,28,16,20,25]. 강의 방식은 하나씩 삽입]",
+  "evidence": "independent_verify.py -> independent-output.txt p2 섹션; S8 p8~p10"
+ },
+ {
+  "item": "p2:b",
+  "method": "exact",
+  "answer": "30을 6번 칸에 넣고 부모 28과 교환, 41보다 작아 멈춤 → [41,25,30,16,20,28] (레벨 41 / 25 30 / 16 20 28). [heapify 해석: [41,28,30,20,25,16]]",
+  "evidence": "independent_verify.py -> independent-output.txt p2 섹션"
+ },
+ {
+  "item": "p2:c",
+  "method": "exact",
+  "answer": "41 제거, 28을 루트로 올린 뒤 큰 자식 30과 교환 → [30,25,28,16,20] (레벨 30 / 25 28 / 16 20). [heapify 해석: [30,28,16,20,25]]",
+  "evidence": "independent_verify.py -> independent-output.txt p2 섹션; S8 p11~p13"
+ },
+ {
+  "item": "p2:d",
+  "method": "exact",
+  "answer": "[0]=비움, [1]=30, [2]=25, [3]=28, [4]=16, [5]=20, [6]~[12]=비움. [heapify 해석: [1..5]=30,28,16,20,25]",
+  "evidence": "independent_verify.py -> independent-output.txt p2 섹션; S8 p7(1번 칸부터), p10"
+ },
+ {
+  "item": "p3:a",
+  "method": "exact",
+  "answer": "[60,15,40,12,10,6,30,5] (레벨 60 / 15 40 / 12 10 6 30 / 5). 교환 40↔10; 12↔10; 60↔30, 60↔40; 15↔5, 15↔12. [heapify 해석: [60,40,30,15,12,6,10,5]]",
+  "evidence": "independent_verify.py -> independent-output.txt p3 섹션; S8 p8~p10"
+ },
+ {
+  "item": "p3:b",
+  "method": "exact",
+  "answer": "60 제거, 5를 루트로 올린 뒤 5↔40, 5↔30 → [40,15,30,12,10,6,5] (레벨 40 / 15 30 / 12 10 6 5). [heapify 해석: [40,15,30,5,12,6,10]]",
+  "evidence": "independent_verify.py -> independent-output.txt p3 섹션; S8 p11~p13"
+ },
+ {
+  "item": "p4:main",
+  "method": "exact",
+  "answer": "해석 A(삭제 1번=1회, 삭제 2번=2회, 루트 삭제): 7개 삽입 [50,48,31,9,41,16,24] → 1회 삭제(50) [48,41,31,9,24,16] → 53,71,50,68,64 삽입 [71,68,48,50,64,16,31,9,41,24,53] → 2회 삭제(71,68) → 최종 [64,53,48,50,24,16,31,9,41] (레벨 64 / 53 48 / 50 24 16 31 / 9 41). 해석 B(삭제 2번=2번 칸 노드 삭제. 삭제 1번=1번 칸=루트라 A와 같음): 2번 칸 68을 지우고 마지막 53을 그 자리에 둔 뒤 64와 교환 → [71,64,48,50,53,16,31,9,41,24] (레벨 71 / 64 48 / 50 53 16 31 / 9 41 24). 중복 키 50: 같은 값의 자식 선택(왼/오), 같을 때 교환 여부의 4가지 변형 모두 결과가 같음. 원문 주석 '키 값 정확치는 않음'.",
+  "evidence": "independent_verify.py -> independent-output.txt p4 섹션(4개 변형); S8 p9(같으면 upheap 종료), p13"
+ },
+ {
+  "item": "p5:main",
+  "method": "exact",
+  "answer": "삽입 후 [65,75,70,90,80,85] → 65 삭제, 85를 루트로 올린 뒤 작은 자식 70과 교환 → [70,75,85,90,80] (레벨 70 / 75 85 / 90 80)",
+  "evidence": "independent_verify.py -> independent-output.txt p5 섹션; S8 p5(최소 히프), p11~p13"
+ },
+ {
+  "item": "p6:main",
+  "method": "qualitative",
+  "answer": "① 완전 이진 트리이기 때문. 빈칸 없이 레벨 순서 번호를 붙일 수 있으므로 번호를 배열 인덱스로 쓰고, 부모 i/2·자식 2i, 2i+1로 계산된다. ②④는 배열 표현과 무관, ③ 일반 이진 트리는 빈칸이 생긴다.",
+  "evidence": "S8 p7 '완전이진트리이므로 각 노드에 번호를 붙일 수 있다', p5"
+ },
+ {
+  "item": "p7:main",
+  "method": "exact",
+  "answer": "강의 기준(루트 깊이 1, 레벨 수): 4 (레벨별 1,2,4,3개). [간선 수 기준(루트 높이 0): 3]. floor(log2 10)+1 = 4",
+  "evidence": "independent_verify.py -> independent-output.txt p7 섹션; S8 p6 표(깊이 1~4, 노드 1,2,4,3 = 10개 예시 그대로)"
+ },
+ {
+  "item": "p8:main",
+  "method": "qualitative",
+  "answer": "아니다. 11개 노드가 1~11번 칸을 빈칸 없이 채운 완전 이진 트리지만, 5번 칸 노드 6의 왼쪽 자식(10번 칸)이 5라 key(부모) ≤ key(자식)을 어긴다. 그 밖의 부모-자식 쌍은 모두 만족한다.",
+  "evidence": "independent_verify.py -> independent-output.txt p8 섹션 violations=[(5,6,10,5)]; S8 p5 최소 히프 정의"
+ },
+ {
+  "item": "p9:main",
+  "method": "exact",
+  "answer": "[20]→[12,20]→[3,20,12]→[2,3,12,20]→delete(2 제거) [3,20,12]→insert5 [3,5,12,20]→insert16 [3,5,12,20,16]→delete(3 제거) [5,16,12,20]→insert1 [1,5,12,20,16]; is_empty()=false(변화 없음). 최종 [1,5,12,20,16] (레벨 1 / 5 12 / 20 16)",
+  "evidence": "independent_verify.py -> independent-output.txt p9 섹션; S8 p3, p8~p13"
+ },
+ {
+  "item": "p10:a",
+  "method": "qualitative",
+  "answer": "순서 없는 배열 O(1)/O(n), 순서 없는 연결 리스트 O(1)/O(n), 정렬된 배열 O(n)/O(1), 정렬된 연결 리스트 O(n)/O(1), 히프 O(log n)/O(log n) (삽입/삭제)",
+  "evidence": "S8 p4 비교표"
+ },
+ {
+  "item": "p10:b",
+  "method": "qualitative",
+  "answer": "정렬된 배열은 삭제가 O(1)이어도 삽입이 O(n)이라 연산 한 번의 최악 시간이 n에 비례해 커진다. 히프는 삽입·삭제 모두 높이 O(log n) 경로만 따라가므로 어떤 연산이든 최악이 log n으로 묶여, n이 커져도 한 번의 비용을 미리 짐작할 수 있다(n=10^6이면 약 10^6 이동 대 약 20 비교). 삽입·삭제가 섞이는 우선순위 큐에서는 둘 다 로그인 쪽이 유리하다.",
+  "evidence": "S8 p4 표, p6(높이 O(log n)), p9·p12(upheap/downheap O(log n))"
+ },
+ {
+  "item": "p10:c",
+  "method": "exact",
+  "answer": "왼쪽 자식 10, 오른쪽 자식 없음(11 > 10), 부모 2",
+  "evidence": "independent_verify.py -> independent-output.txt p10 섹션; S8 p7 식"
+ },
+ {
+  "item": "p11:a",
+  "method": "exact",
+  "answer": "item=9, A[1]←3, heap_size=9. (i=2, largest=2, 교환 A[1]↔A[2]) → (i=4, largest=4, 교환 A[2]↔A[4]) → (i=8, largest=8, break: A[4]=3 > A[8]=2). 끝난 뒤 A[1..9]=7 5 6 3 4 3 2 2 1, 리턴 9 (최대 힙 맞음)",
+  "evidence": "p11_delete_max.c 출력(cc -std=c11 -Wall -Wextra 경고 없음, -fsanitize=address,undefined 보고 없음)이 independent_verify.py literal_delete와 일치; S8 p12 그림 결과와 같음"
+ },
+ {
+  "item": "p11:b",
+  "method": "exact",
+  "answer": "item=50, A[1]←10, heap_size=4 (A[5]=10 옛값 남음). (i=2, largest=2, 교환 → 40 10 30 20) → (i=4: i<heap_size가 거짓이라 else로 largest=5(힙 밖 칸). A[2]=10 > A[5]=10이 거짓이라 A[2]↔A[5] 교환, 값이 같아 변화 없음) → i=10 > 4로 끝. A[1..4]=40 10 30 20, 리턴 50. 최대 힙 아님(2번 칸 10 < 4번 칸 자식 20). 원인: 왼쪽 자식만 있을 때(i==heap_size) else 분기가 힙 밖의 i+1(옛값)을 고른다. 고친 조건: 'if i < heap_size and A[i+1] > A[i] then largest ← i+1 else largest ← i' (같은 뜻: 'if i == heap_size or A[i] > A[i+1] then largest ← i'). 고친 뒤 결과 40 20 30 10(최대 힙). C 번역에 미정의 동작 없음(200칸 안에서만 접근).",
+  "evidence": "p11_delete_max.c literal/fixed 출력, sanitizer 보고 없음; independent_verify.py p11 섹션 max heap? False; S8 p13 의사코드"
+ }
+]
