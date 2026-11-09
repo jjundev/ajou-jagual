@@ -147,7 +147,7 @@ def main():
 
     chunk_p = Path(args.chunk)
     if args.merge_subs:
-        prefix = re.sub(r"(_sub\d+)?(\.md|\.mp3|\.mp4|_temp\.mp4)$", "", chunk_p.stem)
+        prefix = re.sub(r"(_sub\d+)?(_temp)?$", "", chunk_p.stem)
         merge_subs(chunk_p.parent, prefix, args.out)
     else:
         subs = split_and_wrap(chunk_p, sub_seconds=args.sub_seconds, perturb=args.perturb)
