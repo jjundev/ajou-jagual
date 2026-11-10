@@ -23,6 +23,18 @@ Review the **current deliverable** against the current assignment, not against a
 
 Use a compact review record: `requirement | source and page | report location | evidence | status | correction`. Use `충족`, `보완 필요`, `확인 불가`, and `자료 충돌` as appropriate. State scoring as a provisional rubric assessment, not an awarded grade.
 
+## Check report prose in context
+
+Include these checks in every ordinary audit after factual verification, even when no final text pass is requested. Examine the report's natural-language explanations separately from code, literal outputs, formulas, and quotations.
+
+- Separate observed results from planned checks, work instructions, hypotheses, and recommendations. In a completed result analysis, flag retained checklist or instruction text when it replaces or obscures what was actually observed. Identify the missing observation or evidence; present-tense explanations of procedures, general principles, or observed behavior are not defects by themselves.
+- Check repeated definitions, sentence frames, and requirement-compliance statements for their contribution to the local explanation. Flag repetition that substitutes for function-specific conditions, state changes, or causal analysis, or burdens the reader without adding meaning. Preserve required specifications and labels, legitimate explanations of compliance, and definitions needed to read a section independently. Repetition counts alone do not establish a defect.
+- Check titles and captions with their adjacent context. Preserve required common labels and caption prefixes, including the course format's consistent terminal-screen wording. Flag generic or repeated filler when the reader cannot identify the case or what the evidence supports; a case already identified by a nearby heading need not be restated in each caption. Do not require cosmetic wording variation.
+- Distinguish theoretical deductions from execution claims. A comparison derived from an algorithm's definition or the code may be valid without implementing or running that alternative. Verify claims of actual execution, measurement, or observation against the records; mark unsupported claims `확인 불가` and conflicting records `자료 충돌`. Do not invent an experiment to support the prose.
+- Assess authorship obligations through the applicable assignment rules and demonstrated understanding. Lack of first-person writing or anecdotes, uniform image dimensions, mixed declaration styles, and polished or repetitive prose do not establish who wrote the report. Do not add invented experiences or intentional mistakes to make it appear personal.
+
+For each finding, quote the relevant passage, give its exact location and context, explain the concrete problem, and state a repair direction in the review record above. Identify whether its basis is an official requirement, an author format preference, a factual or evidence issue, or a readability improvement. Do not invent rubric deductions for readability concerns. These checks produce findings, not permission to rewrite; the final text pass below remains conditional on the user's request.
+
 ## Final text hygiene
 
 After factual review, load both `remove-ai-marks` and `clean-user-facing-text` when the user asks to remove AI-like artifacts or wants a final text pass. Use the former to inspect invisible Unicode and file metadata, and the latter to audit clarity and formulaic prose. Protect code, formulas, identifiers, citations, quotations, links, and required disclosures. Line-leading U+00A0 in Notion code cells is indentation required by `notion-report-sync`; exclude it from `space` cleanup. Never run a whole-file cleaning pass over mixed report Markdown without locating protected spans first.
