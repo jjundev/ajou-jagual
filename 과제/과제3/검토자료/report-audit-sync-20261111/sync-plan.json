@@ -1,0 +1,148 @@
+{
+  "page_id": "408b06d2-63bc-8184-8464-e0f3a3bbd8e5",
+  "page_url": "https://app.notion.com/p/HW3-CPU-408b06d263bc81848464e0f3a3bbd8e5",
+  "title": "HW3: CPU 및 인터럽트 스케줄러 보고서",
+  "edits": [
+    {
+      "block_id": "408b06d2-63bc-814a-9fa1-c72a46fa46c7",
+      "type": "table_row",
+      "old_text": "TaskType은 CPU가 지금 하는 일의 종류다. IDLE은 실행할 작업이 없는 상태, PROCESS는 라운드로빈으로 도는 프로세스, INTERRUPT는 인터럽트 처리를 뜻한다.\n\nContext는 실행 중이거나 중단된 작업 하나의 문맥이다. kind는 종류, id는 입력 순서대로 매긴 번호, remaining은 남은 실행 시간, quantum_left는 이번 배정에서 남은 할당 시간이다. 멈췄던 작업을 이어서 돌리는 데 필요한 값은 이 네 개뿐이라, 스택과 큐에는 Context를 값 그대로 복사해 넣는다. 인터럽트는 라운드로빈 대상이 아니어서 quantum_left를 0으로 둔다.\n\nIDLE_CONTEXT는 모든 값이 0인 IDLE 문맥이고, CPU를 비울 때 current에 대입한다. 열거형의 첫 값인 IDLE이 0이라서, 0으로 초기화한 Context가 IDLE_CONTEXT와 같은 셈이다.",
+      "new_text": "TaskType은 CPU가 지금 하는 일의 종류다. IDLE은 실행할 작업이 없는 상태, PROCESS는 라운드로빈으로 도는 프로세스, INTERRUPT는 인터럽트 처리를 뜻한다.\n\nContext는 실행 중이거나 중단된 작업 하나의 문맥이다. kind는 종류, id는 입력 순서대로 매긴 번호, remaining은 남은 실행 시간, quantum_left는 이번 배정에서 남은 할당 시간이다. 멈췄던 작업을 이어서 돌리는 데 필요한 값은 이 네 개뿐이라, 스택과 큐에는 Context를 값 그대로 복사해 넣는다. 인터럽트는 라운드로빈 대상이 아니어서 quantum_left를 0으로 둔다.\n\nIDLE_CONTEXT는 모든 값이 0인 IDLE 문맥이고, CPU를 비울 때 current에 대입한다. 열거형의 첫 값인 IDLE이 0이라서, 0으로 초기화한 Context가 IDLE_CONTEXT와 같다.",
+      "report_line": 25,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-817c-bce2-dcbe59576aa5",
+      "type": "table_row",
+      "old_text": "ReadyQueue는 CPU를 기다리는 프로세스를 담는 원형 큐다. front는 첫 원소 바로 앞 칸을, rear는 마지막 원소가 있는 칸을 가리킨다. 먼저 들어온 프로세스가 먼저 나가는 구조(FIFO)라서, 퀀텀을 다 쓴 프로세스를 뒤에 넣으면 나머지 프로세스가 한 번씩 돈 다음에야 차례가 다시 오는 셈이다.\n\nContextStack에는 인터럽트 때문에 멈춘 문맥이 쌓인다. top은 가장 최근에 넣은 칸의 인덱스이고, 비어 있을 때는 -1이다. 인터럽트가 겹치면 가장 나중에 멈춘 작업부터 다시 돌려야 하는데, 나중에 넣은 것을 먼저 꺼내는 스택(LIFO)이 바로 그 순서를 만든다.",
+      "new_text": "ReadyQueue는 CPU를 기다리는 프로세스를 담는 원형 큐다. front는 첫 원소 바로 앞 칸을, rear는 마지막 원소가 있는 칸을 가리킨다. 먼저 들어온 프로세스가 먼저 나가는 구조(FIFO)라서, 퀀텀을 다 쓴 프로세스를 뒤에 넣으면 나머지 프로세스가 한 번씩 돈 다음에야 차례가 다시 온다.\n\nContextStack에는 인터럽트 때문에 멈춘 문맥이 쌓인다. top은 가장 최근에 넣은 칸의 인덱스이고, 비어 있을 때는 -1이다. 인터럽트가 겹치면 가장 나중에 멈춘 작업부터 다시 돌려야 하는데, 나중에 넣은 것을 먼저 꺼내는 스택(LIFO)이 바로 그 순서를 만든다.",
+      "report_line": 29,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-81d6-af61-fab23680486b",
+      "type": "table_row",
+      "old_text": "Scheduler는 시뮬레이션 상태 전체를 한데 묶은 구조체이다. ready는 준비 큐, suspended는 중단 문맥 스택, current는 지금 CPU에서 돌고 있는 문맥이며, tick은 지금까지 흐른 tick 수이자 현재 시각을 의미한다. finished_processes와 finished_interrupts는 끝난 작업 수로, main의 반복 종료 조건에 쓰인다.\n\ncurrent는 포인터가 아니라 값이다. 그래서 큐에서 꺼내거나 스택에서 복원한 문맥은 current로 복사된다.\n\nInterruptEvent는 미리 입력받아 둔 인터럽트 정보다. Context에는 없는 도착 시각 arrival_time이 있고, duration은 처리에 걸리는 시간이다. 도착 시각이 되면 start_interrupt가 이 정보로 INTERRUPT 문맥을 만든다.",
+      "new_text": "Scheduler는 시뮬레이션 상태 전체를 한데 묶은 구조체다. ready는 준비 큐, suspended는 중단 문맥 스택, current는 지금 CPU에서 돌고 있는 문맥이다. tick은 지금까지 흐른 tick 수이자 현재 시각이다. finished_processes와 finished_interrupts는 끝난 작업 수로, main의 반복 종료 조건에 쓰인다.\n\ncurrent는 포인터가 아니라 값이다. 그래서 큐에서 꺼내거나 스택에서 복원한 문맥은 current로 복사된다.\n\nInterruptEvent는 미리 입력받아 둔 인터럽트 정보다. Context에는 없는 도착 시각 arrival_time이 있고, duration은 처리에 걸리는 시간이다. 도착 시각이 되면 start_interrupt가 이 정보로 INTERRUPT 문맥을 만든다.",
+      "report_line": 33,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-81f8-bcb0-cf8eaae0f69b",
+      "type": "table_row",
+      "old_text": "앞의 다섯 개는 제공 함수 가운데 큐·스택 조작 함수와 1 tick 실행 함수, 뒤의 세 개는 구현할 함수의 원형이다. ",
+      "new_text": "앞의 다섯 개는 제공 함수 가운데 큐·스택 조작 함수와 1 tick 실행 함수, 뒤의 세 개는 구현할 함수의 원형이다. 원형이 위에 있어 정의 순서와 상관없이 서로 부를 수 있다. 과제 조건대로 함수 형식·매크로·구조체는 손대지 않았고 함수도 새로 만들지 않았다.",
+      "report_line": 37,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-8164-9722-c6f390f66fc6",
+      "type": "table_row",
+      "old_text": "front == rear를 비었다고 보는 꼴이다.",
+      "new_text": "front와 rear가 같으면 꺼낼 원소가 없으므로 1을 돌려준다.",
+      "report_line": 71,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-81c1-a0d3-d6deaa2efc88",
+      "type": "table_row",
+      "old_text": "top = -1이 빈 스택인 꼴이다.",
+      "new_text": "top을 -1로 두어 빈 스택을 만든다.",
+      "report_line": 139,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-8116-869a-c866eed39eaa",
+      "type": "table_row",
+      "old_text": "top이 15면 가득이다.",
+      "new_text": "top이 마지막 인덱스 15에 닿으면 1을 돌려준다.",
+      "report_line": 173,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-81cc-9f9a-e2c5abd9c653",
+      "type": "table_row",
+      "old_text": "CPU가 비어 있으면 준비 큐 맨 앞 프로세스를 꺼내 current로 삼는다. main이 이 함수를 매 tick 부르기 때문에, 프로세스든 인터럽트든 이미 무언가 실행 중이면(current.kind가 IDLE이 아니면) 그대로 돌아가야 한다. 이 검사가 없으면 실행 중인 작업이 tick마다 바뀌어 버린다.\n\n준비 큐가 비어 있을 때도 손대지 않는다. current가 IDLE로 남고, execute_tick은 시간만 흘려보낸다. 큐가 비었는지 먼저 확인하니 dequeue가 빈 큐에서 QUEUE_ERROR로 끝날 일도 없다.\n\n꺼낸 프로세스의 quantum_left는 QUANTUM(2)으로 정한다. 큐로 돌아온 프로세스는 quantum_left가 0이라, CPU를 새로 받을 때마다 2 tick을 다시 받는 셈이다. 반면 인터럽트가 끝나 스택에서 복원된 프로세스는 current가 IDLE이 아니어서 이 함수가 건드리지 않는다. 그래서 중단 전에 남아 있던 quantum_left를 그대로 이어 쓴다.",
+      "new_text": "CPU가 비어 있으면 준비 큐 맨 앞 프로세스를 꺼내 current로 삼는다. main이 이 함수를 매 tick 부르기 때문에, 프로세스든 인터럽트든 이미 무언가 실행 중이면(current.kind가 IDLE이 아니면) 그대로 돌아가야 한다. 이 검사가 없으면 실행 중인 작업이 tick마다 바뀌어 버린다.\n\n준비 큐가 비어 있을 때도 손대지 않는다. current가 IDLE로 남고, execute_tick은 시간만 흘려보낸다. 큐가 비었는지 먼저 확인하니 dequeue가 빈 큐에서 QUEUE_ERROR로 끝날 일도 없다.\n\n꺼낸 프로세스의 quantum_left는 QUANTUM(2)으로 정한다. 큐로 돌아온 프로세스는 quantum_left가 0이라, CPU를 새로 받을 때마다 2 tick을 다시 받는다. 반면 인터럽트가 끝나 스택에서 복원된 프로세스는 current가 IDLE이 아니어서 이 함수가 건드리지 않는다. 그래서 중단 전에 남아 있던 quantum_left를 그대로 이어 쓴다.",
+      "report_line": 224,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-816e-a784-ccae23f84b64",
+      "type": "table_row",
+      "old_text": "인자: 스케줄러, 도착한 인터럽트 정보. 반환값: 없음.\n\ncurrent가 IDLE이 아니면 그 문맥을 스택에 push한다(문맥 전환, context switch의 저장 측면이다). 멈춘 것이 프로세스든 처리 중이던 인터럽트든 remaining과 quantum_left가 중단 시점 값 그대로 저장되고, 나중에 꺼내면 그 상태에서 다시 이어진다. IDLE은 돌아갈 작업이 아니라서 저장하지 않는다. &&의 단락 평가(short-circuit evaluation) 덕분에 current가 IDLE이면 push는 호출조차 되지 않는다.\n\npush가 실패하면 문맥이 사라진다. 사라진 작업은 영영 끝나지 않아 반복도 멈추지 않을 테니, main의 다른 시뮬레이션 오류처럼 SIMULATION_ERROR를 출력하고 종료 코드 2로 끝내도록 했다. 정상 입력이라면 스택에는 실행 중인 하나를 뺀 인터럽트 최대 15개와 프로세스 1개, 합쳐 16개까지만 쌓여 이 분기에 오지 않는다.\n\n그다음 current를 새 인터럽트로 바꾼다. id와 남은 시간은 입력 정보에서 가져오고, 인터럽트에는 퀀텀이 없어 quantum_left는 0이다. execute_tick은 인터럽트의 quantum_left를 검사하지도 줄이지도 않기 때문에, 인터럽트는 끝날 때까지 계속 실행된다.",
+      "new_text": "인자: 스케줄러, 도착한 인터럽트 정보. 반환값: 없음.\n\ncurrent가 IDLE이 아니면 그 문맥을 스택에 push한다. 문맥 전환(context switch)에서 저장에 해당하는 단계다. 멈춘 것이 프로세스든 처리 중이던 인터럽트든 remaining과 quantum_left가 중단 시점 값 그대로 저장되고, 나중에 꺼내면 그 상태에서 다시 이어진다. IDLE은 돌아갈 작업이 아니라서 저장하지 않는다. &&의 단락 평가(short-circuit evaluation) 덕분에 current가 IDLE이면 push는 호출조차 되지 않는다.\n\npush 실패를 무시하고 current를 바꾸면 문맥이 사라진다. 사라진 작업은 완료되지 않아 정상 종료할 수 없으니, main의 다른 시뮬레이션 오류처럼 SIMULATION_ERROR를 출력하고 종료 코드 2로 끝내도록 했다. 정상 입력이라면 스택에는 실행 중인 하나를 뺀 인터럽트 최대 15개와 프로세스 1개, 합쳐 16개까지만 쌓여 이 분기에 오지 않는다.\n\n그다음 current를 새 인터럽트로 바꾼다. id와 남은 시간은 입력 정보에서 가져오고, 인터럽트에는 퀀텀이 없어 quantum_left는 0이다. execute_tick은 인터럽트의 quantum_left를 검사하지도 줄이지도 않기 때문에, 인터럽트는 퀀텀 소진으로 중단되지 않는다.",
+      "report_line": 241,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-8117-8df5-c49ef8e9eba7",
+      "type": "table_row",
+      "old_text": "execute_tick으로 1 tick을 돌린 직후, 그 결과를 보고 다음 tick의 current를 정리한다. 지역 변수 current는 s->current를 가리키는 포인터여서, 이것으로 바꾼 값은 스케줄러에 바로 반영된다.\n\n프로세스가 다 돈 경우.\n\n프로세스의 remaining이 0이면 완료다. 완료 수를 1 늘리고 CPU를 IDLE로 비워, 다음 tick에 select_process가 다른 프로세스를 고를 수 있게 한다.\n\n완료는 아닌데 quantum_left가 0이면 퀀텀을 다 쓴 경우다. 프로세스를 준비 큐 맨 뒤에 넣고 CPU를 비운다. 완료 검사를 앞에 둔 건 두 값이 같은 tick에 함께 0이 될 수 있기 때문이다(실행 사례 2·3). 순서가 반대라면 끝난 프로세스가 큐로 들어가 완료 수가 늘지 않는다. 그러다 다시 선택되면 execute_tick이 남은 시간 0을 보고 SIMULATION_ERROR로 끝난다.\n\n정상 입력에서 enqueue가 실패할 일은 없다. 실행 중인 프로세스는 큐 밖에 있어 큐에는 많아야 7개만 들어 있기 때문이다. 그래도 문맥을 잃지 않도록 start_interrupt와 같은 방식으로 처리했다. 두 조건 모두 아니면 아무것도 하지 않고, 다음 tick에도 같은 프로세스가 이어서 실행되는 셈이다.",
+      "new_text": "execute_tick으로 1 tick을 돌린 직후, 그 결과를 보고 다음 tick의 current를 정리한다. 지역 변수 current는 s->current를 가리키는 포인터여서, 이것으로 바꾼 값은 스케줄러에 바로 반영된다.\n\ncurrent가 프로세스인 경우.\n\n프로세스의 remaining이 0이면 완료다. 완료 수를 1 늘리고 CPU를 IDLE로 비워, 다음 tick에 select_process가 다른 프로세스를 고를 수 있게 한다.\n\n완료는 아닌데 quantum_left가 0이면 퀀텀을 다 쓴 경우다. 프로세스를 준비 큐 맨 뒤에 넣고 CPU를 비운다. 완료 검사를 앞에 둔 건 두 값이 같은 tick에 함께 0이 될 수 있기 때문이다(추가 사례 1·2). 순서가 반대라면 끝난 프로세스가 큐로 들어가 완료 수가 늘지 않는다. 그러다 다시 선택되면 execute_tick이 남은 시간 0을 보고 SIMULATION_ERROR로 끝난다.\n\n정상 입력에서 enqueue가 실패할 일은 없다. 실행 중인 프로세스는 큐 밖에 있어 큐에는 많아야 7개만 들어 있기 때문이다. 그래도 문맥을 잃지 않도록 start_interrupt와 같은 방식으로 처리했다. 두 조건 모두 아니면 아무것도 하지 않고, 다음 tick에도 같은 프로세스가 이어서 실행된다.",
+      "report_line": 258,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-819a-b93e-cd71325d8ff0",
+      "type": "table_row",
+      "old_text": "인터럽트가 끝난 경우.\n\n인터럽트의 remaining이 0이면 처리가 끝난 것이다. 인터럽트 완료 수를 늘리고, 스택이 비어 있으면 돌아갈 작업이 없으니 IDLE로 바꾼다. 비어 있지 않으면 pop으로 가장 최근에 멈춘 문맥을 current로 되돌린다. 인터럽트가 겹쳤던 경우라면 이때 나오는 것은 바깥쪽 인터럽트이고, 그 인터럽트까지 끝나야 다음 pop에서 처음 멈췄던 프로세스가 나온다.\n\n빈 스택인지 먼저 확인하기 때문에 pop이 STACK_ERROR로 끝나는 일은 없다. 인터럽트가 아직 남았거나 current가 IDLE이면 아무것도 바꾸지 않는다. 다음 프로세스를 고르는 일은 select_process가 맡는 셈이다.",
+      "new_text": "인터럽트가 끝난 경우.\n\n인터럽트의 remaining이 0이면 처리가 끝난 것이다. 인터럽트 완료 수를 늘리고, 스택이 비어 있으면 돌아갈 작업이 없으니 IDLE로 바꾼다. 비어 있지 않으면 pop으로 가장 최근에 멈춘 문맥을 current로 되돌린다. 인터럽트가 겹쳤던 경우라면 이때 나오는 것은 바깥쪽 인터럽트이고, 바깥쪽 인터럽트들이 모두 끝나야 처음 멈췄던 프로세스가 나온다.\n\n빈 스택인지 먼저 확인하기 때문에 pop이 STACK_ERROR로 끝나는 일은 없다. 인터럽트가 아직 남았거나 current가 IDLE이면 아무것도 바꾸지 않는다. 다음 프로세스를 고르는 일은 select_process의 몫이다.",
+      "report_line": 262,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-812d-b765-ca962c369f03",
+      "type": "table_row",
+      "old_text": "정상 종료면 0, 입력 오류면 1, 시뮬레이션 오류면 2를 돌려준다.\n\n입력받을 프로세스·인터럽트 배열과 개수, 스케줄러 s, 다음에 처리할 인터럽트 인덱스 next_interrupt를 선언한다. s = {0}이라 tick과 완료 수는 0이고, current의 kind도 IDLE(0)이어서 IDLE_CONTEXT와 같다.\n\n첫 줄에서 프로세스 수 N과 인터럽트 수 M을 읽고, N이 1~8, M이 0~16 안에 드는지 확인한다. 과제는 입력이 정상이라고 가정하지만 제공 코드에는 이 검사가 들어 있다.",
+      "new_text": "정상 종료면 0, 입력 오류면 1, 시뮬레이션 오류면 2를 돌려준다.\n\n입력받을 프로세스·인터럽트 배열과 개수, 스케줄러 s, 다음에 처리할 인터럽트 인덱스 next_interrupt를 선언한다. s = {0}이라 tick과 완료 수는 0이고, current도 모든 필드가 0이어서 IDLE_CONTEXT와 같다.\n\n첫 줄에서 프로세스 수 N과 인터럽트 수 M을 읽고, N이 1~8, M이 0~16 안에 드는지 확인한다. 과제는 입력이 정상이라고 가정하지만 제공 코드에는 이 검사가 들어 있다.",
+      "report_line": 300,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-819c-87ef-d2065f947b64",
+      "type": "table_row",
+      "old_text": "프로세스와 인터럽트가 모두 끝날 때까지 1 tick씩 반복한다. 프로세스가 다 끝났더라도 아직 오지 않은 인터럽트가 있으면 IDLE로 시간을 보내며 기다린다(실행 사례 5).\n\n반복 한 번은 과제가 정한 실행 흐름을 그대로 따른다. ① 현재 시각에 도착한 인터럽트가 있으면 start_interrupt로 시작한다. ② CPU가 비었다면 select_process가 프로세스를 고른다. ③ execute_tick이 1 tick을 실행하고 출력한다. ④ finish_tick이 완료·재등록·복원을 처리한다.\n\n인터럽트 처리가 프로세스 선택보다 앞서 있어서, 같은 시각에 CPU가 비어 있으면 인터럽트가 먼저 CPU를 잡고 프로세스는 큐에서 계속 기다린다(실행 사례 4). execute_tick은 성공할 때마다 tick을 반드시 1 늘리니 도착 시각을 건너뛸 일이 없다. tick이 상한에 닿거나 execute_tick이 0을 돌려주면 SIMULATION_ERROR로 끝낸다.",
+      "new_text": "프로세스와 인터럽트가 모두 끝날 때까지 1 tick씩 반복한다. 프로세스가 다 끝났더라도 아직 오지 않은 인터럽트가 있으면 IDLE로 시간을 보내며 기다린다(추가 사례 4).\n\n반복 한 번은 과제가 정한 실행 흐름을 그대로 따른다. ① 현재 시각에 도착한 인터럽트가 있으면 start_interrupt로 시작한다. ② CPU가 비었다면 select_process가 프로세스를 고른다. ③ execute_tick이 1 tick을 실행하고 출력한다. ④ finish_tick이 완료·재등록·복원을 처리한다.\n\n인터럽트 처리가 프로세스 선택보다 앞서 있어서, 같은 시각에 CPU가 비어 있으면 인터럽트가 먼저 CPU를 잡고 프로세스는 큐에서 계속 기다린다(추가 사례 3). execute_tick은 성공할 때마다 tick을 반드시 1 늘리니 도착 시각을 건너뛸 일이 없다. tick이 상한에 닿거나 execute_tick이 0을 돌려주면 SIMULATION_ERROR로 끝낸다.",
+      "report_line": 316,
+      "cell_index": 1
+    },
+    {
+      "block_id": "408b06d2-63bc-8157-be3b-d5b162da044e",
+      "type": "paragraph",
+      "old_text": "결과 분석: 출력 순서 P1 I1 I2 I1 P1 P2 P1은 과제 18쪽 실행 화면·간트 차트와 같다. 시각 2에 I2가 I1을 끊었고(선점, preemption), I2가 끝나자 처음 멈춘 P1이 아니라 가장 최근에 멈춘 I1이 먼저 다시 실행되었다. 같은 P1인데 T5에는 Q 0, T7에는 Q 1이 찍힌 것도 차이가 있다. T5는 T1에서 쓰고 남긴 퀀텀 1을 복원 뒤 이어 쓴 결과이고, T7은 큐에서 다시 선택되며 퀀텀 2를 새로 받기 때문이다.",
+      "new_text": "결과 분석: 출력 순서 P1 I1 I2 I1 P1 P2 P1은 과제 18쪽 실행 화면·간트 차트와 같다. 시각 2에 I2가 I1을 끊었고(선점, preemption), I2가 끝나자 처음 멈춘 P1이 아니라 가장 최근에 멈춘 I1이 먼저 다시 실행되었다. 같은 P1인데 T5에는 Q 0, T7에는 Q 1이 찍힌 것도 차이가 있다. T5는 T1에서 쓰고 남긴 퀀텀 1을 복원 뒤 이어 쓴 결과이고, T7은 큐에서 다시 선택되며 퀀텀 2를 새로 받은 결과다.",
+      "report_line": 396
+    }
+  ],
+  "images": [
+    {
+      "block_id": "408b06d2-63bc-8131-ac8f-d7876599315d",
+      "type": "image",
+      "old_text": "T2에 I2가 I1을 끊고, T6·T7에서 I1 → P1 순서로 스택이 풀린다.",
+      "new_text": "T3에서 I2가 I1을 끊고, T3·T4 종료 후 I1 → P1 순서로 스택이 풀린다.",
+      "report_line": 399
+    },
+    {
+      "block_id": "408b06d2-63bc-811f-95ef-e062bd2bcfaa",
+      "type": "image",
+      "old_text": "I1·I2·I3가 순서대로 들어가 역순으로 빠진다. T8·T9·T11의 pop 세 번이 보인다.",
+      "new_text": "I1·I2·I3가 순서대로 시작되고 역순으로 완료된다. T4·T6·T8이 끝날 때마다 pop이 일어나 T5·T7·T9에 I2·I1·P1이 이어서 실행된다.",
+      "report_line": 472
+    },
+    {
+      "block_id": "408b06d2-63bc-81da-8ae6-cf723f96e1f1",
+      "type": "image",
+      "old_text": "I1이 끝난 T5에서 스택이 비어 CPU가 IDLE로 떨어진다.",
+      "new_text": "I1이 끝난 T3에서 스택이 비어 CPU가 비고, T4부터 큐의 P2가 실행된다.",
+      "report_line": 572
+    },
+    {
+      "block_id": "408b06d2-63bc-8196-8eb7-e5cba454711d",
+      "type": "image",
+      "old_text": "T1에 P1이 끝났지만 아직 끝나지 않은 I1 때문에 반복이 이어지는 구간이다.",
+      "new_text": "T1에 P1이 끝났지만 아직 도착하지 않은 I1 때문에 반복이 이어지는 구간.",
+      "report_line": 622
+    }
+  ]
+}
