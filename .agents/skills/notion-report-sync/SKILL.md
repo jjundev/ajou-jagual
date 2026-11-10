@@ -1,6 +1,6 @@
 ---
 name: notion-report-sync
-description: Use when uploading or editing a course report in Notion, applying its format, comparing local Markdown, adding image slots, or downloading its default-mode HTML and producing a verified A4 landscape PDF. Not for databases, cover creation, or cover merging.
+description: Use when uploading or editing a course report in Notion, replacing execution images, applying its format, comparing local Markdown, adding image slots, or downloading its default-mode HTML and producing a verified A4 landscape PDF. Not for databases, cover creation, or cover merging.
 ---
 
 # Notion report sync
@@ -15,6 +15,8 @@ Before uploading, read [Native report upload](references/native-report-upload.md
 
 The common [`scripts/notion_report.py`](scripts/notion_report.py) CLI provides **only `pull` and `edit`**, not upload/create/layout/export/print commands. Use its API client for an assignment-specific native upload following the reference; do not invent CLI commands or run a historical assignment script unchanged. Prefer connected tools when they support the required operations; use the UI for settings, exports, or empty image slots unsupported by available tools.
 
+For replacing files in **existing image blocks**, use [`scripts/notion_images.py`](scripts/notion_images.py) and [the image replacement and tool reference](references/common-tools.md). Its `prepare`, `apply`, and `resume` commands preserve block identity, captions and order, back up prior attachments, and verify downloaded bytes/pixels. They do not create pages or empty slots. Review the explicit block-to-file mapping before applying it.
+
 Upload completion requires the reference's verification record: native content, code, images or slots, headings/spacing, live page settings and table widths, and a fresh Markdown download. For the course default, explicitly check the single gray TOC, direct explanation-cell text, every execution case's gaps, and consistent captions without duplicate case titles. Record each as verified, failed, or not verified with evidence. An incomplete setting or readback is partial completion, even when the page exists. Keep Notion content verification, HTML export, export-derived PDF printing and verification, native Notion PDF export, cover merge, and actual submission as separate states.
 
 ## Download HTML and produce a landscape PDF
@@ -22,6 +24,14 @@ Upload completion requires the reference's verification record: native content, 
 For a requested report export or complete HTML-to-PDF workflow, follow [HTML export to PDF](references/html-export-to-pdf.md). The course default is **verified Notion report → native HTML download in default mode with its assets → A4 landscape PDF print → content and visual verification**. Perform the export UI actions, file saving, safe extraction, printing, and checks directly with available tools; do not hand these steps to the user when the agent can complete them. Report a concrete access or authentication blocker if one prevents progress.
 
 An upload, comparison, wording edit, or image-slot request alone does not trigger PDF production. If the user requests only the HTML download, deliver the verified HTML bundle and stop there. For the complete workflow, preserve the downloaded ZIP and untouched extracted files, print a separate copy, and retain the existing PDF until its replacement is checked. Use the genuine Notion export rather than a locally authored report HTML. Describe the result as **Notion HTML export → A4 landscape PDF**, not Notion's native PDF export. Preserve default font/appearance, wording, code, indentation, order, links, and assets; adjust only print layout when needed.
+
+The local [`scripts/notion_pdf.py`](scripts/notion_pdf.py) supports `print`, `verify`, and recording an actual visual `review`; it does not download from Notion or establish export origin. See [common tools](references/common-tools.md) for inputs, dependencies and configuration. A successful print or automated verification leaves visual review unverified.
+
+## Verification freshness and interrupted work
+
+Use the shared `scripts/report_state.py` ledger when linking upload, export and PDF evidence. Before resuming or claiming completion, run `status` against the workflow's state file; this refreshes the local ledger. Each check binds to the files and settings it actually examined. A changed manuscript, screenshot, mapping, HTML/asset, configuration or PDF makes dependent evidence **stale (재검증 필요)**; retain the evidence and redo the affected stages. Rechecking an upstream stage does not restore old downstream checks. Missing stages remain not verified. Targeted attachment checks use a separate `images` stage and do not establish the `notion` stage's full report/content/settings completion.
+
+Hashes establish local identity, not remote freshness. Re-read the confirmed Notion page before export and verify current wording and attached images in the downloaded bundle. Record Notion and HTML checks with their observed evidence and current input files using [the tool reference](references/common-tools.md); never mark them verified merely because a previous PDF passed. Preserve pending-operation records on interruption and use readback before another write.
 
 ## Pull and compare
 
