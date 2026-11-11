@@ -308,11 +308,35 @@ def _signal_caption_duplication(text: str) -> list[tuple[str, str, str]]:
     return out
 
 
+def _signal_cell_prefix_repetition(text: str) -> list[tuple[str, str, str]]:
+    cells: list[str] = []
+    for _, kind, payload in _walk(text):
+        if kind == "prose_cell":
+            cleaned = _clean(payload)
+            if cleaned:
+                cells.append(cleaned)
+    prefixes = [c[:8] for c in cells if len(c) >= 8]
+    if len(prefixes) < 4:
+        return []
+    counts: dict[str, int] = {}
+    for p in prefixes:
+        counts[p] = counts.get(p, 0) + 1
+    prefix, shared = max(counts.items(), key=lambda kv: kv[1])
+    if shared / len(prefixes) >= 0.8:
+        return [(
+            "cell-prefix-repetition",
+            "prose cells",
+            f"{shared}/{len(prefixes)} start with {prefix!r}",
+        )]
+    return []
+
+
 def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
     out: list[tuple[str, str, str]] = []
     out.extend(_signal_run_script_trace(text))
     out.extend(_signal_output_block_smushed_prompts(text))
     out.extend(_signal_caption_duplication(text))
+    out.extend(_signal_cell_prefix_repetition(text))
     return out
 
 

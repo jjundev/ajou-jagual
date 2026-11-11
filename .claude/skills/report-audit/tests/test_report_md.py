@@ -212,6 +212,39 @@ class SignalTests(unittest.TestCase):
         names = [n for n, _, _ in report_md.style_signals(text)]
         self.assertNotIn("caption-duplication", names)
 
+    def test_cell_prefix_repetition_fires_on_uniform_intro(self):
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        body = "\n".join(
+            f"<tr>\n<td>void f{i}(void);</td>\n<td>인자: 없음. 반환값: 없음. 변경 상태: 없음.</td>\n</tr>"
+            for i in range(5)
+        )
+        text = f"<table>\n{header}\n{body}\n</table>\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("cell-prefix-repetition", names)
+
+    def test_cell_prefix_matches_after_escape_strip(self):
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        body = "\n".join(
+            f"<tr>\n<td>#define X{i} 1</td>\n<td>\\#기능 명세 X{i} 상한이다.</td>\n</tr>"
+            for i in range(4)
+        )
+        text = f"<table>\n{header}\n{body}\n</table>\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("cell-prefix-repetition", names)
+
+    def test_cell_prefix_quiet_when_intros_vary(self):
+        bodies = [
+            "인자: 없음. 반환값: 없음.",
+            "인자: 큐. 반환값: 1.",
+            "front == rear 이면 비었다고 본다.",
+            "top == -1 이면 1을 반환한다.",
+        ]
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        rows = "\n".join(f"<tr>\n<td>f{i}();</td>\n<td>{b}</td>\n</tr>" for i, b in enumerate(bodies))
+        text = f"<table>\n{header}\n{rows}\n</table>\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("cell-prefix-repetition", names)
+
 
 class ReviewFocusTests(unittest.TestCase):
     def test_signals_cli_on_empty_file_exits_zero(self):
