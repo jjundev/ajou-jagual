@@ -242,6 +242,21 @@ class SignalTests(unittest.TestCase):
         names = [n for n, _, _ in report_md.style_signals(text)]
         self.assertNotIn("out-of-scope-vocabulary", names)
 
+    def test_no_personal_voice_fires_on_prose_without_markers(self):
+        text = "함수는 1을 반환한다. 성공하면 상태가 바뀐다. 실패하면 유지한다." * 8
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("no-personal-voice", names)
+
+    def test_no_personal_voice_quiet_when_any_marker_present(self):
+        text = "함수는 1을 반환한다. 처음에 헷갈렸다. 이후 수정했다." * 8
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("no-personal-voice", names)
+
+    def test_no_personal_voice_quiet_on_short_text(self):
+        text = "짧다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("no-personal-voice", names)
+
     def test_cell_prefix_quiet_when_intros_vary(self):
         bodies = [
             "인자: 없음. 반환값: 없음.",
