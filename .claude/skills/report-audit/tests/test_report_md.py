@@ -277,6 +277,29 @@ class SignalTests(unittest.TestCase):
         names = [n for n, _, _ in report_md.style_signals(text)]
         self.assertNotIn("third-person-rubric-echo", names)
 
+    def test_parity_fires_when_both_groups_long_and_similar(self):
+        long_body = "설명. " * 100
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        rows = []
+        for label in ("제공 함수", "제공 함수", "구현 대상 함수", "구현 대상 함수"):
+            rows.append(
+                f"## {label}\n<table>\n{header}\n"
+                f"<tr>\n<td>code</td>\n<td>{long_body}</td>\n</tr>\n</table>\n"
+            )
+        text = "\n".join(rows)
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("provided-vs-implemented-parity", names)
+
+    def test_parity_quiet_when_provided_is_terse(self):
+        long_body = "설명. " * 100
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        rows = [
+            f"## 제공 함수\n<table>\n{header}\n<tr>\n<td>code</td>\n<td>짧다.</td>\n</tr>\n</table>\n",
+            f"## 구현 대상 함수\n<table>\n{header}\n<tr>\n<td>code</td>\n<td>{long_body}</td>\n</tr>\n</table>\n",
+        ]
+        names = [n for n, _, _ in report_md.style_signals("\n".join(rows))]
+        self.assertNotIn("provided-vs-implemented-parity", names)
+
     def test_cell_prefix_quiet_when_intros_vary(self):
         bodies = [
             "인자: 없음. 반환값: 없음.",

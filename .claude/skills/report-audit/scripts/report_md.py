@@ -394,6 +394,39 @@ def _signal_third_person_rubric_echo(text: str) -> list[tuple[str, str, str]]:
     return [("third-person-rubric-echo", "whole text", f"count={total}")]
 
 
+def _signal_provided_vs_implemented_parity(text: str) -> list[tuple[str, str, str]]:
+    heading = ""
+    groups: dict[str, list[int]] = {"P": [], "I": []}
+    for _, kind, payload in _walk(text):
+        if kind == "prose" and payload.lstrip().startswith("#"):
+            heading = payload.strip()
+        elif kind == "prose_cell":
+            cleaned = _clean(payload)
+            if "제공" in heading:
+                groups["P"].append(len(cleaned))
+            elif "구현" in heading or "학생" in heading:
+                groups["I"].append(len(cleaned))
+    long_p = [n for n in groups["P"] if n >= 50]
+    long_i = [n for n in groups["I"] if n >= 50]
+    if not long_p or not long_i:
+        return []
+    def _median(xs: list[int]) -> float:
+        xs = sorted(xs)
+        mid = len(xs) // 2
+        return (xs[mid] if len(xs) % 2 else (xs[mid - 1] + xs[mid]) / 2)
+    pm, im = _median(long_p), _median(long_i)
+    if pm < 300 or im < 300:
+        return []
+    ratio = min(pm, im) / max(pm, im)
+    if ratio < 0.9:
+        return []
+    return [(
+        "provided-vs-implemented-parity",
+        "section headings",
+        f"P_median={pm:.0f}, I_median={im:.0f}, ratio={ratio:.2f}",
+    )]
+
+
 def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
     out: list[tuple[str, str, str]] = []
     out.extend(_signal_run_script_trace(text))
@@ -404,6 +437,7 @@ def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, 
     out.extend(_signal_no_personal_voice(text))
     out.extend(_signal_evaluation_report_vocabulary(text))
     out.extend(_signal_third_person_rubric_echo(text))
+    out.extend(_signal_provided_vs_implemented_parity(text))
     return out
 
 
