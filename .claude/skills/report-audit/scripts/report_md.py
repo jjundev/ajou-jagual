@@ -35,6 +35,15 @@ _PROMPT = re.compile(r"[ㄱ-힣\w\s().~\-]{1,40}입력하세요[^:\n]{0,40}:")
 _VOICE = re.compile(
     r"나는|내가|처음에|헷갈|시행착오|고쳤|수정했|생각했|이해했|보았다|느낀|어려|막혔|놓쳤|배운"
 )
+_EVAL = (
+    re.compile(r"표준\s*출력\s*원문"),
+    re.compile(r"관찰한"),
+    re.compile(r"실제\s*결과"),
+    re.compile(r"검증했"),
+    re.compile(r"하네스"),
+    re.compile(r"sanitizer", re.IGNORECASE),
+    re.compile(r"링크\s*검사"),
+)
 _OUT_OF_SCOPE = (
     (re.compile(r"O\(\s*[nN1]\s*\)"), "O(n)"),
     (re.compile(r"정의되지\s*않은\s*동작"), "정의되지 않은 동작"),
@@ -365,6 +374,13 @@ def _signal_no_personal_voice(text: str) -> list[tuple[str, str, str]]:
     return [("no-personal-voice", "whole prose", f"prose_chars={len(prose)}, markers=0")]
 
 
+def _signal_evaluation_report_vocabulary(text: str) -> list[tuple[str, str, str]]:
+    total = sum(len(p.findall(text)) for p in _EVAL)
+    if total < 5:
+        return []
+    return [("evaluation-report-vocabulary", "whole text", f"count={total}")]
+
+
 def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
     out: list[tuple[str, str, str]] = []
     out.extend(_signal_run_script_trace(text))
@@ -373,6 +389,7 @@ def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, 
     out.extend(_signal_cell_prefix_repetition(text))
     out.extend(_signal_out_of_scope_vocabulary(text))
     out.extend(_signal_no_personal_voice(text))
+    out.extend(_signal_evaluation_report_vocabulary(text))
     return out
 
 

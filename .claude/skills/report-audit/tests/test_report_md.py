@@ -257,6 +257,16 @@ class SignalTests(unittest.TestCase):
         names = [n for n, _, _ in report_md.style_signals(text)]
         self.assertNotIn("no-personal-voice", names)
 
+    def test_evaluation_vocabulary_fires_with_five_hits(self):
+        text = "표준 출력 원문. 관찰한 메모리 지도. 실제 결과는. 검증했다. 하네스."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("evaluation-report-vocabulary", names)
+
+    def test_evaluation_vocabulary_quiet_below_threshold(self):
+        text = "실제 출력은 정상이었다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("evaluation-report-vocabulary", names)
+
     def test_cell_prefix_quiet_when_intros_vary(self):
         bodies = [
             "인자: 없음. 반환값: 없음.",
