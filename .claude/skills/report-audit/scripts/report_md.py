@@ -32,6 +32,15 @@ _RUN_SCRIPT = re.compile(
     r"(?:^|\s)(\./run\s+\d+|EXIT_STATUS:\s*\d+|hw\d-(?:author-evidence|report-screenshots)[\w-]*|case-?\d+\.(?:txt|tty))"
 )
 _PROMPT = re.compile(r"[ㄱ-힣\w\s().~\-]{1,40}입력하세요[^:\n]{0,40}:")
+_OUT_OF_SCOPE = (
+    (re.compile(r"O\(\s*[nN1]\s*\)"), "O(n)"),
+    (re.compile(r"정의되지\s*않은\s*동작"), "정의되지 않은 동작"),
+    (re.compile(r"undefined\s+behavior", re.IGNORECASE), "undefined behavior"),
+    (re.compile(r"Best-?Fit|Worst-?Fit"), "Best/Worst-Fit"),
+    (re.compile(r"MSVC"), "MSVC"),
+    (re.compile(r"ISO\s*C"), "ISO C"),
+    (re.compile(r"외부\s*단편화"), "외부 단편화"),
+)
 CODE_HEADER = "소스코드"
 FULL_SOURCE_HEADING = re.compile(r"^#\s*전체 소스코드\s*$")
 
@@ -331,12 +340,26 @@ def _signal_cell_prefix_repetition(text: str) -> list[tuple[str, str, str]]:
     return []
 
 
+def _signal_out_of_scope_vocabulary(text: str) -> list[tuple[str, str, str]]:
+    total = 0
+    labels: list[str] = []
+    for pattern, label in _OUT_OF_SCOPE:
+        hits = pattern.findall(text)
+        if hits:
+            total += len(hits)
+            labels.append(label)
+    if total < 3:
+        return []
+    return [("out-of-scope-vocabulary", "whole text", f"count={total}; " + "/".join(labels))]
+
+
 def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
     out: list[tuple[str, str, str]] = []
     out.extend(_signal_run_script_trace(text))
     out.extend(_signal_output_block_smushed_prompts(text))
     out.extend(_signal_caption_duplication(text))
     out.extend(_signal_cell_prefix_repetition(text))
+    out.extend(_signal_out_of_scope_vocabulary(text))
     return out
 
 

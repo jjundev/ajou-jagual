@@ -232,6 +232,16 @@ class SignalTests(unittest.TestCase):
         names = [n for n, _, _ in report_md.style_signals(text)]
         self.assertIn("cell-prefix-repetition", names)
 
+    def test_out_of_scope_vocabulary_fires_with_three_hits(self):
+        text = "최악은 O(n)이다. 정의되지 않은 동작이다. Best-Fit과 다르다. MSVC 경고."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("out-of-scope-vocabulary", names)
+
+    def test_out_of_scope_vocabulary_quiet_below_threshold(self):
+        text = "최악은 O(n)이다. 다른 내용은 평범하다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("out-of-scope-vocabulary", names)
+
     def test_cell_prefix_quiet_when_intros_vary(self):
         bodies = [
             "인자: 없음. 반환값: 없음.",
