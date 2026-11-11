@@ -1,8 +1,8 @@
 {
  "app": "Antigravity IDE",
  "bundle_id": "com.google.antigravity-ide",
- "window": "통합 터미널 패널(새로 만든 zsh, 패널 최대화)",
- "workdir": "/var/folders/t7/zhvnpb1j4tb2pszpcnhlnt2h0000gn/T/hw3-evidence.EaGMYvEOtq",
+ "window": "통합 터미널 패널(새 zsh, 패널 최대화·좌우 분할 중 오른쪽 창)",
+ "workdir": "/var/folders/t7/zhvnpb1j4tb2pszpcnhlnt2h0000gn/T/hw3-evidence.vyUn8BKlS0",
  "source": "과제/과제3/HW3.c",
  "source_sha256": "7dc3d64e29ae258f899839a7be75111f4e0f8f43c7c45f17baa9c2725a6487ea",
  "build_command": [
@@ -14,177 +14,179 @@
   "-Werror",
   "HW3.c",
   "-o",
-  "/var/folders/t7/zhvnpb1j4tb2pszpcnhlnt2h0000gn/T/hw3-evidence.EaGMYvEOtq/HW3"
+  "/var/folders/t7/zhvnpb1j4tb2pszpcnhlnt2h0000gn/T/hw3-evidence.vyUn8BKlS0/HW3"
  ],
  "build_exit_status": 0,
- "binary_sha256": "3f53710f1ed5fc26deb16f27488da065fa1b70f538474f1523fa81eb29e239e2",
- "runner": "#!/bin/sh\ncase \"$1\" in\n  01) case_name=official-example ;;\n  02) case_name=triple-nested-interrupts ;;\n  03) case_name=finish-and-quantum-same-tick ;;\n  04) case_name=interrupt-while-idle ;;\n  05) case_name=interrupt-after-processes ;;\n  *) exit 2 ;;\nesac\nprintf 'HW3 | CASE %s | %s\\n' \"$1\" \"$case_name\"\nexec /usr/bin/script -q \"case-$1.tty\" /bin/sh -c './HW3; program_status=$?; printf \"\\nEXIT_STATUS: %d\\n\" \"$program_status\"; exit \"$program_status\"'\n",
+ "binary_sha256": "3d89be71609ad63516aa16932d3ee8cd5885a135fa902b70b05293b61a47b60d",
+ "runner": null,
  "notes": [
-  "clear 직후 run 스크립트가 찍는 \"HW3 | CASE\" 머리줄은 IDE 터미널 화면에 남지 않았다. 명령줄 ./run NN 으로 사례를 식별한다.",
-  "입력은 한 줄씩 보내고 매번 화면을 확대해 확인했다.",
-  "01·02·04 화면에는 마우스 포인터가 함께 찍혔다. 01은 마지막 프롬프트 줄 일부를 가리지만 결과·EXIT_STATUS 줄은 가리지 않는다."
+  "보고서에 실행 명령이 보여야 해서 2026-11-11 다시 캡처했다. 이전 판(./run NN 래퍼·script 기록)은 git 이력에 있다.",
+  "명령줄 ./HW3 을 직접 입력하고, 입력은 한 줄씩 보내며 매번 화면을 확대해 확인했다.",
+  "종료 상태는 래퍼 없이 프로그램 직후 echo \"EXIT_STATUS: $?\" 로 찍었다.",
+  "terminal_text 는 화면과 같은 입력으로 같은 실행 파일을 다시 돌린 출력으로 맞췄고, 화면 내용과 줄마다 일치함을 눈으로 확인했다. 이번 판에는 .tty 기록이 없다.",
+  "왼쪽 파란 점(셸 통합 표시)은 잘라 냈다."
  ],
  "screenshot_count": 5,
  "cases": [
   {
    "case_number": "01",
    "title": "공식 예시: 중첩 인터럽트와 라운드로빈",
-   "command": "clear; ./run 01",
+   "command": "./HW3 (입력은 한 줄씩 타이핑) 후 echo \"EXIT_STATUS: $?\"",
    "stdin": "2 2\n3\n1\n1 2\n2 1\n",
-   "terminal_transcript": "검토자료/터미널_대화로그/01.tty",
-   "terminal_text": "2 2\n3\n1\n1 2\n2 1\nT  1 P 1 R 2 Q 1\nT  2 I 1 R 1\nT  3 I 2 R 0\nT  4 I 1 R 0\nT  5 P 1 R 1 Q 0\nT  6 P 2 R 0 Q 1\nT  7 P 1 R 0 Q 1\nFINISHED 2 INTERRUPTS 2 TICKS 7\n\nEXIT_STATUS: 0\n",
+   "terminal_text": "$ ./HW3\n2 2\n3\n1\n1 2\n2 1\nT  1 P 1 R 2 Q 1\nT  2 I 1 R 1\nT  3 I 2 R 0\nT  4 I 1 R 0\nT  5 P 1 R 1 Q 0\nT  6 P 2 R 0 Q 1\nT  7 P 1 R 0 Q 1\nFINISHED 2 INTERRUPTS 2 TICKS 7\n$ echo \"EXIT_STATUS: $?\"\nEXIT_STATUS: 0\n",
    "exit_status": 0,
    "passed": true,
    "original_capture": "터미널_스크린샷/원본/01.jpg",
    "original_capture_format": "JPEG",
-   "original_capture_sha256": "210054ad9a072735c05d225676e24abd4b4449cd798bc8e4935c85b396445fc8",
+   "original_capture_sha256": "669ee1f16a9d5e8e3b1e8459672836a5a38b68128760e4bd8343635a55b094bb",
    "png_conversion_pixel_identical": true,
    "final_png": "터미널_스크린샷/01-공식예시.png",
    "crop": {
     "source": "터미널_스크린샷/원본/01-pixels.png",
-    "source_sha256": "1188ced774fdebb60b110950072ee6407d917000c34f44c1f878fd97c9c3f2be",
+    "source_sha256": "9775aefe63975ab68cfccec47bf3155ba096f8ae5864261cb3a10d46a89a55ee",
     "output": "터미널_스크린샷/01-공식예시.png",
-    "output_sha256": "154804f5b31e75147064c063305f78e530fc5c1367cb79dd688b2ef6ec7ea6a2",
+    "output_sha256": "ede48bfb685bdaebfa37efe59c76d55cc543e52610261ec7fa4a0ca3ca39ae6a",
     "box": [
-     44,
-     90,
-     1036,
-     290
+     563,
+     140,
+     795,
+     358
     ],
     "size": [
-     992,
-     200
+     232,
+     218
     ],
     "pixel_identical": true
-   }
+   },
+   "visual_check": "실행 명령줄 $ ./HW3, 입력 전부, 출력 전부, echo 명령과 EXIT_STATUS: 0 이 모두 보임. 사용자명·호스트·경로와 마지막 프롬프트는 빠짐."
   },
   {
    "case_number": "02",
    "title": "추가 사례 1: 세 겹 중첩 인터럽트",
-   "command": "clear; ./run 02",
+   "command": "./HW3 (입력은 한 줄씩 타이핑) 후 echo \"EXIT_STATUS: $?\"",
    "stdin": "1 3\n4\n1 3\n2 3\n3 1\n",
-   "terminal_transcript": "검토자료/터미널_대화로그/02.tty",
-   "terminal_text": "1 3\n4\n1 3\n2 3\n3 1\nT  1 P 1 R 3 Q 1\nT  2 I 1 R 2\nT  3 I 2 R 2\nT  4 I 3 R 0\nT  5 I 2 R 1\nT  6 I 2 R 0\nT  7 I 1 R 1\nT  8 I 1 R 0\nT  9 P 1 R 2 Q 0\nT 10 P 1 R 1 Q 1\nT 11 P 1 R 0 Q 0\nFINISHED 1 INTERRUPTS 3 TICKS 11\n\nEXIT_STATUS: 0\n",
+   "terminal_text": "$ ./HW3\n1 3\n4\n1 3\n2 3\n3 1\nT  1 P 1 R 3 Q 1\nT  2 I 1 R 2\nT  3 I 2 R 2\nT  4 I 3 R 0\nT  5 I 2 R 1\nT  6 I 2 R 0\nT  7 I 1 R 1\nT  8 I 1 R 0\nT  9 P 1 R 2 Q 0\nT 10 P 1 R 1 Q 1\nT 11 P 1 R 0 Q 0\nFINISHED 1 INTERRUPTS 3 TICKS 11\n$ echo \"EXIT_STATUS: $?\"\nEXIT_STATUS: 0\n",
    "exit_status": 0,
    "passed": true,
    "original_capture": "터미널_스크린샷/원본/02.jpg",
    "original_capture_format": "JPEG",
-   "original_capture_sha256": "274c2044e7a187fff3d47d1016c9271d83357804e8db185b10e082604531dff7",
+   "original_capture_sha256": "2271f1cb4f405fed773323f36aac4bc451eed68987c2d1b559223272a6bd0eb6",
    "png_conversion_pixel_identical": true,
    "final_png": "터미널_스크린샷/02-세겹중첩.png",
    "crop": {
     "source": "터미널_스크린샷/원본/02-pixels.png",
-    "source_sha256": "c7d03ae125b17f129176b592603b3150ed9c4c1c1cb9d4f4a67a9e222b77f13e",
+    "source_sha256": "0e4e6b92c1af7e9f6b670cc9b150faef6618b9d92f26fcaa49c8ac8a913dafac",
     "output": "터미널_스크린샷/02-세겹중첩.png",
-    "output_sha256": "8dc693787b0a8585471462a4538212986f4764f0d93897503da3b5eeec4330d7",
+    "output_sha256": "b3939d7e89d5da29ffa519d777cf461ece8aa4c37c288ccb9f6f794382ef9c16",
     "box": [
-     44,
-     90,
-     1036,
-     344
+     563,
+     140,
+     795,
+     412
     ],
     "size": [
-     992,
-     254
+     232,
+     272
     ],
     "pixel_identical": true
-   }
+   },
+   "visual_check": "실행 명령줄 $ ./HW3, 입력 전부, 출력 전부, echo 명령과 EXIT_STATUS: 0 이 모두 보임. 사용자명·호스트·경로와 마지막 프롬프트는 빠짐."
   },
   {
    "case_number": "03",
    "title": "추가 사례 2: 완료와 퀀텀 소진이 같은 tick",
-   "command": "clear; ./run 03",
+   "command": "./HW3 (입력은 한 줄씩 타이핑) 후 echo \"EXIT_STATUS: $?\"",
    "stdin": "2 0\n2\n1\n",
-   "terminal_transcript": "검토자료/터미널_대화로그/03.tty",
-   "terminal_text": "2 0\n2\n1\nT  1 P 1 R 1 Q 1\nT  2 P 1 R 0 Q 0\nT  3 P 2 R 0 Q 1\nFINISHED 2 INTERRUPTS 0 TICKS 3\n\nEXIT_STATUS: 0\n",
+   "terminal_text": "$ ./HW3\n2 0\n2\n1\nT  1 P 1 R 1 Q 1\nT  2 P 1 R 0 Q 0\nT  3 P 2 R 0 Q 1\nFINISHED 2 INTERRUPTS 0 TICKS 3\n$ echo \"EXIT_STATUS: $?\"\nEXIT_STATUS: 0\n",
    "exit_status": 0,
    "passed": true,
    "original_capture": "터미널_스크린샷/원본/03.jpg",
    "original_capture_format": "JPEG",
-   "original_capture_sha256": "6321fbccaea0002aecd8bd49df12289dd30ed3ce235668395366fab28017688d",
+   "original_capture_sha256": "aea61e5a5df81345c4a368b966160c24f0afcb3500b5107c6c2c7a382b98eb46",
    "png_conversion_pixel_identical": true,
    "final_png": "터미널_스크린샷/03-완료와퀀텀동시.png",
    "crop": {
     "source": "터미널_스크린샷/원본/03-pixels.png",
-    "source_sha256": "5409156517cfc3aa8737a2c81f7ac67601d03ea313b0915404c708b2dba8a40d",
+    "source_sha256": "494ea8474a216d5c75fffdfdcb06ca0d6ff3d9a3a70d84f3ef1fd61ab695c5c8",
     "output": "터미널_스크린샷/03-완료와퀀텀동시.png",
-    "output_sha256": "52036007034e05380ad5a20ec5c2da7452c73665f5150140a5518969496fff0d",
+    "output_sha256": "8d2e31f5035d46c640dc4a532e6a92c6bdc54ef3231f6d73a821c5a405201f13",
     "box": [
-     44,
-     90,
-     1036,
-     209
+     563,
+     140,
+     795,
+     277
     ],
     "size": [
-     992,
-     119
+     232,
+     137
     ],
     "pixel_identical": true
-   }
+   },
+   "visual_check": "실행 명령줄 $ ./HW3, 입력 전부, 출력 전부, echo 명령과 EXIT_STATUS: 0 이 모두 보임. 사용자명·호스트·경로와 마지막 프롬프트는 빠짐."
   },
   {
    "case_number": "04",
    "title": "추가 사례 3: CPU가 빈 순간에 도착한 인터럽트",
-   "command": "clear; ./run 04",
+   "command": "./HW3 (입력은 한 줄씩 타이핑) 후 echo \"EXIT_STATUS: $?\"",
    "stdin": "2 1\n3\n2\n2 1\n",
-   "terminal_transcript": "검토자료/터미널_대화로그/04.tty",
-   "terminal_text": "2 1\n3\n2\n2 1\nT  1 P 1 R 2 Q 1\nT  2 P 1 R 1 Q 0\nT  3 I 1 R 0\nT  4 P 2 R 1 Q 1\nT  5 P 2 R 0 Q 0\nT  6 P 1 R 0 Q 1\nFINISHED 2 INTERRUPTS 1 TICKS 6\n\nEXIT_STATUS: 0\n",
+   "terminal_text": "$ ./HW3\n2 1\n3\n2\n2 1\nT  1 P 1 R 2 Q 1\nT  2 P 1 R 1 Q 0\nT  3 I 1 R 0\nT  4 P 2 R 1 Q 1\nT  5 P 2 R 0 Q 0\nT  6 P 1 R 0 Q 1\nFINISHED 2 INTERRUPTS 1 TICKS 6\n$ echo \"EXIT_STATUS: $?\"\nEXIT_STATUS: 0\n",
    "exit_status": 0,
    "passed": true,
    "original_capture": "터미널_스크린샷/원본/04.jpg",
    "original_capture_format": "JPEG",
-   "original_capture_sha256": "dffe45dad6a2295eb9a25d7f782fe1a6da758be2efe571a0f375defa2cabe6f6",
+   "original_capture_sha256": "869575706e46bc02b44964df23aff544b291e648a26ee3a78fefd4d329a2b574",
    "png_conversion_pixel_identical": true,
    "final_png": "터미널_스크린샷/04-IDLE중인터럽트.png",
    "crop": {
     "source": "터미널_스크린샷/원본/04-pixels.png",
-    "source_sha256": "4fde8b2e621c69ed6ee9ecba48467bb9ff658a8ffaa0d4f1382a8844f2d79ab8",
+    "source_sha256": "b93357e3290bf80bb69992f0d5d68e6edfebb9aedb4cbdd2e2f24ddb1c47ca79",
     "output": "터미널_스크린샷/04-IDLE중인터럽트.png",
-    "output_sha256": "d07555cffe1d7c64ff3eec432cae10e38334d606440c21585623739897188b7a",
+    "output_sha256": "e790d2851462f85bc7a9956d6b9028688fb035198b9e9155cca66f15b907552f",
     "box": [
-     44,
-     90,
-     1036,
-     263
+     563,
+     140,
+     795,
+     331
     ],
     "size": [
-     992,
-     173
+     232,
+     191
     ],
     "pixel_identical": true
-   }
+   },
+   "visual_check": "실행 명령줄 $ ./HW3, 입력 전부, 출력 전부, echo 명령과 EXIT_STATUS: 0 이 모두 보임. 사용자명·호스트·경로와 마지막 프롬프트는 빠짐."
   },
   {
    "case_number": "05",
    "title": "추가 사례 4: 프로세스가 모두 끝난 뒤의 인터럽트",
-   "command": "clear; ./run 05",
+   "command": "./HW3 (입력은 한 줄씩 타이핑) 후 echo \"EXIT_STATUS: $?\"",
    "stdin": "1 1\n1\n3 2\n",
-   "terminal_transcript": "검토자료/터미널_대화로그/05.tty",
-   "terminal_text": "1 1\n1\n3 2\nT  1 P 1 R 0 Q 1\nT  2 IDLE\nT  3 IDLE\nT  4 I 1 R 1\nT  5 I 1 R 0\nFINISHED 1 INTERRUPTS 1 TICKS 5\n\nEXIT_STATUS: 0\n",
+   "terminal_text": "$ ./HW3\n1 1\n1\n3 2\nT  1 P 1 R 0 Q 1\nT  2 IDLE\nT  3 IDLE\nT  4 I 1 R 1\nT  5 I 1 R 0\nFINISHED 1 INTERRUPTS 1 TICKS 5\n$ echo \"EXIT_STATUS: $?\"\nEXIT_STATUS: 0\n",
    "exit_status": 0,
    "passed": true,
    "original_capture": "터미널_스크린샷/원본/05.jpg",
    "original_capture_format": "JPEG",
-   "original_capture_sha256": "b90aa9e5ae0c344aaa3e179f69cf378336db76cee7719b6fffa2c9f2baf4b265",
+   "original_capture_sha256": "9782d278127fa77ed473472df474fc2f318df99666b157cead9d93abaef98765",
    "png_conversion_pixel_identical": true,
    "final_png": "터미널_스크린샷/05-프로세스종료후인터럽트.png",
    "crop": {
     "source": "터미널_스크린샷/원본/05-pixels.png",
-    "source_sha256": "b371271e612c018361bea5a75fbbc3dd86ce3a4893501b8a217aecff5c4827fe",
+    "source_sha256": "708826c7d0a4af44b9509ff31665ff4ce3ac56ea1ad5d5502fe5fd734bf0f88c",
     "output": "터미널_스크린샷/05-프로세스종료후인터럽트.png",
-    "output_sha256": "9ec0f7bda31ad2bb7d3531d5d91d15fd46cf6b7f59843c33071515a7cf36b997",
+    "output_sha256": "c8af2a42ba327f2ebdd2e77eeb4d53f5ad408ef19166001f9d8e2ed37a9f2b46",
     "box": [
-     44,
-     90,
-     1036,
-     236
+     563,
+     140,
+     795,
+     304
     ],
     "size": [
-     992,
-     146
+     232,
+     164
     ],
     "pixel_identical": true
-   }
+   },
+   "visual_check": "실행 명령줄 $ ./HW3, 입력 전부, 출력 전부, echo 명령과 EXIT_STATUS: 0 이 모두 보임. 사용자명·호스트·경로와 마지막 프롬프트는 빠짐."
   }
  ],
  "recrop": {
@@ -192,5 +194,7 @@
   "reason": "사용자 요청으로 상단 경로와 실행 명령 줄을 제외하고 모든 입력, 전체 결과와 EXIT_STATUS를 포함하도록 자름",
   "method": "terminal-evidence-capture/scripts/crop_and_verify.py; 원본 픽셀 유지",
   "raw_captures_preserved": true
- }
+ },
+ "captured_at": "2026-11-11",
+ "prompt_setup": "PS1='$ ' && RPROMPT='' 후 clear — 사용자명·호스트·경로가 프롬프트에 나오지 않게 했다"
 }
