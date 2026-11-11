@@ -168,6 +168,27 @@ class SignalTests(unittest.TestCase):
         names = [n for n, _, _ in report_md.style_signals(text)]
         self.assertNotIn("run-script-trace", names)
 
+    def test_smushed_prompts_fires_on_run_from_captured_output(self):
+        text = (
+            "```plain text\n"
+            "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5):\n"
+            "Need matrix:\n"
+            "```\n"
+        )
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("output-block-smushed-prompts", names)
+
+    def test_smushed_prompts_fires_regardless_of_fence_language(self):
+        for lang in ("", "text", "c", "plain text"):
+            text = f"```{lang}\nX를 입력하세요: Y를 입력하세요:\n```\n"
+            names = [n for n, _, _ in report_md.style_signals(text)]
+            self.assertIn("output-block-smushed-prompts", names, lang)
+
+    def test_smushed_prompts_quiet_with_interleaved_input(self):
+        text = "```plain text\n프로세스의 수를 입력하세요. (1~8): 2\n자원의 종류를 입력하세요. (0~5): 2\n```\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("output-block-smushed-prompts", names)
+
 
 class ReviewFocusTests(unittest.TestCase):
     def test_signals_cli_on_empty_file_exits_zero(self):

@@ -30,6 +30,7 @@ _ESCAPE = re.compile(r"\\([\\<>{}\[\]*~|_#`])")
 _RUN_SCRIPT = re.compile(
     r"(?:^|\s)(\./run\s+\d+|EXIT_STATUS:\s*\d+|hw\d-(?:author-evidence|report-screenshots)[\w-]*|case-?\d+\.(?:txt|tty))"
 )
+_PROMPT = re.compile(r"[ㄱ-힣\w\s().~\-]{1,40}입력하세요[^:\n]{0,40}:")
 CODE_HEADER = "소스코드"
 FULL_SOURCE_HEADING = re.compile(r"^#\s*전체 소스코드\s*$")
 
@@ -258,9 +259,34 @@ def _signal_run_script_trace(text: str) -> list[tuple[str, str, str]]:
     return out
 
 
+def _signal_output_block_smushed_prompts(text: str) -> list[tuple[str, str, str]]:
+    out: list[tuple[str, str, str]] = []
+    in_fence = False
+    for number, line in enumerate(text.splitlines(), start=1):
+        if _FENCE.match(line):
+            in_fence = not in_fence
+            continue
+        if not in_fence:
+            continue
+        matches = list(_PROMPT.finditer(line))
+        if len(matches) < 2:
+            continue
+        smushed = False
+        for a, b in zip(matches, matches[1:]):
+            gap = line[a.end():b.start()]
+            if not re.search(r"\d", gap):
+                smushed = True
+                break
+        if smushed:
+            evidence = f"{len(matches)} prompts: " + line.strip()[:60]
+            out.append(("output-block-smushed-prompts", f"line {number}", evidence[:60]))
+    return out
+
+
 def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
     out: list[tuple[str, str, str]] = []
     out.extend(_signal_run_script_trace(text))
+    out.extend(_signal_output_block_smushed_prompts(text))
     return out
 
 
