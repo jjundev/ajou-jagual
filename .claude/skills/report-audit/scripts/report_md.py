@@ -13,6 +13,7 @@ Exit codes: 0 ok, 1 difference found, 2 usage or file error.
 from __future__ import annotations
 
 import argparse
+import itertools
 import re
 import subprocess
 import sys
@@ -27,6 +28,37 @@ _TAG = re.compile(
 _FENCE = re.compile(r"^\s*```")
 _IMAGE = re.compile(r"(!\[[^\]]*\]\()([^)\s]+)(\))")
 _ESCAPE = re.compile(r"\\([\\<>{}\[\]*~|_#`])")
+_RUN_SCRIPT = re.compile(
+    r"(?:^|\s)(\./run\s+\d+|EXIT_STATUS:\s*\d+|hw\d-(?:author-evidence|report-screenshots)[\w-]*|case-?\d+\.(?:txt|tty))"
+)
+_PROMPT = re.compile(r"[ㄱ-힣\w\s().~\-]{1,40}입력하세요[^:\n]{0,40}:")
+_VOICE = re.compile(
+    r"나는|내가|처음에|헷갈|시행착오|고쳤|수정했|생각했|이해했|보았다|느낀|어려|막혔|놓쳤|배운"
+)
+_RUBRIC = (
+    re.compile(r"추가\s*함수는\s*만들지\s*않"),
+    re.compile(r"주어진\s*함수\s*형식.{0,8}유지"),
+    re.compile(r"요구사항.{0,4}(?:충족|확인)"),
+    re.compile(r"제공.{0,4}함수.{0,12}(?:유지|변경하지)"),
+)
+_EVAL = (
+    re.compile(r"표준\s*출력\s*원문"),
+    re.compile(r"관찰한"),
+    re.compile(r"실제\s*결과"),
+    re.compile(r"검증했"),
+    re.compile(r"하네스"),
+    re.compile(r"sanitizer", re.IGNORECASE),
+    re.compile(r"링크\s*검사"),
+)
+_OUT_OF_SCOPE = (
+    (re.compile(r"O\(\s*[nN1]\s*\)"), "O(n)"),
+    (re.compile(r"정의되지\s*않은\s*동작"), "정의되지 않은 동작"),
+    (re.compile(r"undefined\s+behavior", re.IGNORECASE), "undefined behavior"),
+    (re.compile(r"Best-?Fit|Worst-?Fit"), "Best/Worst-Fit"),
+    (re.compile(r"MSVC"), "MSVC"),
+    (re.compile(r"ISO\s*C"), "ISO C"),
+    (re.compile(r"외부\s*단편화"), "외부 단편화"),
+)
 CODE_HEADER = "소스코드"
 FULL_SOURCE_HEADING = re.compile(r"^#\s*전체 소스코드\s*$")
 
@@ -246,6 +278,197 @@ def _read(path: str) -> str:
     return file.read_text(encoding="utf-8")
 
 
+def _signal_run_script_trace(text: str) -> list[tuple[str, str, str]]:
+    out: list[tuple[str, str, str]] = []
+    for match in _RUN_SCRIPT.finditer(text):
+        line_no = text.count("\n", 0, match.start()) + 1
+        evidence = match.group(1)[:60]
+        out.append(("run-script-trace", f"line {line_no}", evidence))
+    return out
+
+
+def _signal_output_block_smushed_prompts(text: str) -> list[tuple[str, str, str]]:
+    out: list[tuple[str, str, str]] = []
+    in_fence = False
+    for number, line in enumerate(text.splitlines(), start=1):
+        if _FENCE.match(line):
+            in_fence = not in_fence
+            continue
+        if not in_fence:
+            continue
+        matches = list(_PROMPT.finditer(line))
+        if len(matches) < 2:
+            continue
+        smushed = False
+        for a, b in zip(matches, matches[1:]):
+            gap = line[a.end():b.start()]
+            if not re.search(r"\d", gap):
+                smushed = True
+                break
+        if smushed:
+            evidence = f"{len(matches)} prompts: " + line.strip()[:60]
+            out.append(("output-block-smushed-prompts", f"line {number}", evidence[:60]))
+    return out
+
+
+def _trigrams(s: str) -> set[str]:
+    s = re.sub(r"\s+", " ", s).strip()
+    return {s[i:i + 3] for i in range(max(0, len(s) - 2))}
+
+
+def _signal_caption_duplication(text: str) -> list[tuple[str, str, str]]:
+    captions: list[tuple[int, str]] = []
+    for index, match in enumerate(_IMAGE.finditer(text), start=1):
+        head = match.group(1)  # "![caption]("
+        caption = head[2:-2]
+        captions.append((index, caption))
+    if len(captions) < 3:
+        return []
+    grams = [(i, _trigrams(c)) for i, c in captions]
+    out: list[tuple[str, str, str]] = []
+    for (i1, g1), (i2, g2) in itertools.combinations(grams, 2):
+        if not g1 or not g2:
+            continue
+        jaccard = len(g1 & g2) / min(len(g1), len(g2))
+        if jaccard >= 0.6:
+            out.append(("caption-duplication", f"image {i1},{i2}", f"jaccard={jaccard:.2f}"))
+    return out
+
+
+def _signal_cell_prefix_repetition(text: str) -> list[tuple[str, str, str]]:
+    cells: list[str] = []
+    for _, kind, payload in _walk(text):
+        if kind == "prose_cell":
+            cleaned = _clean(payload)
+            if cleaned:
+                cells.append(cleaned)
+    # Skip header-label cells like "기능 명세와 분석" (9 chars). Body cells
+    # that carry a repeated template are always longer than any header label
+    # in the course's report format.
+    prefixes = [c[:8] for c in cells if len(c) >= 12]
+    if len(prefixes) < 4:
+        return []
+    counts: dict[str, int] = {}
+    for p in prefixes:
+        counts[p] = counts.get(p, 0) + 1
+    prefix, shared = max(counts.items(), key=lambda kv: kv[1])
+    if shared / len(prefixes) >= 0.8:
+        return [(
+            "cell-prefix-repetition",
+            "prose cells",
+            f"{shared}/{len(prefixes)} start with {prefix!r}",
+        )]
+    return []
+
+
+def _signal_out_of_scope_vocabulary(text: str) -> list[tuple[str, str, str]]:
+    total = 0
+    labels: list[str] = []
+    for pattern, label in _OUT_OF_SCOPE:
+        hits = pattern.findall(text)
+        if hits:
+            total += len(hits)
+            labels.append(label)
+    if total < 3:
+        return []
+    return [("out-of-scope-vocabulary", "whole text", f"count={total}; " + "/".join(labels))]
+
+
+def _signal_no_personal_voice(text: str) -> list[tuple[str, str, str]]:
+    prose = " ".join(t for _, t in prose_lines(text))
+    if len(prose) < 200:
+        return []
+    if _VOICE.search(prose):
+        return []
+    return [("no-personal-voice", "whole prose", f"prose_chars={len(prose)}, markers=0")]
+
+
+def _signal_evaluation_report_vocabulary(text: str) -> list[tuple[str, str, str]]:
+    total = sum(len(p.findall(text)) for p in _EVAL)
+    if total < 5:
+        return []
+    return [("evaluation-report-vocabulary", "whole text", f"count={total}")]
+
+
+def _signal_third_person_rubric_echo(text: str) -> list[tuple[str, str, str]]:
+    total = sum(len(p.findall(text)) for p in _RUBRIC)
+    if total < 2:
+        return []
+    return [("third-person-rubric-echo", "whole text", f"count={total}")]
+
+
+def _signal_provided_vs_implemented_parity(text: str) -> list[tuple[str, str, str]]:
+    heading = ""
+    groups: dict[str, list[int]] = {"P": [], "I": []}
+    for _, kind, payload in _walk(text):
+        if kind == "prose" and payload.lstrip().startswith("#"):
+            heading = payload.strip()
+        elif kind == "prose_cell":
+            cleaned = _clean(payload)
+            if "제공" in heading:
+                groups["P"].append(len(cleaned))
+            elif "구현" in heading or "학생" in heading:
+                groups["I"].append(len(cleaned))
+    long_p = [n for n in groups["P"] if n >= 50]
+    long_i = [n for n in groups["I"] if n >= 50]
+    if not long_p or not long_i:
+        return []
+    def _median(xs: list[int]) -> float:
+        xs = sorted(xs)
+        mid = len(xs) // 2
+        return (xs[mid] if len(xs) % 2 else (xs[mid - 1] + xs[mid]) / 2)
+    pm, im = _median(long_p), _median(long_i)
+    if pm < 300 or im < 300:
+        return []
+    ratio = min(pm, im) / max(pm, im)
+    if ratio < 0.9:
+        return []
+    return [(
+        "provided-vs-implemented-parity",
+        "section headings",
+        f"P_median={pm:.0f}, I_median={im:.0f}, ratio={ratio:.2f}",
+    )]
+
+
+_FUNC_DEF = re.compile(r"^\s*\w[\w\s*]*\s+\*?(\w+)\s*\([^)]*\)\s*\{", re.M)
+_GUARD = re.compile(r"(\w+)\s*(?:==\s*NULL|<=\s*0|<\s*0)")
+
+
+def _signal_source_out_of_scope_guards(source: str | None) -> list[tuple[str, str, str]]:
+    if source is None:
+        return [("source-out-of-scope-guards", "skipped", "--source not given")]
+    out: list[tuple[str, str, str]] = []
+    for match in _FUNC_DEF.finditer(source):
+        name = match.group(1)
+        block = "\n".join(source[match.end():].splitlines()[:15])
+        hits = _GUARD.findall(block)
+        if len(hits) >= 2:
+            out.append((
+                "source-out-of-scope-guards",
+                f"function {name}",
+                f"guards={len(hits)}",
+            ))
+    return out
+
+
+def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
+    out: list[tuple[str, str, str]] = []
+    out.extend(_signal_run_script_trace(text))
+    out.extend(_signal_output_block_smushed_prompts(text))
+    out.extend(_signal_caption_duplication(text))
+    out.extend(_signal_cell_prefix_repetition(text))
+    out.extend(_signal_out_of_scope_vocabulary(text))
+    out.extend(_signal_no_personal_voice(text))
+    out.extend(_signal_evaluation_report_vocabulary(text))
+    out.extend(_signal_third_person_rubric_echo(text))
+    out.extend(_signal_provided_vs_implemented_parity(text))
+    if source is None:
+        out.extend(_signal_source_out_of_scope_guards(None))
+    else:
+        out.extend(_signal_source_out_of_scope_guards(_read(source)))
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -257,6 +480,9 @@ def main(argv: list[str] | None = None) -> int:
     compare.add_argument("path")
     compare.add_argument("--source", required=True)
     sub.add_parser("warnings").add_argument("path")
+    signals = sub.add_parser("signals")
+    signals.add_argument("path")
+    signals.add_argument("--source", default=None)
     args = parser.parse_args(argv)
     try:
         text = _read(args.path)
@@ -277,6 +503,12 @@ def main(argv: list[str] | None = None) -> int:
             for key, value in result.items():
                 print(f"{key}: {value}")
             return 0 if result["tokens_equal"] and not result["format_differs"] else 1
+        if args.command == "signals":
+            found = style_signals(text, args.source)
+            graded = [row for row in found if row[1] != "skipped"]
+            for name, loc, evidence in graded:
+                print(f"{name}\t{loc}\t{evidence}")
+            return 1 if graded else 0
         warnings = url_warnings(text)
         for line in warnings:
             print(line)

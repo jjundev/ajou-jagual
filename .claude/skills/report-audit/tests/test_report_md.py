@@ -151,5 +151,249 @@ class WarningTests(unittest.TestCase):
         self.assertIn("20261029", warnings[0])
 
 
+class SignalTests(unittest.TestCase):
+    def test_signals_on_empty_file_exits_zero(self):
+        self.assertEqual(
+            [r for r in report_md.style_signals("") if r[1] != "skipped"],
+            [],
+        )
+
+    def test_run_script_trace_fires_on_exit_status_and_run_command(self):
+        text = "실행:\n```plain text\n$ ./run 01\nALLOC P1 20: SUCCESS\nEXIT_STATUS: 0\n```\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("run-script-trace", names)
+
+    def test_run_script_trace_quiet_on_plain_run(self):
+        text = "실행:\n```plain text\n$ ./HW2\nALLOC P1 20: SUCCESS\n```\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("run-script-trace", names)
+
+    def test_smushed_prompts_fires_on_run_from_captured_output(self):
+        text = (
+            "```plain text\n"
+            "프로세스의 수를 입력하세요. (1~8): 자원의 종류의 개수를 입력하세요. (0~5):\n"
+            "Need matrix:\n"
+            "```\n"
+        )
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("output-block-smushed-prompts", names)
+
+    def test_smushed_prompts_fires_regardless_of_fence_language(self):
+        for lang in ("", "text", "c", "plain text"):
+            text = f"```{lang}\nX를 입력하세요: Y를 입력하세요:\n```\n"
+            names = [n for n, _, _ in report_md.style_signals(text)]
+            self.assertIn("output-block-smushed-prompts", names, lang)
+
+    def test_smushed_prompts_quiet_with_interleaved_input(self):
+        text = "```plain text\n프로세스의 수를 입력하세요. (1~8): 2\n자원의 종류를 입력하세요. (0~5): 2\n```\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("output-block-smushed-prompts", names)
+
+    def test_caption_duplication_fires_when_all_three_captions_equal(self):
+        text = (
+            "![동일한 캡션 문구입니다](https://example.com/a.png)\n"
+            "![동일한 캡션 문구입니다](https://example.com/a.png)\n"
+            "![동일한 캡션 문구입니다](https://example.com/a.png)\n"
+        )
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("caption-duplication", names)
+
+    def test_caption_duplication_needs_three_images(self):
+        text = "![동일한 캡션 문구입니다](https://example.com/a.png)\n![동일한 캡션 문구입니다](https://example.com/b.png)\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("caption-duplication", names)
+
+    def test_caption_duplication_quiet_when_captions_differ(self):
+        text = (
+            "![사례 1 설명 push](https://example.com/a.png)\n"
+            "![사례 2 설명 pop](https://example.com/b.png)\n"
+            "![사례 3 설명 idle](https://example.com/c.png)\n"
+        )
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("caption-duplication", names)
+
+    def test_cell_prefix_repetition_fires_on_uniform_intro(self):
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        body = "\n".join(
+            f"<tr>\n<td>void f{i}(void);</td>\n<td>인자: 없음. 반환값: 없음. 변경 상태: 없음.</td>\n</tr>"
+            for i in range(5)
+        )
+        text = f"<table>\n{header}\n{body}\n</table>\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("cell-prefix-repetition", names)
+
+    def test_cell_prefix_matches_after_escape_strip(self):
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        body = "\n".join(
+            f"<tr>\n<td>#define X{i} 1</td>\n<td>\\#기능 명세 X{i} 상한이다.</td>\n</tr>"
+            for i in range(4)
+        )
+        text = f"<table>\n{header}\n{body}\n</table>\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("cell-prefix-repetition", names)
+
+    def test_out_of_scope_vocabulary_fires_with_three_hits(self):
+        text = "최악은 O(n)이다. 정의되지 않은 동작이다. Best-Fit과 다르다. MSVC 경고."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("out-of-scope-vocabulary", names)
+
+    def test_out_of_scope_vocabulary_quiet_below_threshold(self):
+        text = "최악은 O(n)이다. 다른 내용은 평범하다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("out-of-scope-vocabulary", names)
+
+    def test_no_personal_voice_fires_on_prose_without_markers(self):
+        text = "함수는 1을 반환한다. 성공하면 상태가 바뀐다. 실패하면 유지한다." * 8
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("no-personal-voice", names)
+
+    def test_no_personal_voice_quiet_when_any_marker_present(self):
+        text = "함수는 1을 반환한다. 처음에 헷갈렸다. 이후 수정했다." * 8
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("no-personal-voice", names)
+
+    def test_no_personal_voice_quiet_on_short_text(self):
+        text = "짧다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("no-personal-voice", names)
+
+    def test_evaluation_vocabulary_fires_with_five_hits(self):
+        text = "표준 출력 원문. 관찰한 메모리 지도. 실제 결과는. 검증했다. 하네스."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("evaluation-report-vocabulary", names)
+
+    def test_evaluation_vocabulary_quiet_below_threshold(self):
+        text = "실제 출력은 정상이었다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("evaluation-report-vocabulary", names)
+
+    def test_rubric_echo_fires_with_two_hits(self):
+        text = "추가 함수는 만들지 않았다. 주어진 함수 형식을 유지한다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("third-person-rubric-echo", names)
+
+    def test_rubric_echo_quiet_with_one_hit(self):
+        text = "추가 함수는 만들지 않았다. 다음은 다른 이야기다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("third-person-rubric-echo", names)
+
+    def test_parity_fires_when_both_groups_long_and_similar(self):
+        long_body = "설명. " * 100
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        rows = []
+        for label in ("제공 함수", "제공 함수", "구현 대상 함수", "구현 대상 함수"):
+            rows.append(
+                f"## {label}\n<table>\n{header}\n"
+                f"<tr>\n<td>code</td>\n<td>{long_body}</td>\n</tr>\n</table>\n"
+            )
+        text = "\n".join(rows)
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("provided-vs-implemented-parity", names)
+
+    def test_guards_skipped_when_no_source(self):
+        rows = report_md.style_signals("")
+        self.assertIn(("source-out-of-scope-guards", "skipped", "--source not given"), rows)
+
+    def test_guards_fire_on_defensive_conditions(self):
+        source = (
+            "int allocate(List *l, int pid, int size)\n"
+            "{\n"
+            "    if (l == NULL || pid <= 0 || size <= 0) { return 0; }\n"
+            "    return 1;\n"
+            "}\n"
+        )
+        with tempfile.NamedTemporaryFile("w", suffix=".c", delete=False) as fh:
+            fh.write(source)
+            src = fh.name
+        rows = report_md.style_signals("", src)
+        names_locs = [(n, l) for n, l, _ in rows]
+        self.assertIn(("source-out-of-scope-guards", "function allocate"), names_locs)
+
+    def test_parity_quiet_when_provided_is_terse(self):
+        long_body = "설명. " * 100
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        rows = [
+            f"## 제공 함수\n<table>\n{header}\n<tr>\n<td>code</td>\n<td>짧다.</td>\n</tr>\n</table>\n",
+            f"## 구현 대상 함수\n<table>\n{header}\n<tr>\n<td>code</td>\n<td>{long_body}</td>\n</tr>\n</table>\n",
+        ]
+        names = [n for n, _, _ in report_md.style_signals("\n".join(rows))]
+        self.assertNotIn("provided-vs-implemented-parity", names)
+
+    def test_cell_prefix_quiet_when_intros_vary(self):
+        bodies = [
+            "인자: 없음. 반환값: 없음.",
+            "인자: 큐. 반환값: 1.",
+            "front == rear 이면 비었다고 본다.",
+            "top == -1 이면 1을 반환한다.",
+        ]
+        header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
+        rows = "\n".join(f"<tr>\n<td>f{i}();</td>\n<td>{b}</td>\n</tr>" for i, b in enumerate(bodies))
+        text = f"<table>\n{header}\n{rows}\n</table>\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("cell-prefix-repetition", names)
+
+
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
+
+
+class SignalIntegrationTests(unittest.TestCase):
+    def test_hw2_triggers_at_least_eight(self):
+        text = (FIXTURES / "hw2_excerpt.md").read_text(encoding="utf-8")
+        source = str(FIXTURES / "hw2_source.c")
+        names = {n for n, loc, _ in report_md.style_signals(text, source) if loc != "skipped"}
+        self.assertGreaterEqual(len(names), 8, sorted(names))
+
+    def test_hw2_triggers_cell_prefix_repetition(self):
+        text = (FIXTURES / "hw2_excerpt.md").read_text(encoding="utf-8")
+        names = {n for n, _, _ in report_md.style_signals(text)}
+        self.assertIn("cell-prefix-repetition", names)
+
+    def test_hw2_triggers_provided_vs_implemented_parity(self):
+        text = (FIXTURES / "hw2_excerpt.md").read_text(encoding="utf-8")
+        names = {n for n, _, _ in report_md.style_signals(text)}
+        self.assertIn("provided-vs-implemented-parity", names)
+
+    def test_hw1_triggers_at_most_two(self):
+        text = (FIXTURES / "hw1_excerpt.md").read_text(encoding="utf-8")
+        names = {n for n, loc, _ in report_md.style_signals(text) if loc != "skipped"}
+        self.assertLessEqual(len(names), 2, sorted(names))
+
+    def test_signals_cli_tab_separated_lines(self):
+        text = (FIXTURES / "hw2_excerpt.md").read_text(encoding="utf-8")
+        with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as fh:
+            fh.write(text)
+            report = fh.name
+        result = subprocess.run(
+            [sys.executable, str(Path(report_md.__file__)), "signals", report],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 1)
+        for line in result.stdout.splitlines():
+            self.assertEqual(line.count("\t"), 2, line)
+
+
+class ReviewFocusTests(unittest.TestCase):
+    def test_signals_cli_on_empty_file_exits_zero(self):
+        with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as fh:
+            fh.write("")
+            path = fh.name
+        result = subprocess.run(
+            [sys.executable, str(Path(report_md.__file__)), "signals", path],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(result.stdout, "")
+
+    def test_signals_missing_source_file_exits_two(self):
+        with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as fh:
+            fh.write("")
+            report = fh.name
+        result = subprocess.run(
+            [sys.executable, str(Path(report_md.__file__)), "signals", report, "--source", "/no/such/file.c"],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 2)
+
+
 if __name__ == "__main__":
     unittest.main()
