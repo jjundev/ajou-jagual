@@ -427,6 +427,27 @@ def _signal_provided_vs_implemented_parity(text: str) -> list[tuple[str, str, st
     )]
 
 
+_FUNC_DEF = re.compile(r"^\s*\w[\w\s*]*\s+(\w+)\s*\([^)]*\)\s*\n\s*\{", re.M)
+_GUARD = re.compile(r"(\w+)\s*(?:==\s*NULL|<=\s*0|<\s*0)")
+
+
+def _signal_source_out_of_scope_guards(source: str | None) -> list[tuple[str, str, str]]:
+    if source is None:
+        return [("source-out-of-scope-guards", "skipped", "--source not given")]
+    out: list[tuple[str, str, str]] = []
+    for match in _FUNC_DEF.finditer(source):
+        name = match.group(1)
+        block = "\n".join(source[match.end():].splitlines()[:15])
+        hits = _GUARD.findall(block)
+        if len(hits) >= 2:
+            out.append((
+                "source-out-of-scope-guards",
+                f"function {name}",
+                f"guards={len(hits)}",
+            ))
+    return out
+
+
 def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
     out: list[tuple[str, str, str]] = []
     out.extend(_signal_run_script_trace(text))
@@ -438,6 +459,10 @@ def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, 
     out.extend(_signal_evaluation_report_vocabulary(text))
     out.extend(_signal_third_person_rubric_echo(text))
     out.extend(_signal_provided_vs_implemented_parity(text))
+    if source is None:
+        out.extend(_signal_source_out_of_scope_guards(None))
+    else:
+        out.extend(_signal_source_out_of_scope_guards(_read(source)))
     return out
 
 
@@ -477,9 +502,9 @@ def main(argv: list[str] | None = None) -> int:
             return 0 if result["tokens_equal"] and not result["format_differs"] else 1
         if args.command == "signals":
             found = style_signals(text, args.source)
-            for name, loc, evidence in found:
-                print(f"{name}\t{loc}\t{evidence}")
             graded = [row for row in found if row[1] != "skipped"]
+            for name, loc, evidence in graded:
+                print(f"{name}\t{loc}\t{evidence}")
             return 1 if graded else 0
         warnings = url_warnings(text)
         for line in warnings:

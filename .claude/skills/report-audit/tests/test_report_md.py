@@ -290,6 +290,25 @@ class SignalTests(unittest.TestCase):
         names = [n for n, _, _ in report_md.style_signals(text)]
         self.assertIn("provided-vs-implemented-parity", names)
 
+    def test_guards_skipped_when_no_source(self):
+        rows = report_md.style_signals("")
+        self.assertIn(("source-out-of-scope-guards", "skipped", "--source not given"), rows)
+
+    def test_guards_fire_on_defensive_conditions(self):
+        source = (
+            "int allocate(List *l, int pid, int size)\n"
+            "{\n"
+            "    if (l == NULL || pid <= 0 || size <= 0) { return 0; }\n"
+            "    return 1;\n"
+            "}\n"
+        )
+        with tempfile.NamedTemporaryFile("w", suffix=".c", delete=False) as fh:
+            fh.write(source)
+            src = fh.name
+        rows = report_md.style_signals("", src)
+        names_locs = [(n, l) for n, l, _ in rows]
+        self.assertIn(("source-out-of-scope-guards", "function allocate"), names_locs)
+
     def test_parity_quiet_when_provided_is_terse(self):
         long_body = "설명. " * 100
         header = "<tr>\n<td>소스코드</td>\n<td>기능 명세와 분석</td>\n</tr>"
@@ -325,6 +344,16 @@ class ReviewFocusTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0)
         self.assertEqual(result.stdout, "")
+
+    def test_signals_missing_source_file_exits_two(self):
+        with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as fh:
+            fh.write("")
+            report = fh.name
+        result = subprocess.run(
+            [sys.executable, str(Path(report_md.__file__)), "signals", report, "--source", "/no/such/file.c"],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 2)
 
 
 if __name__ == "__main__":
