@@ -151,5 +151,36 @@ class WarningTests(unittest.TestCase):
         self.assertIn("20261029", warnings[0])
 
 
+class SignalTests(unittest.TestCase):
+    def test_signals_on_empty_file_exits_zero(self):
+        self.assertEqual(
+            [r for r in report_md.style_signals("") if r[1] != "skipped"],
+            [],
+        )
+
+    def test_run_script_trace_fires_on_exit_status_and_run_command(self):
+        text = "실행:\n```plain text\n$ ./run 01\nALLOC P1 20: SUCCESS\nEXIT_STATUS: 0\n```\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("run-script-trace", names)
+
+    def test_run_script_trace_quiet_on_plain_run(self):
+        text = "실행:\n```plain text\n$ ./HW2\nALLOC P1 20: SUCCESS\n```\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("run-script-trace", names)
+
+
+class ReviewFocusTests(unittest.TestCase):
+    def test_signals_cli_on_empty_file_exits_zero(self):
+        with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as fh:
+            fh.write("")
+            path = fh.name
+        result = subprocess.run(
+            [sys.executable, str(Path(report_md.__file__)), "signals", path],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0)
+        self.assertEqual(result.stdout, "")
+
+
 if __name__ == "__main__":
     unittest.main()

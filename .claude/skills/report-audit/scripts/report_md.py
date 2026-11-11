@@ -27,6 +27,9 @@ _TAG = re.compile(
 _FENCE = re.compile(r"^\s*```")
 _IMAGE = re.compile(r"(!\[[^\]]*\]\()([^)\s]+)(\))")
 _ESCAPE = re.compile(r"\\([\\<>{}\[\]*~|_#`])")
+_RUN_SCRIPT = re.compile(
+    r"(?:^|\s)(\./run\s+\d+|EXIT_STATUS:\s*\d+|hw\d-(?:author-evidence|report-screenshots)[\w-]*|case-?\d+\.(?:txt|tty))"
+)
 CODE_HEADER = "소스코드"
 FULL_SOURCE_HEADING = re.compile(r"^#\s*전체 소스코드\s*$")
 
@@ -246,6 +249,21 @@ def _read(path: str) -> str:
     return file.read_text(encoding="utf-8")
 
 
+def _signal_run_script_trace(text: str) -> list[tuple[str, str, str]]:
+    out: list[tuple[str, str, str]] = []
+    for match in _RUN_SCRIPT.finditer(text):
+        line_no = text.count("\n", 0, match.start()) + 1
+        evidence = match.group(1)[:60]
+        out.append(("run-script-trace", f"line {line_no}", evidence))
+    return out
+
+
+def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
+    out: list[tuple[str, str, str]] = []
+    out.extend(_signal_run_script_trace(text))
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -257,6 +275,9 @@ def main(argv: list[str] | None = None) -> int:
     compare.add_argument("path")
     compare.add_argument("--source", required=True)
     sub.add_parser("warnings").add_argument("path")
+    signals = sub.add_parser("signals")
+    signals.add_argument("path")
+    signals.add_argument("--source", default=None)
     args = parser.parse_args(argv)
     try:
         text = _read(args.path)
@@ -277,6 +298,12 @@ def main(argv: list[str] | None = None) -> int:
             for key, value in result.items():
                 print(f"{key}: {value}")
             return 0 if result["tokens_equal"] and not result["format_differs"] else 1
+        if args.command == "signals":
+            found = style_signals(text, args.source)
+            for name, loc, evidence in found:
+                print(f"{name}\t{loc}\t{evidence}")
+            graded = [row for row in found if row[1] != "skipped"]
+            return 1 if graded else 0
         warnings = url_warnings(text)
         for line in warnings:
             print(line)
