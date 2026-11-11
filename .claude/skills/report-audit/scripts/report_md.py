@@ -35,6 +35,12 @@ _PROMPT = re.compile(r"[ㄱ-힣\w\s().~\-]{1,40}입력하세요[^:\n]{0,40}:")
 _VOICE = re.compile(
     r"나는|내가|처음에|헷갈|시행착오|고쳤|수정했|생각했|이해했|보았다|느낀|어려|막혔|놓쳤|배운"
 )
+_RUBRIC = (
+    re.compile(r"추가\s*함수는\s*만들지\s*않"),
+    re.compile(r"주어진\s*함수\s*형식.{0,8}유지"),
+    re.compile(r"요구사항.{0,4}(?:충족|확인)"),
+    re.compile(r"제공.{0,4}함수.{0,12}(?:유지|변경하지)"),
+)
 _EVAL = (
     re.compile(r"표준\s*출력\s*원문"),
     re.compile(r"관찰한"),
@@ -381,6 +387,13 @@ def _signal_evaluation_report_vocabulary(text: str) -> list[tuple[str, str, str]
     return [("evaluation-report-vocabulary", "whole text", f"count={total}")]
 
 
+def _signal_third_person_rubric_echo(text: str) -> list[tuple[str, str, str]]:
+    total = sum(len(p.findall(text)) for p in _RUBRIC)
+    if total < 2:
+        return []
+    return [("third-person-rubric-echo", "whole text", f"count={total}")]
+
+
 def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
     out: list[tuple[str, str, str]] = []
     out.extend(_signal_run_script_trace(text))
@@ -390,6 +403,7 @@ def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, 
     out.extend(_signal_out_of_scope_vocabulary(text))
     out.extend(_signal_no_personal_voice(text))
     out.extend(_signal_evaluation_report_vocabulary(text))
+    out.extend(_signal_third_person_rubric_echo(text))
     return out
 
 

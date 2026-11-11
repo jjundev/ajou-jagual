@@ -267,6 +267,16 @@ class SignalTests(unittest.TestCase):
         names = [n for n, _, _ in report_md.style_signals(text)]
         self.assertNotIn("evaluation-report-vocabulary", names)
 
+    def test_rubric_echo_fires_with_two_hits(self):
+        text = "추가 함수는 만들지 않았다. 주어진 함수 형식을 유지한다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("third-person-rubric-echo", names)
+
+    def test_rubric_echo_quiet_with_one_hit(self):
+        text = "추가 함수는 만들지 않았다. 다음은 다른 이야기다."
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("third-person-rubric-echo", names)
+
     def test_cell_prefix_quiet_when_intros_vary(self):
         bodies = [
             "인자: 없음. 반환값: 없음.",
