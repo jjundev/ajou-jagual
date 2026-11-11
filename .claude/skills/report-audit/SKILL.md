@@ -18,12 +18,12 @@ Allowed without asking, because it is the same content: extracting the file's ow
 1. `python3 .claude/skills/report-audit/scripts/report_md.py prose FILE` — numbered prose; code cells, code blocks and image URLs are hidden. Read all of it.
 2. `python3 .claude/skills/report-audit/scripts/report_md.py signals FILE [--source X.c]` — 과제2에서 밝혀낸 AI 작성 신호 10종을 보고한다. 자동 수정하지 않는다.
 3. For each candidate, return to the relevant raw code, input and output in the **same file**; `prose` hides those blocks and cannot establish a factual error by itself. Apply the verdict rules below, then fill **every** category of the findings table. A checked category with no issue gets `없음` with what you checked; a category outside the supplied scope gets `대상 외` with the reason. Missing evidence is `판단 보류`, not `없음`.
-3. Present the table and ask once for the scope to fix (AskUserQuestion, recommended answer first). If no question tool exists, ask in chat and stop. Do not edit before the answer.
-4. Edit approved `오류 확정` or `설명 보완` rows with exact-string replacements. Change only the defective words; do not add new claims, examples or sentences while fixing one. Leave `정상` and `판단 보류` rows unchanged, including unsupported claims whose truth remains unknown. Do not delete a claim or replace it with a theoretical prediction merely because its execution evidence is absent.
-5. Verify:
+4. Present the table and ask once for the scope to fix (AskUserQuestion, recommended answer first). If no question tool exists, ask in chat and stop. Do not edit before the answer.
+5. Edit approved `오류 확정` or `설명 보완` rows with exact-string replacements. Change only the defective words; do not add new claims, examples or sentences while fixing one. Leave `정상` and `판단 보류` rows unchanged, including unsupported claims whose truth remains unknown. Do not delete a claim or replace it with a theoretical prediction merely because its execution evidence is absent.
+6. Verify:
    - `python3 .claude/skills/report-audit/scripts/report_md.py check FILE --before HEAD` (or `--before <backup file>` outside git) must print `protected spans identical`. Image alt text is editable; URLs are not.
    - `grep -c` each removed phrase → 0 (or the count you intended to keep).
-6. Report: rows fixed, rows left, verification output, and what was not done (Notion, PDF, commit — those belong to `notion-report-sync` and the user).
+7. Report: rows fixed, rows left, verification output, and what was not done (Notion, PDF, commit — those belong to `notion-report-sync` and the user).
 
 ## Evidence and verdicts
 

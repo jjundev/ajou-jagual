@@ -343,6 +343,16 @@ class SignalIntegrationTests(unittest.TestCase):
         names = {n for n, loc, _ in report_md.style_signals(text, source) if loc != "skipped"}
         self.assertGreaterEqual(len(names), 8, sorted(names))
 
+    def test_hw2_triggers_cell_prefix_repetition(self):
+        text = (FIXTURES / "hw2_excerpt.md").read_text(encoding="utf-8")
+        names = {n for n, _, _ in report_md.style_signals(text)}
+        self.assertIn("cell-prefix-repetition", names)
+
+    def test_hw2_triggers_provided_vs_implemented_parity(self):
+        text = (FIXTURES / "hw2_excerpt.md").read_text(encoding="utf-8")
+        names = {n for n, _, _ in report_md.style_signals(text)}
+        self.assertIn("provided-vs-implemented-parity", names)
+
     def test_hw1_triggers_at_most_two(self):
         text = (FIXTURES / "hw1_excerpt.md").read_text(encoding="utf-8")
         names = {n for n, loc, _ in report_md.style_signals(text) if loc != "skipped"}

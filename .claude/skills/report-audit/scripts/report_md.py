@@ -342,7 +342,10 @@ def _signal_cell_prefix_repetition(text: str) -> list[tuple[str, str, str]]:
             cleaned = _clean(payload)
             if cleaned:
                 cells.append(cleaned)
-    prefixes = [c[:8] for c in cells if len(c) >= 8]
+    # Skip header-label cells like "기능 명세와 분석" (9 chars). Body cells
+    # that carry a repeated template are always longer than any header label
+    # in the course's report format.
+    prefixes = [c[:8] for c in cells if len(c) >= 12]
     if len(prefixes) < 4:
         return []
     counts: dict[str, int] = {}
