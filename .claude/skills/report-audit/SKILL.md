@@ -16,7 +16,8 @@ Allowed without asking, because it is the same content: extracting the file's ow
 ## Workflow
 
 1. `python3 .claude/skills/report-audit/scripts/report_md.py prose FILE` — numbered prose; code cells, code blocks and image URLs are hidden. Read all of it.
-2. For each candidate, return to the relevant raw code, input and output in the **same file**; `prose` hides those blocks and cannot establish a factual error by itself. Apply the verdict rules below, then fill **every** category of the findings table. A checked category with no issue gets `없음` with what you checked; a category outside the supplied scope gets `대상 외` with the reason. Missing evidence is `판단 보류`, not `없음`.
+2. `python3 .claude/skills/report-audit/scripts/report_md.py signals FILE [--source X.c]` — 과제2에서 밝혀낸 AI 작성 신호 10종을 보고한다. 자동 수정하지 않는다.
+3. For each candidate, return to the relevant raw code, input and output in the **same file**; `prose` hides those blocks and cannot establish a factual error by itself. Apply the verdict rules below, then fill **every** category of the findings table. A checked category with no issue gets `없음` with what you checked; a category outside the supplied scope gets `대상 외` with the reason. Missing evidence is `판단 보류`, not `없음`.
 3. Present the table and ask once for the scope to fix (AskUserQuestion, recommended answer first). If no question tool exists, ask in chat and stop. Do not edit before the answer.
 4. Edit approved `오류 확정` or `설명 보완` rows with exact-string replacements. Change only the defective words; do not add new claims, examples or sentences while fixing one. Leave `정상` and `판단 보류` rows unchanged, including unsupported claims whose truth remains unknown. Do not delete a claim or replace it with a theoretical prediction merely because its execution evidence is absent.
 5. Verify:
@@ -49,6 +50,7 @@ Absence of an implementation or output in the report does **not** establish that
 | 문장 | Endings whose meaning does not fit (셈이다 for something literally true), colloquial fragments (꼴이다, 가득이다), mismatched pairs (…결과이고, …때문이다), a predicate inside parentheses, a subheading narrower than its content — in-cell subheadings are the short segments between `¶` marks in `prose` output; compare each with the branch or paragraphs under it (e.g. "프로세스가 다 돈 경우." heading a branch that also covers quantum expiry). Scan: `… prose FILE \| grep -n '셈이다\|꼴이다\|가득이다\|때문이다\|)'` then read each hit. | "IDLE_CONTEXT와 같은 셈이다" (they are exactly equal) |
 | 소스 대조 (opt-in) | Only when the user names a `.c` file: `python3 .claude/skills/report-audit/scripts/report_md.py code-compare FILE --source X.c`. Inspect the raw source before judging content; see the helper limitations below. | Allman/4-space vs K&R/2-space establishes a formatting difference, not a content error or authorship. |
 | 경고 (보고만) | `report_md.py warnings FILE` — expired signed image URLs carrying security tokens. Do not edit them; re-export replaces them. | `X-Amz-Expires=3600` issued 2026-10-29 |
+| AI 작성 신호 (보고만) | `signals` 10종. 양성 이름·위치·수치를 그대로 옮기고, 수정 제안은 쓰지 않는다. `source-out-of-scope-guards`는 `--source` 지정 시에만. | 과제2: `run-script-trace` 24건, `output-block-smushed-prompts` 6건, `caption-duplication` 6/6, `no-personal-voice` whole prose |
 
 Columns of the table you present: `행 | 범주 | 판정 | 현재 문구 | 문제 | 수정안 | 근거`. 근거 identifies the claim role and conditions, cites the relevant output/code/heading lines, and explains why they support the verdict (or what is missing). Use `정상` for checked, matching captions. For a checked category with no issue, use `정상` and `없음`; for `대상 외`, use `—` as the verdict. `정상` and `판단 보류` rows have `—` as the correction. Signed-URL warnings remain report-only.
 
@@ -61,6 +63,8 @@ Exit code 1 can mean formatting alone differs. Read `tokens_equal`, `format_diff
 ## Out of scope: style signals
 
 Do not rewrite text to look less AI-written or to pass a detector: repeated templates, symmetric case layouts, "정상 입력이라면…" repetition, rubric-compliance sentences, prose length, comment density. These are not errors, and rewriting them hides assistance (same rule as `assignment-report-audit`). If asked, say this skill fixes factual and language errors only, and that AI assistance should be disclosed under the course policy. Fix genuine errors in the same pass as usual.
+
+다만 검출(`signals`)은 저자가 제출 전 공개·수정할 수 있도록 허용한다. 스킬 자체가 재작성하거나 신호 문구를 "자연스럽게" 바꾸지 않는다.
 
 ## Common mistakes
 

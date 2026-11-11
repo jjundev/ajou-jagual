@@ -427,7 +427,7 @@ def _signal_provided_vs_implemented_parity(text: str) -> list[tuple[str, str, st
     )]
 
 
-_FUNC_DEF = re.compile(r"^\s*\w[\w\s*]*\s+(\w+)\s*\([^)]*\)\s*\n\s*\{", re.M)
+_FUNC_DEF = re.compile(r"^\s*\w[\w\s*]*\s+\*?(\w+)\s*\([^)]*\)\s*\{", re.M)
 _GUARD = re.compile(r"(\w+)\s*(?:==\s*NULL|<=\s*0|<\s*0)")
 
 

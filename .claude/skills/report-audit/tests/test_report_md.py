@@ -333,6 +333,35 @@ class SignalTests(unittest.TestCase):
         self.assertNotIn("cell-prefix-repetition", names)
 
 
+FIXTURES = Path(__file__).resolve().parent / "fixtures"
+
+
+class SignalIntegrationTests(unittest.TestCase):
+    def test_hw2_triggers_at_least_eight(self):
+        text = (FIXTURES / "hw2_excerpt.md").read_text(encoding="utf-8")
+        source = str(FIXTURES / "hw2_source.c")
+        names = {n for n, loc, _ in report_md.style_signals(text, source) if loc != "skipped"}
+        self.assertGreaterEqual(len(names), 8, sorted(names))
+
+    def test_hw1_triggers_at_most_two(self):
+        text = (FIXTURES / "hw1_excerpt.md").read_text(encoding="utf-8")
+        names = {n for n, loc, _ in report_md.style_signals(text) if loc != "skipped"}
+        self.assertLessEqual(len(names), 2, sorted(names))
+
+    def test_signals_cli_tab_separated_lines(self):
+        text = (FIXTURES / "hw2_excerpt.md").read_text(encoding="utf-8")
+        with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as fh:
+            fh.write(text)
+            report = fh.name
+        result = subprocess.run(
+            [sys.executable, str(Path(report_md.__file__)), "signals", report],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 1)
+        for line in result.stdout.splitlines():
+            self.assertEqual(line.count("\t"), 2, line)
+
+
 class ReviewFocusTests(unittest.TestCase):
     def test_signals_cli_on_empty_file_exits_zero(self):
         with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as fh:
