@@ -189,6 +189,29 @@ class SignalTests(unittest.TestCase):
         names = [n for n, _, _ in report_md.style_signals(text)]
         self.assertNotIn("output-block-smushed-prompts", names)
 
+    def test_caption_duplication_fires_when_all_three_captions_equal(self):
+        text = (
+            "![동일한 캡션 문구입니다](https://example.com/a.png)\n"
+            "![동일한 캡션 문구입니다](https://example.com/a.png)\n"
+            "![동일한 캡션 문구입니다](https://example.com/a.png)\n"
+        )
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertIn("caption-duplication", names)
+
+    def test_caption_duplication_needs_three_images(self):
+        text = "![동일한 캡션 문구입니다](https://example.com/a.png)\n![동일한 캡션 문구입니다](https://example.com/b.png)\n"
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("caption-duplication", names)
+
+    def test_caption_duplication_quiet_when_captions_differ(self):
+        text = (
+            "![사례 1 설명 push](https://example.com/a.png)\n"
+            "![사례 2 설명 pop](https://example.com/b.png)\n"
+            "![사례 3 설명 idle](https://example.com/c.png)\n"
+        )
+        names = [n for n, _, _ in report_md.style_signals(text)]
+        self.assertNotIn("caption-duplication", names)
+
 
 class ReviewFocusTests(unittest.TestCase):
     def test_signals_cli_on_empty_file_exits_zero(self):

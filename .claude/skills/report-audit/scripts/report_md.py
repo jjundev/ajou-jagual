@@ -13,6 +13,7 @@ Exit codes: 0 ok, 1 difference found, 2 usage or file error.
 from __future__ import annotations
 
 import argparse
+import itertools
 import re
 import subprocess
 import sys
@@ -283,10 +284,35 @@ def _signal_output_block_smushed_prompts(text: str) -> list[tuple[str, str, str]
     return out
 
 
+def _trigrams(s: str) -> set[str]:
+    s = re.sub(r"\s+", " ", s).strip()
+    return {s[i:i + 3] for i in range(max(0, len(s) - 2))}
+
+
+def _signal_caption_duplication(text: str) -> list[tuple[str, str, str]]:
+    captions: list[tuple[int, str]] = []
+    for index, match in enumerate(_IMAGE.finditer(text), start=1):
+        head = match.group(1)  # "![caption]("
+        caption = head[2:-2]
+        captions.append((index, caption))
+    if len(captions) < 3:
+        return []
+    grams = [(i, _trigrams(c)) for i, c in captions]
+    out: list[tuple[str, str, str]] = []
+    for (i1, g1), (i2, g2) in itertools.combinations(grams, 2):
+        if not g1 or not g2:
+            continue
+        jaccard = len(g1 & g2) / min(len(g1), len(g2))
+        if jaccard >= 0.6:
+            out.append(("caption-duplication", f"image {i1},{i2}", f"jaccard={jaccard:.2f}"))
+    return out
+
+
 def style_signals(text: str, source: str | None = None) -> list[tuple[str, str, str]]:
     out: list[tuple[str, str, str]] = []
     out.extend(_signal_run_script_trace(text))
     out.extend(_signal_output_block_smushed_prompts(text))
+    out.extend(_signal_caption_duplication(text))
     return out
 
 
