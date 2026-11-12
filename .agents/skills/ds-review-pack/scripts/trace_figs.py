@@ -437,3 +437,140 @@ def shadow_svg(trace: dict, structure_id: str, svg_id: str) -> str:
     h = base + 28 + MARGIN
     label = f"나무의 숫자를 아래로 내리면 왼쪽부터 {', '.join(order)}이 차례로 놓여요"
     return _svg(svg_id, w, h, label, parts)
+
+
+# ---------------------------------------------------------------------------
+# HTML 조각 (노트 재생기 / 문제설명 대표 그림)
+# ---------------------------------------------------------------------------
+
+_BTN_GHOST = ('style="justify-self:auto;min-width:0;padding:0 16px;border:1px solid var(--line)"')
+_BTN_PRIMARY = 'style="justify-self:auto;min-width:0;padding:0 16px"'
+
+_PLAYER_JS = """(function () {
+  var id = %s;
+  var svgs = [];
+  var k = 1;
+  var el;
+  while ((el = document.getElementById('trace-' + id + '-s' + k))) { svgs.push(el); k += 1; }
+  var items = document.getElementById('trace-' + id + '-steps').getElementsByTagName('li');
+  var num = document.getElementById('trace-' + id + '-n');
+  var text = document.getElementById('trace-' + id + '-text');
+  var reset = document.getElementById('trace-' + id + '-reset');
+  var prev = document.getElementById('trace-' + id + '-prev');
+  var next = document.getElementById('trace-' + id + '-next');
+  var i = 0;
+  function show(n) {
+    i = Math.max(0, Math.min(svgs.length - 1, n));
+    for (var j = 0; j < svgs.length; j += 1) {
+      if (j === i) { svgs[j].removeAttribute('hidden'); } else { svgs[j].setAttribute('hidden', ''); }
+    }
+    num.textContent = (i + 1) + '/' + svgs.length;
+    text.textContent = items[i].textContent;
+    prev.disabled = i === 0;
+    reset.disabled = i === 0;
+    next.disabled = i === svgs.length - 1;
+  }
+  reset.addEventListener('click', function () { show(0); });
+  prev.addEventListener('click', function () { show(i - 1); });
+  next.addEventListener('click', function () { show(i + 1); });
+  show(0);
+})();"""
+
+
+def _key_indexes(trace: dict) -> list[int]:
+    return [i for i, s in enumerate(trace["steps"]) if s.get("key")]
+
+
+def _wrapper_open(trace: dict, target: str) -> str:
+    return (f'<div class="trace-block" data-trace="{_esc(trace["id"])}" '
+            f'data-trace-sha="{trace_sha(trace)}" data-trace-target="{target}">')
+
+
+def _render_note(trace: dict) -> str:
+    tid = trace["id"]
+    steps = trace["steps"]
+    total = len(steps)
+    keys = _key_indexes(trace)
+    out = [_wrapper_open(trace, "note")]
+    out.append(f'<div class="widget" id="widget-trace-{tid}"><h4>직접 해 보기: {_esc(trace.get("title", ""))}</h4>')
+    out.append('<p class="widget-help">이전·다음을 누르면 한 단계씩 그림과 설명이 바뀌어요.</p>')
+    out.append('<div class="controls" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">'
+               f'<button class="btn btn-ghost" id="trace-{tid}-reset" type="button" {_BTN_GHOST}>처음부터</button>'
+               f'<button class="btn btn-ghost" id="trace-{tid}-prev" type="button" {_BTN_GHOST}>이전</button>'
+               f'<button class="btn btn-primary" id="trace-{tid}-next" type="button" {_BTN_PRIMARY}>다음</button>'
+               '</div>')
+    for i in range(total):
+        out.append(step_svg(trace, i, f"trace-{tid}-s{i + 1}", hidden=i > 0))
+    out.append(f'<p class="readout"><b id="trace-{tid}-n">1/{total}</b> '
+               f'<span id="trace-{tid}-text" aria-live="polite">{_esc(steps[0]["text"])}</span></p>')
+    out.append('<div class="widget-static" hidden>')
+    for n, i in enumerate(keys, 1):
+        out.append(f'<figure class="figure">{step_svg(trace, i, f"widget-trace-{tid}-static-{n}")}'
+                   f'<figcaption>단계 {i + 1}. {_esc(steps[i]["text"])}</figcaption></figure>')
+    rows = "".join(f'<tr><td>{i + 1}</td><td>{_esc(steps[i]["text"])}</td></tr>' for i in keys)
+    out.append(f'<div class="table-wrap"><table><tr><th>단계</th><th>설명</th></tr>{rows}</table></div>')
+    out.append('</div></div>')
+    out.append(f'<ol class="steps" id="trace-{tid}-steps" data-trace="{_esc(tid)}">'
+               + "".join(f'<li>{_esc(s["text"])}</li>' for s in steps) + '</ol>')
+    out.append('</div>')
+    out.append(f'<!-- /trace {tid} -->')
+    out.append(f'<script id="widget-trace-{tid}-ui">{_PLAYER_JS % json.dumps(tid)}</script>')
+    return "\n".join(out) + "\n"
+
+
+def _render_explain(trace: dict) -> str:
+    tid = trace["id"]
+    steps = trace["steps"]
+    out = [_wrapper_open(trace, "explain")]
+    for n, i in enumerate(_key_indexes(trace), 1):
+        out.append(f'<figure class="figure">{step_svg(trace, i, f"trace-{tid}-k{n}")}'
+                   f'<figcaption>단계 {i + 1}. {_esc(steps[i]["text"])}</figcaption></figure>')
+    out.append('</div>')
+    out.append(f'<!-- /trace {tid} -->')
+    return "\n".join(out) + "\n"
+
+
+def render(trace: dict, target: str) -> str:
+    """target 'note' 은 단계 재생기, 'explain' 은 key 단계 정적 그림."""
+    if target == "note":
+        return _render_note(trace)
+    if target == "explain":
+        return _render_explain(trace)
+    raise ValueError(f"render: unknown target {target!r}")
+
+
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+    import sys
+
+    ap = argparse.ArgumentParser(prog="trace_figs.py")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    p = sub.add_parser("lint")
+    p.add_argument("path")
+    p = sub.add_parser("render")
+    p.add_argument("path")
+    p.add_argument("--target", choices=("note", "explain"), required=True)
+    p = sub.add_parser("shadow")
+    p.add_argument("path")
+    p.add_argument("--structure", required=True)
+    p.add_argument("--id", required=True)
+    args = ap.parse_args(argv)
+    try:
+        if args.cmd == "lint":
+            errors = lint(json.loads(Path(args.path).read_text(encoding="utf-8")))
+            for e in errors:
+                print(e)
+            return 1 if errors else 0
+        trace = load(Path(args.path))
+        if args.cmd == "render":
+            sys.stdout.write(render(trace, args.target))
+        else:
+            sys.stdout.write(shadow_svg(trace, args.structure, args.id))
+    except (TraceError, ValueError) as e:
+        print(e, file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

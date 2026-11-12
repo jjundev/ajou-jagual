@@ -1,11 +1,13 @@
 import copy
 import json
 import re
+import subprocess
+import sys
 from pathlib import Path
 import tempfile
 import unittest
 
-from _util import FIXTURES
+from _util import FIXTURES, SCRIPTS
 
 import trace_figs
 
@@ -169,6 +171,60 @@ class TestRender(unittest.TestCase):
     def test_shadow_unknown_structure(self):
         with self.assertRaises(ValueError):
             trace_figs.shadow_svg(self.t, "nope", "x")
+
+
+class TestFragments(unittest.TestCase):
+    def setUp(self):
+        self.t = trace_figs.load(FIXTURES / "trace" / "inorder-1105.json")
+
+    def test_note_fragment_parts(self):
+        h = trace_figs.render(self.t, "note")
+        self.assertEqual(h.count("<svg id=\"trace-inorder-1105-s"), 14)
+        self.assertEqual(h.count(" hidden"), 13 + 1)  # 숨긴 단계 13 + widget-static
+        self.assertEqual(re.findall(r"<li>(.*?)</li>", h), [s["text"] for s in self.t["steps"]])
+        self.assertIn('data-trace-sha="' + trace_figs.trace_sha(self.t) + '"', h)
+        self.assertEqual(h.count('id="widget-trace-inorder-1105-static-'), 4)
+        self.assertIn("<!-- /trace inorder-1105 -->", h)
+        self.assertLess(h.index("<!-- /trace inorder-1105 -->"), h.index('<script id="widget-trace-inorder-1105-ui">'))
+
+    def test_two_players_do_not_collide(self):
+        t2 = copy.deepcopy(self.t)
+        t2["id"] = "inorder-b"
+        doc = trace_figs.render(self.t, "note") + trace_figs.render(t2, "note")
+        ids = re.findall(r' id="([^"]+)"', doc)
+        self.assertEqual(len(ids), len(set(ids)))
+
+    def test_text_is_escaped(self):
+        t = copy.deepcopy(self.t)
+        t["steps"][0]["text"] = "a<b & c"
+        self.assertIn("a&lt;b &amp; c", trace_figs.render(t, "note"))
+
+    def test_cli_render_matches_function(self):
+        path = str(FIXTURES / "trace" / "inorder-1105.json")
+        for target in ("note", "explain"):
+            out = subprocess.run([sys.executable, str(SCRIPTS / "trace_figs.py"), "render", path, "--target", target],
+                                 capture_output=True, text=True, check=True).stdout
+            self.assertEqual(out, trace_figs.render(self.t, target))
+
+    def test_cli_lint_and_shadow(self):
+        path = str(FIXTURES / "trace" / "inorder-1105.json")
+        r = subprocess.run([sys.executable, str(SCRIPTS / "trace_figs.py"), "lint", path], capture_output=True, text=True)
+        self.assertEqual((r.returncode, r.stdout), (0, ""))
+        sid = self.t["structures"][0]["id"]
+        r = subprocess.run([sys.executable, str(SCRIPTS / "trace_figs.py"), "shadow", path, "--structure", sid, "--id", "sh-1"],
+                           capture_output=True, text=True, check=True)
+        self.assertIn('<svg id="sh-1"', r.stdout)
+        with tempfile.TemporaryDirectory() as d:
+            bad = copy.deepcopy(self.t)
+            bad["steps"][0]["text"] = "비용 $x$"
+            r = subprocess.run([sys.executable, str(SCRIPTS / "trace_figs.py"), "lint", str(write_tmp(bad, d))],
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 1)
+            self.assertTrue(r.stdout.strip())
+
+    def test_render_rejects_bad_target(self):
+        with self.assertRaises(ValueError):
+            trace_figs.render(self.t, "pdf")
 
 
 if __name__ == "__main__":
