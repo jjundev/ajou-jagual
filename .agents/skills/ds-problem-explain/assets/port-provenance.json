@@ -1862,6 +1862,62 @@
           "new": "_).resolve().parents[1]/'assets/note-template.html').read_text()\n    assert 'bio-' not in t and \"const TAB = 'ds-problem-explain-tab';\" in t\n    assert '.verdict-card {' in t  # 판정 카드 코드는 비활성 상태로 남는다\n\n\ndef test_review_scroll_figure_without_white_background_is_preserved(tmp_path):\n    pack,fragments=make(tmp_path)\n    figure='<figure><div class=\"figure-scroll\" style=\"max-width:100%;overflow-x:auto\"><svg viewBox=\"0 0 800 300\" style=\"width:800px;max-width:none;height:auto\"><text x=\"700\" y=\"20\">원문 끝 노드</text></svg></div></figure>'\n    p=replace(pack.problems[0],conditions_html=pack.problems[0].conditions_html+figure)\n    art=build_explanation(replace(pack,problems=(p,)),fragments,tmp_path/'stage',tmp_path/'repo')\n    assert figure in art.html.read_text()\n\n\ndef test_original_preformatted_paragraph_preserves_its_lines(tmp_path):\n    pack,fragments=make(tmp_path)\n    original='<p style=\"white-space:pre-wrap\">첫 문장\\n둘째 문장</p>'\n    p=replace(pack.problems[0],original_html=original)\n    art=build_explanation(replace(pack,problems=(p,)),fragments,tmp_path/'stage',tmp_path/'repo')\n    assert original in art.html.read_text()\n"
         }
       ]
+    },
+    {
+      "destination": "scripts/mpe_cli.py",
+      "base_sha256": "aedad7e1f39fcb99f73699f822650fbac05279bc16a9491fdee86bddc6ec40b9",
+      "current_sha256": "eb49fb095ddffe4a184f49efe629690cc75798cacbede277a55043dd769668a7",
+      "reason": "trace figures: build verifies trace-block fragments against folder/traces JSON (trace-missing/trace-stale) and passes traces to the stage",
+      "replacements": [
+        {
+          "old": "",
+          "new": "def trace_verifier():\n    scripts = Path(__file__).resolve().parents[2] / 'ds-review-pack' / 'scripts'\n    if not (scripts / 'trace_figs.py').is_file():\n        raise ExplainError('trace 생성기(ds-review-pack/scripts/trace_figs.py)가 없어요')\n    if str(scripts) not in sys.path:\n        sys.path.insert(0, str(scripts))\n    from trace_figs import verify\n    return verify\n\n"
+        },
+        {
+          "old": "    artifacts = build_explanation(item['pack'], fragments, stage, item['repo'])\n",
+          "new": "    traces = folder / 'traces'\n    if traces.is_dir() or any('class=\"trace-block\"' in text for text in fragments.values()):\n        verify = trace_verifier()\n        for pid, text in fragments.items():\n            bad = verify(text, traces)\n            if bad:\n                raise ExplainError(f'{pid}: ' + ', '.join(f'{code} {tid}' for code, tid in bad))\n    artifacts = build_explanation(item['pack'], fragments, stage, item['repo'], traces if traces.is_dir() else None)\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/mpe_render.py",
+      "base_sha256": "5a1165b5f1d1c4d5b81fea2029cc7443a66682f8c64efc38a4123eda20c26c0b",
+      "current_sha256": "026e715f1da0dd85ef0acb20d45693ed42644c518042339913947ae9f1e1be18",
+      "reason": "trace figures: build_explanation copies traces/*.json into the data dir before the manifest file list is computed",
+      "replacements": [
+        {
+          "old": "def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:\n",
+          "new": "def build_explanation(pack, fragments, stage: Path, repo: Path, traces: Path | None = None) -> Artifacts:\n"
+        },
+        {
+          "old": "",
+          "new": "    if traces is not None:\n        shutil.copytree(traces, data_dir / 'traces', ignore=lambda d, names: [n for n in names if not n.endswith('.json')])\n"
+        }
+      ]
+    },
+    {
+      "destination": "references/authoring.md",
+      "base_sha256": "9410752ce242a83846fda07e1306e1d53963143304cd1e226196084aabdc6e22",
+      "current_sha256": "34e58788a9a79bb881e4ee3c9a311433f329c66e8be814c0711d4c8ab10378da",
+      "reason": "trace figures: traces of 5+ steps use RUN/<대상>/traces/<id>.json and trace_figs.py render --target explain",
+      "replacements": [
+        {
+          "old": "재귀는 종료 조건과 호출·반환 순서, 반복문은 변수 변화와 실행 횟수, 포인터는 변수·주소·객체를 구분해요. 자료구조 추적은 연산별 상태 표와 불변식을 보여 줘요. `~해요` 체와 영어 전문용어 병기를 사용해요. 기존 원문·조건·질문·그림은 조립기가 붙이므로 재작성하지 않아요. `lecture-` 카드(`lecture-code` 등)는 조건·코드 블록을 `[data-source-field=\"conditions\"]`에, `(a)`/`(b)` 소문항 질문 목록을 `<h4>구할 것</h4><div data-source-field=\"ask\">`에 분리해 렌더링하므로 `understand`는 문제 전문을 반복하지 않고 1~2문장으로 간결하게 요약해요. 기출 원문은 조립기가 문제 안에 '기출 원문 보기'로 접어 보존해요.\n",
+          "new": "재귀는 종료 조건과 호출·반환 순서, 반복문은 변수 변화와 실행 횟수, 포인터는 변수·주소·객체를 구분해요. 자료구조 추적은 연산별 상태 표와 불변식을 보여 주고, 5단계 이상이면 `RUN/<대상>/traces/<id>.json` 을 만들어 `.agents/skills/ds-review-pack/scripts/trace_figs.py render --target explain` 그림을 붙여요. `~해요` 체와 영어 전문용어 병기를 사용해요. 기존 원문·조건·질문·그림은 조립기가 붙이므로 재작성하지 않아요. `lecture-` 카드(`lecture-code` 등)는 조건·코드 블록을 `[data-source-field=\"conditions\"]`에, `(a)`/`(b)` 소문항 질문 목록을 `<h4>구할 것</h4><div data-source-field=\"ask\">`에 분리해 렌더링하므로 `understand`는 문제 전문을 반복하지 않고 1~2문장으로 간결하게 요약해요. 기출 원문은 조립기가 문제 안에 '기출 원문 보기'로 접어 보존해요.\n"
+        }
+      ]
+    },
+    {
+      "destination": "tests/test_cli.py",
+      "base_sha256": "4671dfd9020cadaf44b6c22d3fded44d9af36078c06590853790364faa256f76",
+      "current_sha256": "36844b71d7851e43457d7f1723bafb6672a4bdf80ff3381db67e1be71f873a4a",
+      "reason": "trace figures: rerender keeps published traces/*.json; build rejects trace blocks without a traces dir and copies only JSON",
+      "replacements": [
+        {
+          "old": "",
+          "new": "\ndef test_rerender_keeps_published_traces(tmp_path):\n    repo, source = published_pack(tmp_path)\n    data = next((repo / '복습노트/0917/.pack').glob('자료_*'))\n    (data / 'traces').mkdir()\n    (data / 'traces' / 'x.json').write_text('{\"a\": 1}', encoding='utf-8')\n    result = call('rerender', '--repo', repo, '--target', source, '--run', tmp_path / 'run2')\n    assert result.returncode == 0, result.stderr\n    folder = next(p for p in (tmp_path / 'run2').iterdir() if p.is_dir())\n    assert (folder / 'traces' / 'x.json').read_text() == '{\"a\": 1}'\n"
+        }
+      ]
     }
   ],
   "common_sync": {
