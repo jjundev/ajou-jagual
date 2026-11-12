@@ -171,7 +171,7 @@ def build_explanation(pack, fragments, stage: Path, repo: Path, traces: Path | N
     shutil.copytree(ASSETS / 'vendor', data_dir / 'vendor')
     shutil.copy2(ASSETS / 'template-provenance.json', data_dir / 'template-provenance.json')
     if traces is not None:
-        shutil.copytree(traces, data_dir / 'traces')
+        shutil.copytree(traces, data_dir / 'traces', ignore=lambda d, names: [n for n in names if not n.endswith('.json')])
     articles = []
     toc = []
     for p in pack.problems:

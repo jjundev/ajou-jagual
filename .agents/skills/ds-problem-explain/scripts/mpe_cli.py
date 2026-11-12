@@ -108,7 +108,7 @@ def build(item, fragments):
     folder = item['folder']
     stage = folder / 'stage' / uuid.uuid4().hex
     traces = folder / 'traces'
-    if traces.is_dir():
+    if traces.is_dir() or any('class="trace-block"' in text for text in fragments.values()):
         verify = trace_verifier()
         for pid, text in fragments.items():
             bad = verify(text, traces)

@@ -69,5 +69,23 @@ class TestExplainFragment(unittest.TestCase):
             mpe_cli.build(item, frags)
 
 
+    def test_build_rejects_trace_block_without_traces_dir(self):
+        import shutil
+        import mpe_cli
+        from mpe_types import ExplainError
+        item, frags, folder = self._item()
+        shutil.rmtree(folder / "traces")
+        with self.assertRaisesRegex(ExplainError, "p1: trace-missing inorder-1105"):
+            mpe_cli.build(item, frags)
+
+    def test_build_copies_only_json_traces(self):
+        import mpe_cli
+        item, frags, folder = self._item()
+        (folder / "traces" / "stray.txt").write_text("x", encoding="utf-8")
+        mpe_cli.build(item, frags)
+        self.assertEqual(list(folder.glob("stage/*/**/traces/stray.txt")), [])
+        self.assertEqual(len(list(folder.glob("stage/*/**/traces/inorder-1105.json"))), 1)
+
+
 if __name__ == "__main__":
     unittest.main()

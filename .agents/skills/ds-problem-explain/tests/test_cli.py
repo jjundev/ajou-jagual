@@ -233,3 +233,13 @@ def test_rerender_keeps_published_evidence(tmp_path):
     assert result.returncode == 0, result.stderr
     folder = next(p for p in (tmp_path / 'run2').iterdir() if p.is_dir())
     assert (folder / 'evidence' / 'code-block-history' / 'old.html').read_text() == '옛 화면'
+
+def test_rerender_keeps_published_traces(tmp_path):
+    repo, source = published_pack(tmp_path)
+    data = next((repo / '복습노트/0917/.pack').glob('자료_*'))
+    (data / 'traces').mkdir()
+    (data / 'traces' / 'x.json').write_text('{"a": 1}', encoding='utf-8')
+    result = call('rerender', '--repo', repo, '--target', source, '--run', tmp_path / 'run2')
+    assert result.returncode == 0, result.stderr
+    folder = next(p for p in (tmp_path / 'run2').iterdir() if p.is_dir())
+    assert (folder / 'traces' / 'x.json').read_text() == '{"a": 1}'
