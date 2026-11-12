@@ -21,4 +21,6 @@
 
 7. `review-interaction.css` 끝 — `.note-link` 규칙을 붙였다. `render.py` 가 풀이 끝에 넣는 정리노트 토픽 링크의 간격이다.
 
+8. `review-interaction.css` 2~3행 사이 — `.review-ready .problem > .choices { margin-top:var(--s6); }` 를 넣었다. 문제 문장과 첫 보기 카드 사이를 카드끼리 간격(`--s3`)보다 넓힌다. 문제 `<p>` 아래 마진과 `ol` 위 마진은 겹치므로 기본 1em 보다 큰 토큰이어야 보인다.
+
 단답 대소문자 무시: `review-interaction.js` 의 `grade` 는 `window.ReviewShortCasefold` 지도가 없으면 글자마다 `toLowerCase()` 를 쓴다. 이 스킬의 답은 라틴 문자·숫자라 지도를 넣지 않는다.
