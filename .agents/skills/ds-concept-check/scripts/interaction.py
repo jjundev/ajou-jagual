@@ -145,7 +145,7 @@ ANSWER_EVENT = """        document.addEventListener('od:answer', ({detail}) => {
           if (detail.restored && detail.selected !== null) return;
           if (detail.selected === null) solved.delete(detail.id);
           else solved.add(detail.id);
-          tabStore.set(KEY, Array.from(solved));
+          // 저장하지 않는다: 새로고침하면 진행이 초기화된다(ds-review-pack 템플릿엔 tabStore 가 없다).
           if (curId) paintBtn();
           markToc(solved, cards.length, '푼 문제');
         });
