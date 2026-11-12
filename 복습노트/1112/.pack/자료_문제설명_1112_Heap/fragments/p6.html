@@ -1,7 +1,7 @@
 <div class="layer eli5" data-explanation="understand">
 <h4>무엇을 따라가라는 문제일까요?</h4>
 <p>강의 S8 p15의 <code>heap_sort</code>에 key 1, 23, 7, 8, 20을 넣고 두 for 루프를 손으로 따라가는 문제예요. (a)는 첫 루프(삽입) 직후 힙 배열, (b)는 둘째 루프(삭제) 반복마다 바뀌는 값, (c)는 뒤에서부터 채우는 이유와 시간 복잡도를 묻는 거예요.</p>
-<p>원래 코드는 <code>typedef</code>가 함수 뒤에 있어서, 문제는 typedef가 함수보다 앞에 있다고 보고 풀자고 약속했어요. 또 <code>heap_sort</code>가 아래에서 정의되는 <code>init</code>·<code>insert_max_heap</code>·<code>delete_max_heap</code>을 먼저 불러요. 문제는 이 순서를 따로 말하지 않았지만, 그대로면 C99 이후에는 선언 없는 호출이라 컴파일되지 않아요. 그래서 이 해설은 <strong>세 함수의 원형(선언)도 앞에 있다고 덧붙여 가정</strong>해요. 원 슬라이드 p15가 프로그램 일부만 보여 준 것이라 출제 의도와도 맞고, 이 가정 아래에서 n = 5인 실행은 범위 밖 접근 없이 정의된 동작이에요.</p>
+<p>원래 코드는 <code>typedef</code>가 함수 뒤에 있고, <code>heap_sort</code>가 아래에서 정의되는 <code>init</code>·<code>insert_max_heap</code>·<code>delete_max_heap</code>을 먼저 불러요. 그 순서 그대로면 C99 이후에는 타입을 모르고 선언 없이 호출하는 셈이라 컴파일되지 않아요. 그래서 문제는 <strong>두 <code>typedef</code>와 세 함수의 원형(선언)이 <code>heap_sort</code>보다 앞에 있다고 보고</strong> 풀자고 약속했어요. 원 슬라이드 p15가 프로그램 일부만 보여 준 것이라 출제 의도와도 맞고, 이 약속 아래에서 n = 5인 실행은 범위 밖 접근 없이 정의된 동작이에요.</p>
 </div>
 <div class="layer formal" data-explanation="recall">
 <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
