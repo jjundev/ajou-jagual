@@ -61,6 +61,11 @@ def validate(m: dict) -> list[str]:
         return ["manifest: JSON 객체 필요"]
     for key, typ in TOP_LEVEL_TYPES.items():
         _need(m, key, typ, "manifest", errors)
+    if "rules" in m:
+        if not isinstance(m["rules"], list):
+            errors.append("manifest.rules: list 필요")
+        else:
+            _strings(m["rules"], "manifest.rules", errors)
     if errors:
         return errors
     if not RANGE_RE.fullmatch(m["range"]):

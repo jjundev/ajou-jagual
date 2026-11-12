@@ -22,6 +22,7 @@ from urllib.parse import unquote
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import manifest as manifest_mod  # noqa: E402
+import trace_figs  # noqa: E402
 
 VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
 CONTAINER_CLASSES = {"topic", "card"}
@@ -257,9 +258,68 @@ class Problem:
         return f"[{self.code}] {self.where}: {self.detail}"
 
 
-def check_common(doc: Doc, source: str, path: Path) -> list[Problem]:
+TRACE_REQUIRED_MIN_STEPS = 5
+
+
+class _LongStepsFinder(HTMLParser):
+    """formal 레이어 안의 data-trace 없는 ol.steps 중 <li> 가 많은 것을 토픽 id 로 모은다."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.found: list[str] = []
+        self._stack: list[tuple[str, str]] = []  # (tag, kind): topic:<id> | formal | steps | ""
+        self._topic = ""
+        self._li = 0
+
+    def _has(self, kind: str) -> bool:
+        return any(k.startswith(kind) for _, k in self._stack)
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        classes = set((a.get("class") or "").split())
+        kind = ""
+        if tag == "li" and self._has("steps"):
+            self._li += 1
+        elif tag in VOID_TAGS:
+            return
+        if "topic" in classes and a.get("id"):
+            kind = f"topic:{a['id']}"
+        elif tag == "div" and {"layer", "formal"} <= classes:
+            kind = "formal"
+        elif tag == "ol" and "steps" in classes and self._has("formal") and "data-trace" not in a:
+            kind = "steps"
+            self._li = 0
+        self._stack.append((tag, kind))
+
+    def handle_endtag(self, tag):
+        for i in range(len(self._stack) - 1, -1, -1):
+            if self._stack[i][0] == tag:
+                for _, kind in self._stack[i:]:
+                    if kind == "steps" and self._li >= TRACE_REQUIRED_MIN_STEPS:
+                        topic = next((k[6:] for _, k in reversed(self._stack) if k.startswith("topic:")), "")
+                        self.found.append(topic)
+                del self._stack[i:]
+                break
+
+
+def long_hand_traces(source: str) -> list[str]:
+    finder = _LongStepsFinder()
+    finder.feed(source)
+    finder.close()
+    return finder.found
+
+
+def check_common(doc: Doc, source: str, path: Path, *, rules: frozenset[str] = frozenset(),
+                 traces_dir: Path | None = None) -> list[Problem]:
     name = Path(path).name
     out: list[Problem] = []
+    if traces_dir is None:
+        traces_dir = Path(path).parent / ".pack" / "자료_복습팩" / "traces"
+    out += [Problem(code, tid, "trace 조각이 JSON 과 맞지 않음" if code == "trace-stale" else "trace JSON 없음")
+            for code, tid in trace_figs.verify(source, traces_dir)]
+    if "trace-v1" in rules:
+        out += [Problem("trace-required", topic or name, f"formal ol.steps <li> {TRACE_REQUIRED_MIN_STEPS}개 이상인데 생성된 trace 조각이 없음")
+                for topic in long_hand_traces(source)]
     is_note = name.startswith("정리노트_") or any("topic" in c.classes for c in doc.containers.values())
     if is_note:
         out += [Problem("recording-locator", name, match.group(0))
@@ -363,17 +423,20 @@ def check_review(doc: Doc, m: dict) -> list[Problem]:
     return out
 
 
-def check_file(path: Path | str) -> list[Problem]:
+def check_file(path: Path | str, *, traces_dir: Path | None = None) -> list[Problem]:
     source = Path(path).read_text(encoding="utf-8")
-    return check_common(parse_html(source), source, Path(path))
+    return check_common(parse_html(source), source, Path(path), traces_dir=traces_dir)
 
 
-def check_pack(m: dict, note_path: Path | str, review_path: Path | str) -> list[Problem]:
+def check_pack(m: dict, note_path: Path | str, review_path: Path | str, *,
+               traces_dir: Path | None = None) -> list[Problem]:
     out: list[Problem] = []
+    rules = frozenset(m.get("rules", []))
     for path, extra in ((note_path, check_note), (review_path, check_review)):
         source = Path(path).read_text(encoding="utf-8")
         doc = parse_html(source)
-        out += check_common(doc, source, Path(path)) + extra(doc, m)
+        out += check_common(doc, source, Path(path), rules=rules if extra is check_note else frozenset(),
+                            traces_dir=traces_dir) + extra(doc, m)
     return out
 
 
@@ -383,14 +446,16 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--manifest")
     ap.add_argument("--note")
     ap.add_argument("--review")
+    ap.add_argument("--traces", help="trace JSON 폴더 (기본: 노트 옆 .pack/자료_복습팩/traces)")
     args = ap.parse_args(argv)
     problems: list[Problem] = []
     if args.manifest:
         if not (args.note and args.review):
             ap.error("--manifest에는 --note와 --review가 필요")
-        problems += check_pack(manifest_mod.load(args.manifest), args.note, args.review)
+        problems += check_pack(manifest_mod.load(args.manifest), args.note, args.review,
+                              traces_dir=Path(args.traces) if args.traces else None)
     for name in args.files:
-        problems += check_file(name)
+        problems += check_file(name, traces_dir=Path(args.traces) if args.traces else None)
     for p in problems:
         print(p)
     print("OK" if not problems else f"FAIL ({len(problems)})")

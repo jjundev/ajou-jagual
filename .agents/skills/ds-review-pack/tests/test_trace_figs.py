@@ -229,3 +229,63 @@ class TestFragments(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestVerify(unittest.TestCase):
+    def setUp(self):
+        self.t = trace_figs.load(FIXTURES / "trace" / "inorder-1105.json")
+        self.dir = Path(tempfile.mkdtemp())
+        self.addCleanup(__import__("shutil").rmtree, self.dir, True)
+
+    def dump(self):
+        (self.dir / "inorder-1105.json").write_text(json.dumps(self.t, ensure_ascii=False), encoding="utf-8")
+
+    def test_stale_trace_fails(self):
+        self.dump()
+        h = trace_figs.render(self.t, "note")
+        self.assertEqual(trace_figs.verify(h, self.dir), [])
+        self.t["steps"][2]["text"] += "!"
+        self.dump()
+        self.assertEqual(trace_figs.verify(h, self.dir), [("trace-stale", "inorder-1105")])
+
+    def test_missing_json(self):
+        self.assertEqual(trace_figs.verify(trace_figs.render(self.t, "note"), self.dir),
+                         [("trace-missing", "inorder-1105")])
+
+    def test_broken_json_is_stale_not_crash(self):
+        (self.dir / "inorder-1105.json").write_text("{", encoding="utf-8")
+        self.assertEqual(trace_figs.verify(trace_figs.render(self.t, "note"), self.dir),
+                         [("trace-stale", "inorder-1105")])
+
+    def test_script_moved_before_body_end_is_fresh(self):
+        self.dump()
+        h = trace_figs.render(self.t, "note")
+        i = h.index("<script")
+        doc = f"<html><body>{h[:i]}<p>later</p>{h[i:]}</body></html>"
+        self.assertEqual(trace_figs.verify(doc, self.dir), [])
+
+    def test_missing_or_changed_script_is_stale(self):
+        self.dump()
+        h = trace_figs.render(self.t, "note")
+        i = h.index("<script")
+        self.assertEqual(trace_figs.verify(h[:i], self.dir), [("trace-stale", "inorder-1105")])
+        self.assertEqual(trace_figs.verify(h.replace("function", "fun ction", 1), self.dir),
+                         [("trace-stale", "inorder-1105")])
+
+    def test_explain_fragment(self):
+        self.dump()
+        h = trace_figs.render(self.t, "explain")
+        self.assertEqual(trace_figs.verify(h, self.dir), [])
+
+    def test_cli_verify(self):
+        self.dump()
+        f = self.dir / "n.html"
+        f.write_text(trace_figs.render(self.t, "note"), encoding="utf-8")
+        r = subprocess.run([sys.executable, str(SCRIPTS / "trace_figs.py"), "verify", str(f), "--traces", str(self.dir)],
+                           capture_output=True, text=True)
+        self.assertEqual((r.returncode, r.stdout), (0, ""))
+        self.t["steps"][0]["text"] += "!"
+        self.dump()
+        r = subprocess.run([sys.executable, str(SCRIPTS / "trace_figs.py"), "verify", str(f), "--traces", str(self.dir)],
+                           capture_output=True, text=True)
+        self.assertEqual((r.returncode, r.stdout.strip()), (1, "trace-stale inorder-1105"))

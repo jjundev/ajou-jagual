@@ -172,3 +172,61 @@ class TestPack(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestTraceRules(unittest.TestCase):
+    def _codes(self, n, rules, traces_dir=None):
+        ol = '<ol class="steps">' + "<li>x</li>" * n + "</ol>"
+        src = (f'<html lang="ko"><body><article class="topic" id="t"><div class="layer formal">{ol}</div>'
+               '</article></body></html>')
+        doc = check_html.parse_html(src)
+        return [p for p in check_html.check_common(doc, src, Path("정리노트_9999_X.html"), rules=rules)]
+
+    def test_trace_required_only_with_rule(self):
+        self.assertNotIn("trace-required", [p.code for p in self._codes(5, frozenset())])
+        probs = [p for p in self._codes(5, frozenset({"trace-v1"})) if p.code == "trace-required"]
+        self.assertEqual([p.where for p in probs], ["t"])
+
+    def test_four_steps_allowed(self):
+        self.assertNotIn("trace-required", [p.code for p in self._codes(4, frozenset({"trace-v1"}))])
+
+    def test_generated_ol_not_required(self):
+        ol = '<ol class="steps" data-trace="x">' + "<li>x</li>" * 6 + "</ol>"
+        src = f'<html lang="ko"><body><article class="topic" id="t"><div class="layer formal">{ol}</div></article></body></html>'
+        codes = [p.code for p in check_html.check_common(check_html.parse_html(src), src, Path("정리노트_9999_X.html"),
+                                                          rules=frozenset({"trace-v1"}))]
+        self.assertNotIn("trace-required", codes)
+
+    def test_other_layer_not_required(self):
+        ol = '<ol class="steps">' + "<li>x</li>" * 6 + "</ol>"
+        src = f'<html lang="ko"><body><article class="topic" id="t"><div class="layer eli5">{ol}</div></article></body></html>'
+        codes = [p.code for p in check_html.check_common(check_html.parse_html(src), src, Path("정리노트_9999_X.html"),
+                                                          rules=frozenset({"trace-v1"}))]
+        self.assertNotIn("trace-required", codes)
+
+    def test_trace_missing_and_stale_reported(self):
+        import tempfile, trace_figs
+        from _util import FIXTURES
+        t = trace_figs.load(FIXTURES / "trace" / "inorder-1105.json")
+        frag = trace_figs.render(t, "note")
+        i = frag.index("<script")
+        src = f'<html lang="ko"><body><article class="topic" id="t">{frag[:i]}</article>{frag[i:]}</body></html>'
+        doc = check_html.parse_html(src)
+        with tempfile.TemporaryDirectory() as d:
+            codes = [p.code for p in check_html.check_common(doc, src, Path("정리노트_9999_X.html"), traces_dir=Path(d))]
+            self.assertIn("trace-missing", codes)
+            (Path(d) / "inorder-1105.json").write_text(json.dumps(t, ensure_ascii=False), encoding="utf-8")
+            codes = [p.code for p in check_html.check_common(doc, src, Path("정리노트_9999_X.html"), traces_dir=Path(d))]
+            self.assertFalse([c for c in codes if c.startswith("trace-")])
+            t["steps"][1]["text"] += "!"
+            (Path(d) / "inorder-1105.json").write_text(json.dumps(t, ensure_ascii=False), encoding="utf-8")
+            codes = [p.code for p in check_html.check_common(doc, src, Path("정리노트_9999_X.html"), traces_dir=Path(d))]
+            self.assertIn("trace-stale", codes)
+
+    def test_existing_notes_unchanged(self):
+        from _util import REPO
+        notes = sorted((REPO / "복습노트").glob("*/정리노트_*.html"))
+        for note in notes:
+            src = note.read_text(encoding="utf-8")
+            codes = [p.code for p in check_html.check_common(check_html.parse_html(src), src, note)]
+            self.assertEqual([c for c in codes if c.startswith("trace-")], [], note.name)

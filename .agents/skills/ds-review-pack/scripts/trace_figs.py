@@ -539,6 +539,49 @@ def render(trace: dict, target: str) -> str:
     raise ValueError(f"render: unknown target {target!r}")
 
 
+_BLOCK_RE = re.compile(
+    r'<div class="trace-block" data-trace="([^"]*)"[^>]*? data-trace-target="(note|explain)">')
+_SCRIPT_RE = r'<script id="widget-trace-%s-ui">.*?</script>'
+
+
+def _split_fragment(rendered: str, tid: str) -> tuple[str, str]:
+    """render 결과를 (표지까지의 블록, 스크립트 또는 빈 문자열)로 가른다."""
+    marker = f"<!-- /trace {tid} -->"
+    cut = rendered.index(marker) + len(marker)
+    m = re.search(_SCRIPT_RE % re.escape(tid), rendered[cut:], re.S)
+    return rendered[:cut], (m.group(0) if m else "")
+
+
+def verify(html: str, traces_dir: Path) -> list[tuple[str, str]]:
+    """문서 속 trace 조각이 JSON 과 일치하는지 본다. (code, id) 목록.
+
+    JSON 이 없으면 trace-missing, 있어도 읽기·lint 에 실패하거나 조각이 다르면 trace-stale.
+    스크립트는 조립 때 </body> 앞으로 옮겨지므로 블록(표지까지)과 따로 비교한다.
+    """
+    out: list[tuple[str, str]] = []
+    for m in _BLOCK_RE.finditer(html):
+        tid, target = m.group(1), m.group(2)
+        json_path = Path(traces_dir) / f"{tid}.json"
+        if not json_path.is_file():
+            out.append(("trace-missing", tid))
+            continue
+        try:
+            want_block, want_script = _split_fragment(render(load(json_path), target), tid)
+        except (TraceError, ValueError, OSError):
+            out.append(("trace-stale", tid))
+            continue
+        marker = f"<!-- /trace {tid} -->"
+        end = html.find(marker, m.start())
+        if end < 0 or html[m.start():end + len(marker)] != want_block:
+            out.append(("trace-stale", tid))
+            continue
+        if want_script:
+            found = re.search(_SCRIPT_RE % re.escape(tid), html, re.S)
+            if not found or found.group(0) != want_script:
+                out.append(("trace-stale", tid))
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     import argparse
     import sys
@@ -554,8 +597,16 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("path")
     p.add_argument("--structure", required=True)
     p.add_argument("--id", required=True)
+    p = sub.add_parser("verify")
+    p.add_argument("path")
+    p.add_argument("--traces", required=True)
     args = ap.parse_args(argv)
     try:
+        if args.cmd == "verify":
+            bad = verify(Path(args.path).read_text(encoding="utf-8"), Path(args.traces))
+            for code, tid in bad:
+                print(code, tid)
+            return 1 if bad else 0
         if args.cmd == "lint":
             errors = lint(json.loads(Path(args.path).read_text(encoding="utf-8")))
             for e in errors:

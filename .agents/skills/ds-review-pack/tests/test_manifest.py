@@ -144,3 +144,17 @@ class TestManifest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestRules(unittest.TestCase):
+    def test_rules_optional_and_list_of_str(self):
+        m = mini()
+        self.assertEqual(manifest.validate(m), [])
+        m["rules"] = ["trace-v1"]
+        self.assertEqual(manifest.validate(m), [])
+
+    def test_rules_bad_types(self):
+        for bad in ("trace-v1", [1], [""]):
+            m = mini()
+            m["rules"] = bad
+            self.assertTrue(manifest.validate(m), bad)
