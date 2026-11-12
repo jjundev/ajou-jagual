@@ -58,6 +58,7 @@
 ## 문체
 - 쉽게 말하면(eli5): 초등학생이 이해할 1~3문장(figcaption 포함) + 그림. 전문용어·기호·코드 없이(필요하면 정확히 말하면에 쓴다). 토스처럼 짧고 다정한 "~해요" 체.
 - 정확히 말하면(formal): 빠짐없이, 정확하게. 추적은 한 줄에 한 단계. 문장은 "~해요" 체, 추적 단계는 상태 위주로 짧게(예: `push(3) → [1, 3]`).
+- 5단계 이상 상태 추적은 [trace 생성기](trace-figures.md)로 만든다. 손으로 쓴 `ol.steps` 는 4단계까지만 쓴다. 생성 조각은 손으로 고치지 않는다.
 - 교수님 말씀(prof)/꼭 기억해요(warn): 원문 인용은 15단어 안팎으로 줄이고 인용 끝에 출처·날짜 꼬리표(`(0914 26:00)`, `(1112)`, `(1112 수업)` 등)를 붙이지 않는다. 수업 날짜는 토픽 머리의 `<span class="tag date">`가 맡는다. `check_html.py`의 `quote-date`가 잡는다.
 - UI 글은 한국어, 전문용어는 영어 병기(예: 재귀(recursion)). 한 문장에 한 가지만 말하고, 군더더기 수식어("아주", "정말", "한번")는 뺀다.
 
@@ -75,6 +76,7 @@
 
 ## SVG 그림
 - 개념 토픽마다 eli5 레이어에 그림 1개 이상(노드와 화살표로 된 리스트, 칸으로 된 배열·스택·큐, 트리, 재귀 호출 상자 쌓기 등).
+- 실제 예제(트리·배열·스택·리스트)의 상태는 formal 레이어에서 trace 생성기 그림으로 보여 준다. eli5 그림은 비유여도 된다.
 - `<figure class="figure"><svg id="fig-<kebab>" viewBox="…" role="img" aria-label="한국어 설명">…</svg><figcaption>…</figcaption></figure>`
 - 색은 클래스로만: `fig-ink`, `fig-accent`, `fig-danger`, `fig-dot`, `fig-text`, `fig-muted`. 하드코딩 색 금지(다크모드).
 - 채움과 윤곽: `fig-ink`, `fig-accent`, `fig-danger`는 선만 그린다(`fill:none`). 속이 칠해진 점·도형은 `fig-dot`(강조색 채움)뿐이다(`fig-text`, `fig-muted`는 글자용). 글·figcaption·`aria-label`에서 "색칠된", "채워진"은 `fig-dot` 도형에만 쓰고, 선만 있는 도형은 "테두리", "선"으로 부른다.

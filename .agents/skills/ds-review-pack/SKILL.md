@@ -115,6 +115,7 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 - 신규 팩은 핵심 범위 충족 우선으로 보통 8~12문항을 목표로 하며 적합한 교과서도 포함한다. 기존 추가 모드는 별도 4~8개 정책이다. 교과서 후보 장 대응은 검색용이며 보기·소문항 전체가 배운 범위여야 한다.
 - `scripts/textbook_blocks.py`로 교과서 원문 content/options를 순서대로 렌더링한다. 원문은 숫자·코드·그림·오타를 보존하고 observations/printed_answer를 답으로 쓰지 않는다. 직접 풀이를 Python/C 실행 또는 강의 근거로 검산한다.
 - manifest는 `references/manifest-guide.md`대로 `RUN/manifest.json`에 쓴다.
+- 신규 팩 manifest 에 `"rules": ["trace-v1"]` 을 넣는다.
 - 검증: 둘 다 `OK`여야 한다.
   ```bash
   python3 "$SKILL/scripts/manifest.py" "$RUN/manifest.json"
@@ -124,6 +125,7 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 ### 3. 작성
 - 정리노트 HTML의 본문·인용·요약·푸터에 녹음 시각, Part 번호, 시각 미제공 등 위치 표시와 그 안내 문장을 싣지 않는다. 토픽 머리의 수업 날짜 태그(`tag date`)·강의록 페이지·푸터 일반 출처는 유지하되 인용 끝 `(MMDD)`는 붙이지 않고, 위치 근거는 내부 STT 요약에만 둔다. 신규·기존 갱신 모드 모두 `recording-locator`·`quote-date` 검사 통과가 필수다.
 - 섹션마다 작성자 1명을 띄운다. 브리프는 `references/content-rules.md`, 위젯 규칙은 `references/widget-rules.md`에 있다.
+- 추적 토픽 작성자에게 `<RUN>/traces/` 와 [trace 생성기](references/trace-figures.md)를 알려 준다.
 - 문제 작성자 1명이 모든 카드를 쓴다. 브리프는 `references/card-rules.md`에 있다.
 - 모두 **한 메시지에서 병렬로** 띄운다. 모델은 "에이전트 모델" 표를 따른다.
 - 브리프의 `<…>` 자리는 실제 경로, id, 금지어 목록(`<forbidden 목록>`), 예고 토픽 id(`<preview_topic>`), 그리고 섹션 작성자에게는 manifest `links` 중 그 섹션 토픽에 속한 것만(`<이 섹션의 links 목록>`) 채워 넣는다.
@@ -192,7 +194,7 @@ python3 "$SKILL/scripts/pack_layout.py" check --repo "$REPO"
 - 미해결: … (없으면 "없음")
 - 커밋 제안: git add 복습노트/<range> && git commit -m "docs(notes): add ds review pack <range>"
 ```
-교과서 추가 개수·출처·검산 방법·제외 이유도 보고한다. `복습노트/<range>/.pack/자료_복습팩/`에 manifest.json, selection.json, answers.py, validation.json을 저장한다.
+교과서 추가 개수·출처·검산 방법·제외 이유도 보고한다. `복습노트/<range>/.pack/자료_복습팩/`에 manifest.json, selection.json, answers.py, validation.json, traces/(trace 생성기 JSON, 있을 때)를 저장한다.
 실행 폴더 경로(`RUN`)도 적는다. 수정이 필요하면 조각을 고쳐 4단계부터 다시 돌리면 된다.
 
 ## 오류 처리

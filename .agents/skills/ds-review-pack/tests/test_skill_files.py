@@ -155,6 +155,29 @@ class TestScrollbar(unittest.TestCase):
         self.check("review-template.html")
 
 
+class TestTraceFigureDocs(unittest.TestCase):
+    def test_trace_figures_doc_exists_and_links_resolve(self):
+        self.assertTrue((SKILL / "references/trace-figures.md").exists())
+        for rel in ("SKILL.md", "references/content-rules.md", "references/widget-rules.md"):
+            with self.subTest(doc=rel):
+                path = SKILL / rel
+                text = path.read_text(encoding="utf-8")
+                targets = re.findall(r"\]\(((?:references/)?trace-figures\.md)\)", text)
+                self.assertTrue(targets, f"{rel}: trace-figures.md 링크 없음")
+                for t in targets:
+                    self.assertTrue((path.parent / t).exists(), t)
+
+    def test_content_rules_cap_hand_written_steps(self):
+        text = (SKILL / "references/content-rules.md").read_text(encoding="utf-8")
+        self.assertIn("4단계까지만", text)
+
+    def test_manifest_and_save_list_mention_trace(self):
+        skill = SKILL_MD.read_text(encoding="utf-8")
+        self.assertIn('"rules": ["trace-v1"]', skill)
+        self.assertIn("traces/", skill)
+        self.assertIn("rules", (SKILL / "references/manifest-guide.md").read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()
 def test_revision_workflow_requires_full_audit_and_lecture_evidence():
