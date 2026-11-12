@@ -1,0 +1,299 @@
+{
+ "range": "1112",
+ "mode": "new",
+ "policy_version": "review-questions-2026-10-17",
+ "taught_evidence": {
+  "range_ch": [
+   8
+  ],
+  "taught": "1-8",
+  "slides": "S8 p14–19 (p14·p16 일부)",
+  "summary": "summaries/stt-1112.md",
+  "not_taught": "S9 전체(예고만)",
+  "recording_gap": "1112 녹음은 앞부분이 빠짐(학생 지각). 지난 팩 1109 끝(S8 p14 일부)부터 강의록 근거로 이어 씀"
+ },
+ "concept_overrides": {},
+ "selected": [
+  {
+   "id": "p1",
+   "source": "2016-final-ljw-q4",
+   "source_kind": "past-exam",
+   "original_id": "2016-final-ljw-q4",
+   "prerequisites": [
+    "S8 p14–19 (1112) 및 1109 힙 삽입·삭제(S8 p8–13)"
+   ],
+   "objectives": [
+    "허프만 트리 만들기·코드·총 비트"
+   ],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2016-final-ljw-q4"
+   },
+   "answer": "1) 3 bit, 300 bit (문제 글의 '7가지'는 오기, 문자는 8개) 2) 247 bit. 병합 1+2=3, 3+5=8, 8+8=16, 9+15=24, 16+20=36, 24+36=60, 40+60=100. 코드 길이 F 1, A·C·G 3, B 4, E 5, D·H 6. 코드 예(원본 시험지의 채점된 답안과 같은 배치): F 0, A 100, G 101, C 110, B 1110, E 11110, H 111110, D 111111 (합칠 때 좌우 배치에 따라 비트는 달라도 길이와 247은 같다)",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py huffman(), work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p2",
+   "source": "2021-mock1-q5",
+   "source_kind": "past-exam",
+   "original_id": "2021-mock1-q5",
+   "prerequisites": [
+    "S8 p14–19 (1112) 및 1109 힙 삽입·삭제(S8 p8–13)"
+   ],
+   "objectives": [
+    "허프만 트리 만들기·코드·총 비트"
+   ],
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2021-mock1-q5"
+   },
+   "answer": "1) 병합 4+8=12, 12+16=28, 19+23=42, 28+35=63, 42+63=105. 틀에 맞춰 루트 왼쪽 63(t 35, 28(12(u,v), s)), 오른쪽 42(x, w) 2) s 011, t 00, u 0100, v 0101, w 11, x 10 3) 250 bits",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py huffman(), work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p3",
+   "source": "textbook-ch09-q04",
+   "source_kind": "textbook",
+   "original_id": "ch09-q04",
+   "prerequisites": [
+    "S8 p14–19 (1112) 및 1109 힙 삽입·삭제(S8 p8–13)"
+   ],
+   "objectives": [
+    "힙 정렬이 유용한 경우(전체가 아니라 앞쪽 몇 개만 필요할 때)"
+   ],
+   "evidence": {
+    "path": "교과서/09_우선순위 큐_연습문제.json",
+    "locator": "ch09-q04",
+    "sha256": "700b10a8a7da3f8a848f0016d1bed2167cdea68ebfccaa13c63a1b70c63b4f8f"
+   },
+   "answer": "① 데이터 100개 중에서 오름차순으로 20개만 뽑고자 할 때",
+   "verification": {
+    "method": "lecture-reference",
+    "reference": "S8 p14 '가장 큰 값 몇 개만 필요할 때' ; answers.py",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p4",
+   "source": "textbook-ch09-q10",
+   "source_kind": "textbook",
+   "original_id": "ch09-q10",
+   "prerequisites": [
+    "S8 p14–19 (1112) 및 1109 힙 삽입·삭제(S8 p8–13)"
+   ],
+   "objectives": [
+    "heap_sort 첫 단계(차례로 insert)로 최대 힙 만들기",
+    "최댓값 삭제와 downheap"
+   ],
+   "evidence": {
+    "path": "교과서/09_우선순위 큐_연습문제.json",
+    "locator": "ch09-q10",
+    "sha256": "700b10a8a7da3f8a848f0016d1bed2167cdea68ebfccaa13c63a1b70c63b4f8f"
+   },
+   "answer": "1) 삽입마다 10 → 40 10 → 40 10 30 → 40 10 30 5 → 40 12 30 5 10 → 40 12 30 5 10 6 → 40 12 30 5 10 6 15 → 40 12 30 9 10 6 15 5 → 60 40 30 12 10 6 15 5 9 2) 배열 [1..9] = 60 40 30 12 10 6 15 5 9 3) 루트 60 삭제, 마지막 9를 루트로 올리고 큰 자식과 교환(40, 12)해 40 12 30 9 10 6 15 5",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py insert/delete, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p5",
+   "source": "textbook-ch09-q17",
+   "source_kind": "textbook",
+   "original_id": "ch09-q17",
+   "prerequisites": [
+    "S8 p14–19 (1112) 및 1109 힙 삽입·삭제(S8 p8–13)"
+   ],
+   "objectives": [
+    "허프만 트리 만들기(같은 빈도 처리 포함)",
+    "코드 길이와 총 비트 수"
+   ],
+   "evidence": {
+    "path": "교과서/09_우선순위 큐_연습문제.json",
+    "locator": "ch09-q17",
+    "sha256": "700b10a8a7da3f8a848f0016d1bed2167cdea68ebfccaa13c63a1b70c63b4f8f"
+   },
+   "answer": "병합 1+1=2, 2+2=4, 3+4=7, 5+7=12, 8+12=20, 13+20=33, 21+33=54. 코드 길이 h 1, g 2, f 3, e 4, d 5, c 6, a·b 7 (먼저 꺼낸 쪽을 왼쪽(0)에 두면 h 0, g 10, f 110, e 1110, d 11110, c 111110, a 1111110, b 1111111 — 좌우 배치에 따라 비트는 달라도 길이는 같다). 총 132 bit (고정 3비트면 162 bit)",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py huffman(), work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p6",
+   "source": "lecture-s08-p15-heap-sort",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s08-p15-heap-sort",
+   "prerequisites": [
+    "S8 p14–19 (1112) 및 1109 힙 삽입·삭제(S8 p8–13)"
+   ],
+   "objectives": [
+    "heap_sort 두 for 루프 추적",
+    "i를 n-1부터 내려가며 채우는 이유와 시간 복잡도"
+   ],
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+    "locator": "S8 p15",
+    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492"
+   },
+   "answer": "(a) 첫 for 뒤 힙 배열 23 20 7 1 8 (b) i=4: a[4]=23, 힙 20 8 7 1 → i=3: a[3]=20, 힙 8 1 7 → i=2: a[2]=8, 힙 7 1 → i=1: a[1]=7, 힙 1 → i=0: a[0]=1, 결과 1 7 8 20 23 (c) 최대 힙은 큰 값부터 나오므로 뒤(n-1)부터 채워야 오름차순. insert·delete 각 O(log n)을 n번씩이라 O(n log n)",
+   "verification": {
+    "method": "c-run",
+    "reference": "answers.py, work/verify_heapsort.c -std=c11 -Wall -Wextra ASan/UBSan, work/verify_heapsort-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p7",
+   "source": "lecture-s08-p17-huffman-etnis",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s08-p17-huffman-etnis",
+   "prerequisites": [
+    "S8 p14–19 (1112) 및 1109 힙 삽입·삭제(S8 p8–13)"
+   ],
+   "objectives": [
+    "고정 길이 비트 수 계산",
+    "최소 힙으로 가장 작은 두 빈도를 꺼내 합치는 과정 추적",
+    "코드 배정과 압축률"
+   ],
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+    "locator": "S8 p17",
+    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492"
+   },
+   "answer": "(a) 3비트, 45 × 3 = 135 bit (b) 최소 힙 4 6 8 12 15 → 4+6=10 후 8 10 15 12 → 8+10=18 후 12 15 18 → 12+15=27 후 18 27 → 18+27=45 후 45 (c) 코드 길이 e·t·n 2, i·s 3 (슬라이드 배치 e 00, t 01, n 10, i 110, s 111), 15·2+12·2+8·2+6·3+4·3 = 100 bit, 35 bit 절약(35/135 ≈ 25.9%)",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py huffman()+최소 힙 추적, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p8",
+   "source": "lecture-s08-p16-event-sim",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s08-p16-event-sim",
+   "prerequisites": [
+    "S8 p14–19 (1112) 및 1109 힙 삽입·삭제(S8 p8–13)"
+   ],
+   "objectives": [
+    "이산 이벤트 시뮬레이션에서 큐 대신 우선순위 큐를 쓰는 이유",
+    "arrival·order·leave 이벤트 처리 순서와 의자 수 추적"
+   ],
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+    "locator": "S8 p16",
+    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492"
+   },
+   "answer": "(a) 나중에 생긴 order·leave 이벤트가 먼저 들어 있던 도착보다 먼저 일어나야 할 수 있어, 넣은 순서(FIFO)가 아니라 시각이 가장 이른 것을 꺼내는 우선순위 큐가 필요 (b) t=1 arrival 3명 착석(의자 2) → t=2 order → t=3 arrival 3명 그냥 나감 → t=5 leave(의자 5) → t=6 arrival 2명 착석(의자 3) → t=7 order → t=8 arrival 4명 그냥 나감 → t=10 leave(의자 5) (c) 그냥 나간 손님 7명, 마지막 남은 의자 5개",
+   "verification": {
+    "method": "python",
+    "reference": "answers.py heapq 이벤트 시뮬레이션, work/answers-output.txt",
+    "result": "pass"
+   }
+  }
+ ],
+ "excluded": [
+  {
+   "source": "textbook-ch09-q01/q03/q05/q06",
+   "reason": "힙 삭제 위치·높이 비례·최솟값 위치 — 1109 범위(S8 p5–13) 개념 확인 문항으로 이번 날짜 핵심(p14–19)과 무관"
+  },
+  {
+   "source": "textbook-ch09-q08/q09",
+   "reason": "최소 힙 삽입·삭제 추적 — 1109 범위, 이번 날짜에는 heap_sort 첫 단계 연결로 q10 하나만 채택"
+  },
+  {
+   "source": "textbook-ch09-q11/q14/q15/q16",
+   "reason": "우선순위 큐 구현 code-write — 이번 날짜 핵심(힙 정렬·응용)이 아니고 1109 범위"
+  }
+ ],
+ "coverage": [
+  {
+   "id": "heapsort-use",
+   "objective": "힙 정렬이 최대로 유용한 경우(앞쪽 몇 개만 필요할 때)와 O(n log n)",
+   "evidence": "S8 p14; STT 1절",
+   "questions": [
+    "p3",
+    "p6"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "heapsort-code",
+   "objective": "heap_sort 두 for 루프(insert n번, i=n-1..0 delete) 추적",
+   "evidence": "S8 p15; STT 2절",
+   "questions": [
+    "p4",
+    "p6"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "event-sim",
+   "objective": "이산 이벤트 시뮬레이션에 큐 대신 우선순위 큐를 쓰는 이유와 arrival/order/leave 처리",
+   "evidence": "S8 p16; STT 3절",
+   "questions": [
+    "p8"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "huffman-fixed",
+   "objective": "고정 길이 비트 수(135 bits)와 압축 효과",
+   "evidence": "S8 p17; STT 4절",
+   "questions": [
+    "p1",
+    "p5",
+    "p7"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "huffman-build",
+   "objective": "가장 작은 두 빈도를 합쳐 트리 만들기(최소 힙)",
+   "evidence": "S8 p18; STT 4절",
+   "questions": [
+    "p1",
+    "p2",
+    "p5",
+    "p7"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "huffman-code",
+   "objective": "왼쪽 0·오른쪽 1 코드 배정, 총 비트 수(100 bits), 26%",
+   "evidence": "S8 p19; STT 4절",
+   "questions": [
+    "p1",
+    "p2",
+    "p5",
+    "p7"
+   ],
+   "status": "covered"
+  }
+ ],
+ "required_exam_sources": [
+  "2016-final-ljw-q4",
+  "2021-mock1-q5"
+ ],
+ "duplicate_decisions": [],
+ "widget_decision": {
+  "topic": "s2-huffman-build",
+  "reason": "etnis 빈도로 최소 힙에서 두 개 꺼내 합치는 단계를 넘기며 힙 배열과 자라는 트리를 함께 보여 줌"
+ },
+ "scope_exclusions": [
+  "정렬 장(S9) — 예고만",
+  "조교 트리 실습(하위 파일 크기 계산) — 실습 안내만"
+ ]
+}

@@ -1,0 +1,19 @@
+p1:main OK [('300', True, True), ('247', True, True)]
+p2:main OK [('250', True, True), ('011', True, True), ('0100', True, True), ('0101', True, True)]
+p3:main OK [('①', True, True)]
+p4:1 OK [('60, ?40, ?30, ?12, ?10, ?6, ?15, ?5, ?9|60 40 30 12 10 6 15 5 9', True, True)]
+p4:2 OK [('60, ?40, ?30, ?12, ?10, ?6, ?15, ?5, ?9|60 40 30 12 10 6 15 5 9', True, True)]
+p4:3 OK [('40, ?12, ?30, ?9, ?10, ?6, ?15, ?5|40 12 30 9 10 6 15 5', True, True)]
+p5:main OK [('132', True, True), ('162', True, True)]
+p6:a OK [('23, ?20, ?7, ?1, ?8|23 20 7 1 8', True, True)]
+p6:b OK [('1, ?7, ?8, ?20, ?23|1 7 8 20 23', True, True)]
+p6:c OK [('log', True, True)]
+p7:a OK [('135', True, True)]
+p7:b OK [('8, ?10, ?15, ?12|8 10 15 12', True, True), ('12, ?15, ?18|12 15 18', True, True), ('18, ?27|18 27', True, True)]
+p7:c OK [('100', True, True), ('35', True, True), ('25.9', True, True)]
+p8:a OK [('우선순위', True, True)]
+p8:b OK [('10', True, True)]
+p8:c OK [('7', True, True), ('5', True, True)]
+p8:b 독립: (1,arrival) 2 → (2,order) 2 → (3,arrival) 2 [3명 나감] → (5,leave) 5 → (6,arrival) 3 → (7,order) 3 → (8,arrival) 3 [4명 나감] → (10,leave) 5
+p8:b 참고: t=1 arrival 3명 착석(의자 2) → t=2 order → t=3 arrival 3명 그냥 나감 → t=5 leave(의자 5) → t=6 arrival 2명 착석(의자 3) → t=7 order → t=8 arrival 4명 그냥 나감 → t=10 leave(의자 5)
+ALL OK

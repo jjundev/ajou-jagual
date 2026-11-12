@@ -1,0 +1,2259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>자료구조및알고리즘이해 복습 1112 문제설명</title>
+  <meta name="description" content="첫 줄부터 완성 답과 검산까지 설명해요.">
+  <script>document.documentElement.classList.add('js');try{const t=localStorage.getItem('od-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
+  <link rel="stylesheet" href=".pack/자료_문제설명_1112_Heap/vendor/pretendard/pretendard.css">
+  <link rel="stylesheet" href=".pack/자료_문제설명_1112_Heap/vendor/katex/katex.min.css">
+  <script defer src=".pack/자료_문제설명_1112_Heap/vendor/katex/katex.min.js"></script>
+  <script defer src=".pack/자료_문제설명_1112_Heap/vendor/katex/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']});window.mlLayoutMath?.()"></script>
+  <style>
+    /* ---------- 토큰 ---------- */
+    :root {
+      color-scheme: light;
+      --bg: #ffffff; --surface: #f7f8fa; --ink: #111111; --ink-2: #6b7280; --line: #d9dee7;
+      --accent: #1677ff; --accent-ink: #1b64da; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #b54708; --prof: #6941c6; --supp: #067647; --danger: #d92d20;
+      --font: 'Pretendard', system-ui, -apple-system, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      --fs-title: clamp(28px, 6vw, 36px); --fs-h3: clamp(26px, 5.4vw, 32px); --fs-layer: 19px; --fs-lead: 22px; --fs-body: 17px; --fs-sub: 15px; --fs-small: 14px; --fs-label: 13px; --fs-fig: 12px;
+      --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+      --radius: 8px; --measure: 680px; --tap: 48px; --btn-min: 160px;
+      --dur: 220ms; --dur-exit: 150ms; --ease-out: cubic-bezier(.2, .8, .2, 1);
+      /* 예전 조각이 참조할 수 있는 이름 */
+      --surface-2: var(--surface); --accent-soft: var(--surface); --warn-soft: var(--surface);
+      --prof-soft: var(--surface); --supp-soft: var(--surface); --eli5: var(--accent-ink); --eli5-soft: var(--surface);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+        --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+        --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+      }
+    }
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --bg: #17171c; --surface: #212128; --ink: #f2f4f6; --ink-2: #a3abb8; --line: #34353d;
+      --accent: #3182f6; --accent-ink: #6ea4ff; --btn-bg: #1b64da; --on-btn: #ffffff;
+      --warn: #f5a15c; --prof: #b69cff; --supp: #5fd39a; --danger: #ff6b61;
+    }
+
+    /* ---------- 기본 ---------- */
+    * { box-sizing: border-box; }
+    html { scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column;
+      background: var(--bg); color: var(--ink); font-family: var(--font); font-size: var(--fs-body); line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+    a { color: var(--accent-ink); text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    [hidden] { display: none !important; }
+
+    /* ---------- 상단 바 ---------- */
+    .topbar { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+    .topbar-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s2) var(--s4); display: flex; align-items: center; gap: var(--s3); min-height: 56px; }
+    .brand { flex: 1 1 auto; min-width: 0; font-size: var(--fs-body); font-weight: 700; white-space: nowrap; }
+    .text-btn { flex: none; min-height: 44px; min-width: 44px; padding: 0 var(--s3); border: 0; border-radius: var(--radius);
+      background: transparent; color: var(--ink); font: 600 var(--fs-small)/1 var(--font); cursor: pointer; }
+    .bar { height: 2px; background: var(--line); overflow: hidden; }
+    .bar > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+
+    /* ---------- 본문 ---------- */
+    main { flex: 1 0 auto; width: 100%; max-width: var(--measure); margin: 0 auto; padding: var(--s6) var(--s5) var(--s7); }
+    .hero h1 { font-size: var(--fs-title); line-height: 1.3; margin: 0 0 var(--s3); letter-spacing: -0.02em; }
+    .hero p { color: var(--ink-2); margin: 0; }
+    section { margin-top: var(--s7); }
+    section > h2 { font-size: 22px; line-height: 1.4; margin: 0 0 var(--s4); }
+    .topic { padding: var(--s6) 0; border-top: 1px solid var(--line); }
+    .topic h3 { margin: 0 0 var(--s2); font-size: var(--fs-h3); font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; }
+    .tags { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s5); }
+    .tag { font-size: var(--fs-label); line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); white-space: nowrap; }
+
+    /* 레이어: 배경 없이 라벨과 구분선으로 나눈다 */
+    .layer { margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); }
+    .topic > .layer:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+    .layer > :first-child { margin-top: 0; }
+    .layer > :last-child { margin-bottom: 0; }
+    .layer h4 { margin: 0 0 var(--s3); font-size: var(--fs-layer); line-height: 1.5; }
+    .layer [data-source-field] + h4 { margin-top: var(--s5); }
+    .layer p { margin: var(--s3) 0; }
+    .verdict-card { padding: var(--s3) var(--s4); border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .layer .part, .layer [data-subpart] + [data-subpart] { margin-top: var(--s4); }
+    .layer li + li { margin-top: var(--s3); }
+    .sum > p + p, .sum > .summary-group + .summary-group { margin-top: var(--s5); }
+    .sum h4 { margin: 0 0 var(--s3); font-size: inherit; line-height: 1.5; }
+    .sum .summary-group > p { margin: 0; }
+    .layer-title { display: block; font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; color: var(--ink); margin-bottom: var(--s3); }
+    .layer.eli5 .layer-title { color: var(--accent-ink); }
+    .layer.eli5 .lead { font-size: var(--fs-lead); font-weight: 700; line-height: 1.5; letter-spacing: -0.01em; margin: 0 0 var(--s4); }
+    /* 정확히 말하면: 본문 크기 그대로, 굵은 첫머리만 진하게 */
+    .layer.formal b { font-weight: 700; color: var(--ink); }
+    /* 교수님 말씀 · 주의: 보조 정보는 한 단계 작게 */
+    .layer.prof, .layer.warn, .layer.listen { font-size: var(--fs-sub); line-height: 1.7; }
+    .layer.prof blockquote { font-size: var(--fs-sub); }
+    .layer.prof .layer-title { color: var(--prof); }
+    .layer.warn, .layer.listen { background: var(--surface); border-top: 0; border-radius: var(--radius); padding: var(--s4); }
+    .layer.warn .layer-title { color: var(--warn); font-size: var(--fs-body); }
+    .layer.listen .layer-title { color: var(--accent-ink); font-size: var(--fs-body); }
+    .layer.supp .badge.supp { margin-bottom: var(--s2); }
+    .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
+    .badge.supp { color: var(--supp); }
+    blockquote { margin: var(--s3) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
+    ol.steps { padding-left: 1.4em; }
+    ol.steps li { margin: var(--s2) 0; }
+
+    /* 그림 · 수식 · 표 */
+    .figure { margin: var(--s4) 0; text-align: center; }
+    .figure svg { width: 100%; height: auto; max-width: 560px; color: var(--ink); }
+    .figure figcaption { font-size: var(--fs-small); color: var(--ink-2); margin-top: var(--s1); }
+    .katex-display { padding: var(--s2) 0; }
+    pre {
+    box-sizing: border-box; min-width: 0; max-width: 100%;
+    margin: var(--s4) 0; padding: var(--s4);
+    background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 14px; line-height: 1.6;
+    overflow-x: auto; white-space: pre; tab-size: 4;
+  }
+  pre > code { font: inherit; color: inherit; background: none; border: 0; margin: 0; padding: 0; }
+    .table-wrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: var(--fs-small); }
+    th, td { border-bottom: 1px solid var(--line); padding: var(--s2); text-align: left; vertical-align: top; }
+    th { color: var(--ink-2); font-weight: 600; }
+    td:first-child, th:first-child { min-width: 6em; }
+
+    /* 위젯 */
+    .widget { background: var(--surface); border-radius: var(--radius); padding: var(--s4); margin: var(--s5) 0; }
+    .widget h4 { margin: 0 0 var(--s1); font-size: var(--fs-layer); line-height: 1.4; }
+    .widget-help { font-size: var(--fs-small); color: var(--ink-2); margin: 0 0 var(--s3); }
+    .controls { display: grid; gap: var(--s2); grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: var(--s2); font-size: var(--fs-small); }
+    .controls label { display: flex; align-items: center; gap: var(--s2); min-height: 44px; }
+    .controls input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+    .widget svg { width: 100%; height: auto; background: var(--bg); border-radius: var(--radius); }
+    .readout { font-size: var(--fs-small); margin-top: var(--s2); }
+    .legend { font-size: var(--fs-label); color: var(--ink-2); display: flex; flex-wrap: wrap; gap: var(--s3); }
+    .sw { display: inline-block; width: 14px; height: 4px; vertical-align: middle; margin-right: var(--s1); border-radius: 2px; }
+    .sw.truth { background: var(--ink-2); } .sw.fit { background: var(--accent); } .sw.train { background: var(--accent); height: 10px; width: 10px; border-radius: 50%; }
+    .sw.test { background: var(--warn); height: 10px; width: 10px; border-radius: 50%; } .sw.like { background: var(--accent); } .sw.prior { background: var(--prof); } .sw.post { background: var(--supp); }
+    .axis { stroke: var(--line); stroke-width: 1.5; }
+    .tick { fill: var(--ink-2); font-size: 11px; }
+    .plot-truth { fill: none; stroke: var(--ink-2); stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .plot-fit { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+    .pt-train { fill: var(--accent); }
+    .pt-test { fill: var(--warn); }
+    .plot-like { fill: none; stroke: var(--accent); stroke-width: 2; }
+    .plot-prior { fill: none; stroke: var(--prof); stroke-width: 2; stroke-dasharray: 6 4; }
+    .plot-post { fill: none; stroke: var(--supp); stroke-width: 3; }
+    .mark-ml { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .mark-map { stroke: var(--supp); stroke-width: 1.5; stroke-dasharray: 3 3; }
+    .fig-ink { stroke: currentColor; fill: none; stroke-width: 2; }
+    .fig-accent { stroke: var(--accent); fill: none; stroke-width: 2.5; }
+    .fig-danger { stroke: var(--danger); fill: none; stroke-width: 2.5; }
+    .fig-dot { fill: var(--accent); }
+    .fig-text { fill: currentColor; font-size: 13px; font-family: inherit; }
+    .fig-muted { fill: var(--ink-2); font-size: var(--fs-fig); font-family: inherit; }
+
+    footer { width: 100%; max-width: var(--measure); margin: 0 auto; padding: 0 var(--s5) var(--s6); color: var(--ink-2); font-size: var(--fs-small); }
+
+    /* ---------- 하단 이동 바 ---------- */
+    .pager { position: sticky; bottom: 0; z-index: 10; background: var(--bg); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom); }
+    .pager-inner { max-width: var(--measure); margin: 0 auto; padding: var(--s3) var(--s4); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--s3); }
+    .pager-count { font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: center; min-width: 4em; }
+    .btn { min-height: var(--tap); min-width: var(--btn-min); padding: 0 var(--s6); border-radius: var(--radius); border: 0; font: 700 var(--fs-body)/1 var(--font); cursor: pointer; white-space: nowrap;
+      transition: background-color 150ms ease-out, opacity 150ms ease-out; }
+    .btn-ghost { justify-self: start; background: var(--surface); color: var(--ink); }
+    .btn-primary { justify-self: end; background: var(--btn-bg); color: var(--on-btn); }
+    .btn:disabled { opacity: .4; cursor: default; }
+    @media (hover: hover) {
+      .text-btn:hover, .btn-ghost:not(:disabled):hover { background: var(--line); }
+      .btn-primary:not(:disabled):hover { box-shadow: inset 0 0 0 100px rgba(0, 0, 0, .14); }
+    }
+
+    /* ---------- 목차 시트 ---------- */
+    .sheet { width: min(100%, var(--measure)); max-width: 100%; max-height: 80dvh; margin: auto auto 0; padding: 0; border: 0;
+      border-radius: 16px 16px 0 0; background: var(--bg); color: var(--ink); }
+    .sheet::backdrop { background: rgba(0, 0, 0, .4); }
+    .sheet-inner { padding: var(--s4) var(--s5) calc(var(--s5) + env(safe-area-inset-bottom)); }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s2); }
+    .sheet-head h2 { margin: 0; font-size: var(--fs-lead); }
+    .toc { display: flex; flex-direction: column; }
+    .toc > a, .toc-group > a { display: block; padding: var(--s3) 0 var(--s1); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); text-decoration: none; }
+    .toc-list { list-style: none; margin: 0 0 var(--s2); padding: 0; }
+    .toc-list a { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); padding: var(--s2) var(--s3); margin: 0 calc(-1 * var(--s3));
+      border-radius: var(--radius); color: var(--ink); text-decoration: none; line-height: 1.4; }
+    .toc-list a[aria-current="true"] { background: var(--surface); font-weight: 700; color: var(--accent-ink); }
+    .toc-list .toc-title { flex: 1 1 0; min-width: 0; }
+    @media (hover: hover) { .toc-list a:hover { background: var(--surface); } }
+
+    /* ---------- 한 화면에 하나씩 (JS가 켤 때만) ---------- */
+    html:not(.js) .pager, html:not(.js) #toc-open { display: none; }
+    html:not(.js) .sheet { display: block; position: static; width: 100%; max-height: none; margin: 0 auto; border-radius: 0; border-bottom: 1px solid var(--line); }
+    html:not(.js) .sheet-close { display: none; }
+    .js main > .hero:not(.is-current), .js main > section:not(.is-on), .js .screen:not(.is-current) { display: none; }
+    .js main > section { margin-top: 0; }
+    .js main > section > h2 { font-size: var(--fs-small); font-weight: 600; color: var(--accent-ink); margin: 0 0 var(--s2); }
+    .js .topic { padding: 0; border-top: 0; }
+    .js .hero { padding-top: 12vh; }
+    .js footer { display: none; }
+    .js body.at-end footer { display: block; }
+    .screen.enter-next { animation: enter-next var(--dur) var(--ease-out); }
+    .screen.enter-prev { animation: enter-prev var(--dur) var(--ease-out); }
+    @keyframes enter-next { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    @keyframes enter-prev { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .screen.enter-next, .screen.enter-prev { animation: none; }
+      .bar > span, .btn { transition: none; }
+    }
+    @media (max-width: 480px) {
+      main { padding: var(--s5) var(--s4) var(--s6); }
+      footer { padding: 0 var(--s4) var(--s5); }
+      .btn { min-width: 120px; padding: 0 var(--s5); }
+    }
+    @media print {
+      .topbar, .pager, .sheet { display: none !important; }
+      .js main > .hero, .js main > section, .js .screen, .js footer { display: block !important; }
+    }
+
+    /* ---------- 좌우 패널 (drawer) ---------- */
+    :root { --panel-l: clamp(240px, 18vw, 320px); --panel-p-min: 360px; --panel-p-max: 720px; --panel-r: clamp(300px, 22vw, 380px); --scrollbar: 16px; --drawer-l: 304px; --drawer-r: 360px; --fs-panel: 16px; --scrim: rgba(0, 0, 0, .4); }
+    body { height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }
+    .topbar-inner { max-width: none; padding: var(--s2) var(--s3); gap: var(--s2); }
+    .panel-toggle { display: inline-flex; align-items: center; gap: var(--s1); padding: 0 var(--s2); }
+    .panel-toggle svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .panel-toggle .strip { fill: transparent; stroke: none; transition: fill 150ms ease-out; }
+    .panel-toggle[aria-expanded="true"] { color: var(--accent-ink); }
+    .panel-toggle[aria-expanded="true"] .strip { fill: currentColor; }
+    .theme-toggle { display: inline-flex; align-items: center; justify-content: center; padding: 0; }
+    .theme-toggle svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .theme-toggle .i-sun { display: none; }
+    :root[data-theme="dark"] .theme-toggle .i-sun { display: block; }
+    :root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .theme-toggle .i-sun { display: block; }
+      :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
+    }
+
+    .layout { display: grid; grid-template-columns: auto auto minmax(320px, 1fr) auto auto; min-height: 0; }
+    .content { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scroll-padding-top: var(--s4); }
+    .panel { position: relative; display: flex; flex-direction: column; min-height: 0; overflow: hidden; background: var(--bg); color: var(--ink); font-size: var(--fs-panel); line-height: 1.6; }
+    .panel-left { grid-column: 1; border-right: 1px solid var(--line); }
+    .panel-prob { grid-column: 2; border-right: 1px solid var(--line); }
+    .content { grid-column: 3; }
+    .panel-right { grid-column: 5; border-left: 1px solid var(--line); }
+    /* 문제 패널이 DOM에서 본문 앞에 있어도 오른쪽 칸(4)에 둘 때 줄이 바뀌지 않게 모두 첫 줄에 둔다 */
+    .layout > .panel, .layout > .content { grid-row: 1; }
+    .layout[data-prob-dock="right"] .panel-prob { grid-column: 4; border-right: 0; border-left: 1px solid var(--line); }
+    .panel-inner { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--s4) var(--s4) var(--s6); }
+    :root { --scroll: #c9d0db; --scroll-hover: #9aa3b2; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --scroll: #3f414b; --scroll-hover: #5b5e6a; } }
+    :root[data-theme="dark"] { --scroll: #3f414b; --scroll-hover: #5b5e6a; }
+    .content::-webkit-scrollbar, .panel-inner::-webkit-scrollbar { width: 8px; }
+    :is(pre, .table-wrap, .katex-display, table)::-webkit-scrollbar { height: 8px; }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display, table)::-webkit-scrollbar-track { background: transparent; }
+    :is(.content, .panel-inner, .table-wrap, .katex-display, table)::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--bg); }
+    pre::-webkit-scrollbar-thumb { background: var(--scroll); border-radius: 8px; border: 2px solid var(--surface); }
+    :is(.content, .panel-inner, pre, .table-wrap, .katex-display, table)::-webkit-scrollbar-thumb:hover { background: var(--scroll-hover); }
+    @supports (scrollbar-color: auto) { :is(.content, .panel-inner, pre, .table-wrap, .katex-display, table) { scrollbar-width: thin; scrollbar-color: var(--scroll) transparent; } }
+    .panel-resize { display: none; }
+    .panel-head { display: flex; align-items: center; gap: var(--s2); min-height: 44px; margin-bottom: var(--s2); }
+    .panel-head h2 { flex: 1 1 0; min-width: 0; margin: 0; font-size: var(--fs-lead); line-height: 1.4; }
+    .panel-sub { margin: 0 0 var(--s4); font-size: var(--fs-layer); font-weight: 700; line-height: 1.4; letter-spacing: -0.01em; }
+    .panel-empty { margin: 0; color: var(--ink-2); }
+    .panel-label { display: block; margin: var(--s5) 0 var(--s2); font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+
+    /* 진행 상태 */
+    .panel-meta { margin: 0 0 var(--s2); font-size: var(--fs-small); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+    .panel-meta b { color: var(--ink); }
+    .progress { height: 4px; margin-bottom: var(--s3); border-radius: 2px; background: var(--line); overflow: hidden; }
+    .progress > span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform var(--dur) var(--ease-out); }
+    .panel .toc-list a { margin: 0 calc(-1 * var(--s2)); padding: var(--s2); font-size: var(--fs-panel); }
+    .toc-mark { flex: none; display: block; width: 20px; height: 20px; color: var(--ink-2); }
+    .toc-mark svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .toc-mark.is-done { color: var(--accent-ink); }
+
+    /* 복습문제: 원문 · 힌트 · 풀이 */
+    .aid details:last-of-type { border-bottom: 1px solid var(--line); }
+    .aid details.original > summary { font-size: var(--fs-panel); }
+    .solved-btn { display: flex; align-items: center; justify-content: center; gap: var(--s2); width: 100%; min-height: var(--tap); margin-top: var(--s5); padding: 0 var(--s4);
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 700 var(--fs-panel)/1.2 var(--font); cursor: pointer; }
+    .solved-btn svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .solved-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent-ink); }
+
+    /* 정리노트: 페이지 요약 */
+    .sum-lead { margin: 0; font-size: var(--fs-body); font-weight: 700; line-height: 1.6; }
+    .eq-list { list-style: none; margin: 0; padding: 0; }
+    .eq-list li { padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+    .eq-list li:first-child { padding-top: 0; }
+    .eq-name { display: block; font-size: var(--fs-label); font-weight: 600; color: var(--ink-2); }
+    .eq-list .katex-display { margin: var(--s1) 0 0; text-align: left; }
+    .eq-list .katex-display > .katex { text-align: left; }
+    .terms { margin: 0; }
+    .terms dt { font-size: var(--fs-panel); font-weight: 700; margin-top: var(--s4); }
+    .terms dt:first-child { margin-top: 0; }
+    .terms dd { margin: var(--s1) 0 0; font-size: var(--fs-sub); line-height: 1.6; color: var(--ink-2); }
+    .flow { margin: 0; padding-left: 1.4em; font-size: var(--fs-sub); }
+    .flow li { margin: var(--s2) 0; }
+
+    @media (hover: hover) { .solved-btn:hover { background: var(--surface); } }
+
+    /* 문제해설: 오른쪽 문제 · 원문 · 요약 탭, 좁은 화면은 해설 위 접힘 */
+    .panel-tabs { flex: 1 1 0; min-width: 0; display: flex; gap: var(--s1); border-bottom: 1px solid var(--line); }
+    .panel-tabs [role="tab"] { min-height: var(--tap); padding: 0 var(--s3); margin-bottom: -1px; border: 0; border-bottom: 2px solid transparent;
+      background: transparent; color: var(--ink-2); font: 700 var(--fs-panel)/1 var(--font); cursor: pointer; }
+    .panel-tabs [role="tab"][aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+    .probs, .orig-tab, .sum-tab { padding-top: var(--s2); }
+    /* 문제 패널 머리: [이동] [문제 | 원문] … [왼쪽 | 오른쪽 | 띄우기] — 탭과 버튼 사이 빈 띠를 끌면 패널이 떨어진다 */
+    .panel-prob .panel-head { align-items: flex-end; border-bottom: 1px solid var(--line); }
+    .panel-prob .panel-tabs { flex: 0 1 auto; border-bottom: 0; }
+    .panel-tabs [role="tab"] { white-space: nowrap; }
+    .prob-dock { display: flex; align-self: center; gap: 2px; margin-left: auto; }
+    .prob-dock button, .float-move { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0;
+      border: 0; border-radius: 6px; background: transparent; color: var(--ink-2); cursor: pointer; }
+    .prob-dock svg, .float-move svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .prob-dock .strip { fill: currentColor; stroke: none; }
+    .prob-dock button[aria-checked="true"] { color: var(--accent-ink); background: var(--surface); }
+    @media (hover: hover) { .prob-dock button:hover, .float-move:hover { background: var(--surface); } }
+    .float-move { display: none; align-self: center; cursor: grab; }
+    .float-resize { display: none; }
+    .dock-preview { display: none; }
+    #toggle-prob[data-dock="right"] .strip { transform: translateX(6px); }
+    .orig-tab details.original { margin-top: 0; padding-top: 0; border-top: 0; }
+    .orig-tab details.original > summary { display: none; }
+    .problem-pane > .layer:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+    .problem-pane [data-source-field="conditions"] > :first-child, .problem-pane [data-source-field="ask"] > :first-child { margin-top: 0; }
+    .problem-pane [data-source-field="conditions"] > :last-child, .problem-pane [data-source-field="ask"] > :last-child { margin-bottom: 0; }
+    .problem-pane [data-source-field="conditions"] p + p, .problem-pane [data-source-field="conditions"] p + pre, .problem-pane [data-source-field="conditions"] pre + p { margin-top: var(--s3); }
+    .problem-pane [data-source-field="ask"] ol, .problem-pane [data-source-field="ask"] ul { margin: 0; padding-left: 1.4em; }
+    .problem-pane [data-source-field="ask"] li + li { margin-top: var(--s2); }
+    .problem-pane [data-source-field="ask"][data-labeled] ol { list-style: none; padding-left: 0; }
+    .problem-pane details.original { margin-top: var(--s4); padding-top: var(--s2); border-top: 1px solid var(--line); }
+    .problem-pane details.original > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 600; color: var(--ink-2); }
+    .problem-pane img { max-width: 100%; height: auto; }
+    .topic > .problem-pane { margin-top: var(--s3); padding: var(--s4); border: 1px solid var(--line); border-radius: var(--radius); }
+    .problem-toggle { display: flex; align-items: center; justify-content: center; width: 100%; min-height: var(--tap); margin-top: var(--s3); padding: 0 var(--s4);
+      border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); color: var(--ink); font: 700 var(--fs-panel)/1.2 var(--font); cursor: pointer; }
+    .problem-toggle[aria-expanded="true"] { border-color: var(--accent); color: var(--accent-ink); }
+    @media (hover: hover) { .problem-toggle:hover, .panel-tabs [role="tab"]:hover { background: var(--surface); } }
+    .problem-pane img, .problem-pane svg.zoomable { cursor: zoom-in; }
+    .is-target { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: var(--radius); }
+    .figure-sheet { width: min(96vw, 1100px); max-height: 90dvh; margin: auto; border-radius: 16px; }
+    .figure-sheet img, .figure-sheet svg { display: block; width: 100%; max-width: 100%; height: auto; cursor: default; }
+
+    /* 클릭형 보기: pinned bio template review-interaction.css의 보기 규칙 */
+    .review-ready .choices { list-style:none; padding:0; }
+    .review-ready .choices > li { margin:0 0 var(--s3); }
+    .review-choice {
+      display:block; width:100%; min-height:44px; text-align:left; font:inherit;
+      color:var(--ink); background:var(--surface); border:1px solid var(--line);
+      border-radius:8px; padding:12px 16px; cursor:pointer; overflow-wrap:anywhere;
+    }
+    .review-choice:hover { border-color:var(--accent); }
+    .review-choice:focus-visible, .review-reset:focus-visible { outline:3px solid var(--accent); outline-offset:3px; }
+    /* pinned bio template review-interaction.css에서 복사 — test_choice_feedback_copied_from_review_pack이 어긋남을 잡는다 */
+    .review-choice[data-result="correct"], .review-choice[data-result="intended"] { border:3px solid var(--accent); }
+    .review-choice[data-result="selected"] { border:3px solid var(--danger); }
+    .review-choice[data-result="uncertain"] { border:3px solid var(--ink-2); }
+    .review-choice-label { display:block; margin-top:6px; font-size:var(--fs-small); font-weight:700; color:var(--ink); }
+    .review-choice-label[hidden], .review-reset[hidden] { display:none; }
+    .review-status { margin:var(--s3) 0; font-weight:650; }
+    .review-status:empty { display:none; }
+    .review-reset { min-height:44px; margin:var(--s2) 0 var(--s4); }
+    .review-choice-content { padding:var(--s2) 0; }
+    .review-choice-content > :first-child { margin-top:0; }
+    .review-choice-content > :last-child { margin-bottom:0; }
+    /* 보기 판정 알림: pinned bio template review-interaction.css에서 복사 */
+    .review-feedback {
+      position:fixed; top:calc(env(safe-area-inset-top) + 72px); left:50%; z-index:100;
+      transform:translateX(-50%); width:max-content; max-width:calc(100vw - 32px);
+      display:flex; align-items:center; gap:12px; padding:10px 16px;
+      border:2px solid var(--line); border-radius:12px; background:var(--bg);
+      color:var(--ink); font-weight:700; pointer-events:none;
+      animation:review-feedback-in 180ms ease-out both;
+    }
+    .review-feedback[data-result="correct"] { border-color:var(--accent); }
+    .review-feedback[data-result="incorrect"] { border-color:var(--danger); }
+    .review-feedback-icon { position:relative; flex:none; width:20px; height:20px; }
+    .review-feedback[data-result="correct"] .review-feedback-icon {
+      border-radius:50%; background:var(--accent); transform:scale(.45);
+      animation:review-pop 350ms ease-out both;
+    }
+    .review-feedback[data-result="correct"] .review-feedback-icon::before,
+    .review-feedback[data-result="correct"] .review-feedback-icon::after {
+      content:""; position:absolute; left:8px; top:8px; width:4px; height:4px;
+      border-radius:50%; background:var(--accent);
+      box-shadow:0 -16px var(--accent), 16px 0 var(--accent), 0 16px var(--accent), -16px 0 var(--accent);
+      animation:review-burst 650ms ease-out both;
+    }
+    .review-feedback[data-result="correct"] .review-feedback-icon::after {
+      rotate:45deg; animation-delay:80ms;
+    }
+    .review-feedback[data-result="incorrect"] .review-feedback-icon {
+      animation:review-shake 320ms ease-in-out;
+    }
+    .review-feedback[data-result="incorrect"] .review-feedback-icon::before,
+    .review-feedback[data-result="incorrect"] .review-feedback-icon::after {
+      content:""; position:absolute; left:9px; top:0; width:3px; height:20px;
+      border-radius:2px; background:var(--danger); rotate:45deg;
+    }
+    .review-feedback[data-result="incorrect"] .review-feedback-icon::after { rotate:-45deg; }
+    @keyframes review-feedback-in {
+      from { opacity:0; translate:0 -8px; } to { opacity:1; translate:0 0; }
+    }
+    @keyframes review-pop {
+      from { transform:scale(.35); opacity:.5; } to { transform:scale(.65); opacity:1; }
+    }
+    @keyframes review-shake {
+      0%,100% { translate:0; } 25%,75% { translate:-5px; } 50% { translate:5px; }
+    }
+    @keyframes review-burst {
+      from { opacity:1; scale:.45; } to { opacity:0; scale:1.5; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .review-feedback, .review-feedback-icon, .review-feedback-icon::before,
+      .review-feedback-icon::after { animation:none !important; }
+      .review-feedback[data-result="correct"] .review-feedback-icon::before,
+      .review-feedback[data-result="correct"] .review-feedback-icon::after { display:none; }
+    }
+
+    /* 넓은 화면: 본문 옆에 붙는 패널 */
+    @media (min-width: 1024px) {
+      .layout { --l: var(--panel-l-user, var(--panel-l)); }
+      .layout[data-left="closed"] { --l: 0px; }
+      .layout { --r: var(--panel-r-user, var(--panel-r)); }
+      .layout[data-right="closed"] { --r: 0px; }
+      .panel-left { width: var(--l); }
+      .panel-right { width: var(--r); }
+      /* 기본값: 목차·요약 패널과 본문 폭을 뺀 나머지를 문제 패널이 차지 → 본문 옆 빈 여백이 생기지 않는다 */
+      .panel-prob { width: var(--panel-p-user, clamp(var(--panel-p-min), calc(100vw - var(--l) - var(--r) - var(--measure) - var(--scrollbar)), var(--panel-p-max))); }
+      .panel-resize { display: block; position: absolute; top: 0; bottom: 0; z-index: 2; width: 12px; padding: 0; border: 0; background: transparent; cursor: col-resize; touch-action: none; }
+      .panel-left .panel-resize, .panel-prob .panel-resize { right: 0; }
+      .panel-right .panel-resize { left: 0; }
+      .panel-resize::after { content: ""; position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: 0; transition: opacity 150ms ease-out; }
+      .panel-left .panel-resize::after, .panel-prob .panel-resize::after { right: 0; }
+      .panel-right .panel-resize::after { left: 0; }
+      .panel-resize:focus-visible { outline: none; }
+      .panel-resize:focus-visible::after, .is-resizing .panel-resize:active::after { opacity: 1; }
+      @media (hover: hover) { .panel-resize:hover::after { opacity: 1; } }
+      body.is-resizing { cursor: col-resize; user-select: none; }
+      .layout[data-prob-dock="right"] .panel-prob .panel-resize, .layout[data-prob-dock="right"] .panel-prob .panel-resize::after { left: 0; right: auto; }
+      /* 터치 화면에서도 머리·이동 버튼 끌기가 스크롤로 넘어가 취소되지 않게 */
+      .panel-prob .panel-head, .float-move { touch-action: none; }
+      /* 띄운 문제 창: grid에서 빠져 본문 위에 뜬다. 위치·크기는 스크립트가 --fx/--fy/--fw/--fh로 준다 */
+      .layout[data-prob-dock="float"] .panel-prob { position: fixed; left: var(--fx); top: var(--fy); width: var(--fw); height: var(--fh); z-index: 30;
+        border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 12px 32px rgb(0 0 0 / .18); }
+      .layout[data-prob-dock="float"] .panel-prob .panel-head { position: sticky; top: calc(-1 * var(--s4)); z-index: 1; margin-top: calc(-1 * var(--s4)); padding-top: var(--s2); background: var(--bg); cursor: grab; }
+      .layout[data-prob-dock="float"] .panel-prob .panel-resize { display: none; }
+      /* 좁은 창에서도 머리가 한 줄에 들어가게 간격을 줄인다 */
+      .layout[data-prob-dock="float"] .panel-prob .panel-head { gap: var(--s1); }
+      .layout[data-prob-dock="float"] .panel-prob .panel-tabs [role="tab"] { padding: 0 var(--s2); }
+      .layout[data-prob-dock="float"] .float-move { display: inline-flex; }
+      .layout[data-prob-dock="float"] .float-resize { display: block; position: absolute; right: 0; bottom: 0; z-index: 3; width: 16px; height: 16px; cursor: nwse-resize; touch-action: none;
+        background: linear-gradient(135deg, transparent 50%, var(--ink-2) 50%, var(--ink-2) 58%, transparent 58%, transparent 70%, var(--ink-2) 70%, var(--ink-2) 78%, transparent 78%); border-bottom-right-radius: 12px; }
+      .float-resize:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+      body.is-dragging, body.is-dragging .panel-prob .panel-head { cursor: grabbing; user-select: none; }
+      body.is-sizing, body.is-sizing .float-resize { cursor: nwse-resize; user-select: none; }
+      .dock-preview:not([hidden]) { display: block; position: fixed; z-index: 29; bottom: 0; width: min(400px, 40vw); pointer-events: none;
+        background: color-mix(in srgb, var(--accent) 18%, transparent); border: 2px solid var(--accent); }
+      .dock-preview[data-side="left"] { left: 0; }
+      .dock-preview[data-side="right"] { right: 0; }
+      .layout[data-left="closed"] .panel-left, .layout[data-prob="closed"] .panel-prob, .layout[data-right="closed"] .panel-right { display: none; }
+      .panel.is-shown { animation: panel-fade var(--dur) var(--ease-out); }
+      .scrim, .panel-close { display: none; }
+    }
+    @keyframes panel-fade { from { opacity: 0; } to { opacity: 1; } }
+
+    /* 좁은 화면: 가장자리에서 밀려 나오는 drawer */
+    @media (max-width: 1023.98px) {
+      .panel { position: fixed; top: 0; bottom: 0; z-index: 40; visibility: hidden;
+        transition: transform var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .panel-left { left: 0; width: min(var(--drawer-l), 88vw); transform: translateX(-100%); }
+      .panel-right { right: 0; width: min(var(--drawer-r), 88vw); transform: translateX(100%); }
+      .panel.is-open { visibility: visible; transform: none; transition: transform var(--dur) var(--ease-out); }
+      .panel-inner { padding-top: calc(var(--s3) + env(safe-area-inset-top)); padding-bottom: calc(var(--s6) + env(safe-area-inset-bottom)); }
+      .scrim { position: fixed; inset: 0; z-index: 35; background: var(--scrim); opacity: 0; visibility: hidden;
+        transition: opacity var(--dur-exit) ease-in, visibility 0s linear var(--dur-exit); }
+      .scrim.is-on { opacity: 1; visibility: visible; transition: opacity var(--dur) var(--ease-out); }
+      html:not(.js) .panel-left { display: none; }
+      /* 좁은 화면의 문제는 각 문항 안 '문제 보기'로 본다 */
+      .panel-prob, #toggle-prob { display: none; }
+    }
+    @media (max-width: 480px) { .panel-toggle { padding: 0 var(--s1); } }
+    html:not(.js) .panel-toggle, html:not(.js) .panel-prob, html:not(.js) .panel-right, html:not(.js) .scrim { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .panel, .panel.is-open, .scrim, .scrim.is-on, .progress > span, .panel-toggle .strip { transition: none; }
+      .panel.is-shown { animation: none; }
+      .panel-resize::after { transition: none; }
+    }
+    @media print {
+      body { display: block; height: auto; overflow: visible; }
+      .layout { display: block; }
+      .content { overflow: visible; }
+      .panel, .scrim { display: none !important; }
+      .verdict-card { break-inside: avoid; }
+    }
+
+    .topic, .layer, .content, main { min-width: 0; }
+    /* Inline formulas stay inline; only genuinely wide blocks may be panned. */
+    .katex-display { max-width:100%; }
+    .katex-display > .katex, .katex.math-block { display:block; white-space:normal; text-align:left; }
+    .katex.math-block { margin:0; }
+    .katex-display > .katex > .katex-html { white-space:normal; }
+    .math-row { display:block; max-width:100%; margin:var(--s3) 0; padding:var(--s2) var(--s1); }
+    .math-row .katex-display { margin:0; padding:0; }
+    .math-punctuation { margin-left:.15em; font-family:var(--font); }
+    .math-row.math-pan { overflow-x:auto; overflow-y:hidden; scrollbar-width:none; }
+    .math-row.math-pan::-webkit-scrollbar { display:none; }
+    .math-pan-hint { display:block; margin:var(--s1) 0 var(--s3); color:var(--ink-2); font:var(--fs-small)/1.5 var(--font); }
+    table { display:block; max-width:100%; overflow-x:auto; }
+    img, svg { max-width:100%; height:auto; }
+  </style>
+</head>
+<body data-screens="article.topic" data-panels="explain" data-range="ds-problem-explain-review-1112-Heap">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <button class="text-btn panel-toggle" id="toggle-left" type="button" aria-controls="panel-left" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>목차</span></button>
+      <button class="text-btn panel-toggle" id="toggle-prob" type="button" aria-controls="panel-prob" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="9" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16 M15 4v16"/></svg><span>문제</span></button>
+      <strong class="brand">문제풀이 입문 설명</strong>
+      <button class="text-btn theme-toggle" id="theme-toggle" type="button" aria-label="다크 모드로 전환" title="다크 모드로 전환"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+      <button class="text-btn panel-toggle" id="toggle-right" type="button" aria-controls="panel-right" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="15" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span>요약</span></button>
+    </div>
+    <div class="bar" aria-hidden="true"><span id="pager-bar"></span></div>
+  </header>
+  <div class="layout" data-left="open" data-prob="open" data-right="closed" data-prob-dock="left">
+    <aside class="panel panel-left" id="panel-left" aria-labelledby="panel-left-title">
+      <div class="panel-resize" data-side="left" role="separator" aria-orientation="vertical" aria-controls="panel-left" aria-label="왼쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-left-title">목차</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <p class="panel-meta">읽은 토픽 <b id="progress-n">0</b> / <span id="progress-total">0</span></p>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+        <nav class="toc" aria-label="목차"><ul class="toc-list"><li><a href="#p1">P1. 빈도 표로 허프만 트리와 코드 만들기</a></li><li><a href="#p2">P2. 정해진 틀에 허프만 트리 채우기</a></li><li><a href="#p3">P3. 히프 정렬이 특히 쓸모 있는 경우</a></li><li><a href="#p4">P4. 파일을 읽어 최대 히프 만들고 최댓값 빼기</a></li><li><a href="#p5">P5. 피보나치 빈도의 허프만 코드</a></li><li><a href="#p6">P6. heap_sort의 두 for 루프 따라가기</a></li><li><a href="#p7">P7. 최소 힙으로 etnis 허프만 트리 만들기</a></li><li><a href="#p8">P8. 아이스크림 가게 이벤트를 시각 순서로 처리하기</a></li></ul></nav>
+      </div>
+    </aside>
+    <aside class="panel panel-prob" id="panel-prob" aria-labelledby="panel-prob-title">
+      <div class="panel-resize" data-side="prob" role="separator" aria-orientation="vertical" aria-controls="panel-prob" aria-label="문제 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <button class="float-move" type="button" aria-label="문제 창 이동. 화살표로 이동" title="끌어서 이동"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01" stroke-width="3"/></svg></button>
+          <h2 id="panel-prob-title" class="sr-only">문제, 원문</h2>
+          <div class="panel-tabs" role="tablist" aria-labelledby="panel-prob-title">
+            <button type="button" role="tab" id="tab-problem" data-tab="problem" aria-controls="tabpanel-problem" aria-selected="true">문제</button>
+            <button type="button" role="tab" id="tab-original" data-tab="original" aria-controls="tabpanel-original" aria-selected="false" tabindex="-1" hidden>원문</button>
+          </div>
+          <div class="prob-dock" role="radiogroup" aria-label="문제 패널 위치">
+            <button type="button" role="radio" data-dock="left" aria-checked="true" tabindex="0" aria-label="왼쪽에 붙이기" title="왼쪽에 붙이기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="7" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/></svg></button>
+            <button type="button" role="radio" data-dock="right" aria-checked="false" tabindex="-1" aria-label="오른쪽에 붙이기" title="오른쪽에 붙이기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="14" y="4" width="7" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/></svg></button>
+            <button type="button" role="radio" data-dock="float" aria-checked="false" tabindex="-1" aria-label="띄우기" title="띄우기"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><rect class="strip" x="11" y="8" width="7" height="6" rx="1"/></svg></button>
+          </div>
+        </div>
+        <div class="probs" role="tabpanel" id="tabpanel-problem" aria-labelledby="tab-problem">
+          <p class="panel-empty" id="prob-empty">문항을 고르면 여기에 문제가 나와요.</p>
+        </div>
+        <div class="orig-tab" role="tabpanel" id="tabpanel-original" aria-labelledby="tab-original" hidden></div>
+      </div>
+      <div class="float-resize" role="button" tabindex="0" aria-label="문제 창 크기 조절. 화살표로 조절, Enter로 기본 크기"></div>
+    </aside>
+    <div class="content">
+  <main>
+    <div class="hero">
+      <h1>자료구조및알고리즘이해 복습 1112 문제설명</h1>
+      <p>왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.</p>
+    </div>
+<section id="problems"><h2>문항별 설명</h2><article class="topic" id="p1"><h3>P1. 빈도 표로 허프만 트리와 코드 만들기</h3><p class="panel-meta">2016-final-ljw-q4 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1112_Heap.html#p1">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p1"><div class="layer formal" data-source-problem="p1"><div data-source-field="conditions"><p>어떤 문서에 총 100개의 문자가 들어 있고, character의 빈도수가 다음 표와 같아요. 다음에 답해 보세요.</p><div class="table-wrap"><table><thead><tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th></tr></thead><tbody><tr><td>15%</td><td>8%</td><td>20%</td><td>1%</td><td>5%</td><td>40%</td><td>9%</td><td>2%</td></tr></tbody></table></div><p>1) 본래는 7가지의 character를 표현해야 하므로 하나의 문자당 (    )bit가 필요하며, 총 (    ) bit가 필요해요. 빈칸을 채워 보세요.</p><p>2) 이를 허프만 코딩 방법으로 압축한다면 총 (    ) bit가 필요해요. 빈칸을 채우고, 허프만 코딩 트리를 그린 뒤 다음 표의 code를 채워 보세요. (단 left 0, right 1로 coding해요.)</p><figure class="figure"><svg id="p1-source-fig-p1-prob-codes" viewBox="0 0 426 92" role="img" aria-label="Code를 채우는 표: 문자 A부터 H까지, 빈도 15%, 8%, 20%, 1%, 5%, 40%, 9%, 2%, Code 행은 빈칸"><rect class="fig-ink" x="1" y="1" width="56" height="30"/><text class="fig-text" x="29.0" y="21.0" text-anchor="middle" font-size="13">Char</text><rect class="fig-ink" x="57" y="1" width="46" height="30"/><text class="fig-text" x="80.0" y="21.0" text-anchor="middle" font-size="13">A</text><rect class="fig-ink" x="103" y="1" width="46" height="30"/><text class="fig-text" x="126.0" y="21.0" text-anchor="middle" font-size="13">B</text><rect class="fig-ink" x="149" y="1" width="46" height="30"/><text class="fig-text" x="172.0" y="21.0" text-anchor="middle" font-size="13">C</text><rect class="fig-ink" x="195" y="1" width="46" height="30"/><text class="fig-text" x="218.0" y="21.0" text-anchor="middle" font-size="13">D</text><rect class="fig-ink" x="241" y="1" width="46" height="30"/><text class="fig-text" x="264.0" y="21.0" text-anchor="middle" font-size="13">E</text><rect class="fig-ink" x="287" y="1" width="46" height="30"/><text class="fig-text" x="310.0" y="21.0" text-anchor="middle" font-size="13">F</text><rect class="fig-ink" x="333" y="1" width="46" height="30"/><text class="fig-text" x="356.0" y="21.0" text-anchor="middle" font-size="13">G</text><rect class="fig-ink" x="379" y="1" width="46" height="30"/><text class="fig-text" x="402.0" y="21.0" text-anchor="middle" font-size="13">H</text><rect class="fig-ink" x="1" y="31" width="56" height="30"/><text class="fig-text" x="29.0" y="51.0" text-anchor="middle" font-size="13">빈도</text><rect class="fig-ink" x="57" y="31" width="46" height="30"/><text class="fig-text" x="80.0" y="51.0" text-anchor="middle" font-size="13">15%</text><rect class="fig-ink" x="103" y="31" width="46" height="30"/><text class="fig-text" x="126.0" y="51.0" text-anchor="middle" font-size="13">8%</text><rect class="fig-ink" x="149" y="31" width="46" height="30"/><text class="fig-text" x="172.0" y="51.0" text-anchor="middle" font-size="13">20%</text><rect class="fig-ink" x="195" y="31" width="46" height="30"/><text class="fig-text" x="218.0" y="51.0" text-anchor="middle" font-size="13">1%</text><rect class="fig-ink" x="241" y="31" width="46" height="30"/><text class="fig-text" x="264.0" y="51.0" text-anchor="middle" font-size="13">5%</text><rect class="fig-ink" x="287" y="31" width="46" height="30"/><text class="fig-text" x="310.0" y="51.0" text-anchor="middle" font-size="13">40%</text><rect class="fig-ink" x="333" y="31" width="46" height="30"/><text class="fig-text" x="356.0" y="51.0" text-anchor="middle" font-size="13">9%</text><rect class="fig-ink" x="379" y="31" width="46" height="30"/><text class="fig-text" x="402.0" y="51.0" text-anchor="middle" font-size="13">2%</text><rect class="fig-ink" x="1" y="61" width="56" height="30"/><text class="fig-text" x="29.0" y="81.0" text-anchor="middle" font-size="13">Code</text><rect class="fig-ink" x="57" y="61" width="46" height="30"/><rect class="fig-ink" x="103" y="61" width="46" height="30"/><rect class="fig-ink" x="149" y="61" width="46" height="30"/><rect class="fig-ink" x="195" y="61" width="46" height="30"/><rect class="fig-ink" x="241" y="61" width="46" height="30"/><rect class="fig-ink" x="287" y="61" width="46" height="30"/><rect class="fig-ink" x="333" y="61" width="46" height="30"/><rect class="fig-ink" x="379" y="61" width="46" height="30"/></svg><figcaption>Char·빈도·Code 표 (Code 행이 빈칸)</figcaption></figure></div></div><details class="original" data-original-problem="p1"><summary>기출 원문 보기</summary><p>2016 기말 4번 · 10점 · 이정원 교수님</p><p>"4. 어떤 문서에 총 100개의 문자가 들어 있으며, 다음 표와 같이 character의 빈도수가 결정 된다고 할 때, 다음에 답하여라. (10점)</p><div class="table-wrap"><table><thead><tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th></tr></thead><tbody><tr><td>15%</td><td>8%</td><td>20%</td><td>1%</td><td>5%</td><td>40%</td><td>9%</td><td>2%</td></tr></tbody></table></div><p>1) 본래는 7가지의 character를 표현해야 하므로 하나의 문자당 (    )bit가 필요하며, 총 (    ) bit가 필요하다.</p><p>2) 이를 허프만 코딩 방법을 이용하여 압축한다면 총 (    ) bit가 필요하다. 허프만 코딩 트리를 그리고 다음표의 code를 채워라. (단 left 0, right 1로 coding 할 것)"</p><figure class="figure"><svg id="p1-original-fig-p1-orig-codes" viewBox="0 0 426 92" role="img" aria-label="Code를 채우는 표: 문자 A부터 H까지, 빈도 15%, 8%, 20%, 1%, 5%, 40%, 9%, 2%, Code 행은 빈칸"><rect class="fig-ink" x="1" y="1" width="56" height="30"/><text class="fig-text" x="29.0" y="21.0" text-anchor="middle" font-size="13">Char</text><rect class="fig-ink" x="57" y="1" width="46" height="30"/><text class="fig-text" x="80.0" y="21.0" text-anchor="middle" font-size="13">A</text><rect class="fig-ink" x="103" y="1" width="46" height="30"/><text class="fig-text" x="126.0" y="21.0" text-anchor="middle" font-size="13">B</text><rect class="fig-ink" x="149" y="1" width="46" height="30"/><text class="fig-text" x="172.0" y="21.0" text-anchor="middle" font-size="13">C</text><rect class="fig-ink" x="195" y="1" width="46" height="30"/><text class="fig-text" x="218.0" y="21.0" text-anchor="middle" font-size="13">D</text><rect class="fig-ink" x="241" y="1" width="46" height="30"/><text class="fig-text" x="264.0" y="21.0" text-anchor="middle" font-size="13">E</text><rect class="fig-ink" x="287" y="1" width="46" height="30"/><text class="fig-text" x="310.0" y="21.0" text-anchor="middle" font-size="13">F</text><rect class="fig-ink" x="333" y="1" width="46" height="30"/><text class="fig-text" x="356.0" y="21.0" text-anchor="middle" font-size="13">G</text><rect class="fig-ink" x="379" y="1" width="46" height="30"/><text class="fig-text" x="402.0" y="21.0" text-anchor="middle" font-size="13">H</text><rect class="fig-ink" x="1" y="31" width="56" height="30"/><text class="fig-text" x="29.0" y="51.0" text-anchor="middle" font-size="13">빈도</text><rect class="fig-ink" x="57" y="31" width="46" height="30"/><text class="fig-text" x="80.0" y="51.0" text-anchor="middle" font-size="13">15%</text><rect class="fig-ink" x="103" y="31" width="46" height="30"/><text class="fig-text" x="126.0" y="51.0" text-anchor="middle" font-size="13">8%</text><rect class="fig-ink" x="149" y="31" width="46" height="30"/><text class="fig-text" x="172.0" y="51.0" text-anchor="middle" font-size="13">20%</text><rect class="fig-ink" x="195" y="31" width="46" height="30"/><text class="fig-text" x="218.0" y="51.0" text-anchor="middle" font-size="13">1%</text><rect class="fig-ink" x="241" y="31" width="46" height="30"/><text class="fig-text" x="264.0" y="51.0" text-anchor="middle" font-size="13">5%</text><rect class="fig-ink" x="287" y="31" width="46" height="30"/><text class="fig-text" x="310.0" y="51.0" text-anchor="middle" font-size="13">40%</text><rect class="fig-ink" x="333" y="31" width="46" height="30"/><text class="fig-text" x="356.0" y="51.0" text-anchor="middle" font-size="13">9%</text><rect class="fig-ink" x="379" y="31" width="46" height="30"/><text class="fig-text" x="402.0" y="51.0" text-anchor="middle" font-size="13">2%</text><rect class="fig-ink" x="1" y="61" width="56" height="30"/><text class="fig-text" x="29.0" y="81.0" text-anchor="middle" font-size="13">Code</text><rect class="fig-ink" x="57" y="61" width="46" height="30"/><rect class="fig-ink" x="103" y="61" width="46" height="30"/><rect class="fig-ink" x="149" y="61" width="46" height="30"/><rect class="fig-ink" x="195" y="61" width="46" height="30"/><rect class="fig-ink" x="241" y="61" width="46" height="30"/><rect class="fig-ink" x="287" y="61" width="46" height="30"/><rect class="fig-ink" x="333" y="61" width="46" height="30"/><rect class="fig-ink" x="379" y="61" width="46" height="30"/></svg><figcaption>원문의 두 번째 표: Char·빈도·Code (Code 행이 빈칸)</figcaption></figure></details></div><div class="layer eli5" data-explanation="understand">
+<h4>무엇을 구하라는 문제일까요?</h4>
+<p>글자 A부터 H까지가 섞인 100글자짜리 문서가 있고, 표는 각 글자가 몇 %(곧 100글자 중 몇 개) 나오는지 알려 줘요. 1)은 모든 글자를 같은 길이의 비트로 적을 때 글자당 몇 비트, 전체 몇 비트인지 묻고, 2)는 허프만 코딩(Huffman coding)으로 줄였을 때 전체 비트 수, 트리 그림, 글자별 code를 묻는 거예요. 가지에는 left 0, right 1을 붙이라는 조건이 있어요.</p>
+<p>원문 1)은 “7가지의 character”라고 적었지만 표의 글자는 A~H로 <strong>8개</strong>예요. 원문 오기이고, 원본 시험지에서도 채점자가 7을 8로 고쳐 두었어요. 7로 읽어도 8로 읽어도 답이 3비트로 같아서 답에는 영향이 없어요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<p>‘본래는 … 하나의 문자당 ( )bit’라는 단서에서 <strong>고정 길이 코드</strong>를 떠올려요. 비트 $b$개로는 $2^b$가지를 구별하니, 글자 $k$종류에는 $2^b \ge k$를 만족하는 가장 작은 $b$가 필요해요. 전체 비트는 글자 수 × $b$예요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-why">정리노트: 자주 나오는 글자에 짧은 코드</a>).</p>
+<p>‘허프만 코딩으로 압축’과 빈도표라는 단서에서 <strong>허프만 코딩 트리</strong>를 떠올려요. 빈도마다 단말 노드를 만들고, <strong>가장 작은 빈도 두 개</strong>를 자식으로 하는 새 노드(값은 두 빈도의 합)를 만드는 일을 노드가 하나 남을 때까지 반복해요(S8 p18). 가장 작은 둘을 꺼내고 합을 다시 넣는 일이 최소 힙(min heap), 곧 우선순위 큐가 잘하는 일이라 ‘히프 응용 3’이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-build">정리노트: 가장 작은 두 개를 묶어 트리 만들기</a>).</p>
+<p>code는 루트에서 그 글자까지 내려가며 만난 가지 비트를 이은 것이고, 코드 길이는 그 글자의 깊이예요. 그래서 전체 비트 수는 $\sum (\text{빈도} \times \text{코드 길이})$예요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-code">정리노트: 비트 코드와 100비트</a>).</p>
+</div>
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<p>먼저 1)을 식 한 줄로 끝내요.</p>
+<pre><code>글자 8종: 2^2 = 4 &lt; 8 &lt;= 2^3 = 8 → 3 bit, 100 × 3 = 300 bit</code></pre>
+<p>2)는 빈도를 작은 순서로 한 줄에 늘어놓는 것부터 시작해요: D 1, H 2, E 5, B 8, G 9, A 15, C 20, F 40. 그다음 맨 앞 두 개 D 1, H 2를 묶어 3을 만드는 행이 병합 표의 첫 행이에요.</p>
+</div>
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="main">
+<h5>1) 고정 길이 코드</h5>
+<p>2비트는 $2^2 = 4$가지만 구별해서 8글자에 모자라고, 3비트는 $2^3 = 8$가지라 딱 맞아요. 원문처럼 7가지로 읽어도 $4 &lt; 7 \le 8$이라 3비트예요. 100글자이니 $100 \times 3 = 300$ bit예요.</p>
+<h5>2) 허프만 트리 만들기</h5>
+<p>매번 남은 노드 중 가장 작은 두 개를 꺼내 합치고, 합을 다시 넣어요.</p>
+<div class="table-wrap"><table><thead><tr><th>단계</th><th>꺼낸 두 값</th><th>합</th><th>남은 빈도</th></tr></thead><tbody>
+<tr><td>1</td><td>D 1, H 2</td><td>3</td><td>3 5 8 9 15 20 40</td></tr>
+<tr><td>2</td><td>3, E 5</td><td>8</td><td>8 8 9 15 20 40</td></tr>
+<tr><td>3</td><td>B 8, 8</td><td>16</td><td>9 15 16 20 40</td></tr>
+<tr><td>4</td><td>G 9, A 15</td><td>24</td><td>16 20 24 40</td></tr>
+<tr><td>5</td><td>16, C 20</td><td>36</td><td>24 36 40</td></tr>
+<tr><td>6</td><td>24, 36</td><td>60</td><td>40 60</td></tr>
+<tr><td>7</td><td>F 40, 60</td><td>100</td><td>100</td></tr>
+</tbody></table></div>
+<p>3단계에서 B 8과 합친 노드 8이 같은 빈도예요. 남은 8이 둘뿐이라 어느 쪽을 먼저 꺼내도 둘이 함께 합쳐지므로 트리 모양은 같아요. 5단계에서는 16과 20이 가장 작은 둘이에요. 24보다 16·20이 작다는 것을 매번 확인해야 해요.</p>
+<p>합친 두 노드를 자식으로 달고 왼쪽 가지에 0, 오른쪽 가지에 1을 붙이면 다음 트리가 돼요. 이 배치는 원본 시험지에 남은 채점된 답안과 같은 배치예요(괄호는 합친 노드).</p>
+<pre><code>[100]
+├─0─ F 40
+└─1─ [60]
+     ├─0─ [24]
+     │    ├─0─ A 15
+     │    └─1─ G 9
+     └─1─ [36]
+          ├─0─ C 20
+          └─1─ [16]
+               ├─0─ B 8
+               └─1─ [8]
+                    ├─0─ E 5
+                    └─1─ [3]
+                         ├─0─ H 2
+                         └─1─ D 1</code></pre>
+<h5>2) code와 총 비트</h5>
+<p>루트에서 글자까지 내려가며 만난 비트를 이어 써요. 비트 수는 빈도 × 코드 길이예요.</p>
+<div class="table-wrap"><table><thead><tr><th>글자</th><th>빈도</th><th>code</th><th>길이</th><th>비트 수</th></tr></thead><tbody>
+<tr><td>A</td><td>15</td><td>100</td><td>3</td><td>45</td></tr>
+<tr><td>B</td><td>8</td><td>1110</td><td>4</td><td>32</td></tr>
+<tr><td>C</td><td>20</td><td>110</td><td>3</td><td>60</td></tr>
+<tr><td>D</td><td>1</td><td>111111</td><td>6</td><td>6</td></tr>
+<tr><td>E</td><td>5</td><td>11110</td><td>5</td><td>25</td></tr>
+<tr><td>F</td><td>40</td><td>0</td><td>1</td><td>40</td></tr>
+<tr><td>G</td><td>9</td><td>101</td><td>3</td><td>27</td></tr>
+<tr><td>H</td><td>2</td><td>111110</td><td>6</td><td>12</td></tr>
+</tbody></table></div>
+<p>$45 + 32 + 60 + 6 + 25 + 40 + 27 + 12 = 247$ bit예요. 고정 길이 300 bit보다 53 bit 적어요.</p>
+<p>문제는 어느 자식을 왼쪽에 둘지 정하지 않았어요. 같은 부모 아래 두 자식을 바꾸면 code의 0과 1은 달라질 수 있지만, 깊이는 그대로라 코드 길이(F 1, A·C·G 3, B 4, E 5, D·H 6)와 총 247 bit는 같아요.</p>
+</div>
+</div>
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="main">
+<p>완성 답: 1) 3 bit, 300 bit(원문 “7가지”는 오기, 글자는 8개) 2) 247 bit, 위 트리, code A 100, B 1110, C 110, D 111111, E 11110, F 0, G 101, H 111110.</p>
+<p>검산 1: 빈도 합 $15+8+20+1+5+40+9+2 = 100$이 루트 값 100과 같아요.</p>
+<p>검산 2: 내부 노드 값의 합도 총 비트와 같아야 해요. 글자 하나가 깊이만큼의 내부 노드를 지나기 때문이에요. $3+8+16+24+36+60+100 = 247$로 표의 합과 같아요.</p>
+<p>검산 3: 문제·그림만 보고 따로 짠 우선순위 큐 시뮬레이션(<code>evidence/independent_verify.py</code>)도 병합 순서 1+2, 3+5, 8+8, 9+15, 16+20, 24+36, 40+60과 총 247 bit를 냈어요. 동점 처리 순서를 고정 규칙 4가지와 무작위 순서 200가지, 모두 204가지로 바꿔 봐도 글자별 코드 길이와 247 bit는 한 가지로만 나왔어요. 그 시뮬레이션은 좌우를 다르게 놓아 F 0, G 100, A 101 …처럼 비트가 다르지만 길이는 모두 같아요. 원본 시험지의 채점 답안 code와도 일치해요.</p>
+<p>검산 4: 어떤 code도 다른 code의 앞부분이 아니에요(예: 0으로 시작하는 것은 F 하나뿐). 그래서 구분자 없이도 하나로만 풀려요.</p>
+</div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+<h4>이 문제에서 특히 조심할 점</h4>
+<p>원문의 “7가지”를 그대로 믿고 글자 수를 7로 세면 안 돼요. 표를 직접 세면 8개예요. 이 문제는 3비트로 답이 같지만, 다른 문제에서는 $2^b$ 경계를 넘어 답이 바뀔 수 있어요.</p>
+<p>방금 만든 노드를 무조건 다음 글자와 합치면 틀려요. 매번 <strong>남은 모든 노드</strong> 중 가장 작은 둘을 골라야 해요. 4단계에서 남은 값은 9, 15, 16, 20, 40이라 가장 작은 둘은 G 9와 A 15예요. 만든 노드를 계속 다음 글자에 붙여 3, 8, 16, 25, 40, 60, 100으로 합치면 내부 노드 합이 252가 되어 247보다 커져요.</p>
+<p>총 비트를 ‘코드 길이의 합’으로 계산하면 안 돼요. 빈도를 곱한 $\sum(\text{빈도}\times\text{길이})$가 문서 전체 비트예요. 좌우 배치가 달라 code 비트가 채점 답과 달라도, 길이와 247이 같으면 같은 허프만 트리예요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 닫고 다시 해 봐요</h4>
+<ol><li>글자 수를 직접 세고 $2^b \ge 8$인 가장 작은 $b$로 1)의 두 빈칸을 채워요.</li><li>빈도를 오름차순으로 적고 “가장 작은 둘을 합쳐 다시 넣기”를 일곱 번 하며 병합 표를 써요.</li><li>트리에 left 0, right 1을 붙여 code를 읽고, 내부 노드 합과 $\sum(\text{빈도}\times\text{길이})$가 둘 다 247인지 확인해요.</li></ol>
+</div>
+<div class="sum" hidden="">
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>고정 길이: $2^b \ge$ 글자 종류 수인 최소 $b$. 허프만: 가장 작은 빈도 둘을 자식으로 하는 노드(값은 합)를 하나 남을 때까지 반복, 가장 작은 둘은 최소 힙으로 꺼내요. 총 비트 $= \sum(\text{빈도}\times\text{코드 길이})$.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>글자 8종(원문 “7가지”는 오기) → 3 bit, 300 bit. 빈도 정렬 D 1, H 2, E 5, B 8, G 9, A 15, C 20, F 40에서 1+2=3부터 합쳐요.</p></div>
+<div class="summary-group"><h4>핵심 판단</h4><p>병합 3, 8, 16, 24, 36, 60, 100. code(채점 답안 배치) F 0, A 100, G 101, C 110, B 1110, E 11110, H 111110, D 111111. 좌우를 바꾸면 비트는 달라도 길이 F 1, A·C·G 3, B 4, E 5, D·H 6과 247 bit는 같아요.</p></div>
+<div class="summary-group"><h4>검산</h4><p>내부 노드 합 3+8+16+24+36+60+100 = 247, 독립 시뮬레이션·동점 변형 모두 247, 채점된 원본 답안과 일치해요.</p></div>
+</div>
+</article><article class="topic" id="p2"><h3>P2. 정해진 틀에 허프만 트리 채우기</h3><p class="panel-meta">2021-mock1-q5 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1112_Heap.html#p2">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p2"><div class="layer formal" data-source-problem="p2"><div data-source-field="conditions"><p>아래 표는 105개의 글자(symbol)로 된 글에서 각 글자의 빈도수예요. 이 symbol들로 이루어진 파일을 압축하는 허프만 코드(Huffman code)를 만들려고 해요.</p><div class="table-wrap"><table><thead><tr><th>symbol</th><th>빈도수</th></tr></thead><tbody><tr><td>s</td><td>16</td></tr><tr><td>t</td><td>35</td></tr><tr><td>u</td><td>4</td></tr><tr><td>v</td><td>8</td></tr><tr><td>w</td><td>23</td></tr><tr><td>x</td><td>19</td></tr></tbody></table></div><p>1) 허프만 트리를 그려 보세요. 허프만 트리에 0과 1의 표시도 해 보세요. 아래 틀에 맞춰 그려요.</p><figure class="figure"><svg id="p2-source-fig-p2-prob-frame" viewBox="0 0 368 308" role="img" aria-label="빈 허프만 트리 틀: 루트의 왼쪽 자식은 내부 노드, 오른쪽 자식은 내부 노드. 왼쪽 내부 노드의 왼쪽은 단말, 오른쪽은 내부 노드. 그 내부 노드의 왼쪽은 단말 두 개를 가진 내부 노드, 오른쪽은 단말. 오른쪽 내부 노드의 두 자식은 단말"><line class="fig-ink" x1="119.2" y1="228.5" x2="103.8" y2="261.5"/><line class="fig-ink" x1="132.8" y1="228.5" x2="148.2" y2="261.5"/><line class="fig-ink" x1="160.3" y1="165.1" x2="135.2" y2="200.9"/><line class="fig-ink" x1="178.7" y1="165.1" x2="203.8" y2="200.9"/><line class="fig-ink" x1="92.7" y1="101.0" x2="50.6" y2="141.0"/><line class="fig-ink" x1="115.8" y1="101.0" x2="157.9" y2="141.0"/><line class="fig-ink" x1="293.2" y1="104.5" x2="277.8" y2="137.5"/><line class="fig-ink" x1="306.8" y1="104.5" x2="322.2" y2="137.5"/><line class="fig-ink" x1="188.6" y1="36.6" x2="117.8" y2="81.4"/><line class="fig-ink" x1="215.6" y1="36.6" x2="286.5" y2="81.4"/><circle class="fig-ink" cx="39.0" cy="152.0" r="16"/><circle class="fig-ink" cx="97.0" cy="276.0" r="16"/><circle class="fig-ink" cx="155.0" cy="276.0" r="16"/><circle class="fig-ink" cx="126.0" cy="214.0" r="16"/><circle class="fig-ink" cx="213.0" cy="214.0" r="16"/><circle class="fig-ink" cx="169.5" cy="152.0" r="16"/><circle class="fig-ink" cx="104.2" cy="90.0" r="16"/><circle class="fig-ink" cx="271.0" cy="152.0" r="16"/><circle class="fig-ink" cx="329.0" cy="152.0" r="16"/><circle class="fig-ink" cx="300.0" cy="90.0" r="16"/><circle class="fig-ink" cx="202.1" cy="28.0" r="16"/></svg><figcaption>빈 노드로 된 허프만 트리 틀</figcaption></figure><p>2) 각 symbol의 허프만 코드를 적어 보세요.</p><figure class="figure"><svg id="p2-source-svg2-fig-p2-prob-codes" viewBox="0 0 202 212" role="img" aria-label="허프만 코드를 적는 표: symbol s, t, u, v, w, x, 코드 칸은 빈칸"><rect class="fig-ink" x="1" y="1" width="80" height="30"/><text class="fig-text" x="41.0" y="21.0" text-anchor="middle" font-size="13">symbol</text><rect class="fig-ink" x="81" y="1" width="120" height="30"/><text class="fig-text" x="141.0" y="21.0" text-anchor="middle" font-size="13">허프만 코드</text><rect class="fig-ink" x="1" y="31" width="80" height="30"/><text class="fig-text" x="41.0" y="51.0" text-anchor="middle" font-size="13">s</text><rect class="fig-ink" x="81" y="31" width="120" height="30"/><rect class="fig-ink" x="1" y="61" width="80" height="30"/><text class="fig-text" x="41.0" y="81.0" text-anchor="middle" font-size="13">t</text><rect class="fig-ink" x="81" y="61" width="120" height="30"/><rect class="fig-ink" x="1" y="91" width="80" height="30"/><text class="fig-text" x="41.0" y="111.0" text-anchor="middle" font-size="13">u</text><rect class="fig-ink" x="81" y="91" width="120" height="30"/><rect class="fig-ink" x="1" y="121" width="80" height="30"/><text class="fig-text" x="41.0" y="141.0" text-anchor="middle" font-size="13">v</text><rect class="fig-ink" x="81" y="121" width="120" height="30"/><rect class="fig-ink" x="1" y="151" width="80" height="30"/><text class="fig-text" x="41.0" y="171.0" text-anchor="middle" font-size="13">w</text><rect class="fig-ink" x="81" y="151" width="120" height="30"/><rect class="fig-ink" x="1" y="181" width="80" height="30"/><text class="fig-text" x="41.0" y="201.0" text-anchor="middle" font-size="13">x</text><rect class="fig-ink" x="81" y="181" width="120" height="30"/></svg><figcaption>symbol별 허프만 코드 표 (빈칸)</figcaption></figure><p>3) 허프만 코딩으로 105개의 글자(symbol)를 압축했을 때 총 비트의 수는? (    )bits</p></div></div><details class="original" data-original-problem="p2"><summary>기출 원문 보기</summary><p>2021 모의 5번 · 10점 · 출제자 미상</p><p>"아래의 표는 105개의 글자(symbol)들 글에서 각 글자들의 빈도수를 나타낸 것이다. 이 symbol들로 이루어진 파일을 압축하는 허프만 코드(Huffman code)를 만들려고 한다. (총 10점) [2018-2 기출]</p><div class="table-wrap"><table><thead><tr><th>symbol</th><th>빈도수</th></tr></thead><tbody><tr><td>s</td><td>16</td></tr><tr><td>t</td><td>35</td></tr><tr><td>u</td><td>4</td></tr><tr><td>v</td><td>8</td></tr><tr><td>w</td><td>23</td></tr><tr><td>x</td><td>19</td></tr></tbody></table></div><p>1) 허프만 트리를 그리시오. (5점) (허프만 트리에 0과 1의 표시도 하시오)</p><figure class="figure"><svg id="p2-original-fig-p2-orig-frame" viewBox="0 0 368 308" role="img" aria-label="빈 허프만 트리 틀: 루트의 왼쪽 자식은 내부 노드, 오른쪽 자식은 내부 노드. 왼쪽 내부 노드의 왼쪽은 단말, 오른쪽은 내부 노드. 그 내부 노드의 왼쪽은 단말 두 개를 가진 내부 노드, 오른쪽은 단말. 오른쪽 내부 노드의 두 자식은 단말"><line class="fig-ink" x1="119.2" y1="228.5" x2="103.8" y2="261.5"/><line class="fig-ink" x1="132.8" y1="228.5" x2="148.2" y2="261.5"/><line class="fig-ink" x1="160.3" y1="165.1" x2="135.2" y2="200.9"/><line class="fig-ink" x1="178.7" y1="165.1" x2="203.8" y2="200.9"/><line class="fig-ink" x1="92.7" y1="101.0" x2="50.6" y2="141.0"/><line class="fig-ink" x1="115.8" y1="101.0" x2="157.9" y2="141.0"/><line class="fig-ink" x1="293.2" y1="104.5" x2="277.8" y2="137.5"/><line class="fig-ink" x1="306.8" y1="104.5" x2="322.2" y2="137.5"/><line class="fig-ink" x1="188.6" y1="36.6" x2="117.8" y2="81.4"/><line class="fig-ink" x1="215.6" y1="36.6" x2="286.5" y2="81.4"/><circle class="fig-ink" cx="39.0" cy="152.0" r="16"/><circle class="fig-ink" cx="97.0" cy="276.0" r="16"/><circle class="fig-ink" cx="155.0" cy="276.0" r="16"/><circle class="fig-ink" cx="126.0" cy="214.0" r="16"/><circle class="fig-ink" cx="213.0" cy="214.0" r="16"/><circle class="fig-ink" cx="169.5" cy="152.0" r="16"/><circle class="fig-ink" cx="104.2" cy="90.0" r="16"/><circle class="fig-ink" cx="271.0" cy="152.0" r="16"/><circle class="fig-ink" cx="329.0" cy="152.0" r="16"/><circle class="fig-ink" cx="300.0" cy="90.0" r="16"/><circle class="fig-ink" cx="202.1" cy="28.0" r="16"/></svg><figcaption>원문의 빈 트리 틀</figcaption></figure><p>2) 각 symbol의 허프만 코드를 적으시오. (3점)</p><figure class="figure"><svg id="p2-original-svg2-fig-p2-orig-codes" viewBox="0 0 202 212" role="img" aria-label="허프만 코드를 적는 표: symbol s, t, u, v, w, x, 코드 칸은 빈칸"><rect class="fig-ink" x="1" y="1" width="80" height="30"/><text class="fig-text" x="41.0" y="21.0" text-anchor="middle" font-size="13">symbol</text><rect class="fig-ink" x="81" y="1" width="120" height="30"/><text class="fig-text" x="141.0" y="21.0" text-anchor="middle" font-size="13">허프만 코드</text><rect class="fig-ink" x="1" y="31" width="80" height="30"/><text class="fig-text" x="41.0" y="51.0" text-anchor="middle" font-size="13">s</text><rect class="fig-ink" x="81" y="31" width="120" height="30"/><rect class="fig-ink" x="1" y="61" width="80" height="30"/><text class="fig-text" x="41.0" y="81.0" text-anchor="middle" font-size="13">t</text><rect class="fig-ink" x="81" y="61" width="120" height="30"/><rect class="fig-ink" x="1" y="91" width="80" height="30"/><text class="fig-text" x="41.0" y="111.0" text-anchor="middle" font-size="13">u</text><rect class="fig-ink" x="81" y="91" width="120" height="30"/><rect class="fig-ink" x="1" y="121" width="80" height="30"/><text class="fig-text" x="41.0" y="141.0" text-anchor="middle" font-size="13">v</text><rect class="fig-ink" x="81" y="121" width="120" height="30"/><rect class="fig-ink" x="1" y="151" width="80" height="30"/><text class="fig-text" x="41.0" y="171.0" text-anchor="middle" font-size="13">w</text><rect class="fig-ink" x="81" y="151" width="120" height="30"/><rect class="fig-ink" x="1" y="181" width="80" height="30"/><text class="fig-text" x="41.0" y="201.0" text-anchor="middle" font-size="13">x</text><rect class="fig-ink" x="81" y="181" width="120" height="30"/></svg><figcaption>원문의 빈 코드 표</figcaption></figure><p>3) 허프만 코딩에 의해서 105개의 글자(symbol)들을 압축하였을 경우에 총 비트의 수는? (2점) (                       )bits"</p></details></div><div class="layer eli5" data-explanation="understand">
+<h4>무엇을 구하라는 문제일까요?</h4>
+<p>글자 여섯 개(s, t, u, v, w, x)의 빈도가 주어진 105글자짜리 글을 허프만 코드로 압축해요. 1)은 허프만 트리를 <strong>주어진 빈 틀 모양에 맞춰</strong> 그리고 가지에 0과 1을 표시하는 것, 2)는 글자별 허프만 코드, 3)은 압축한 뒤 전체 비트 수를 묻는 거예요.</p>
+<p>틀은 모양만 정해 줘요. 루트 아래 왼쪽은 ‘단말 하나 + 더 깊은 서브트리’, 오른쪽은 단말 두 개예요. 어느 가지가 0인지는 문제에 없어요. 1112 수업에서 교수님이 말로 설명한 대로 왼쪽 0, 오른쪽 1로 붙여요(반대로 붙여도 된다고 하셨어요).</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<p>‘빈도수 표’와 ‘허프만 코드를 만들려고 한다’는 단서에서 <strong>허프만 코딩 트리 만들기</strong>를 떠올려요. 가장 작은 빈도 두 개를 자식으로 하는 새 노드를 만들고(값은 두 빈도의 합) 다시 넣는 일을 하나 남을 때까지 반복해요. 매번 가장 작은 둘을 꺼내는 일은 최소 힙(min heap)이 맡아요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-build">정리노트: 가장 작은 두 개를 묶어 트리 만들기</a>).</p>
+<p>‘틀에 맞춰’라는 단서는 병합으로 정해지는 것은 <strong>부모·자식 관계(어떤 둘이 묶이는지)</strong>이고 좌우 순서는 정해지지 않는다는 점을 떠올리게 해요. 그래서 병합 결과의 각 노드를 틀에서 같은 개수의 단말을 가진 자리에 맞추면 돼요.</p>
+<p>코드는 루트에서 단말까지의 가지 비트를 이은 것이고, 총 비트는 $\sum(\text{빈도}\times\text{코드 길이})$예요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-code">정리노트: 비트 코드와 100비트</a>).</p>
+</div>
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<p>빈도를 작은 순서로 늘어놓고 맨 앞 두 개를 묶는 병합 표의 첫 행을 써요.</p>
+<pre><code>정렬: u 4, v 8, s 16, x 19, w 23, t 35
+1단계: u 4 + v 8 = 12 → 남은 값 12 16 19 23 35</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="main">
+<h5>1) 병합 순서</h5>
+<div class="table-wrap"><table><thead><tr><th>단계</th><th>꺼낸 두 값</th><th>합</th><th>남은 빈도</th></tr></thead><tbody>
+<tr><td>1</td><td>u 4, v 8</td><td>12</td><td>12 16 19 23 35</td></tr>
+<tr><td>2</td><td>12, s 16</td><td>28</td><td>19 23 28 35</td></tr>
+<tr><td>3</td><td>x 19, w 23</td><td>42</td><td>28 35 42</td></tr>
+<tr><td>4</td><td>28, t 35</td><td>63</td><td>42 63</td></tr>
+<tr><td>5</td><td>42, 63</td><td>105</td><td>105</td></tr>
+</tbody></table></div>
+<p>3단계에서 남은 값은 19, 23, 28, 35예요. 가장 작은 둘은 x 19, w 23이라 방금 만든 28보다 이 둘이 먼저 묶여요.</p>
+<h5>1) 틀에 맞추기</h5>
+<p>루트 105의 두 자식은 42(단말 두 개)와 63(단말 네 개)이에요. 틀에서 단말 두 개짜리 서브트리는 오른쪽이니 42가 오른쪽, 63이 왼쪽이에요. 63의 두 자식은 단말 t 35와 28이고, 틀은 왼쪽이 단말이라 t가 왼쪽이에요. 28의 자식은 12(단말 두 개)와 단말 s이고, 틀은 왼쪽이 내부 노드라 12가 왼쪽이에요. 같은 모양인 u·v, x·w는 어느 쪽에 두어도 틀에 맞아요. 여기서는 작은 쪽을 왼쪽에 둬요.</p>
+<pre><code>[105]
+├─0─ [63]
+│    ├─0─ t 35
+│    └─1─ [28]
+│         ├─0─ [12]
+│         │    ├─0─ u 4
+│         │    └─1─ v 8
+│         └─1─ s 16
+└─1─ [42]
+     ├─0─ x 19
+     └─1─ w 23</code></pre>
+<h5>2) 허프만 코드</h5>
+<div class="table-wrap"><table><thead><tr><th>symbol</th><th>빈도수</th><th>허프만 코드</th><th>길이</th><th>비트 수</th></tr></thead><tbody>
+<tr><td>s</td><td>16</td><td>011</td><td>3</td><td>48</td></tr>
+<tr><td>t</td><td>35</td><td>00</td><td>2</td><td>70</td></tr>
+<tr><td>u</td><td>4</td><td>0100</td><td>4</td><td>16</td></tr>
+<tr><td>v</td><td>8</td><td>0101</td><td>4</td><td>32</td></tr>
+<tr><td>w</td><td>23</td><td>11</td><td>2</td><td>46</td></tr>
+<tr><td>x</td><td>19</td><td>10</td><td>2</td><td>38</td></tr>
+</tbody></table></div>
+<h5>3) 총 비트</h5>
+<p>$16\cdot3 + 35\cdot2 + 4\cdot4 + 8\cdot4 + 23\cdot2 + 19\cdot2 = 48+70+16+32+46+38 = 250$ bits예요. 같은 길이 코드라면 6글자에 3비트씩 $105 \times 3 = 315$ bits가 들어요.</p>
+<p>u·v나 x·w의 좌우를 바꾸면 코드 비트가 바뀌지만(예: x 11, w 10) 코드 길이(s 3, t 2, u 4, v 4, w 2, x 2)와 250 bits는 같아요.</p>
+</div>
+</div>
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="main">
+<p>완성 답: 1) 위 트리(루트 왼쪽 63 = t 35와 28(12(u, v), s), 오른쪽 42 = x, w, 왼쪽 0·오른쪽 1) 2) s 011, t 00, u 0100, v 0101, w 11, x 10 3) 250 bits.</p>
+<p>검산 1: 빈도 합 $16+35+4+8+23+19 = 105$가 루트 값과 같아요.</p>
+<p>검산 2: 내부 노드 값의 합 $12+28+42+63+105 = 250$이 표의 비트 합과 같아요.</p>
+<p>검산 3: 문제·그림만 보고 따로 짠 시뮬레이션(<code>evidence/independent_verify.py</code>)이 같은 병합 순서와 250 bits를 냈고, 병합 트리를 좌우 교환까지 허용해 틀 모양과 비교한 결과 같은 모양이었어요. 틀에 맞는 배치는 u·v, x·w 교환 4가지뿐이었고 모두 길이와 250이 같아요. 2021 모의 원본 PDF 2쪽의 틀 그림과 문항 글자도 대조했어요.</p>
+</div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+<h4>이 문제에서 특히 조심할 점</h4>
+<p>틀이 정해져 있다고 해서 틀에서 거꾸로 코드를 짐작하면 안 돼요. 먼저 병합으로 ‘누가 누구와 묶이는지’를 정하고, 그다음 단말 개수가 맞는 자리에 끼워 넣어요. 예를 들어 t를 42 쪽 단말에 넣으면 x·w가 묶인 병합 결과와 어긋나요.</p>
+<p>3단계에서 방금 만든 28을 습관처럼 다음 값과 합치면 안 돼요. 그때 가장 작은 둘은 x 19, w 23이에요.</p>
+<p>총 비트를 코드 길이의 합(3+2+4+4+2+2 = 17)으로 쓰면 틀려요. 글자마다 빈도를 곱해야 105글자 전체의 비트예요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 닫고 다시 해 봐요</h4>
+<ol><li>빈도를 오름차순으로 적고 다섯 번 병합해 12, 28, 42, 63, 105를 만들어요.</li><li>틀에서 단말 개수로 42·63·28·12의 자리를 정하고, 왼쪽 0·오른쪽 1을 붙여 코드를 읽어요.</li><li>내부 노드 합이 $\sum(\text{빈도}\times\text{길이})$와 같은 250인지 확인해요.</li></ol>
+</div>
+<div class="sum" hidden="">
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>허프만: 가장 작은 두 빈도를 자식으로 묶고 합을 다시 넣기를 반복해요. 병합은 묶이는 관계만 정하고 좌우는 자유라, 틀에는 단말 개수가 맞는 자리에 끼워요. 총 비트 $= \sum(\text{빈도}\times\text{코드 길이})$.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>u 4, v 8, s 16, x 19, w 23, t 35로 정렬하고 4+8=12부터 합쳐요.</p></div>
+<div class="summary-group"><h4>핵심 판단</h4><p>병합 12, 28, 42(x+w가 28보다 먼저), 63, 105. 틀에서 63이 왼쪽, 42가 오른쪽. 코드 s 011, t 00, u 0100, v 0101, w 11, x 10.</p></div>
+<div class="summary-group"><h4>검산</h4><p>내부 노드 합 12+28+42+63+105 = 250 bits, 독립 시뮬레이션과 틀 모양 비교 일치. 좌우 교환해도 길이와 250은 같아요.</p></div>
+</div>
+</article><article class="topic" id="p3"><h3>P3. 히프 정렬이 특히 쓸모 있는 경우</h3><p class="panel-meta">textbook-ch09-q04 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1112_Heap.html#p3">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p3"><div class="layer formal" data-source-problem="p3"><div data-source-field="conditions"><p>다음 중 히프 정렬이 특히 유용하게 쓰일 수 있는 경우는 무엇인가요? 보기에서 골라 보세요.</p><div class="options"><div class="option"><p>(①)</p><p>데이터 100개 중에서 오름차순으로 20개만 뽑고자 할때</p></div><div class="option"><p>(②)</p><p>비교적 데이터의 개수가 적을 때</p></div><div class="option"><p>(③)</p><p>정렬의 대상이 되는 레코드의 크기가 클 때</p></div><div class="option"><p>(④)</p><p>데이터가 역순으로 정렬되어 있을 때</p></div></div></div></div><details class="original" data-original-problem="p3"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 4번 · 책 356쪽</p><p>다음 중 히프 정렬이 특히 유용하게 사용될 수 있는 경우는?</p><div class="options"><div class="option"><p>(①)</p><p>데이터 100개 중에서 오름차순으로 20개만 뽑고자 할때</p></div><div class="option"><p>(②)</p><p>비교적 데이터의 개수가 적을 때</p></div><div class="option"><p>(③)</p><p>정렬의 대상이 되는 레코드의 크기가 클 때</p></div><div class="option"><p>(④)</p><p>데이터가 역순으로 정렬되어 있을 때</p></div></div></details></div><div class="layer eli5" data-explanation="understand">
+<h4>무엇을 고르라는 문제일까요?</h4>
+<p>네 가지 상황 중 히프 정렬(heap sort)이 <strong>특히 유용한</strong> 경우를 하나 고르는 긍정형 단일 선택 문제예요. ‘히프 정렬로 정렬할 수 있는가’가 아니라 ‘다른 방법보다 히프를 쓸 이유가 뚜렷한가’를 묻는 거예요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<p>‘히프 정렬이 특히 유용한 경우’라는 말은 강의 S8 p14의 마지막 항목을 거의 그대로 떠올리게 해요. 슬라이드는 히프 정렬이 가장 유용한 경우를 “전체 자료를 정렬하는 것이 아니라 가장 큰 값 몇 개만 필요할 때”라고 적었어요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s0-store">정리노트: 힙은 꺼내기 좋게 넣어 두는 자료구조</a>).</p>
+<p>이유는 히프 정렬의 두 단계에 있어요. 먼저 $n$개를 히프에 넣고, 그다음 루트를 하나씩 삭제해요. 삭제 한 번은 트리 높이만큼, 곧 $O(\log n)$이에요. 최소 히프는 작은 값부터, 최대 히프는 큰 값부터 나오니, 필요한 $k$개만 삭제하고 멈출 수 있어요. 앞쪽 일부만 원할 때 나머지를 정렬하는 비용을 쓰지 않아도 돼요.</p>
+<p>보기를 판정할 때는 히프 정렬의 다른 성질도 함께 써요. 넣기 $n$번·빼기 $n$번이라 입력 순서와 상관없이 전체 $O(n\log n)$이고, 넣고 뺄 때 요소를 여러 번 옮겨요(upheap·downheap).</p>
+</div>
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<p>보기마다 ‘히프 정렬의 어떤 성질과 관련 있나’를 한 단어로 적는 것부터 시작해요.</p>
+<pre><code>① 일부(20개)만 → 삭제를 20번에서 멈출 수 있음</code></pre>
+<p>나머지 보기도 ② 데이터 개수, ③ 요소 이동, ④ 입력 순서처럼 관련 성질을 적은 뒤 판정해요.</p>
+</div>
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="main">
+<p>① 데이터 100개 중 오름차순으로 20개만 뽑을 때: 최소 히프에 100개를 넣고 삭제를 20번만 하면 가장 작은 20개가 오름차순으로 나와요. 남은 80개는 정렬하지 않고 둬도 돼요. S8 p14가 말한 “몇 개만 필요할 때”와 같은 상황이라 <strong>특히 유용</strong>해요. 선택해요.</p>
+<p>② 데이터 개수가 비교적 적을 때: 어떤 정렬로도 금방 끝나서 히프를 만드는 수고가 이점이 되지 않아요. 히프 정렬로 정렬은 되지만 ‘특히 유용’한 이유가 없어요.</p>
+<p>③ 레코드 크기가 클 때: upheap·downheap 동안 요소를 여러 번 옮겨요. 강의 코드도 히프 배열에 요소를 통째로 복사해요. 레코드가 크면 옮기는 비용이 커져서 오히려 불리해요.</p>
+<p>④ 데이터가 역순일 때: 히프 정렬은 입력 순서와 상관없이 넣기 $n$번·빼기 $n$번이라 역순이라고 특별히 빨라지지 않아요.</p>
+<p>그래서 답은 ①이에요. ②·④는 ‘틀린 사실’이라기보다 히프 정렬을 고를 특별한 이유가 아닌 경우이고, ③은 오히려 단점이 드러나는 경우예요.</p>
+</div>
+</div>
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="main">
+<p>완성 답: ① 데이터 100개 중에서 오름차순으로 20개만 뽑고자 할 때.</p>
+<p>검산: 비용으로 비교하면 ①은 히프 만들기에 $100$번 삽입($100 \times O(\log 100)$) 뒤 삭제 20번($20 \times O(\log 100)$)으로 끝나요. 전체를 다 삭제하는 것보다 삭제가 80번 적어요. 다른 보기는 이런 ‘중간에 멈출 수 있는’ 이점을 쓰지 않아요.</p>
+<p>근거 대조: 교과서 9장 4번(356쪽) 문항·보기를 교과서 연습문제 JSON과 대조했고, 결론은 강의 S8 p14 마지막 항목 및 1112 수업의 “상위 몇 개만 뒤지는 일” 발언과 같아요. 문제만 보고 따로 판단한 독립 검산도 보기별로 같은 결론(① 선택, ②·③·④ 아님)을 냈어요. 교과서에 인쇄된 정답은 없어서 공식 답은 확인하지 못했어요.</p>
+</div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+<h4>이 문제에서 특히 조심할 점</h4>
+<p>④를 고르기 쉬워요. ‘역순’이 정렬에 불리한 특별한 입력처럼 들리지만, 그건 입력 순서에 따라 속도가 크게 바뀌는 다른 정렬의 이야기예요. 히프 정렬은 입력 순서와 상관없이 $O(n\log n)$이라 역순이 특별한 이점이 되지 않아요.</p>
+<p>③도 ‘큰 데이터에 강하다’는 인상 때문에 고르기 쉬워요. 여기서 ‘크다’는 개수가 아니라 레코드 하나의 크기예요. 히프 정렬은 레코드를 여러 번 옮기므로 크기가 클수록 불리해요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 닫고 다시 해 봐요</h4>
+<ol><li>히프 정렬의 두 단계(넣기 $n$번, 빼기)를 쓰고, 빼기를 중간에 멈출 수 있다는 점을 적어요.</li><li>보기 네 개에 관련 성질(일부만, 개수, 레코드 이동, 입력 순서)을 하나씩 붙여 판정해요.</li></ol>
+</div>
+<div class="sum" hidden="">
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>S8 p14: 히프 정렬이 가장 유용한 때는 전체가 아니라 가장 큰 값 몇 개만 필요할 때예요. 최소 히프로 바꾸면 가장 작은 값 몇 개에도 같은 이점이 있어요. 삭제 한 번 $O(\log n)$이라 필요한 $k$번만 삭제하고 멈출 수 있어요.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>보기마다 관련 성질을 적어요: ① 일부만, ② 개수, ③ 레코드 이동, ④ 입력 순서.</p></div>
+<div class="summary-group"><h4>핵심 판단</h4><p>① 20개만 → 삭제 20번에서 멈춤, 선택. ② 적으면 이점 없음. ③ 요소를 여러 번 옮겨 큰 레코드에 불리. ④ 입력 순서와 무관한 $O(n\log n)$.</p></div>
+<div class="summary-group"><h4>검산</h4><p>독립 판단도 ①. 강의 S8 p14·1112 수업 발언과 일치해요. 교과서 인쇄 정답은 없어요.</p></div>
+</div>
+</article><article class="topic" id="p4"><h3>P4. 파일을 읽어 최대 히프 만들고 최댓값 빼기</h3><p class="panel-meta">textbook-ch09-q10 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1112_Heap.html#p4">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p4"><div class="layer formal" data-source-problem="p4"><div data-source-field="conditions"><p>다음 파일(데이터를 읽는 순서)에 대해 물음에 답해 보세요.</p><p>10, 40, 30, 5, 12, 6, 15, 9, 60</p><ol><li>(1) 위 파일을 순서대로 읽어 최대 히프 트리를 만들어 보세요. 공백 트리에서 최대 히프 트리가 만들어지는 과정을 보여 주세요.</li><li>(2) 만들어진 최대 히프 트리가 저장된 배열의 내용을 적어 보세요.</li><li>(3) 만들어진 최대 히프 트리에서 최댓값을 제거한 다음 다시 정비하는 과정을 설명해 보세요.</li></ol></div></div><details class="original" data-original-problem="p4"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 10번 · PDF 2쪽</p><p>다음의 파일에 대하여 다음 물음에 답하시오.</p><p>10, 40, 30, 5, 12, 6, 15, 9, 60</p><div class="subquestions"><div><p>(1)</p><p>위의 파일을 순차적으로 읽어서 최대 히프트리를 구성하라. 공백 트리에서 최대 히프트리가 만들어지는 과정을 보여라.</p></div><div><p>(2)</p><p>구성된 최대 히프트리가 저장된 배열의 내용을 표시하라.</p></div><div><p>(3)</p><p>구성된 최대 히프트리에서 최대값을 제거한 다음 재정비하는 과정을 설명하라.</p></div></div><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand">
+<h4>무엇을 보여 달라는 문제일까요?</h4>
+<p>숫자 아홉 개가 10, 40, 30, 5, 12, 6, 15, 9, 60 순서로 들어와요. (1)은 빈 트리에서 시작해 하나씩 넣으며 최대 히프(max heap)가 자라는 과정을, (2)는 완성된 히프를 담은 배열을, (3)은 그 히프에서 가장 큰 값을 꺼낸 뒤 다시 히프로 고치는 과정을 보여 달라는 거예요. 세 소문항은 이어져 있어서 (1)의 결과가 (2), (3)의 출발점이에요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<p>(1) ‘순차적으로 읽어서 최대 히프트리를 구성’이라는 단서에서 <strong>최대 히프의 삽입</strong>을 떠올려요. 최대 히프는 완전 이진 트리이면서 모든 부모가 자식보다 크거나 같은 트리예요. 새 값은 다음 빈자리(배열 맨 끝)에 놓아 모양을 지키고, 부모보다 크면 바꾸며 올라가요(upheap)(<a href="../1109/%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">1109 정리노트: upheap</a>).</p>
+<p>(2) ‘배열의 내용’이라는 단서에서 <strong>배열 표현</strong>을 떠올려요. 1번 칸부터 레벨 순서로 담으면 $i$번 칸의 부모는 $\lfloor i/2 \rfloor$, 왼쪽 자식은 $2i$, 오른쪽 자식은 $2i+1$이에요(<a href="../1109/%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">1109 정리노트: 배열 표현</a>). 그래서 트리를 레벨 순서로 읽은 것이 곧 배열이에요.</p>
+<p>(3) ‘최대값을 제거한 다음 재정비’라는 단서에서 <strong>삭제와 downheap</strong>을 떠올려요. 루트를 꺼내고 마지막 노드를 루트로 옮긴 뒤, 두 자식 중 더 큰 쪽보다 작으면 바꾸며 내려가요. 자식이 하나뿐이면 그 자식과만 비교해요(<a href="../1109/%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">1109 정리노트: downheap</a>). 1112 수업에서 루트를 빼면 말단 사원(마지막 노드)이 올라가 내려오며 다시 힙을 만든다고 설명한 것이 이 과정이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s0-heapsort-code">정리노트: heap_sort 프로그램</a>).</p>
+</div>
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<p>삽입 과정을 표로 적을 준비를 하고 첫 행을 써요. 빈 트리라 10은 1번 칸, 곧 루트에 놓이고 비교할 부모가 없어요.</p>
+<pre><code>단계 1 | 넣은 값 10 | 1번 칸, 부모 없음 | 배열: 10</code></pre>
+<p>다음 행은 40을 2번 칸에 놓고 부모 1번 칸(10)과 비교하는 데서 시작해요.</p>
+</div>
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="1">
+<h5>(1) 하나씩 넣으며 upheap</h5>
+<p>새 값이 처음 놓이는 칸은 ‘지금까지 개수 + 1’이고, 부모 칸은 $\lfloor i/2 \rfloor$예요.</p>
+<div class="table-wrap"><table><thead><tr><th>단계</th><th>넣은 값</th><th>처음 칸</th><th>upheap</th><th>배열(1번 칸부터)</th></tr></thead><tbody>
+<tr><td>1</td><td>10</td><td>1</td><td>빈 트리라 루트</td><td>10</td></tr>
+<tr><td>2</td><td>40</td><td>2</td><td>부모 10과 교환</td><td>40 10</td></tr>
+<tr><td>3</td><td>30</td><td>3</td><td>부모 40보다 작아 그대로</td><td>40 10 30</td></tr>
+<tr><td>4</td><td>5</td><td>4</td><td>부모 10보다 작아 그대로</td><td>40 10 30 5</td></tr>
+<tr><td>5</td><td>12</td><td>5</td><td>부모 10과 교환 → 40보다 작아 멈춤</td><td>40 12 30 5 10</td></tr>
+<tr><td>6</td><td>6</td><td>6</td><td>부모 30보다 작아 그대로</td><td>40 12 30 5 10 6</td></tr>
+<tr><td>7</td><td>15</td><td>7</td><td>부모 30보다 작아 그대로</td><td>40 12 30 5 10 6 15</td></tr>
+<tr><td>8</td><td>9</td><td>8</td><td>부모 5와 교환 → 12보다 작아 멈춤</td><td>40 12 30 9 10 6 15 5</td></tr>
+<tr><td>9</td><td>60</td><td>9</td><td>부모 9, 12, 40과 차례로 교환</td><td>60 40 30 12 10 6 15 5 9</td></tr>
+</tbody></table></div>
+<p>upheap은 새 값이 올라가는 경로 하나만 건드려요. 9단계에서 60은 9번 → 4번 → 2번 → 1번 칸으로 올라가고, 내려온 9, 12, 40이 한 칸씩 아래로 밀려요. 완성 트리는 루트 60, 둘째 줄 40 30, 셋째 줄 12 10 6 15, 넷째 줄 5 9예요.</p>
+<pre><code>          60
+       /      \
+     40        30
+    /  \      /  \
+  12    10   6    15
+ /  \
+5    9</code></pre>
+</div>
+<div data-subpart="2">
+<h5>(2) 배열의 내용</h5>
+<p>완성 트리를 레벨 순서로 1번 칸부터 적어요. 0번 칸은 비워 둬요.</p>
+<div class="table-wrap"><table><thead><tr><th>칸</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr></thead><tbody>
+<tr><td>값</td><td>60</td><td>40</td><td>30</td><td>12</td><td>10</td><td>6</td><td>15</td><td>5</td><td>9</td></tr>
+</tbody></table></div>
+</div>
+<div data-subpart="3">
+<h5>(3) 최댓값을 제거하고 재정비</h5>
+<p>루트 60을 꺼내요. 마지막 칸(9번)의 9를 루트로 옮기면 노드는 8개가 되고 모양은 그대로 완전 이진 트리예요.</p>
+<div class="table-wrap"><table><thead><tr><th>단계</th><th>9의 위치</th><th>비교</th><th>배열(1~8번 칸)</th></tr></thead><tbody>
+<tr><td>시작</td><td>1</td><td>60을 꺼내고 9를 루트로</td><td>9 40 30 12 10 6 15 5</td></tr>
+<tr><td>1</td><td>1 → 2</td><td>자식 40, 30 중 큰 40과 교환</td><td>40 9 30 12 10 6 15 5</td></tr>
+<tr><td>2</td><td>2 → 4</td><td>자식 12, 10 중 큰 12와 교환</td><td>40 12 30 9 10 6 15 5</td></tr>
+<tr><td>3</td><td>4</td><td>자식은 8번 칸 5 하나, 9가 더 커서 멈춤</td><td>40 12 30 9 10 6 15 5</td></tr>
+</tbody></table></div>
+<p>4번 칸의 오른쪽 자식 자리 9번 칸은 이제 히프 밖이라 비교하지 않아요. 결과는 루트 40, 둘째 줄 12 30, 셋째 줄 9 10 6 15, 넷째 줄 5예요.</p>
+</div>
+</div>
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="1">
+<p>(1) 완성 답: 10 → 40 10 → 40 10 30 → 40 10 30 5 → 40 12 30 5 10 → 40 12 30 5 10 6 → 40 12 30 5 10 6 15 → 40 12 30 9 10 6 15 5 → 60 40 30 12 10 6 15 5 9.</p>
+<p>검산: 문제만 보고 따로 짠 삽입 시뮬레이션(<code>evidence/independent_verify.py</code>의 p4 블록)이 아홉 상태를 모두 같게 냈어요. 각 상태에서 모든 $i \ge 2$에 대해 $A[\lfloor i/2 \rfloor] \ge A[i]$가 성립해요.</p>
+</div>
+<div data-subpart="2">
+<p>(2) 완성 답: 1~9번 칸 60 40 30 12 10 6 15 5 9.</p>
+<p>검산: 부모·자식 쌍 (60; 40, 30), (40; 12, 10), (30; 6, 15), (12; 5, 9)가 모두 부모 ≥ 자식이에요. 값 집합도 입력 아홉 개와 같아요.</p>
+</div>
+<div data-subpart="3">
+<p>(3) 완성 답: 60 삭제, 9를 루트로 → 40과 교환 → 12와 교환 → 5보다 커서 멈춤, 결과 40 12 30 9 10 6 15 5.</p>
+<p>검산: 독립 시뮬레이션의 삭제 결과와 같아요. 남은 값은 입력에서 60만 뺀 여덟 개이고, 쌍 (40; 12, 30), (12; 9, 10), (30; 6, 15), (9; 5)가 모두 부모 ≥ 자식이에요. 새 루트 40은 남은 값 중 최댓값이에요.</p>
+</div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+<h4>이 문제에서 특히 조심할 점</h4>
+<p>(1)에서 아홉 개를 먼저 정렬해 60 40 30 15 12 10 9 6 5처럼 채우면 최대 히프이긴 해도 ‘순차적으로 읽어 구성하는 과정’의 답이 아니에요. 삽입 순서대로 upheap한 결과를 써야 해요.</p>
+<p>(3)에서 9를 왼쪽 자식 40과만 비교하는 습관은 이번엔 우연히 맞지만, 원칙은 두 자식 중 <strong>큰 쪽</strong>이에요. 2단계에서 12와 10 중 10과 바꾸면 2번 칸의 10이 4번 칸 12의 부모가 되어 부모 ≥ 자식이 깨져요.</p>
+<p>(3)에서 꺼낸 자리를 자식으로 채워 올리면 마지막 레벨에 구멍이 생길 수 있어요. 늘 마지막 노드를 루트로 옮기는 데서 시작해요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 닫고 다시 해 봐요</h4>
+<ol><li>아홉 값을 넣으며 처음 칸과 비교한 부모 칸을 표로 적어요.</li><li>완성 트리를 레벨 순서로 읽어 1~9번 칸 배열을 써요.</li><li>60을 꺼내고 9를 루트로 올린 뒤, 단계마다 두 자식 중 큰 쪽을 표시하며 내려요.</li></ol>
+</div>
+<div class="sum" hidden="">
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최대 히프 = 완전 이진 트리 + 부모 ≥ 자식. 1번 칸부터: 부모 $\lfloor i/2 \rfloor$, 자식 $2i$, $2i+1$. 삽입은 끝에 놓고 upheap, 삭제는 마지막 노드를 루트로 옮기고 큰 자식 쪽으로 downheap.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>단계 1: 10을 1번 칸에, 부모 없음.</p></div>
+<div class="summary-group"><h4>핵심 판단</h4><p>(1) 12는 10과, 9는 5와, 60은 9·12·40과 교환. (2) 60 40 30 12 10 6 15 5 9. (3) 9를 루트로 → 40과, 12와 교환 → 5보다 커서 멈춤, 40 12 30 9 10 6 15 5.</p></div>
+<div class="summary-group"><h4>검산</h4><p>독립 시뮬레이션과 모든 상태 일치, 각 상태에서 부모 ≥ 자식 성립, 값 집합 보존.</p></div>
+</div>
+</article><article class="topic" id="p5"><h3>P5. 피보나치 빈도의 허프만 코드</h3><p class="panel-meta">textbook-ch09-q17 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1112_Heap.html#p5">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p5"><div class="layer formal" data-source-problem="p5"><div data-source-field="conditions"><p>각 글자의 빈도가 다음과 같을 때, 허프만(호프만) 코드를 계산해 보세요. 생성되는 트리도 그려 보세요.</p><p>a:1 b:1 c:2 d:3 e:5 f:8 g:13 h:21</p></div></div><details class="original" data-original-problem="p5"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 17번 · 책 358쪽</p><p>다음과 같이 각 글자들의 빈도가 있을 때, 호프만 코드를 계산해보자. 생성되는 트리를 그려보자.</p><p>a:1 b:1 c:2 d:3 e:5 f:8 g:13 h:21</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand">
+<h4>무엇을 구하라는 문제일까요?</h4>
+<p>글자 여덟 개 a~h의 빈도가 1, 1, 2, 3, 5, 8, 13, 21로 주어져요. 이 빈도로 허프만(호프만) 코드를 계산하고, 만들어지는 트리를 그리라는 거예요. 빈도의 합은 54라서 54글자짜리 글로 볼 수 있어요. 문제는 0·1을 어느 가지에 붙일지 정하지 않았으니, 코드의 비트보다 코드 길이와 트리 구조가 핵심 답이에요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<p>‘각 글자들의 빈도’와 ‘호프만 코드’라는 단서에서 <strong>허프만 코딩 트리</strong>를 떠올려요(호프만은 Huffman의 다른 표기예요). 가장 작은 빈도 두 개를 자식으로 하는 새 노드(값은 합)를 만들고 다시 넣는 일을 하나 남을 때까지 반복해요. 매번 가장 작은 둘을 꺼내는 데 최소 힙을 써요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-build">정리노트: 가장 작은 두 개를 묶어 트리 만들기</a>).</p>
+<p>빈도가 1, 1, 2, 3, 5, 8, 13, 21처럼 <strong>앞의 두 수를 더하면 다음 수</strong>가 되는 피보나치 꼴이에요. 그래서 방금 만든 합(4, 7, 12, 20)이 늘 그다음 글자(5, 8, 13, 21)보다 1 작아, 가장 작은 둘은 매번 ‘방금 만든 합 + 남은 글자 중 가장 작은 것’이 돼요. 트리가 한쪽으로만 길게 뻗을 것을 예상할 수 있어요.</p>
+<p>코드 길이는 글자의 깊이이고, 빈도가 작은 글자일수록 깊이 내려가 긴 비트를 받아요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-code">정리노트: 비트 코드와 100비트</a>). 총 비트는 $\sum(\text{빈도}\times\text{코드 길이})$예요.</p>
+</div>
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<pre><code>정렬: a 1, b 1, c 2, d 3, e 5, f 8, g 13, h 21
+1단계: a 1 + b 1 = 2 → 남은 값 2 2 3 5 8 13 21</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="main">
+<h5>병합 순서</h5>
+<div class="table-wrap"><table><thead><tr><th>단계</th><th>꺼낸 두 값</th><th>합</th><th>남은 빈도</th></tr></thead><tbody>
+<tr><td>1</td><td>a 1, b 1</td><td>2</td><td>2 2 3 5 8 13 21</td></tr>
+<tr><td>2</td><td>c 2, 2</td><td>4</td><td>3 4 5 8 13 21</td></tr>
+<tr><td>3</td><td>d 3, 4</td><td>7</td><td>5 7 8 13 21</td></tr>
+<tr><td>4</td><td>e 5, 7</td><td>12</td><td>8 12 13 21</td></tr>
+<tr><td>5</td><td>f 8, 12</td><td>20</td><td>13 20 21</td></tr>
+<tr><td>6</td><td>g 13, 20</td><td>33</td><td>21 33</td></tr>
+<tr><td>7</td><td>h 21, 33</td><td>54</td><td>54</td></tr>
+</tbody></table></div>
+<p>2단계에서 c 2와 합친 노드 2가 같은 빈도예요. 2짜리가 둘뿐이라 어느 쪽을 먼저 꺼내도 둘이 함께 묶여요. 그 뒤로는 매번 방금 만든 합과 다음 글자가 가장 작은 둘이에요. 예를 들어 4단계에서 남은 값 5, 7, 8, 13, 21 중 가장 작은 둘은 e 5와 7이에요.</p>
+<h5>트리</h5>
+<p>먼저 꺼낸 쪽을 왼쪽(0), 나중에 꺼낸 쪽을 오른쪽(1)에 두면 이런 트리가 돼요. 한 단계 내려갈 때마다 글자가 하나씩 떨어지는 사다리 모양이에요.</p>
+<pre><code>[54]
+├─0─ h 21
+└─1─ [33]
+     ├─0─ g 13
+     └─1─ [20]
+          ├─0─ f 8
+          └─1─ [12]
+               ├─0─ e 5
+               └─1─ [7]
+                    ├─0─ d 3
+                    └─1─ [4]
+                         ├─0─ c 2
+                         └─1─ [2]
+                              ├─0─ a 1
+                              └─1─ b 1</code></pre>
+<h5>코드와 총 비트</h5>
+<div class="table-wrap"><table><thead><tr><th>글자</th><th>빈도</th><th>코드</th><th>길이</th><th>비트 수</th></tr></thead><tbody>
+<tr><td>h</td><td>21</td><td>0</td><td>1</td><td>21</td></tr>
+<tr><td>g</td><td>13</td><td>10</td><td>2</td><td>26</td></tr>
+<tr><td>f</td><td>8</td><td>110</td><td>3</td><td>24</td></tr>
+<tr><td>e</td><td>5</td><td>1110</td><td>4</td><td>20</td></tr>
+<tr><td>d</td><td>3</td><td>11110</td><td>5</td><td>15</td></tr>
+<tr><td>c</td><td>2</td><td>111110</td><td>6</td><td>12</td></tr>
+<tr><td>a</td><td>1</td><td>1111110</td><td>7</td><td>7</td></tr>
+<tr><td>b</td><td>1</td><td>1111111</td><td>7</td><td>7</td></tr>
+</tbody></table></div>
+<p>$21+26+24+20+15+12+7+7 = 132$비트예요. 글자가 8종류라 같은 길이 코드면 3비트씩, $54 \times 3 = 162$비트가 들어요.</p>
+<p>좌우를 바꾸면 코드의 0과 1은 달라질 수 있지만, 코드 길이(h 1, g 2, f 3, e 4, d 5, c 6, a·b 7)와 총 132비트는 그대로예요. 이 트리는 한쪽으로 뻗어서 완전 이진 트리(힙 모양)가 아니에요. 힙은 트리 모양이 아니라 가장 작은 둘을 꺼내는 과정에 쓰여요.</p>
+</div>
+</div>
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="main">
+<p>완성 답: 병합 1+1=2, 2+2=4, 3+4=7, 5+7=12, 8+12=20, 13+20=33, 21+33=54, 위 사다리 트리. 코드 예(먼저 꺼낸 쪽 0) h 0, g 10, f 110, e 1110, d 11110, c 111110, a 1111110, b 1111111. 총 132비트(고정 3비트면 162비트).</p>
+<p>검산 1: 빈도 합 $1+1+2+3+5+8+13+21 = 54$가 루트 값과 같아요.</p>
+<p>검산 2: 내부 노드 값의 합 $2+4+7+12+20+33+54 = 132$가 표의 비트 합과 같아요.</p>
+<p>검산 3: 문제만 보고 따로 짠 시뮬레이션(<code>evidence/independent_verify.py</code>의 p5 블록)이 같은 병합 순서와 132비트를 냈어요. a·b, c와 노드 2의 동점 처리 순서를 고정 규칙 4가지와 무작위 순서 200가지, 모두 204가지로 바꿔 봐도 글자별 코드 길이와 132비트는 한 가지였어요. 교과서 9장 17번(358쪽)에는 인쇄된 정답이 없어 공식 답은 확인하지 못했어요.</p>
+<p>검산 4: 코드는 모두 ‘1 여러 개 + 0’ 꼴이거나 1111111이라, 어떤 코드도 다른 코드의 앞부분이 아니에요.</p>
+</div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+<h4>이 문제에서 특히 조심할 점</h4>
+<p>허프만 트리를 힙처럼 균형 잡힌 모양으로 그리려 하면 틀려요. 이 빈도에서는 매번 합이 다음 글자와 묶여 트리가 한쪽으로 뻗는 것이 맞는 결과예요.</p>
+<p>a와 b의 빈도가 같아서 하나는 짧은 코드를 받을 것 같지만, 둘은 맨 처음에 함께 묶여 같은 깊이 7에 놓여요. 길이가 다른 코드를 주면 허프만 트리가 아니에요.</p>
+<p>2단계에서 노드 2와 d 3을 묶으면 안 돼요. c 2가 남아 있어서 가장 작은 둘은 2와 2예요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 닫고 다시 해 봐요</h4>
+<ol><li>빈도를 오름차순으로 적고 일곱 번 병합해 2, 4, 7, 12, 20, 33, 54를 만들어요.</li><li>사다리 트리를 그리고 가지에 0·1을 붙여 여덟 글자의 코드와 길이를 읽어요.</li><li>내부 노드 합과 $\sum(\text{빈도}\times\text{길이})$가 둘 다 132인지, 고정 3비트 162와 비교해요.</li></ol>
+</div>
+<div class="sum" hidden="">
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>허프만: 가장 작은 두 빈도를 묶고 합을 다시 넣기를 반복(최소 힙). 피보나치 빈도는 합이 늘 다음 글자와 묶여 한쪽으로 뻗는 트리가 돼요. 총 비트 $= \sum(\text{빈도}\times\text{코드 길이})$.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>a 1 + b 1 = 2, 남은 값 2 2 3 5 8 13 21.</p></div>
+<div class="summary-group"><h4>핵심 판단</h4><p>병합 2, 4, 7, 12, 20, 33, 54. 코드 길이 h 1, g 2, f 3, e 4, d 5, c 6, a·b 7. 먼저 꺼낸 쪽 0이면 h 0, g 10, …, a 1111110, b 1111111.</p></div>
+<div class="summary-group"><h4>검산</h4><p>내부 노드 합 132 = 표의 합, 독립 시뮬레이션·동점 변형 일치. 고정 3비트면 162비트. 교과서 정답은 인쇄돼 있지 않아요.</p></div>
+</div>
+</article><article class="topic" id="p6"><h3>P6. heap_sort의 두 for 루프 따라가기</h3><p class="panel-meta">lecture-s08-p15-heap-sort · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1112_Heap.html#p6">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p6"><div class="layer formal" data-source-problem="p6"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S8 p15</p><p>최대 힙 <code>h</code>는 <code>h.heap[1]</code>부터 <code>h.heap[h.heap_size]</code>까지 요소를 담아요. <code>0</code>번 칸은 쓰지 않아요. <code>MAX_ELEMENT</code>는 <code>200</code>이에요. 아래 첫 코드는 원래 예제 코드 그대로예요. 코드에서는 <code>typedef</code>가 함수 뒤에 있지만, 함수보다 앞에 있다고 보고 풀어요.</p><pre><code class="language-c">// 우선순위 큐인 히프를 이용한 정렬
+void heap_sort(element a[], int n)
+{
+    int i;
+    HeapType h;
+    init(&amp;h);
+    for(i=0;i&lt;n;i++){
+        insert_max_heap(&amp;h, a[i]);
+    }
+    for(i=(n-1);i&gt;=0;i--){
+        a[i] = delete_max_heap(&amp;h);
+    }
+}
+void init(HeapType *h)
+{
+    h -&gt; heap_size = 0;
+}
+typedef struct {
+    int key;
+} element;
+typedef struct{
+    element heap[MAX_ELEMENT];
+    int heap_size;
+} HeapType;</code></pre><p>두 번째 코드는 이 문제를 위해 쓴 삽입·삭제 함수예요. <code>insert_max_heap</code>은 새 요소를 맨 끝 칸에 놓고 부모보다 크면 올려요. <code>delete_max_heap</code>은 루트를 돌려주고, 마지막 요소를 루트 자리에서부터 큰 자식과 비교하며 내려요. 오른쪽 자식이 없으면 왼쪽 자식과 비교해요.</p><pre><code class="language-c">/* 이 문제를 위해 쓴 자체 코드: 삽입(upheap), 삭제(downheap) */
+void insert_max_heap(HeapType *h, element item) {
+    int i = ++(h-&gt;heap_size);
+    while ((i != 1) &amp;&amp; (item.key &gt; h-&gt;heap[i / 2].key)) {
+        h-&gt;heap[i] = h-&gt;heap[i / 2];
+        i /= 2;
+    }
+    h-&gt;heap[i] = item;
+}
+element delete_max_heap(HeapType *h) {
+    int parent = 1, child = 2;
+    element item = h-&gt;heap[1], temp = h-&gt;heap[(h-&gt;heap_size)--];
+    while (child &lt;= h-&gt;heap_size) {
+        if ((child &lt; h-&gt;heap_size) &amp;&amp;
+            (h-&gt;heap[child].key &lt; h-&gt;heap[child + 1].key)) child++;
+        if (temp.key &gt;= h-&gt;heap[child].key) break;
+        h-&gt;heap[parent] = h-&gt;heap[child];
+        parent = child; child *= 2;
+    }
+    h-&gt;heap[parent] = temp;
+    return item;
+}</code></pre><p><code>a[]</code>의 <code>key</code>가 차례로 <code>1, 23, 7, 8, 20</code>이고 <code>n = 5</code>로 <code>heap_sort(a, 5)</code>를 불러요.</p></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 첫 번째 <code>for</code> 루프가 끝난 직후 <code>h.heap[1..5]</code>의 <code>key</code>를 써 보세요.</li><li>(b) 두 번째 <code>for</code> 루프의 반복마다 <code>i</code>, <code>a[i]</code>에 저장되는 값, 남은 힙 배열을 쓰고, 끝난 뒤의 <code>a[]</code>를 써 보세요.</li><li>(c) 두 번째 루프가 <code>i</code>를 <code>n-1</code>부터 <code>0</code>까지 내려가며 채우는 이유는 무엇인가요? <code>heap_sort</code> 전체의 시간 복잡도와 그 근거도 써 보세요.</li></ol></div></div><details class="original" data-original-problem="p6"><summary>강의 예제 보기</summary><p>S8 p15 · 히프 정렬 프로그램 · 추가 근거 p14</p><p>원 코드 발췌: 문제의 첫 코드(<code>heap_sort</code>, <code>init</code>, 두 <code>typedef</code>)는 p15 코드의 글자·순서를 그대로 옮겼어요. 들여쓰기만 공백 4칸으로 맞췄어요. p15 옆 설명은 "오름차순으로 a[i] 정렬"이에요. <code>#define MAX_ELEMENT 200</code>과 같은 두 <code>typedef</code>는 p10에 있어요. p15 코드는 <code>typedef</code>가 함수 뒤에 있어서 그 순서 그대로는 컴파일되지 않아요.</p><p>자체 코드: <code>insert_max_heap</code>, <code>delete_max_heap</code>은 p10 upheap·p13 downheap 의사코드를 C로 옮겨 이 문제를 위해 쓴 코드예요. p13 의사코드는 오른쪽 자식이 없을 때도 <code>i+1</code>번 칸을 고르지만, 자체 코드는 그때 왼쪽 자식을 골라요.</p><p>추가 근거 p14: "하나의 요소를 히프에 삽입하거나 삭제할 때 시간이 O(logn) 만큼 소요되고 요소의 개수가 n개이므로 전체적으로 O(nlogn) 시간이 걸린다." 입력 1, 23, 7, 8, 20은 1109 수업 칠판 예제의 숫자예요.</p><p>검산: 두 코드에 <code>#include</code>, p10의 <code>#define MAX_ELEMENT 200</code>, 출력용 <code>main</code>을 더하고 <code>typedef</code>를 앞으로 옮긴 C11 실행 harness로 (a)·(b)의 값을 확인했어요.</p></details></div><div class="layer eli5" data-explanation="understand">
+<h4>무엇을 따라가라는 문제일까요?</h4>
+<p>강의 S8 p15의 <code>heap_sort</code>에 key 1, 23, 7, 8, 20을 넣고 두 for 루프를 손으로 따라가는 문제예요. (a)는 첫 루프(삽입) 직후 힙 배열, (b)는 둘째 루프(삭제) 반복마다 바뀌는 값, (c)는 뒤에서부터 채우는 이유와 시간 복잡도를 묻는 거예요.</p>
+<p>원래 코드는 <code>typedef</code>가 함수 뒤에 있어서, 문제는 typedef가 함수보다 앞에 있다고 보고 풀자고 약속했어요. 또 <code>heap_sort</code>가 아래에서 정의되는 <code>init</code>·<code>insert_max_heap</code>·<code>delete_max_heap</code>을 먼저 불러요. 문제는 이 순서를 따로 말하지 않았지만, 그대로면 C99 이후에는 선언 없는 호출이라 컴파일되지 않아요. 그래서 이 해설은 <strong>세 함수의 원형(선언)도 앞에 있다고 덧붙여 가정</strong>해요. 원 슬라이드 p15가 프로그램 일부만 보여 준 것이라 출제 의도와도 맞고, 이 가정 아래에서 n = 5인 실행은 범위 밖 접근 없이 정의된 동작이에요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<p>(a) <code>insert_max_heap</code>을 n번 부르는 첫 루프에서 <strong>최대 힙 삽입(upheap)</strong>을 떠올려요. 코드의 <code>i = ++(h-&gt;heap_size)</code>가 새 칸 번호이고, <code>h-&gt;heap[i / 2]</code>가 부모예요. 새 값이 부모보다 크면 부모를 아래로 내리고 한 칸 올라가요(<a href="../1109/%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">1109 정리노트: upheap</a>).</p>
+<p>(b) <code>a[i] = delete_max_heap(&amp;h);</code>에서 <strong>최대 힙 삭제(downheap)</strong>를 떠올려요. 루트를 돌려주고, 마지막 요소 <code>temp</code>를 루트 자리부터 내려보내요. <code>child &lt; h-&gt;heap_size</code>일 때만 오른쪽 자식과 비교해 큰 쪽을 고르고, <code>temp</code>가 그 자식보다 크거나 같으면 멈춰요(<a href="../1109/%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">1109 정리노트: downheap</a>).</p>
+<p>(c) ‘오름차순’과 ‘i를 n-1부터’라는 단서에서 <strong>최대 힙은 큰 값부터 내놓는다</strong>는 성질을 떠올려요. 시간은 S8 p14대로 삽입·삭제 한 번이 $O(\log n)$이고 요소가 n개라 전체 $O(n\log n)$이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s0-heapsort-code">정리노트: heap_sort 프로그램</a>).</p>
+</div>
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<p>첫 루프의 반복을 표로 적어요. 첫 행은 빈 힙에 1을 넣는 i = 0이에요.</p>
+<pre><code>i=0 | 넣은 key 1 | heap_size 1, 1번 칸, 부모 없음 | heap[1..1] = 1</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="a">
+<h5>(a) 첫 번째 for 루프: 삽입 다섯 번</h5>
+<div class="table-wrap"><table><thead><tr><th>i</th><th>넣은 key</th><th>처음 칸</th><th>upheap</th><th>heap[1..]</th></tr></thead><tbody>
+<tr><td>0</td><td>1</td><td>1</td><td>빈 힙이라 루트</td><td>1</td></tr>
+<tr><td>1</td><td>23</td><td>2</td><td>부모 1보다 커서 올라감</td><td>23 1</td></tr>
+<tr><td>2</td><td>7</td><td>3</td><td>부모 23보다 작아 그대로</td><td>23 1 7</td></tr>
+<tr><td>3</td><td>8</td><td>4</td><td>부모 1보다 커서 올라감 → 23보다 작아 멈춤</td><td>23 8 7 1</td></tr>
+<tr><td>4</td><td>20</td><td>5</td><td>부모 8보다 커서 올라감 → 23보다 작아 멈춤</td><td>23 20 7 1 8</td></tr>
+</tbody></table></div>
+<p>코드에서는 ‘교환’이 아니라 부모를 한 칸 내리고(<code>h-&gt;heap[i] = h-&gt;heap[i / 2]</code>) 마지막에 새 값을 한 번 놓아요. 결과는 교환으로 따라간 것과 같아요. 첫 루프 직후 heap[1..5]는 23 20 7 1 8이에요.</p>
+</div>
+<div data-subpart="b">
+<h5>(b) 두 번째 for 루프: 삭제 다섯 번</h5>
+<p>i = 4부터 내려가며 꺼낸 값을 <code>a[i]</code>에 넣어요. <code>a[]</code>의 앞쪽 칸에 옛 값이 남아 있지만, 이미 모두 힙에 들어가 있어서 덮어써도 값을 잃지 않아요.</p>
+<div class="table-wrap"><table><thead><tr><th>i</th><th>a[i]에 저장</th><th>downheap</th><th>남은 heap[1..]</th><th>a[0..4]</th></tr></thead><tbody>
+<tr><td>4</td><td>23</td><td>temp 8, 자식 20·7 중 20과 비교해 20을 올림 → 2번 칸의 자식은 4번 칸 1 하나, 8이 커서 멈춤</td><td>20 8 7 1</td><td>1 23 7 8 23</td></tr>
+<tr><td>3</td><td>20</td><td>temp 1, 자식 8·7 중 8을 올림 → 2번 칸의 자식 4번 칸은 범위 밖이라 멈춤</td><td>8 1 7</td><td>1 23 7 20 23</td></tr>
+<tr><td>2</td><td>8</td><td>temp 7, 자식은 2번 칸 1 하나, 7이 커서 멈춤</td><td>7 1</td><td>1 23 8 20 23</td></tr>
+<tr><td>1</td><td>7</td><td>temp 1, heap_size가 1이 되어 루프에 들어가지 않음</td><td>1</td><td>1 7 8 20 23</td></tr>
+<tr><td>0</td><td>1</td><td>마지막 하나를 꺼냄, heap_size 0</td><td>빈 힙</td><td>1 7 8 20 23</td></tr>
+</tbody></table></div>
+<p>i = 4일 때 <code>child = 2</code>, <code>heap_size = 4</code>라 <code>child &lt; heap_size</code>가 참이어서 오른쪽 자식 3번 칸(7)과 비교해요. 두 번째 비교에서는 <code>child = 4</code>가 <code>heap_size</code>와 같아 오른쪽 자식 5번 칸(방금 빠진 옛 값)을 읽지 않아요. 끝난 뒤 <code>a[]</code>는 1 7 8 20 23이에요.</p>
+</div>
+<div data-subpart="c">
+<h5>(c) 뒤에서부터 채우는 이유와 시간 복잡도</h5>
+<p>최대 힙에서는 남은 값 중 가장 큰 값이 먼저 나와요. 첫 번째로 꺼낸 23은 오름차순 배열의 맨 뒤 <code>a[n-1]</code>에, 그다음 20은 그 앞에 들어가야 해요. 그래서 <code>i</code>를 n-1부터 0까지 줄여 가요. 앞에서부터 채우면 23 20 8 7 1, 곧 내림차순이 돼요.</p>
+<p>두 for 루프는 동시에(parallel) 도는 게 아니라 첫 루프가 끝난 뒤 이어서 돌아요. 삽입 한 번은 새 값이 최대 트리 높이만큼, 삭제 한 번은 <code>temp</code>가 최대 높이만큼 움직여요. 완전 이진 트리의 높이는 $\lfloor \log_2 n \rfloor$이라 각각 $O(\log n)$이에요.</p>
+<p>$$n \cdot O(\log n) + n \cdot O(\log n) = O(n\log n)$$</p>
+</div>
+</div>
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="a">
+<p>(a) 완성 답: heap[1..5] = 23 20 7 1 8.</p>
+<p>검산: 문제의 두 코드를 그대로 옮기고 <code>#include &lt;stdio.h&gt;</code>, <code>#define MAX_ELEMENT 200</code>, typedef를 앞으로 옮긴 것, 함수 원형, 출력용 <code>main</code>만 더해 <code>cc -std=c11 -Wall -Wextra -fsanitize=address,undefined</code>로 실행했어요(<code>evidence/independent_heapsort.c</code>, 출력 <code>independent-heapsort-output.txt</code>). 출력 <code>(a) 첫 루프 직후 heap[1..5] = [23, 20, 7, 1, 8]</code>이 손 추적과 같고, 경고·새니타이저 보고 0, 종료 코드 0이에요. 부모 ≥ 자식 쌍 (23; 20, 7), (20; 1, 8)도 성립해요.</p>
+</div>
+<div data-subpart="b">
+<p>(b) 완성 답: i=4: a[4]=23, 힙 20 8 7 1 → i=3: a[3]=20, 힙 8 1 7 → i=2: a[2]=8, 힙 7 1 → i=1: a[1]=7, 힙 1 → i=0: a[0]=1, 빈 힙. 결과 a[] = 1 7 8 20 23.</p>
+<p>검산: 같은 실행의 반복별 출력이 다섯 행 모두 위 표와 같아요. 0번 칸과 힙 밖 칸을 표시값으로 채운 뒤 실행해도 그 값이 결과나 남은 힙에 나타나지 않아, 삭제가 범위 밖·쓰레기 칸을 읽지 않음을 확인했어요. 최종 <code>a[]</code>는 입력을 정렬한 1 7 8 20 23과 같아요.</p>
+</div>
+<div data-subpart="c">
+<p>(c) 완성 답: 최대 힙은 큰 값부터 나오므로 맨 뒤 <code>a[n-1]</code>부터 채워야 오름차순이 돼요. 삽입 n번·삭제 n번이 각각 $O(\log n)$이라 전체 $O(n\log n)$이에요.</p>
+<p>검산(논증): 둘째 루프의 불변식은 “반복을 마칠 때마다 <code>a[i..n-1]</code>은 가장 큰 $n-i$개가 오름차순으로 놓여 있고, 힙에는 나머지 $i$개가 남아 있다”예요. 처음 i = n-1에서 꺼낸 값은 전체 최댓값이라 성립하고, 다음 반복에서 꺼낸 값은 남은 값 중 최댓값이니 이미 채운 값들보다 작거나 같아 그 앞 칸에 놓여도 불변식이 유지돼요. i = 0까지 마치면 배열 전체가 오름차순이에요. 시간은 높이 $\lfloor\log_2 n\rfloor$ 상한으로 따졌고, S8 p14의 서술과 같아요.</p>
+</div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+<h4>이 문제에서 특히 조심할 점</h4>
+<p>(a)에서 8을 넣을 때 부모는 4/2 = 2번 칸(1)이에요. 3번 칸의 7과 비교하면 안 돼요. 20도 5/2 = 2번 칸(8)과 비교해요.</p>
+<p>(b)에서 남은 힙 크기가 줄어든다는 것을 잊고 빠진 칸까지 자식으로 비교하면 틀려요. i = 4의 두 번째 비교에서 5번 칸은 이미 힙 밖이에요. 코드의 <code>child &lt; h-&gt;heap_size</code>가 바로 이 경계를 지켜요.</p>
+<p>(c)에서 두 for 루프가 동시에 돈다고 생각하면 안 돼요. 첫 루프가 다 끝나 힙에 다섯 개가 모두 들어간 뒤에 둘째 루프가 시작해요. 또 ‘루프가 두 개라 $O(n^2)$’도 아니에요. 두 루프는 중첩이 아니라 차례로 놓여 있어요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 닫고 다시 해 봐요</h4>
+<ol><li>1, 23, 7, 8, 20을 넣으며 칸 번호 i와 부모 칸 i/2를 적어 23 20 7 1 8을 만들어요.</li><li>i = 4부터 0까지 꺼낸 값, <code>temp</code>가 내려간 경로, 남은 힙, <code>a[]</code>를 한 행씩 써요.</li><li>뒤에서부터 채우는 이유를 ‘최대 힙은 큰 값부터’로 한 문장, 시간 복잡도를 식 한 줄로 써요.</li></ol>
+</div>
+<div class="sum" hidden="">
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>삽입: 새 칸 <code>++heap_size</code>, 부모 <code>i/2</code>보다 크면 올라감. 삭제: 루트 반환, 마지막 요소를 루트부터 큰 자식과 비교해 내림(<code>child &lt; heap_size</code>일 때만 오른쪽 비교). 전체 $n\cdot O(\log n)+n\cdot O(\log n)=O(n\log n)$.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>i=0: 1을 1번 칸에, 부모 없음.</p></div>
+<div class="summary-group"><h4>핵심 판단</h4><p>(a) 23 20 7 1 8. (b) a[4]=23(힙 20 8 7 1), a[3]=20(8 1 7), a[2]=8(7 1), a[1]=7(1), a[0]=1, 결과 1 7 8 20 23. (c) 큰 값부터 나오니 뒤에서부터 채워 오름차순, 두 루프는 차례로 돌아요.</p></div>
+<div class="summary-group"><h4>검산</h4><p>C11 + ASan/UBSan 실행 출력이 모든 상태와 일치, 범위 밖 읽기 없음. 둘째 루프 불변식으로 오름차순을 논증했어요.</p></div>
+</div>
+</article><article class="topic" id="p7"><h3>P7. 최소 힙으로 etnis 허프만 트리 만들기</h3><p class="panel-meta">lecture-s08-p17-huffman-etnis · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1112_Heap.html#p7">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p7"><div class="layer formal" data-source-problem="p7"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S8 p17</p><p>다섯 글자 e, t, n, i, s로 된 45글자짜리 글이 있어요. 각 글자의 빈도는 e 15, t 12, n 8, i 6, s 4예요.</p><p>허프만 트리는 이렇게 만들어요. 빈도마다 단말 노드를 하나씩 만들고, 빈도가 가장 작은 두 노드를 자식으로 하는 새 노드를 만들어요. 새 노드의 값은 두 자식 빈도의 합이에요. 노드가 하나 남을 때까지 반복해요.</p><p>가장 작은 두 값은 최소 힙으로 꺼내요. 최소 힙은 배열 <code>1</code>번 칸부터 담고, 삽입은 맨 끝에 놓고 부모보다 작으면 올려요(upheap). 삭제는 루트를 꺼내고 마지막 노드를 루트로 옮긴 뒤 더 작은 자식보다 크면 내려요(downheap).</p></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 다섯 글자를 모두 같은 길이의 비트 코드로 나타내려면 글자당 몇 비트가 필요한가요? 45글자 전체는 몇 비트인가요?</li><li>(b) 빈도 <code>4, 6, 8, 12, 15</code>를 이 순서로 빈 최소 힙에 삽입해요. 그다음 "삭제 두 번 → 두 값의 합을 삽입"을 원소가 하나 남을 때까지 반복해요. 반복마다 합친 두 값과, 합을 삽입한 직후의 최소 힙 배열을 써 보세요.</li><li>(c) 만들어진 트리에서 왼쪽 가지 0, 오른쪽 가지 1로 코드를 정할 때 각 글자의 코드 길이를 구해 보세요. 45글자 전체의 비트 수와, (a)보다 몇 비트·몇 퍼센트 줄었는지도 구해 보세요.</li></ol></div></div><details class="original" data-original-problem="p7"><summary>강의 예제 보기</summary><p>S8 p17–19 · 히프 응용3: 허프만 코드 (etnis 예제)</p><p>원 자료(p17): 글자 빈도 e 15, t 12, n 8, i 6, s 4. "15+12+8+6+4 = 45 글자", "만약 3bit로 표현하는 코드가 있다면 45 * 3 = 135 bits 필요", "15*2+12*2+8*2+6*3+4*3 = 100bits 필요".</p><p>추가 근거 p18: "1. 오름차순으로 단말 노드화", "2. 가장 작은 빈도수를 가지는 두 단말 노드를 자식 노드로 하는 root 구성, node value는 자식 노드의 freq. 합", "3. (10, 8, 12, 15)를 정렬 (8, 10, 12, 15), 다시 2로 반복". 그림의 합 노드는 10, 18, 27, 45예요.</p><p>추가 근거 p19의 표:</p><div class="table-wrap"><table><thead><tr><th>Character</th><th>Bit code</th><th>Frequency</th><th>Number of bit</th></tr></thead><tbody><tr><td>e</td><td>00</td><td>15</td><td>30</td></tr><tr><td>t</td><td>01</td><td>12</td><td>24</td></tr><tr><td>n</td><td>10</td><td>8</td><td>16</td></tr><tr><td>i</td><td>110</td><td>6</td><td>18</td></tr><tr><td>s</td><td>111</td><td>4</td><td>12</td></tr></tbody></table></div><p>"135 bits 에서 35 bit, 즉 26% 줄임"</p><p>p19 그림의 배치는 루트 45의 왼쪽 18(10(4, 6), 8), 오른쪽 27(12, 15)이고, 가지 표시는 왼쪽 1, 오른쪽 0이에요. 그래서 e 00 … s 111이 나와요. 이 배치는 마침 완전 이진 트리이면서 최대 힙 순서도 만족해요.</p><p>자체 출제 부분: 원 자료는 매번 "정렬"해 가장 작은 둘을 고르고, (b)의 최소 힙 삽입·삭제 추적과 힙 배열 상태는 이 문제를 위해 만든 질문이에요. 비율 25.9%는 35/135를 소수 첫째 자리까지 계산한 값이에요(원 자료는 반올림해 26%).</p></details></div><div class="layer eli5" data-explanation="understand">
+<h4>무엇을 구하라는 문제일까요?</h4>
+<p>강의 S8 p17–19의 etnis 예제(e 15, t 12, n 8, i 6, s 4, 모두 45글자)를 세 단계로 따라가요. (a)는 고정 길이 코드의 비트 수, (b)는 허프만 트리를 만들 때 ‘가장 작은 두 값’을 최소 힙으로 꺼내는 과정의 힙 배열, (c)는 완성된 트리의 코드 길이와 전체 비트 수, 그리고 (a)보다 얼마나 줄었는지예요.</p>
+<p>(b)의 최소 힙 추적은 이 문제를 위해 만든 질문이에요. 원래 슬라이드 p18은 매번 ‘정렬’해 가장 작은 둘을 고른다고만 적었어요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<p>(a) ‘같은 길이의 비트 코드’라는 단서에서 고정 길이 코드를 떠올려요. 비트 $b$개는 $2^b$가지를 구별하니 $2^b \ge 5$인 가장 작은 $b$가 필요해요. 슬라이드 p17의 “45 * 3 = 135 bits”가 이 계산이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-why">정리노트: 자주 나오는 글자에 짧은 코드</a>).</p>
+<p>(b) ‘삭제 두 번 → 합을 삽입’이라는 단서에서 <strong>최소 힙(min heap)</strong>의 두 연산을 떠올려요. 최소 힙은 완전 이진 트리이면서 부모 ≤ 자식이라 루트가 늘 가장 작은 값이에요. 삽입은 맨 끝에 놓고 부모보다 작으면 올리고(upheap), 삭제는 루트를 꺼낸 뒤 마지막 노드를 루트로 옮겨 <strong>더 작은</strong> 자식보다 크면 내려요(downheap). 최대 힙과 비교 방향만 반대예요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-build">정리노트: 가장 작은 두 개를 묶어 트리 만들기</a>).</p>
+<p>(c) 코드 길이는 글자의 깊이, 전체 비트는 $\sum(\text{빈도}\times\text{코드 길이})$, 줄어든 비율은 $\frac{135-100}{135}$처럼 ‘줄어든 양 ÷ 원래 양’이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s2-huffman-code">정리노트: 비트 코드와 100비트</a>).</p>
+</div>
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<p>(a)는 식 한 줄이에요.</p>
+<pre><code>2^2 = 4 &lt; 5 &lt;= 2^3 = 8 → 3 bit, 45 × 3 = 135 bit</code></pre>
+<p>(b)는 삽입 다섯 번을 끝낸 힙 배열을 먼저 적어요: 4 6 8 12 15. 넣을 때마다 부모보다 커서 아무 값도 올라가지 않아요.</p>
+</div>
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="a">
+<h5>(a) 고정 길이 코드</h5>
+<p>글자가 5개라 2비트(4가지)로는 모자라고 3비트(8가지)면 돼요. 45글자 × 3비트 = 135비트예요.</p>
+</div>
+<div data-subpart="b">
+<h5>(b) 최소 힙으로 가장 작은 둘 꺼내기</h5>
+<p>한 반복은 ‘삭제 → 삭제 → 합 삽입’이에요. 힙 배열은 1번 칸부터 적어요.</p>
+<div class="table-wrap"><table><thead><tr><th>반복</th><th>첫 삭제 뒤</th><th>둘째 삭제 뒤</th><th>합친 두 값</th><th>합 삽입 직후</th></tr></thead><tbody>
+<tr><td>1</td><td>6 12 8 15</td><td>8 12 15</td><td>4 + 6 = 10</td><td>8 10 15 12</td></tr>
+<tr><td>2</td><td>10 12 15</td><td>12 15</td><td>8 + 10 = 18</td><td>12 15 18</td></tr>
+<tr><td>3</td><td>15 18</td><td>18</td><td>12 + 15 = 27</td><td>18 27</td></tr>
+<tr><td>4</td><td>27</td><td>빈 힙</td><td>18 + 27 = 45</td><td>45</td></tr>
+</tbody></table></div>
+<p>1회차 첫 삭제를 자세히 보면, 4를 꺼내고 마지막 15를 루트로 옮겨 15 6 8 12가 돼요. 자식 6, 8 중 작은 6과 바꾸고(6 15 8 12), 다시 자식 12보다 커서 바꿔요(6 12 8 15). 1회차 삽입은 10을 4번 칸에 놓으면 부모 2번 칸 12보다 작아 올라가고, 부모 1번 칸 8보다는 커서 멈춰요 → 8 10 15 12.</p>
+<p>합친 순서 10, 18, 27, 45는 슬라이드 p18 그림의 합 노드와 같아요.</p>
+</div>
+<div data-subpart="c">
+<h5>(c) 코드 길이와 줄어든 비트</h5>
+<p>합친 순서대로 트리를 만들면 45 아래에 18(10(s, i), n)과 27(t, e)이 달려요. 슬라이드 p19 그림은 18을 왼쪽, 27을 오른쪽에 두고 가지 표시를 왼쪽 1, 오른쪽 0으로 붙였어요.</p>
+<pre><code>            45
+        1 /    \ 0
+        18      27
+     1 /  \ 0  1/ \0
+     10    n   t   e
+  1 /  \ 0
+   s    i</code></pre>
+<p>문제의 규칙(왼쪽 0, 오른쪽 1)으로 같은 트리를 읽으면 s 000, i 001, n 01, t 10, e 11이고, 슬라이드처럼 왼쪽 1로 읽으면 e 00, t 01, n 10, i 110, s 111이에요. 어느 쪽이든 코드 길이는 e·t·n 2, i·s 3이에요.</p>
+<div class="table-wrap"><table><thead><tr><th>글자</th><th>빈도</th><th>코드(왼쪽 0)</th><th>코드(슬라이드, 왼쪽 1)</th><th>길이</th><th>비트 수</th></tr></thead><tbody>
+<tr><td>e</td><td>15</td><td>11</td><td>00</td><td>2</td><td>30</td></tr>
+<tr><td>t</td><td>12</td><td>10</td><td>01</td><td>2</td><td>24</td></tr>
+<tr><td>n</td><td>8</td><td>01</td><td>10</td><td>2</td><td>16</td></tr>
+<tr><td>i</td><td>6</td><td>001</td><td>110</td><td>3</td><td>18</td></tr>
+<tr><td>s</td><td>4</td><td>000</td><td>111</td><td>3</td><td>12</td></tr>
+</tbody></table></div>
+<p>$15\cdot2+12\cdot2+8\cdot2+6\cdot3+4\cdot3 = 100$비트예요. $135-100 = 35$비트가 줄었고, $\frac{35}{135} \approx 0.259$, 곧 약 25.9%예요. 슬라이드는 반올림해 26%라고 적었어요.</p>
+<p>이 트리는 레벨 순서 45 18 27 10 8 12 15 4 6으로 빈칸 없이 차 있어 마침 완전 이진 트리이고, 부모가 두 자식보다 크거나 같아 최대 힙 모양이에요. 하지만 허프만 트리가 늘 그런 것은 아니에요. 빈도 1, 2, 4, 8이면 1+2=3, 3+4=7, 7+8=15로 한쪽으로 뻗어요. 힙이 허프만 코드에서 하는 일은 (b)처럼 가장 작은 두 빈도를 꺼내는 거예요.</p>
+<p>보충 · 수업에서 유도하진 않았어요: 이 코드는 어떤 코드도 다른 코드의 앞부분이 아닌 접두어 코드(prefix code)예요. 그래서 비트열을 앞에서부터 읽으면 글자 사이에 구분자(delimiter)가 없어도 하나로만 풀려요. 예를 들어 슬라이드 코드로 11000111은 110, 00, 111로만 끊겨 i, e, s예요. 수업에서 delimiter가 필요하다고 덧붙이신 부분은 정리노트의 보충에서 이 표준 설명으로 이어 정리했어요.</p>
+</div>
+</div>
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="a">
+<p>(a) 완성 답: 글자당 3비트, 45 × 3 = 135비트.</p>
+<p>검산: 빈도 합 $15+12+8+6+4 = 45$이고, $2^2 = 4 &lt; 5$, $2^3 = 8 \ge 5$예요. 슬라이드 p17의 “45 * 3 = 135 bits”와 같아요.</p>
+</div>
+<div data-subpart="b">
+<p>(b) 완성 답: 시작 4 6 8 12 15 → 4+6=10 후 8 10 15 12 → 8+10=18 후 12 15 18 → 12+15=27 후 18 27 → 18+27=45 후 45.</p>
+<p>검산: 문제에 적힌 규칙만으로 따로 짠 최소 힙 시뮬레이션(<code>evidence/independent_verify.py</code>의 p7 블록)이 네 반복의 합친 값과 삽입 직후 배열을 모두 같게 냈고, downheap에서 두 자식이 같은 값인 동점은 생기지 않았어요. 각 상태에서 모든 $i \ge 2$에 대해 $A[\lfloor i/2\rfloor] \le A[i]$가 성립해요.</p>
+</div>
+<div data-subpart="c">
+<p>(c) 완성 답: 코드 길이 e·t·n 2, i·s 3. 총 100비트, 35비트(약 25.9%, 반올림 26%) 감소.</p>
+<p>검산: 내부 노드 값의 합 $10+18+27+45 = 100$이 표의 비트 합과 같아요. 독립 시뮬레이션도 같은 길이와 100비트, 35비트, 25.9%를 냈고, 슬라이드 p19의 비트 코드 표·100bits·“35 bit, 즉 26% 줄임”과 일치해요.</p>
+</div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+<h4>이 문제에서 특히 조심할 점</h4>
+<p>(b)에서 최소 힙 삭제 때 큰 자식과 바꾸면 최대 힙 규칙이 섞인 거예요. 최소 힙은 <strong>더 작은</strong> 자식과 바꿔요. 1회차 첫 삭제에서 15를 8과 바꾸면 6이 루트의 자식으로 남아 부모 ≤ 자식이 깨져요.</p>
+<p>(b) 3회차에서 방금 만든 18을 무조건 다음 값 12와 합쳐 30을 만들면 안 돼요. 남은 값 12, 15, 18 중 가장 작은 둘은 12와 15라 27이 돼요. 최소 힙의 루트를 두 번 꺼내면 이 판단이 저절로 돼요.</p>
+<p>(c)에서 슬라이드 코드(e 00 …)를 그대로 쓰면서 ‘왼쪽 0’이라고 하면 서로 맞지 않아요. 같은 트리라도 0·1 배정에 따라 비트가 바뀌니, 어떤 규칙으로 읽었는지 밝혀요. 줄어든 비율은 $35/100$이 아니라 원래 양 135로 나눠요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 닫고 다시 해 봐요</h4>
+<ol><li>$2^b \ge 5$로 (a)의 3비트와 135비트를 써요.</li><li>4 6 8 12 15에서 시작해 ‘삭제, 삭제, 합 삽입’을 네 번 하며 매번 작은 자식과 바꾼 힙 배열을 적어요.</li><li>트리를 그려 왼쪽 0으로 코드를 읽고, 100비트와 $35/135$를 계산해요.</li></ol>
+</div>
+<div class="sum" hidden="">
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>고정 길이: $2^b \ge 5$ → 3비트. 최소 힙: 부모 ≤ 자식, 삭제는 마지막 노드를 루트로 옮겨 더 작은 자식과 교환, 삽입은 끝에서 upheap. 총 비트 $\sum(\text{빈도}\times\text{길이})$, 감소율 = 줄어든 양 ÷ 135.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>3비트, 45 × 3 = 135. 삽입 뒤 힙 4 6 8 12 15.</p></div>
+<div class="summary-group"><h4>핵심 판단</h4><p>(b) 10 → 8 10 15 12, 18 → 12 15 18, 27 → 18 27, 45 → 45. (c) e·t·n 2, i·s 3. 왼쪽 0이면 s 000, i 001, n 01, t 10, e 11. 슬라이드(왼쪽 1)는 e 00, t 01, n 10, i 110, s 111. 이 트리는 마침 최대 힙 모양이지만 허프만 트리가 늘 그렇진 않아요(예: 1, 2, 4, 8).</p></div>
+<div class="summary-group"><h4>검산</h4><p>100비트, 35비트·약 25.9%(26%) 감소. 내부 노드 합 10+18+27+45 = 100, 독립 시뮬레이션·슬라이드 p19와 일치. 접두어 코드라 구분자 없이 풀려요(보충).</p></div>
+</div>
+</article><article class="topic" id="p8"><h3>P8. 아이스크림 가게 이벤트를 시각 순서로 처리하기</h3><p class="panel-meta">lecture-s08-p16-event-sim · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1112_Heap.html#p8">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p8"><div class="layer formal" data-source-problem="p8"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S8 p16</p><p>아이스크림 가게를 이산 이벤트 시뮬레이션으로 흉내 내요. 가게 의자는 처음에 <code>5</code>개예요. 이벤트는 <code>(시각, 종류, 인원)</code>이고, 시각이 가장 이른 이벤트부터 꺼내는 최소 우선순위 큐에 들어 있어요.</p><p>시작할 때 도착 이벤트가 <code>(6, arrival, 2)</code>, <code>(1, arrival, 3)</code>, <code>(8, arrival, 4)</code>, <code>(3, arrival, 3)</code> 순서로 큐에 삽입돼 있어요. 꺼낸 이벤트는 다음 규칙으로 처리해요.</p><p><code>arrival(t, k)</code>: 남은 의자가 <code>k</code>개 이상이면 의자를 <code>k</code>개 줄이고 <code>(t+1, order, k)</code>를 큐에 넣어요. 아니면 <code>k</code>명은 주문 없이 나가요.</p><p><code>order(t, k)</code>: <code>(t+3, leave, k)</code>를 큐에 넣어요.</p><p><code>leave(t, k)</code>: 의자를 <code>k</code>개 늘려요.</p></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 이벤트를 넣은 순서대로 꺼내는 보통의 큐(FIFO)로는 이 시뮬레이션이 왜 틀리는지 한두 문장으로 써 보세요.</li><li>(b) 큐가 빌 때까지 꺼내지는 이벤트 순서(시각, 종류)와 각 단계 뒤 남은 의자 수를 써 보세요.</li><li>(c) 주문 없이 나간 손님은 모두 몇 명인가요? 마지막에 남은 의자는 몇 개인가요?</li></ol></div></div><details class="original" data-original-problem="p8"><summary>강의 예제 보기</summary><p>S8 p16 · 히프 응용2: 이산 이벤트 시뮬레이션</p><p>원 자료: "이산 이벤트 시뮬레이션: 많은 이벤트들이 발생, 이벤트의 우선순위에 따른 처리", "예: 아이스크림 가게 시뮬레이션(이벤트가 발생한 시각) (p328)". 손님 도착 이벤트(arrival): "남아있는 의자 수 &gt; # of arrival 의자 수 감소", "만약 의자 수가 더 적으면, arrival 손님은 주문 없이 나감". 손님 주문 이벤트(order): "손님 수대로 주문, 주문 후에는 leave event 발생". 손님이 가게를 떠나는 이벤트(leave): "Leave 이벤트 수만큼 의자 수 증가".</p><p>자체 설정: 원 자료에는 코드와 수치 예가 없어요(시뮬레이션 코드는 교재 p328로 미뤘어요). 의자 5개, 네 도착 이벤트, order는 도착 1분 뒤, leave는 order 3분 뒤라는 시각 규칙은 이 문제를 위해 정한 값이에요. 원 자료는 남은 의자 수가 도착 인원보다 "클 때" 앉는다고만 해서 같을 때가 정해져 있지 않아요. 문제에서는 "이상이면 앉는다"로 정했어요. 이 데이터에서는 두 수가 같은 경우가 나오지 않아 답은 같아요.</p></details></div><div class="layer eli5" data-explanation="understand">
+<h4>무엇을 구하라는 문제일까요?</h4>
+<p>의자 5개인 아이스크림 가게에서 손님 도착(arrival), 주문(order), 떠남(leave) 이벤트를 시각 순서대로 처리해요. 처음 큐에는 도착 이벤트 네 개가 시각 6, 1, 8, 3 순서로 들어 있고, 처리하면서 order·leave 이벤트가 새로 생겨요. (a)는 보통의 FIFO 큐가 왜 안 되는지, (b)는 실제로 꺼내지는 이벤트 순서와 남은 의자 수, (c)는 그냥 나간 손님 수와 마지막 의자 수를 묻는 거예요.</p>
+<p>의자 5개, 시각 규칙(order는 도착 1분 뒤, leave는 order 3분 뒤), “남은 의자가 k개 이상이면 앉는다”는 이 문제를 위해 정한 값이에요. 슬라이드 p16은 남은 의자 수가 도착 인원보다 ‘클 때’ 앉는다고만 적었는데, 이 데이터에서는 두 수가 같은 경우가 나오지 않아 어느 쪽으로 읽어도 답이 같아요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<p>‘이산 이벤트 시뮬레이션’과 ‘시각이 가장 이른 이벤트부터 꺼내는’이라는 단서에서 <strong>우선순위 큐(priority queue)</strong>를 떠올려요. 이산 사건은 구별되는 시점에 딱딱 일어나는 사건이고, 시뮬레이션은 그 사건들을 일어나는 시각 순서대로 처리해야 해요. 여기서는 시각이 우선순위이고, 작은 시각이 먼저 나오므로 최소 우선순위 큐(최소 힙으로 구현)예요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1112_Heap.html#s1-event-sim">정리노트: 아이스크림 가게와 우선순위 큐</a>).</p>
+<p>(a)의 ‘보통의 큐(FIFO)’는 먼저 넣은 것이 먼저 나오는 구조예요. 넣은 순서와 일어나는 시각 순서가 다를 수 있다는 점이 두 구조를 가르는 기준이에요. 1112 수업에서도 줄 서기는 큐로 모델링하지만 이벤트가 여러 종류인 가게는 하나의 큐로 표현할 수 없어 우선순위 큐를 쓴다고 했어요.</p>
+<p>(b)·(c)는 상태가 ‘남은 의자 수’ 하나뿐이라, 이벤트를 꺼낼 때마다 규칙을 적용하고 의자 수와 큐에 남은 이벤트를 표로 적으면 돼요.</p>
+</div>
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<p>큐 안의 이벤트를 시각 순으로 다시 적고, 가장 이른 t=1 도착을 처리하는 첫 행을 써요.</p>
+<pre><code>큐(시각 순): (1 arrival 3) (3 arrival 3) (6 arrival 2) (8 arrival 4), 의자 5
+1단계: t=1 arrival 3명 → 5 ≥ 3 앉음, 의자 2, (2 order 3) 넣음</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="a">
+<h5>(a) FIFO 큐로는 왜 틀릴까요</h5>
+<p>FIFO 큐는 넣은 순서대로 꺼내니 처음 넣은 (6, arrival, 2)를 (1, arrival, 3)보다 먼저 처리해 시간이 거꾸로 흘러요. 또 처리 중에 생긴 (2, order, 3), (5, leave, 3)은 큐 뒤에 붙어서, 먼저 넣어 둔 t=6, t=8 도착보다 늦게 처리돼요. 그래서 넣은 순서가 아니라 시각이 가장 이른 이벤트를 꺼내는 우선순위 큐가 필요해요.</p>
+<p>실제로 FIFO로 돌리면 처리 시각이 6, 1, 8, 3, 7, 2, 10, 5 순서가 돼요. t=3 도착을 처리할 때 의자가 실제(2개)와 달리 0개로 계산되는 등 중간 상태가 어긋나요. 이 데이터에서는 마지막 숫자(나간 손님, 남은 의자)가 우연히 같게 나오지만, 시각이 뒤섞인 처리는 시뮬레이션으로서 틀린 거예요.</p>
+</div>
+<div data-subpart="b">
+<h5>(b) 시각 순서로 처리하기</h5>
+<p>매번 큐에서 시각이 가장 작은 이벤트를 꺼내요. 마지막 칸은 그 단계 뒤 큐에 남은 이벤트를 시각 순으로 적은 거예요.</p>
+<div class="table-wrap"><table><thead><tr><th>단계</th><th>꺼낸 이벤트</th><th>처리</th><th>남은 의자</th><th>큐에 남은 이벤트</th></tr></thead><tbody>
+<tr><td>1</td><td>t=1 arrival 3명</td><td>5 ≥ 3 → 앉음, (2 order 3) 넣음</td><td>2</td><td>(2 order) (3 arrival) (6 arrival) (8 arrival)</td></tr>
+<tr><td>2</td><td>t=2 order 3명</td><td>(5 leave 3) 넣음</td><td>2</td><td>(3 arrival) (5 leave) (6 arrival) (8 arrival)</td></tr>
+<tr><td>3</td><td>t=3 arrival 3명</td><td>2 &lt; 3 → 주문 없이 나감</td><td>2</td><td>(5 leave) (6 arrival) (8 arrival)</td></tr>
+<tr><td>4</td><td>t=5 leave 3명</td><td>의자 3개 늘림</td><td>5</td><td>(6 arrival) (8 arrival)</td></tr>
+<tr><td>5</td><td>t=6 arrival 2명</td><td>5 ≥ 2 → 앉음, (7 order 2) 넣음</td><td>3</td><td>(7 order) (8 arrival)</td></tr>
+<tr><td>6</td><td>t=7 order 2명</td><td>(10 leave 2) 넣음</td><td>3</td><td>(8 arrival) (10 leave)</td></tr>
+<tr><td>7</td><td>t=8 arrival 4명</td><td>3 &lt; 4 → 주문 없이 나감</td><td>3</td><td>(10 leave)</td></tr>
+<tr><td>8</td><td>t=10 leave 2명</td><td>의자 2개 늘림</td><td>5</td><td>빈 큐</td></tr>
+</tbody></table></div>
+<p>2단계에서 새로 넣은 t=5 leave가 이미 들어 있던 t=6 도착보다 앞에 놓이는 것이 우선순위 큐의 역할이에요. 덕분에 t=6 손님이 왔을 때 의자가 5개로 돌아와 있어 앉을 수 있어요. 같은 시각의 이벤트는 생기지 않아 꺼내는 순서가 하나로 정해져요.</p>
+</div>
+<div data-subpart="c">
+<h5>(c) 나간 손님과 마지막 의자</h5>
+<p>주문 없이 나간 것은 t=3 도착 3명과 t=8 도착 4명이라 모두 $3 + 4 = 7$명이에요. 마지막 leave 뒤 남은 의자는 5개예요.</p>
+</div>
+</div>
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="a">
+<p>(a) 완성 답: 이벤트를 넣은 순서와 일어나는 시각 순서가 달라요. FIFO는 t=6 도착을 t=1 도착보다 먼저 처리하고, 나중에 생긴 order·leave를 먼저 넣은 도착보다 늦게 처리해서 시간이 뒤섞여요. 그래서 시각이 가장 이른 것을 꺼내는 우선순위 큐가 필요해요.</p>
+<p>검산: 문제만 보고 따로 짠 시뮬레이션(<code>evidence/independent_verify.py</code>의 p8 블록)이 FIFO 처리 시각 열 6, 1, 8, 3, 7, 2, 10, 5가 단조 증가가 아님을 확인했어요. 같은 검산에서 FIFO의 최종 숫자는 우연히 같다는 점도 확인돼, 답의 근거를 최종 숫자가 아니라 시각 순서에 두었어요.</p>
+</div>
+<div data-subpart="b">
+<p>(b) 완성 답: t=1 arrival(의자 2) → t=2 order(2) → t=3 arrival 3명 그냥 나감(2) → t=5 leave(5) → t=6 arrival(3) → t=7 order(3) → t=8 arrival 4명 그냥 나감(3) → t=10 leave(5).</p>
+<p>검산: 독립 시뮬레이션(최소 우선순위 큐, 시각 기준)의 여덟 단계와 의자 수가 위 표와 모두 같고, 같은 시각 동점은 없었어요. 의자 수는 늘 0 이상 5 이하예요.</p>
+</div>
+<div data-subpart="c">
+<p>(c) 완성 답: 그냥 나간 손님 7명, 마지막 남은 의자 5개.</p>
+<p>검산: 앉은 손님 3 + 2 = 5명이 모두 leave로 의자를 돌려주니, 마지막 의자는 처음 5개로 돌아와야 해요. 도착 총원 $3+3+2+4 = 12$명 = 앉은 5명 + 나간 7명으로 맞아요.</p>
+</div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+<h4>이 문제에서 특히 조심할 점</h4>
+<p>(a)를 ‘FIFO로 하면 결과 숫자가 달라진다’로 쓰면 이 데이터에서는 사실과 달라요. 최종 숫자는 우연히 같아요. 틀리는 이유는 처리 순서가 실제 시각과 어긋난다는 데 있어요.</p>
+<p>(b)에서 처음 큐에 넣은 순서(6, 1, 8, 3)대로 처리하거나, 도착만 먼저 다 처리하고 order·leave를 나중에 몰아 처리하면 틀려요. t=5 leave는 t=6 도착보다 먼저예요. 이를 놓치면 t=6 손님 때 의자가 2개로 계산돼요.</p>
+<p>그 잘못된 경로에서는 t=6 손님 2명이 올 때 의자가 2개라, 슬라이드의 ‘클 때 앉는다’와 문제의 ‘이상이면 앉는다’가 서로 다른 결과를 내요. 올바른 시각 순서에서는 이런 같은 수 비교가 나오지 않아요.</p>
+<p>(c)에서 t=3 손님을 앉혔다고 착각하지 않도록 해요. 그때는 t=1 손님 3명이 아직 떠나지 않아(떠남은 t=5) 의자가 2개뿐이에요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 닫고 다시 해 봐요</h4>
+<ol><li>처음 네 도착 이벤트를 시각 순으로 다시 적고, FIFO라면 어떤 순서로 처리되는지 옆에 적어 비교해요.</li><li>가장 이른 이벤트를 꺼낼 때마다 규칙을 적용해 의자 수와 남은 큐를 한 행씩 써요.</li><li>앉은 인원 + 나간 인원 = 도착 총원, 마지막 의자 = 5인지 확인해요.</li></ol>
+</div>
+<div class="sum" hidden="">
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>이산 이벤트 시뮬레이션은 사건을 일어나는 시각 순서로 처리해야 해서, 시각을 우선순위로 하는 최소 우선순위 큐(최소 힙)를 써요. FIFO는 넣은 순서대로 꺼내 시각이 뒤섞여요.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>큐를 시각 순으로 (1 arrival 3) (3 arrival 3) (6 arrival 2) (8 arrival 4)로 다시 적고 t=1 도착부터 처리해요.</p></div>
+<div class="summary-group"><h4>핵심 판단</h4><p>순서 t=1 arrival → 2 order → 3 arrival(3명 나감) → 5 leave → 6 arrival → 7 order → 8 arrival(4명 나감) → 10 leave, 의자 2, 2, 2, 5, 3, 3, 3, 5. 새로 생긴 t=5 leave가 t=6 도착보다 먼저예요.</p></div>
+<div class="summary-group"><h4>검산</h4><p>나간 손님 7명, 마지막 의자 5개. 도착 12명 = 앉은 5명 + 나간 7명. FIFO는 최종 숫자가 우연히 같지만 처리 시각이 6, 1, 8, 3, …으로 뒤섞여요.</p></div>
+</div>
+</article></section>
+  </main>
+  <footer>원 문제·정리노트·PDF는 보존해요.</footer>
+    </div>
+    <aside class="panel panel-right" id="panel-right" aria-labelledby="panel-right-title">
+      <div class="panel-resize" data-side="right" role="separator" aria-orientation="vertical" aria-controls="panel-right" aria-label="오른쪽 패널 너비 조절. 좌우 화살표로 조절, Home으로 자동 너비" tabindex="0"></div>
+      <div class="panel-inner">
+        <div class="panel-head">
+          <h2 id="panel-right-title">페이지 요약</h2>
+          <button class="text-btn panel-close" type="button" data-panel-close>닫기</button>
+        </div>
+        <div class="sum-tab">
+          <p class="panel-empty" id="sum-empty">페이지를 넘기면 그 페이지의 핵심 식과 용어가 여기에 나옵니다.</p>
+          <div class="sums" id="sum-for"></div>
+        </div>
+      </div>
+    </aside>
+    <div class="dock-preview" hidden></div>
+  </div>
+  <div class="scrim" id="panel-scrim" aria-hidden="true"></div>
+  <nav class="pager" aria-label="화면 이동">
+    <div class="pager-inner">
+      <button class="btn btn-ghost" id="pager-prev" type="button">이전</button>
+      <span class="pager-count" id="pager-count"></span>
+      <button class="btn btn-primary" id="pager-next" type="button">시작하기</button>
+    </div>
+  </nav>
+  <p class="sr-only" id="pager-status" aria-live="polite"></p>
+<script type="application/json" id="explain-choice-model">{}</script>
+  <script id="theme-ui">
+    (function () {
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const sysDark = matchMedia('(prefers-color-scheme: dark)');
+      const KEY = 'od-theme';
+      const isDark = () => root.dataset.theme ? root.dataset.theme === 'dark' : sysDark.matches;
+      function label() {
+        const next = isDark() ? '라이트 모드로 전환' : '다크 모드로 전환';
+        btn.setAttribute('aria-label', next);
+        btn.title = next;
+      }
+      btn.addEventListener('click', () => {
+        const t = isDark() ? 'light' : 'dark';
+        // 시스템 설정과 같아지면 저장을 지워 다시 시스템을 따른다
+        if ((t === 'dark') === sysDark.matches) { delete root.dataset.theme; try { localStorage.removeItem(KEY); } catch (e) {} }
+        else { root.dataset.theme = t; try { localStorage.setItem(KEY, t); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+        label();
+      });
+      sysDark.addEventListener('change', label);
+      window.addEventListener('storage', (e) => {
+        if (e.key !== KEY) return;
+        if (e.newValue === 'light' || e.newValue === 'dark') root.dataset.theme = e.newValue; else delete root.dataset.theme;
+        label();
+      });
+      label();
+    })();
+  </script>
+  <script id="panels-ui">
+    (function () {
+      const body = document.body;
+      const layout = document.querySelector('.layout');
+      const kind = body.dataset.panels;
+      const SIDES = ['left', 'prob', 'right'];
+      const panels = { left: document.getElementById('panel-left'), prob: document.getElementById('panel-prob'), right: document.getElementById('panel-right') };
+      const toggles = { left: document.getElementById('toggle-left'), prob: document.getElementById('toggle-prob'), right: document.getElementById('toggle-right') };
+      const scrim = document.getElementById('panel-scrim');
+      const blockers = [document.querySelector('.topbar'), document.querySelector('.content'), document.querySelector('.pager')];
+      const wideMq = matchMedia('(min-width: 1024px)');
+      const roomyMq = matchMedia('(min-width: 1280px)');
+      const store = {
+        get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+        set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* 저장 불가: 이번 방문에만 유지 */ } }
+      };
+      // v2: 문제가 왼쪽 패널로 옮겨 오며 예전 저장값(오른쪽 = 문제)은 읽지 않는다
+      const PREF = 'od-panels:' + kind + ':v2';
+      // 팩마다 문제·토픽 id가 p1, s1-…로 겹치므로 진행 기록은 기간별로 나눈다
+      const RANGE = body.dataset.range || '';
+      const ICON_TODO = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>';
+      const ICON_DONE = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 10"/></svg>';
+      let overlay = null;
+      // 넓은 화면에서 공간이 모자라 잠시 숨긴 패널. 저장값은 그대로 두어 화면이 넓어지면 다시 보인다
+      let last = null;
+      const DOCKS = ['left', 'right', 'float'];
+      const SNAP = 32, UNDOCK = 24, FLOAT_MIN = { w: 280, h: 200 };
+      const topbar = document.querySelector('.topbar');
+      const pager = document.querySelector('.pager');
+      const preview = layout.querySelector('.dock-preview');
+      const dockBtns = panels.prob.querySelectorAll('.prob-dock [data-dock]');
+      const moveBtn = panels.prob.querySelector('.float-move');
+      const sizer = panels.prob.querySelector('.float-resize');
+
+      // ---------- 열고 닫기 ----------
+      function docked() {
+        const pref = store.get(PREF, {});
+        // 문제해설은 본문 왼쪽 문제 패널을 기본으로 연다
+        if (kind === 'explain') return { left: pref.left ?? wideMq.matches, prob: pref.prob ?? true, right: pref.right ?? false };
+        return { left: pref.left ?? true, prob: false, right: pref.right ?? roomyMq.matches };
+      }
+      // 본문이 최소 폭(320px)보다 좁아지면 먼저 직접 넓힌 패널(문제 → 요약)을 이번 화면에서만 줄이고,
+      // 그래도 모자라면 목차 → 요약 → 문제 순으로 숨긴다. 방금 연 패널은 마지막까지 남긴다
+      // 띄운 문제 창은 grid 칸을 차지하지 않으므로 폭 계산·숨김 순서에서 뺀다
+      const inGrid = (s) => layout.dataset[s] === 'open' && !(s === 'prob' && layout.dataset.probDock === 'float');
+      function fit() {
+        const order = ['left', 'right', 'prob'].filter((s) => s !== last).concat(last ? [last] : []);
+        const room = () => document.documentElement.clientWidth - SIDES.reduce((w, s) => w + (inGrid(s) ? panels[s].getBoundingClientRect().width : 0), 0);
+        applyWidths();
+        ['prob', 'right'].forEach((side) => {
+          const short = 320 - room();
+          if (short <= 0 || !inGrid(side) || !layout.style.getPropertyValue(WIDTH[side].prop)) return;
+          const w = panels[side].getBoundingClientRect().width;
+          layout.style.setProperty(WIDTH[side].prop, Math.max(WIDTH[side].min, Math.round(w - short)) + 'px');
+        });
+        for (const side of order) {
+          if (room() >= 320) break;
+          if (inGrid(side) && SIDES.filter(inGrid).length > 1) layout.dataset[side] = 'closed';
+        }
+      }
+      function sync() {
+        const wide = wideMq.matches;
+        const d = docked();
+        const pp = probPref();
+        layout.dataset.probDock = pp.dock;
+        dockBtns.forEach((b) => { const on = b.dataset.dock === pp.dock; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
+        SIDES.forEach((side) => { layout.dataset[side] = (wide ? d[side] : overlay === side) ? 'open' : 'closed'; });
+        if (wide) fit();
+        const floating = wide && pp.dock === 'float' && layout.dataset.prob === 'open';
+        if (floating) placeFloat(pp);
+        SIDES.forEach((side) => {
+          const open = layout.dataset[side] === 'open';
+          const p = panels[side];
+          p.classList.toggle('is-open', !wide && open);
+          p.inert = !open;
+          if (!wide && open) { p.setAttribute('role', 'dialog'); p.setAttribute('aria-modal', 'true'); }
+          else if (side === 'prob' && floating) { p.setAttribute('role', 'dialog'); p.removeAttribute('aria-modal'); }
+          else { p.removeAttribute('role'); p.removeAttribute('aria-modal'); }
+          toggles[side].setAttribute('aria-expanded', String(open));
+        });
+        placeToggle();
+        const drawer = !wide && overlay !== null;
+        scrim.classList.toggle('is-on', drawer);
+        body.classList.toggle('drawer-open', drawer);
+        blockers.forEach((el) => { el.inert = drawer; });
+      }
+      function openDrawer(side) {
+        overlay = side;
+        sync();
+        requestAnimationFrame(() => panels[side].querySelector('[data-panel-close]').focus());
+      }
+      function closeDrawer(refocus) {
+        if (overlay === null) return;
+        const side = overlay;
+        overlay = null;
+        sync();
+        if (refocus) toggles[side].focus();
+      }
+      function toggle(side) {
+        if (wideMq.matches) {
+          const d = docked();
+          // 공간 때문에 숨긴 패널은 눌렀을 때 다시 연다
+          d[side] = layout.dataset[side] !== 'open';
+          store.set(PREF, d);
+          if (d[side]) last = side;
+          sync();
+          if (d[side]) { const p = panels[side]; p.classList.remove('is-shown'); void p.offsetWidth; p.classList.add('is-shown'); }
+        } else if (overlay === side) closeDrawer(true);
+        else openDrawer(side);
+      }
+
+      SIDES.forEach((side) => toggles[side].addEventListener('click', () => toggle(side)));
+      scrim.addEventListener('click', () => closeDrawer(true));
+      document.querySelectorAll('[data-panel-close]').forEach((b) => b.addEventListener('click', () => closeDrawer(true)));
+      panels.left.addEventListener('click', (e) => { if (e.target.closest('.toc a')) closeDrawer(false); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && overlay !== null) { e.preventDefault(); closeDrawer(true); } });
+
+      // ---------- 패널 너비: 기본은 화면 폭에 맞춰 자동, 경계를 끌면 직접 조절 ----------
+      const WIDTH = { left: { min: 220, max: 480, prop: '--panel-l-user' }, prob: { min: 320, max: 720, prop: '--panel-p-user' }, right: { min: 280, max: 720, prop: '--panel-r-user' } };
+      function applyWidths() {
+        const w = store.get(PREF + ':w', {});
+        SIDES.forEach((side) => {
+          if (w[side]) layout.style.setProperty(WIDTH[side].prop, w[side] + 'px');
+          else layout.style.removeProperty(WIDTH[side].prop);
+        });
+      }
+      function maxFor(side) {
+        const otherW = SIDES.reduce((w, s) => w + (s !== side && inGrid(s) ? panels[s].getBoundingClientRect().width : 0), 0);
+        return Math.max(WIDTH[side].min, Math.min(WIDTH[side].max, window.innerWidth - otherW - 400));
+      }
+      function setWidth(side, px, save) {
+        const v = Math.round(Math.min(Math.max(px, WIDTH[side].min), maxFor(side)));
+        layout.style.setProperty(WIDTH[side].prop, v + 'px');
+        panels[side].querySelector('.panel-resize').setAttribute('aria-valuenow', String(v));
+        if (save) { const w = store.get(PREF + ':w', {}); w[side] = v; store.set(PREF + ':w', w); }
+      }
+      function resetWidth(side) {
+        const w = store.get(PREF + ':w', {});
+        delete w[side];
+        store.set(PREF + ':w', w);
+        layout.style.removeProperty(WIDTH[side].prop);
+      }
+      document.querySelectorAll('.panel-resize').forEach((handle) => {
+        const side = handle.dataset.side;
+        // 오른쪽에 붙은 패널은 왼쪽 경계를 끈다: 왼쪽으로 끌면 넓어진다
+        const dir = () => (side === 'right' || (side === 'prob' && layout.dataset.probDock === 'right') ? -1 : 1);
+        handle.setAttribute('aria-valuemin', String(WIDTH[side].min));
+        handle.setAttribute('aria-valuemax', String(WIDTH[side].max));
+        handle.addEventListener('pointerdown', (e) => {
+          if (!wideMq.matches || e.button !== 0) return;
+          e.preventDefault();
+          const startX = e.clientX;
+          const startW = panels[side].getBoundingClientRect().width;
+          const d = dir();
+          handle.setPointerCapture(e.pointerId);
+          body.classList.add('is-resizing');
+          const move = (ev) => setWidth(side, startW + d * (ev.clientX - startX), false);
+          const up = () => {
+            handle.removeEventListener('pointermove', move);
+            handle.removeEventListener('pointerup', up);
+            handle.removeEventListener('pointercancel', up);
+            body.classList.remove('is-resizing');
+            setWidth(side, panels[side].getBoundingClientRect().width, true);
+          };
+          handle.addEventListener('pointermove', move);
+          handle.addEventListener('pointerup', up);
+          handle.addEventListener('pointercancel', up);
+        });
+        handle.addEventListener('dblclick', () => { resetWidth(side); sync(); });
+        handle.addEventListener('keydown', (e) => {
+          const step = e.shiftKey ? 64 : 16;
+          const cur = panels[side].getBoundingClientRect().width;
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault();
+            e.stopPropagation();
+            setWidth(side, cur + (e.key === 'ArrowRight' ? step : -step) * dir(), true);
+          } else if (e.key === 'Home') { e.preventDefault(); resetWidth(side); sync(); }
+        });
+      });
+
+      // ---------- 문제 패널 자리: 왼쪽·오른쪽에 붙이기, 띄우기(옮기고 크기 조절하는 창) ----------
+      function probPref() {
+        const v = store.get(PREF + ':prob', {}) || {};
+        const num = (n, d) => (typeof n === 'number' && Number.isFinite(n) ? n : d);
+        const w = num(v.w, 420);
+        return {
+          dock: DOCKS.includes(v.dock) ? v.dock : 'left',
+          x: num(v.x, document.documentElement.clientWidth - w - 24),
+          y: num(v.y, topbar.getBoundingClientRect().bottom + 16),
+          w,
+          h: num(v.h, Math.min(560, Math.round(0.7 * window.innerHeight)))
+        };
+      }
+      function saveProb(patch) { store.set(PREF + ':prob', Object.assign(probPref(), patch)); }
+      function setDock(dock) {
+        saveProb({ dock });
+        last = 'prob';
+        sync();
+      }
+      function placeToggle() {
+        const dock = layout.dataset.probDock;
+        toggles.prob.dataset.dock = dock;
+        if (dock === 'right') { if (toggles.prob.nextElementSibling !== toggles.right) toggles.right.before(toggles.prob); }
+        else if (toggles.prob.previousElementSibling !== toggles.left) toggles.left.after(toggles.prob);
+      }
+      const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), Math.max(lo, hi));
+      // 아래 경계: 이전/다음 바를 가리지 않게 그 위까지
+      function floor() {
+        const r = pager ? pager.getBoundingClientRect() : null;
+        return r && r.height ? Math.round(r.top) : document.documentElement.clientHeight;
+      }
+      // 창을 상단 바 아래·이전/다음 바 위·화면 안에 맞춘다. 크기를 먼저 줄이고 위치를 민다. 저장값은 건드리지 않는다
+      function placeFloat(g = probPref()) {
+        const top = Math.round(topbar.getBoundingClientRect().bottom);
+        const W = document.documentElement.clientWidth, H = floor();
+        const w = Math.round(clamp(g.w, FLOAT_MIN.w, W)), h = Math.round(clamp(g.h, FLOAT_MIN.h, H - top));
+        const r = { x: Math.round(clamp(g.x, 0, W - w)), y: Math.round(clamp(g.y, top, H - h)), w, h };
+        const st = panels.prob.style;
+        st.setProperty('--fx', r.x + 'px'); st.setProperty('--fy', r.y + 'px');
+        st.setProperty('--fw', r.w + 'px'); st.setProperty('--fh', r.h + 'px');
+        return r;
+      }
+      function dockPreview(side) {
+        preview.hidden = !side;
+        if (side) {
+          preview.dataset.side = side;
+          preview.style.top = Math.round(topbar.getBoundingClientRect().bottom) + 'px';
+          preview.style.bottom = (document.documentElement.clientHeight - floor()) + 'px';
+        }
+      }
+      // 끌기 도중 화면이 좁아지는 등 끌기를 끝내야 할 때 부른다
+      let endDrag = null;
+      dockBtns.forEach((b) => b.addEventListener('click', () => setDock(b.dataset.dock)));
+      // 단일 선택: 화살표로 이웃 자리를 고른다(페이지 넘김으로 번지지 않게)
+      panels.prob.querySelector('.prob-dock').addEventListener('keydown', (e) => {
+        const step = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[e.key];
+        if (!step) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const next = DOCKS[(DOCKS.indexOf(layout.dataset.probDock) + step + DOCKS.length) % DOCKS.length];
+        setDock(next);
+        panels.prob.querySelector(`.prob-dock [data-dock="${next}"]`).focus();
+      });
+      // 머리 끌기: 띄운 창은 옮기고(가장자리 32px 안에서 놓으면 그쪽에 붙음), 붙인 패널은 24px 넘게 끌면 떨어져 나온다
+      const head = panels.prob.querySelector('.panel-head');
+      head.addEventListener('pointerdown', (e) => {
+        if (!wideMq.matches || e.button !== 0 || e.target.closest('button:not(.float-move),[role=tab],a,input')) return;
+        e.preventDefault();
+        let floating = layout.dataset.probDock === 'float';
+        let ox = e.clientX, oy = e.clientY;
+        let start = floating ? placeFloat() : null, cur = start, snap = null;
+        head.setPointerCapture(e.pointerId);
+        body.classList.add('is-dragging');
+        const move = (ev) => {
+          if (!floating) {
+            if (Math.hypot(ev.clientX - ox, ev.clientY - oy) <= UNDOCK) return;
+            saveProb({ x: ev.clientX - probPref().w / 2, y: ev.clientY - 20 });
+            setDock('float');
+            floating = true;
+            start = cur = placeFloat();
+            ox = ev.clientX; oy = ev.clientY;
+            return;
+          }
+          cur = placeFloat({ x: start.x + ev.clientX - ox, y: start.y + ev.clientY - oy, w: start.w, h: start.h });
+          const W = document.documentElement.clientWidth;
+          snap = ev.clientX <= SNAP ? 'left' : ev.clientX >= W - SNAP ? 'right' : null;
+          dockPreview(snap);
+        };
+        const up = (ev) => {
+          endDrag = null;
+          head.removeEventListener('pointermove', move);
+          head.removeEventListener('pointerup', up);
+          head.removeEventListener('pointercancel', up);
+          head.removeEventListener('lostpointercapture', up);
+          body.classList.remove('is-dragging');
+          dockPreview(null);
+          // 브라우저가 끌기를 취소했으면 가장자리 근처여도 붙이지 않는다
+          if (snap && ev.type === 'pointerup') setDock(snap);
+          else if (floating && cur) saveProb({ x: cur.x, y: cur.y });
+        };
+        head.addEventListener('pointermove', move);
+        head.addEventListener('pointerup', up);
+        head.addEventListener('pointercancel', up);
+        head.addEventListener('lostpointercapture', up);
+        endDrag = () => up({ type: 'pointercancel' });
+      });
+      // 모서리 손잡이로 크기 조절
+      sizer.addEventListener('pointerdown', (e) => {
+        if (!wideMq.matches || e.button !== 0) return;
+        e.preventDefault();
+        const start = placeFloat(), ox = e.clientX, oy = e.clientY;
+        let cur = start;
+        sizer.setPointerCapture(e.pointerId);
+        body.classList.add('is-sizing');
+        const move = (ev) => { cur = placeFloat({ x: start.x, y: start.y, w: start.w + ev.clientX - ox, h: start.h + ev.clientY - oy }); };
+        const up = () => {
+          endDrag = null;
+          sizer.removeEventListener('pointermove', move);
+          sizer.removeEventListener('pointerup', up);
+          sizer.removeEventListener('pointercancel', up);
+          sizer.removeEventListener('lostpointercapture', up);
+          body.classList.remove('is-sizing');
+          saveProb({ w: cur.w, h: cur.h });
+        };
+        sizer.addEventListener('pointermove', move);
+        sizer.addEventListener('pointerup', up);
+        sizer.addEventListener('pointercancel', up);
+        sizer.addEventListener('lostpointercapture', up);
+        endDrag = up;
+      });
+      // 키보드: 이동 버튼은 위치, 모서리는 크기(←→ 너비, ↑↓ 높이). 16px, Shift 64px
+      const ARROWS = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+      function nudge(e, resize) {
+        const k = ARROWS[e.key];
+        if (!k || layout.dataset.probDock !== 'float') return;
+        e.preventDefault();
+        e.stopPropagation();
+        const step = e.shiftKey ? 64 : 16, g = placeFloat();
+        const r = placeFloat(resize ? { x: g.x, y: g.y, w: g.w + k[0] * step, h: g.h + k[1] * step } : { x: g.x + k[0] * step, y: g.y + k[1] * step, w: g.w, h: g.h });
+        saveProb(r);
+      }
+      moveBtn.addEventListener('keydown', (e) => nudge(e, false));
+      sizer.addEventListener('keydown', (e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && layout.dataset.probDock === 'float') {
+          e.preventDefault();
+          const g = placeFloat();
+          saveProb(placeFloat({ x: g.x, y: g.y, w: 420, h: Math.min(560, Math.round(0.7 * window.innerHeight)) }));
+        } else nudge(e, true);
+      });
+
+      applyWidths();
+      const onMq = () => { if (endDrag) endDrag(); overlay = null; sync(); };
+      wideMq.addEventListener('change', onMq);
+      roomyMq.addEventListener('change', onMq);
+      let fitFrame = 0;
+      window.addEventListener('resize', () => { cancelAnimationFrame(fitFrame); fitFrame = requestAnimationFrame(() => { if (wideMq.matches) sync(); }); });
+
+      // ---------- 목차의 진행 표시 ----------
+      const progressN = document.getElementById('progress-n');
+      const progressBar = document.getElementById('progress-bar');
+      const progressTotal = document.getElementById('progress-total');
+      function markToc(done, total, doneLabel) {
+        panels.left.querySelectorAll('.toc-list a').forEach((a) => {
+          const id = decodeURIComponent(a.getAttribute('href').slice(1));
+          let mark = a.querySelector('.toc-mark');
+          if (!mark) {
+            mark = document.createElement('span');
+            mark.className = 'toc-mark';
+            mark.setAttribute('aria-hidden', 'true');
+            const state = document.createElement('span');
+            state.className = 'sr-only toc-state';
+            a.append(mark, state);
+          }
+          const isDone = done.has(id);
+          mark.classList.toggle('is-done', isDone);
+          mark.innerHTML = isDone ? ICON_DONE : ICON_TODO;
+          a.querySelector('.toc-state').textContent = isDone ? ' (' + doneLabel + ')' : '';
+        });
+        progressN.textContent = String(done.size);
+        progressTotal.textContent = String(total);
+        progressBar.style.transform = 'scaleX(' + (total ? done.size / total : 0) + ')';
+      }
+      function revealCurrent() {
+        const link = panels.left.querySelector('.toc-list a[aria-current="true"]');
+        if (link && layout.dataset.left === 'open') link.scrollIntoView({ block: 'nearest' });
+      }
+
+      // ---------- 복습문제: 오른쪽 = 원문 · 힌트 · 풀이 ----------
+      function setupReview() {
+        const KEY = 'od-review-solved:' + RANGE;
+        const cards = Array.from(document.querySelectorAll('main article.card'));
+        const aids = panels.right.querySelector('.aids');
+        const empty = panels.right.querySelector('.panel-empty');
+        const btn = document.getElementById('solved-btn');
+        const groups = {};
+        const solved = new Set(store.get(KEY, []).filter((id) => cards.some((c) => c.id === id)));
+        cards.forEach((card) => {
+          const g = document.createElement('div');
+          g.className = 'aid';
+          g.hidden = true;
+          card.querySelectorAll(':scope > details').forEach((d) => g.appendChild(d));
+          aids.appendChild(g);
+          groups[card.id] = g;
+        });
+        let curId = null;
+        function paintBtn() {
+          const on = solved.has(curId);
+          btn.setAttribute('aria-pressed', String(on));
+          btn.innerHTML = (on ? ICON_DONE : ICON_TODO) + '<span>' + (on ? '푼 문제 · 표시 해제' : '푼 문제로 표시') + '</span>';
+        }
+        btn.addEventListener('click', () => {
+          if (!curId) return;
+          if (solved.has(curId)) solved.delete(curId); else solved.add(curId);
+          store.set(KEY, Array.from(solved));
+          paintBtn();
+          markToc(solved, cards.length, '푼 문제');
+        });
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          curId = s.matches('article.card') ? s.id : null;
+          Object.keys(groups).forEach((id) => { groups[id].hidden = id !== curId; });
+          empty.hidden = Boolean(curId);
+          btn.hidden = !curId;
+          if (curId) paintBtn();
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(solved, cards.length, '푼 문제');
+          revealCurrent();
+        });
+      }
+
+      // ---------- 문제해설: 본문 왼쪽 = [문제 | 원문] 탭, 오른쪽 = 요약, 좁은 화면은 해설 위 접힘 ----------
+      function setupExplain() {
+        const KEY = 'od-note-read:' + RANGE;
+        const TAB = 'ds-problem-explain-tab';
+        const topics = Array.from(document.querySelectorAll('main article.topic'));
+        const read = new Set(store.get(KEY, []).filter((id) => topics.some((t) => t.id === id)));
+        const box = panels.right.querySelector('.sums');
+        const probs = panels.prob.querySelector('.probs');
+        const origTab = panels.prob.querySelector('.orig-tab');
+        const origBtn = document.getElementById('tab-original');
+        const tabList = panels.prob.querySelector('.panel-tabs');
+        const tabs = Array.from(tabList.querySelectorAll('[role="tab"]'));
+        const empty = document.getElementById('sum-empty');
+        const probEmpty = document.getElementById('prob-empty');
+        const sums = {};
+        const panes = {};
+        const opens = {};
+        const origs = {};
+        const expanded = new Set();
+        let curId = null;
+        const saved = store.get(TAB, 'problem');
+        let tab = ['problem', 'original'].includes(saved) ? saved : 'problem';
+        // 보기 문항의 판정 문단((1), A, ㄱ, ① 로 시작)을 보기별 카드로 보인다
+        const verdictRe = /^\(?([0-9]+|[A-Za-z]|[ㄱ-ㅎ]|[①-⑩])(\)|\.|\s)/;
+        topics.filter((t) => t.querySelector('.choices')).forEach((t) => {
+          t.querySelectorAll('[data-explanation="solve"] [data-subpart] > p').forEach((p) => {
+            if (verdictRe.test(p.textContent.trim())) p.classList.add('verdict-card');
+          });
+        });
+        topics.forEach((t) => {
+          // 조각의 <div class="sum" hidden> 을 요약 패널로 옮긴다. 없으면 안내 문구만 보인다.
+          const el = t.querySelector(':scope > .sum');
+          if (el) { el.hidden = true; box.appendChild(el); sums[t.id] = el; }
+          const pane = t.querySelector(':scope > .problem-pane');
+          if (!pane) return;
+          pane.id = 'problem-' + t.id;
+          const orig = pane.querySelector(':scope > details.original');
+          if (orig) origs[t.id] = orig;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'problem-toggle';
+          btn.setAttribute('aria-controls', pane.id);
+          btn.addEventListener('click', () => {
+            if (expanded.has(t.id)) expanded.delete(t.id); else expanded.add(t.id);
+            paintToggle(t.id);
+            window.mlLayoutMath?.();
+          });
+          panes[t.id] = pane;
+          opens[t.id] = btn;
+        });
+        function paintToggle(id) {
+          const on = expanded.has(id);
+          opens[id].setAttribute('aria-expanded', String(on));
+          opens[id].textContent = on ? '문제 접기' : '문제 보기';
+          panes[id].hidden = !on;
+        }
+        // 저장된 탭이 원문인데 지금 문항에 원문이 없으면 문제 탭을 보이되 선호는 그대로 둔다
+        const effective = (name) => (name === 'original' && !origs[curId] ? 'problem' : name);
+        function showTab(name, save) {
+          const shown = effective(name);
+          origBtn.hidden = !origs[curId];
+          tabs.forEach((b) => { const on = b.dataset.tab === shown; b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; });
+          probs.hidden = shown !== 'problem';
+          origTab.hidden = shown !== 'original';
+          if (save) { tab = name; store.set(TAB, name); }
+          window.mlLayoutMath?.();
+        }
+        // 넓은 화면은 왼쪽 문제 패널의 문제 탭(원문은 원문 탭), 좁은 화면은 각 문항 메타 줄 뒤 "문제 보기" 아래로 옮긴다
+        // 좁은 화면으로 바뀌어 문제 패널이 사라질 때, 패널 안에 있던 초점을 그 문항의 '문제 보기'로 옮긴다
+        let lastFocus = null;
+        document.addEventListener('focusin', (e) => { lastFocus = e.target; });
+        function mountPanes() {
+          const wide = wideMq.matches;
+          const active = document.activeElement;
+          const refocus = !wide && lastFocus && panels.prob.contains(lastFocus) && (active === lastFocus || active === body || !active);
+          Object.keys(origs).forEach((id) => {
+            const orig = origs[id];
+            if (wide) { orig.open = true; origTab.appendChild(orig); orig.hidden = id !== curId; }
+            else { orig.open = false; orig.hidden = false; panes[id].appendChild(orig); }
+          });
+          Object.keys(panes).forEach((id) => {
+            if (wide) { opens[id].remove(); probs.appendChild(panes[id]); panes[id].hidden = id !== curId; }
+            else {
+              const topic = document.getElementById(id);
+              (topic.querySelector(':scope > .panel-meta') || topic.querySelector('h3')).after(opens[id], panes[id]);
+              paintToggle(id);
+            }
+          });
+          probEmpty.hidden = Boolean(curId && panes[curId]);
+          showTab(tab, false);
+          if (refocus && opens[curId]) opens[curId].focus();
+        }
+        // ---------- 보기 클릭: 복습노트와 같은 판정·알림·스크롤, 넓은 화면은 해설 판정 문단으로 이동 (선택은 메모리에만) ----------
+        let model = {};
+        try { model = JSON.parse((document.getElementById('explain-choice-model') || {}).textContent || '{}') || {}; } catch (e) { model = {}; }
+        const scroller = document.querySelector('.content');
+        const picks = new Map();
+        const ui = {};
+        let targetTimer = 0;
+        const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        // 판정 알림과 보기 스크롤: pinned bio template review-interaction.js에서 복사 (root→document, win→window)
+        function scrollAnswerIntoView(scroller, selectedLi, answerLi, selectedButton, answerButton) {
+            if (!scroller || !selectedLi.getClientRects().length) return;
+            const viewport = scroller.getBoundingClientRect();
+            const height = scroller.clientHeight;
+            const margin = 16;
+            const span = (a, b) => {
+              const x = a.getBoundingClientRect(), y = b.getBoundingClientRect();
+              return {top:Math.min(x.top, y.top), bottom:Math.max(x.bottom, y.bottom)};
+            };
+            let target = span(selectedLi, answerLi);
+            if (target.bottom - target.top > height - 2 * margin)
+              target = span(selectedButton, answerButton);
+            if (target.bottom - target.top > height - 2 * margin)
+              target = span(selectedButton, selectedButton);
+            scroller.scrollTop += (target.top + target.bottom - viewport.top - viewport.bottom) / 2;
+          }
+
+        let feedback = null;
+        let feedbackTimer = null;
+        let feedbackOwner = null;
+        function clearFeedback(owner = null) {
+          if (owner !== null && owner !== feedbackOwner) return;
+          if (feedbackTimer !== null) window.clearTimeout(feedbackTimer);
+          feedbackTimer = null;
+          if (feedback) feedback.remove();
+          feedback = null;
+          feedbackOwner = null;
+        }
+        function showFeedback(result, id) {
+          clearFeedback();
+          if (result !== 'correct' && result !== 'incorrect') return;
+          feedback = document.createElement('div');
+          feedback.className = 'review-feedback';
+          feedback.dataset.reviewFeedback = '';
+          feedback.dataset.result = result;
+          feedback.setAttribute('aria-hidden', 'true');
+          const icon = document.createElement('span');
+          icon.className = 'review-feedback-icon';
+          const text = document.createElement('span');
+          text.className = 'review-feedback-text';
+          text.textContent = result === 'correct' ? '정답이에요' : '다시 확인해요';
+          feedback.append(icon, text);
+          document.body.append(feedback);
+          feedbackOwner = id;
+          feedbackTimer = window.setTimeout(clearFeedback, 1100);
+        }
+        const grade = (m, pick) => (m.mode === 'ambiguous' ? 'ambiguous' : pick === m.answer ? 'correct' : 'incorrect');
+        function paint(id) {
+          // 문구와 data-result 규칙은 review-interaction.js paint()와 같다
+          const { m, status, reset } = ui[id];
+          const pick = picks.get(id);
+          const answered = pick !== undefined;
+          const result = answered ? grade(m, pick) : '';
+          reset.hidden = !answered;
+          status.textContent = !answered ? '' : result === 'ambiguous'
+            ? '단일 정답 판정 주의'
+            : result === 'correct' ? '정답이에요.' : '정답이 아니에요. 보기별 이유를 확인해 보세요.';
+          status.dataset.result = result;
+          panes[id].querySelectorAll('.review-choice').forEach((b) => {
+            const cid = b.dataset.choiceId;
+            if (answered) b.removeAttribute('aria-pressed');
+            else b.setAttribute('aria-pressed', 'false');
+            b.dataset.result = !answered ? '' : cid === m.answer
+              ? (m.mode === 'ambiguous' ? 'intended' : 'correct')
+              : cid === pick ? (m.mode === 'ambiguous' ? 'uncertain' : 'selected') : '';
+            const badge = b.querySelector('.review-choice-label');
+            badge.hidden = !answered;
+            badge.textContent = !answered ? '' : [
+              cid === pick ? '내 선택' : '',
+              cid === m.answer ? (m.mode === 'ambiguous' ? '출제 의도상 답' : '정답')
+                : m.mode === 'single' ? '정답 아님' : ''
+            ].filter(Boolean).join(' · ');
+          });
+        }
+        function jump(id, cid) {
+          const solve = document.getElementById(id).querySelector('[data-explanation="solve"]');
+          if (!solve) return;
+          const re = new RegExp('^\\(?' + escapeRe(cid) + '(\\)|\\.|\\s)');
+          const target = Array.from(solve.querySelectorAll('p, li')).find((n) => re.test(n.textContent.trim())) || solve.querySelector('h4') || solve;
+          const top = scroller.scrollTop + target.getBoundingClientRect().top - scroller.getBoundingClientRect().top - scroller.clientHeight / 4;
+          scroller.scrollTo({ top: Math.max(0, top), behavior: 'auto' });
+          document.querySelectorAll('main .is-target').forEach((n) => n.classList.remove('is-target'));
+          target.classList.add('is-target');
+          clearTimeout(targetTimer);
+          targetTimer = setTimeout(() => target.classList.remove('is-target'), 1600);
+        }
+        Object.keys(panes).forEach((id) => {
+          const m = model[id];
+          const list = panes[id].querySelector('.choices');
+          if (!m || !list || !Array.isArray(m.options)) return;
+          const items = Array.from(list.children).filter((li) => li.tagName === 'LI');
+          // 모델과 보기 수가 다르면 정적 문제로 둔다
+          if (items.length !== m.options.length) return;
+          panes[id].classList.add('review-ready');
+          items.forEach((li, i) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'review-choice';
+            btn.dataset.choiceId = m.options[i];
+            btn.dataset.result = '';
+            btn.setAttribute('aria-pressed', 'false');
+            const content = document.createElement('div');
+            content.className = 'review-choice-content';
+            while (li.firstChild) content.appendChild(li.firstChild);
+            const badge = document.createElement('span');
+            badge.className = 'review-choice-label';
+            badge.hidden = true;
+            btn.append(content, badge);
+            li.appendChild(btn);
+            btn.addEventListener('click', () => {
+              // 첫 선택에서 잠그고, 다시 고르려면 "다시 풀기"
+              if (picks.has(id)) return;
+              const cid = m.options[i];
+              picks.set(id, cid);
+              paint(id);
+              showFeedback(grade(m, cid), id);
+              const at = m.options.indexOf(m.answer);
+              requestAnimationFrame(() => {
+                if (!panes[id].getClientRects().length) return;
+                scrollAnswerIntoView(panes[id].closest('.panel-inner') || scroller,
+                  items[i], items[at], btn, items[at].querySelector('.review-choice'));
+                if (wideMq.matches) jump(id, cid);
+              });
+            });
+          });
+          const status = document.createElement('p');
+          status.className = 'review-status';
+          status.setAttribute('role', 'status');
+          status.setAttribute('aria-live', 'polite');
+          status.dataset.result = '';
+          const reset = document.createElement('button');
+          reset.type = 'button';
+          reset.className = 'review-reset text-btn';
+          reset.textContent = '다시 풀기';
+          reset.hidden = true;
+          reset.addEventListener('click', () => {
+            clearFeedback(id);
+            picks.delete(id);
+            paint(id);
+            items[0].querySelector('.review-choice').focus();
+          });
+          list.before(status);
+          list.after(reset);
+          ui[id] = { m, status, reset };
+        });
+
+        // ---------- 문제 그림: 눌러서 크게 보기 ----------
+        let sheet = null;
+        // 확대본의 SVG id는 원본과 겹치지 않게 바꾸고, 내부 참조(url(#…), href)도 함께 바꾼다
+        function cloneSvg(svg) {
+          const copy = svg.cloneNode(true);
+          const nodes = [copy, ...copy.querySelectorAll('*')];
+          const ids = new Map();
+          nodes.forEach((n) => { if (n.id) { ids.set(n.id, n.id + '-zoom'); n.id += '-zoom'; } });
+          if (ids.size) nodes.forEach((n) => Array.from(n.attributes).forEach((a) => {
+            let v = a.value.replace(/url\(#([^)]*)\)/g, (m, id) => (ids.has(id) ? 'url(#' + ids.get(id) + ')' : m));
+            if (v.startsWith('#') && ids.has(v.slice(1))) v = '#' + ids.get(v.slice(1));
+            if (v !== a.value) n.setAttribute(a.name, v);
+          }));
+          copy.classList.remove('zoomable');
+          copy.style.width = '100%';
+          copy.style.maxWidth = '100%';
+          copy.style.height = 'auto';
+          return copy;
+        }
+        function zoom(fig) {
+          if (!sheet) {
+            sheet = document.createElement('dialog');
+            sheet.className = 'sheet figure-sheet';
+            sheet.setAttribute('aria-label', '그림 크게 보기');
+            sheet.innerHTML = '<div class="sheet-inner"><div class="sheet-head"><h2>그림</h2><button class="text-btn sheet-close" type="button">닫기</button></div><div class="figure-sheet-body"></div></div>';
+            sheet.querySelector('.sheet-close').addEventListener('click', () => sheet.close());
+            sheet.addEventListener('click', (e) => { if (e.target === sheet) sheet.close(); });
+            document.body.appendChild(sheet);
+          }
+          let big;
+          if (fig.tagName.toLowerCase() === 'img') {
+            big = document.createElement('img');
+            big.src = fig.currentSrc || fig.src;
+            big.alt = fig.alt;
+          } else big = cloneSvg(fig);
+          sheet.querySelector('.figure-sheet-body').replaceChildren(big);
+          sheet.showModal();
+        }
+        Object.values(panes).forEach((pane) => {
+          // 지금 있는 SVG는 모두 원본 그림이다(KaTeX는 나중에 렌더링된다). 중첩 SVG는 바깥 것만.
+          pane.querySelectorAll('svg').forEach((svg) => { if (!svg.parentElement.closest('svg')) svg.classList.add('zoomable'); });
+          pane.addEventListener('click', (e) => {
+            const fig = e.target.closest('img, svg.zoomable');
+            if (fig && !fig.closest('.review-choice')) zoom(fig);
+          });
+        });
+
+        // ---------- 인쇄: 문제를 모든 문항의 해설 위에 펼친다 ----------
+        function mountForPrint() {
+          Object.keys(panes).forEach((id) => {
+            const topic = document.getElementById(id);
+            opens[id].remove();
+            (topic.querySelector(':scope > .panel-meta') || topic.querySelector('h3')).after(panes[id]);
+            panes[id].hidden = false;
+            if (origs[id]) { panes[id].appendChild(origs[id]); origs[id].open = true; origs[id].hidden = false; }
+          });
+        }
+        const printMq = matchMedia('print');
+        printMq.addEventListener('change', () => (printMq.matches ? mountForPrint() : mountPanes()));
+        window.addEventListener('beforeprint', mountForPrint);
+        window.addEventListener('afterprint', mountPanes);
+
+        tabs.forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab, true)));
+        tabList.addEventListener('keydown', (e) => {
+          if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+          e.preventDefault();
+          e.stopPropagation();
+          const order = ['problem'].concat(origs[curId] ? ['original'] : []);
+          const at = order.indexOf(effective(tab));
+          const next = order[(at + (e.key === 'ArrowRight' ? 1 : order.length - 1)) % order.length];
+          showTab(next, true);
+          tabs.find((b) => b.dataset.tab === next).focus();
+        });
+        document.addEventListener('od:screen', (e) => {
+          const s = e.detail.screen;
+          const key = s.matches('article.topic') ? s.id : 'intro';
+          curId = key === 'intro' ? null : key;
+          Object.keys(sums).forEach((id) => { sums[id].hidden = id !== key; });
+          empty.hidden = Boolean(sums[key]);
+          if (wideMq.matches) {
+            Object.keys(panes).forEach((id) => { panes[id].hidden = id !== curId; });
+            Object.keys(origs).forEach((id) => { origs[id].hidden = id !== curId; });
+            showTab(tab, false);
+          }
+          probEmpty.hidden = Boolean(curId && panes[curId]);
+          if (curId && !read.has(curId)) { read.add(curId); store.set(KEY, Array.from(read)); }
+          panels.prob.querySelector('.panel-inner').scrollTop = 0;
+          panels.right.querySelector('.panel-inner').scrollTop = 0;
+          markToc(read, topics.length, '읽음');
+          revealCurrent();
+        });
+        wideMq.addEventListener('change', mountPanes);
+        mountPanes();
+      }
+
+      if (kind === 'review') setupReview();
+      if (kind === 'explain') setupExplain();
+      sync();
+    })();
+  </script>
+  <script id="pager-ui">
+    (function () {
+      const root = document.documentElement;
+      const main = document.querySelector('main');
+      const hero = main.querySelector('.hero');
+      const screens = [hero].concat(Array.from(main.querySelectorAll(document.body.dataset.screens)));
+      if (screens.length < 2) { root.classList.remove('js'); return; }
+      screens.forEach((s) => s.classList.add('screen'));
+
+      const last = screens.length - 1;
+      const prevBtn = document.getElementById('pager-prev');
+      const nextBtn = document.getElementById('pager-next');
+      const count = document.getElementById('pager-count');
+      const bar = document.getElementById('pager-bar');
+      const status = document.getElementById('pager-status');
+      const toc = document.querySelector('#panel-left .toc');
+      const scroller = document.querySelector('.content');
+      const titleOf = (s) => ((s.querySelector('h3') || s.querySelector('h1') || {}).textContent || '').trim();
+      let cur = -1;
+
+      // 목차: 섹션 링크 아래에 화면(토픽·카드) 목록을 붙인다
+      const tocLinks = [];
+      Array.from(toc.querySelectorAll(':scope > a')).forEach((a) => {
+        const sec = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+        const group = document.createElement('div');
+        group.className = 'toc-group';
+        a.replaceWith(group);
+        group.appendChild(a);
+        if (!sec) return;
+        const list = document.createElement('ol');
+        list.className = 'toc-list';
+        screens.forEach((s, i) => {
+          if (!sec.contains(s)) return;
+          const li = document.createElement('li');
+          const link = document.createElement('a');
+          link.href = '#' + s.id;
+          link.innerHTML = '<span class="toc-title"></span>';
+          link.firstChild.textContent = titleOf(s);
+          li.appendChild(link);
+          list.appendChild(li);
+          tocLinks[i] = link;
+        });
+        group.appendChild(list);
+      });
+
+      function indexFor(hash) {
+        const id = decodeURIComponent((hash || '').replace(/^#/, ''));
+        const el = id && document.getElementById(id);
+        if (!el || !main.contains(el)) return { i: 0 };
+        const i = screens.findIndex((s) => s.contains(el) || el.contains(s));
+        return { i: Math.max(i, 0), target: i >= 0 && screens[i].contains(el) && screens[i] !== el ? el : null };
+      }
+
+      function render(i, target) {
+        const dir = cur < 0 ? '' : i > cur ? 'enter-next' : 'enter-prev';
+        if (i !== cur) {
+          if (cur >= 0) screens[cur].classList.remove('is-current', 'enter-next', 'enter-prev');
+          main.querySelectorAll(':scope > section.is-on').forEach((sec) => sec.classList.remove('is-on'));
+          const s = screens[i];
+          const sec = s.closest('section');
+          if (sec) sec.classList.add('is-on');
+          s.classList.add('is-current');
+          if (dir) { s.classList.remove('enter-next', 'enter-prev'); void s.offsetWidth; s.classList.add(dir); }
+          cur = i;
+          document.body.classList.toggle('at-end', i === last);
+          prevBtn.disabled = i === 0;
+          nextBtn.textContent = i === 0 ? '시작하기' : i === last ? '처음으로' : '다음';
+          count.textContent = i === 0 ? '' : i + ' / ' + last;
+          bar.style.transform = 'scaleX(' + (i / last) + ')';
+          status.textContent = i === 0 ? titleOf(s) : i + ' / ' + last + ', ' + titleOf(s);
+          tocLinks.forEach((link, k) => link && link.setAttribute('aria-current', String(k === i)));
+          document.dispatchEvent(new CustomEvent('od:screen', { detail: { index: i, screen: s } }));
+        }
+        if (target) target.scrollIntoView({ block: 'start' });
+        else scroller.scrollTo(0, 0);
+      }
+
+      function go(i) {
+        i = Math.min(Math.max(i, 0), last);
+        if (i === cur) return;
+        const url = i === 0 ? location.pathname + location.search : '#' + screens[i].id;
+        history.pushState(null, '', url);
+        render(i);
+      }
+
+      prevBtn.addEventListener('click', () => go(cur - 1));
+      nextBtn.addEventListener('click', () => go(cur === last ? 0 : cur + 1));
+      const fromUrl = () => { const r = indexFor(location.hash); render(r.i, r.target); };
+      window.addEventListener('hashchange', fromUrl);
+      window.addEventListener('popstate', fromUrl);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || document.body.classList.contains('drawer-open') || document.querySelector('dialog[open]')) return;
+        if (e.target.closest('input, select, textarea, [contenteditable="true"], .math-row')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+      });
+
+      // 좌우로 밀어서 넘기기 (가로로 스크롤되는 영역은 제외)
+      let sx = 0, sy = 0, skip = true;
+      main.addEventListener('touchstart', (e) => {
+        const t = e.touches[0];
+        sx = t.clientX; sy = t.clientY;
+        skip = e.touches.length > 1 || Boolean(e.target.closest('.widget, .katex-display, .math-row, .table-wrap, svg, input, details'));
+      }, { passive: true });
+      main.addEventListener('touchend', (e) => {
+        if (skip) return;
+        const t = e.changedTouches[0];
+        const dx = t.clientX - sx, dy = t.clientY - sy;
+        if (Math.abs(dx) > 64 && Math.abs(dx) > 2 * Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      fromUrl();
+    })();
+  </script>
+  <script id="math-layout">
+    (function () {
+      let queued = false;
+      function markOverflow(row) {
+        row.classList.remove('math-pan');
+        row.removeAttribute('tabindex'); row.removeAttribute('aria-label');
+        if (row.nextElementSibling?.classList.contains('math-pan-hint')) row.nextElementSibling.remove();
+        if (row.scrollWidth > row.clientWidth + 2) {
+          row.classList.add('math-pan'); row.tabIndex = 0;
+          row.setAttribute('aria-label', '긴 수식. 좌우 화살표 또는 가로 밀기로 전체를 읽을 수 있어요.');
+          const hint = document.createElement('span'); hint.className = 'math-pan-hint';
+          hint.textContent = '가로로 밀어 전체 수식 읽기'; row.after(hint);
+        }
+      }
+      function layout() {
+        queued = false;
+        document.querySelectorAll('main .katex, .sums .katex, .probs .katex').forEach((math) => {
+          if (!math.getClientRects().length) return;
+          const tex = math.querySelector('annotation')?.textContent || '';
+          const display = math.parentElement.classList.contains('katex-display');
+          let row = math.closest('.math-row');
+          const container = math.closest('p, li, .part, [data-source-field], [data-subpart], .layer, .sum');
+          const width = container?.clientWidth || 0;
+          // Each matrix receives its own line; long inline equations become blocks.
+          if (!row && (display || /\\begin\{(?:bmatrix|pmatrix|matrix|aligned|array)\}/.test(tex) || (width > 0 && math.getBoundingClientRect().width > width - 8))) {
+            row = document.createElement('span');
+            row.className = 'math-row';
+            const autoWrapper = math.parentElement.tagName === 'SPAN' && math.parentElement.childNodes.length === 1;
+            const target = display || autoWrapper ? math.parentElement : math;
+            target.before(row); row.appendChild(target);
+            if (!display) math.classList.add('math-block');
+            // Keep sentence punctuation beside the last formula instead of orphaning it.
+            const tail = row.nextSibling;
+            if (tail?.nodeType === Node.TEXT_NODE) {
+              const match = tail.textContent.match(/^([.,;:]+["”]?)/);
+              if (match) {
+                const punctuation = document.createElement('span'); punctuation.className = 'math-punctuation';
+                punctuation.textContent = match[1]; math.appendChild(punctuation);
+                tail.textContent = tail.textContent.slice(match[1].length);
+              }
+            }
+          }
+          if (!row) return;
+          math.style.fontSize = '';
+          row.classList.remove('math-pan');
+          row.removeAttribute('tabindex'); row.removeAttribute('aria-label');
+          if (row.nextElementSibling?.classList.contains('math-pan-hint')) row.nextElementSibling.remove();
+          const available = row.clientWidth - 8;
+          if (available <= 0) return;
+          const bases = Array.from(math.querySelectorAll('.katex-html > .base'));
+          const widest = Math.max(0, ...bases.map((el) => el.getBoundingClientRect().width));
+          // Relations already split KaTeX's base groups, allowing natural line breaks.
+          // Reduce only unbreakable content, by at most 15%; retain readable body size.
+          if (widest > available) math.style.fontSize = (1.21 * Math.max(.85, available / widest)) + 'em';
+          markOverflow(row);
+        });
+        // Font-size changes and wrapping need one completed frame before final ink bounds.
+        requestAnimationFrame(() => document.querySelectorAll('.math-row').forEach((row) => {
+          if (row.getClientRects().length) markOverflow(row);
+        }));
+      }
+      function schedule() { if (!queued) { queued = true; requestAnimationFrame(layout); } }
+      window.mlLayoutMath = schedule;
+      document.addEventListener('od:screen', schedule);
+      new ResizeObserver(schedule).observe(document.querySelector('.content'));
+      new ResizeObserver(schedule).observe(document.querySelector('#panel-right .panel-inner'));
+      new ResizeObserver(schedule).observe(document.querySelector('#panel-prob .panel-inner'));
+      new MutationObserver(schedule).observe(document.querySelector('.sums'), {subtree:true, attributes:true, attributeFilter:['hidden']});
+      new MutationObserver(schedule).observe(document.querySelector('.probs'), {subtree:true, attributes:true, attributeFilter:['hidden']});
+      document.fonts.ready.then(schedule);
+      schedule();
+    })();
+  </script>
+</body>
+</html>
