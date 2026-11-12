@@ -74,6 +74,12 @@ def test_install_boots_without_storage():
     assert "storage = null" in out and "review-interaction-model" in out
 
 
+def test_install_gaps_problem_from_choices():
+    # 문제 문장과 첫 보기 사이가 카드 사이(--s3)보다 넓어야 한다.
+    out = interaction.install(TEMPLATE_WITH_CARD, "확인문제_t")
+    assert ".review-ready .problem > .choices { margin-top:var(--s6); }" in out
+
+
 def _setup_review(page: str) -> str:
     begin = page.index("function setupReview()")
     return page[begin:page.index("function setupNote()", begin)]
