@@ -50,7 +50,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 python3 .agents/skills/ds-concept-check/scripts/check.py SRC
 ```
 - `OK`가 나와야 한다. 아니면 `[코드] <id>: <설명>` 줄을 모두 묶어 같은 작성자에게 되돌린다(SendMessage). 작성자가 고칠 때마다 `RUN/items.json`을 `SRC/items.json`으로 다시 복사한 뒤 check를 다시 돌린다. 이 RUN→SRC 복사는 4단계(작성자 수정)에서만 한다. 최대 2회. 그래도 남으면 메인 에이전트가 고치고 보고에 적는다.
-- 코드 뜻은 item-rules.md의 `[코드]` 표시를 본다(`count`·`topic`·`source`·`format`·`mcq-shape`·`explain`·`title-leak`·`forbidden`·`compute`·`duplicate`·`style`·`balance`·`negative`).
+- 코드 뜻은 item-rules.md의 `[코드]` 표시를 본다(`count`·`topic`·`source`·`format`·`mcq-shape`·`explain`·`title-leak`·`forbidden`·`compute`·`duplicate`·`style`·`balance`·`negative`·`steps`·`distance`).
 
 ### 5. 빌드
 ```

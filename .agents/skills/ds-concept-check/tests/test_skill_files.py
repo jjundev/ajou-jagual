@@ -20,3 +20,15 @@ def test_item_rules_lists_compute_ops():
     rules = (SKILL / "references/item-rules.md").read_text(encoding="utf-8")
     for op in tree.OPS:
         assert f"`{op}`" in rules
+
+
+def test_item_rules_lists_every_check_code():
+    import re
+    code = (SKILL / "scripts/check.py").read_text(encoding="utf-8")
+    rules = (SKILL / "references/item-rules.md").read_text(encoding="utf-8")
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+    codes = set(re.findall(r'add\("([a-z-]+)"', code))
+    assert {"steps", "distance"} <= codes
+    for c in codes:
+        assert f"[{c}]" in rules, c
+        assert f"`{c}`" in skill, c

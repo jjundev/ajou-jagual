@@ -131,6 +131,28 @@ def compute(spec, tree):
     raise ValueError(f"알 수 없는 op: {op!r}")
 
 
+SEQUENCE_OPS = ("preorder", "inorder", "postorder", "levelorder")
+
+
+def steps(spec, tree):
+    """정답에 닿기까지 손으로 밟는 걸음 수. 확인문제 걸음 상한([steps])이 쓴다.
+
+    새 op 를 OPS 에 더하면 여기에도 걸음 정의를 더한다(test_tree 가 강제한다).
+    """
+    op = spec["op"]
+    if op in SEQUENCE_OPS or op == "node_count":
+        return node_count(tree)
+    if op == "evaluate":
+        return sum(1 for i, x in enumerate(tree) if x in _OPERATORS and _reachable(tree, i))
+    if op == "height":
+        return height(tree)
+    if op == "lecture_number":
+        return _depth(lecture_number(tree, spec["arg"]) - 1) + 1
+    if op in ("parent_index", "left_index", "right_index"):
+        return 1
+    raise ValueError(f"알 수 없는 op: {op!r}")
+
+
 R = 17
 X_STEP = 44
 Y0 = 30
