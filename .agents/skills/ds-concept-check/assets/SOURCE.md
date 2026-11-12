@@ -19,4 +19,6 @@
 
 6. `interaction.py` `main()`·`argparse` — 지웠다. 원본 CLI(`--root … --write`)는 `*/복습문제_*.html`을 덮어써서 ds-review-pack 산출물을 고칠 수 있다. 이 스킬은 `install`·`build_model`만 import 해 쓴다.
 
+7. `review-interaction.css` 끝 — `.note-link` 규칙을 붙였다. `render.py` 가 풀이 끝에 넣는 정리노트 토픽 링크의 간격이다.
+
 단답 대소문자 무시: `review-interaction.js` 의 `grade` 는 `window.ReviewShortCasefold` 지도가 없으면 글자마다 `toLowerCase()` 를 쓴다. 이 스킬의 답은 라틴 문자·숫자라 지도를 넣지 않는다.

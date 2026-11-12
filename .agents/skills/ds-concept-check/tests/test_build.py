@@ -83,3 +83,24 @@ def test_build_missing_stt_names_file(tmp_path):
     (root / ".pack/자료_복습팩/stt-summary.md").unlink()
     with pytest.raises(build.BuildError, match=r"팩이 없어 근거가 없습니다: .* \(stt-summary\.md 없음\)"):
         build.build(root / ".pack/자료_확인문제_9999_Mini")
+
+
+def test_build_links_each_card_to_note_topic(tmp_path):
+    root = copy_fixture(tmp_path)
+    page = build.render_page(root / ".pack/자료_확인문제_9999_Mini")
+    assert 'href="정리노트_9999_Mini.html#s0-a"' in page and 'href="정리노트_9999_Mini.html#s0-b"' in page
+
+
+def test_build_missing_note_html(tmp_path):
+    root = copy_fixture(tmp_path)
+    (root / "정리노트_9999_Mini.html").unlink()
+    with pytest.raises(build.BuildError, match="정리노트 HTML이 없어"):
+        build.build(root / ".pack/자료_확인문제_9999_Mini")
+
+
+def test_build_missing_note_anchor(tmp_path):
+    root = copy_fixture(tmp_path)
+    note = root / "정리노트_9999_Mini.html"
+    note.write_text(note.read_text(encoding="utf-8").replace('id="s0-b"', 'id="s0-x"'), encoding="utf-8")
+    with pytest.raises(build.BuildError, match="#s0-b"):
+        build.build(root / ".pack/자료_확인문제_9999_Mini")

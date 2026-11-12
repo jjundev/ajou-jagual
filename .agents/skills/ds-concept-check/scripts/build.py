@@ -63,18 +63,35 @@ def load_source(src: Path) -> dict:
                 items=items_doc["items"], manifest=manifest, pack_root=pack_root)
 
 
+def note_name(range_: str, slug: str) -> str:
+    return f"정리노트_{range_}_{slug}.html"
+
+
+def check_note_anchors(pack_root: Path, name: str, topic_ids: list[str]) -> None:
+    """풀이의 정리노트 링크가 깨지지 않게, 노트 HTML 과 토픽 앵커가 실제로 있는지 본다."""
+    note = _paths.find_nfc(pack_root, name)
+    if note is None:
+        raise BuildError(f"정리노트 HTML이 없어 링크를 걸 수 없어요: {Path(pack_root) / name}")
+    text = note.read_text(encoding="utf-8")
+    missing = [t for t in dict.fromkeys(topic_ids) if f'id="{t}"' not in text]
+    if missing:
+        raise BuildError(f"정리노트 {name} 에 앵커가 없어요: " + ", ".join(f"#{t}" for t in missing))
+
+
 def render_page(src: Path) -> str:
     s = load_source(src)
     range_, slug = s["range"], s["slug"]
     by_id = {o["id"]: o for o in s["objectives"]}
-    cards = "".join(render.card_html(it, by_id[it["objective"]], n) for n, it in enumerate(s["items"], 1))
+    note = note_name(range_, slug)
+    check_note_anchors(s["pack_root"], note, [by_id[it["objective"]]["topic_id"] for it in s["items"]])
+    cards = "".join(render.card_html(it, by_id[it["objective"]], n, note) for n, it in enumerate(s["items"], 1))
     title = f"{range_} 확인문제 — 이번 수업 개념 확인"
     template = (_paths.DS_REVIEW_PACK / "assets" / "review-template.html").read_text(encoding="utf-8")
     page = assemble.fill(template, dict(
         PAGE_TITLE=assemble.esc(f"{s['manifest']['course']} 확인문제 {range_}"),
         DESCRIPTION=assemble.esc(title), TITLE=assemble.esc(title),
         TOC='<a href="#check">확인</a>',
-        NOTE_HREF=assemble.esc(f"정리노트_{range_}_{slug}.html"),
+        NOTE_HREF=assemble.esc(note),
         INTRO=f"이번 수업에서 처음 배운 개념을 {len(s['items'])}문항으로 확인해요. 고르면 바로 채점돼요.",
         PARTS=f'<section id="check"><h2>확인문제</h2>{cards}</section>',
         FOOTER="<p>Claude가 강의 근거로 만든 문항이에요. 근거: 강의록·수업 녹음 요약.</p>",

@@ -148,6 +148,18 @@ def check_short(run: Run, item: dict):
     return True
 
 
+def check_note_link(run: Run, item: dict):
+    """채점 뒤 오른쪽 패널 풀이 끝에 그 목표의 정리노트 토픽 링크(새 탭)가 있어야 한다."""
+    cid = item["id"]
+    link = run.page.locator(f".aid[data-card-id='{cid}'] details.solution:not([hidden]) .note-link a")
+    run.expect(link.count() == 1, f"{cid}: 채점 뒤 풀이에 정리노트 링크가 {link.count()}개 (기대 1)")
+    if link.count() == 1:
+        href = link.get_attribute("href") or ""
+        run.expect(href.endswith("#" + item["topic_id"]), f"{cid}: 정리노트 링크 '{href}' 가 #{item['topic_id']} 로 가지 않음")
+        run.expect(link.get_attribute("target") == "_blank", f"{cid}: 정리노트 링크가 새 탭으로 열리지 않음")
+    return True
+
+
 def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: str) -> dict:
     page = run.page
     page.goto(url, wait_until="load")
@@ -157,6 +169,7 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
         fn = check_short if item["format"] == "short" else check_mcq
         if run.step(f"{item['id']}: 조작", lambda fn=fn, item=item: fn(run, item)):
             checked += 1
+        run.step(f"{item['id']}: 정리노트 링크", lambda item=item: check_note_link(run, item))
         if n == 0 and shots is not None:
             shot = shots / f"{tag}-{item['id']}.png"
             run.step("스크린샷 첫 문항", lambda: (page.wait_for_timeout(SETTLE_MS), page.screenshot(path=str(shot))))
@@ -187,7 +200,9 @@ def check(html: Path, out: Path, shots: Path | None, *, src: Path, serve_root: P
     root = Path(serve_root if serve_root is not None else _paths.REPO).resolve()
     if not html.is_relative_to(root):
         raise ValueError(f"HTML 이 서버 루트 밖에 있습니다: {html} (루트 {root})")
-    items = build.load_source(src)["items"]
+    source = build.load_source(src)
+    topics = {o["id"]: o["topic_id"] for o in source["objectives"]}
+    items = [dict(it, topic_id=topics[it["objective"]]) for it in source["items"]]
     report = {"html": html.relative_to(root).as_posix(), "sha256": sha256(html), "viewports": [f"{w}x{h}" for w, h in viewports],
               "themes": list(themes), "runs": [], "failures": []}
     if shots is not None:
