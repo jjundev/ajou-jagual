@@ -2,7 +2,8 @@
 
 python3 backup.py --range 0921 --repo REPO --run RUN
 대상: 복습노트/<range>/(와 예전 형식인 복습노트/ 바로 아래)의 정리노트_<range>_*, 복습문제_<range>_*,
-그리고 복습노트/<range>/.pack/ 의 같은 이름 .md 와 figures_<range>/ (백업에서도 .pack/ 아래에 둔다).
+그리고 복습노트/<range>/.pack/ 의 같은 이름 .md 와 figures_<range>/, .pack/자료_복습팩/ 의 manifest.json·stt-summary.md
+(조립이 덮어쓰는 확인문제 근거) (백업에서도 같은 상대 경로에 둔다).
 파일명은 NFC로 비교하므로 NFD 이름도 잡힌다. range 형식이 틀리거나 복사된 파일 수가 다르면 종료 코드 1.
 """
 
@@ -43,10 +44,17 @@ def main():
 
     pack = listdir_nfc(notes).get(r)
     srcs = [(pack, ""), (notes, "")]  # 날짜 폴더, 예전 형식(바로 아래)
+    data = None
     if pack:
-        srcs.append((listdir_nfc(pack).get(PACK_DIR), PACK_DIR + "/"))
-    hits = sorted({pre + n: p for d, pre in srcs if d and os.path.isdir(d)
-                   for n, p in listdir_nfc(d).items() if want(n)}.items())
+        dot = listdir_nfc(pack).get(PACK_DIR)
+        srcs.append((dot, PACK_DIR + "/"))
+        data = listdir_nfc(dot).get("자료_복습팩") if dot else None
+    found = {pre + n: p for d, pre in srcs if d and os.path.isdir(d)
+             for n, p in listdir_nfc(d).items() if want(n)}
+    # 4단계 조립(assemble.py)이 덮어쓰는 확인문제 근거 두 파일
+    found.update({f"{PACK_DIR}/자료_복습팩/{n}": p for n, p in listdir_nfc(data).items()
+                  if n in ("manifest.json", "stt-summary.md")} if data else {})
+    hits = sorted(found.items())
     if not hits:
         print("백업할 기존 팩 없음")
         return
