@@ -80,6 +80,11 @@ def test_install_gaps_problem_from_choices():
     assert ".review-ready .problem > .choices { margin-top:var(--s6); }" in out
 
 
+def test_install_labels_choices_a_to_d():
+    out = interaction.install(TEMPLATE_WITH_CARD, "확인문제_t")
+    assert 'content:"(" counter(opt, upper-alpha) ") "' in out
+
+
 def _setup_review(page: str) -> str:
     begin = page.index("function setupReview()")
     return page[begin:page.index("function setupNote()", begin)]
