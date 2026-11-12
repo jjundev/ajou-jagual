@@ -11,6 +11,7 @@ from html import unescape
 from pathlib import Path
 
 import render
+import tree
 from build import BuildError, load_source
 
 ID_RE = re.compile(r"^q\d+$")
@@ -30,7 +31,15 @@ def _plain(html: str) -> str:
 
 
 def _tree_line(t: list) -> str:
-    return "[그림: 트리 — 레벨 순서 " + ", ".join("-" if v is None else str(v) for v in t) + "]"
+    """그림이 보여 주는 만큼만: 루트와 부모→자식 간선(왼쪽/오른쪽). 칸 번호·빈 자리는 쓰지 않는다."""
+    parts = [f"루트 {t[0]}"] if tree._has(t, 0) else []
+    for i in range(len(t)):
+        if not tree._reachable(t, i):
+            continue
+        for side, j in (("왼쪽", 2 * i + 1), ("오른쪽", 2 * i + 2)):
+            if tree._has(t, j):
+                parts.append(f"{t[i]}의 {side} 자식 {t[j]}")
+    return "[그림: 트리 — " + "; ".join(parts) + "]"
 
 
 def _card(item: dict) -> str:

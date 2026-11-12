@@ -61,6 +61,7 @@ python3 .agents/skills/ds-concept-check/scripts/build.py SRC
 ```
 python3 .agents/skills/ds-concept-check/scripts/blind.py make SRC RUN/blind-r1.md
 ```
+- 사본은 트리를 학습자 화면의 그림과 같은 정보로만 적는다: `[그림: 트리 — 루트 A; A의 왼쪽 자식 B; …]`(칸 번호·빈 자리 목록 없음).
 - 풀이자에게 [blind-brief.md](references/blind-brief.md) 경로와 그 `---` 사이 브리프를 `<RUN>`·`<회차>`·`<range>`·`<slug>`를 채워 넘긴다. 풀이자가 읽는 것은 그 브리프, `RUN/blind-r<회차>.md`, `복습노트/<MMDD>/.pack/정리노트_<range>_<slug>.md` 셋뿐이다. `SRC`, `items.json`, `objectives.json`, 이전 답안표 경로는 알려 주지 않는다.
 - 풀이자는 `RUN/blind-answers-r<회차>.md`를 쓴다. 기록하고 상태를 본다:
 ```
