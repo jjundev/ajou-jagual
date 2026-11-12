@@ -69,7 +69,7 @@ def _card_texts(pack_root: Path) -> list[str]:
 
 def _is_dup(stem: str, cards: list[str]) -> bool:
     if len(stem) < DUP_WINDOW:
-        return any(stem in c for c in cards)
+        return False
     return any(stem[i:i + DUP_WINDOW] in c
                for i in range(len(stem) - DUP_WINDOW + 1) for c in cards)
 

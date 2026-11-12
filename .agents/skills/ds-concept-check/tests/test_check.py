@@ -91,3 +91,7 @@ def test_cli_ok_and_fail(tmp_path, capsys):
     bad = mutated_fixture(tmp_path / "x", lambda d: d["items"][0]["answer"].update(canonical="3"))
     assert check.main(["check.py", str(bad)]) == 1
     assert "[compute]" in capsys.readouterr().out
+
+
+def test_short_stem_is_never_duplicate(tmp_path):
+    assert not _fires(tmp_path, lambda d: d["items"][1].update(stem_html="<p>A</p>"), "[duplicate]")
