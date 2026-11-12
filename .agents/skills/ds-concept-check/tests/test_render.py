@@ -43,6 +43,11 @@ def test_card_has_no_source_line():
         assert OBJ["source"]["slide"] not in html_ and OBJ["concept"] not in html_
 
 
+def test_check_button_is_primary():
+    """답 확인은 템플릿의 파란 주 버튼(btn-primary)으로 그린다."""
+    assert '<button class="btn btn-primary check-answer" type="button">답 확인</button>' in render.card_html(SHORT, OBJ, 1)
+
+
 def test_mcq_card_builds_model():
     page = "<html><body><main>" + render.card_html(MCQ, OBJ, 1) + "</main></body></html>"
     m = interaction.build_model(page, "t")

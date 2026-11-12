@@ -60,7 +60,7 @@ def _short(item: dict) -> tuple[str, str, str, str]:
     attrs = f' data-format="short" data-short-answer="{esc(data)}"'
     inputs = (f'<div class="short-input"><label for="answer-{cid}">답</label>'
               f'<input type="text" id="answer-{cid}" autocomplete="off">'
-              '<button class="btn check-answer" type="button">답 확인</button></div>')
+              '<button class="btn btn-primary check-answer" type="button">답 확인</button></div>')
     steps = "".join(f"<li>{esc(s)}</li>" for s in item["solution"])
     return attrs, "", inputs, f'<ol class="steps">{steps}</ol><p class="answer">정답: {esc(canonical)}</p>'
 
