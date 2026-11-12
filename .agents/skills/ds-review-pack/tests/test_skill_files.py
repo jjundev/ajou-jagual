@@ -51,6 +51,31 @@ class TestSkillFiles(unittest.TestCase):
                 self.assertRegex(self.text, rf"\n### B{n}\. ")
         self.assertIn("`reviewed: true`인 `scan`·`photo` 원본은 B2·B3을 건너뛰고", self.text)
 
+    def _step8(self):
+        return self.text.split("\n### 8. ", 1)[1].split("\n### 9. ", 1)[0]
+
+    def test_concept_check_after_pdf_before_layout(self):
+        s8 = self._step8()
+        self.assertLess(s8.index("references/pdf-build.md"), s8.index("ds-concept-check/SKILL.md"))
+        self.assertLess(s8.index("ds-concept-check/SKILL.md"), s8.index("pack_layout.py"))
+
+    def test_concept_check_scope_and_failure(self):
+        self.assertTrue((SKILL.parent / "ds-concept-check" / "SKILL.md").exists())
+        self.assertIn("**확인문제 연결**", self.text)
+        self.assertIn("`update-existing`·`revise-existing`은 확인문제를 만들지 않고", self.text)
+        self.assertIn("복습팩 생성됨 / 확인문제 보류", self.text)
+        self.assertIn("| 확인문제 스킬 누락 |", self.text)
+        self.assertIn("| 확인문제 검사 실패 |", self.text)
+        self.assertIn("- 확인문제:", self.text.split("\n### 9. ", 1)[1])
+        self.assertIn("stt-summary.md", self.text.split("\n### 9. ", 1)[1])
+
+    def test_concept_check_withhold_triggers(self):
+        # 근거 없음도 보류로 처리하고, 배치 검사는 이 팩 줄만 판정한다(다른 팩 문제로 보류하지 않는다).
+        s8 = self._step8()
+        self.assertIn("근거 파일이 없어 그 스킬 1단계가 멈춘 경우", s8)
+        self.assertIn("이 팩(`복습노트/<range>/`) 줄만", s8)
+        self.assertIn("| 확인문제 근거 없음 |", self.text)
+
     def test_no_ml_leftovers(self):
         for path in [SKILL_MD, *sorted((SKILL / "references").glob("*.md"))]:
             text = path.read_text(encoding="utf-8")
@@ -103,6 +128,19 @@ class TestBackupScript(unittest.TestCase):
             names = sorted(unicodedata.normalize("NFC", n) for n in os.listdir(d))
             self.assertEqual(names, ["figures_0921", "복습문제_0921_A.md", "정리노트_0921_A.html"])
             self.assertTrue((d / "figures_0921" / "a.svg").exists())
+
+    def test_backs_up_pack_sources(self):
+        # 4단계 조립이 덮어쓰는 manifest.json·stt-summary.md 도 백업한다. 다른 자료_복습팩 파일은 대상이 아니다.
+        data = self.notes / "0921" / ".pack" / "자료_복습팩"
+        data.mkdir(parents=True)
+        (data / "manifest.json").write_text("{}", encoding="utf-8")
+        (data / "stt-summary.md").write_text("요약", encoding="utf-8")
+        (data / "answers.py").write_text("", encoding="utf-8")
+        r = self.backup("0921")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertIn("백업 2항목(파일 2개)", r.stdout)
+        [d] = self.backups()
+        self.assertEqual(sorted(os.listdir(d / ".pack" / "자료_복습팩")), ["manifest.json", "stt-summary.md"])
 
     def test_backs_up_dated_folder_layout(self):
         # 새 형식: 복습노트/<range>/ 루트의 HTML·PDF 와 .pack/ 안의 md·그림. 다른 range 폴더는 건드리지 않는다.

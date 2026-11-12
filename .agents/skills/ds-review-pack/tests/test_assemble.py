@@ -111,8 +111,56 @@ class TestAssemble(unittest.TestCase):
         self.assertLess(script, html.index("</body>"))
         self.assertGreater(script, html.index("</main>"))
 
-    def test_no_traces_dir_creates_nothing(self):
-        self.assertFalse((self.tmp / ".pack" / "자료_복습팩").exists())
+    def test_no_traces_dir_creates_no_traces(self):
+        self.assertFalse((self.tmp / ".pack" / "자료_복습팩" / "traces").exists())
+
+    def _run_with(self, summaries: dict[str, str]) -> Path:
+        run = self.tmp / "run"
+        shutil.copytree(MINI_RUN, run)
+        if summaries:
+            (run / "summaries").mkdir()
+            for name, text in summaries.items():
+                (run / "summaries" / name).write_text(text, encoding="utf-8")
+        return run
+
+    def test_manifest_copied(self):
+        dest = self.tmp / ".pack" / "자료_복습팩" / "manifest.json"
+        self.assertEqual(dest.read_bytes(), (MINI_RUN / "manifest.json").read_bytes())
+
+    def test_single_summary_copied(self):
+        run = self._run_with({"stt-0101.md": "# 0101 요약\n\n본문\n"})
+        out = self.tmp / "o1"
+        assemble.assemble(run, out)
+        got = (out / ".pack" / "자료_복습팩" / "stt-summary.md").read_text(encoding="utf-8")
+        self.assertEqual(got, "# 0101 요약\n\n본문\n")
+
+    def test_multi_date_summaries_joined(self):
+        run = self._run_with({"stt-0102.md": "# 0102\nB\n\n", "stt-0101.md": "# 0101\nA\n"})
+        out = self.tmp / "o2"
+        assemble.assemble(run, out)
+        got = (out / ".pack" / "자료_복습팩" / "stt-summary.md").read_text(encoding="utf-8")
+        self.assertEqual(got, "# 0101\nA\n\n---\n\n# 0102\nB\n")
+
+    def test_no_summaries_keeps_existing(self):
+        run = self._run_with({})
+        out = self.tmp / "o3"
+        dest = out / ".pack" / "자료_복습팩"
+        dest.mkdir(parents=True)
+        (dest / "stt-summary.md").write_text("옛 요약\n", encoding="utf-8")
+        assemble.assemble(run, out)
+        self.assertEqual((dest / "stt-summary.md").read_text(encoding="utf-8"), "옛 요약\n")
+        self.assertTrue((dest / "manifest.json").exists())
+
+    def test_pack_sources_overwrite(self):
+        run = self._run_with({"stt-0101.md": "새 요약\n"})
+        out = self.tmp / "o4"
+        dest = out / ".pack" / "자료_복습팩"
+        dest.mkdir(parents=True)
+        (dest / "stt-summary.md").write_text("옛 요약\n", encoding="utf-8")
+        (dest / "manifest.json").write_text("{}", encoding="utf-8")
+        assemble.assemble(run, out)
+        self.assertEqual((dest / "stt-summary.md").read_text(encoding="utf-8"), "새 요약\n")
+        self.assertEqual((dest / "manifest.json").read_bytes(), (run / "manifest.json").read_bytes())
 
     def test_traces_overwrite_existing(self):
         run = make_trace_run(self.tmp)
