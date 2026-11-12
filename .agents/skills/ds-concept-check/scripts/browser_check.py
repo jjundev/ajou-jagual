@@ -149,14 +149,14 @@ def check_short(run: Run, item: dict):
 
 
 def check_note_link(run: Run, item: dict):
-    """채점 뒤 오른쪽 패널 풀이 끝에 그 목표의 정리노트 토픽 링크(새 탭)가 있어야 한다."""
+    """채점 뒤 오른쪽 패널 풀이 끝에 그 목표의 정리노트 토픽 링크(같은 창)가 있어야 한다."""
     cid = item["id"]
     link = run.page.locator(f".aid[data-card-id='{cid}'] details.solution:not([hidden]) .note-link a")
     run.expect(link.count() == 1, f"{cid}: 채점 뒤 풀이에 정리노트 링크가 {link.count()}개 (기대 1)")
     if link.count() == 1:
         href = link.get_attribute("href") or ""
         run.expect(href.endswith("#" + item["topic_id"]), f"{cid}: 정리노트 링크 '{href}' 가 #{item['topic_id']} 로 가지 않음")
-        run.expect(link.get_attribute("target") == "_blank", f"{cid}: 정리노트 링크가 새 탭으로 열리지 않음")
+        run.expect(link.get_attribute("target") is None, f"{cid}: 정리노트 링크가 같은 창에서 열리지 않음(target 있음)")
     return True
 
 

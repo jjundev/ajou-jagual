@@ -65,13 +65,13 @@ def _short(item: dict) -> tuple[str, str, str, str]:
     return attrs, "", inputs, f'<ol class="steps">{steps}</ol><p class="answer">정답: {esc(canonical)}</p>'
 
 
-NOTE_LINK_TEXT = "정리노트에서 이 개념 다시 보기 ↗"
+NOTE_LINK_TEXT = "정리노트에서 이 개념 다시 보기 →"
 
 
 def note_link(note_name: str, topic_id: str) -> str:
-    """그 목표의 정리노트 토픽으로 가는 링크. 풀이 안에 두어 채점 뒤에만 보이고, 새 탭으로 열어 답안을 지킨다."""
+    """그 목표의 정리노트 토픽으로 가는 링크. 풀이 안에 두어 채점 뒤에만 보인다. 같은 창에서 연다(사용자 결정, 2026-11-13)."""
     href = f"{note_name}#{topic_id}"
-    return (f'<p class="note-link"><a href="{esc(href)}" target="_blank" rel="noopener">'
+    return (f'<p class="note-link"><a href="{esc(href)}">'
             f'{esc(NOTE_LINK_TEXT)}</a></p>')
 
 

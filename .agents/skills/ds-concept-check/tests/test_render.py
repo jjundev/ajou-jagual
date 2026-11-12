@@ -99,13 +99,13 @@ def test_interaction_has_no_cli():
 
 
 def test_solution_ends_with_note_topic_link():
-    """풀이 끝에 그 목표의 정리노트 토픽 링크가 새 탭으로 붙는다. 문구엔 토픽·개념 이름이 없다."""
+    """풀이 끝에 그 목표의 정리노트 토픽 링크가 같은 창 링크로 붙는다. 문구엔 토픽·개념 이름이 없다."""
     import re
     for item in (MCQ, SHORT):
         html_ = render.card_html(item, OBJ, 1, NOTE)
         sol = re.search(r'<details class="solution">(.*?)</details>', html_, re.S).group(1)
         assert sol.endswith(
-            '<p class="note-link"><a href="정리노트_1102_Tree.html#s1-traversal" target="_blank" rel="noopener">'
+            '<p class="note-link"><a href="정리노트_1102_Tree.html#s1-traversal">'
             f'{render.NOTE_LINK_TEXT}</a></p>')
         assert html_.count('class="note-link"') == 1
         assert OBJ["concept"] not in render.NOTE_LINK_TEXT

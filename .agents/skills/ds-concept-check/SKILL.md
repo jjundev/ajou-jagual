@@ -16,7 +16,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 **산출물**
 - 공개: `복습노트/<range>/확인문제_<range>_<slug>.html`. 팩 루트에는 이 `.html`만 더한다.
 - 근거(`SRC`): `복습노트/<range>/.pack/자료_확인문제_<range>_<slug>/` — `objectives.json`, `items.json`, `blind-ledger.json`(블라인드 장부), `browser.json`.
-- 화면: 복습문제와 같은 상단 바·좌우 패널, 한 화면 한 문항. 채점하면 오른쪽 패널 풀이 끝에 그 목표의 정리노트 토픽 링크(`정리노트_<range>_<slug>.html#<topic_id>`, 새 탭)가 나온다. 목표 근거(쪽 번호·개념 이름)는 화면에 찍지 않는다(링크 문구도 일반 문구). 새로고침하면 답안·푼 문제 수가 초기화되고 테마는 남는다.
+- 화면: 복습문제와 같은 상단 바·좌우 패널, 한 화면 한 문항. 채점하면 오른쪽 패널 풀이 끝에 그 목표의 정리노트 토픽 링크(`정리노트_<range>_<slug>.html#<topic_id>`, 같은 창)가 나온다. 노트로 넘어갔다 돌아오면 답안이 초기화될 수 있다. 목표 근거(쪽 번호·개념 이름)는 화면에 찍지 않는다(링크 문구도 일반 문구). 새로고침하면 답안·푼 문제 수가 초기화되고 테마는 남는다.
 
 **경로 약속**
 - 명령은 저장소 루트에서 실행한다(경로는 루트 기준 상대 경로). 셸이 다른 폴더에 있으면 같은 경로를 절대 경로로 바꿔 쓴다.
@@ -83,7 +83,7 @@ python3 .agents/skills/ds-concept-check/scripts/blind.py status SRC SRC/blind-le
 ```
 python3 .agents/skills/ds-concept-check/scripts/browser_check.py 복습노트/<range>/확인문제_<range>_<slug>.html --src SRC --out SRC/browser.json --shots RUN/shots
 ```
-- 1280×900·375×812 × light·dark 4회. 객관식 오답→설명→`다시 풀기`→정답, 단답 변형 입력→`자동 일치`, 채점 뒤 풀이의 정리노트 토픽 링크(해시·새 탭), 새로고침 뒤 초기화, 복기 버튼, 콘솔 오류·KaTeX 오류·가로 넘침을 본다. `browser: pass`여야 한다.
+- 1280×900·375×812 × light·dark 4회. 객관식 오답→설명→`다시 풀기`→정답, 단답 변형 입력→`자동 일치`, 채점 뒤 풀이의 정리노트 토픽 링크(해시·같은 창), 새로고침 뒤 초기화, 복기 버튼, 콘솔 오류·KaTeX 오류·가로 넘침을 본다. `browser: pass`여야 한다.
 - 스크린샷(`RUN/shots/<폭>x<높이>-<테마>-<첫 문항>.png`, `…-last.png`) 8장을 Read로 직접 열어 겹침·잘림·트리 그림을 확인한다.
 - HTML을 다시 빌드했으면 이 단계도 다시 한다(`browser.json`에 HTML 해시가 남는다).
 
