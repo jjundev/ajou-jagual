@@ -51,6 +51,24 @@ class TestSkillFiles(unittest.TestCase):
                 self.assertRegex(self.text, rf"\n### B{n}\. ")
         self.assertIn("`reviewed: true`인 `scan`·`photo` 원본은 B2·B3을 건너뛰고", self.text)
 
+    def _step8(self):
+        return self.text.split("\n### 8. ", 1)[1].split("\n### 9. ", 1)[0]
+
+    def test_concept_check_after_pdf_before_layout(self):
+        s8 = self._step8()
+        self.assertLess(s8.index("references/pdf-build.md"), s8.index("ds-concept-check/SKILL.md"))
+        self.assertLess(s8.index("ds-concept-check/SKILL.md"), s8.index("pack_layout.py"))
+
+    def test_concept_check_scope_and_failure(self):
+        self.assertTrue((SKILL.parent / "ds-concept-check" / "SKILL.md").exists())
+        self.assertIn("**확인문제 연결**", self.text)
+        self.assertIn("`update-existing`·`revise-existing`은 확인문제를 만들지 않고", self.text)
+        self.assertIn("복습팩 생성됨 / 확인문제 보류", self.text)
+        self.assertIn("| 확인문제 스킬 누락 |", self.text)
+        self.assertIn("| 확인문제 검사 실패 |", self.text)
+        self.assertIn("- 확인문제:", self.text.split("\n### 9. ", 1)[1])
+        self.assertIn("stt-summary.md", self.text.split("\n### 9. ", 1)[1])
+
     def test_no_ml_leftovers(self):
         for path in [SKILL_MD, *sorted((SKILL / "references").glob("*.md"))]:
             text = path.read_text(encoding="utf-8")
