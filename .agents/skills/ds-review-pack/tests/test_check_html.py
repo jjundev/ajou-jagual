@@ -170,10 +170,6 @@ class TestPack(unittest.TestCase):
         self.assertIn("[lang]", out.getvalue())
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class TestTraceRules(unittest.TestCase):
     def _codes(self, n, rules, traces_dir=None):
         ol = '<ol class="steps">' + "<li>x</li>" * n + "</ol>"
@@ -192,10 +188,18 @@ class TestTraceRules(unittest.TestCase):
 
     def test_generated_ol_not_required(self):
         ol = '<ol class="steps" data-trace="x">' + "<li>x</li>" * 6 + "</ol>"
+        src = (f'<html lang="ko"><body><article class="topic" id="t"><div class="layer formal">'
+               f'<div class="trace-block" data-trace="x" data-trace-target="note">{ol}</div></div></article></body></html>')
+        codes = [p.code for p in check_html.check_common(check_html.parse_html(src), src, Path("정리노트_9999_X.html"),
+                                                          rules=frozenset({"trace-v1"}), traces_dir=Path("/nonexistent"))]
+        self.assertNotIn("trace-required", codes)
+
+    def test_hand_written_data_trace_ol_still_required(self):
+        ol = '<ol class="steps" data-trace="x">' + "<li>x</li>" * 5 + "</ol>"
         src = f'<html lang="ko"><body><article class="topic" id="t"><div class="layer formal">{ol}</div></article></body></html>'
         codes = [p.code for p in check_html.check_common(check_html.parse_html(src), src, Path("정리노트_9999_X.html"),
                                                           rules=frozenset({"trace-v1"}))]
-        self.assertNotIn("trace-required", codes)
+        self.assertIn("trace-required", codes)
 
     def test_other_layer_not_required(self):
         ol = '<ol class="steps">' + "<li>x</li>" * 6 + "</ol>"
@@ -230,3 +234,7 @@ class TestTraceRules(unittest.TestCase):
             src = note.read_text(encoding="utf-8")
             codes = [p.code for p in check_html.check_common(check_html.parse_html(src), src, note)]
             self.assertEqual([c for c in codes if c.startswith("trace-")], [], note.name)
+
+
+if __name__ == "__main__":
+    unittest.main()

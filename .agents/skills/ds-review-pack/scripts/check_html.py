@@ -262,7 +262,7 @@ TRACE_REQUIRED_MIN_STEPS = 5
 
 
 class _LongStepsFinder(HTMLParser):
-    """formal 레이어 안의 data-trace 없는 ol.steps 중 <li> 가 많은 것을 토픽 id 로 모은다."""
+    """formal 레이어 안의, 생성된 trace-block 밖의 ol.steps 중 <li> 가 많은 것을 토픽 id 로 모은다."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -286,7 +286,10 @@ class _LongStepsFinder(HTMLParser):
             kind = f"topic:{a['id']}"
         elif tag == "div" and {"layer", "formal"} <= classes:
             kind = "formal"
-        elif tag == "ol" and "steps" in classes and self._has("formal") and "data-trace" not in a:
+        elif tag == "div" and "trace-block" in classes:
+            kind = "trace-block"
+        elif (tag == "ol" and "steps" in classes and self._has("formal")
+              and not (self._has("trace-block") and "data-trace" in a)):
             kind = "steps"
             self._li = 0
         self._stack.append((tag, kind))
