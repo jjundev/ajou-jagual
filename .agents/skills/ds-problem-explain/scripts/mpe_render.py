@@ -151,7 +151,7 @@ def resources(markup, problem, pack, repo, stage, fig_name, destination, scope):
             node.attrs['href'] = quote(Path(os.path.relpath(target, destination)).as_posix(), safe='/') + (f'#{url.fragment}' if url.fragment else '')
     return inner(root)
 
-def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
+def build_explanation(pack, fragments, stage: Path, repo: Path, traces: Path | None = None) -> Artifacts:
     stage = Path(stage).resolve()
     if stage.exists() and any(stage.iterdir()):
         raise ExplainError('stage는 비어 있어야 해요: ' + str(stage))
@@ -170,6 +170,8 @@ def build_explanation(pack, fragments, stage: Path, repo: Path) -> Artifacts:
     fig_rel = f'{PACK_DIR}/{fig_name}'  # HTML(루트) 기준
     shutil.copytree(ASSETS / 'vendor', data_dir / 'vendor')
     shutil.copy2(ASSETS / 'template-provenance.json', data_dir / 'template-provenance.json')
+    if traces is not None:
+        shutil.copytree(traces, data_dir / 'traces')
     articles = []
     toc = []
     for p in pack.problems:
