@@ -55,14 +55,14 @@ def render_page(src: Path) -> str:
     title = f"{range_} 확인문제 — 이번 수업 개념 확인"
     template = (_paths.DS_REVIEW_PACK / "assets" / "review-template.html").read_text(encoding="utf-8")
     page = assemble.fill(template, dict(
-        PAGE_TITLE=f"{s['manifest']['course']} 확인문제 {range_}",
-        DESCRIPTION=title, TITLE=title,
+        PAGE_TITLE=assemble.esc(f"{s['manifest']['course']} 확인문제 {range_}"),
+        DESCRIPTION=assemble.esc(title), TITLE=assemble.esc(title),
         TOC='<a href="#check">확인</a>',
-        NOTE_HREF=f"정리노트_{range_}_{slug}.html",
-        INTRO=f"<p>이번 수업에서 처음 배운 개념을 {len(s['items'])}문항으로 확인해요. 고르면 바로 채점돼요.</p>",
+        NOTE_HREF=assemble.esc(f"정리노트_{range_}_{slug}.html"),
+        INTRO=f"이번 수업에서 처음 배운 개념을 {len(s['items'])}문항으로 확인해요. 고르면 바로 채점돼요.",
         PARTS=f'<section id="check"><h2>확인문제</h2>{cards}</section>',
         FOOTER="<p>Claude가 강의 근거로 만든 문항이에요. 근거: 강의록·수업 녹음 요약.</p>",
-        SCRIPTS="", RANGE=f"{range_}-확인"))
+        SCRIPTS="", RANGE=assemble.esc(f"{range_}-확인")))
     return interaction.install(page, output_name(range_, slug).removesuffix(".html"))
 
 

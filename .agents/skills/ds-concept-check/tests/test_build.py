@@ -15,6 +15,7 @@ def test_build_writes_root_html(tmp_path):
     page = out.read_text(encoding="utf-8")
     assert "확인문제 9999" in page and page.count('class="card"') == 3
     assert interaction.build_model(page, "x")["errors"] == []
+    assert "<p><p>" not in page
 
 
 def test_build_finds_nfd_pack_dir(tmp_path):
@@ -42,3 +43,15 @@ def test_cli_missing_pack_exits_1(tmp_path, capsys):
     shutil.rmtree(root / ".pack/자료_복습팩")
     assert build.main(["build.py", str(root / ".pack/자료_확인문제_9999_Mini")]) == 1
     assert "팩이 없어 근거가 없습니다" in capsys.readouterr().err
+
+
+def test_page_values_are_escaped(tmp_path):
+    import json
+    root = copy_fixture(tmp_path)
+    m = root / ".pack/자료_복습팩/manifest.json"
+    d = json.loads(m.read_text(encoding="utf-8"))
+    d["course"] = 'A&B "C"'
+    m.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    page = build.render_page(root / ".pack/자료_확인문제_9999_Mini")
+    assert "A&amp;B &quot;C&quot; 확인문제 9999" in page
+    assert 'A&B "C" 확인문제' not in page
