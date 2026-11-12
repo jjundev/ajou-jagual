@@ -60,3 +60,7 @@ def mutated_fixture(tmp_path, mutate):
     mutate(doc)
     path.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
     return src
+
+
+def write(path, text):
+    Path(path).write_text(text, encoding="utf-8")
