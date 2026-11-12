@@ -64,3 +64,16 @@ def mutated_fixture(tmp_path, mutate):
 
 def write(path, text):
     Path(path).write_text(text, encoding="utf-8")
+
+
+def playwright_available() -> bool:
+    """playwright 를 import 할 수 있고 chromium 실행 파일이 깔려 있으면 True."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        return False
+    try:
+        with sync_playwright() as pw:
+            return Path(pw.chromium.executable_path).exists()
+    except Exception:
+        return False
