@@ -1,0 +1,90 @@
+{
+  "items": [
+    {
+      "id": "q1",
+      "objective": "o1",
+      "format": "short",
+      "title": "부모 칸 번호",
+      "stem_html": "<p>배열 표현에서 5번 노드의 부모는 몇 번 칸에 있을까요?</p>",
+      "tree": [
+        "A",
+        "B",
+        "C",
+        null,
+        "D"
+      ],
+      "compute": {
+        "op": "parent_index",
+        "arg": 5
+      },
+      "answer": {
+        "canonical": "2",
+        "accepted": []
+      },
+      "solution": [
+        "i번의 부모는 i/2(정수 나눗셈)예요.",
+        "5/2 = 2예요."
+      ]
+    },
+    {
+      "id": "q2",
+      "objective": "o2",
+      "format": "mcq",
+      "title": "비워 둔 첫 칸",
+      "stem_html": "<p>배열로 트리를 나타낼 때 0번 칸을 비워 두는 까닭은 무엇일까요?</p>",
+      "options": [
+        {
+          "id": "A",
+          "text": "루트를 1번으로 두면 계산식이 간단해져요",
+          "why": "루트를 1번으로 맞추면 부모는 i/2, 자식은 2i와 2i+1로 바로 계산돼요."
+        },
+        {
+          "id": "B",
+          "text": "메모리를 아끼려고 비워 두어요",
+          "why": "칸을 비우면 오히려 한 칸이 더 들어요.",
+          "misconception": "낭비를 줄이는 장치로 봄",
+          "source": "stt:1절"
+        },
+        {
+          "id": "C",
+          "text": "루트에 특별한 값을 넣으려고 비워 두어요",
+          "why": "0번 칸에는 아무 값도 넣지 않아요. 특별한 용도가 없어요.",
+          "misconception": "센티널 칸으로 오해함",
+          "source": "note:s0-b"
+        },
+        {
+          "id": "D",
+          "text": "정렬 순서를 바꾸려고 비워 두어요",
+          "why": "칸 번호는 정렬과 상관이 없어요.",
+          "misconception": "정렬과 인덱스를 혼동함",
+          "source": "bank:q9"
+        }
+      ],
+      "answer": "A",
+      "compute": null
+    },
+    {
+      "id": "q3",
+      "objective": "o1",
+      "format": "short",
+      "title": "세 노드 순회",
+      "stem_html": "<p>이 트리를 후위로 돌았을 때 방문 순서를 차례로 쓰세요.</p>",
+      "tree": [
+        "A",
+        "B",
+        "C"
+      ],
+      "compute": {
+        "op": "postorder"
+      },
+      "answer": {
+        "canonical": "B, C, A",
+        "accepted": []
+      },
+      "solution": [
+        "왼쪽 B, 오른쪽 C를 먼저 방문해요.",
+        "루트 A는 마지막이에요."
+      ]
+    }
+  ]
+}
