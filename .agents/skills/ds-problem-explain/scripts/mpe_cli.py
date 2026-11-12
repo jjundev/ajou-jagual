@@ -95,10 +95,26 @@ def load_artifacts(item):
     files = tuple(inside(stage / name, stage) for name in manifest['files']) + (paths[2],)
     return Artifacts(*paths, files)
 
+def trace_verifier():
+    scripts = Path(__file__).resolve().parents[2] / 'ds-review-pack' / 'scripts'
+    if not (scripts / 'trace_figs.py').is_file():
+        raise ExplainError('trace 생성기(ds-review-pack/scripts/trace_figs.py)가 없어요')
+    if str(scripts) not in sys.path:
+        sys.path.insert(0, str(scripts))
+    from trace_figs import verify
+    return verify
+
 def build(item, fragments):
     folder = item['folder']
     stage = folder / 'stage' / uuid.uuid4().hex
-    artifacts = build_explanation(item['pack'], fragments, stage, item['repo'])
+    traces = folder / 'traces'
+    if traces.is_dir() or any('class="trace-block"' in text for text in fragments.values()):
+        verify = trace_verifier()
+        for pid, text in fragments.items():
+            bad = verify(text, traces)
+            if bad:
+                raise ExplainError(f'{pid}: ' + ', '.join(f'{code} {tid}' for code, tid in bad))
+    artifacts = build_explanation(item['pack'], fragments, stage, item['repo'], traces if traces.is_dir() else None)
     # Evidence is copied before binding the artifact hashes; review approval comes later.
     evidence = inside(folder / 'evidence', item['run'])
     if evidence.is_dir():

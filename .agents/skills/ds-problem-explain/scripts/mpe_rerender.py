@@ -203,6 +203,11 @@ def rerender(repo,target,run):
                 for child in evidence.rglob('*'):
                     inside(child,repo)
                 shutil.copytree(evidence,folder/'evidence',dirs_exist_ok=True)
+            traces=data/'traces'
+            if traces.is_dir():
+                for child in traces.rglob('*'):
+                    inside(child,repo)
+                shutil.copytree(traces,folder/'traces',dirs_exist_ok=True)
             fragments=load_fragments(item)
             same=stored.get('input_hash')==payload_hash(pack,fragments)
             # Only HTML adapters can recover a style-only historical input. EC2's digest covers all MD/images.

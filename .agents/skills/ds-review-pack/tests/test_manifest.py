@@ -142,5 +142,19 @@ class TestManifest(unittest.TestCase):
         self.assertEqual(manifest.fig_dir_name("0101-0102"), "figures_0101-0102")
 
 
+class TestRules(unittest.TestCase):
+    def test_rules_optional_and_list_of_str(self):
+        m = mini()
+        self.assertEqual(manifest.validate(m), [])
+        m["rules"] = ["trace-v1"]
+        self.assertEqual(manifest.validate(m), [])
+
+    def test_rules_bad_types(self):
+        for bad in ("trace-v1", [1], [""]):
+            m = mini()
+            m["rules"] = bad
+            self.assertTrue(manifest.validate(m), bad)
+
+
 if __name__ == "__main__":
     unittest.main()
