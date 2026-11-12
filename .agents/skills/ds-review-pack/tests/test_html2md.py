@@ -5,7 +5,7 @@ import unicodedata
 import unittest
 import xml.dom.minidom
 
-from _util import MINI_RUN
+from _util import MINI_RUN, make_trace_run
 
 import assemble
 import html2md
@@ -214,6 +214,31 @@ class TestHtml2Md(unittest.TestCase):
         self.assertEqual(Path(note_md).name, "정리노트_0101_X.md")
         self.assertIn("(./복습문제_0101_X.md#q)", Path(note_md).read_text(encoding="utf-8"))
         self.assertEqual(html2md.check_md(note, note_md), [])
+
+class TestHtml2MdTrace(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        run = make_trace_run(self.tmp)
+        self.note, self.review = assemble.assemble(run, self.tmp / "out")
+        (self.note_md, _), self.figs = html2md.convert_pack(self.note, self.review)
+        self.md = Path(self.note_md).read_text(encoding="utf-8")
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def test_trace_exports_static_figures_and_steps(self):
+        figs = self.tmp / "out" / ".pack" / "figures_0101-0102"
+        for n in range(1, 5):
+            self.assertTrue((figs / f"widget-trace-inorder-1105-static-{n}.svg").exists(), n)
+        self.assertNotIn("trace-inorder-1105-s2", self.md)
+        self.assertNotIn("trace-inorder-1105-s14", self.md)
+        import trace_figs
+        from _util import TRACE_FIXTURE
+        t = trace_figs.load(TRACE_FIXTURE)
+        lines = self.md.splitlines()
+        for i, st in enumerate(t["steps"], 1):
+            self.assertIn(f"{i}. {st['text']}", lines)
+        self.assertEqual(html2md.check_md(self.note, self.note_md), [])
 
 
 if __name__ == "__main__":

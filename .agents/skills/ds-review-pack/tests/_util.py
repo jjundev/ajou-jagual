@@ -32,3 +32,20 @@ def copy_nfc(src: Path, dst_dir: Path) -> Path:
     dst = dst_dir / unicodedata.normalize("NFC", src.name)
     shutil.copyfile(src, dst)
     return dst
+
+
+TRACE_FIXTURE = FIXTURES / "trace" / "inorder-1105.json"
+
+
+def make_trace_run(dst: Path) -> Path:
+    """mini-run 복사본 s1 섹션 끝에 inorder-1105 재생기를 넣고 traces/ 에 JSON 을 둔다."""
+    import trace_figs
+
+    run = Path(dst) / "run"
+    shutil.copytree(MINI_RUN, run)
+    (run / "traces").mkdir()
+    shutil.copy(TRACE_FIXTURE, run / "traces" / "inorder-1105.json")
+    frag = trace_figs.render(trace_figs.load(TRACE_FIXTURE), "note")
+    sec = run / "sections" / "s1.html"
+    sec.write_text(sec.read_text(encoding="utf-8") + "\n" + frag + "\n", encoding="utf-8")
+    return run

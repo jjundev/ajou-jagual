@@ -14,6 +14,7 @@ CLI: assemble.py --run RUN --out 복습노트/<range>
 from __future__ import annotations
 
 import argparse
+import shutil
 import html
 from pathlib import Path
 import re
@@ -112,6 +113,13 @@ def assemble(run_dir: Path | str, out_dir: Path | str) -> tuple[Path, Path]:
     note_html, review_html = build_note(m, run_dir), build_review(m, run_dir)
     note_path.write_text(note_html, encoding="utf-8")
     review_path.write_text(review_html, encoding="utf-8")
+    # trace 재생기 조각을 검사하는 check_html 이 <노트 폴더>/.pack/자료_복습팩/traces/ 에서 JSON 을 찾는다.
+    traces = sorted((run_dir / "traces").glob("*.json"))
+    if traces:
+        dest = out_dir / ".pack" / "자료_복습팩" / "traces"
+        dest.mkdir(parents=True, exist_ok=True)
+        for t in traces:
+            shutil.copyfile(t, dest / t.name)
     return note_path, review_path
 
 

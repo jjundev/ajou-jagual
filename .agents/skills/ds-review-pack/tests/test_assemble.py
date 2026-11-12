@@ -4,7 +4,7 @@ import shutil
 import tempfile
 import unittest
 
-from _util import MINI_RUN
+from _util import MINI_RUN, make_trace_run
 
 import assemble
 
@@ -92,6 +92,36 @@ class TestAssemble(unittest.TestCase):
 
     def test_fill_does_not_expand_slots_inside_values(self):
         self.assertEqual(assemble.fill("{{A}}", {"A": "{{B}}"}), "{{B}}")
+
+    def test_traces_copied_and_pass_check(self):
+        import check_html
+        import manifest as manifest_mod
+        run = make_trace_run(self.tmp)
+        out = self.tmp / "tout"
+        note, review = assemble.assemble(run, out)
+        copied = out / ".pack" / "자료_복습팩" / "traces" / "inorder-1105.json"
+        self.assertTrue(copied.exists())
+        self.assertEqual(copied.read_bytes(), (run / "traces" / "inorder-1105.json").read_bytes())
+        m = manifest_mod.load(run / "manifest.json")
+        problems = check_html.check_pack(m, note, review)
+        self.assertEqual([p for p in problems if p.code.startswith("trace-")], [])
+        html = note.read_text(encoding="utf-8")
+        self.assertIn('id="widget-trace-inorder-1105-static-4"', html)
+        script = html.index('<script id="widget-trace-inorder-1105-ui">')
+        self.assertLess(script, html.index("</body>"))
+        self.assertGreater(script, html.index("</main>"))
+
+    def test_no_traces_dir_creates_nothing(self):
+        self.assertFalse((self.tmp / ".pack" / "자료_복습팩").exists())
+
+    def test_traces_overwrite_existing(self):
+        run = make_trace_run(self.tmp)
+        out = self.tmp / "tout2"
+        dest = out / ".pack" / "자료_복습팩" / "traces"
+        dest.mkdir(parents=True)
+        (dest / "inorder-1105.json").write_text("{}", encoding="utf-8")
+        assemble.assemble(run, out)
+        self.assertEqual((dest / "inorder-1105.json").read_bytes(), (run / "traces" / "inorder-1105.json").read_bytes())
 
 
 if __name__ == "__main__":
