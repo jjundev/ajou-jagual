@@ -86,7 +86,7 @@
 |---|---|---|
 | STT 혼동 | `stt:<절>절` (예 `stt:7절`) | `stt-summary.md`의 학생 질문·“학생과의 대화”·“말실수 정정”, 교수님이 “헷갈리면 안 된다”고 짚은 곳 |
 | 정리노트 주의 | `note:<topic_id>` (예 `note:s1-levelorder`) | `.pack/정리노트_<range>_<slug>.md`의 주의·헷갈림·“조건·구분과 확인” |
-| 같은 장 기출 오답 | `bank:<문제 id>` (예 `bank:2018-mid-c024-q11`) | `from_the_past/기출/문제은행.json`에서 `chapters`에 강의록 장 번호(`S7` → `7`)가 든 문항의 흔한 틀린 답 |
+| 같은 장 기출 함정 | `bank:<문제 id>` (예 `bank:2018-mid-c024-q11`) | `from_the_past/기출/문제은행.json`에서 `chapters`에 강의록 장 번호(`S7` → `7`)가 든 문항이 노린 함정(정답과 대비되는 잘못된 판단). 은행에는 정답만 있고 틀린 답 기록은 없으니, 문항과 정답에서 함정을 읽어 낸다 |
 
 `source`는 `stt:`·`note:`·`bank:`로 시작해야 한다 `[explain]`. 정답 보기에는 `misconception`·`source`를 넣지 않는다.
 

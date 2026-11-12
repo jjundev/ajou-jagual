@@ -14,7 +14,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 
 **산출물**
 - 공개: `복습노트/<MMDD>/확인문제_<range>_<slug>.html`. 팩 루트에는 이 `.html`만 더한다.
-- 근거(`SRC`): `복습노트/<MMDD>/.pack/자료_확인문제_<range>_<slug>/` — `objectives.json`, `items.json`, `blind.json`(블라인드 장부), `browser.json`.
+- 근거(`SRC`): `복습노트/<MMDD>/.pack/자료_확인문제_<range>_<slug>/` — `objectives.json`, `items.json`, `blind-ledger.json`(블라인드 장부), `browser.json`.
 - 화면: 복습문제와 같은 상단 바·좌우 패널, 한 화면 한 문항, 카드 아래 `S7 p8 · 확인: <개념>`. 새로고침하면 답안·푼 문제 수가 초기화되고 테마는 남는다.
 
 **경로 약속**
@@ -48,7 +48,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 ```
 python3 .agents/skills/ds-concept-check/scripts/check.py SRC
 ```
-- `OK`가 나와야 한다. 아니면 `[코드] <id>: <설명>` 줄을 모두 묶어 같은 작성자에게 되돌린다(SendMessage). 최대 2회. 그래도 남으면 메인 에이전트가 고치고 보고에 적는다.
+- `OK`가 나와야 한다. 아니면 `[코드] <id>: <설명>` 줄을 모두 묶어 같은 작성자에게 되돌린다(SendMessage). 작성자가 고칠 때마다 `RUN/items.json`을 `SRC/items.json`으로 다시 복사한 뒤 check를 다시 돌린다. 최대 2회. 그래도 남으면 메인 에이전트가 고치고 보고에 적는다.
 - 코드 뜻은 item-rules.md의 `[코드]` 표시를 본다(`count`·`topic`·`source`·`format`·`mcq-shape`·`explain`·`title-leak`·`forbidden`·`compute`·`duplicate`·`style`·`balance`·`negative`).
 
 ### 5. 빌드
@@ -64,18 +64,17 @@ python3 .agents/skills/ds-concept-check/scripts/blind.py make SRC RUN/blind-r1.m
 - 풀이자에게 [blind-brief.md](references/blind-brief.md) 경로와 그 `---` 사이 브리프를 `<RUN>`·`<회차>`·`<range>`·`<slug>`를 채워 넘긴다. 풀이자가 읽는 것은 그 브리프, `RUN/blind-r<회차>.md`, `복습노트/<MMDD>/.pack/정리노트_<range>_<slug>.md` 셋뿐이다. `SRC`, `items.json`, `objectives.json`, 이전 답안표 경로는 알려 주지 않는다.
 - 풀이자는 `RUN/blind-answers-r<회차>.md`를 쓴다. 기록하고 상태를 본다:
 ```
-python3 .agents/skills/ds-concept-check/scripts/blind.py record SRC RUN/blind-answers-r1.md SRC/blind.json --round 1
-python3 .agents/skills/ds-concept-check/scripts/blind.py status SRC SRC/blind.json
+python3 .agents/skills/ds-concept-check/scripts/blind.py record SRC RUN/blind-answers-r1.md SRC/blind-ledger.json --round 1
+python3 .agents/skills/ds-concept-check/scripts/blind.py status SRC SRC/blind-ledger.json
 ```
 - `status`가 `OK`면 끝. 아니면 줄마다 `장부에 없음`·`수정됨`·`답 불일치 (고른 답 ≠ 정답)`·`이의 — …`가 나온다. 단답은 쉼표·공백·화살표·대소문자 변형과 `accepted`를 정답으로 친다.
-- 실패한 문항만 `SRC/items.json`에서 고치고 4단계(check)·5단계(build)를 다시 한 뒤, 고친 문항만 새 풀이자(새 에이전트)에게 다시 풀린다:
+- 이의도 실패다(무시·기각하지 않는다). 답 불일치·이의가 나온 문항을 `SRC/items.json`에서 고치고 4단계(check)·5단계(build)를 다시 한 뒤, 고친 문항만 새 풀이자(새 에이전트)에게 다시 풀린다:
 ```
 python3 .agents/skills/ds-concept-check/scripts/blind.py make SRC RUN/blind-r2.md --only q3,q7
-python3 .agents/skills/ds-concept-check/scripts/blind.py record SRC RUN/blind-answers-r2.md SRC/blind.json --round 2
-python3 .agents/skills/ds-concept-check/scripts/blind.py status SRC SRC/blind.json
+python3 .agents/skills/ds-concept-check/scripts/blind.py record SRC RUN/blind-answers-r2.md SRC/blind-ledger.json --round 2
+python3 .agents/skills/ds-concept-check/scripts/blind.py status SRC SRC/blind-ledger.json
 ```
-- 문항을 고치면 장부의 그 문항 판정은 `수정됨`으로 무효가 된다. `--only`에는 `수정됨`인 문항을 모두 넣는다. 재풀이는 최대 2회(r2·r3). 그 뒤에도 남은 줄은 미해결로 보고한다.
-- 이의가 타당하지 않다고 판단하면 문항을 고치지 않고 보고에 기각 사유를 적는다(`status`는 그 줄을 계속 낸다).
+- 문항을 고치면 장부의 그 문항 판정은 `수정됨`으로 무효가 된다. `--only`에는 `status`가 `장부에 없음`·`수정됨`으로 낸 문항을 모두 넣는다(답 불일치·이의로 고친 문항은 고친 뒤 `수정됨`이 된다). 재풀이는 최대 2회(r2·r3). r3 뒤에도 `status`에 남은 줄(답 불일치·이의 포함)은 모두 미해결로 보고한다.
 
 ### 7. 브라우저 검사
 ```
@@ -94,7 +93,7 @@ python3 .agents/skills/ds-review-pack/scripts/pack_layout.py check --repo .
 ### 9. 보고
 - 경로: 공개 HTML, `SRC`, 백업(있으면).
 - 목표 수(6개 미만이면 사유), 문항 수(객관식 n · 입력 n), 객관식 정답 분포(A~D), 부정형 수.
-- 블라인드 결과: 회차별 일치 수, 고친 문항과 이유, 기각한 이의.
+- 블라인드 결과: 회차별 일치 수, 고친 문항과 이유, 남은 이의(미해결).
 - 브라우저 결과: pass/fail, 스크린샷에서 본 것.
 - 미해결.
 - 커밋 제안: `git add 복습노트/<MMDD> && git commit -m "docs(notes): add concept check <MMDD>"`
