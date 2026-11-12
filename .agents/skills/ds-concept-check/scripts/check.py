@@ -78,6 +78,27 @@ def _nospace(s: str) -> str:
     return re.sub(r"\s+", "", s or "")
 
 
+def _words(text: str) -> set[str]:
+    """보기 글의 낱말(2자 이상)과, 3자 이상 낱말의 끝 한 글자(조사)를 뗀 형태."""
+    out: set[str] = set()
+    for w in re.findall(r"\w+", re.sub(r"\$[^$]*\$", " ", text or "")):
+        if len(w) >= 2:
+            out.add(w)
+        if len(w) >= 3:
+            out.add(w[:-1])
+    return out
+
+
+def concept_leaks(concept: str, options: list[dict], answer: str) -> list[str]:
+    """정답 보기에만 있는 낱말 중 목표 concept 에 들어 있는 것. 화면 근거 줄이 정답을 흘리는지 본다."""
+    right = next((o for o in options if o.get("id") == answer), None)
+    if right is None:
+        return []
+    wrong = _nospace(" ".join(o.get("text", "") for o in options if o.get("id") != answer))
+    c = _nospace(concept)
+    return sorted(w for w in _words(right.get("text", "")) if w in c and w not in wrong)
+
+
 def check(src: Path) -> list[str]:
     s = load_source(Path(src))
     objectives, items, manifest = s["objectives"], s["items"], s["manifest"]
@@ -151,6 +172,9 @@ def check(src: Path) -> list[str]:
                 ans = _nospace(correct.get("text", ""))
                 if len(ans) >= 2 and ans in _nospace(title):
                     add("title-leak", iid, "제목에 정답 보기 문구가 그대로 들어 있어요.")
+                leak = concept_leaks(obj.get("concept", ""), opts, it.get("answer"))
+                if leak:
+                    add("title-leak", iid, f"목표 concept(카드 근거 줄)에 정답 보기에만 있는 낱말이 있어요: {', '.join(leak)}")
 
         if any(w in title or w in stem for w in NEG_WORDS):
             negatives += 1

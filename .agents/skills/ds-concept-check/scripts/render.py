@@ -7,7 +7,7 @@ import json
 import tree
 
 SEP = ", "
-JOINERS = (",", " ", "", "→")
+JOINERS = (",", " ", "", "→", " → ")
 
 
 def esc(text: str) -> str:

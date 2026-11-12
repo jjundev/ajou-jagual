@@ -1,6 +1,5 @@
 """Validated choice/diagnostic mapping and self-contained review enhancement."""
 from __future__ import annotations
-import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -235,27 +234,3 @@ def install(source: str, document_id: str, overrides: dict | None = None, strict
              + '<script>\n' + js + '\n</script>\n<script>' + boot + '</script>\n' + END + '\n')
     return source.replace('</body>', block + '</body>')
 
-
-def main():
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--root', type=Path, required=True)
-    ap.add_argument('--audit', action='store_true')
-    ap.add_argument('--write', action='store_true')
-    args = ap.parse_args()
-    failed = False
-    pending = []
-    for path in sorted(args.root.glob('*/복습문제_*.html')):
-        model = build_model(path.read_text(encoding='utf-8'), path.name)
-        failed |= bool(model['errors'])
-        if args.write and not model['errors']:
-            pending.append((path, install(path.read_text(encoding='utf-8'), path.name)))
-        print(json.dumps(dict(file=path.name, interactive=len(model['cards']), skipped=model['skipped'], errors=model['errors']), ensure_ascii=False))
-    if args.write and not failed:
-        for path, output in pending:
-            if path.read_text(encoding='utf-8') != output:
-                path.write_text(output, encoding='utf-8')
-    return int(failed)
-
-
-if __name__ == '__main__':
-    raise SystemExit(main())

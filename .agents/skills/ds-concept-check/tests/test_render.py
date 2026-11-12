@@ -31,7 +31,7 @@ TEMPLATE_WITH_CARD = concept_util.review_template_with(render.card_html(MCQ, OBJ
 
 def test_accepted_variants():
     v = render.accepted_variants("A, B, D")
-    assert {"A,B,D", "A B D", "ABD", "A→B→D"} <= set(v) and "A, B, D" not in v
+    assert {"A,B,D", "A B D", "ABD", "A→B→D", "A → B → D"} <= set(v) and "A, B, D" not in v
     assert render.accepted_variants("2") == []
 
 
@@ -75,3 +75,9 @@ def test_install_rejects_unknown_solved_store_shape():
     broken = TEMPLATE_WITH_CARD.replace("store.set(KEY, Array.from(solved));", "save(solved);")
     with pytest.raises(ValueError):
         interaction.install(broken, "확인문제_t")
+
+
+def test_interaction_has_no_cli():
+    """복사해 온 CLI(--write)는 ds-review-pack 산출물을 덮어쓸 수 있어 지웠다."""
+    assert not hasattr(interaction, "main")
+    assert "__main__" not in (concept_util.SCRIPTS / "interaction.py").read_text(encoding="utf-8")

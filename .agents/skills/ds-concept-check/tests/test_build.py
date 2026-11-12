@@ -64,3 +64,22 @@ def test_page_values_are_escaped(tmp_path):
 def test_swap_brand_needs_exactly_one_anchor(text):
     with pytest.raises(build.BuildError, match="brand"):
         build.swap_brand(text)
+
+
+@pytest.mark.parametrize("key", ["range", "slug"])
+def test_build_rejects_range_slug_mismatch(tmp_path, key):
+    import json
+    root = copy_fixture(tmp_path)
+    p = root / ".pack/자료_확인문제_9999_Mini/objectives.json"
+    d = json.loads(p.read_text(encoding="utf-8"))
+    d[key] = "8888" if key == "range" else "Other"
+    p.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    with pytest.raises(build.BuildError, match=key):
+        build.build(root / ".pack/자료_확인문제_9999_Mini")
+
+
+def test_build_missing_stt_names_file(tmp_path):
+    root = copy_fixture(tmp_path)
+    (root / ".pack/자료_복습팩/stt-summary.md").unlink()
+    with pytest.raises(build.BuildError, match=r"팩이 없어 근거가 없습니다: .* \(stt-summary\.md 없음\)"):
+        build.build(root / ".pack/자료_확인문제_9999_Mini")

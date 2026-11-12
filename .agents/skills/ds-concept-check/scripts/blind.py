@@ -17,8 +17,16 @@ from build import BuildError, load_source
 ID_RE = re.compile(r"^q\d+$")
 
 
-def item_hash(item: dict) -> str:
-    return hashlib.sha256(json.dumps(item, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
+def item_hash(item: dict, objective: dict) -> str:
+    """문항 + 화면에 함께 보이는 목표 근거 줄(concept·source.slide). 어느 쪽이 바뀌어도 장부가 무효가 된다."""
+    shown = dict(concept=objective.get("concept"), slide=(objective.get("source") or {}).get("slide"))
+    blob = json.dumps(dict(item=item, objective=shown), sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def source_line(objective: dict) -> str:
+    """render._problem 이 카드에 찍는 근거 줄과 같은 글."""
+    return f"{(objective.get('source') or {}).get('slide', '')} · 확인: {objective['concept']}"
 
 
 def _plain(html: str) -> str:
@@ -42,11 +50,11 @@ def _tree_line(t: list) -> str:
     return "[그림: 트리 — " + "; ".join(parts) + "]"
 
 
-def _card(item: dict) -> str:
+def _card(item: dict, objective: dict) -> str:
     lines = [f"## {item['id']}. {item['title']}", "", _plain(item.get("stem_html", ""))]
     if item.get("tree"):
         lines += ["", _tree_line(item["tree"])]
-    lines.append("")
+    lines += ["", source_line(objective), ""]
     if item["format"] == "mcq":
         lines += [f"{o['id']}. {_plain(o['text'])}" for o in item["options"]]
     else:
@@ -55,9 +63,12 @@ def _card(item: dict) -> str:
 
 
 def make(src: Path, out: Path, only: set[str] | None = None) -> None:
-    items = [it for it in load_source(src)["items"] if only is None or it["id"] in only]
+    s = load_source(src)
+    objs = {o["id"]: o for o in s["objectives"]}
+    items = [it for it in s["items"] if only is None or it["id"] in only]
     head = "# 확인문제 블라인드 사본\n\n문항마다 답을 하나 고르세요. 결과는 표로 적습니다.\n"
-    Path(out).write_text(head + "\n" + "\n".join(_card(it) for it in items), encoding="utf-8")
+    Path(out).write_text(head + "\n" + "\n".join(_card(it, objs[it["objective"]]) for it in items),
+                         encoding="utf-8")
 
 
 def parse_answers(text: str) -> dict[str, dict]:
@@ -82,13 +93,15 @@ def _load(ledger: Path) -> dict:
 
 
 def record(src: Path, answers_md: Path, ledger: Path, round_no: int) -> dict:
-    items = {it["id"]: it for it in load_source(src)["items"]}
+    s = load_source(src)
+    objs = {o["id"]: o for o in s["objectives"]}
+    items = {it["id"]: it for it in s["items"]}
     answers = parse_answers(Path(answers_md).read_text(encoding="utf-8"))
     data = _load(ledger)
     for id_, a in answers.items():
         if id_ not in items:
             raise ValueError(f"소스에 없는 문항: {id_}")
-        data[id_] = dict(answer=a["answer"], objection=a["objection"], hash=item_hash(items[id_]), round=round_no)
+        data[id_] = dict(answer=a["answer"], objection=a["objection"], hash=item_hash(items[id_], objs[items[id_]["objective"]]), round=round_no)
     Path(ledger).write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
     return data
 
@@ -107,14 +120,16 @@ def _accepted(item: dict) -> set[str]:
 
 def status(src: Path, ledger: Path) -> list[str]:
     data = _load(ledger)
+    s = load_source(src)
+    objs = {o["id"]: o for o in s["objectives"]}
     out: list[str] = []
-    for item in load_source(src)["items"]:
+    for item in s["items"]:
         id_ = item["id"]
         row = data.get(id_)
         if row is None:
             out.append(f"{id_}: 장부에 없음")
             continue
-        if row.get("hash") != item_hash(item):
+        if row.get("hash") != item_hash(item, objs[item["objective"]]):
             out.append(f"{id_}: 수정됨")
             continue
         if _norm(row["answer"]) not in _accepted(item):

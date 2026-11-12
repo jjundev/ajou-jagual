@@ -95,3 +95,24 @@ def test_cli_ok_and_fail(tmp_path, capsys):
 
 def test_short_stem_is_never_duplicate(tmp_path):
     assert not _fires(tmp_path, lambda d: d["items"][1].update(stem_html="<p>A</p>"), "[duplicate]")
+
+
+def _set_concept(src, oid, concept):
+    path = src / "objectives.json"
+    d = json.loads(path.read_text(encoding="utf-8"))
+    for o in d["objectives"]:
+        if o["id"] == oid:
+            o["concept"] = concept
+    path.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+
+
+def test_concept_leak_fires(tmp_path):
+    src = fixture_src(tmp_path)
+    _set_concept(src, "o2", "계산식이 간단해지는 이유")   # 정답 보기에만 있는 '계산식'
+    assert any(p.startswith("[title-leak] q2:") and "concept" in p for p in check.check(src))
+
+
+def test_concept_leak_quiet_on_shared_or_neutral_words(tmp_path):
+    src = fixture_src(tmp_path)
+    _set_concept(src, "o2", "비워 두는 루트 앞 칸")   # '비워'·'루트' 는 오답 보기에도 있다
+    assert not [p for p in check.check(src) if p.startswith("[title-leak]")]

@@ -22,6 +22,7 @@ def test_make_hides_answers(tmp_path):
     assert "## q2." in text and "A. " in text
     assert "[그림: 트리 — 루트 A; A의 왼쪽 자식 B; A의 오른쪽 자식 C; B의 오른쪽 자식 D]" in text
     assert "(값을 쓰시오)" in text
+    assert "S1 p2 · 확인: 0번 칸을 비우는 이유" in text   # 화면 카드의 근거 줄 그대로
     for leak in ("why", "정답", "misconception", "B, C, A", "solution", "compute"):
         assert leak not in text
 
@@ -85,3 +86,18 @@ def test_parse_answers_duplicate_and_prose():
         blind.parse_answers(TABLE + "| q1 | 2 | | |\n| q1 | 3 | | |")
     got = blind.parse_answers("결과입니다.\n\n" + TABLE + "|  q1 |  2  | s0 |  |\n끝.")
     assert list(got) == ["q1"] and got["q1"]["answer"] == "2" and got["q1"]["objection"] == ""
+
+
+@pytest.mark.parametrize("field, value", [("concept", "다른 개념"), ("slide", "S1 p3")])
+def test_status_invalidates_changed_objective(tmp_path, field, value):
+    src = fixture_src(tmp_path)
+    ledger = _ok_ledger(tmp_path, src)
+    path = src / "objectives.json"
+    d = json.loads(path.read_text(encoding="utf-8"))
+    o = d["objectives"][1]
+    if field == "slide":
+        o["source"]["slide"] = value
+    else:
+        o[field] = value
+    path.write_text(json.dumps(d, ensure_ascii=False), encoding="utf-8")
+    assert blind.status(src, ledger) == ["q2: 수정됨"]

@@ -48,8 +48,12 @@ def load_source(src: Path) -> dict:
         raise BuildError(f"팩이 없어 근거가 없습니다: {src.parent / '자료_복습팩'}")
     for name in ("manifest.json", "stt-summary.md"):
         if _paths.find_nfc(pack, name) is None:
-            raise BuildError(f"팩이 없어 근거가 없습니다: {pack / name}")
+            raise BuildError(f"팩이 없어 근거가 없습니다: {pack / name} ({name} 없음)")
     manifest = json.loads(_paths.find_nfc(pack, "manifest.json").read_text(encoding="utf-8"))
+    for key in ("range", "slug"):
+        if objectives_doc.get(key) != manifest.get(key):
+            raise BuildError(f"objectives.json 의 {key} {objectives_doc.get(key)!r} 가 "
+                             f"manifest 의 {key} {manifest.get(key)!r} 와 달라요")
     objectives = objectives_doc["objectives"]
     known = {o["id"] for o in objectives}
     for item in items_doc["items"]:
