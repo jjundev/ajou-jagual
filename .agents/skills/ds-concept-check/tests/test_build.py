@@ -16,6 +16,8 @@ def test_build_writes_root_html(tmp_path):
     assert "확인문제 9999" in page and page.count('class="card"') == 3
     assert interaction.build_model(page, "x")["errors"] == []
     assert "<p><p>" not in page
+    assert '<strong class="brand">확인문제</strong>' in page
+    assert '<strong class="brand">복습문제</strong>' not in page
 
 
 def test_build_finds_nfd_pack_dir(tmp_path):
@@ -55,3 +57,10 @@ def test_page_values_are_escaped(tmp_path):
     page = build.render_page(root / ".pack/자료_확인문제_9999_Mini")
     assert "A&amp;B &quot;C&quot; 확인문제 9999" in page
     assert 'A&B "C" 확인문제' not in page
+
+
+@pytest.mark.parametrize("text", ["<header>없음</header>",
+                                  '<strong class="brand">복습문제</strong>' * 2])
+def test_swap_brand_needs_exactly_one_anchor(text):
+    with pytest.raises(build.BuildError, match="brand"):
+        build.swap_brand(text)

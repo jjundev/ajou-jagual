@@ -16,6 +16,18 @@ class BuildError(RuntimeError):
     pass
 
 
+BRAND_ANCHOR = '<strong class="brand">복습문제</strong>'
+BRAND = '<strong class="brand">확인문제</strong>'
+
+
+def swap_brand(page: str) -> str:
+    """복습문제 템플릿 상단 바 brand 를 확인문제로. 앵커가 정확히 한 번이 아니면 멈춘다."""
+    n = page.count(BRAND_ANCHOR)
+    if n != 1:
+        raise BuildError(f"템플릿 상단 바 brand 앵커가 {n}번 있어요(정확히 1번이어야 해요): {BRAND_ANCHOR}")
+    return page.replace(BRAND_ANCHOR, BRAND)
+
+
 def output_name(range_: str, slug: str) -> str:
     return f"확인문제_{range_}_{slug}.html"
 
@@ -63,7 +75,7 @@ def render_page(src: Path) -> str:
         PARTS=f'<section id="check"><h2>확인문제</h2>{cards}</section>',
         FOOTER="<p>Claude가 강의 근거로 만든 문항이에요. 근거: 강의록·수업 녹음 요약.</p>",
         SCRIPTS="", RANGE=assemble.esc(f"{range_}-확인")))
-    return interaction.install(page, output_name(range_, slug).removesuffix(".html"))
+    return interaction.install(swap_brand(page), output_name(range_, slug).removesuffix(".html"))
 
 
 def build(src: Path) -> Path:

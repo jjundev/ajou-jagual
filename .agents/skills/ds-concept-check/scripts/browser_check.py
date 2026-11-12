@@ -188,7 +188,7 @@ def check(html: Path, out: Path, shots: Path | None, *, src: Path, serve_root: P
     if not html.is_relative_to(root):
         raise ValueError(f"HTML 이 서버 루트 밖에 있습니다: {html} (루트 {root})")
     items = build.load_source(src)["items"]
-    report = {"html": str(html), "sha256": sha256(html), "viewports": [f"{w}x{h}" for w, h in viewports],
+    report = {"html": html.relative_to(root).as_posix(), "sha256": sha256(html), "viewports": [f"{w}x{h}" for w, h in viewports],
               "themes": list(themes), "runs": [], "failures": []}
     if shots is not None:
         shots = Path(shots)
