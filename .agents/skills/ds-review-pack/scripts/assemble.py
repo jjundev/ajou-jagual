@@ -120,7 +120,22 @@ def assemble(run_dir: Path | str, out_dir: Path | str) -> tuple[Path, Path]:
         dest.mkdir(parents=True, exist_ok=True)
         for t in traces:
             shutil.copyfile(t, dest / t.name)
+    copy_pack_sources(run_dir, out_dir)
     return note_path, review_path
+
+
+def copy_pack_sources(run_dir: Path, out_dir: Path) -> None:
+    """확인문제(ds-concept-check)가 근거로 읽는 manifest.json·stt-summary.md 를 .pack/자료_복습팩/ 에 쓴다.
+
+    요약은 summaries/stt-*.md 를 이름(날짜)순으로 이어 붙인다. 요약이 없으면 기존 stt-summary.md 를 그대로 둔다.
+    """
+    dest = Path(out_dir) / ".pack" / "자료_복습팩"
+    dest.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(Path(run_dir) / "manifest.json", dest / "manifest.json")
+    parts = sorted(Path(run_dir).glob("summaries/stt-*.md"))
+    if parts:
+        text = "\n\n---\n\n".join(p.read_text(encoding="utf-8").rstrip("\n") for p in parts) + "\n"
+        (dest / "stt-summary.md").write_text(text, encoding="utf-8")
 
 
 def main(argv: list[str] | None = None) -> int:
