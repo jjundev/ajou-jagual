@@ -165,15 +165,18 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
     if shots is not None:
         shot = shots / f"{tag}-last.png"
         run.step("스크린샷 마지막 화면", lambda: (page.wait_for_timeout(SETTLE_MS), page.screenshot(path=str(shot))))
+    if page.locator("#solved-btn").is_visible():  # 푼 문제 표시를 눌러 둬도 새로고침하면 사라져야 한다
+        run.step("푼 문제로 표시", lambda: page.locator("#solved-btn").click())
     run.step("새로고침", lambda: page.reload(wait_until="load"))
+    progress = (page.locator("#progress-n").text_content() or "").strip()
+    run.expect(progress == "0", f"새로고침 뒤 푼 문제 수가 {progress} (기대 0)")
     run.expect(page.locator(".review-choice[data-selected='true']").count() == 0, "새로고침 뒤 선택 남음")
     values = run.step("새로고침 뒤 입력값 읽기", lambda: page.locator(".short-input input[type=text]").evaluate_all(
         "els => els.map(e => e.value)")) or []
     run.expect(all(v == "" for v in values), f"새로고침 뒤 입력값 남음: {values}")
     saved = run.step("새로고침 뒤 진행 기록 읽기", lambda: page.evaluate(
-        "Object.keys(localStorage).filter(k => k.startsWith('od-review-solved:'))"
-        ".map(k => JSON.parse(localStorage.getItem(k))).flat()")) or []
-    run.expect(saved == [], f"답한 문항이 진행 기록으로 저장됨: {saved}")
+        "Object.keys(localStorage).filter(k => k.startsWith('od-review-solved:'))")) or []
+    run.expect(saved == [], f"진행 기록이 localStorage 에 남음: {saved}")
     return {"items_checked": checked, "items": len(items)}
 
 

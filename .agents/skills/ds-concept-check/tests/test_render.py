@@ -57,3 +57,21 @@ def test_option_text_is_escaped():
 def test_install_boots_without_storage():
     out = interaction.install(TEMPLATE_WITH_CARD, "확인문제_t")
     assert "storage = null" in out and "review-interaction-model" in out
+
+
+def _setup_review(page: str) -> str:
+    begin = page.index("function setupReview()")
+    return page[begin:page.index("function setupNote()", begin)]
+
+
+def test_install_drops_solved_progress_persistence():
+    section = _setup_review(interaction.install(TEMPLATE_WITH_CARD, "확인문제_t"))
+    assert "store.get(KEY" not in section and "store.set(KEY" not in section
+    assert "solved.add(curId)" in section  # 푼 문제 버튼은 메모리에서 그대로 동작
+
+
+def test_install_rejects_unknown_solved_store_shape():
+    import pytest
+    broken = TEMPLATE_WITH_CARD.replace("store.set(KEY, Array.from(solved));", "save(solved);")
+    with pytest.raises(ValueError):
+        interaction.install(broken, "확인문제_t")

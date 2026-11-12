@@ -186,7 +186,23 @@ def patch_review_shell(source: str) -> str:
         if section.count(needle) != 1:
             raise ValueError('setupReview 완료 상태 연결 구조 불일치')
         section = section.replace(needle, needle + '\n          if (detail.restored && detail.selected !== null) return;')
+    section = drop_solved_persistence(section)
     return source[:begin] + section + source[end:]
+
+
+SOLVED_LOAD = "new Set(store.get(KEY, []).filter("
+SOLVED_SAVE = "          store.set(KEY, Array.from(solved));\n"
+SOLVED_MARK = "// concept-check: 푼 문제 기록은 저장하지 않는다"
+
+
+def drop_solved_persistence(section: str) -> str:
+    """setupReview 의 '푼 문제' 기록을 메모리에만 둔다(새로고침하면 진행 초기화). 테마 저장은 그대로."""
+    if SOLVED_MARK in section:
+        return section
+    if section.count(SOLVED_LOAD) != 1 or section.count(SOLVED_SAVE) != 1:
+        raise ValueError('setupReview 푼 문제 저장 구조 불일치')
+    section = section.replace(SOLVED_LOAD, "new Set([].filter(")
+    return section.replace(SOLVED_SAVE, "          " + SOLVED_MARK + "\n")
 
 
 def install(source: str, document_id: str, overrides: dict | None = None, strict: bool = True) -> str:
