@@ -44,3 +44,19 @@ def nfd_path(root, rel: str):
         hit = next((c for c in path.iterdir() if unicodedata.normalize("NFC", c.name) == want), None)
         path = hit if hit is not None else path / part
     return path
+
+
+def fixture_src(tmp_path):
+    """복사한 픽스처의 .pack/자료_확인문제_9999_Mini 경로(실제 디스크 철자)."""
+    return nfd_path(copy_fixture(tmp_path), ".pack/자료_확인문제_9999_Mini")
+
+
+def mutated_fixture(tmp_path, mutate):
+    """items.json 을 읽어 mutate(dict) 로 고친 뒤 되써서 src 경로를 돌려준다."""
+    import json
+    src = fixture_src(tmp_path)
+    path = src / "items.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    mutate(doc)
+    path.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
+    return src
