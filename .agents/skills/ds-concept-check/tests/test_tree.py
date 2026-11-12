@@ -1,4 +1,4 @@
-import _util  # noqa: F401  (scripts/ 를 sys.path 에 넣는다)
+import concept_util  # noqa: F401  (scripts/ 를 sys.path 에 넣는다)
 import tree
 
 T = ["A", "B", "C", "D", "E", None, "F"]          # A(B(D,E), C(-,F))
