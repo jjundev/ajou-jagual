@@ -227,10 +227,6 @@ class TestFragments(unittest.TestCase):
             trace_figs.render(self.t, "pdf")
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class TestVerify(unittest.TestCase):
     def setUp(self):
         self.t = trace_figs.load(FIXTURES / "trace" / "inorder-1105.json")
@@ -289,3 +285,70 @@ class TestVerify(unittest.TestCase):
         r = subprocess.run([sys.executable, str(SCRIPTS / "trace_figs.py"), "verify", str(f), "--traces", str(self.dir)],
                            capture_output=True, text=True)
         self.assertEqual((r.returncode, r.stdout.strip()), (1, "trace-stale inorder-1105"))
+
+
+class TestMalformed(unittest.TestCase):
+    def setUp(self):
+        self.t = trace_figs.load(FIXTURES / "trace" / "inorder-1105.json")
+
+    def _codes(self, mutate):
+        t = copy.deepcopy(self.t)
+        mutate(t)
+        return trace_figs.lint(t)
+
+    def test_non_dict_values_never_raise(self):
+        for value in (None, 1, "x", [], [1], True, 1.5):
+            self.assertEqual(trace_figs.lint(value), ["not-object"])
+
+    def test_step_text_missing_or_not_str(self):
+        self.assertIn("text", self._codes(lambda t: t["steps"][0].pop("text")))
+        self.assertIn("text", self._codes(lambda t: t["steps"][0].update(text=5)))
+
+    def test_structure_id_must_be_unique_str(self):
+        self.assertIn("structure-id", self._codes(lambda t: t["structures"][0].update(id=[1])))
+        self.assertIn("structure-id", self._codes(lambda t: t["structures"].append(copy.deepcopy(t["structures"][0]))))
+        self.assertIn("structure-id", self._codes(lambda t: t["structures"].append(5)))
+
+    def test_unhashable_refs_do_not_raise(self):
+        def root(t): t["structures"][0]["root"] = ["a"]
+        def child(t): t["structures"][0]["nodes"][next(iter(t["structures"][0]["nodes"]))]["l"] = {"x": 1}
+        def done(t):
+            for s in t["steps"]:
+                for v in s.get("state", {}).values():
+                    if isinstance(v, dict):
+                        v["done"] = [["a"]]
+                        return
+        def changed(t):
+            for s in t["steps"]:
+                for v in s.get("state", {}).values():
+                    if isinstance(v, dict):
+                        v["changed"] = [1]
+                        return
+        for m in (root, child, done, changed):
+            self.assertIn("bad-ref", self._codes(m))
+
+    def test_cyclic_tree_is_not_a_tree_and_does_not_hang(self):
+        def cyc(t):
+            nodes = t["structures"][0]["nodes"]
+            root = t["structures"][0]["root"]
+            nodes[root]["l"] = root
+        self.assertIn("not-a-tree", self._codes(cyc))
+
+    def test_shared_child_is_not_a_tree(self):
+        def shared(t):
+            nodes = t["structures"][0]["nodes"]
+            root = t["structures"][0]["root"]
+            nodes[root]["l"] = nodes[root]["r"] = next(k for k in nodes if k != root)
+        self.assertIn("not-a-tree", self._codes(shared))
+
+    def test_verify_on_malformed_json_is_stale(self):
+        d = Path(tempfile.mkdtemp())
+        self.addCleanup(__import__("shutil").rmtree, d, True)
+        h = trace_figs.render(self.t, "note")
+        for payload in ("[]", "5", "null"):
+            (d / "inorder-1105.json").write_text(payload, encoding="utf-8")
+            self.assertEqual(trace_figs.verify(h, d), [("trace-stale", "inorder-1105")], payload)
+
+
+if __name__ == "__main__":
+    unittest.main()

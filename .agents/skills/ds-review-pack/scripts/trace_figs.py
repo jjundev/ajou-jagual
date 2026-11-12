@@ -48,6 +48,27 @@ def _tree_nodes(struct: dict) -> dict:
     return nodes if isinstance(nodes, dict) else {}
 
 
+def _is_ref(ref) -> bool:
+    return ref is None or isinstance(ref, str)
+
+
+def _walks_as_tree(struct: dict, nodes: dict) -> bool:
+    """루트에서 걸어 같은 노드를 두 번 만나지 않으면 True(순환·공유 자식이면 False)."""
+    seen: set = set()
+    todo = [struct.get("root")]
+    while todo:
+        cur = todo.pop()
+        if cur is None or not isinstance(cur, str) or cur not in nodes:
+            continue
+        if cur in seen:
+            return False
+        seen.add(cur)
+        children = nodes[cur]
+        if isinstance(children, dict):
+            todo += [children.get("l"), children.get("r")]
+    return True
+
+
 def _lint_structure(struct, codes: list[str]) -> None:
     kind = struct.get("kind") if isinstance(struct, dict) else None
     if kind not in KINDS:
@@ -61,12 +82,20 @@ def _lint_structure(struct, codes: list[str]) -> None:
         for children in nodes.values():
             if isinstance(children, dict):
                 refs += [children.get("l"), children.get("r")]
-        if any(ref is not None and ref not in nodes for ref in refs):
+        if not all(_is_ref(ref) for ref in refs):
+            codes.append("bad-ref")
+        elif any(ref is not None and ref not in nodes for ref in refs):
             codes.append("missing-node")
+        elif not _walks_as_tree(struct, nodes):
+            codes.append("not-a-tree")
     elif kind == "array":
         size = struct.get("size")
         if isinstance(size, int) and size > MAX_CELLS:
             codes.append("too-many-cells")
+
+
+def _as_list(value) -> list:
+    return value if isinstance(value, list) else []
 
 
 def _lint_state(struct: dict, state, codes: list[str]) -> None:
@@ -74,10 +103,12 @@ def _lint_state(struct: dict, state, codes: list[str]) -> None:
     if kind == "bintree" and isinstance(state, dict):
         nodes = _tree_nodes(struct)
         null_at = state.get("null_at")
-        refs = [state.get("cur")] + list(state.get("done") or []) + list(state.get("changed") or [])
+        refs = [state.get("cur")] + _as_list(state.get("done")) + _as_list(state.get("changed"))
         if isinstance(null_at, dict):
             refs.append(null_at.get("node"))
-        if any(ref is not None and ref not in nodes for ref in refs):
+        if not all(_is_ref(ref) for ref in refs):
+            codes.append("bad-ref")
+        elif any(ref is not None and ref not in nodes for ref in refs):
             codes.append("missing-node")
     elif kind == "array" and isinstance(state, dict):
         values = state.get("values")
@@ -85,8 +116,10 @@ def _lint_state(struct: dict, state, codes: list[str]) -> None:
             codes.append("too-many-cells")
 
 
-def lint(trace: dict) -> list[str]:
-    """오류 코드 목록(처음 발견한 순서, 중복 없음). 빈 목록이면 통과. 던지지 않는다."""
+def lint(trace) -> list[str]:
+    """오류 코드 목록(처음 발견한 순서, 중복 없음). 빈 목록이면 통과. 어떤 JSON 값에도 던지지 않는다."""
+    if not isinstance(trace, dict):
+        return ["not-object"]
     codes: list[str] = []
     if trace.get("version") != VERSION:
         codes.append("version")
@@ -99,7 +132,13 @@ def lint(trace: dict) -> list[str]:
     for struct in structs if isinstance(structs, list) else []:
         _lint_structure(struct, codes)
         if isinstance(struct, dict):
-            by_id[struct.get("id")] = struct
+            sid = struct.get("id")
+            if not isinstance(sid, str) or sid in by_id:
+                codes.append("structure-id")
+            else:
+                by_id[sid] = struct
+        else:
+            codes.append("structure-id")
 
     steps = trace.get("steps")
     steps = steps if isinstance(steps, list) else []
@@ -112,7 +151,10 @@ def lint(trace: dict) -> list[str]:
     for step in steps:
         if not isinstance(step, dict):
             continue
-        if "$" in str(step.get("text", "")):
+        text = step.get("text")
+        if not isinstance(text, str):
+            codes.append("text")
+        elif "$" in text:
             codes.append("dollar")
         state = step.get("state")
         for sid, value in (state if isinstance(state, dict) else {}).items():
@@ -567,7 +609,7 @@ def verify(html: str, traces_dir: Path) -> list[tuple[str, str]]:
             continue
         try:
             want_block, want_script = _split_fragment(render(load(json_path), target), tid)
-        except (TraceError, ValueError, OSError):
+        except (TraceError, ValueError, OSError, KeyError, TypeError, AttributeError):
             out.append(("trace-stale", tid))
             continue
         marker = f"<!-- /trace {tid} -->"

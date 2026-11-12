@@ -142,10 +142,6 @@ class TestManifest(unittest.TestCase):
         self.assertEqual(manifest.fig_dir_name("0101-0102"), "figures_0101-0102")
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 class TestRules(unittest.TestCase):
     def test_rules_optional_and_list_of_str(self):
         m = mini()
@@ -158,3 +154,7 @@ class TestRules(unittest.TestCase):
             m = mini()
             m["rules"] = bad
             self.assertTrue(manifest.validate(m), bad)
+
+
+if __name__ == "__main__":
+    unittest.main()

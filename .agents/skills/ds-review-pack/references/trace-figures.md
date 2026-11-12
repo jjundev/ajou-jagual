@@ -25,9 +25,9 @@
 - `key: true` 는 대표 단계다.
 
 ## 한도
-단계 40개 이하, 트리 노드 31개 이하, 배열 칸 20개 이하, `key` 단계 2~4개. lint 오류 코드: `version`, `id`, `no-steps`, `too-many-steps`, `unknown-kind`, `unknown-structure`, `missing-node`, `too-many-nodes`, `too-many-cells`, `key-count`, `dollar`.
+단계 40개 이하, 트리 노드 31개 이하, 배열 칸 20개 이하, `key` 단계 2~4개. lint 오류 코드: `version`, `id`, `no-steps`, `too-many-steps`, `unknown-kind`, `unknown-structure`, `missing-node`, `too-many-nodes`, `too-many-cells`, `key-count`, `dollar`, `not-object`(최상위가 객체 아님), `text`(단계 `text` 없음·문자열 아님), `structure-id`(구조 `id` 가 유일한 문자열 아님), `bad-ref`(노드 참조·`done`·`changed` 가 문자열 아님), `not-a-tree`(루트에서 걸을 때 같은 노드를 다시 만남: 순환·공유 자식). lint 는 어떤 JSON 값에도 예외를 던지지 않는다.
 
 ## 조각과 검사
 - 조각은 `data-trace`, `data-trace-sha`(정규 JSON 해시 앞 12자)로 도장이 찍힌다. id 는 `trace-<id>-s<n>`, `trace-<id>-k<n>`, `widget-trace-<id>`(재생기), `widget-trace-<id>-static-<n>`, `widget-trace-<id>-ui` 다.
 - 재생기(`widget-trace-*`)는 팩의 위젯 0~2개 한도에 세지 않는다.
-- JSON 은 조립 때 `.pack/자료_복습팩/traces/` 로 복사된다. `check_html.py` 코드: `trace-missing`(JSON 없음), `trace-stale`(조각이 JSON 을 다시 render 한 결과와 다름), `trace-required`(manifest `rules` 에 `trace-v1` 이 있는데 formal 의 5단계 이상 `ol.steps` 에 `data-trace` 없음).
+- JSON 은 조립 때 `.pack/자료_복습팩/traces/` 로 복사된다. `check_html.py` 코드: `trace-missing`(JSON 없음), `trace-stale`(조각이 JSON 을 다시 render 한 결과와 다름. JSON 을 읽을 수 없거나 lint 에 실패해도 같다), `trace-required`(manifest `rules` 에 `trace-v1` 이 있는데 formal 의 5단계 이상 `ol.steps` 가 생성된 `div.trace-block` 안에 있지 않음. 손으로 쓴 `data-trace` 속성은 면제되지 않는다).
