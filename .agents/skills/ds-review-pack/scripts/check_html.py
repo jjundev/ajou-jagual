@@ -48,6 +48,8 @@ RECORDING_LOCATOR_RE = re.compile(
     r"|(?<!\d)\d{4}\s+\d{1,2}:\d{2}(?::\d{2})?",
     re.IGNORECASE,
 )
+# 인용 끝 수업 날짜 꼬리표: "…" (1112), "…" (1112 수업). 날짜는 토픽 머리의 tag date 가 맡는다.
+QUOTE_DATE_RE = re.compile(r"[（(]\s*\d{4}(?:\s*수업)?\s*[)）]\s*$")
 
 
 def is_remote(url: str) -> bool:
@@ -79,6 +81,7 @@ class Doc:
     widgets: dict[str, set[str]] = field(default_factory=dict)
     scripts_by_id: dict[str, str] = field(default_factory=dict)
     body_text: str = ""
+    quotes: list[str] = field(default_factory=list)
 
 
 class _Parser(HTMLParser):
@@ -89,6 +92,7 @@ class _Parser(HTMLParser):
         self.stack: list[tuple[str, str | None, str | None, str | None, str | None]] = []
         self.raw_tag: str | None = None
         self.script_id: str | None = None
+        self.quote_depth = 0
 
     def _context(self) -> tuple[str | None, str | None, str | None]:
         if not self.stack:
@@ -144,6 +148,10 @@ class _Parser(HTMLParser):
                 self.doc.scripts_by_id[self.script_id] = ""
         if tag in BLOCK_TAGS:
             self._emit("\n")
+        if tag == "blockquote":
+            if self.quote_depth == 0:
+                self.doc.quotes.append("")
+            self.quote_depth += 1
         if tag not in VOID_TAGS:
             self.stack.append((tag, sec, con, wid, part))
 
@@ -158,6 +166,8 @@ class _Parser(HTMLParser):
             self.script_id = None
         if tag in BLOCK_TAGS:
             self._emit("\n")
+        if tag == "blockquote" and self.quote_depth:
+            self.quote_depth -= 1
         for i in range(len(self.stack) - 1, -1, -1):
             if self.stack[i][0] == tag:
                 del self.stack[i:]
@@ -181,6 +191,8 @@ class _Parser(HTMLParser):
             return
         sec, con, _ = self._context()
         self.doc.body_text += data
+        if self.quote_depth:
+            self.doc.quotes[-1] += data
         if sec:
             self.doc.section_text[sec] += data
         if con:
@@ -252,6 +264,8 @@ def check_common(doc: Doc, source: str, path: Path) -> list[Problem]:
     if is_note:
         out += [Problem("recording-locator", name, match.group(0))
                 for match in RECORDING_LOCATOR_RE.finditer(doc.body_text)]
+        out += [Problem("quote-date", name, q.strip()[-40:])
+                for q in doc.quotes if QUOTE_DATE_RE.search(q)]
     if doc.lang != "ko":
         out.append(Problem("lang", name, f"<html lang> = {doc.lang!r}"))
     out += [Problem("duplicate-id", name, i) for i in sorted(doc.duplicate_ids)]

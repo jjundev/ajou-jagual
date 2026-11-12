@@ -40,6 +40,20 @@ class TestPrimitives(unittest.TestCase):
                '</article></body></html>')
         self.assertEqual(check_html.check_common(check_html.parse_html(src), src, Path('note.html')), [])
 
+    def test_note_rejects_date_tag_at_quote_end(self):
+        for quote in ('"메모리가 여왕벌이구나." (1112)', '“말씀” （1112）', '말씀 ( 1112 ) ', '말씀. (1109 수업)'):
+            with self.subTest(quote=quote):
+                src = f'<html lang="ko"><body><article class="topic" id="t"><blockquote>{quote}</blockquote></article></body></html>'
+                codes = [p.code for p in check_html.check_common(check_html.parse_html(src), src, Path('note.html'))]
+                self.assertIn('quote-date', codes)
+
+    def test_note_allows_date_outside_quote_end(self):
+        src = ('<html lang="ko"><body><article class="topic" id="t">'
+               '<span class="tag date">1112 수업</span>'
+               '<blockquote>"1112년에는 (1112) 이런 일이 있었다"</blockquote></article>'
+               '<footer>출처: 수업 녹음 전사(1112).</footer></body></html>')
+        self.assertEqual(check_html.check_common(check_html.parse_html(src), src, Path('note.html')), [])
+
     def test_review_is_not_subject_to_note_recording_policy(self):
         src = '<html lang="ko"><body><article class="card" id="p1">(1105 Part 05)</article></body></html>'
         self.assertEqual(check_html.check_common(check_html.parse_html(src), src, Path('review.html')), [])
