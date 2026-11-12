@@ -62,3 +62,20 @@ def test_find_nfc(tmp_path):
     got = _paths.find_nfc(tmp_path, "자료_복습팩")
     assert got is not None and got.is_dir()
     assert _paths.find_nfc(tmp_path, "없음") is None
+
+
+def test_steps_per_op():
+    assert tree.steps({"op": "preorder"}, T) == 6
+    assert tree.steps({"op": "node_count"}, T) == 6
+    assert tree.steps({"op": "evaluate"}, NUM) == 3
+    assert tree.steps({"op": "height"}, T) == 3
+    assert tree.steps({"op": "lecture_number", "arg": "F"}, T) == 3
+    assert tree.steps({"op": "parent_index", "arg": 13}, None) == 1
+
+
+def test_every_op_has_steps():
+    specs = {"lecture_number": {"arg": "A"}, "parent_index": {"arg": 5},
+             "left_index": {"arg": 5}, "right_index": {"arg": 5}}
+    for op in tree.OPS:
+        t = NUM if op == "evaluate" else T
+        assert tree.steps(dict(specs.get(op, {}), op=op), t) >= 1, op

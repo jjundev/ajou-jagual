@@ -17,6 +17,12 @@ NEG_WORDS = ("않은", "아닌", "틀린", "옳지")
 STRICT_KINDS = ("절차 결과", "규칙 적용")
 SOURCE_PREFIXES = ("stt:", "note:", "bank:")
 DUP_WINDOW = 20
+# 걸음 상한([steps]). 순서열 op 는 "sequence" 줄을 쓴다.
+STEP_CAPS = {"sequence": 7, "evaluate": 3, "height": 4, "node_count": 7, "lecture_number": 4}
+DEFAULT_STEP_CAP = 3
+# 순서열 객관식 구별 거리([distance]): 오답마다 이 칸 안에서 갈리고, 하나는 이 칸 이후에 갈린다.
+DIST_MAX = 3
+DIST_LATE = 2
 
 
 def _text(html: str) -> str:
@@ -78,6 +84,47 @@ def _nospace(s: str) -> str:
     return re.sub(r"\s+", "", s or "")
 
 
+def _step_cap(op: str) -> int:
+    if op in treemod.SEQUENCE_OPS:
+        return STEP_CAPS["sequence"]
+    return STEP_CAPS.get(op, DEFAULT_STEP_CAP)
+
+
+def _tokens(value) -> list[str]:
+    return [t.strip() for t in str(value).split(",") if t.strip()]
+
+
+def _first_diff(a: list[str], b: list[str]) -> int | None:
+    for k, (x, y) in enumerate(zip(a, b), 1):
+        if x != y:
+            return k
+    return None if len(a) == len(b) else min(len(a), len(b)) + 1
+
+
+def _distance_problems(opts: list[dict], answer: str) -> list[str]:
+    """순서열 객관식 보기의 구별 거리 문제를 설명 문장으로 돌려준다."""
+    out: list[str] = []
+    missing = [o.get("id") for o in opts if not str(o.get("value") or "").strip()]
+    if missing:
+        return [f"순서열 객관식은 모든 보기에 value 가 있어야 해요(빠진 보기 {', '.join(map(str, missing))})."]
+    right = _tokens(next(o for o in opts if o.get("id") == answer)["value"])
+    diffs = []
+    for o in opts:
+        if o.get("id") == answer:
+            continue
+        mine = _tokens(o["value"])
+        if sorted(mine) != sorted(right) or mine == right:
+            out.append(f"오답 보기 {o.get('id')} value 는 정답과 같은 노드를 다른 순서로 적어야 해요.")
+            continue
+        k = _first_diff(right, mine)
+        diffs.append(k)
+        if k > DIST_MAX:
+            out.append(f"오답 보기 {o.get('id')} 는 정답과 {k}번째 칸에서야 갈려요. {DIST_MAX}칸 안에서 갈리게 해 주세요.")
+    if diffs and max(diffs) < DIST_LATE:
+        out.append(f"모든 오답이 첫 칸에서 갈려요. 적어도 한 오답은 {DIST_LATE}번째 칸 이후에 갈리게 해 주세요.")
+    return out
+
+
 def check(src: Path) -> list[str]:
     s = load_source(Path(src))
     objectives, items, manifest = s["objectives"], s["items"], s["manifest"]
@@ -113,6 +160,17 @@ def check(src: Path) -> list[str]:
         if not SLIDE_RE.match(slide or ""):
             add("source", o["id"], f"source.slide {slide!r} 형식이 'S7 p8' 또는 'S7 p8–9' 가 아니에요.")
 
+    def _check_steps(add, iid, spec, tree_):
+        try:
+            n = treemod.steps(spec, tree_)
+        except Exception as e:  # noqa: BLE001
+            add("steps", iid, f"걸음 수를 세지 못했어요: {e}")
+            return
+        cap = _step_cap(spec["op"])
+        if n > cap:
+            extra = " 순서열이면 객관식으로 바꿔 첫 갈림만 물어도 돼요." if spec["op"] in treemod.SEQUENCE_OPS else ""
+            add("steps", iid, f"정답까지 {n}걸음이에요. {cap}걸음 이하로 줄여 주세요.{extra}")
+
     cards = _card_texts(s["pack_root"])
     mcq_answers: list[str] = []
     negatives = 0
@@ -125,8 +183,11 @@ def check(src: Path) -> list[str]:
         fmt = it.get("format")
         opts = it.get("options") or []
 
-        if obj.get("kind") in STRICT_KINDS and fmt != "short":
-            add("format", iid, f"'{obj['kind']}' 목표의 문항은 단답(short)이어야 해요.")
+        op = (it.get("compute") or {}).get("op")
+        seq_mcq = fmt == "mcq" and obj.get("kind") == "절차 결과" and op in treemod.SEQUENCE_OPS
+        if obj.get("kind") in STRICT_KINDS and fmt != "short" and not seq_mcq:
+            add("format", iid, f"'{obj['kind']}' 목표의 문항은 단답(short)이어야 해요. "
+                "절차 결과는 순서열 op 객관식도 돼요.")
 
         correct = None
         if fmt == "mcq":
@@ -178,6 +239,7 @@ def check(src: Path) -> list[str]:
                     want = (it.get("answer") or {}).get("canonical")
                     if got != want:
                         add("compute", iid, f"compute 결과 {got!r} 가 answer.canonical {want!r} 와 달라요.")
+                    _check_steps(add, iid, spec, it.get("tree"))
         elif fmt == "mcq" and it.get("compute") and correct is not None:
             spec = it["compute"]
             try:
@@ -187,6 +249,11 @@ def check(src: Path) -> list[str]:
             else:
                 if got != str(correct.get("value")):
                     add("compute", iid, f"compute 결과 {got!r} 가 정답 보기 value {correct.get('value')!r} 와 달라요.")
+                elif spec["op"] in treemod.SEQUENCE_OPS:
+                    for msg in _distance_problems(opts, it["answer"]):
+                        add("distance", iid, msg)
+                else:
+                    _check_steps(add, iid, spec, it.get("tree"))
 
         if stem and _is_dup(stem, cards):
             add("duplicate", iid, "발문이 기존 복습문제 카드와 20자 이상 겹쳐요.")
