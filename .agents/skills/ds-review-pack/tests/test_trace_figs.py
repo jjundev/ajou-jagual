@@ -1,5 +1,6 @@
 import copy
 import json
+import re
 from pathlib import Path
 import tempfile
 import unittest
@@ -63,3 +64,82 @@ class TestLint(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def full_tree(n: int) -> dict:
+    """완전 이진 트리. 키 "1".."n"."""
+    nodes = {}
+    for i in range(1, n + 1):
+        child = {}
+        if 2 * i <= n:
+            child["l"] = str(2 * i)
+        if 2 * i + 1 <= n:
+            child["r"] = str(2 * i + 1)
+        nodes[str(i)] = child
+    return {"id": "t", "kind": "bintree", "root": "1", "nodes": nodes}
+
+
+def single_step_trace(struct: dict) -> dict:
+    return {"version": 1, "id": "one", "structures": [struct],
+            "steps": [{"text": "한 단계예요.", "state": {struct["id"]: {"cur": "1", "done": [], "null_at": None, "changed": []}}}]}
+
+
+def viewbox_width(svg: str) -> float:
+    return float(re.search(r'viewBox="0 0 ([\d.]+) ', svg).group(1))
+
+
+class TestRender(unittest.TestCase):
+    def setUp(self):
+        self.t = trace_figs.load(FIXTURES / "trace" / "inorder-1105.json")
+
+    def test_layout_x_follows_inorder(self):
+        pos = trace_figs.tree_layout(self.t["structures"][0])
+        self.assertEqual(sorted(pos, key=lambda k: pos[k][0]), ["3", "7", "12", "18", "26", "27", "31"])
+        self.assertEqual(pos["27"][1], pos["18"][1] + 3 * 56)
+
+    def test_layout_uses_structure_not_key_order(self):
+        s = {"id": "t", "kind": "bintree", "root": "+", "nodes": {
+            "+": {"l": "*", "r": "/"}, "*": {"l": "a", "r": "b"}, "/": {"l": "c", "r": "d"},
+            "a": {}, "b": {}, "c": {}, "d": {}}}
+        pos = trace_figs.tree_layout(s)
+        self.assertEqual(sorted(pos, key=lambda k: pos[k][0]), ["a", "*", "b", "+", "c", "/", "d"])
+
+    def test_wide_tree_fits_width(self):
+        svg = trace_figs.step_svg(single_step_trace(full_tree(31)), 0, "x")
+        self.assertLessEqual(viewbox_width(svg), 720)
+
+    def test_step_svg_contract(self):
+        svg = trace_figs.step_svg(self.t, 0, "trace-inorder-1105-s1")
+        self.assertNotIn("style=", svg)
+        self.assertEqual(set(re.findall(r'class="([^"]+)"', svg)) - {"fig-ink", "fig-accent", "fig-dot", "fig-text", "fig-muted"}, set())
+        self.assertIn('aria-label="18에서는 왼쪽을 먼저 처리해요.', svg)
+        self.assertIn(">18<", svg)  # 스택 칸
+
+    def test_null_marker(self):
+        i = next(n for n, s in enumerate(self.t["steps"]) if s["state"]["t"].get("null_at"))
+        self.assertIn(">NULL<", trace_figs.step_svg(self.t, i, "x"))
+
+    def test_shadow_order(self):
+        svg = trace_figs.shadow_svg(self.t, "t", "fig-inorder-shadow")
+        self.assertIn("3, 7, 12, 18, 26, 27, 31", svg)
+
+    def test_deterministic_and_stable_viewbox(self):
+        a = [trace_figs.step_svg(self.t, i, "x") for i in range(len(self.t["steps"]))]
+        b = [trace_figs.step_svg(self.t, i, "x") for i in range(len(self.t["steps"]))]
+        self.assertEqual(a, b)
+        self.assertEqual(len({re.search(r'viewBox="[^"]+"', s).group(0) for s in a}), 1)
+
+    def test_text_is_escaped(self):
+        t = copy.deepcopy(self.t)
+        t["steps"][0]["text"] = 'a < b & "c"'
+        svg = trace_figs.step_svg(t, 0, "x", hidden=True)
+        self.assertIn('aria-label="a &lt; b &amp; &quot;c&quot;"', svg)
+        self.assertIn(" hidden>", svg)
+
+    def test_list_structure(self):
+        t = {"version": 1, "id": "l", "structures": [{"id": "ls", "kind": "list", "label": "연결"}],
+             "steps": [{"text": "이어요.", "state": {"ls": {"order": ["a", "b", "c"], "ptr": {"p": "b"}, "edge_changed": [["a", "b"]]}}}]}
+        svg = trace_figs.step_svg(t, 0, "x")
+        self.assertIn(">p<", svg)
+        self.assertIn('class="fig-accent" d="M', svg)
+        self.assertNotIn("style=", svg)
