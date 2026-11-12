@@ -1,47 +1,171 @@
-{"range": "1102", "slug": "Tree", "objectives": [
-  {"id": "o1", "topic_id": "s0-array", "concept": "배열 표현의 인덱스 규칙",
-   "can_do": "강의 번호로 부모·자식 칸 번호와 노드의 칸 번호를 계산한다", "kind": "규칙 적용",
-   "source": {"slide": "S7 p8", "stt": "1절"}},
-  {"id": "o2", "topic_id": "s0-array", "concept": "0번 칸을 쓰지 않는 이유",
-   "can_do": "배열 표현에서 0번을 비우는 까닭을 루트 번호 약속으로 설명한다", "kind": "이유",
-   "source": {"slide": "S7 p8", "stt": "1절"}},
-  {"id": "o3", "topic_id": "s0-array", "concept": "빈칸을 당기지 않는 이유",
-   "can_do": "경사 이진 트리를 배열에 담을 때 빈칸을 그대로 두는 까닭을 설명한다", "kind": "이유",
-   "source": {"slide": "S7 p8", "stt": "1절"}},
-  {"id": "o4", "topic_id": "s0-link", "concept": "링크 표현법의 노드 구조",
-   "can_do": "left·right 링크와 NULL로 트리 모양을 읽는다", "kind": "정의·구별",
-   "source": {"slide": "S7 p8", "stt": "2절"}},
-  {"id": "o5", "topic_id": "s1-traversal", "concept": "VLR·LVR·LRV",
-   "can_do": "세 순회가 루트 V를 방문하는 때로만 갈리고 L이 늘 R보다 먼저임을 구별한다", "kind": "정의·구별",
-   "source": {"slide": "S7 p9", "stt": "3절"}},
-  {"id": "o6", "topic_id": "s1-traversal", "concept": "재귀와 내부 스택",
-   "can_do": "순회가 이용하는 스택이 재귀 호출이 쌓이는 내부 스택임을 설명한다", "kind": "이유",
-   "source": {"slide": "S7 p9", "stt": "3절"}},
-  {"id": "o7", "topic_id": "s1-preorder", "concept": "전위 순회 출력",
-   "can_do": "이진 트리를 전위 순회(VLR)한 방문 순서를 쓴다", "kind": "절차 결과",
-   "source": {"slide": "S7 p10", "stt": "4절"}},
-  {"id": "o8", "topic_id": "s1-inorder", "concept": "수식 트리의 중위 순회",
-   "can_do": "수식 트리를 중위 순회(LVR)한 출력을 쓴다", "kind": "절차 결과",
-   "source": {"slide": "S7 p11", "stt": "5절"}},
-  {"id": "o9", "topic_id": "s1-postorder", "concept": "디렉토리 용량과 후위 순회",
-   "can_do": "디렉토리 용량 계산에 후위 순회(LRV)가 맞는 까닭을 설명한다", "kind": "이유",
-   "source": {"slide": "S7 p12", "stt": "6절"}},
-  {"id": "o10", "topic_id": "s1-levelorder", "concept": "레벨 순회와 표준 순회",
-   "can_do": "큐를 쓰는 레벨 순회를 표준 순회로 보지 않는 까닭을 설명한다", "kind": "이유",
-   "source": {"slide": "S7 p13", "stt": "7절"}},
-  {"id": "o11", "topic_id": "s2-expr-tree", "concept": "수식 트리의 노드",
-   "can_do": "수식 트리의 비단말 노드와 단말 노드에 무엇이 오는지 구별한다", "kind": "정의·구별",
-   "source": {"slide": "S7 p14", "stt": "9절"}},
-  {"id": "o12", "topic_id": "s2-expr-tree", "concept": "수식 트리의 후위 표기",
-   "can_do": "수식 트리를 후위 순회해 후위 표기를 쓴다", "kind": "절차 결과",
-   "source": {"slide": "S7 p14", "stt": "9절"}},
-  {"id": "o13", "topic_id": "s2-evaluate", "concept": "evaluate 계산값",
-   "can_do": "evaluate가 후위 순회로 (x op y)를 계산한 결과값을 구한다", "kind": "절차 결과",
-   "source": {"slide": "S7 p15", "stt": "10절"}},
-  {"id": "o14", "topic_id": "s2-count", "concept": "get_node_count 재귀식",
-   "can_do": "get_node_count가 한 노드에서 돌려주는 값을 재귀식으로 말한다", "kind": "코드 이해",
-   "source": {"slide": "S7 p16", "stt": "11절"}},
-  {"id": "o15", "topic_id": "s2-height", "concept": "get_height 결과",
-   "can_do": "get_height가 max + 1로 돌려주는 높이를 구한다(루트만 있으면 1)", "kind": "절차 결과",
-   "source": {"slide": "S7 p17", "stt": "12절"}}
-]}
+{
+ "range": "1102",
+ "slug": "Tree",
+ "objectives": [
+  {
+   "id": "o1",
+   "topic_id": "s0-array",
+   "concept": "배열 표현의 인덱스 규칙",
+   "can_do": "강의 번호로 부모·자식 칸 번호와 노드의 칸 번호를 계산한다",
+   "kind": "규칙 적용",
+   "source": {
+    "slide": "S7 p8",
+    "stt": "1절"
+   }
+  },
+  {
+   "id": "o2",
+   "topic_id": "s0-array",
+   "concept": "0번 칸을 쓰지 않는 이유",
+   "can_do": "배열 표현에서 0번을 비우는 까닭을 루트 번호 약속으로 설명한다",
+   "kind": "이유",
+   "source": {
+    "slide": "S7 p8",
+    "stt": "1절"
+   }
+  },
+  {
+   "id": "o3",
+   "topic_id": "s0-array",
+   "concept": "빈칸을 당기지 않는 이유",
+   "can_do": "경사 이진 트리를 배열에 담을 때 빈칸을 그대로 두는 까닭을 설명한다",
+   "kind": "이유",
+   "source": {
+    "slide": "S7 p8",
+    "stt": "1절"
+   }
+  },
+  {
+   "id": "o4",
+   "topic_id": "s0-link",
+   "concept": "링크 표현법의 노드 구조",
+   "can_do": "left·right 링크와 NULL로 트리 모양을 읽는다",
+   "kind": "정의·구별",
+   "source": {
+    "slide": "S7 p8",
+    "stt": "2절"
+   }
+  },
+  {
+   "id": "o5",
+   "topic_id": "s1-traversal",
+   "concept": "VLR·LVR·LRV",
+   "can_do": "세 순회가 루트 V를 방문하는 때로만 갈리고 L이 늘 R보다 먼저임을 구별한다",
+   "kind": "정의·구별",
+   "source": {
+    "slide": "S7 p9",
+    "stt": "3절"
+   }
+  },
+  {
+   "id": "o6",
+   "topic_id": "s1-traversal",
+   "concept": "슬라이드가 말한 Stack 구조",
+   "can_do": "순회가 이용하는 스택이 재귀 호출이 쌓이는 내부 스택임을 설명한다",
+   "kind": "이유",
+   "source": {
+    "slide": "S7 p9",
+    "stt": "3절"
+   }
+  },
+  {
+   "id": "o7",
+   "topic_id": "s1-preorder",
+   "concept": "전위 순회 출력",
+   "can_do": "이진 트리를 전위 순회(VLR)한 방문 순서를 쓴다",
+   "kind": "절차 결과",
+   "source": {
+    "slide": "S7 p10",
+    "stt": "4절"
+   }
+  },
+  {
+   "id": "o8",
+   "topic_id": "s1-inorder",
+   "concept": "수식 트리의 중위 순회",
+   "can_do": "수식 트리를 중위 순회(LVR)한 출력을 쓴다",
+   "kind": "절차 결과",
+   "source": {
+    "slide": "S7 p11",
+    "stt": "5절"
+   }
+  },
+  {
+   "id": "o9",
+   "topic_id": "s1-postorder",
+   "concept": "디렉토리 용량 계산 순서",
+   "can_do": "디렉토리 용량 계산에 후위 순회(LRV)가 맞는 까닭을 설명한다",
+   "kind": "이유",
+   "source": {
+    "slide": "S7 p12",
+    "stt": "6절"
+   }
+  },
+  {
+   "id": "o10",
+   "topic_id": "s1-levelorder",
+   "concept": "레벨 순회와 표준 순회",
+   "can_do": "큐를 쓰는 레벨 순회를 표준 순회로 보지 않는 까닭을 설명한다",
+   "kind": "이유",
+   "source": {
+    "slide": "S7 p13",
+    "stt": "7절"
+   }
+  },
+  {
+   "id": "o11",
+   "topic_id": "s2-expr-tree",
+   "concept": "수식 트리의 노드",
+   "can_do": "수식 트리의 비단말 노드와 단말 노드에 무엇이 오는지 구별한다",
+   "kind": "정의·구별",
+   "source": {
+    "slide": "S7 p14",
+    "stt": "9절"
+   }
+  },
+  {
+   "id": "o12",
+   "topic_id": "s2-expr-tree",
+   "concept": "수식 트리의 후위 표기",
+   "can_do": "수식 트리를 후위 순회해 후위 표기를 쓴다",
+   "kind": "절차 결과",
+   "source": {
+    "slide": "S7 p14",
+    "stt": "9절"
+   }
+  },
+  {
+   "id": "o13",
+   "topic_id": "s2-evaluate",
+   "concept": "evaluate 계산값",
+   "can_do": "evaluate가 후위 순회로 (x op y)를 계산한 결과값을 구한다",
+   "kind": "절차 결과",
+   "source": {
+    "slide": "S7 p15",
+    "stt": "10절"
+   }
+  },
+  {
+   "id": "o14",
+   "topic_id": "s2-count",
+   "concept": "get_node_count 재귀식",
+   "can_do": "get_node_count가 한 노드에서 돌려주는 값을 재귀식으로 말한다",
+   "kind": "코드 이해",
+   "source": {
+    "slide": "S7 p16",
+    "stt": "11절"
+   }
+  },
+  {
+   "id": "o15",
+   "topic_id": "s2-height",
+   "concept": "get_height 결과",
+   "can_do": "get_height가 max + 1로 돌려주는 높이를 구한다(루트만 있으면 1)",
+   "kind": "절차 결과",
+   "source": {
+    "slide": "S7 p17",
+    "stt": "12절"
+   }
+  }
+ ]
+}
