@@ -16,6 +16,7 @@ def test_browser_passes_on_fixture(tmp_path):
     out = tmp_path / "b.json"
     result = browser_check.check(html, out, None, src=src, serve_root=tmp_path)
     assert result["failures"] == [] and len(result["runs"]) == 4
+    assert all(run["detail"]["hints_checked"] == 3 for run in result["runs"])
     saved = json.loads(out.read_text(encoding="utf-8"))
     assert saved["sha256"] == result["sha256"]
     # 기기 경로(홈 폴더)를 남기지 않는다: serve_root 기준 상대 POSIX 경로

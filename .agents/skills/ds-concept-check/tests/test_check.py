@@ -37,6 +37,20 @@ def test_rule_fires(tmp_path, mutate, code):
     assert _fires(tmp_path, mutate, code)
 
 
+@pytest.mark.parametrize("mutate", [
+    lambda item: item.pop("hint", None),
+    lambda item: item.update(hint="   "),
+    lambda item: item.update(hint=["첫 단계"]),
+    lambda item: item.update(hint="첫 줄\n둘째 줄"),
+])
+def test_rejects_missing_or_malformed_hint(tmp_path, mutate):
+    assert _fires(tmp_path, lambda d: mutate(d["items"][0]), "[hint] q1:")
+
+
+def test_forbidden_preview_term_in_hint(tmp_path):
+    assert _fires(tmp_path, lambda d: d["items"][0].update(hint="이진 탐색 트리를 떠올려 보세요."), "[forbidden] q1:")
+
+
 def test_negative_ratio(tmp_path):
     assert _fires(tmp_path, lambda d: d["items"][1].update(stem_html="<p>옳지 않은 것은?</p>"), "[negative]")
 

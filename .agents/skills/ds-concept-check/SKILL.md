@@ -16,7 +16,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 **산출물**
 - 공개: `복습노트/<range>/확인문제_<range>_<slug>.html`. 팩 루트에는 이 `.html`만 더한다.
 - 근거(`SRC`): `복습노트/<range>/.pack/자료_확인문제_<range>_<slug>/` — `objectives.json`, `items.json`, `blind-ledger.json`(블라인드 장부), `browser.json`.
-- 화면: 복습문제와 같은 상단 바·좌우 패널, 한 화면 한 문항. 채점하면 오른쪽 패널 풀이 끝에 그 목표의 정리노트 토픽 링크(`정리노트_<range>_<slug>.html#<topic_id>`, 같은 창)가 나온다. 노트로 넘어갔다 돌아오면 답안이 초기화될 수 있다. 목표 근거(쪽 번호·개념 이름)는 화면에 찍지 않는다(링크 문구도 일반 문구). 새로고침하면 답안·푼 문제 수가 초기화되고 테마는 남는다.
+- 화면: 복습문제와 같은 상단 바·좌우 패널, 한 화면 한 문항. 오른쪽 패널의 `힌트 보기`를 채점 전에도 열 수 있다. 채점하면 오른쪽 패널 풀이 끝에 그 목표의 정리노트 토픽 링크(`정리노트_<range>_<slug>.html#<topic_id>`, 같은 창)가 나온다. 노트로 넘어갔다 돌아오면 답안이 초기화될 수 있다. 목표 근거(쪽 번호·개념 이름)는 화면에 찍지 않는다(링크 문구도 일반 문구). 새로고침하면 답안·푼 문제 수·힌트 펼침 상태가 초기화되고 테마는 남는다.
 
 **경로 약속**
 - 명령은 저장소 루트에서 실행한다(경로는 루트 기준 상대 경로). 셸이 다른 폴더에 있으면 같은 경로를 절대 경로로 바꿔 쓴다.
@@ -50,7 +50,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 python3 .agents/skills/ds-concept-check/scripts/check.py SRC
 ```
 - `OK`가 나와야 한다. 아니면 `[코드] <id>: <설명>` 줄을 모두 묶어 같은 작성자에게 되돌린다(SendMessage). 작성자가 고칠 때마다 `RUN/items.json`을 `SRC/items.json`으로 다시 복사한 뒤 check를 다시 돌린다. 이 RUN→SRC 복사는 4단계(작성자 수정)에서만 한다. 최대 2회. 그래도 남으면 메인 에이전트가 고치고 보고에 적는다.
-- 코드 뜻은 item-rules.md의 `[코드]` 표시를 본다(`count`·`topic`·`source`·`format`·`mcq-shape`·`explain`·`title-leak`·`forbidden`·`compute`·`duplicate`·`style`·`balance`·`negative`·`steps`·`distance`).
+- 코드 뜻은 item-rules.md의 `[코드]` 표시를 본다(`count`·`topic`·`source`·`format`·`mcq-shape`·`explain`·`title-leak`·`forbidden`·`compute`·`duplicate`·`style`·`balance`·`negative`·`steps`·`distance`·`hint`). 각 힌트가 문항에 맞는 첫 행동인지, 정답을 드러내는지 직접 검토한다.
 
 ### 5. 빌드
 ```
@@ -62,8 +62,8 @@ python3 .agents/skills/ds-concept-check/scripts/build.py SRC
 ```
 python3 .agents/skills/ds-concept-check/scripts/blind.py make SRC RUN/blind-r1.md
 ```
-- 사본은 학습자 화면과 같은 정보만 담는다. 트리는 그림처럼 `[그림: 트리 — 루트 A; A의 왼쪽 자식 B; …]`(칸 번호·빈 자리 목록 없음)로 적는다. 화면에 없는 목표 근거(쪽 번호·개념 이름)는 넣지 않는다.
-- 장부 해시는 문항과 목표의 `concept`·`source.slide`를 함께 묶는다. 목표 이름이나 쪽을 바꾸면 그 목표의 문항이 `수정됨`이 된다.
+- 사본은 힌트를 접은 상태의 학습자 화면을 기준으로 한다. 트리는 그림처럼 `[그림: 트리 — 루트 A; A의 왼쪽 자식 B; …]`(칸 번호·빈 자리 목록 없음)로 적는다. 화면에 없는 목표 근거(쪽 번호·개념 이름)는 넣지 않는다.
+- 장부 해시는 `hint`를 제외한 문항과 목표의 `concept`·`source.slide`를 함께 묶는다. 목표 이름이나 쪽을 바꾸면 그 목표의 문항이 `수정됨`이 된다.
 - 풀이자에게 [blind-brief.md](references/blind-brief.md) 경로와 그 `---` 사이 브리프를 `<RUN>`·`<회차>`·`<range>`·`<slug>`를 채워 넘긴다. 풀이자가 읽는 것은 그 브리프, `RUN/blind-r<회차>.md`, `복습노트/<range>/.pack/정리노트_<range>_<slug>.md` 셋뿐이다. `SRC`, `items.json`, `objectives.json`, 이전 답안표 경로는 알려 주지 않는다.
 - 풀이자는 `RUN/blind-answers-r<회차>.md`를 쓴다. 기록하고 상태를 본다:
 ```
@@ -77,14 +77,14 @@ python3 .agents/skills/ds-concept-check/scripts/blind.py make SRC RUN/blind-r2.m
 python3 .agents/skills/ds-concept-check/scripts/blind.py record SRC RUN/blind-answers-r2.md SRC/blind-ledger.json --round 2
 python3 .agents/skills/ds-concept-check/scripts/blind.py status SRC SRC/blind-ledger.json
 ```
-- 문항을 고치면 장부의 그 문항 판정은 `수정됨`으로 무효가 된다. `--only`에는 `status`가 `장부에 없음`·`수정됨`으로 낸 문항을 모두 넣는다(답 불일치·이의로 고친 문항은 고친 뒤 `수정됨`이 된다). 재풀이는 최대 2회(r2·r3). r3 뒤에도 `status`에 남은 줄(답 불일치·이의 포함)은 모두 미해결로 보고한다.
+- `hint` 이외의 문항 데이터가 바뀌면 장부의 그 문항 판정은 `수정됨`으로 무효가 된다. `--only`에는 `status`가 `장부에 없음`·`수정됨`으로 낸 문항을 모두 넣는다(답 불일치·이의로 고친 문항은 고친 뒤 `수정됨`이 된다). 재풀이는 최대 2회(r2·r3). r3 뒤에도 `status`에 남은 줄(답 불일치·이의 포함)은 모두 미해결로 보고한다.
 
 ### 7. 브라우저 검사
 ```
 python3 .agents/skills/ds-concept-check/scripts/browser_check.py 복습노트/<range>/확인문제_<range>_<slug>.html --src SRC --out SRC/browser.json --shots RUN/shots
 ```
-- 1280×900·375×812 × light·dark 4회. 객관식 오답→설명→`다시 풀기`→정답, 단답 변형 입력→`자동 일치`, 채점 뒤 풀이의 정리노트 토픽 링크(해시·같은 창), 새로고침 뒤 초기화, 복기 버튼, 콘솔 오류·KaTeX 오류·가로 넘침을 본다. `browser: pass`여야 한다.
-- 스크린샷(`RUN/shots/<폭>x<높이>-<테마>-<첫 문항>.png`, `…-last.png`) 8장을 Read로 직접 열어 겹침·잘림·트리 그림을 확인한다.
+- 1280×900·375×812 × light·dark 4회. 채점 전 힌트 펼치기·풀이 숨김, 객관식 오답→설명→`다시 풀기`→정답, 단답 변형 입력→`자동 일치`, 채점 뒤 풀이의 정리노트 토픽 링크(해시·같은 창), 문항 재방문과 새로고침 뒤 힌트 상태, 복기 버튼, 콘솔 오류·KaTeX 오류·가로 넘침을 본다. `browser: pass`여야 한다.
+- 각 화면 크기와 테마의 스크린샷(`RUN/shots/<폭>x<높이>-<테마>-<첫 문항>.png`, `…-<첫 문항>-hint.png`, `…-last.png`)을 열어 겹침·잘림·트리 그림을 확인한다.
 - HTML을 다시 빌드했으면 이 단계도 다시 한다(`browser.json`에 HTML 해시가 남는다).
 
 ### 8. 팩 배치 검사

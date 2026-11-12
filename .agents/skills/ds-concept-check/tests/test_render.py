@@ -69,6 +69,15 @@ def test_option_text_is_escaped():
     assert interaction.build_model("<body>" + html_ + "</body>", "t")["errors"] == []
 
 
+def test_card_renders_a_closed_hint_before_the_solution():
+    for item in (MCQ, SHORT):
+        html_ = render.card_html(dict(item, hint="x < y인지 & 그림의 경로를 확인해 보세요."), OBJ, 1, NOTE)
+        hint = ('<details class="hint"><summary>힌트 보기</summary>'
+                '<p>x &lt; y인지 &amp; 그림의 경로를 확인해 보세요.</p></details>')
+        assert hint + '<details class="solution">' in html_
+        assert '<details class="hint"' not in render.card_html(item, OBJ, 1, NOTE)
+
+
 def test_install_boots_without_storage():
     out = interaction.install(TEMPLATE_WITH_CARD, "확인문제_t")
     assert "storage = null" in out and "review-interaction-model" in out

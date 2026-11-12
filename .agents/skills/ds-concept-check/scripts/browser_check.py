@@ -5,6 +5,7 @@ CLI: browser_check.py <확인문제 html> --src <자료_확인문제 폴더> --o
 
 - serve_root(기본 저장소 루트)를 127.0.0.1 빈 포트 http.server 로 띄운다(끝나면 끈다).
 - 1280×900·375×812 × light·dark 4회. 매 회 콘솔 error·.katex-error·가로 넘침을 본다.
+- 우측 패널: 채점 전에 현재 문항의 힌트를 열고, 풀이가 가려져 있는지 본다.
 - 객관식: 오답 클릭 → 상태 문구·보기별 설명 → 다시 풀기 → 정답 클릭.
 - 값 입력(short): 허용답의 소문자·공백 변형을 넣고 '답 확인' → 맞음 상태('자동 일치').
 - 새로고침하면 선택·입력이 비어야 한다(저장소 null). 복기 버튼이 있어야 한다.
@@ -114,6 +115,42 @@ class Run:
         self.expect(page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1"), f"{where}: 가로 넘침")
 
 
+def check_hint(run: Run, item: dict, shot: Path | None):
+    page, cid = run.page, item["id"]
+    text = item.get("hint")
+    aid = page.locator(f"#panel-right .aid[data-card-id='{cid}']")
+    hint = aid.locator("details.hint")
+    if not run.expect(hint.count() == int(bool(text)), f"{cid}: 우측 패널의 힌트 개수가 원본과 다름") or not text:
+        return False
+
+    run.go(cid)
+    toggle = page.locator("#toggle-right")
+    was_closed = toggle.get_attribute("aria-expanded") == "false"
+    if was_closed:
+        toggle.click()
+    try:
+        summary = hint.get_by_text("힌트 보기", exact=True)
+        body = hint.locator("p")
+        solution = aid.locator("details.solution")
+        run.expect(hint.get_attribute("open") is None, f"{cid}: 첫 방문에 힌트가 펼쳐져 있음")
+        run.expect(not body.is_visible(), f"{cid}: 접힌 힌트의 내용이 보임")
+        summary.click()
+        shown = body.text_content() or ""
+        run.expect(body.is_visible() and bool(shown.strip()), f"{cid}: 펼친 힌트 내용이 보이지 않음")
+        # KaTeX가 수식을 그리면 텍스트 노드는 원본의 $…$ 문자열과 달라진다.
+        if body.locator(".katex").count() == 0:
+            run.expect(shown == text, f"{cid}: 펼친 힌트가 원본과 다름")
+        run.expect(not solution.is_visible(), f"{cid}: 힌트를 열 때 채점 전 풀이도 보임")
+        run.page_checks(f"{cid} 힌트")
+        if shot is not None:
+            page.screenshot(path=str(shot), animations="disabled")
+    finally:
+        if was_closed:
+            close = page.locator("#panel-right [data-panel-close]")
+            (close if close.is_visible() else toggle).click()
+    return True
+
+
 def check_mcq(run: Run, item: dict):
     page, cid = run.page, item["id"]
     run.go(cid)
@@ -165,7 +202,11 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
     page.goto(url, wait_until="load")
     run.page_checks("시작 화면")
     checked = 0
+    hints_checked = 0
     for n, item in enumerate(items):
+        hint_shot = shots / f"{tag}-{item['id']}-hint.png" if n == 0 and shots is not None else None
+        if run.step(f"{item['id']}: 힌트", lambda: check_hint(run, item, hint_shot)):
+            hints_checked += 1
         fn = check_short if item["format"] == "short" else check_mcq
         if run.step(f"{item['id']}: 조작", lambda fn=fn, item=item: fn(run, item)):
             checked += 1
@@ -180,17 +221,23 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
         run.step("스크린샷 마지막 화면", lambda: (page.wait_for_timeout(SETTLE_MS), page.screenshot(path=str(shot))))
     if page.locator("#solved-btn").is_visible():  # 푼 문제 표시를 눌러 둬도 새로고침하면 사라져야 한다
         run.step("푼 문제로 표시", lambda: page.locator("#solved-btn").click())
+    first_hint = next((item["id"] for item in items if item.get("hint")), None)
+    if first_hint is not None:
+        run.step("힌트 문항 다시 방문", lambda: run.go(first_hint))
+        active_aid = page.locator(f".aid[data-card-id='{first_hint}']:not([hidden])")
+        run.expect(active_aid.locator("details.hint[open]").count() == 1, "다시 방문한 문항의 힌트가 접혀 있음")
     run.step("새로고침", lambda: page.reload(wait_until="load"))
     progress = (page.locator("#progress-n").text_content() or "").strip()
     run.expect(progress == "0", f"새로고침 뒤 푼 문제 수가 {progress} (기대 0)")
     run.expect(page.locator(".review-choice[data-selected='true']").count() == 0, "새로고침 뒤 선택 남음")
+    run.expect(page.locator("details.hint[open]").count() == 0, "새로고침 뒤 힌트가 펼쳐져 있음")
     values = run.step("새로고침 뒤 입력값 읽기", lambda: page.locator(".short-input input[type=text]").evaluate_all(
         "els => els.map(e => e.value)")) or []
     run.expect(all(v == "" for v in values), f"새로고침 뒤 입력값 남음: {values}")
     saved = run.step("새로고침 뒤 진행 기록 읽기", lambda: page.evaluate(
         "Object.keys(localStorage).filter(k => k.startsWith('od-review-solved:'))")) or []
     run.expect(saved == [], f"진행 기록이 localStorage 에 남음: {saved}")
-    return {"items_checked": checked, "items": len(items)}
+    return {"items_checked": checked, "items": len(items), "hints_checked": hints_checked}
 
 
 def check(html: Path, out: Path, shots: Path | None, *, src: Path, serve_root: Path | None = None,

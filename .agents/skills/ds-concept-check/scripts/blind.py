@@ -18,10 +18,11 @@ ID_RE = re.compile(r"^q\d+$")
 
 
 def item_hash(item: dict, objective: dict) -> str:
-    """문항 + 목표 근거(concept·source.slide). 어느 쪽이 바뀌어도 장부가 무효가 된다.
-    근거 줄은 더 이상 화면에 안 보이지만, 기존 장부를 살리려고 해시 입력은 그대로 둔다."""
+    """블라인드 풀이 판정에 쓰는 문항 데이터와 목표 근거를 해시한다.
+    블라인드 사본에서 접혀 있는 힌트는 해시에서 제외한다."""
+    item_for_blind = {key: value for key, value in item.items() if key != "hint"}
     shown = dict(concept=objective.get("concept"), slide=(objective.get("source") or {}).get("slide"))
-    blob = json.dumps(dict(item=item, objective=shown), sort_keys=True, ensure_ascii=False)
+    blob = json.dumps(dict(item=item_for_blind, objective=shown), sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 

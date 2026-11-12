@@ -71,6 +71,23 @@ def test_status_invalidates_changed_item(tmp_path):
     assert lines == ["q2: 수정됨"]
 
 
+def test_adding_hint_preserves_blind_ledger_and_copy(tmp_path):
+    src = mutated_fixture(tmp_path, lambda d: d["items"][0].pop("hint", None))
+    ledger = _ok_ledger(tmp_path, src)
+    copy = tmp_path / "blind.md"
+    blind.make(src, copy)
+    before = copy.read_text(encoding="utf-8")
+
+    path = src / "items.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    doc["items"][0]["hint"] = "같은 부모를 둔 자식의 번호를 나란히 적어 보세요."
+    path.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+
+    blind.make(src, copy)
+    assert copy.read_text(encoding="utf-8") == before
+    assert blind.status(src, ledger) == []
+
+
 def test_status_missing_and_later_round_overwrites(tmp_path):
     src = fixture_src(tmp_path)
     write(tmp_path / "a.md", TABLE + "| q1 | 2 | x | |")

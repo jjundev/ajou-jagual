@@ -180,8 +180,12 @@ def check(src: Path) -> list[str]:
         obj = obj_by_id.get(it["objective"], {})
         stem = _text(it.get("stem_html", ""))
         title = it.get("title", "")
+        hint = it.get("hint")
         fmt = it.get("format")
         opts = it.get("options") or []
+
+        if not isinstance(hint, str) or not hint.strip() or hint.splitlines() != [hint]:
+            add("hint", iid, "hint에 줄바꿈 없이 풀이의 첫 행동을 한 문장으로 써 주세요.")
 
         op = (it.get("compute") or {}).get("op")
         seq_mcq = fmt == "mcq" and obj.get("kind") == "절차 결과" and op in treemod.SEQUENCE_OPS
@@ -218,6 +222,8 @@ def check(src: Path) -> list[str]:
 
         if forbidden:
             bag = [title, stem]
+            if isinstance(hint, str):
+                bag.append(hint)
             for o in opts:
                 bag += [_text(o.get("text", "")), _text(o.get("why", "")), _text(o.get("misconception", ""))]
             bag += [_text(x) for x in it.get("solution", [])]
