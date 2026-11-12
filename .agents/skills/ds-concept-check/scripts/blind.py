@@ -18,15 +18,11 @@ ID_RE = re.compile(r"^q\d+$")
 
 
 def item_hash(item: dict, objective: dict) -> str:
-    """문항 + 화면에 함께 보이는 목표 근거 줄(concept·source.slide). 어느 쪽이 바뀌어도 장부가 무효가 된다."""
+    """문항 + 목표 근거(concept·source.slide). 어느 쪽이 바뀌어도 장부가 무효가 된다.
+    근거 줄은 더 이상 화면에 안 보이지만, 기존 장부를 살리려고 해시 입력은 그대로 둔다."""
     shown = dict(concept=objective.get("concept"), slide=(objective.get("source") or {}).get("slide"))
     blob = json.dumps(dict(item=item, objective=shown), sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
-
-
-def source_line(objective: dict) -> str:
-    """render._problem 이 카드에 찍는 근거 줄과 같은 글."""
-    return f"{(objective.get('source') or {}).get('slide', '')} · 확인: {objective['concept']}"
 
 
 def _plain(html: str) -> str:
@@ -54,7 +50,7 @@ def _card(item: dict, objective: dict) -> str:
     lines = [f"## {item['id']}. {item['title']}", "", _plain(item.get("stem_html", ""))]
     if item.get("tree"):
         lines += ["", _tree_line(item["tree"])]
-    lines += ["", source_line(objective), ""]
+    lines += [""]
     if item["format"] == "mcq":
         lines += [f"{o['id']}. {_plain(o['text'])}" for o in item["options"]]
     else:

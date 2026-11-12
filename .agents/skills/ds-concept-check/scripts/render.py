@@ -27,13 +27,11 @@ def accepted_variants(canonical: str) -> list[str]:
     return out
 
 
-def _problem(item: dict, objective: dict, choices: str) -> str:
+def _problem(item: dict, choices: str) -> str:
     body = item["stem_html"]
     if item.get("tree"):
         svg = tree.tree_svg(item["tree"], f"fig-{item['id']}", f"{item['title']} 트리")
         body += f'<figure class="figure">{svg}</figure>'
-    slide = objective.get("source", {}).get("slide", "")
-    body += f'<p class="source">{esc(slide)} · 확인: {esc(objective["concept"])}</p>'
     # 보기 목록은 .problem 안에 둔다(review-prompt.js problemText 가 .problem 안의 .choices 를 지운다).
     return f'<div class="problem">{body}{choices}</div>'
 
@@ -71,5 +69,5 @@ def card_html(item: dict, objective: dict, number: int) -> str:
     attrs, choices, after, solution = _short(item) if item["format"] == "short" else _mcq(item)
     return (f'<article class="card" id="{esc(item["id"])}" data-objective="{esc(objective["id"])}"{attrs}>'
             f'<h3>Q{number}. {esc(item["title"])}</h3>'
-            + _problem(item, objective, choices) + after
+            + _problem(item, choices) + after
             + f'<details class="solution"><summary>풀이 보기</summary>{solution}</details></article>')

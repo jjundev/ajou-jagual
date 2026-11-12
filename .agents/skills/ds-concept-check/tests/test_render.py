@@ -35,6 +35,14 @@ def test_accepted_variants():
     assert render.accepted_variants("2") == []
 
 
+def test_card_has_no_source_line():
+    """목표 근거(쪽 번호·개념 이름)는 카드에 찍지 않는다."""
+    for item in (MCQ, SHORT):
+        html_ = render.card_html(item, OBJ, 1)
+        assert 'class="source"' not in html_ and "확인:" not in html_
+        assert OBJ["source"]["slide"] not in html_ and OBJ["concept"] not in html_
+
+
 def test_mcq_card_builds_model():
     page = "<html><body><main>" + render.card_html(MCQ, OBJ, 1) + "</main></body></html>"
     m = interaction.build_model(page, "t")

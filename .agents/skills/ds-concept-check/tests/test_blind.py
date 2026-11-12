@@ -22,7 +22,7 @@ def test_make_hides_answers(tmp_path):
     assert "## q2." in text and "A. " in text
     assert "[그림: 트리 — 루트 A; A의 왼쪽 자식 B; A의 오른쪽 자식 C; B의 오른쪽 자식 D]" in text
     assert "(값을 쓰시오)" in text
-    assert "S1 p2 · 확인: 0번 칸을 비우는 이유" in text   # 화면 카드의 근거 줄 그대로
+    assert "확인:" not in text and "S1 p2" not in text   # 근거 줄은 화면에도 사본에도 없다
     for leak in ("why", "정답", "misconception", "B, C, A", "solution", "compute"):
         assert leak not in text
 

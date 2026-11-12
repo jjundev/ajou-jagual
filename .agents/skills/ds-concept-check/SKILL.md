@@ -15,7 +15,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 **산출물**
 - 공개: `복습노트/<range>/확인문제_<range>_<slug>.html`. 팩 루트에는 이 `.html`만 더한다.
 - 근거(`SRC`): `복습노트/<range>/.pack/자료_확인문제_<range>_<slug>/` — `objectives.json`, `items.json`, `blind-ledger.json`(블라인드 장부), `browser.json`.
-- 화면: 복습문제와 같은 상단 바·좌우 패널, 한 화면 한 문항, 카드 아래 `S7 p8 · 확인: <개념>`. 새로고침하면 답안·푼 문제 수가 초기화되고 테마는 남는다.
+- 화면: 복습문제와 같은 상단 바·좌우 패널, 한 화면 한 문항. 목표 근거(쪽 번호·개념 이름)는 화면에 찍지 않는다. 새로고침하면 답안·푼 문제 수가 초기화되고 테마는 남는다.
 
 **경로 약속**
 - 명령은 저장소 루트에서 실행한다(경로는 루트 기준 상대 경로). 셸이 다른 폴더에 있으면 같은 경로를 절대 경로로 바꿔 쓴다.
@@ -61,7 +61,7 @@ python3 .agents/skills/ds-concept-check/scripts/build.py SRC
 ```
 python3 .agents/skills/ds-concept-check/scripts/blind.py make SRC RUN/blind-r1.md
 ```
-- 사본은 학습자 화면과 같은 정보만 담는다. 트리는 그림처럼 `[그림: 트리 — 루트 A; A의 왼쪽 자식 B; …]`(칸 번호·빈 자리 목록 없음)로 적고, 카드 아래 근거 줄 `S7 p8 · 확인: <concept>`도 화면 그대로 넣는다.
+- 사본은 학습자 화면과 같은 정보만 담는다. 트리는 그림처럼 `[그림: 트리 — 루트 A; A의 왼쪽 자식 B; …]`(칸 번호·빈 자리 목록 없음)로 적는다. 화면에 없는 목표 근거(쪽 번호·개념 이름)는 넣지 않는다.
 - 장부 해시는 문항과 목표의 `concept`·`source.slide`를 함께 묶는다. 목표 이름이나 쪽을 바꾸면 그 목표의 문항이 `수정됨`이 된다.
 - 풀이자에게 [blind-brief.md](references/blind-brief.md) 경로와 그 `---` 사이 브리프를 `<RUN>`·`<회차>`·`<range>`·`<slug>`를 채워 넘긴다. 풀이자가 읽는 것은 그 브리프, `RUN/blind-r<회차>.md`, `복습노트/<range>/.pack/정리노트_<range>_<slug>.md` 셋뿐이다. `SRC`, `items.json`, `objectives.json`, 이전 답안표 경로는 알려 주지 않는다.
 - 풀이자는 `RUN/blind-answers-r<회차>.md`를 쓴다. 기록하고 상태를 본다:
