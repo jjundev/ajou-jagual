@@ -136,6 +136,16 @@ STK_GAP = 24
 NULL_LEN = 24
 LABEL_H = 18
 FONT = 13
+MAX_W = 720
+INNER_W = 680
+
+
+def _arr_w(cells: int) -> float:
+    return min(ARR_W, INNER_W / max(1, cells))
+
+
+def _list_pitch(cells: int) -> float:
+    return min(ARR_W + STK_GAP, INNER_W / max(1, cells))
 
 
 def _n(x: float) -> str:
@@ -247,7 +257,8 @@ def _blocks(trace: dict) -> tuple[list, float, float]:
             cap = max(_max_len(trace, struct["id"]), 1)
             need = LABEL_H + cap * STK_H
             label_w = len(struct.get("label", "")) * FONT
-            if tree_block is not None and not tree_block.get("stack"):
+            side_right = (tree_block["right"] + STK_GAP + max(STK_W, label_w)) if tree_block else 0
+            if tree_block is not None and not tree_block.get("stack") and side_right + MARGIN <= MAX_W:
                 x = tree_block["right"] + STK_GAP
                 bottom = max(tree_block["y"] + tree_block["h"], tree_block["y"] + need)
                 tree_block["stack"] = True
@@ -261,12 +272,13 @@ def _blocks(trace: dict) -> tuple[list, float, float]:
         elif kind == "array":
             cells = max(struct.get("size") or 0, _max_len(trace, struct["id"], "values"))
             blocks.append({"struct": struct, "x": MARGIN, "y": y, "cells": cells})
-            right = max(right, MARGIN + cells * ARR_W)
+            right = max(right, MARGIN + cells * _arr_w(cells))
             y += LABEL_H + ARR_H + 22
         elif kind == "list":
             cells = max(_max_len(trace, struct["id"], "order"), 1)
             blocks.append({"struct": struct, "x": MARGIN, "y": y, "cells": cells})
-            right = max(right, MARGIN + cells * (ARR_W + STK_GAP) - STK_GAP)
+            pitch = _list_pitch(cells)
+            right = max(right, MARGIN + (cells - 1) * pitch + pitch * ARR_W / (ARR_W + STK_GAP))
             y += LABEL_H + ARR_H + 22 + 12
     return blocks, right + MARGIN, y + MARGIN
 
@@ -326,14 +338,15 @@ def _draw_array(blk, state, parts) -> None:
     if struct.get("label"):
         parts.append(_text("fig-muted", x0, y0 + 12, struct["label"], "start"))
     cy = y0 + LABEL_H
+    aw = _arr_w(blk["cells"])
     for i in range(blk["cells"]):
-        x = x0 + i * ARR_W
+        x = x0 + i * aw
         cls = "fig-accent" if i in hi else "fig-ink"
-        parts.append(f'<rect class="{cls}" x="{_n(x)}" y="{_n(cy)}" width="{ARR_W}" height="{ARR_H}"/>')
+        parts.append(f'<rect class="{cls}" x="{_n(x)}" y="{_n(cy)}" width="{_n(aw)}" height="{ARR_H}"/>')
         if i < len(values):
-            parts.append(_text("fig-text", x + ARR_W / 2, cy + ARR_H / 2 + 4.5, values[i]))
+            parts.append(_text("fig-text", x + aw / 2, cy + ARR_H / 2 + 4.5, values[i]))
     for name, idx in (state.get("ptr") or {}).items():
-        parts.append(_text("fig-muted", x0 + idx * ARR_W + ARR_W / 2, cy + ARR_H + 15, name))
+        parts.append(_text("fig-muted", x0 + idx * aw + aw / 2, cy + ARR_H + 15, name))
 
 
 def _draw_list(blk, state, parts) -> None:
@@ -342,15 +355,16 @@ def _draw_list(blk, state, parts) -> None:
     state = state if isinstance(state, dict) else {}
     order = state.get("order") or []
     changed = {tuple(e) for e in state.get("edge_changed") or []}
-    step = ARR_W + STK_GAP
+    step = _list_pitch(blk["cells"])
+    nw = step * ARR_W / (ARR_W + STK_GAP)
     if struct.get("label"):
         parts.append(_text("fig-muted", x0, y0 + 12, struct["label"], "start"))
     cy = y0 + LABEL_H + 12
     idx = {v: i for i, v in enumerate(order)}
     for i, v in enumerate(order):
         x = x0 + i * step
-        parts.append(f'<rect class="fig-ink" x="{_n(x)}" y="{_n(cy)}" width="{ARR_W}" height="{ARR_H}"/>')
-        parts.append(_text("fig-text", x + ARR_W / 2, cy + ARR_H / 2 + 4.5, v))
+        parts.append(f'<rect class="fig-ink" x="{_n(x)}" y="{_n(cy)}" width="{_n(nw)}" height="{ARR_H}"/>')
+        parts.append(_text("fig-text", x + nw / 2, cy + ARR_H / 2 + 4.5, v))
     edges = [(a, b) for a, b in zip(order, order[1:])]
     edges += [e for e in sorted(changed) if e not in edges and e[0] in idx and e[1] in idx]
     for a, b in edges:
@@ -358,17 +372,17 @@ def _draw_list(blk, state, parts) -> None:
         ia, ib = idx[a], idx[b]
         ym = cy + ARR_H / 2
         if abs(ia - ib) == 1:
-            xa = x0 + ia * step + (ARR_W if ib > ia else 0)
-            xb = x0 + ib * step + (0 if ib > ia else ARR_W)
+            xa = x0 + ia * step + (nw if ib > ia else 0)
+            xb = x0 + ib * step + (0 if ib > ia else nw)
             parts.append(_arrow(xa, ym, xb, cls))
         else:
-            xa, xb = x0 + ia * step + ARR_W / 2, x0 + ib * step + ARR_W / 2
+            xa, xb = x0 + ia * step + nw / 2, x0 + ib * step + nw / 2
             peak = cy - 10
             parts.append(f'<path class="{cls}" d="M{_n(xa)} {_n(cy)}Q{_n((xa + xb) / 2)} {_n(peak - 8)} {_n(xb)} {_n(cy)} '
                          f'M{_n(xb - 4)} {_n(cy - 8)}L{_n(xb)} {_n(cy)}L{_n(xb + 4)} {_n(cy - 8)}"/>')
     for name, node in (state.get("ptr") or {}).items():
         if node in idx:
-            parts.append(_text("fig-muted", x0 + idx[node] * step + ARR_W / 2, cy + ARR_H + 15, name))
+            parts.append(_text("fig-muted", x0 + idx[node] * step + nw / 2, cy + ARR_H + 15, name))
 
 
 _DRAW = {"bintree": _draw_tree, "stack": _draw_stack, "array": _draw_array, "list": _draw_list}
@@ -393,12 +407,13 @@ def step_svg(trace: dict, index: int, svg_id: str, *, hidden: bool = False) -> s
 
 def shadow_svg(trace: dict, structure_id: str, svg_id: str) -> str:
     """트리 노드를 아래 수직선으로 내려 중위 순서를 보이는 그림."""
-    struct = next(s for s in trace["structures"] if s.get("id") == structure_id)
+    struct = next((s for s in trace["structures"] if s.get("id") == structure_id), None)
+    if struct is None or struct.get("kind") != "bintree":
+        raise ValueError(f"shadow_svg: bintree structure {structure_id!r} not found")
     rank, depth = _tree_info(struct)
     pos = tree_layout(struct)
     nodes = _tree_nodes(struct)
-    _, th = _tree_size(struct)
-    base = MARGIN + th - NULL_LEN - 18 + NODE_R + 20 + 4  # 가장 깊은 노드 아래
+    base = MARGIN + NODE_R + (max(depth.values()) if depth else 0) * LAYER_H + NODE_R + 24  # 가장 깊은 노드 아래
     parts: list = []
     edges = []
     for k in pos:

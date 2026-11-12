@@ -62,10 +62,6 @@ class TestLint(unittest.TestCase):
         self.assertEqual(len(a), 12)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 def full_tree(n: int) -> dict:
     """완전 이진 트리. 키 "1".."n"."""
     nodes = {}
@@ -113,7 +109,9 @@ class TestRender(unittest.TestCase):
         self.assertNotIn("style=", svg)
         self.assertEqual(set(re.findall(r'class="([^"]+)"', svg)) - {"fig-ink", "fig-accent", "fig-dot", "fig-text", "fig-muted"}, set())
         self.assertIn('aria-label="18에서는 왼쪽을 먼저 처리해요.', svg)
-        self.assertIn(">18<", svg)  # 스택 칸
+        self.assertIn(">미뤄 둔 노드<", svg)
+        # 스택 칸은 글자 18 바로 앞에 rect 가 있고, 트리 노드는 circle 뒤에 18 이 온다
+        self.assertRegex(svg, r'<rect class="fig-ink"[^>]*/><text class="fig-text"[^>]*>18</text>')
 
     def test_null_marker(self):
         i = next(n for n, s in enumerate(self.t["steps"]) if s["state"]["t"].get("null_at"))
@@ -143,3 +141,35 @@ class TestRender(unittest.TestCase):
         self.assertIn(">p<", svg)
         self.assertIn('class="fig-accent" d="M', svg)
         self.assertNotIn("style=", svg)
+
+    def test_stack_and_wide_content_fit_width(self):
+        t = single_step_trace(full_tree(31))
+        t["structures"].append({"id": "st", "kind": "stack", "label": "미뤄 둔 노드"})
+        t["steps"][0]["state"]["st"] = ["1", "2", "4"]
+        self.assertLessEqual(viewbox_width(trace_figs.step_svg(t, 0, "x")), 720)
+
+    def test_20_cell_array_fits_width(self):
+        vals = [str(i) for i in range(20)]
+        t = {"version": 1, "id": "a", "structures": [{"id": "a", "kind": "array", "size": 20}],
+             "steps": [{"text": "배열이에요.", "state": {"a": {"values": vals, "hi": [3], "ptr": {"i": 3}}}}]}
+        self.assertLessEqual(viewbox_width(trace_figs.step_svg(t, 0, "x")), 720)
+
+    def test_20_node_list_fits_width(self):
+        order = [f"n{i}" for i in range(20)]
+        t = {"version": 1, "id": "l", "structures": [{"id": "l", "kind": "list"}],
+             "steps": [{"text": "목록이에요.", "state": {"l": {"order": order, "ptr": {}, "edge_changed": [["n0", "n1"]]}}}]}
+        self.assertLessEqual(viewbox_width(trace_figs.step_svg(t, 0, "x")), 720)
+
+    def test_shadow_structure(self):
+        svg = trace_figs.shadow_svg(self.t, "t", "x")
+        self.assertEqual(svg.count('stroke-dasharray="4 3"'), 7)
+        self.assertEqual(len(re.findall(r'<text class="fig-text"', svg)), 14)  # 노드 안 7 + 아래 값 7
+        self.assertIn('class="fig-accent" d="M', svg)
+
+    def test_shadow_unknown_structure(self):
+        with self.assertRaises(ValueError):
+            trace_figs.shadow_svg(self.t, "nope", "x")
+
+
+if __name__ == "__main__":
+    unittest.main()
