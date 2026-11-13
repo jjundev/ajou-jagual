@@ -91,6 +91,20 @@
     .layer.supp .badge.supp { margin-bottom: var(--s2); }
     .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
     .badge.supp { color: var(--supp); }
+    /* layout-v2: 결론 상자 · 굵은 첫머리 · 곁가지 접기 */
+    .gist { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--s2) var(--s4); margin: var(--s4) 0 var(--s5); padding: var(--s4); background: var(--surface); border-radius: var(--radius); }
+    .gist dt { font-size: var(--fs-label); font-weight: 700; line-height: 1.7; color: var(--accent-ink); padding-top: 3px; white-space: nowrap; }
+    .gist dd { margin: 0; font-size: var(--fs-body); font-weight: 600; line-height: 1.6; }
+    .layer.formal p > b:first-child { display: block; }
+    details.more { margin-top: var(--s4); border-top: 1px solid var(--line); font-size: var(--fs-sub); line-height: 1.7; }
+    details.more + details.more { margin-top: 0; }
+    details.more > summary, details.layer > summary { cursor: pointer; padding: var(--s3) 0; font-size: var(--fs-sub); font-weight: 600; color: var(--ink-2); }
+    details.more[open] { padding-bottom: var(--s2); }
+    details.more[open] > summary { color: var(--ink); }
+    details.layer.supp { font-size: var(--fs-sub); line-height: 1.7; }
+    details.layer > summary .layer-title { display: inline; margin: 0; }
+    details.layer > summary .badge.supp { margin-bottom: 0; }
+    @media print { details.more > :not(summary), details.layer > :not(summary) { display: block; } }
     blockquote { margin: var(--s3) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
     pre { margin: var(--s3) 0; padding: var(--s3) var(--s4); overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
       font: var(--fs-small)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; white-space: pre; word-break: normal; overflow-wrap: normal; tab-size: 4; }

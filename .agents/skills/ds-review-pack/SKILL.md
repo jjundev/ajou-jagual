@@ -117,7 +117,7 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 - 신규 팩은 핵심 범위 충족 우선으로 보통 8~12문항을 목표로 하며 적합한 교과서도 포함한다. 기존 추가 모드는 별도 4~8개 정책이다. 교과서 후보 장 대응은 검색용이며 보기·소문항 전체가 배운 범위여야 한다.
 - `scripts/textbook_blocks.py`로 교과서 원문 content/options를 순서대로 렌더링한다. 원문은 숫자·코드·그림·오타를 보존하고 observations/printed_answer를 답으로 쓰지 않는다. 직접 풀이를 Python/C 실행 또는 강의 근거로 검산한다.
 - manifest는 `references/manifest-guide.md`대로 `RUN/manifest.json`에 쓴다.
-- 신규 팩 manifest 에 `"rules": ["trace-v1"]` 을 넣는다.
+- 신규 팩 manifest 에 `"rules": ["trace-v1", "layout-v2"]` 를 넣는다. `update-existing`·`revise-existing` 은 기존 manifest 의 `rules` 를 그대로 둔다(옛 노트 본문은 layout-v2 로 쓰지 않았다).
 - 검증: 둘 다 `OK`여야 한다.
   ```bash
   python3 "$SKILL/scripts/manifest.py" "$RUN/manifest.json"
