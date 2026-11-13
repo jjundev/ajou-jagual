@@ -9,6 +9,7 @@ import tempfile
 from dataclasses import replace, fields
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+from mpe_assets import verify_shared_assets
 from mpe_source import inside, load_source, sha256, existing_path
 from mpe_shared import parse
 from mpe_types import ExplainError
@@ -189,6 +190,7 @@ def rerender(repo,target,run):
             if not published.is_dir() or {p.stem for p in published.glob('*.html')} != ids:
                 raise ExplainError('발행된 조각 없음/불일치: 정상 저작 절차를 쓰세요')
             manifest=read_json(inside(data/'manifest.json',repo))
+            verify_shared_assets(repo, manifest)
             stored=read_json(inside(data/'validation.json',repo))
             intact=True
             for name,digest in manifest.get('files',{}).items():

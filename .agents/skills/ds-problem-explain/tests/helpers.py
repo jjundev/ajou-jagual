@@ -40,7 +40,16 @@ def approved(pack, fragments, artifacts=None):
     return result
 
 
+def install_fixture_assets(repo):
+    import shutil
+    source = Path(__file__).resolve().parents[4] / '복습노트/_assets/problem-explain/v1'
+    target = repo / '복습노트/_assets/problem-explain/v1'
+    if not target.exists():
+        shutil.copytree(source, target)
+
+
 def source_file(repo, date='0917', slug='Recursion', empty=False):
+    install_fixture_assets(repo)
     path=repo / '복습노트' / date / f'복습문제_{date}_{slug}.html'
     path.parent.mkdir(parents=True,exist_ok=True)
     card = '' if empty else ('''<article class="card" id="p1" data-source="1001 기출">

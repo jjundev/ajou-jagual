@@ -21,6 +21,8 @@ def publish_explanation(pack, artifacts, fragments, reviews, destination, backup
         if errors:
             raise ExplainError('발행 보류: ' + ' / '.join(errors))
         manifest = json.loads(artifacts.manifest.read_text(encoding='utf-8'))
+        if manifest.get('version') != 2:
+            raise ExplainError('발행 보류: 공용 자원 기준으로 다시 build 하세요')
         if manifest.get('review_policy_version') != POLICY_VERSION:
             raise ExplainError('발행 보류: manifest 검토 기준 불일치')
         if manifest['input_hash'] != payload_hash(pack, fragments):

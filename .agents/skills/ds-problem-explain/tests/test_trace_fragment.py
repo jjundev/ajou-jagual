@@ -29,15 +29,15 @@ class TestExplainFragment(unittest.TestCase):
     def _item(self):
         import shutil
         import tempfile
-        from helpers import fragment, pack
+        from helpers import fragment, pack, install_fixture_assets
         tmp = Path(tempfile.mkdtemp()).resolve()
         self.addCleanup(shutil.rmtree, tmp, True)
-        pk = pack(tmp / "복습문제_0917_Recursion.html")
+        pk = pack(tmp / "repo/복습노트/0917/복습문제_0917_Recursion.html")
         folder = tmp / "run" / "t"
         (folder / "traces").mkdir(parents=True)
         shutil.copy2(RP / "tests" / "fixtures" / "trace" / "inorder-1105.json", folder / "traces")
         frag = fragment(pk.problems[0]) + trace_figs.render(self.t, "explain")
-        (tmp / "repo").mkdir()
+        install_fixture_assets(tmp / "repo")
         item = {"pack": pk, "folder": folder, "repo": tmp / "repo", "run": tmp / "run"}
         return item, {"p1": frag}, folder
 

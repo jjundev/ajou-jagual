@@ -3,7 +3,7 @@ import subprocess
 import sys
 from pathlib import Path
 import pytest
-from helpers import fragment, approved, source_file
+from helpers import fragment, approved, source_file, install_fixture_assets
 from mpe_source import load_source
 from mpe_cli import load_run
 
@@ -20,10 +20,14 @@ def test_missing_target_returns_one(tmp_path):
 
 def test_cli_round_trip_and_unreviewed_publish(tmp_path):
     repo = tmp_path / 'repo'
+    install_fixture_assets(repo)
     source = repo / '복습노트/0917/복습문제_0917_Recursion.html'
     source.parent.mkdir(parents=True)
     source.write_bytes((ROOT / '복습노트/0917' / source.name).read_bytes())
-    run = tmp_path / 'run'
+    # A platform alias such as macOS /tmp may precede the real RUN directory.
+    alias = tmp_path / 'alias'
+    alias.symlink_to(tmp_path, target_is_directory=True)
+    run = alias / 'run'
     result = call('extract', '--repo', repo, '--target', '0917', '--run', run)
     assert result.returncode == 0, result.stderr
     item = load_run(run)[0]
@@ -69,6 +73,7 @@ def test_forged_serialized_problem_is_rejected(tmp_path):
 
 def test_one_stale_pack_does_not_block_other_pack(tmp_path):
     repo = tmp_path / 'repo'
+    install_fixture_assets(repo)
     for date in ('0914', '0917'):
         source = repo / '복습노트' / date / f'복습문제_{date}_Recursion.html'
         source.parent.mkdir(parents=True)

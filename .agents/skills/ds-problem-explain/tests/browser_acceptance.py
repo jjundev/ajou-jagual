@@ -1,5 +1,5 @@
 """Run synthetic browser acceptance: python browser_acceptance.py EMPTY_SCRATCH."""
-import sys,json,threading,http.server,functools
+import sys,json
 from pathlib import Path
 SKILL=Path(__file__).resolve().parents[1]
 sys.path[:0]=[str(SKILL/'scripts'),str(SKILL/'tests')]
@@ -16,13 +16,12 @@ assert check_artifacts(pack,art)==[]
 # p2 stands in for a problem without an original (helpers' review sources always carry one)
 import re
 art.html.write_text(re.sub(r'<details class="original" data-original-problem="p2">.*?</details>','',art.html.read_text(),count=1,flags=re.S))
-class Handler(http.server.SimpleHTTPRequestHandler):
- def log_message(self,*args):pass
-server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Handler,directory=str(root)))
-threading.Thread(target=server.serve_forever,daemon=True).start();port=server.server_port
-url=f'http://127.0.0.1:{port}/stage/{art.html.name}'
+from mpe_preview import preview_server
+
 results=[]
-with sync_playwright() as pw:
+with preview_server((art,)) as (server, paths), sync_playwright() as pw:
+ port=server.server_port
+ url=f'http://127.0.0.1:{port}{paths[0]}'
  browser=pw.chromium.launch()
  for width,height in [(1280,900),(1024,768),(375,812)]:
   for theme in ['light','dark']:
@@ -260,6 +259,6 @@ with sync_playwright() as pw:
  assert page.locator('.layout').get_attribute('data-prob-dock')=='float'
  ctx.close()
  browser.close()
-server.shutdown()
+
 (root/'results.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))
 print(json.dumps(results,ensure_ascii=False))

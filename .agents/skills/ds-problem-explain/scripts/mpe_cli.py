@@ -56,6 +56,9 @@ def extract(repo, target, run):
 
 def load_run(run, errors=None):
     run = Path(run).absolute()
+    if run.is_symlink():
+        raise ExplainError('RUN 심볼릭 링크는 사용할 수 없어요')
+    run = run.resolve()
     index = read_json(inside(run / 'run.json', run))
     repo = Path(index['repo'])
     if not repo.is_absolute() or not repo.is_dir():
@@ -155,6 +158,9 @@ def main(argv=None):
     extraction.add_argument('--run', type=Path, required=True)
     for name in ('build', 'check', 'publish'):
         commands.add_parser(name).add_argument('--run', type=Path, required=True)
+    previewing = commands.add_parser('preview')
+    previewing.add_argument('--run', type=Path, required=True)
+    previewing.add_argument('--port', type=int, default=0)
     rerendering = commands.add_parser('rerender')
     rerendering.add_argument('--repo', type=Path, required=True)
     rerendering.add_argument('--target', required=True)
@@ -167,6 +173,20 @@ def main(argv=None):
             return rerender(args.repo, args.target, args.run)
         load_errors = []
         items = load_run(args.run, errors=load_errors)
+        if args.command == 'preview':
+            from mpe_preview import preview_server
+            if load_errors:
+                raise ExplainError(' / '.join(load_errors))
+            stages = [load_artifacts(item) for item in items]
+            with preview_server(stages, args.port) as (server, pages):
+                for page in pages:
+                    print(f'http://127.0.0.1:{server.server_port}{page}', flush=True)
+                try:
+                    import threading
+                    threading.Event().wait()
+                except KeyboardInterrupt:
+                    pass
+            return 0
         failed = bool(load_errors)
         for error in load_errors:
             print(error, file=sys.stderr)

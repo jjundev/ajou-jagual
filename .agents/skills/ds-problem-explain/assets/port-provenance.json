@@ -1918,6 +1918,174 @@
           "new": "\ndef test_rerender_keeps_published_traces(tmp_path):\n    repo, source = published_pack(tmp_path)\n    data = next((repo / '복습노트/0917/.pack').glob('자료_*'))\n    (data / 'traces').mkdir()\n    (data / 'traces' / 'x.json').write_text('{\"a\": 1}', encoding='utf-8')\n    result = call('rerender', '--repo', repo, '--target', source, '--run', tmp_path / 'run2')\n    assert result.returncode == 0, result.stderr\n    folder = next(p for p in (tmp_path / 'run2').iterdir() if p.is_dir())\n    assert (folder / 'traces' / 'x.json').read_text() == '{\"a\": 1}'\n"
         }
       ]
+    },
+    {
+      "destination": "SKILL.md",
+      "base_sha256": "b227d074a359ec1d8937ec2a9ef2c23f46ccdd748b789e4f851edb3075aa98ed",
+      "current_sha256": "c18685b7bef929f089501cb97780047a3e6df24824339c55747067105e8235e5",
+      "reason": "Share pinned local resources between problem explanations.",
+      "replacements": [
+        {
+          "old": "   python3 .agents/skills/ds-problem-explain/scripts/mpe_cli.py check --run tmp/ds-problem-explain/0917-first\n   ```\n\n6. [검토 기록](references/verification.md)을 읽고 실제 source_visual/content/independent/browser 결과를 `review.json`에 기록한다. 사용한 참조 파일의 절대 path와 SHA-256을 references에 기록한다. 구조 통과를 정답 검증으로 기록하지 않는다. 로컬 브라우저에서 1280×900/375×812, light/dark의 모든 문항·목차·이전/다음·요약·수식·그림·코드·상태 표를 확인한다. 콘솔·KaTeX 오류·누락 자원·외부 요청·문서 가로 넘침은 0이어야 한다. 코드 블록 내부 스크롤은 허용한다. stage의 원 문제/개념 링크는 최종 발행 디렉터리 기준이므로 실제 원 파일과 anchor도 대조한다. 문제는 넓은 화면에서 목차 오른쪽·본문 왼쪽의 문제 패널 [문제 | 원문] 탭(원문 탭은 원문이 있는 문항만)으로 기본 표시되고, 패널 머리 버튼이나 끌어서 붙이기·떼기로 오른쪽에 붙이거나 띄운 창(이동·크기 조절)으로 바꿀 수 있으며 방식·위치는 `od-panels:explain:v2:prob`에 기억된다. 요약은 오른쪽 요약 패널, 좁은 화면에서 해설 위 접힘 버튼으로 표시된다. 템플릿 결함은 근거를 보고하며 임의로 템플릿을 수정하지 않는다.\n7. 실제 검토가 모두 pass이고 현재 해시가 일치하면 사용자 호출 범위에서 추가 확인 없이 발행한다. 미검토·변경·실패·disputed는 해당 팩의 발행을 막는다.\n\n   ```sh\n",
+          "new": "   python3 .agents/skills/ds-problem-explain/scripts/mpe_cli.py check --run tmp/ds-problem-explain/0917-first\n   ```\n\n6. [검토 기록](references/verification.md)을 읽고 실제 source_visual/content/independent/browser 결과를 `review.json`에 기록한다. 사용한 참조 파일의 절대 path와 SHA-256을 references에 기록한다. 구조 통과를 정답 검증으로 기록하지 않는다. `python3 .agents/skills/ds-problem-explain/scripts/mpe_cli.py preview --run <RUN>`이 출력한 로컬 URL을 브라우저에서 연다. 같은 RUN의 stage를 최종 발행과 동일한 상대 경로로 제공한다. 1280×900/375×812, light/dark의 모든 문항·목차·이전/다음·요약·수식·그림·코드·상태 표를 확인한다. 콘솔·KaTeX 오류·누락 자원·외부 요청·문서 가로 넘침은 0이어야 한다. 코드 블록 내부 스크롤은 허용한다. stage의 원 문제/개념 링크는 최종 발행 디렉터리 기준이므로 실제 원 파일과 anchor도 대조한다. 문제는 넓은 화면에서 목차 오른쪽·본문 왼쪽의 문제 패널 [문제 | 원문] 탭(원문 탭은 원문이 있는 문항만)으로 기본 표시되고, 패널 머리 버튼이나 끌어서 붙이기·떼기로 오른쪽에 붙이거나 띄운 창(이동·크기 조절)으로 바꿀 수 있으며 방식·위치는 `od-panels:explain:v2:prob`에 기억된다. 요약은 오른쪽 요약 패널, 좁은 화면에서 해설 위 접힘 버튼으로 표시된다. 템플릿 결함은 근거를 보고하며 임의로 템플릿을 수정하지 않는다.\n7. 실제 검토가 모두 pass이고 현재 해시가 일치하면 사용자 호출 범위에서 추가 확인 없이 발행한다. 미검토·변경·실패·disputed는 해당 팩의 발행을 막는다.\n\n   ```sh\n"
+        },
+        {
+          "old": "\n## 산출 위치\n\n입력과 같은 날짜 폴더 루트에는 `문제설명_<range>_<slug>.html`만 두고, `.md`·`figures_문제설명_<range>_<slug>/`·`자료_문제설명_<range>_<slug>/`는 그 폴더의 숨김 폴더 `.pack/` 안에 저장한다(예: `복습노트/1012/.pack/문제설명_1012_Queue.md`). 숨김 폴더라 검색 도구가 건너뛸 수 있으니 이 경로를 직접 연다. 자료 폴더에는 생성 기록·검토·설명 조각·검산·로컬 자원이 들어간다. 정리노트 링크를 자동 삽입하지 않는다. 읽음 상태 범위는 `ds-problem-explain-review-<range>-<slug>`다.\n\n원본 고정 커밋과 바이트 해시는 [이식 기록](assets/port-provenance.json)에 있다. 실행 중 머신러닝기초 checkout이나 ds-review-pack을 참조하지 않는다.\n\n",
+          "new": "\n## 산출 위치\n\n입력과 같은 날짜 폴더 루트에는 `문제설명_<range>_<slug>.html`만 두고, `.md`·`figures_문제설명_<range>_<slug>/`·`자료_문제설명_<range>_<slug>/`는 그 폴더의 숨김 폴더 `.pack/` 안에 저장한다(예: `복습노트/1012/.pack/문제설명_1012_Queue.md`). 숨김 폴더라 검색 도구가 건너뛸 수 있으니 이 경로를 직접 연다. 자료 폴더에는 생성 기록·검토·설명 조각·검산이 들어간다. HTML은 `복습노트/_assets/problem-explain/v1/`의 Pretendard·KaTeX를 상대 경로로 참조한다. build/check/publish는 이 자원의 SHA-256을 검증한다. 저장소 밖으로 HTML 한 장을 옮길 때는 `export-standalone-note`를 사용한다. 정리노트 링크를 자동 삽입하지 않는다. 읽음 상태 범위는 `ds-problem-explain-review-<range>-<slug>`다.\n\n원본 고정 커밋과 바이트 해시는 [이식 기록](assets/port-provenance.json)에 있다. 실행 중 머신러닝기초 checkout이나 ds-review-pack을 참조하지 않는다.\n\n"
+        },
+        {
+          "old": "\n요약 항목 수에 고정 상한을 두지 않는다. 같은 토픽 본문의 핵심 개념·원리·성립 조건·혼동 구분을 압축하고, 본문에 없는 사실을 추가하지 않는다. 보충의 범위·출처·불확실성을 유지한다. 모든 학습 토픽의 일반·강조·주의·보충 핵심을 본문 주장, 대응 요약, 판정 또는 생략 이유로 대조한다. 누락은 unresolved로 기록하고 보완된 실제 요약을 다시 읽은 뒤 pass로 바꾼다. 기존 동반 MD와 실제 생성 원고를 동기화하고 동반 MD가 없으면 새 형식을 만들지 않는다.\n\n브라우저는 HTTP 임시 stage에서 1280×900, 375×812 각각 light/dark로 검사한다. 요약·풀이 패널을 열어 중앙 제목 표시, 우측 중복 제목 없음, 토픽별 요약 하나와 정확한 내용, 표지 안내, 이전 요약 숨김, 수식 오류와 페이지 오류 0을 확인한다. 문제·원문 탭, 이전/다음, 힌트·풀이, 푼 문제 토글과 기존 read/solved 저장 키를 유지한다. missing-sum 실패 탐지와 no-panel legacy 검사를 유지한다.\n",
+          "new": "\n요약 항목 수에 고정 상한을 두지 않는다. 같은 토픽 본문의 핵심 개념·원리·성립 조건·혼동 구분을 압축하고, 본문에 없는 사실을 추가하지 않는다. 보충의 범위·출처·불확실성을 유지한다. 모든 학습 토픽의 일반·강조·주의·보충 핵심을 본문 주장, 대응 요약, 판정 또는 생략 이유로 대조한다. 누락은 unresolved로 기록하고 보완된 실제 요약을 다시 읽은 뒤 pass로 바꾼다. 기존 동반 MD와 실제 생성 원고를 동기화하고 동반 MD가 없으면 새 형식을 만들지 않는다.\n\n브라우저는 `preview --run <RUN>`이 출력한 URL에서 1280×900, 375×812 각각 light/dark로 검사한다. 요약·풀이 패널을 열어 중앙 제목 표시, 우측 중복 제목 없음, 토픽별 요약 하나와 정확한 내용, 표지 안내, 이전 요약 숨김, 수식 오류와 페이지 오류 0을 확인한다. 문제·원문 탭, 이전/다음, 힌트·풀이, 푼 문제 토글과 기존 read/solved 저장 키를 유지한다. missing-sum 실패 탐지와 no-panel legacy 검사를 유지한다.\n"
+        }
+      ]
+    },
+    {
+      "destination": "references/verification.md",
+      "base_sha256": "b64064e36738cc949dcb737b3b4bdfae3b70b922913e4ad41f2ca084f9153f1b",
+      "current_sha256": "057f18c5891a2a5f4612ba511ac821be85ec48134307d711b8cb169d096a9500",
+      "reason": "Share pinned local resources between problem explanations.",
+      "replacements": [
+        {
+          "old": "\n답 충돌·조건 모호함·원문 미확인은 해당 팩을 disputed로 표시하고 이유를 보고해요. 다른 독립 팩은 통과하면 발행할 수 있어요. 기존 파일은 변경하지 않고 설명 소유 파일만 백업 후 교체하며 실패 시 복구해요.\n\n## 코드 블록 검토\n\n독립 코드·실행결과가 `<pre><code>`로 분리되어 있고 설명은 밖에 있는지 확인한다. 짧은 인라인 code는 유지하고 빈 블록은 없어야 한다. HTML과 MD의 문자·탭·빈 줄을 원 설명 조각과 대조한다. 1280×900/375×812, light/dark에서 블록의 배경·테두리·16px 패딩·고정폭 글꼴을 확인한다. 긴 줄은 pre 내부에서만 스크롤하고 문서 전체는 가로로 넘치지 않아야 한다. 원문 코드의 구조와 내용을 저작 제약에 맞추어 재작성하지 않는다.\n",
+          "new": "\n답 충돌·조건 모호함·원문 미확인은 해당 팩을 disputed로 표시하고 이유를 보고해요. 다른 독립 팩은 통과하면 발행할 수 있어요. 기존 파일은 변경하지 않고 설명 소유 파일만 백업 후 교체하며 실패 시 복구해요.\n\n미리보기 서버는 설명 산출물과 공용 자원만 제공해요. 원 문제·개념 링크는 발행 폴더 기준으로 실제 대상 파일을 열어 앵커를 대조해요.\n\n## 코드 블록 검토\n\n독립 코드·실행결과가 `<pre><code>`로 분리되어 있고 설명은 밖에 있는지 확인한다. 짧은 인라인 code는 유지하고 빈 블록은 없어야 한다. HTML과 MD의 문자·탭·빈 줄을 원 설명 조각과 대조한다. 1280×900/375×812, light/dark에서 블록의 배경·테두리·16px 패딩·고정폭 글꼴을 확인한다. 긴 줄은 pre 내부에서만 스크롤하고 문서 전체는 가로로 넘치지 않아야 한다. 원문 코드의 구조와 내용을 저작 제약에 맞추어 재작성하지 않는다.\n"
+        },
+        {
+          "old": "\n요약 항목 수에 고정 상한을 두지 않는다. 같은 토픽 본문의 핵심 개념·원리·성립 조건·혼동 구분을 압축하고, 본문에 없는 사실을 추가하지 않는다. 보충의 범위·출처·불확실성을 유지한다. 모든 학습 토픽의 일반·강조·주의·보충 핵심을 본문 주장, 대응 요약, 판정 또는 생략 이유로 대조한다. 누락은 unresolved로 기록하고 보완된 실제 요약을 다시 읽은 뒤 pass로 바꾼다. 기존 동반 MD와 실제 생성 원고를 동기화하고 동반 MD가 없으면 새 형식을 만들지 않는다.\n\n브라우저는 HTTP 임시 stage에서 1280×900, 375×812 각각 light/dark로 검사한다. 요약·풀이 패널을 열어 중앙 제목 표시, 우측 중복 제목 없음, 토픽별 요약 하나와 정확한 내용, 표지 안내, 이전 요약 숨김, 수식 오류와 페이지 오류 0을 확인한다. 문제·원문 탭, 이전/다음, 힌트·풀이, 푼 문제 토글과 기존 read/solved 저장 키를 유지한다. missing-sum 실패 탐지와 no-panel legacy 검사를 유지한다.\n\n의미 감사표는 `자료·토픽`을 키로 서로 다른 일반·강조·주의·보충 핵심을 별도 행에 둔다. 검증 JSON은 `{schema_version:1, html, html_sha256, audit_path, audit_sha256, semantic_status, browser_status, evidence, unresolved}`를 기록한다. `pass | unresolved`는 실제 검사 뒤에만 판정하며 산출물 해시가 바뀌면 기존 근거는 갱신 전까지 오래된 것으로 취급한다.\n",
+          "new": "\n요약 항목 수에 고정 상한을 두지 않는다. 같은 토픽 본문의 핵심 개념·원리·성립 조건·혼동 구분을 압축하고, 본문에 없는 사실을 추가하지 않는다. 보충의 범위·출처·불확실성을 유지한다. 모든 학습 토픽의 일반·강조·주의·보충 핵심을 본문 주장, 대응 요약, 판정 또는 생략 이유로 대조한다. 누락은 unresolved로 기록하고 보완된 실제 요약을 다시 읽은 뒤 pass로 바꾼다. 기존 동반 MD와 실제 생성 원고를 동기화하고 동반 MD가 없으면 새 형식을 만들지 않는다.\n\n브라우저는 `mpe_cli.py preview --run <RUN>`이 출력한 로컬 URL에서 1280×900, 375×812 각각 light/dark로 검사한다. 요약·풀이 패널을 열어 중앙 제목 표시, 우측 중복 제목 없음, 토픽별 요약 하나와 정확한 내용, 표지 안내, 이전 요약 숨김, 수식 오류와 페이지 오류 0을 확인한다. 문제·원문 탭, 이전/다음, 힌트·풀이, 푼 문제 토글과 기존 read/solved 저장 키를 유지한다. missing-sum 실패 탐지와 no-panel legacy 검사를 유지한다.\n\n의미 감사표는 `자료·토픽`을 키로 서로 다른 일반·강조·주의·보충 핵심을 별도 행에 둔다. 검증 JSON은 `{schema_version:1, html, html_sha256, audit_path, audit_sha256, semantic_status, browser_status, evidence, unresolved}`를 기록한다. `pass | unresolved`는 실제 검사 뒤에만 판정하며 산출물 해시가 바뀌면 기존 근거는 갱신 전까지 오래된 것으로 취급한다.\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/mpe_cli.py",
+      "base_sha256": "eb49fb095ddffe4a184f49efe629690cc75798cacbede277a55043dd769668a7",
+      "current_sha256": "1eeb64d1f4b4bdd85ad690c428ca8e890ea84bbd4d4c276118ad6376ecf06213",
+      "reason": "Share pinned local resources between problem explanations.",
+      "replacements": [
+        {
+          "old": "\ndef load_run(run, errors=None):\n    run = Path(run).absolute()\n    index = read_json(inside(run / 'run.json', run))\n    repo = Path(index['repo'])\n    if not repo.is_absolute() or not repo.is_dir():\n",
+          "new": "\ndef load_run(run, errors=None):\n    run = Path(run).absolute()\n    if run.is_symlink():\n        raise ExplainError('RUN 심볼릭 링크는 사용할 수 없어요')\n    run = run.resolve()\n    index = read_json(inside(run / 'run.json', run))\n    repo = Path(index['repo'])\n    if not repo.is_absolute() or not repo.is_dir():\n"
+        },
+        {
+          "old": "    extraction.add_argument('--run', type=Path, required=True)\n    for name in ('build', 'check', 'publish'):\n        commands.add_parser(name).add_argument('--run', type=Path, required=True)\n    rerendering = commands.add_parser('rerender')\n    rerendering.add_argument('--repo', type=Path, required=True)\n    rerendering.add_argument('--target', required=True)\n",
+          "new": "    extraction.add_argument('--run', type=Path, required=True)\n    for name in ('build', 'check', 'publish'):\n        commands.add_parser(name).add_argument('--run', type=Path, required=True)\n    previewing = commands.add_parser('preview')\n    previewing.add_argument('--run', type=Path, required=True)\n    previewing.add_argument('--port', type=int, default=0)\n    rerendering = commands.add_parser('rerender')\n    rerendering.add_argument('--repo', type=Path, required=True)\n    rerendering.add_argument('--target', required=True)\n"
+        },
+        {
+          "old": "            return rerender(args.repo, args.target, args.run)\n        load_errors = []\n        items = load_run(args.run, errors=load_errors)\n        failed = bool(load_errors)\n        for error in load_errors:\n            print(error, file=sys.stderr)\n",
+          "new": "            return rerender(args.repo, args.target, args.run)\n        load_errors = []\n        items = load_run(args.run, errors=load_errors)\n        if args.command == 'preview':\n            from mpe_preview import preview_server\n            if load_errors:\n                raise ExplainError(' / '.join(load_errors))\n            stages = [load_artifacts(item) for item in items]\n            with preview_server(stages, args.port) as (server, pages):\n                for page in pages:\n                    print(f'http://127.0.0.1:{server.server_port}{page}', flush=True)\n                try:\n                    import threading\n                    threading.Event().wait()\n                except KeyboardInterrupt:\n                    pass\n            return 0\n        failed = bool(load_errors)\n        for error in load_errors:\n            print(error, file=sys.stderr)\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/mpe_publish.py",
+      "base_sha256": "854a674c53e202428f9f951047c75f80d34652777b38f75e0e1f14325618c736",
+      "current_sha256": "6887fd21a904ea7c2ba3f306a7d5bed9c0304b48410f360707d7cd0f30cbc712",
+      "reason": "Share pinned local resources between problem explanations.",
+      "replacements": [
+        {
+          "old": "        if errors:\n            raise ExplainError('발행 보류: ' + ' / '.join(errors))\n        manifest = json.loads(artifacts.manifest.read_text(encoding='utf-8'))\n        if manifest.get('review_policy_version') != POLICY_VERSION:\n            raise ExplainError('발행 보류: manifest 검토 기준 불일치')\n        if manifest['input_hash'] != payload_hash(pack, fragments):\n",
+          "new": "        if errors:\n            raise ExplainError('발행 보류: ' + ' / '.join(errors))\n        manifest = json.loads(artifacts.manifest.read_text(encoding='utf-8'))\n        if manifest.get('version') != 2:\n            raise ExplainError('발행 보류: 공용 자원 기준으로 다시 build 하세요')\n        if manifest.get('review_policy_version') != POLICY_VERSION:\n            raise ExplainError('발행 보류: manifest 검토 기준 불일치')\n        if manifest['input_hash'] != payload_hash(pack, fragments):\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/mpe_render.py",
+      "base_sha256": "026e715f1da0dd85ef0acb20d45693ed42644c518042339913947ae9f1e1be18",
+      "current_sha256": "ccd78a3b1198cd97a878ea079a46ec41f3e7810c1b0c15425c1cc3f68a042692",
+      "reason": "Share pinned local resources between problem explanations.",
+      "replacements": [
+        {
+          "old": "from collections import Counter\nfrom pathlib import Path\nfrom urllib.parse import unquote, urlsplit, quote\nfrom mpe_contract import validate_fragment, payload_hash, markup_errors\nfrom mpe_shared import Node, parse, inner, outer, compact, Ctx, convert, check_md\nfrom mpe_source import sha256, inside, existing_path\n",
+          "new": "from collections import Counter\nfrom pathlib import Path\nfrom urllib.parse import unquote, urlsplit, quote\nfrom mpe_assets import PAGE_ASSETS, shared_assets, vendor_url, verify_shared_assets\nfrom mpe_contract import validate_fragment, payload_hash, markup_errors\nfrom mpe_shared import Node, parse, inner, outer, compact, Ctx, convert, check_md\nfrom mpe_source import sha256, inside, existing_path\n"
+        },
+        {
+          "old": "    errors = [e for p in pack.problems for e in validate_fragment(p, fragments[p.id])]\n    if errors:\n        raise ExplainError(' / '.join(errors))\n    stage.mkdir(parents=True, exist_ok=True)\n    stem, fig_name, data_name = names(pack)\n    pack_dir = stage / PACK_DIR\n",
+          "new": "    errors = [e for p in pack.problems for e in validate_fragment(p, fragments[p.id])]\n    if errors:\n        raise ExplainError(' / '.join(errors))\n    repo = Path(repo).resolve()\n    dependencies = shared_assets(repo)\n    stage.mkdir(parents=True, exist_ok=True)\n    stem, fig_name, data_name = names(pack)\n    pack_dir = stage / PACK_DIR\n"
+        },
+        {
+          "old": "    data_dir.mkdir(parents=True)\n    (pack_dir / fig_name).mkdir()\n    fig_rel = f'{PACK_DIR}/{fig_name}'  # HTML(루트) 기준\n    shutil.copytree(ASSETS / 'vendor', data_dir / 'vendor')\n    shutil.copy2(ASSETS / 'template-provenance.json', data_dir / 'template-provenance.json')\n    if traces is not None:\n        shutil.copytree(traces, data_dir / 'traces', ignore=lambda d, names: [n for n in names if not n.endswith('.json')])\n",
+          "new": "    data_dir.mkdir(parents=True)\n    (pack_dir / fig_name).mkdir()\n    fig_rel = f'{PACK_DIR}/{fig_name}'  # HTML(루트) 기준\n    shutil.copy2(ASSETS / 'template-provenance.json', data_dir / 'template-provenance.json')\n    if traces is not None:\n        shutil.copytree(traces, data_dir / 'traces', ignore=lambda d, names: [n for n in names if not n.endswith('.json')])\n"
+        },
+        {
+          "old": "              'SECTIONS': '<section id=\"problems\"><h2>문항별 설명</h2>' + ''.join(articles) + '</section>',\n              'FOOTER': '원 문제·정리노트·PDF는 보존해요.',\n              'SCRIPTS': '<script type=\"application/json\" id=\"explain-choice-model\">'+json.dumps({p.id:{'answer':p.choice.answer,'mode':p.choice.mode,'options':list(p.choice.option_ids)} for p in pack.problems if p.choice},ensure_ascii=False).replace('</','<\\\\/')+'</script>',\n              'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': f'{PACK_DIR}/{data_name}/vendor'}\n    text = (ASSETS / 'note-template.html').read_text(encoding='utf-8')\n    for key, value in values.items():\n        text = text.replace('{{' + key + '}}', value)\n",
+          "new": "              'SECTIONS': '<section id=\"problems\"><h2>문항별 설명</h2>' + ''.join(articles) + '</section>',\n              'FOOTER': '원 문제·정리노트·PDF는 보존해요.',\n              'SCRIPTS': '<script type=\"application/json\" id=\"explain-choice-model\">'+json.dumps({p.id:{'answer':p.choice.answer,'mode':p.choice.mode,'options':list(p.choice.option_ids)} for p in pack.problems if p.choice},ensure_ascii=False).replace('</','<\\\\/')+'</script>',\n              'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': vendor_url(repo, pack.path.parent)}\n    text = (ASSETS / 'note-template.html').read_text(encoding='utf-8')\n    for key, value in values.items():\n        text = text.replace('{{' + key + '}}', value)\n"
+        },
+        {
+          "old": "    convert_markdown(html_path, md_path, ctx)\n    manifest_path = data_dir / 'manifest.json'\n    files = tuple(sorted(p for p in stage.rglob('*') if p.is_file()))\n    dump(manifest_path, {'version': 1, 'profile': pack.profile, 'range': pack.range, 'slug': pack.slug,\n                         'source': str(pack.path), 'source_sha256': pack.sha256,\n                         'review_policy_version': POLICY_VERSION, 'source_resources': source_resources(pack,repo),\n                         'input_hash': payload_hash(pack, fragments), 'reading_key': values['RANGE'],\n",
+          "new": "    convert_markdown(html_path, md_path, ctx)\n    manifest_path = data_dir / 'manifest.json'\n    files = tuple(sorted(p for p in stage.rglob('*') if p.is_file()))\n    dump(manifest_path, {'version': 2, 'shared_assets': dependencies, 'profile': pack.profile, 'range': pack.range, 'slug': pack.slug,\n                         'source': str(pack.path), 'source_sha256': pack.sha256,\n                         'review_policy_version': POLICY_VERSION, 'source_resources': source_resources(pack,repo),\n                         'input_hash': payload_hash(pack, fragments), 'reading_key': values['RANGE'],\n"
+        },
+        {
+          "old": "            file = root / name\n            if not file.resolve().is_relative_to(root) or not file.is_file() or sha256(file) != digest:\n                errors.append('생성 파일 변경/누락: ' + name)\n        document = parse(artifacts.html.read_text(encoding='utf-8'))\n        main = next(document.find_all(lambda n: n.tag == 'main'))\n        wanted_images = Counter(md_resource(unquote(n.attrs.get('src', ''))) for n in main.find_all(lambda n: n.tag == 'img'))\n",
+          "new": "            file = root / name\n            if not file.resolve().is_relative_to(root) or not file.is_file() or sha256(file) != digest:\n                errors.append('생성 파일 변경/누락: ' + name)\n        repo = Path(manifest['repo'])\n        destination = inside(pack.path.parent, repo)\n        if Path(manifest['destination']) != pack.path.parent:\n            errors.append('manifest 발행 위치 불일치')\n        uses_shared = verify_shared_assets(repo, manifest)\n        expected_shared = {f'{vendor_url(repo, destination)}/{name}' for name in PAGE_ASSETS} if uses_shared else set()\n        found_shared = set()\n        document = parse(artifacts.html.read_text(encoding='utf-8'))\n        main = next(document.find_all(lambda n: n.tag == 'main'))\n        wanted_images = Counter(md_resource(unquote(n.attrs.get('src', ''))) for n in main.find_all(lambda n: n.tag == 'img'))\n"
+        },
+        {
+          "old": "                if url.fragment and unquote(url.fragment) not in ids:\n                    errors.append('링크 앵커 없음: ' + href)\n                continue\n            path = root / unquote(url.path)\n            if node.tag == 'a':\n                path = Path(manifest['destination']) / unquote(url.path)\n            if not path.is_file():\n                errors.append('자원 없음: ' + href)\n            elif node.tag == 'a' and url.fragment:\n                target_ids = {n.attrs.get('id') for n in parse(path.read_text(encoding='utf-8')).find_all(lambda n: True)}\n                if unquote(url.fragment) not in target_ids:\n                    errors.append('링크 앵커 없음: ' + href)\n        # Existing Markdown checker resolves links relative to stage; external course links\n        # use their intended destination instead (checked above and by browser on publication).\n        errors += [e for e in check_md(str(artifacts.html), str(artifacts.md)) if not e.startswith('링크 파일 없음:')]\n",
+          "new": "                if url.fragment and unquote(url.fragment) not in ids:\n                    errors.append('링크 앵커 없음: ' + href)\n                continue\n            if node.tag in ('link', 'script') and href in expected_shared:\n                found_shared.add(href)\n                continue\n            path = (destination if node.tag == 'a' else root) / unquote(url.path)\n            if node.tag != 'a' and not path.resolve().is_relative_to(root):\n                errors.append('산출 폴더 밖 자원: ' + href)\n            elif not path.is_file():\n                errors.append('자원 없음: ' + href)\n            elif node.tag == 'a' and url.fragment:\n                target_ids = {n.attrs.get('id') for n in parse(path.read_text(encoding='utf-8')).find_all(lambda n: True)}\n                if unquote(url.fragment) not in target_ids:\n                    errors.append('링크 앵커 없음: ' + href)\n        if found_shared != expected_shared:\n            errors.append('공용 자원 링크 누락: ' + ', '.join(sorted(expected_shared - found_shared)))\n        # Existing Markdown checker resolves links relative to stage; external course links\n        # use their intended destination instead (checked above and by browser on publication).\n        errors += [e for e in check_md(str(artifacts.html), str(artifacts.md)) if not e.startswith('링크 파일 없음:')]\n"
+        }
+      ]
+    },
+    {
+      "destination": "tests/browser_acceptance.py",
+      "base_sha256": "1d57c1a9016ae5df669f33d2a18f195d8ab7e66bd85da0b9fb4f4ec1e3094b1c",
+      "current_sha256": "6a457f1ad89e50aeb1d1473e5ed8fb68af49084daceb66dc9e0a3e2bc035f567",
+      "reason": "Share pinned local resources between problem explanations.",
+      "replacements": [
+        {
+          "old": "\"\"\"Run synthetic browser acceptance: python browser_acceptance.py EMPTY_SCRATCH.\"\"\"\nimport sys,json,threading,http.server,functools\nfrom pathlib import Path\nSKILL=Path(__file__).resolve().parents[1]\nsys.path[:0]=[str(SKILL/'scripts'),str(SKILL/'tests')]\n",
+          "new": "\"\"\"Run synthetic browser acceptance: python browser_acceptance.py EMPTY_SCRATCH.\"\"\"\nimport sys,json\nfrom pathlib import Path\nSKILL=Path(__file__).resolve().parents[1]\nsys.path[:0]=[str(SKILL/'scripts'),str(SKILL/'tests')]\n"
+        },
+        {
+          "old": "# p2 stands in for a problem without an original (helpers' review sources always carry one)\nimport re\nart.html.write_text(re.sub(r'<details class=\"original\" data-original-problem=\"p2\">.*?</details>','',art.html.read_text(),count=1,flags=re.S))\nclass Handler(http.server.SimpleHTTPRequestHandler):\n def log_message(self,*args):pass\nserver=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Handler,directory=str(root)))\nthreading.Thread(target=server.serve_forever,daemon=True).start();port=server.server_port\nurl=f'http://127.0.0.1:{port}/stage/{art.html.name}'\nresults=[]\nwith sync_playwright() as pw:\n browser=pw.chromium.launch()\n for width,height in [(1280,900),(1024,768),(375,812)]:\n  for theme in ['light','dark']:\n",
+          "new": "# p2 stands in for a problem without an original (helpers' review sources always carry one)\nimport re\nart.html.write_text(re.sub(r'<details class=\"original\" data-original-problem=\"p2\">.*?</details>','',art.html.read_text(),count=1,flags=re.S))\nfrom mpe_preview import preview_server\n\nresults=[]\nwith preview_server((art,)) as (server, paths), sync_playwright() as pw:\n port=server.server_port\n url=f'http://127.0.0.1:{port}{paths[0]}'\n browser=pw.chromium.launch()\n for width,height in [(1280,900),(1024,768),(375,812)]:\n  for theme in ['light','dark']:\n"
+        },
+        {
+          "old": " assert page.locator('.layout').get_attribute('data-prob-dock')=='float'\n ctx.close()\n browser.close()\nserver.shutdown()\n(root/'results.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))\nprint(json.dumps(results,ensure_ascii=False))",
+          "new": " assert page.locator('.layout').get_attribute('data-prob-dock')=='float'\n ctx.close()\n browser.close()\n\n(root/'results.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))\nprint(json.dumps(results,ensure_ascii=False))\n"
+        }
+      ]
+    },
+    {
+      "destination": "tests/helpers.py",
+      "base_sha256": "95fc58516991acfbba15a92150ba714095e83c1676e5667dccbf9a95e234b3e6",
+      "current_sha256": "32df3dbb17b406fdcb932363b7e08a84765ad865594dd107efb730d280c4115f",
+      "reason": "Share pinned local resources between problem explanations.",
+      "replacements": [
+        {
+          "old": "    return result\n\n\ndef source_file(repo, date='0917', slug='Recursion', empty=False):\n    path=repo / '복습노트' / date / f'복습문제_{date}_{slug}.html'\n    path.parent.mkdir(parents=True,exist_ok=True)\n    card = '' if empty else ('''<article class=\"card\" id=\"p1\" data-source=\"1001 기출\">\n",
+          "new": "    return result\n\n\ndef install_fixture_assets(repo):\n    import shutil\n    source = Path(__file__).resolve().parents[4] / '복습노트/_assets/problem-explain/v1'\n    target = repo / '복습노트/_assets/problem-explain/v1'\n    if not target.exists():\n        shutil.copytree(source, target)\n\n\ndef source_file(repo, date='0917', slug='Recursion', empty=False):\n    install_fixture_assets(repo)\n    path=repo / '복습노트' / date / f'복습문제_{date}_{slug}.html'\n    path.parent.mkdir(parents=True,exist_ok=True)\n    card = '' if empty else ('''<article class=\"card\" id=\"p1\" data-source=\"1001 기출\">\n"
+        }
+      ]
+    },
+    {
+      "destination": "tests/test_cli.py",
+      "base_sha256": "36844b71d7851e43457d7f1723bafb6672a4bdf80ff3381db67e1be71f873a4a",
+      "current_sha256": "3958137e6beafe2e39ee2f850342cb6649baa11a47ce629ca7a5e46e799d7647",
+      "reason": "Share pinned local resources between problem explanations.",
+      "replacements": [
+        {
+          "old": "import sys\nfrom pathlib import Path\nimport pytest\nfrom helpers import fragment, approved, source_file\nfrom mpe_source import load_source\nfrom mpe_cli import load_run\n\n",
+          "new": "import sys\nfrom pathlib import Path\nimport pytest\nfrom helpers import fragment, approved, source_file, install_fixture_assets\nfrom mpe_source import load_source\nfrom mpe_cli import load_run\n\n"
+        },
+        {
+          "old": "\ndef test_cli_round_trip_and_unreviewed_publish(tmp_path):\n    repo = tmp_path / 'repo'\n    source = repo / '복습노트/0917/복습문제_0917_Recursion.html'\n    source.parent.mkdir(parents=True)\n    source.write_bytes((ROOT / '복습노트/0917' / source.name).read_bytes())\n    run = tmp_path / 'run'\n    result = call('extract', '--repo', repo, '--target', '0917', '--run', run)\n    assert result.returncode == 0, result.stderr\n    item = load_run(run)[0]\n",
+          "new": "\ndef test_cli_round_trip_and_unreviewed_publish(tmp_path):\n    repo = tmp_path / 'repo'\n    install_fixture_assets(repo)\n    source = repo / '복습노트/0917/복습문제_0917_Recursion.html'\n    source.parent.mkdir(parents=True)\n    source.write_bytes((ROOT / '복습노트/0917' / source.name).read_bytes())\n    # A platform alias such as macOS /tmp may precede the real RUN directory.\n    alias = tmp_path / 'alias'\n    alias.symlink_to(tmp_path, target_is_directory=True)\n    run = alias / 'run'\n    result = call('extract', '--repo', repo, '--target', '0917', '--run', run)\n    assert result.returncode == 0, result.stderr\n    item = load_run(run)[0]\n"
+        },
+        {
+          "old": "\ndef test_one_stale_pack_does_not_block_other_pack(tmp_path):\n    repo = tmp_path / 'repo'\n    for date in ('0914', '0917'):\n        source = repo / '복습노트' / date / f'복습문제_{date}_Recursion.html'\n        source.parent.mkdir(parents=True)\n",
+          "new": "\ndef test_one_stale_pack_does_not_block_other_pack(tmp_path):\n    repo = tmp_path / 'repo'\n    install_fixture_assets(repo)\n    for date in ('0914', '0917'):\n        source = repo / '복습노트' / date / f'복습문제_{date}_Recursion.html'\n        source.parent.mkdir(parents=True)\n"
+        }
+      ]
+    },
+    {
+      "destination": "tests/test_publish.py",
+      "base_sha256": "d07509bf322bf2c1ed8be56ba3b0440fc65271c9eb13578576c0041fb5e964ab",
+      "current_sha256": "17175dcb4d364e3fc1f5e5e95da7e9536e9711a4b33774bc60201bd0ec24a01b",
+      "reason": "Share pinned local resources between problem explanations.",
+      "replacements": [
+        {
+          "old": "    stem = artifacts.html.stem\n    data = dest / '.pack' / stem.replace('문제설명_', '자료_문제설명_', 1)\n    assert (data / 'manifest.json').is_file() and (data / 'validation.json').is_file()\n    assert f'.pack/{data.name}/vendor/katex/katex.min.js' in artifacts.html.read_text(encoding='utf-8')\n\ndef test_replace_failure_rolls_back_pair(tmp_path, monkeypatch):\n    pack, fragments, artifacts = setup(tmp_path)\n",
+          "new": "    stem = artifacts.html.stem\n    data = dest / '.pack' / stem.replace('문제설명_', '자료_문제설명_', 1)\n    assert (data / 'manifest.json').is_file() and (data / 'validation.json').is_file()\n    assert '../_assets/problem-explain/v1/katex/katex.min.js' in artifacts.html.read_text(encoding='utf-8')\n    assert not (data / 'vendor').exists()\n\n\n@pytest.mark.parametrize('remove', [True, False], ids=['missing', 'modified'])\ndef test_shared_font_changes_block_check_and_publish(tmp_path, remove):\n    from mpe_render import check_artifacts\n\n    pack, fragments, artifacts = setup(tmp_path)\n    reviews = approved(pack, fragments, artifacts)\n    font = pack.path.parent.parent / '_assets/problem-explain/v1/pretendard/woff2/Pretendard-Regular.woff2'\n    assert font.is_file()\n    font.write_bytes(b'changed')\n    if remove:\n        font.unlink()\n    assert any(font.name in error for error in check_artifacts(pack, artifacts))\n    with pytest.raises(ExplainError, match=font.name):\n        publish_explanation(pack, artifacts, fragments, reviews, pack.path.parent, tmp_path / 'backup')\n    assert not (pack.path.parent / artifacts.html.name).exists()\n\ndef test_replace_failure_rolls_back_pair(tmp_path, monkeypatch):\n    pack, fragments, artifacts = setup(tmp_path)\n"
+        }
+      ]
     }
   ],
   "common_sync": {

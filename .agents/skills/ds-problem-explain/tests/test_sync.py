@@ -7,11 +7,12 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'scripts'))
 from mpe_types import SourcePack
 from mpe_render import build_explanation, check_artifacts
 from mpe_source import load_source, resolve_sources, subparts
-from helpers import fragment, problem
+from helpers import fragment, problem, install_fixture_assets
 
 
 def synthetic(tmp_path):
     repo=tmp_path/'repo'
+    install_fixture_assets(repo)
     src=repo/'복습노트/1007/복습문제_1007_Test.html'
     src.parent.mkdir(parents=True)
     src.write_text('<html><body id="p1">fixture</body></html>',encoding='utf-8')

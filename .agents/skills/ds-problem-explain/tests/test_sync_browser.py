@@ -1,7 +1,4 @@
 """Synthetic stage acceptance; no calls to publish or real course output paths."""
-import functools
-import http.server
-import threading
 from dataclasses import replace
 from pathlib import Path
 import pytest
@@ -34,12 +31,11 @@ def make_stage(root):
 def stage_url(tmp_path_factory):
     root=tmp_path_factory.mktemp('explain-browser')
     a=make_stage(root)
-    class Quiet(http.server.SimpleHTTPRequestHandler):
-        def log_message(self,*args): pass
-    server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(root)))
-    thread=threading.Thread(target=server.serve_forever,daemon=True);thread.start()
-    yield f'http://127.0.0.1:{server.server_port}/stage/{a.html.name}#p1'
-    server.shutdown();thread.join();server.server_close()
+    from mpe_preview import preview_server
+
+    with preview_server((a,)) as (server, routes):
+        origin = f'http://127.0.0.1:{server.server_port}'
+        yield origin, origin + routes[0] + '#p1'
 
 
 @pytest.fixture(scope='module')
@@ -53,13 +49,14 @@ def browser():
 @pytest.mark.parametrize('width,height',[(1024,900),(1280,900),(375,812)])
 @pytest.mark.parametrize('theme',['light','dark'])
 def test_panel_tabs_choices_zoom_print_and_resources(browser,stage_url,width,height,theme):
+    origin, stage_url = stage_url
     context=browser.new_context(viewport={'width':width,'height':height},color_scheme=theme)
     page=context.new_page();errors=[];failed=[];external=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
     page.on('console',lambda m:errors.append(m.text) if m.type=='error' else None)
     page.on('requestfailed',lambda r:failed.append(r.url))
     page.on('response',lambda r:failed.append(r.url) if r.status>=400 else None)
-    page.on('request',lambda r:external.append(r.url) if not r.url.startswith(stage_url.split('/stage/')[0]) else None)
+    page.on('request',lambda r:external.append(r.url) if not r.url.startswith(origin + '/') else None)
     try:
         page.goto(stage_url,wait_until='networkidle')
         if width>=1024:
@@ -92,12 +89,15 @@ def test_panel_tabs_choices_zoom_print_and_resources(browser,stage_url,width,hei
         page.evaluate('window.dispatchEvent(new Event("afterprint"))')
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
         assert page.locator('.katex-error').count()==0
+        assert page.locator('.katex').count() > 0
+        assert page.evaluate("document.fonts.ready.then(() => [...document.fonts].some(f => f.family === 'Pretendard' && f.status === 'loaded'))")
         assert not errors and not failed and not external,(errors,failed,external)
     finally:
         context.close()
 
 
 def test_breakpoint_and_saved_closed_toc(browser,stage_url):
+    _, stage_url = stage_url
     context=browser.new_context(viewport={'width':1023,'height':900})
     page=context.new_page()
     try:
@@ -116,6 +116,7 @@ def test_breakpoint_and_saved_closed_toc(browser,stage_url):
 
 
 def test_dock_float_drag_resize_and_restore(browser,stage_url):
+    _, stage_url = stage_url
     context=browser.new_context(viewport={'width':1280,'height':900})
     page=context.new_page()
     try:
@@ -146,6 +147,7 @@ def test_dock_float_drag_resize_and_restore(browser,stage_url):
 @pytest.mark.parametrize('width,height',[(1280,900),(375,812)])
 @pytest.mark.parametrize('theme',['light','dark'])
 def test_summary_switch_with_math_title(browser,stage_url,width,height,theme):
+    _, stage_url = stage_url
     context=browser.new_context(viewport={'width':width,'height':height},color_scheme=theme)
     page=context.new_page();errors=[]
     page.on('pageerror',lambda e:errors.append(str(e)))

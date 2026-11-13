@@ -85,7 +85,25 @@ def test_success_keeps_only_html_at_pack_root(tmp_path):
     stem = artifacts.html.stem
     data = dest / '.pack' / stem.replace('문제설명_', '자료_문제설명_', 1)
     assert (data / 'manifest.json').is_file() and (data / 'validation.json').is_file()
-    assert f'.pack/{data.name}/vendor/katex/katex.min.js' in artifacts.html.read_text(encoding='utf-8')
+    assert '../_assets/problem-explain/v1/katex/katex.min.js' in artifacts.html.read_text(encoding='utf-8')
+    assert not (data / 'vendor').exists()
+
+
+@pytest.mark.parametrize('remove', [True, False], ids=['missing', 'modified'])
+def test_shared_font_changes_block_check_and_publish(tmp_path, remove):
+    from mpe_render import check_artifacts
+
+    pack, fragments, artifacts = setup(tmp_path)
+    reviews = approved(pack, fragments, artifacts)
+    font = pack.path.parent.parent / '_assets/problem-explain/v1/pretendard/woff2/Pretendard-Regular.woff2'
+    assert font.is_file()
+    font.write_bytes(b'changed')
+    if remove:
+        font.unlink()
+    assert any(font.name in error for error in check_artifacts(pack, artifacts))
+    with pytest.raises(ExplainError, match=font.name):
+        publish_explanation(pack, artifacts, fragments, reviews, pack.path.parent, tmp_path / 'backup')
+    assert not (pack.path.parent / artifacts.html.name).exists()
 
 def test_replace_failure_rolls_back_pair(tmp_path, monkeypatch):
     pack, fragments, artifacts = setup(tmp_path)

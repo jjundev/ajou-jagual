@@ -10,6 +10,7 @@ import shutil
 from collections import Counter
 from pathlib import Path
 from urllib.parse import unquote, urlsplit, quote
+from mpe_assets import PAGE_ASSETS, shared_assets, vendor_url, verify_shared_assets
 from mpe_contract import validate_fragment, payload_hash, markup_errors
 from mpe_shared import Node, parse, inner, outer, compact, Ctx, convert, check_md
 from mpe_source import sha256, inside, existing_path
@@ -160,6 +161,8 @@ def build_explanation(pack, fragments, stage: Path, repo: Path, traces: Path | N
     errors = [e for p in pack.problems for e in validate_fragment(p, fragments[p.id])]
     if errors:
         raise ExplainError(' / '.join(errors))
+    repo = Path(repo).resolve()
+    dependencies = shared_assets(repo)
     stage.mkdir(parents=True, exist_ok=True)
     stem, fig_name, data_name = names(pack)
     pack_dir = stage / PACK_DIR
@@ -168,7 +171,6 @@ def build_explanation(pack, fragments, stage: Path, repo: Path, traces: Path | N
     data_dir.mkdir(parents=True)
     (pack_dir / fig_name).mkdir()
     fig_rel = f'{PACK_DIR}/{fig_name}'  # HTML(루트) 기준
-    shutil.copytree(ASSETS / 'vendor', data_dir / 'vendor')
     shutil.copy2(ASSETS / 'template-provenance.json', data_dir / 'template-provenance.json')
     if traces is not None:
         shutil.copytree(traces, data_dir / 'traces', ignore=lambda d, names: [n for n in names if not n.endswith('.json')])
@@ -203,7 +205,7 @@ def build_explanation(pack, fragments, stage: Path, repo: Path, traces: Path | N
               'SECTIONS': '<section id="problems"><h2>문항별 설명</h2>' + ''.join(articles) + '</section>',
               'FOOTER': '원 문제·정리노트·PDF는 보존해요.',
               'SCRIPTS': '<script type="application/json" id="explain-choice-model">'+json.dumps({p.id:{'answer':p.choice.answer,'mode':p.choice.mode,'options':list(p.choice.option_ids)} for p in pack.problems if p.choice},ensure_ascii=False).replace('</','<\\/')+'</script>',
-              'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': f'{PACK_DIR}/{data_name}/vendor'}
+              'RANGE': f'ds-problem-explain-{pack.profile}-{pack.range}-{pack.slug}', 'VENDOR': vendor_url(repo, pack.path.parent)}
     text = (ASSETS / 'note-template.html').read_text(encoding='utf-8')
     for key, value in values.items():
         text = text.replace('{{' + key + '}}', value)
@@ -214,7 +216,7 @@ def build_explanation(pack, fragments, stage: Path, repo: Path, traces: Path | N
     convert_markdown(html_path, md_path, ctx)
     manifest_path = data_dir / 'manifest.json'
     files = tuple(sorted(p for p in stage.rglob('*') if p.is_file()))
-    dump(manifest_path, {'version': 1, 'profile': pack.profile, 'range': pack.range, 'slug': pack.slug,
+    dump(manifest_path, {'version': 2, 'shared_assets': dependencies, 'profile': pack.profile, 'range': pack.range, 'slug': pack.slug,
                          'source': str(pack.path), 'source_sha256': pack.sha256,
                          'review_policy_version': POLICY_VERSION, 'source_resources': source_resources(pack,repo),
                          'input_hash': payload_hash(pack, fragments), 'reading_key': values['RANGE'],
@@ -239,6 +241,13 @@ def check_artifacts(pack, artifacts):
             file = root / name
             if not file.resolve().is_relative_to(root) or not file.is_file() or sha256(file) != digest:
                 errors.append('생성 파일 변경/누락: ' + name)
+        repo = Path(manifest['repo'])
+        destination = inside(pack.path.parent, repo)
+        if Path(manifest['destination']) != pack.path.parent:
+            errors.append('manifest 발행 위치 불일치')
+        uses_shared = verify_shared_assets(repo, manifest)
+        expected_shared = {f'{vendor_url(repo, destination)}/{name}' for name in PAGE_ASSETS} if uses_shared else set()
+        found_shared = set()
         document = parse(artifacts.html.read_text(encoding='utf-8'))
         main = next(document.find_all(lambda n: n.tag == 'main'))
         wanted_images = Counter(md_resource(unquote(n.attrs.get('src', ''))) for n in main.find_all(lambda n: n.tag == 'img'))
@@ -278,15 +287,20 @@ def check_artifacts(pack, artifacts):
                 if url.fragment and unquote(url.fragment) not in ids:
                     errors.append('링크 앵커 없음: ' + href)
                 continue
-            path = root / unquote(url.path)
-            if node.tag == 'a':
-                path = Path(manifest['destination']) / unquote(url.path)
-            if not path.is_file():
+            if node.tag in ('link', 'script') and href in expected_shared:
+                found_shared.add(href)
+                continue
+            path = (destination if node.tag == 'a' else root) / unquote(url.path)
+            if node.tag != 'a' and not path.resolve().is_relative_to(root):
+                errors.append('산출 폴더 밖 자원: ' + href)
+            elif not path.is_file():
                 errors.append('자원 없음: ' + href)
             elif node.tag == 'a' and url.fragment:
                 target_ids = {n.attrs.get('id') for n in parse(path.read_text(encoding='utf-8')).find_all(lambda n: True)}
                 if unquote(url.fragment) not in target_ids:
                     errors.append('링크 앵커 없음: ' + href)
+        if found_shared != expected_shared:
+            errors.append('공용 자원 링크 누락: ' + ', '.join(sorted(expected_shared - found_shared)))
         # Existing Markdown checker resolves links relative to stage; external course links
         # use their intended destination instead (checked above and by browser on publication).
         errors += [e for e in check_md(str(artifacts.html), str(artifacts.md)) if not e.startswith('링크 파일 없음:')]
