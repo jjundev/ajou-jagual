@@ -1,6 +1,6 @@
 """Bio shell behaviour on DS materials; no biology renderer dependency."""
 from pathlib import Path
-import json,sys
+import hashlib,json,sys
 from playwright.sync_api import sync_playwright
 from browser_acceptance import discover_pages
 
@@ -24,7 +24,7 @@ def main(root,out):
      assert typography['section'][1:]==['19px','700','26.6px']
      assert typography['prose'][1:]==['15px','400','24px']
      assert typography['warning'][1:]==['15px','400','25.5px']
-     assert sorted(typography['faces'])==[['400','loaded'],['500','loaded'],['600','loaded'],['700','loaded']],typography['faces']
+     assert {('400','loaded'),('500','loaded'),('600','loaded'),('700','loaded')} <= set(map(tuple,typography['faces'])),typography['faces']
      assert page.evaluate('document.documentElement.scrollWidth<=innerWidth && document.documentElement.scrollHeight<=innerHeight')
      stage=page.locator('.stage').bounding_box();bar=page.locator('.playbar').bounding_box()
      assert stage['x']+stage['width']<=width+1,'stage clipped by min-content width'
@@ -46,9 +46,12 @@ def main(root,out):
       assert right_box['x']+right_box['width']<=width+1,'reopened sibling clips resized dock'
       assert page.locator('.stage').bounding_box()['width']>=319
       right_handle.focus();page.keyboard.press('Home')
-      page.set_viewport_size({'width':1440,'height':900});right_handle.focus()
+      page.set_viewport_size({'width':1440,'height':900});page.evaluate('() => new Promise(resolve => requestAnimationFrame(resolve))');right_handle.focus()
       for _ in range(30):page.keyboard.press('ArrowLeft')
-      page.set_viewport_size({'width':375,'height':812});page.set_viewport_size({'width':width,'height':height})
+      page.set_viewport_size({'width':375,'height':812})
+      page.wait_for_function("document.querySelector('[data-resize=left]').tabIndex === -1")
+      page.set_viewport_size({'width':width,'height':height})
+      page.wait_for_function("document.querySelector('[data-resize=left]').tabIndex === 0")
       right_box=page.locator('.panel-right').bounding_box()
       assert right_box['x']+right_box['width']<=width+1,'dock width stale after mobile breakpoint'
       assert page.locator('.stage').bounding_box()['width']>=319
@@ -61,7 +64,7 @@ def main(root,out):
       page.locator('[data-action=toggle-right]').click();assert page.locator('.panel-right').is_visible();page.locator('.panel-right button[data-action=close-panels]').click()
       toggle.click()
      # Left code and full step list reflect the exact same Trace, including last diagnostic.
-     assert page.locator('.panel-left .code').is_visible()
+     page.locator('.panel-left .code').wait_for(state='visible')
      page.locator('[data-action=step]').last.click();assert page.locator('[data-action=next]').is_disabled()
      selected=page.locator('[data-action=step][aria-pressed=true]');assert selected.count()==1
      selected.scroll_into_view_if_needed();assert selected.is_visible()
@@ -78,8 +81,8 @@ def main(root,out):
      page.locator('[data-action=option-addresses]').click();page.locator('[data-action=option-arrows]').click();assert not page.locator('.memory-svg').is_visible();page.locator('[data-action=option-arrows]').click()
      if width<1024:page.keyboard.press('Escape')
      assert page.locator('.memory-pane').is_visible()
-     topic=page.evaluate('DSInteractive.scenario.id');page.screenshot(path=str(out/f'{topic}-{width}-{theme}.png'))
-     rows.append({'topic':topic,'viewport':[width,height],'theme':theme,'typography':typography,'status':'pass'})
+     topic=page.evaluate('DSInteractive.scenario.id');page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}.png'))
+     rows.append({'topic':topic,'file':file.name,'sha256':hashlib.sha256(file.read_bytes()).hexdigest(),'viewport':[width,height],'theme':theme,'typography':typography,'status':'pass'})
      print(f'{topic} {width} {theme}: bio shell pass',flush=True)
   browser.close()
  assert not errors,errors;assert not requests,requests

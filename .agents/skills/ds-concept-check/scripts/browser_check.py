@@ -3,26 +3,21 @@
 
 CLI: browser_check.py <확인문제 html> --src <자료_확인문제 폴더> --out <json> [--shots <dir>]
 
-- serve_root(기본 저장소 루트)를 127.0.0.1 빈 포트 http.server 로 띄운다(끝나면 끈다).
+- 브라우저를 오프라인으로 설정하고 file://로 열어 공유 글꼴·KaTeX를 확인한다.
 - 1280×900·375×812 × light·dark 4회. 매 회 콘솔 error·.katex-error·가로 넘침을 본다.
 - 우측 패널: 채점 전에 현재 문항의 힌트를 열고, 풀이가 가려져 있는지 본다.
 - 객관식: 오답 클릭 → 상태 문구·보기별 설명 → 다시 풀기 → 정답 클릭.
 - 값 입력(short): 허용답의 소문자·공백 변형을 넣고 '답 확인' → 맞음 상태('자동 일치').
 - 새로고침하면 선택·입력이 비어야 한다(저장소 null). 복기 버튼이 있어야 한다.
-- CDN 의 KaTeX·Pretendard 는 ds-problem-explain 의 같은 버전 로컬 사본으로 응답한다(네트워크 무관).
 - 실패는 멈추지 않고 모아 JSON 에 남기며 하나라도 있으면 exit 1.
 """
 from __future__ import annotations
 
 import argparse
-from functools import partial
 import hashlib
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
 import sys
-import threading
-from urllib.parse import quote
 
 import _paths
 import build
@@ -34,34 +29,17 @@ ACTION_TIMEOUT = 3000
 NAV_TIMEOUT = 20000
 SETTLE_MS = 600  # 화면 전환 애니메이션이 끝난 뒤 찍는다
 SHORT_CORRECT = "자동 일치"  # review-interaction.js 가 short 정답일 때 .review-status 에 쓰는 글
-VENDOR = _paths.REPO / ".agents" / "skills" / "ds-problem-explain" / "assets" / "vendor"
-CDN_MAP = {"https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/": VENDOR / "katex",
-           "https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/": VENDOR / "pretendard"}
-CONTENT_TYPES = {".css": "text/css", ".js": "application/javascript", ".woff2": "font/woff2",
-                 ".woff": "font/woff", ".ttf": "font/ttf"}
 
 
-def route_external(origin: str, served: set[str], blocked: set[str]):
-    """고정 버전 CDN 파일은 로컬 사본으로 응답하고, 그 밖의 외부 요청은 막고 기록한다."""
+def route_external(blocked: set[str]):
+    """파일과 인라인 자원만 허용하고 외부 요청은 기록한다."""
     def handle(route):
         url = route.request.url
-        if url.startswith(origin) or url.startswith(("data:", "blob:")):
+        if url.startswith(("file:", "data:", "blob:")):
             return route.continue_()
-        for prefix, folder in CDN_MAP.items():
-            if url.startswith(prefix):
-                local = folder / url[len(prefix):].split("?")[0].split("#")[0]
-                if local.is_file():
-                    served.add(url)
-                    return route.fulfill(path=str(local),
-                                         content_type=CONTENT_TYPES.get(local.suffix, "application/octet-stream"))
         blocked.add(url)
         return route.abort()
     return handle
-
-
-class Quiet(SimpleHTTPRequestHandler):
-    def log_message(self, *args):
-        pass
 
 
 def sha256(path: Path) -> str:
@@ -80,18 +58,16 @@ def short_variant(answer: dict) -> str:
 class Run:
     """뷰포트 × 테마 한 번. 예외 대신 실패를 모은다."""
 
-    def __init__(self, page, label: str, origin: str):
-        self.page, self.label, self.origin = page, label, origin
+    def __init__(self, page, label: str):
+        self.page, self.label = page, label
         self.failures: list[str] = []
         self.errors: list[str] = []
-        self.served: set[str] = set()
         self.blocked: set[str] = set()
         page.on("pageerror", lambda e: self.errors.append(f"페이지 오류: {e}"))
         page.on("console", lambda m: self.errors.append(f"콘솔 error: {m.text}") if m.type == "error" else None)
-        page.on("requestfailed", lambda r: self.errors.append(f"요청 실패: {r.url}") if r.url.startswith(origin) else None)
-        page.on("response", lambda r: self.errors.append(f"HTTP {r.status}: {r.url}")
-                if r.status >= 400 and r.url.startswith(origin) else None)
-        page.context.route("**/*", route_external(origin, self.served, self.blocked))
+        page.on("requestfailed", lambda r: self.errors.append(f"로컬 자원 요청 실패: {r.url}")
+                if r.url.startswith("file:") else None)
+        page.context.route("**/*", route_external(self.blocked))
 
     def expect(self, ok: bool, what: str) -> bool:
         if not ok:
@@ -200,6 +176,9 @@ def check_note_link(run: Run, item: dict):
 def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: str) -> dict:
     page = run.page
     page.goto(url, wait_until="load")
+    run.expect(page.evaluate("""async () => (await document.fonts.load('400 16px Pretendard', '한글'))
+                    .some(font => font.family === 'Pretendard' && font.status === 'loaded')"""), "Pretendard 로드 실패")
+    run.expect(page.evaluate("typeof renderMathInElement === 'function'"), "KaTeX 자동 렌더 로드 실패")
     run.page_checks("시작 화면")
     checked = 0
     hints_checked = 0
@@ -255,34 +234,27 @@ def check(html: Path, out: Path, shots: Path | None, *, src: Path, serve_root: P
     if shots is not None:
         shots = Path(shots)
         shots.mkdir(parents=True, exist_ok=True)
-    server = ThreadingHTTPServer(("127.0.0.1", 0), partial(Quiet, directory=str(root)))
-    threading.Thread(target=server.serve_forever, daemon=True).start()
-    try:
-        origin = f"http://127.0.0.1:{server.server_port}/"
-        url = origin + quote(html.relative_to(root).as_posix())
-        with sync_playwright() as pw:
-            browser = pw.chromium.launch()
-            try:
-                for width, height in viewports:
-                    for theme in themes:
-                        ctx = browser.new_context(viewport={"width": width, "height": height})
+    report["transport"] = "file://, offline=True"
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        try:
+            for width, height in viewports:
+                for theme in themes:
+                    with browser.new_context(viewport={"width": width, "height": height},
+                                             offline=True, color_scheme=theme) as ctx:
                         page = ctx.new_page()
-                        page.emulate_media(color_scheme=theme)
                         page.set_default_timeout(ACTION_TIMEOUT)
                         page.set_default_navigation_timeout(NAV_TIMEOUT)
-                        run = Run(page, f"{width}x{height} {theme}", origin)
-                        detail = run.step("검사", lambda: check_run(run, url, items, shots, f"{width}x{height}-{theme}")) or {}
+                        run = Run(page, f"{width}x{height} {theme}")
+                        detail = run.step("검사", lambda: check_run(run, html.as_uri(), items, shots,
+                                                                  f"{width}x{height}-{theme}")) or {}
                         run.failures += [f"{run.label}: {e}" for e in run.errors]
+                        run.expect(not run.blocked, "외부 자원 요청: " + ", ".join(sorted(run.blocked)))
                         report["runs"].append({"label": run.label, "detail": detail, "failures": run.failures,
-                                               "cdn_served_locally": len(run.served),
                                                "external_blocked": sorted(run.blocked)})
                         report["failures"] += run.failures
-                        ctx.close()
-            finally:
-                browser.close()
-    finally:
-        server.shutdown()
-        server.server_close()
+        finally:
+            browser.close()
     report["status"] = "fail" if report["failures"] else "pass"
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)

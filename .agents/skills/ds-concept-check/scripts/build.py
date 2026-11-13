@@ -88,6 +88,7 @@ def render_page(src: Path) -> str:
     title = f"{range_} 확인문제 — 이번 수업 개념 확인"
     template = (_paths.DS_REVIEW_PACK / "assets" / "review-template.html").read_text(encoding="utf-8")
     page = assemble.fill(template, dict(
+        ASSET_ROOT=assemble.asset_root(s["pack_root"]),
         PAGE_TITLE=assemble.esc(f"{s['manifest']['course']} 확인문제 {range_}"),
         DESCRIPTION=assemble.esc(title), TITLE=assemble.esc(title),
         TOC='<a href="#check">확인</a>',
@@ -103,7 +104,7 @@ def build(src: Path) -> Path:
     s = load_source(src)
     try:
         page = render_page(src)
-    except ValueError as e:
+    except (ValueError, assemble.AssembleError) as e:
         raise BuildError(str(e)) from e
     out = Path(s["pack_root"]) / output_name(s["range"], s["slug"])
     out.write_text(page, encoding="utf-8")

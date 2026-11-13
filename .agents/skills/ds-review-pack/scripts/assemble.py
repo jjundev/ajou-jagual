@@ -16,14 +16,18 @@ from __future__ import annotations
 import argparse
 import shutil
 import html
+import os
 from pathlib import Path
 import re
 import sys
+from urllib.parse import quote
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import manifest as manifest_mod  # noqa: E402
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
+NOTES = ASSETS.parents[3] / "복습노트"
+SHARED_ASSETS = NOTES / "_assets/problem-explain/v1"
 SLOT_RE = re.compile(r"\{\{([A-Z_]+)\}\}")
 SCRIPT_RE = re.compile(r"<script\b[^>]*>.*?</script>", re.S | re.I)
 
@@ -43,6 +47,19 @@ def fill(template: str, values: dict[str, str]) -> str:
     return SLOT_RE.sub(lambda mo: values[mo.group(1)], template)
 
 
+def asset_root(out_dir: Path) -> str:
+    """Relative URL to the pinned assets, from the HTML's actual output directory."""
+    for name in ("pretendard/pretendard.css", "katex/katex.min.css", "katex/katex.min.js",
+                 "katex/contrib/auto-render.min.js"):
+        if not (SHARED_ASSETS / name).is_file():
+            raise AssembleError(f"공용 자원 없음: {SHARED_ASSETS / name}")
+    try:
+        relative = Path(os.path.relpath(SHARED_ASSETS.resolve(), out_dir.resolve()))
+    except ValueError as e:
+        raise AssembleError("공용 자원과 HTML 출력은 같은 드라이브에 있어야 해요") from e
+    return quote(relative.as_posix(), safe="/")
+
+
 def split_scripts(fragment: str) -> tuple[str, list[str]]:
     scripts = SCRIPT_RE.findall(fragment)
     return SCRIPT_RE.sub("", fragment), scripts
@@ -55,13 +72,14 @@ def read_fragment(path: Path, m: dict) -> str:
     return text.replace("{{NOTE_HREF}}", manifest_mod.note_name(m)).replace("{{REVIEW_HREF}}", manifest_mod.review_name(m))
 
 
-def build_note(m: dict, run_dir: Path) -> str:
+def build_note(m: dict, run_dir: Path, out_dir: Path | None = None) -> str:
     sections, scripts = [], []
     for sec in m["sections"]:
         body, found = split_scripts(read_fragment(run_dir / "sections" / f"{sec['id']}.html", m))
         scripts += found
         sections.append(f'    <section id="{sec["id"]}"><h2>{esc(sec["title"])}</h2>\n{body.strip()}\n    </section>')
     return fill((ASSETS / "note-template.html").read_text(encoding="utf-8"), {
+        "ASSET_ROOT": asset_root(out_dir if out_dir is not None else NOTES / m["range"]),
         "PAGE_TITLE": esc(f"{m['course']} 정리노트 {m['range']}"),
         "DESCRIPTION": esc(m["note_subtitle"]),
         "TOC": "".join(f'<a href="#{s["id"]}">{esc(s["short"])}</a>' for s in m["sections"]),
@@ -74,7 +92,7 @@ def build_note(m: dict, run_dir: Path) -> str:
     })
 
 
-def build_review(m: dict, run_dir: Path) -> str:
+def build_review(m: dict, run_dir: Path, out_dir: Path | None = None) -> str:
     parts, scripts = [], []
     populated={q['part'] for q in m['problems']}
     visible_parts=[part for part in m['parts'] if part['id'] in populated]
@@ -86,6 +104,7 @@ def build_review(m: dict, run_dir: Path) -> str:
             cards.append(body.strip())
         parts.append(f'    <section id="{part["id"]}"><h2>{esc(part["title"])}</h2>\n' + "\n".join(cards) + "\n    </section>")
     result = fill((ASSETS / "review-template.html").read_text(encoding="utf-8"), {
+        "ASSET_ROOT": asset_root(out_dir if out_dir is not None else NOTES / m["range"]),
         "PAGE_TITLE": esc(f"{m['course']} 복습문제 {m['range']}"),
         "DESCRIPTION": esc(m["review_title"]),
         "TOC": "".join(f'<a href="#{p["id"]}">{esc(p["short"])}</a>' for p in visible_parts),
@@ -110,7 +129,8 @@ def assemble(run_dir: Path | str, out_dir: Path | str) -> tuple[Path, Path]:
     note_path = out_dir / manifest_mod.note_name(m)
     review_path = out_dir / manifest_mod.review_name(m)
     # 둘 다 만든 뒤에 쓴다: 조각이 하나라도 없으면 어느 파일도 바뀌지 않는다.
-    note_html, review_html = build_note(m, run_dir), build_review(m, run_dir)
+    note_html = build_note(m, run_dir, out_dir)
+    review_html = build_review(m, run_dir, out_dir)
     note_path.write_text(note_html, encoding="utf-8")
     review_path.write_text(review_html, encoding="utf-8")
     # trace 재생기 조각을 검사하는 check_html 이 <노트 폴더>/.pack/자료_복습팩/traces/ 에서 JSON 을 찾는다.

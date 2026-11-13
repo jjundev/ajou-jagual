@@ -1,7 +1,4 @@
-"""Real generated note/review panel behavior, served over an ephemeral HTTP port."""
-import functools
-import http.server
-import threading
+"""Real generated note/review panel behavior with offline file URLs."""
 import shutil
 import re
 import pytest
@@ -19,19 +16,18 @@ def test_note_and_review_panel_copy(tmp_path,width,height,theme):
     counter=iter(['첫 토픽 요약','둘째 토픽 요약'])
     section.write_text(re.sub(r'<div class="sum" hidden>.*?</article>',lambda m:'<div class="sum" hidden><p>'+next(counter)+'</p></div></article>',section.read_text(),flags=re.S))
     note,review=assemble.assemble(run,tmp_path)
-    class Quiet(http.server.SimpleHTTPRequestHandler):
-        def log_message(self,*args): pass
-    server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(Quiet,directory=str(tmp_path)))
-    thread=threading.Thread(target=server.serve_forever,daemon=True); thread.start()
-    try:
-        with sync_playwright() as pw:
-            browser=pw.chromium.launch()
-            try:
-                context=browser.new_context(viewport={'width':width,'height':height},color_scheme=theme)
+    with sync_playwright() as pw:
+        browser=pw.chromium.launch()
+        try:
+            with browser.new_context(viewport={'width':width,'height':height},color_scheme=theme,offline=True) as context:
                 page=context.new_page(); errors=[]
                 page.on('pageerror',lambda e:errors.append(str(e)))
+                page.on('requestfailed',lambda request:errors.append(request.url))
                 for path in [note,review]:
-                    page.goto(f'http://127.0.0.1:{server.server_port}/{path.name}',wait_until='networkidle')
+                    page.goto(path.as_uri(),wait_until='load')
+                    assert page.evaluate("typeof renderMathInElement === 'function'")
+                    assert page.evaluate("""async () => (await document.fonts.load('400 16px Pretendard','한글'))
+                        .some(face => face.status === 'loaded')""")
                     if not page.locator('#panel-right').is_visible(): page.locator('#toggle-right').click()
                     page.wait_for_timeout(180)
                     assert page.locator('#panel-right .panel-empty:visible').count()==1
@@ -60,7 +56,4 @@ def test_note_and_review_panel_copy(tmp_path,width,height,theme):
                     assert page.evaluate("Object.keys(localStorage).some(k=>k.startsWith('od-note-read:'))")
                     if path==review: assert page.locator('#solved-btn').get_attribute('aria-pressed')=='true'
                     assert errors==[]
-                context.close()
-            finally: browser.close()
-    finally:
-        server.shutdown();thread.join();server.server_close()
+        finally: browser.close()

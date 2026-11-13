@@ -1,11 +1,46 @@
-const {test}=require('node:test'),a=require('node:assert/strict'),fs=require('node:fs'),p=require('node:path');
-test('standalone typography uses real Pretendard 400/500/600/700 faces instead of stretching Regular',()=>{
- const file=p.join(__dirname,'../examples/0928/value-address.cjs');
- const {html}=require('../scripts/build.cjs').buildPage({scenario:{definition:require(file),sourceText:fs.readFileSync(file,'utf8')}});
- for(const [name,weight] of [['Regular',400],['Medium',500],['SemiBold',600],['Bold',700]]){
-  const face=[...html.matchAll(/@font-face\{([^}]+)\}/g)].find(m=>m[1].includes(`font-weight:${weight};`));
-  a.ok(face,`missing real weight ${weight}`);a.match(face[1],/font-family:Pretendard;/);
-  a.ok(face[1].includes(fs.readFileSync(p.join(__dirname,`../assets/vendor/pretendard/Pretendard-${name}.woff2`)).toString('base64')));
- }
- a.ok(!html.includes('font-weight:100 900'),'static Regular cannot advertise variable weights');
+const {test} = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const {buildPage} = require('../scripts/build.cjs');
+const {createReview, verifyReview} = require('../scripts/review.cjs');
+const {rebaseFont} = require('../scripts/fonts.cjs');
+const {save} = require('../scripts/save.cjs');
+
+test('saved and archived pages use the reviewed shared font from their own directories', t => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ds font 한글 '));
+  t.after(() => fs.rmSync(tmp, {recursive: true, force: true}));
+  const run = path.join(tmp, 'stage', 'run');
+  const dest = path.join(tmp, 'notes');
+  fs.mkdirSync(path.join(run, 'evidence'), {recursive: true});
+  const scenario = path.join(__dirname, '../examples/0928/value-address.cjs');
+  const sourceText = fs.readFileSync(scenario, 'utf8');
+  const {html, traces} = buildPage({scenario: {definition: require(scenario), sourceText}, outDir: run});
+  for (const [name, text] of Object.entries({
+    'preview.html': html, 'scenario.cjs': sourceText, 'trace.json': JSON.stringify(traces),
+    'source.json': '{}', 'brief.md': 'fixture', 'evidence/pass.md': 'fixture',
+  })) fs.writeFileSync(path.join(run, name), text);
+  const review = createReview(run);
+  for (const check of Object.values(review.checks)) {
+    Object.assign(check, {status: 'pass', evidence: 'evidence/pass.md', notes: 'fixture'});
+  }
+  fs.writeFileSync(path.join(run, 'review.json'), JSON.stringify(review));
+
+  const result = save({run, dest, name: '값과 주소'});
+  const files = [path.join(run, 'preview.html'), result.html, path.join(result.dir, 'preview.html')];
+  const cssFiles = files.map(file => {
+    const page = fs.readFileSync(file, 'utf8');
+    assert.equal(rebaseFont(page, path.dirname(file), run), html);
+    const ref = page.match(/data-ds-interactive-font href="([^"]+)"/)[1];
+    return fs.realpathSync(path.resolve(path.dirname(file), decodeURIComponent(ref)));
+  });
+  assert.equal(new Set(cssFiles).size, 1);
+  const css = fs.readFileSync(cssFiles[0], 'utf8');
+  for (const [weight, name] of [[400, 'Regular'], [500, 'Medium'], [600, 'SemiBold'], [700, 'Bold']]) {
+    assert.match(css, new RegExp(`font-weight: ${weight};[^}]+/woff2/Pretendard-${name}\\.woff2`));
+    assert.ok(fs.existsSync(path.join(path.dirname(cssFiles[0]), `woff2/Pretendard-${name}.woff2`)));
+  }
+  assert.deepEqual(verifyReview(run), []);
+  assert.deepEqual(verifyReview(result.dir), []);
 });

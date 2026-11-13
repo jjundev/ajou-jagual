@@ -46,34 +46,44 @@ def main(repo, scratch, reuse=False):
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
         context = browser.new_context(offline=True, viewport={'width': 1280, 'height': 900})
-        for kind in sn.KINDS:
+        samples = [(kind, '1015') for kind in sn.PACK_KINDS[:3]]
+        samples += [('확인문제', '1102'), ('인터렉티브', '0928')]
+        for kind, day in samples:
             page = context.new_page()
             if kind == '복습문제':
                 page.set_viewport_size({'width': 390, 'height': 844})
             errors, external = [], []
             page.on('pageerror', lambda e: errors.append(str(e)))
             page.on('request', lambda r: external.append(r.url) if r.url.startswith(('http:', 'https:')) else None)
-            path = next((unpacked / '1015').glob(kind + '_*.html'))
-            page.goto(path.as_uri() + '#p1' if kind != '정리노트' else path.as_uri(), wait_until='load')
+            path = sorted((unpacked / day).glob(kind + '_*.html'))[0]
+            page.goto(path.as_uri() + ('#p1' if kind in ('복습문제', '문제설명') else ''), wait_until='load')
             page.evaluate('document.fonts.ready')
-            measures = page.evaluate('''() => ({
+            measures = page.evaluate('''async () => ({
                 math:document.querySelectorAll('.katex').length,
                 mathErrors:document.querySelectorAll('.katex-error').length,
                 brokenImages:[...document.images].filter(i=>!i.complete||i.naturalWidth===0).length,
-                font:document.fonts.check('16px Pretendard')
+                font:(await document.fonts.load('400 16px Pretendard', '한글')).some(f => f.status === 'loaded')
             })''')
             assert measures['mathErrors'] == measures['brokenImages'] == 0, measures
             assert measures['font'], measures
             # Some review pages contain no TeX. Check the renderer independently.
-            assert page.evaluate('''() => {
-                const probe=document.createElement('span');
-                katex.render('x^2',probe,{throwOnError:true});
-                return !!probe.querySelector('.katex');
-            }''')
-            theme = page.locator('#theme-toggle')
+            if kind != '인터렉티브':
+                assert page.evaluate('''() => {
+                    const probe=document.createElement('span');
+                    katex.render('x^2',probe,{throwOnError:true});
+                    return !!probe.querySelector('.katex');
+                }''')
+            theme = page.locator('[data-action=theme]' if kind == '인터렉티브' else '#theme-toggle')
             initial = page.locator('html').get_attribute('data-theme')
             theme.click()
             assert page.locator('html').get_attribute('data-theme') != initial
+            if kind == '인터렉티브':
+                page.locator('[data-action=next]').click()
+                assert page.locator('#app').get_attribute('data-index') == '1'
+            if kind == '확인문제':
+                page.evaluate("location.hash = document.querySelector('article.card:has(.review-choice)').id")
+                page.locator('article.card:visible .review-choice').first.click()
+                assert page.locator('article.card:visible .review-status').inner_text()
             if kind == '복습문제':
                 if page.locator('#toggle-right').get_attribute('aria-expanded') != 'true':
                     page.locator('#toggle-right').click()
@@ -81,12 +91,13 @@ def main(repo, scratch, reuse=False):
                 detail.locator('summary').click()
                 assert detail.get_attribute('open') is not None
             if kind == '문제설명':
-                page.goto(path.as_uri() + '#p8', wait_until='load')
+                page.goto(path.as_uri() + '#p3', wait_until='load')
                 fig = page.locator('svg.zoomable:visible').first
-                assert fig.count()
+                fig.wait_for(state='visible')
                 fig.click()
                 assert page.locator('dialog.figure-sheet').is_visible()
                 page.locator('dialog.figure-sheet .sheet-close').click()
+                page.goto(path.as_uri() + '#p8', wait_until='load')
                 assert not page.locator('dialog.figure-sheet').is_visible()
                 link = page.locator('a[href*=".html#p8"]').first
                 href = link.get_attribute('href')

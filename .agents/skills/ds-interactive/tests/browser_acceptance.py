@@ -29,7 +29,7 @@ def main(root,scratch):
      if theme=='dark':page.locator('[data-action=theme]').click()
      assert page.locator('html').get_attribute('data-theme')==theme
      assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(file,width,'overflow')
-     assert page.evaluate("document.fonts.check('16px Pretendard')")
+     assert page.evaluate("async () => (await document.fonts.load('400 16px Pretendard', '한글')).some(f => f.status === 'loaded')")
      left(True)
      presets=page.locator('[data-action=preset] option').evaluate_all('(es)=>es.map(e=>e.value)');steps_checked=0
      for preset in presets:
@@ -72,7 +72,7 @@ def main(root,scratch):
      page.locator('[data-action=prev]').click();page.locator('[data-action=play]').click();page.wait_for_timeout(550);assert page.locator('#app').get_attribute('data-playing')=='false'
      left(True);page.locator('[data-action=preset]').select_option('default');left(False);page.locator('[data-action=scrub]').evaluate('(e)=>{e.value=Math.min(6,Number(e.max));e.dispatchEvent(new Event("input",{bubbles:true}));}')
      topic=page.evaluate('DSInteractive.scenario.id')
-     page.screenshot(path=str(out/f'{topic}-{width}-{theme}.png'),full_page=True)
+     page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}.png'),full_page=True)
      print(f'{topic} {width} {theme}: {steps_checked} snapshots',flush=True)
      results.append({'topic':topic,'file':file.name,'sha256':hashlib.sha256(file.read_bytes()).hexdigest(),'viewport':[width,height],'theme':theme,'presets':len(presets),'snapshots_checked':steps_checked,'status':'pass'})
   browser.close()

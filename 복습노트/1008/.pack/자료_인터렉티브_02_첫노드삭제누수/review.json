@@ -2,6 +2,8 @@
   "version": 1,
   "hashes": {
     "brief.md": "0109935b812a4810b02f4c8596c23955897200613e763a8b44e53a856bb9f7ae",
+    "evidence/browser-runs.log": "59ceb5ffe421fae9f1d6d7bfa20cbf38ce1469e85b804fbec9f05440fdf60a01",
+    "evidence/browser.json": "6fd3f42fc328ab2415b5175e5e7e16fab4f0900b58fc425a6c3cbb0421d376e3",
     "evidence/browser/delete-default-1440.png": "d53c2404434bf3ff3a7c65a62d38f470578b709ce8c7e3655e5f97b86d93ea73",
     "evidence/browser/delete-leak-scrolled.png": "c5cee6fdcc1dd7e9e3dad6680848d4c958d873d1c71fde80cf84682fb79088a4",
     "evidence/browser/delete-middle-1440.png": "1ad8918e392889d4e6947deba16bd68fdfbf47fce2e5df6c1a3678b851e64252",
@@ -12,8 +14,6 @@
     "evidence/browser/list-delete-1440-light.png": "a7d8c641db6ca84e905a0e0b00cb60f10f269c2c43841e61e1e59a2e5f4aef91",
     "evidence/browser/list-delete-375-dark.png": "a7a4dfb6bdd84fe2eb4d14adfa7bf9e110bc97caf9b8de5d89c8a92e67951095",
     "evidence/browser/list-delete-375-light.png": "8a6079fe49d79dee036962fb8e4b7788b27898dd80bcf875ad6c876b638507fc",
-    "evidence/browser-runs.log": "59ceb5ffe421fae9f1d6d7bfa20cbf38ce1469e85b804fbec9f05440fdf60a01",
-    "evidence/browser.json": "6fd3f42fc328ab2415b5175e5e7e16fab4f0900b58fc425a6c3cbb0421d376e3",
     "evidence/content-review.md": "a6400152761fcf1f17d3fc7c4c55cd76f729a76b0fa0eaa167c8aeae94757415",
     "evidence/independent-oracle.py": "a3b1ccc3add7afc25bf99057e49f398d1907d6b6bb82c71dcde8996a354dc86c",
     "evidence/independent.json": "efd070e71558494091c86dcf347bfbc7f3dca41dd049f8157fbf42e8295078fb",
@@ -23,15 +23,16 @@
     "evidence/pdf-s4-p47.txt": "5e38cb8acdab1105b0b55be61c3e9116d6f52dd9fd9764e3929880db157d205a",
     "evidence/pdf-s4-p48.txt": "932bc06b99a4a54e0281df92507bfb03f0d81fac8529b9da318e56432a3a5641",
     "evidence/schema.json": "8f385e0c36b4fe79df4b93c37c4b4a29f4bdd22cfe5767dca1a88fb439c59ec4",
+    "evidence/shared-fonts-offline.json": "fa67b4c53f6830b1a1ab909948fdc9c53fbf9f05288c91a7d0354b61661a7cd0",
+    "evidence/ui-review.md": "f9a7c80ec4cd8d41ceb82ffee0d61e4f5e0e27731d0a239e0eda394be5f23fef",
+    "evidence/ui.json": "40f708be99b02943e5e71ffe2dc5789ecf1e1ad5a3b6440531b4016fe17263e7",
     "evidence/ui/list-delete-1024-dark.png": "805fac3f90fd1a126acc79f5f40089fa4ad571701f1f9967bd9375ab3fff1736",
     "evidence/ui/list-delete-1024-light.png": "8007531084af28ce2f760f1c14bb4c1d67dda89e701dd087f5e17866bc25882c",
     "evidence/ui/list-delete-1440-dark.png": "0eba9c89758b4e26f47c2fe4a2e309a7670547e7967280b1c0573dc0227dee0e",
     "evidence/ui/list-delete-1440-light.png": "c78c2ab1747dff9dfecc0c5bacda966e65dfe421f9b1a451ffb6d1e6ae1a337a",
     "evidence/ui/list-delete-375-dark.png": "715158c33c538b532e61d0819a56378f36bf465fc5f7119bca06899b76552586",
     "evidence/ui/list-delete-375-light.png": "5cc338110fce221d5e6ef2c8b72a25abb41bef7416f2748ed36f254371775e3b",
-    "evidence/ui-review.md": "f9a7c80ec4cd8d41ceb82ffee0d61e4f5e0e27731d0a239e0eda394be5f23fef",
-    "evidence/ui.json": "40f708be99b02943e5e71ffe2dc5789ecf1e1ad5a3b6440531b4016fe17263e7",
-    "preview.html": "d59434ee2fbfc15f9a4c666b0bc6f75214a65d06347799c33917a9a82b7510d1",
+    "preview.html": "26a085c277dbd8220c3d940223ca6cc1da9f95f8b2ce01d5eb072789c21469a4",
     "scenario.cjs": "9fbd56782e68bc3ac2543ddec9a2787cdc8a197a26845de2a8f3f18d5033edc5",
     "source.c": "04f543d70d3d5b0e63e53bdec8e6b7959abae4494761ef3021969756904afd18",
     "source.json": "b2f9bdd97bd1d11e2972d9e6f26e93a61fc2830ccc6813dcb97d2f3b4ebb6955",
@@ -55,8 +56,9 @@
     },
     "browser": {
       "status": "pass",
-      "evidence": "evidence/browser.json",
-      "notes": "현재 preview SHA와 browser.json SHA 일치(ui.json은 같은 빌드에서 실행). 6조합×9사례 1668 Snapshot 전체 대조, 공통 UI 6조합, 회귀 통과. 라벨 수정 후 재검사. 누수 화면 직접 확인."
+      "evidence": "evidence/shared-fonts-offline.json",
+      "notes": "네트워크를 차단한 Chromium에서 세 화면 크기와 두 테마의 실행 단계·조작·글꼴을 확인했고, 보관용 미리보기도 같은 공용 글꼴을 로드했다."
     }
-  }
+  },
+  "previous_preview_sha256": "d59434ee2fbfc15f9a4c666b0bc6f75214a65d06347799c33917a9a82b7510d1"
 }

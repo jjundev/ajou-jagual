@@ -4,7 +4,7 @@
 
 생명과학 bio-interactive의 현재 `assets/template.dc.html`과 같은 공통 UI를 사용한다. 색상만 비슷하게 만드는 것이 아니라 상단 바, 접고 너비를 조절하는 좌우 패널, 중앙 장면, 하단 재생 바, 모바일 서랍을 유지한다. 이 저장소 assets에 필요한 CSS·SVG·Native DOM 동작이 포함되어 있으므로 다른 과목 저장소를 실행 의존성으로 읽지 않는다. 참고 원본 해시는 assets/vendor/provenance.json에 있다.
 
-라이트 배경 #ffffff, surface #f7f8fa, 강조 #1677ff. 다크 배경 #17171c, surface #212128, 강조 #3182f6. 나머지 ink/line/button/scroll 토큰도 공통 CSS를 따른다. 생명과학과 같은 Pretendard 1.3.9의 실제 Regular(400)·Medium(500)·SemiBold(600)·Bold(700)를 OFL과 함께 HTML data URI로 포함하며, 코드·주소만 고정폭이다. 8px 모서리, 4/8/12/16/24/32/48px 간격을 쓴다.
+라이트 배경 #ffffff, surface #f7f8fa, 강조 #1677ff. 다크 배경 #17171c, surface #212128, 강조 #3182f6. 나머지 ink/line/button/scroll 토큰도 공통 CSS를 따른다. 생명과학과 같은 Pretendard 1.3.9의 실제 Regular(400)·Medium(500)·SemiBold(600)·Bold(700)를 복습노트 공용 Pretendard 스타일시트에서 불러오며, 코드·주소만 고정폭이다. 8px 모서리, 4/8/12/16/24/32/48px 간격을 쓴다.
 
 ## 배치와 조작
 

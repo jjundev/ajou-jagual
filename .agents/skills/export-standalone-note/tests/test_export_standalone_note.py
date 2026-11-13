@@ -24,7 +24,7 @@ def repo(tmp_path):
         (pack / '.pack/a.css').write_text('body{background:url("a.svg")}')
         (pack / '.pack/a.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg"/>')
         (pack / '.pack/a.js').write_text('window.ready=1;//</script>')
-        for kind in sn.KINDS:
+        for kind in sn.PACK_KINDS[:3]:
             (pack / f'{kind}_{day}_Queue.html').write_text(
                 '<!doctype html><html><head><meta charset="utf-8">'
                 '<link href=".pack/a.css" rel="stylesheet">'
@@ -85,6 +85,19 @@ def test_direct_html_path(repo, tmp_path):
     source = repo / '복습노트/1015/문제설명_1015_Queue.html'
     result, _ = run(repo, tmp_path, str(source))
     assert result.path.name == source.name
+
+
+def test_export_includes_concept_check_and_multiple_interactives(repo, tmp_path):
+    pack = repo / '복습노트/1015'
+    names = ['확인문제_1015_Queue.html', '인터렉티브_01_큐.html', '인터랙티브_02_포인터.html']
+    for name in names:
+        (pack / name).write_text('<html lang="ko"><meta charset="utf-8"><body>테스트</body></html>', encoding='utf-8')
+    result, _ = run(repo, tmp_path, '1015')
+    assert {f'1015/{name}' for name in names} <= set(result.files)
+    result = sn.export(repo, ['1015'], tmp_path / 'one-kind', kind='인터렉티브')
+    assert set(result.files) == {f'1015/{name}' for name in names[1:]}
+    result, _ = run(repo, tmp_path, str(pack / names[1]))
+    assert result.path.name == names[1]
 
 
 @pytest.mark.parametrize('names', [['1016'], ['1015-1008'], ['../'], []])

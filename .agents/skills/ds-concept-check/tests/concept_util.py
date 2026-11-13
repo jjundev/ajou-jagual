@@ -19,6 +19,7 @@ def review_template_with(parts: str) -> str:
     import assemble
     template = (_paths.DS_REVIEW_PACK / "assets" / "review-template.html").read_text(encoding="utf-8")
     return assemble.fill(template, dict(
+        ASSET_ROOT=assemble.asset_root(FIXTURES / "mini" / "9999"),
         PAGE_TITLE="확인문제 t", DESCRIPTION="테스트", RANGE="concept-check-t", NOTE_HREF="#",
         TOC="", TITLE="확인문제 t", INTRO="", PARTS=parts, FOOTER="", SCRIPTS=""))
 

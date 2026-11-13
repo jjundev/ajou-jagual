@@ -21,7 +21,9 @@ from urllib.parse import quote, unquote, urlsplit
 from urllib.request import url2pathname
 import zipfile
 
-KINDS = ('정리노트', '복습문제', '문제설명')
+PACK_KINDS = ('정리노트', '복습문제', '문제설명', '확인문제')
+INTERACTIVE_KINDS = ('인터렉티브', '인터랙티브')
+KINDS = (*PACK_KINDS, *INTERACTIVE_KINDS)
 SKILL = Path(__file__).resolve().parents[1]
 VENDOR = SKILL / 'assets/vendor'
 CDNS = {
@@ -116,7 +118,7 @@ def select(repo, names, kind, include_pdf):
             chosen.update(found)
     selected, skipped = dict(direct), []
     for name, folder in sorted(chosen.items()):
-        prefixes = KINDS if kind == 'all' else (kind,)
+        prefixes = PACK_KINDS if kind == 'all' else (() if kind in INTERACTIVE_KINDS else (kind,))
         patterns = [f'{k}_{name}_*.html' for k in prefixes]
         if include_pdf and kind == 'all':
             patterns += [f'복습문제_{name}_*-{k}.pdf' for k in ('문제', '답안')]
@@ -131,10 +133,19 @@ def select(repo, names, kind, include_pdf):
                 skipped.append(f'{name}/{pattern}')
             else:
                 selected[key(hits[0])] = hits[0]
+        if kind == 'all' or kind in INTERACTIVE_KINDS:
+            pages = sorted(p for p in folder.iterdir() if p.is_file() and p.suffix == '.html'
+                           and nfc(p.name).startswith(tuple(k + '_' for k in INTERACTIVE_KINDS)))
+            if not pages and kind in INTERACTIVE_KINDS:
+                raise ExportError(f'인터랙티브가 없습니다: {folder}')
+            for page in pages:
+                selected[key(page)] = page
     if not selected:
         raise ExportError('내보낼 파일이 없습니다')
-    if kind != 'all' and any(not nfc(p.name).startswith(kind + '_') for p in direct.values()):
-        raise ExportError('직접 지정한 HTML과 --kind가 다릅니다')
+    if kind != 'all':
+        prefixes = INTERACTIVE_KINDS if kind in INTERACTIVE_KINDS else (kind,)
+        if any(not nfc(p.name).startswith(tuple(k + '_' for k in prefixes)) for p in direct.values()):
+            raise ExportError('직접 지정한 HTML과 --kind가 다릅니다')
     return sorted(selected.values(), key=lambda p: nfc(p.as_posix())), skipped
 
 
@@ -256,6 +267,9 @@ class Inliner(HTMLParser):
             if 'stylesheet' in rel:
                 path = self.assets.resolve(a.get('href', ''), self.source.parent)
                 css = self.assets.css_file(path)
+                if path.name == 'pretendard.css':
+                    license_path = self.assets.require(path.with_name('LICENSE'))
+                    css = '/*\n' + license_path.read_text(encoding='utf-8') + '\n*/\n' + css
                 if a.get('media'):
                     css = f'@media {a["media"]}{{{css}}}'
                 self.out.append('<style>' + re.sub(r'</style', r'<\/style', css, flags=re.I) + '</style>')

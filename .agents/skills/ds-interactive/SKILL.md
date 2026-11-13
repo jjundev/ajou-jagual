@@ -5,7 +5,7 @@ description: Use when 자구알(자료구조및알고리즘이해)의 인터랙�
 
 # DS Interactive
 
-자구알의 개념을 입력·사례·실행 단계로 탐색하는 **오프라인 단일 HTML**을 만든다. 코드를 따라가며 매개변수의 값 복사, 포인터의 주소 값, 대상 객체의 변경을 같은 상태에서 보여 준다. 공통 UI는 생명과학 인터랙티브와 같은 상단 바·좌우 패널·중앙 장면·재생 바·모바일 서랍을 사용한다. 코드는 왼쪽, 메모리는 가운데다. 첫 어댑터는 C 메모리다. 이후 큐·트리·정렬은 공통 Trace와 플레이어에 어댑터를 추가한다.
+자구알의 개념을 입력·사례·실행 단계로 탐색하는 **오프라인 HTML**을 만든다. 코드를 따라가며 매개변수의 값 복사, 포인터의 주소 값, 대상 객체의 변경을 같은 상태에서 보여 준다. 공통 UI는 생명과학 인터랙티브와 같은 상단 바·좌우 패널·중앙 장면·재생 바·모바일 서랍을 사용한다. 코드는 왼쪽, 메모리는 가운데다. 첫 어댑터는 C 메모리다. 이후 큐·트리·정렬은 공통 Trace와 플레이어에 어댑터를 추가한다.
 
 ## 요청 해석
 
@@ -25,14 +25,14 @@ description: Use when 자구알(자료구조및알고리즘이해)의 인터랙�
 3. [scenario-api](references/scenario-api.md)와 [c-semantics](references/c-semantics.md)를 읽고 `scenario.cjs`를 저작한다. [examples/0928/value-address.cjs](examples/0928/value-address.cjs)가 완전한 예제다. 초기 상태·이벤트로 Trace를 만들며, 화면과 설명이 별도 수동 상태를 갖지 않게 한다. 브라우저에 임의 코드 편집·컴파일·실행기를 만들지 않는다.
 4. `node "S/scripts/check.cjs" "RUN/scenario.cjs"`, `node "S/scripts/steps.cjs" "RUN/scenario.cjs"`로 기본값과 모든 preset을 확인하고 후자 JSON을 `trace.json`으로 저장한다. 정수 경계·같은 값·별칭·NULL·수명 종료 중 해당 사례를 포함한다. 예상 최종값만으로 중간값 검산을 대신하지 않는다.
 5. 실제 C 컴파일러로 정의된 코드의 bind/write와 결과를 독립 검산한다. 없으면 별도 Python 표를 사용하고 `compiler_unavailable`을 기록한다. UB를 실행해 정답을 정하지 않는다. 동봉 예제는 `python "S/tests/independent.py" "EVIDENCE"`로 재검산할 수 있다.
-6. `node "S/scripts/build.cjs" "RUN/scenario.cjs" "RUN/preview.html"`. HTML/CSS/JS/폰트를 모두 포함한다. [design](references/design.md)의 배치·접근성 기준과 [verification](references/verification.md)의 브라우저 검사를 적용한다. 시나리오 내용 변경 후 다시 build/check/검산한다.
+6. `node "S/scripts/build.cjs" "RUN/scenario.cjs" "RUN/preview.html"`. CSS와 JS를 HTML에 포함하고, Pretendard는 복습노트 공용 자원을 상대 경로로 참조한다. [design](references/design.md)의 배치·접근성 기준과 [verification](references/verification.md)의 브라우저 검사를 적용한다. 시나리오 내용 변경 후 다시 build/check/검산한다.
 7. `node "S/scripts/review.cjs" init "RUN"`은 `not_run` 검토를 만든다. 이미 있으면 검토 파일을 보존하고 새 현재 해시로 재검토한다. schema/content/independent/browser 각각 실제 증거와 사람이 읽을 판정 이유를 남긴다. `createReview`는 합격을 판정하지 않는다. 내용 검토는 각 줄의 복사·읽기·쓰기가 C 의미와 맞는지 검토한다. 자동 구조 검사로 대체하지 않는다.
-8. 모든 검토를 완료한 뒤 `node "S/scripts/review.cjs" check "RUN"`를 통과시키고 `node "S/scripts/save.cjs" "RUN" "대상폴더" "자료이름"`으로 저장한다. [verification](references/verification.md)의 해시·증거 계약을 따른다. 실패·미검토·논쟁·변경된 파일은 저장할 수 없다. 검토한 preview 바이트를 그대로 공개한다.
+8. 모든 검토를 완료한 뒤 `node "S/scripts/review.cjs" check "RUN"`를 통과시키고 `node "S/scripts/save.cjs" "RUN" "대상폴더" "자료이름"`으로 저장한다. [verification](references/verification.md)의 해시·증거 계약을 따른다. 실패·미검토·논쟁·변경된 파일은 저장할 수 없다. 저장할 때 공개본과 보관용 preview의 공용 글꼴 상대 경로를 각 위치에 맞춰 바꾼다.
 9. 관련 절에 [note-links](references/note-links.md)의 관찰 문맥 링크만 dry-run 후 추가한다. `target="_self"`, URL 인코딩한 상대 경로이며 기존 노트는 백업한다. 노트 재생성 후 `node "S/scripts/relink.cjs" "REPO" 0928`로 복원한다. 누락·모호한 절은 해당 연결만 skipped로 보고한다.
 
 ## 저장과 확인
 
-공개 파일은 `복습노트/<날짜>/인터렉티브_NN_<이름>.html`, 근거는 `.pack/자료_인터렉티브_NN_<이름>/`이다. 번호는 최소 두 자리이며 100도 허용한다. 신규 생성은 기존 HTML 또는 자료 폴더를 덮어쓰지 않는다. 사용자가 기존 자료 수정을 명시하면 [verification](references/verification.md)의 백업·재검증·동일 경로 갱신 절차를 따른다. 자료 폴더에는 scenario/brief/source/trace/review, evidence, 상대 `note-links.json`을 보존한다. 다른 PC에서는 HTML 하나만 열어도 작동한다.
+공개 파일은 `복습노트/<날짜>/인터렉티브_NN_<이름>.html`, 근거는 `.pack/자료_인터렉티브_NN_<이름>/`이다. 번호는 최소 두 자리이며 100도 허용한다. 신규 생성은 기존 HTML 또는 자료 폴더를 덮어쓰지 않는다. 사용자가 기존 자료 수정을 명시하면 [verification](references/verification.md)의 백업·재검증·동일 경로 갱신 절차를 따른다. 자료 폴더에는 scenario/brief/source/trace/review, evidence, 상대 `note-links.json`을 보존한다. 저장소 안에서는 인터넷 없이 열 수 있다. 다른 PC에 HTML 하나만 옮기려면 `export-standalone-note`에 공개 HTML 경로를 지정한다.
 
 최종 경로에서 입력·모드·단계와 노트의 현재 탭 이동·뒤로가기를 확인한다. 재연결은 unchanged여야 한다. 모든 최종 경로와 검산 방식·확인하지 못한 범위를 보고한다. 커밋·푸시·외부 게시를 자동 수행하지 않는다.
 
