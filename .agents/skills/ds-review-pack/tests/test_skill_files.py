@@ -211,7 +211,7 @@ class TestTraceFigureDocs(unittest.TestCase):
 
     def test_manifest_and_save_list_mention_trace(self):
         skill = SKILL_MD.read_text(encoding="utf-8")
-        self.assertIn('"rules": ["trace-v1"]', skill)
+        self.assertIn('"rules": ["trace-v1", "layout-v2"]', skill)
         self.assertIn("traces/", skill)
         self.assertIn("rules", (SKILL / "references/manifest-guide.md").read_text(encoding="utf-8"))
 

@@ -147,6 +147,69 @@ class TestPack(unittest.TestCase):
         note.write_text(note.read_text(encoding="utf-8").replace('id="sum-for"', 'id="old-panel"'), encoding="utf-8")
         self.assertEqual([p.code for p in check_html.check_pack(self.m, note, review)], [])
 
+    # --- layout-v2: 결론 상자(gist) · 곁가지 접기 ---
+    GIST_MEAN = ('<dl class="gist"><dt>결론</dt><dd>평균은 값들의 가운데예요.</dd>'
+                 '<dt>왜</dt><dd>값을 모두 더해 개수로 나눠요.</dd></dl>')
+    GIST_VAR = ('<dl class="gist"><dt>결론</dt><dd>분산은 평균에서 얼마나 퍼졌는지예요.</dd>'
+                '<dt>왜</dt><dd>평균과의 차이를 제곱해 평균내요.</dd></dl>')
+
+    def layout_v2(self, gists=True):
+        self.m["rules"] = ["layout-v2"]
+        if gists:
+            self.edit("sections/s1.html", '<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">평균은',
+                      self.GIST_MEAN + '<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">평균은')
+            self.edit("sections/s1.html", '<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">분산은',
+                      self.GIST_VAR + '<div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">분산은')
+
+    def test_layout_v2_requires_gist(self):
+        self.layout_v2(gists=False)
+        self.assertEqual(self.codes(), ["missing-gist", "missing-gist"])
+
+    def test_layout_v2_passes_with_gist(self):
+        self.layout_v2()
+        self.assertEqual(self.codes(), [])
+
+    def test_gist_first_row_must_be_conclusion(self):
+        self.layout_v2()
+        self.edit("sections/s1.html", '<dt>결론</dt><dd>평균은', '<dt>요점</dt><dd>평균은')
+        self.assertEqual(self.codes(), ["missing-gist"])
+
+    def test_gist_conclusion_must_match_sum_lead(self):
+        self.layout_v2()
+        self.edit("sections/s1.html", '<dt>결론</dt><dd>평균은 값들의 가운데예요.', '<dt>결론</dt><dd>평균은 값들의 중심이에요.')
+        self.assertEqual(self.codes(), ["gist-sum-mismatch"])
+
+    def test_gist_match_ignores_whitespace_and_markup(self):
+        self.layout_v2()
+        self.edit("sections/s1.html", '<dt>결론</dt><dd>평균은 값들의 가운데예요.', '<dt>결론</dt><dd>평균은  <b>값들의</b>\n가운데예요.')
+        self.assertEqual(self.codes(), [])
+
+    def test_term_only_inside_fold_fails(self):
+        self.layout_v2()
+        self.edit("sections/s1.html", '<p class="lead">평균은 시소의 무게중심이에요.</p>',
+                  '<details class="more"><summary>더 보기 · 비유</summary><p>평균은 시소의 무게중심이에요.</p></details>')
+        self.assertEqual(self.codes(), ["term-only-folded"])
+
+    def test_term_only_in_sum_panel_fails(self):
+        self.layout_v2()
+        self.edit("sections/s1.html", '<p class="lead">평균은 시소의 무게중심이에요.</p>', '<p class="lead">평균은 시소의 가운데예요.</p>')
+        self.edit("sections/s1.html", '<p class="sum-lead">평균은 값들의 가운데예요.</p>',
+                  '<p class="sum-lead">평균은 값들의 가운데예요.</p><p>무게중심</p>')
+        self.assertEqual(self.codes(), ["term-only-folded"])
+
+    def test_term_folded_without_rule_is_allowed(self):
+        self.edit("sections/s1.html", '<p class="lead">평균은 시소의 무게중심이에요.</p>',
+                  '<details class="more"><summary>더 보기 · 비유</summary><p>평균은 시소의 무게중심이에요.</p></details>')
+        self.assertEqual(self.codes(), [])
+
+    def test_folded_supp_layer_counts(self):
+        self.layout_v2()
+        self.edit("sections/s1.html",
+                  '<div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span><p>$N-1$로 나누는 표본분산은 수업에서 유도하지 않았어요.</p></div>',
+                  '<details class="layer supp"><summary><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span> · 표본분산</summary>'
+                  '<p>$N-1$로 나누는 표본분산은 수업에서 유도하지 않았어요.</p></details>')
+        self.assertEqual(self.codes(), [])
+
     def test_card_source(self):
         self.edit("cards/p1.html", 'data-source="2016-final-ljw-q1"', 'data-source="2016-final-ljw-q2"')
         self.assertEqual(self.codes(), ["card-source"])

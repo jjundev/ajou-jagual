@@ -478,7 +478,7 @@ def block(node, ctx):
                 lines.append(f"- **{text}**")
             elif c.tag == "dd" and lines:
                 lines[-1] += f" — {text}"
-        return lines
+        return ["**한눈에**", ""] + lines if "gist" in cls else lines
     if t == "article" and "card" in cls:
         kids = [c for c in node.children if isinstance(c, Node)]
         head = [c for c in kids if c.tag == "header"]

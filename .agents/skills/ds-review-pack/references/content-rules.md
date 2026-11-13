@@ -12,7 +12,7 @@
 - 근거: `<RUN>/summaries/stt-*.md`(해당 날짜), `<RUN>/slides.txt`(강의록 텍스트, 쪽 표시 `=== S<N> p<k> ===`). 슬라이드 그림·코드가 텍스트로 깨졌으면 `<RUN>/repo/자료구조_강의록_2026/`의 해당 PDF 쪽을 직접 본다.
 - 출력: `<RUN>/sections/<sid>.html` **한 파일만**. `<section>`/`<h2>`는 쓰지 않는다(조립기가 감싼다). 임시 파일은 아래 규칙.
 - 임시·보조 파일(스크립트, 초안, 그림 생성 폴더)은 `<RUN>/work/` 아래에만 둔다. 저장소(`STT/`, `자료구조_강의록_2026/`, `from_the_past/`, `복습노트/`)와 scratchpad 루트, `/tmp`에는 아무것도 쓰지 않는다. 한글(NFD) 파일명은 복사하거나 이름을 바꾸지 말고 Python `os.listdir` + `unicodedata.normalize('NFC', …)`로 찾아 그 경로로 연다.
-- 자기 검사(끝내기 전): 토픽별로 `required_terms`가 모두 문자 그대로 들어갔는지(코드 조각은 `&lt;`가 `<`로 풀린 글자 기준), `$` 짝, `links` 항목이 해당 토픽 안에 있는지, 금지어 `<forbidden 목록>`이 없는지. 금지어는 예고 토픽 `<preview_topic>` 안에서만 허용된다 — 이 토픽에는 예고 제목을 빠뜨리지 말고 쓴다. eli5 레이어마다 문장 수(figcaption 포함)가 3 이하이고 전문용어·기호(식, 코드, 영어 용어)가 없는지 — 있으면 formal 레이어로 옮긴다. 조각 어디에도 이모지를 쓰지 않았는지. 코드 블록 안에 `$`가 없는지. `layers`가 빈 목록이 아닌 토픽마다 마지막에 `<div class="sum" hidden>`이 있고, 그 식·용어가 본문과 같은 표기인지. 그림 설명(글, `aria-label`)이 SVG 클래스의 실제 모양(채움/윤곽)과 맞는지.
+- 자기 검사(끝내기 전): 토픽별로 `required_terms`가 모두 문자 그대로 들어갔는지(코드 조각은 `&lt;`가 `<`로 풀린 글자 기준), `$` 짝, `links` 항목이 해당 토픽 안에 있는지, 금지어 `<forbidden 목록>`이 없는지. 금지어는 예고 토픽 `<preview_topic>` 안에서만 허용된다 — 이 토픽에는 예고 제목을 빠뜨리지 말고 쓴다. eli5 레이어마다 문장 수(figcaption 포함)가 3 이하이고 전문용어·기호(식, 코드, 영어 용어)가 없는지 — 있으면 formal 레이어로 옮긴다. 조각 어디에도 이모지를 쓰지 않았는지. 코드 블록 안에 `$`가 없는지. `layers`가 빈 목록이 아닌 토픽마다 마지막에 `<div class="sum" hidden>`이 있고, 그 식·용어가 본문과 같은 표기인지. layout-v2 이면: 토픽마다 `dl.gist` 첫 줄 결론이 `sum-lead`와 글자 그대로 같은지, `required_terms`가 `details`·`.sum` 밖에도 있는지, 두 문장 이상인 formal `<p>`가 `<b>`로 시작하는지. 그림 설명(글, `aria-label`)이 SVG 클래스의 실제 모양(채움/윤곽)과 맞는지.
 - 보고: 파일 경로, 토픽별 한 줄, 요약에 있었지만 넣지 않은 것과 이유.
 ---
 
@@ -22,16 +22,35 @@
 - STT 오인식과 말실수는 올바른 형태로 쓴다. 코드나 추적 결과가 틀렸던 경우만 각주 한 줄로 "(수업 중 X로 적었다가 정정)".
 
 ## 토픽 마크업 (이 순서)
+manifest `rules` 에 `layout-v2` 가 있으면(신규 팩) 아래 형태로 쓴다. 없으면(옛 팩 수정) 결론 상자·`details` 없이 예전처럼 모든 레이어를 `<div>` 로 쓴다.
 ```html
 <article class="topic" id="…"><h3>…</h3><div class="tags"><span class="tag date">MMDD 수업</span><span class="tag slide">S2 p7</span></div>
+  <dl class="gist"><dt>결론</dt><dd>…</dd><dt>왜</dt><dd>…</dd><dt>언제</dt><dd>…</dd></dl>   ← 결론 상자(아래), layers가 빈 목록이 아닌 토픽만
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">한 문장 비유</p> …그림… </div>
-  <div class="layer formal"><span class="layer-title">정확히 말하면</span> …정의·C 코드(pre)·동작 추적(ol.steps)·시간복잡도… </div>
+  <div class="layer formal"><span class="layer-title">정확히 말하면</span>
+    <p><b>주장 한 문장.</b> 근거 문장…</p> …정의·C 코드(pre)·동작 추적·시간복잡도…
+    <details class="more"><summary>더 보기 · 무엇</summary> …곁가지… </details>                  ← 곁가지가 있을 때만, formal 맨 끝
+  </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span> …비유·일화, 원문은 blockquote… </div>
   <div class="layer warn"><span class="layer-title">꼭 기억해요</span> …원문 인용… </div>   ← 강조 발언이 있을 때만
-  <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span> … </div>             ← manifest supp=true만
+  <details class="layer supp"><summary><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span> · 요지</summary> … </details>   ← manifest supp=true만
   <div class="sum" hidden>…페이지 요약(아래)…</div>                                                    ← layers가 빈 목록이 아닌 토픽만, 맨 끝
 </article>
 ```
+
+### 결론 상자 (`dl.gist`, layout-v2)
+학생이 토픽을 열자마자 핵심을 잡게 한다. 오른쪽 요약 패널이 닫혀 있는 좁은 화면에서는 이 상자가 유일한 결론이다.
+- 2~3줄. 첫 줄은 반드시 `<dt>결론</dt>`, 그 `<dd>`는 같은 토픽 `sum-lead`와 **글자 그대로** 같다(`gist-sum-mismatch`).
+- 둘째 줄은 `<dt>왜</dt>`: 결론이 성립하는 이유 한 문장.
+- 셋째 줄은 선택. `언제`(쓰임새), `시간`(복잡도 식), `조건`(성립 조건), `주의`(혼동 구분) 중 이 토픽에 가장 중요한 하나.
+- dd 하나에 한 문장. 식은 인라인 `$…$`만. 새 내용을 쓰지 않는다 — formal 레이어에 이미 있는 주장을 줄인다.
+
+### 펼쳐 두는 것과 접는 것 (layout-v2)
+- 펼쳐 둔다: 정의, 절차, 수업 코드, 동작 추적, 시간복잡도, 성립 조건, 혼동 구분, 교수님 말씀, 꼭 기억해요.
+- formal 끝 `details.more`로 접는다: 다른 과목·하드웨어와의 연결(예: 로드·스토어), 슬라이드 코드의 오류·컴파일 메모, 추적이나 코드와 같은 내용을 한 줄씩 다시 푼 설명, 수업 중 정정 각주. summary는 `더 보기 · <무엇인지 몇 단어>`.
+- 보충(supp) 레이어는 통째로 `details.layer.supp`로 접는다. summary 에 배지와 ` · 요지`를 둔다.
+- `required_terms`는 접힌 곳과 페이지 요약 **밖** 본문에 한 번 이상 있어야 한다(`term-only-folded`).
+- 접기 때문에 지우는 내용은 없다. 위 "범위"의 빠짐없이 싣기는 그대로다.
 - 슬라이드 태그는 `S<강의록 번호> p<쪽>`(예: `S2 p7`, 여러 쪽이면 `S2 p7–9`). 다음 팩이 이 태그로 이전 범위를 찾는다.
 - 독자용 HTML에는 인용 내용만 싣고 녹음 위치 표시는 넣지 않는다. `(0907 01:11)`, `(1012 Part 02–03)`, `(1105 Part 05 · 시각 미제공)`, `시간 정보 없음`과 Part 표기 안내 문장은 모두 금지한다. 토픽 머리의 수업 날짜 태그(`<span class="tag date">`)·강의록 페이지·푸터의 일반 출처는 유지한다. 인용 끝 `(MMDD)`도 금지다. 시각·Part 근거는 내부 STT 요약에만 보관한다. 자기 검사에 이 항목을 포함하며 `check_html.py`의 `recording-locator`가 있으면 수정한다.
 - 레이어 제목과 배지 글자는 위와 글자 그대로 쓴다. 이모지, 장식 기호(★, ↗, → 같은 화살표 아이콘), "아래를 보세요" 같은 안내 문장은 쓰지 않는다.
@@ -57,7 +76,7 @@
 
 ## 문체
 - 쉽게 말하면(eli5): 초등학생이 이해할 1~3문장(figcaption 포함) + 그림. 전문용어·기호·코드 없이(필요하면 정확히 말하면에 쓴다). 토스처럼 짧고 다정한 "~해요" 체.
-- 정확히 말하면(formal): 빠짐없이, 정확하게. 추적은 한 줄에 한 단계. 문장은 "~해요" 체, 추적 단계는 상태 위주로 짧게(예: `push(3) → [1, 3]`).
+- 정확히 말하면(formal): 빠짐없이, 정확하게. layout-v2 에서는 두 문장 이상인 `<p>`를 `<b>주장 한 문장.</b>`으로 시작한다. 굵은 줄만 이어 읽어도 토픽 줄거리가 되게 쓴다. 추적은 한 줄에 한 단계. 문장은 "~해요" 체, 추적 단계는 상태 위주로 짧게(예: `push(3) → [1, 3]`).
 - 5단계 이상 상태 추적은 [trace 생성기](trace-figures.md)로 만든다. 손으로 쓴 `ol.steps` 는 4단계까지만 쓴다. 생성 조각은 손으로 고치지 않는다.
 - 교수님 말씀(prof)/꼭 기억해요(warn): 원문 인용은 15단어 안팎으로 줄이고 인용 끝에 출처·날짜 꼬리표(`(0914 26:00)`, `(1112)`, `(1112 수업)` 등)를 붙이지 않는다. 수업 날짜는 토픽 머리의 `<span class="tag date">`가 맡는다. `check_html.py`의 `quote-date`가 잡는다.
 - UI 글은 한국어, 전문용어는 영어 병기(예: 재귀(recursion)). 한 문장에 한 가지만 말하고, 군더더기 수식어("아주", "정말", "한번")는 뺀다.

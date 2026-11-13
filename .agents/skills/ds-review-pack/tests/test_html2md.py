@@ -34,6 +34,23 @@ def test_literal_array_state_does_not_become_markdown_link(tmp_path):
     assert html2md.check_md(review,outputs[1])==[]
 
 
+def test_gist_and_folded_layers_render(tmp_path):
+    note, review = small_pack(tmp_path,
+        '<article class="topic" id="t"><h3>T</h3>'
+        '<dl class="gist"><dt>결론</dt><dd>힙 정렬은 $O(n\\log n)$이에요.</dd><dt>왜</dt><dd>넣고 꺼내기를 n번 해요.</dd></dl>'
+        '<div class="layer formal"><span class="layer-title">정확히 말하면</span><p><b>주장.</b> 근거.</p>'
+        '<details class="more"><summary>더 보기 · 로드와 스토어</summary><p>곁가지.</p></details></div>'
+        '<details class="layer supp"><summary><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span> · 예</summary>'
+        '<p>보충 본문.</p></details></article>',
+        '<p>R</p>')
+    outputs, _ = html2md.convert_pack(note, review)
+    md = Path(outputs[0]).read_text(encoding='utf-8')
+    assert "**한눈에**\n\n- **결론** — 힙 정렬은 $O(n\\log n)$이에요.\n- **왜** — 넣고 꺼내기를 n번 해요." in md
+    assert "<details><summary>더 보기 · 로드와 스토어</summary>" in md and "곁가지." in md
+    assert "<details><summary>**보충 · 수업에서 유도하진 않았어요** · 예</summary>" in md and "보충 본문." in md
+    assert html2md.check_md(note, outputs[0]) == []
+
+
 class TestHtml2Md(unittest.TestCase):
     def setUp(self):
         self.tmp = Path(tempfile.mkdtemp())

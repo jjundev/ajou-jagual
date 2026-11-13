@@ -17,7 +17,7 @@ manifest는 이번 팩의 계약이다. 작성자, 검사기, 조립기가 모�
 | `review_intro` | 인라인 HTML만(`<b>`, `<i>`, `<code>`, `<a>`). 템플릿이 `<p>`로 감싸므로 `<p>`·`<ul>`·`<div>` 같은 블록 태그는 쓰지 않는다. 문제 구성(이정원 교수님 기출 몇 개, 다른 기출 몇 개, 변형 몇 개, 교과서 몇 개)과 "먼저 풀어 보고, 막히면 힌트를 열어 보세요"처럼 "~해요" 체 한 문장 안내(이모지 없이) |
 | `footer_note` | HTML 허용. `출처: 이정원 교수님 강의록(Software_N–M) · 수업 녹음 전사(MMDD…).` |
 | `footer_review` | HTML 허용. `출처: 자료구조및알고리즘(이해) 기출 — <이번 팩에 쓴 원본을 "2016 기말(이정원), 2019 중간(출제자 미상)"처럼>. 풀이는 자체 작성이며 답은 <실제로 수행한 Python/C11 실행/강의 근거 대조>로 검증했습니다. 교과서 장·문항 출처도 명시합니다.` |
-| `rules` | 선택. 문자열 목록. `["trace-v1"]` 이면 formal 레이어의 5단계 이상 `ol.steps` 에 trace 생성 조각(`data-trace`)을 요구한다. 신규 팩은 넣는다 |
+| `rules` | 선택. 문자열 목록. `["trace-v1"]` 이면 formal 레이어의 5단계 이상 `ol.steps` 에 trace 생성 조각(`data-trace`)을 요구한다. `"layout-v2"` 면 토픽마다 결론 상자(`dl.gist`, 첫 줄 `결론` = `sum-lead`)를 요구하고 `required_terms` 가 접힌 곳(`details`)·페이지 요약 밖 본문에 있어야 한다. 신규 팩은 둘 다 넣는다 |
 | `sessions` | 날짜별 `{date, stt, summary, slides}`. `stt`는 `"STT/0921 자구알.md"`, `slides`는 `"S2 p1–20"` 형식 |
 
 ## sections / topics

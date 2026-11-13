@@ -312,6 +312,110 @@ def long_hand_traces(source: str) -> list[str]:
     return finder.found
 
 
+@dataclass
+class TopicLayout:
+    gist: list[tuple[str, str]] = field(default_factory=list)  # (dt, dd) 순서대로
+    sum_lead: str | None = None
+    open_text: str = ""  # <details> 와 .sum 밖 본문
+
+
+class _LayoutParser(HTMLParser):
+    """layout-v2 검사용: 토픽마다 결론 상자, sum-lead, 접힌 곳·요약 밖 본문을 모은다."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.topics: dict[str, TopicLayout] = {}
+        self._stack: list[tuple[str, str]] = []  # (tag, kind): topic:<id> | gist | dt | dd | sum-lead | fold | ""
+
+    def _topic(self) -> TopicLayout | None:
+        tid = next((k[6:] for _, k in reversed(self._stack) if k.startswith("topic:")), None)
+        return self.topics.get(tid) if tid else None
+
+    def _has(self, kind: str) -> bool:
+        return any(k == kind for _, k in self._stack)
+
+    def handle_starttag(self, tag, attrs):
+        if tag in VOID_TAGS:
+            self.handle_data("\n" if tag == "br" else "")
+            return
+        a = dict(attrs)
+        classes = set((a.get("class") or "").split())
+        kind = ""
+        if tag == "article" and "topic" in classes and a.get("id"):
+            kind = f"topic:{a['id']}"
+            self.topics[a["id"]] = TopicLayout()
+        elif tag == "dl" and "gist" in classes:
+            kind = "gist"
+        elif tag in ("dt", "dd") and self._has("gist"):
+            kind = tag
+            topic = self._topic()
+            if topic is not None:
+                if tag == "dt":
+                    topic.gist.append(("", ""))
+                elif not topic.gist:
+                    topic.gist.append(("", ""))
+        elif tag == "p" and "sum-lead" in classes:
+            kind = "sum-lead"
+            topic = self._topic()
+            if topic is not None:
+                topic.sum_lead = ""
+        elif tag == "details" or (tag == "div" and "sum" in classes):
+            kind = "fold"
+        self._stack.append((tag, kind))
+        if tag in BLOCK_TAGS:
+            self.handle_data("\n")
+
+    def handle_endtag(self, tag):
+        if tag in BLOCK_TAGS:
+            self.handle_data("\n")
+        for i in range(len(self._stack) - 1, -1, -1):
+            if self._stack[i][0] == tag:
+                del self._stack[i:]
+                break
+
+    def handle_data(self, data):
+        topic = self._topic()
+        if topic is None:
+            return
+        if self._has("sum-lead"):
+            topic.sum_lead = (topic.sum_lead or "") + data
+        if self._has("dt") and topic.gist:
+            topic.gist[-1] = (topic.gist[-1][0] + data, topic.gist[-1][1])
+        elif self._has("dd") and topic.gist:
+            topic.gist[-1] = (topic.gist[-1][0], topic.gist[-1][1] + data)
+        if not self._has("fold"):
+            topic.open_text += data
+
+
+def topic_layouts(source: str) -> dict[str, TopicLayout]:
+    parser = _LayoutParser()
+    parser.feed(source)
+    parser.close()
+    return parser.topics
+
+
+def _squash(text: str) -> str:
+    return " ".join(text.split())
+
+
+def check_layout_v2(source: str, m: dict) -> list[Problem]:
+    """manifest rules 에 layout-v2 가 있는 팩: 결론 상자와 접힌 곳 밖 필수 용어를 본다."""
+    out: list[Problem] = []
+    layouts = topic_layouts(source)
+    for sec in m["sections"]:
+        for t in sec["topics"]:
+            lay = layouts.get(t["id"])
+            if lay is None or not t["layers"]:
+                continue
+            if not lay.gist or _squash(lay.gist[0][0]) != "결론":
+                out.append(Problem("missing-gist", t["id"], '<dl class="gist"> 의 첫 줄이 <dt>결론</dt> 이어야 함'))
+            elif lay.sum_lead is not None and _squash(lay.gist[0][1]) != _squash(lay.sum_lead):
+                out.append(Problem("gist-sum-mismatch", t["id"], f"결론 {_squash(lay.gist[0][1])!r} ≠ sum-lead {_squash(lay.sum_lead)!r}"))
+            out += [Problem("term-only-folded", t["id"], term)
+                    for term in t["required_terms"] if term not in lay.open_text]
+    return out
+
+
 def check_common(doc: Doc, source: str, path: Path, *, rules: frozenset[str] = frozenset(),
                  traces_dir: Path | None = None) -> list[Problem]:
     name = Path(path).name
@@ -440,6 +544,8 @@ def check_pack(m: dict, note_path: Path | str, review_path: Path | str, *,
         doc = parse_html(source)
         out += check_common(doc, source, Path(path), rules=rules if extra is check_note else frozenset(),
                             traces_dir=traces_dir) + extra(doc, m)
+        if extra is check_note and "layout-v2" in rules:
+            out += check_layout_v2(source, m)
     return out
 
 
