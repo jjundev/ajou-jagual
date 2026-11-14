@@ -1,465 +1,468 @@
 {
- "course": "자료구조및알고리즘이해",
- "range": "1029",
- "slug": "Tree",
- "note_title": "트리 용어와 이진 트리 — 5살도 이해하는 정리노트",
- "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1029 수업 (Software_7 Tree)",
- "review_title": "복습문제 10선 — 1029 수업 범위",
- "review_intro": "다른 기출 5개, 교과서 연습문제 3개, 강의 예제 기반 자체 출제 2개로 <b>트리 용어</b>와 <b>이진 트리의 성질·분류</b>를 복습해요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
- "footer_note": "출처: 이정원 교수님 강의록(Software_7 Tree p1–8) · 수업 녹음 전사(1029). 전사에 시각 정보가 없어 인용은 Part 기준이에요.",
- "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2017 중간(출제자 미상), 2018 중간(출제자 미상), 2019 중간(출제자 미상). 교과서 8장 트리 연습문제 4·5·7번. 강의 예제 기반 자체 출제는 Software_7 Tree p5·p7 근거입니다. 풀이는 자체 작성이며 답은 Python 시뮬레이션(answers.py)과 강의 근거 대조로 검증했습니다.",
- "sessions": [
-  {
-   "date": "1029",
-   "stt": "STT/1029 자구알.md",
-   "summary": "summaries/stt-1029.md",
-   "slides": "S7 p1–8"
-  }
- ],
- "sections": [
-  {
-   "id": "s0",
-   "title": "1. 트리와 트리의 용어",
-   "short": "1 트리 용어",
-   "topics": [
+  "course": "자료구조및알고리즘이해",
+  "range": "1029",
+  "slug": "Tree",
+  "note_title": "트리 용어와 이진 트리 — 5살도 이해하는 정리노트",
+  "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1029 수업 (Software_7 Tree)",
+  "review_title": "복습문제 10선 — 1029 수업 범위",
+  "review_intro": "다른 기출 5개, 교과서 연습문제 3개, 강의 예제 기반 자체 출제 2개로 <b>트리 용어</b>와 <b>이진 트리의 성질·분류</b>를 복습해요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
+  "footer_note": "출처: 이정원 교수님 강의록(Software_7 Tree p1–8) · 수업 녹음 전사(1029). 전사에 시각 정보가 없어 인용은 Part 기준이에요.",
+  "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2017 중간(출제자 미상), 2018 중간(출제자 미상), 2019 중간(출제자 미상). 교과서 8장 트리 연습문제 4·5·7번. 강의 예제 기반 자체 출제는 Software_7 Tree p5·p7 근거입니다. 풀이는 자체 작성이며 답은 Python 시뮬레이션(answers.py)과 강의 근거 대조로 검증했습니다.",
+  "sessions": [
     {
-     "id": "s0-why",
-     "title": "1. 트리는 왜 필요할까",
-     "required_terms": [
-      "계층적",
-      "포함 관계",
-      "가계도",
-      "파일 시스템",
-      "결정 트리"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
-    },
-    {
-     "id": "s0-terms-structure",
-     "title": "2. 노드·루트·서브트리·단말 노드",
-     "required_terms": [
-      "노드",
-      "루트",
-      "서브트리",
-      "단말 노드",
-      "비단말 노드",
-      "리프 노드",
-      "재귀",
-      "터미널"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
-    },
-    {
-     "id": "s0-terms-measure",
-     "title": "3. 가족 관계·레벨·높이·차수",
-     "required_terms": [
-      "형제",
-      "조상",
-      "자손",
-      "레벨",
-      "높이",
-      "최대 레벨",
-      "차수",
-      "가장 긴"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "date": "1029",
+      "stt": "STT/1029 자구알.md",
+      "summary": "summaries/stt-1029.md",
+      "slides": "S7 p1–8"
     }
-   ]
-  },
-  {
-   "id": "s1",
-   "title": "2. 이진 트리와 그 성질",
-   "short": "2 이진 트리",
-   "topics": [
+  ],
+  "sections": [
     {
-     "id": "s1-binary",
-     "title": "4. 이진 트리의 정의",
-     "required_terms": [
-      "이진 트리",
-      "2개 이하",
-      "공집합",
-      "왼쪽 서브트리",
-      "오른쪽 서브트리",
-      "0과 1"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s0",
+      "title": "1. 트리와 트리의 용어",
+      "short": "1 트리 용어",
+      "topics": [
+        {
+          "id": "s0-why",
+          "title": "1. 트리는 왜 필요할까",
+          "required_terms": [
+            "계층적",
+            "포함 관계",
+            "가계도",
+            "파일 시스템",
+            "결정 트리"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-terms-structure",
+          "title": "2. 노드·루트·서브트리·단말 노드",
+          "required_terms": [
+            "노드",
+            "루트",
+            "서브트리",
+            "단말 노드",
+            "비단말 노드",
+            "리프 노드",
+            "재귀",
+            "터미널"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-terms-measure",
+          "title": "3. 가족 관계·레벨·높이·차수",
+          "required_terms": [
+            "형제",
+            "조상",
+            "자손",
+            "레벨",
+            "높이",
+            "최대 레벨",
+            "차수",
+            "가장 긴"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
     },
     {
-     "id": "s1-props",
-     "title": "5. 간선 수와 노드 수의 범위",
-     "required_terms": [
-      "e = n - 1",
-      "2^h - 1",
-      "2^{i-1}",
-      "경사 트리",
-      "아름드리"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s1",
+      "title": "2. 이진 트리와 그 성질",
+      "short": "2 이진 트리",
+      "topics": [
+        {
+          "id": "s1-binary",
+          "title": "4. 이진 트리의 정의",
+          "required_terms": [
+            "이진 트리",
+            "2개 이하",
+            "공집합",
+            "왼쪽 서브트리",
+            "오른쪽 서브트리",
+            "0과 1"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-props",
+          "title": "5. 간선 수와 노드 수의 범위",
+          "required_terms": [
+            "e = n - 1",
+            "2^h - 1",
+            "2^{i-1}",
+            "경사 트리",
+            "아름드리"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-height",
+          "title": "6. 노드 수로 높이 구하기",
+          "required_terms": [
+            "h = \\lceil \\log_2(n+1) \\rceil",
+            "upper bound",
+            "높이",
+            "터미놀로지"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
     },
     {
-     "id": "s1-height",
-     "title": "6. 노드 수로 높이 구하기",
-     "required_terms": [
-      "h = \\lceil \\log_2(n+1) \\rceil",
-      "upper bound",
-      "높이",
-      "터미놀로지"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s2",
+      "title": "3. 이진 트리의 분류와 번호",
+      "short": "3 분류·번호",
+      "topics": [
+        {
+          "id": "s2-kinds",
+          "title": "7. 포화·완전·기타 이진 트리",
+          "required_terms": [
+            "포화 이진 트리",
+            "완전 이진 트리",
+            "full binary tree",
+            "complete binary tree",
+            "왼쪽부터 오른쪽으로",
+            "기타 이진 트리"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-numbering",
+          "title": "8. 노드 번호 매기기",
+          "required_terms": [
+            "노드 번호",
+            "분단",
+            "왼쪽 자식",
+            "배열",
+            "연결 리스트"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 요약 · 예고",
+      "short": "4 요약·예고",
+      "topics": [
+        {
+          "id": "s3-cheatsheet",
+          "title": "한눈에 보는 트리 용어와 이진 트리",
+          "required_terms": [
+            "2^h - 1",
+            "완전 이진 트리"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "이진 트리의 표현",
+            "이진 탐색 트리"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "복습문제"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "s2",
-   "title": "3. 이진 트리의 분류와 번호",
-   "short": "3 분류·번호",
-   "topics": [
+  ],
+  "preview_topic": "s3-next",
+  "forbidden_outside_preview": [
+    "전위 순회",
+    "중위 순회",
+    "후위 순회",
+    "레벨 순회",
+    "이진 탐색 트리",
+    "TreeNode",
+    "수식 트리",
+    "2i+1"
+  ],
+  "parts": [
     {
-     "id": "s2-kinds",
-     "title": "7. 포화·완전·기타 이진 트리",
-     "required_terms": [
-      "포화 이진 트리",
-      "완전 이진 트리",
-      "full binary tree",
-      "complete binary tree",
-      "왼쪽부터 오른쪽으로",
-      "기타 이진 트리"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "partB",
+      "title": "A. 기출 문제",
+      "short": "A 기출"
     },
     {
-     "id": "s2-numbering",
-     "title": "8. 노드 번호 매기기",
-     "required_terms": [
-      "노드 번호",
-      "분단",
-      "왼쪽 자식",
-      "배열",
-      "연결 리스트"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "partD",
+      "title": "B. 교과서 연습문제",
+      "short": "B 교과서"
+    },
+    {
+      "id": "partL",
+      "title": "C. 강의 예제 기반 자체 출제",
+      "short": "C 강의 예제"
     }
-   ]
-  },
-  {
-   "id": "s3",
-   "title": "4. 요약 · 예고",
-   "short": "4 요약·예고",
-   "topics": [
+  ],
+  "problems": [
     {
-     "id": "s3-cheatsheet",
-     "title": "한눈에 보는 트리 용어와 이진 트리",
-     "required_terms": [
-      "2^h - 1",
-      "완전 이진 트리"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p1",
+      "part": "partB",
+      "source": "2017-mid-c050-q8",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s0-terms-measure",
+      "level": 2,
+      "date": "1029",
+      "terms": [
+        "v4, v5, v6, v7, v8, v9",
+        "v7, v9",
+        "v16, v17, v18"
+      ],
+      "answer": "(a) v4, v5, v6, v7, v8, v9 (b) v7, v9 (c) v16, v17, v18 (d) 5 (e) 2"
     },
     {
-     "id": "s3-next",
-     "title": "다음 시간 예고",
-     "required_terms": [
-      "이진 트리의 표현",
-      "이진 탐색 트리"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p2",
+      "part": "partB",
+      "source": "2017-mid-c050-q3",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s0-why",
+      "level": 1,
+      "date": "1029",
+      "terms": [
+        "트리",
+        "디렉토리"
+      ],
+      "answer": "트리"
     },
     {
-     "id": "s3-links",
-     "title": "함께 보면 좋은 자료",
-     "required_terms": [
-      "복습문제"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p3",
+      "part": "partB",
+      "source": "2017-mid-c050-q4",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-kinds",
+      "level": 1,
+      "date": "1029",
+      "terms": [
+        "완전이진트리"
+      ],
+      "answer": "완전이진트리"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "2018-mid-c102-q4",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s0-terms-measure",
+      "level": 1,
+      "date": "1029",
+      "terms": [
+        "높이",
+        "최대 레벨"
+      ],
+      "answer": "높이"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "2019-mid-q5",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-kinds",
+      "level": 1,
+      "date": "1029",
+      "terms": [
+        "정답: X",
+        "포화 이진 트리"
+      ],
+      "answer": "X"
+    },
+    {
+      "id": "p6",
+      "part": "partD",
+      "source": "textbook-ch08-q04",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-terms-structure",
+      "level": 1,
+      "date": "1029",
+      "terms": [
+        "③",
+        "D, F, G, H"
+      ],
+      "answer": "③ 4 (D, F, G, H)",
+      "objectives": [
+        "retained-textbook-ch08-q04"
+      ],
+      "task_family": "textbook-ch08-q04"
+    },
+    {
+      "id": "p7",
+      "part": "partD",
+      "source": "textbook-ch08-q05",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-terms-measure",
+      "level": 1,
+      "date": "1029",
+      "terms": [
+        "①",
+        "차수"
+      ],
+      "answer": "① 3",
+      "objectives": [
+        "retained-textbook-ch08-q05"
+      ],
+      "task_family": "textbook-ch08-q05"
+    },
+    {
+      "id": "p8",
+      "part": "partD",
+      "source": "textbook-ch08-q07",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-props",
+      "level": 1,
+      "date": "1029",
+      "terms": [
+        "(4)",
+        "31"
+      ],
+      "answer": "(4) 31개",
+      "objectives": [
+        "retained-textbook-ch08-q07"
+      ],
+      "task_family": "textbook-ch08-q07"
+    },
+    {
+      "id": "p9",
+      "part": "partL",
+      "source": "lecture-s07-p5-binary-tree-bounds",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-props",
+      "level": 2,
+      "date": "1029",
+      "terms": [
+        "11",
+        "최대 12",
+        "최소 4",
+        "최대 15"
+      ],
+      "answer": "(a) 11 (b) 최대 12, 최소 4 (c) 최소 4, 최대 15",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+        "pdf_page": 5,
+        "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+        "example": "binary-tree-bounds",
+        "taught_on": "1029",
+        "extra_pages": [
+          6
+        ]
+      },
+      "objectives": [
+        "노드 n개 트리의 간선 수 n-1 적용",
+        "노드 수가 주어졌을 때 이진 트리 높이의 최대(경사 트리)·최소(ceil(log2(n+1))) 판단",
+        "높이 h 이진 트리의 노드 수 범위 h~2^h-1 판단"
+      ],
+      "task_family": "binary-tree-bounds"
+    },
+    {
+      "id": "p10",
+      "part": "partL",
+      "source": "lecture-s07-p7-complete-binary-tree",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-kinds",
+      "level": 2,
+      "date": "1029",
+      "terms": [
+        "완전 이진 트리",
+        "E의 오른쪽 자식",
+        "기타 이진 트리"
+      ],
+      "answer": "(a) 완전 이진 트리(포화 이진 트리는 아님) (b) E의 오른쪽 자식 (c) 이진 트리는 맞지만 완전 이진 트리는 아님 → 기타 이진 트리",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+        "pdf_page": 7,
+        "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+        "example": "complete-binary-tree-fill",
+        "taught_on": "1029",
+        "extra_pages": [
+          4,
+          8
+        ]
+      },
+      "objectives": [
+        "주어진 이진 트리가 포화·완전 이진 트리인지 판정",
+        "완전 이진 트리에 다음 노드가 들어갈 자리(마지막 레벨 왼쪽부터) 결정",
+        "왼쪽부터 채우지 않은 트리가 이진 트리이지만 완전 이진 트리가 아님(기타 이진 트리)을 판단"
+      ],
+      "task_family": "complete-binary-tree-fill"
     }
-   ]
-  }
- ],
- "preview_topic": "s3-next",
- "forbidden_outside_preview": [
-  "전위 순회",
-  "중위 순회",
-  "후위 순회",
-  "레벨 순회",
-  "이진 탐색 트리",
-  "TreeNode",
-  "수식 트리",
-  "2i+1"
- ],
- "parts": [
-  {
-   "id": "partB",
-   "title": "A. 기출 문제",
-   "short": "A 기출"
-  },
-  {
-   "id": "partD",
-   "title": "B. 교과서 연습문제",
-   "short": "B 교과서"
-  },
-  {
-   "id": "partL",
-   "title": "C. 강의 예제 기반 자체 출제",
-   "short": "C 강의 예제"
-  }
- ],
- "problems": [
-  {
-   "id": "p1",
-   "part": "partB",
-   "source": "2017-mid-c050-q8",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s0-terms-measure",
-   "level": 2,
-   "date": "1029",
-   "terms": [
-    "v4, v5, v6, v7, v8, v9",
-    "v7, v9",
-    "v16, v17, v18"
-   ],
-   "answer": "(a) v4, v5, v6, v7, v8, v9 (b) v7, v9 (c) v16, v17, v18 (d) 5 (e) 2"
-  },
-  {
-   "id": "p2",
-   "part": "partB",
-   "source": "2017-mid-c050-q3",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s0-why",
-   "level": 1,
-   "date": "1029",
-   "terms": [
-    "트리",
-    "디렉토리"
-   ],
-   "answer": "트리"
-  },
-  {
-   "id": "p3",
-   "part": "partB",
-   "source": "2017-mid-c050-q4",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s2-kinds",
-   "level": 1,
-   "date": "1029",
-   "terms": [
-    "완전이진트리"
-   ],
-   "answer": "완전이진트리"
-  },
-  {
-   "id": "p4",
-   "part": "partB",
-   "source": "2018-mid-c102-q4",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s0-terms-measure",
-   "level": 1,
-   "date": "1029",
-   "terms": [
-    "높이",
-    "최대 레벨"
-   ],
-   "answer": "높이"
-  },
-  {
-   "id": "p5",
-   "part": "partB",
-   "source": "2019-mid-q5",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s2-kinds",
-   "level": 1,
-   "date": "1029",
-   "terms": [
-    "정답: X",
-    "포화 이진 트리"
-   ],
-   "answer": "X"
-  },
-  {
-   "id": "p6",
-   "part": "partD",
-   "source": "textbook-ch08-q04",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s0-terms-structure",
-   "level": 1,
-   "date": "1029",
-   "terms": [
-    "③",
-    "D, F, G, H"
-   ],
-   "answer": "③ 4 (D, F, G, H)",
-   "objectives": [
-    "retained-textbook-ch08-q04"
-   ],
-   "task_family": "textbook-ch08-q04"
-  },
-  {
-   "id": "p7",
-   "part": "partD",
-   "source": "textbook-ch08-q05",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s0-terms-measure",
-   "level": 1,
-   "date": "1029",
-   "terms": [
-    "①",
-    "차수"
-   ],
-   "answer": "① 3",
-   "objectives": [
-    "retained-textbook-ch08-q05"
-   ],
-   "task_family": "textbook-ch08-q05"
-  },
-  {
-   "id": "p8",
-   "part": "partD",
-   "source": "textbook-ch08-q07",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s1-props",
-   "level": 1,
-   "date": "1029",
-   "terms": [
-    "(4)",
-    "31"
-   ],
-   "answer": "(4) 31개",
-   "objectives": [
-    "retained-textbook-ch08-q07"
-   ],
-   "task_family": "textbook-ch08-q07"
-  },
-  {
-   "id": "p9",
-   "part": "partL",
-   "source": "lecture-s07-p5-binary-tree-bounds",
-   "source_kind": "lecture-code",
-   "variant": false,
-   "anchor": "s1-props",
-   "level": 2,
-   "date": "1029",
-   "terms": [
-    "11",
-    "최대 12",
-    "최소 4",
-    "최대 15"
-   ],
-   "answer": "(a) 11 (b) 최대 12, 최소 4 (c) 최소 4, 최대 15",
-   "lecture_ref": {
-    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
-    "pdf_page": 5,
-    "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
-    "example": "binary-tree-bounds",
-    "taught_on": "1029",
-    "extra_pages": [
-     6
-    ]
-   },
-   "objectives": [
-    "노드 n개 트리의 간선 수 n-1 적용",
-    "노드 수가 주어졌을 때 이진 트리 높이의 최대(경사 트리)·최소(ceil(log2(n+1))) 판단",
-    "높이 h 이진 트리의 노드 수 범위 h~2^h-1 판단"
-   ],
-   "task_family": "binary-tree-bounds"
-  },
-  {
-   "id": "p10",
-   "part": "partL",
-   "source": "lecture-s07-p7-complete-binary-tree",
-   "source_kind": "lecture-code",
-   "variant": false,
-   "anchor": "s2-kinds",
-   "level": 2,
-   "date": "1029",
-   "terms": [
-    "완전 이진 트리",
-    "E의 오른쪽 자식",
-    "기타 이진 트리"
-   ],
-   "answer": "(a) 완전 이진 트리(포화 이진 트리는 아님) (b) E의 오른쪽 자식 (c) 이진 트리는 맞지만 완전 이진 트리는 아님 → 기타 이진 트리",
-   "lecture_ref": {
-    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
-    "pdf_page": 7,
-    "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
-    "example": "complete-binary-tree-fill",
-    "taught_on": "1029",
-    "extra_pages": [
-     4,
-     8
-    ]
-   },
-   "objectives": [
-    "주어진 이진 트리가 포화·완전 이진 트리인지 판정",
-    "완전 이진 트리에 다음 노드가 들어갈 자리(마지막 레벨 왼쪽부터) 결정",
-    "왼쪽부터 채우지 않은 트리가 이진 트리이지만 완전 이진 트리가 아님(기타 이진 트리)을 판단"
-   ],
-   "task_family": "complete-binary-tree-fill"
-  }
- ],
- "links": [
-  {
-   "topic": "s3-links",
-   "href": "복습문제_1029_Tree.html"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../../자료구조_강의록_2026/Software_7_Tree.pdf"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../0914/정리노트_0914_Recursion.html#s5-links"
-  }
- ],
- "policy_version": "review-questions-2026-10-17",
- "exam_retention_policy": "same-exam-reuse-only"
+  ],
+  "links": [
+    {
+      "topic": "s3-links",
+      "href": "복습문제_1029_Tree.html"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../../자료구조_강의록_2026/Software_7_Tree.pdf"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../0914/정리노트_0914_Recursion.html#s5-links"
+    }
+  ],
+  "policy_version": "review-questions-2026-10-17",
+  "exam_retention_policy": "same-exam-reuse-only",
+  "rules": [
+    "layout-v2"
+  ]
 }

@@ -91,6 +91,20 @@
     .layer.supp .badge.supp { margin-bottom: var(--s2); }
     .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
     .badge.supp { color: var(--supp); }
+    /* layout-v2: 결론 상자 · 굵은 첫머리 · 곁가지 접기 */
+    .gist { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--s2) var(--s4); margin: var(--s4) 0 var(--s5); padding: var(--s4); background: var(--surface); border-radius: var(--radius); }
+    .gist dt { font-size: var(--fs-label); font-weight: 700; line-height: 1.7; color: var(--accent-ink); padding-top: 3px; white-space: nowrap; }
+    .gist dd { margin: 0; font-size: var(--fs-body); font-weight: 600; line-height: 1.6; }
+    .layer.formal p > b:first-child { display: block; }
+    details.more { margin-top: var(--s4); border-top: 1px solid var(--line); font-size: var(--fs-sub); line-height: 1.7; }
+    details.more + details.more { margin-top: 0; }
+    details.more > summary, details.layer > summary { cursor: pointer; padding: var(--s3) 0; font-size: var(--fs-sub); font-weight: 600; color: var(--ink-2); }
+    details.more[open] { padding-bottom: var(--s2); }
+    details.more[open] > summary { color: var(--ink); }
+    details.layer.supp { font-size: var(--fs-sub); line-height: 1.7; }
+    details.layer > summary .layer-title { display: inline; margin: 0; }
+    details.layer > summary .badge.supp { margin-bottom: 0; }
+    @media print { details.more > :not(summary), details.layer > :not(summary) { display: block; } }
     blockquote { margin: var(--s3) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
     pre { margin: var(--s3) 0; padding: var(--s3) var(--s4); overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
       font: var(--fs-small)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; white-space: pre; word-break: normal; overflow-wrap: normal; tab-size: 4; }
@@ -363,16 +377,17 @@
     <section id="s0"><h2>1. 우선순위가 먼저인 큐</h2>
 <article class="topic" id="s0-pq"><h3>우선순위 큐란</h3>
 <div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p2</span></div>
+<dl class="gist"><dt>결론</dt><dd>우선순위 큐는 들어온 순서가 아니라 우선순위가 높은 데이터를 먼저 내보내는 큐예요.</dd><dt>왜</dt><dd>기본은 들어온 순서를 지키되 특별한 사건이 생기면 우선순위를 기준으로 먼저 앞으로 보내 처리하기 때문이에요.</dd><dt>언제</dt><dd>시뮬레이션 시스템, 네트워크 트래픽 제어, 운영체제의 작업 스케줄링에 써요.</dd></dl>
 <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">차들은 온 순서대로 줄을 서지만, 구급차가 오면 비켜서 먼저 보내 줘요.</p><p>보통은 순서를 지키고, 급한 차만 앞으로 가요.</p>
 <figure class="figure"><svg id="fig-pq-ambulance" viewBox="0 0 440 160" role="img" aria-label="한 줄로 선 차 네 대의 맨 뒤에 강조색 테두리의 구급차가 있고, 곡선 화살표가 구급차에서 줄의 맨 앞으로 향하는 모습"><path class="fig-muted" d="M10 135H430"/><text class="fig-muted" x="22" y="155" font-size="12">앞</text><text class="fig-muted" x="400" y="155" font-size="12">뒤</text><rect class="fig-ink" x="30" y="90" width="62" height="36" rx="6"/><text class="fig-text" x="52" y="113" font-size="14">차</text><rect class="fig-ink" x="110" y="90" width="62" height="36" rx="6"/><text class="fig-text" x="132" y="113" font-size="14">차</text><rect class="fig-ink" x="190" y="90" width="62" height="36" rx="6"/><text class="fig-text" x="212" y="113" font-size="14">차</text><rect class="fig-ink" x="270" y="90" width="62" height="36" rx="6"/><text class="fig-text" x="292" y="113" font-size="14">차</text><rect class="fig-accent" x="350" y="90" width="72" height="36" rx="6"/><text class="fig-text" x="365" y="113" font-size="14">구급차</text><path class="fig-accent" d="M386 86Q220 0 62 84"/><path class="fig-accent" d="M62 84L68 70M62 84L77 81"/></svg><figcaption>맨 뒤에 온 구급차가 줄의 맨 앞으로 가요.</figcaption></figure>
 </div>
 <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-<p>우선순위 큐(priority queue)는 우선순위를 가진 항목들을 저장하는 큐예요. 들어온 순서대로 나가는 FIFO(First In, First Out) 순서가 아니라, 우선순위가 높은 데이터가 먼저 나가요.</p>
-<p>기본은 들어온 순서를 지켜요. 그러다 특별한 사건이 생기면 그 데이터를 앞으로 보내요.</p>
+<p><b>우선순위 큐(priority queue)는 우선순위를 가진 항목들을 저장하는 큐예요.</b> 들어온 순서대로 나가는 FIFO(First In, First Out) 순서가 아니라, 우선순위가 높은 데이터가 먼저 나가요.</p>
+<p><b>기본은 들어온 순서를 지켜요.</b> 그러다 특별한 사건이 생기면 그 데이터를 앞으로 보내요.</p>
 <div class="table-wrap"><table><thead><tr><th>자료구조</th><th>삭제되는 요소</th></tr></thead><tbody><tr><td>스택(stack)</td><td>가장 최근에 들어온 데이터</td></tr><tr><td>큐(queue)</td><td>가장 먼저 들어온 데이터</td></tr><tr><td>우선순위 큐</td><td>가장 우선순위가 높은 데이터</td></tr></tbody></table></div>
-<p>우선순위는 여러 단계로 둘 수 있어요. 교수님 예에서는 번호가 작을수록 우선순위가 높아요.</p>
+<p><b>우선순위는 여러 단계로 둘 수 있어요.</b> 교수님 예에서는 번호가 작을수록 우선순위가 높아요.</p>
 <ul><li>1단계: 소방차, 구급차</li><li>2단계: 경찰차</li><li>10단계: 나머지 차</li></ul>
-<p>스택이나 FIFO 큐로도 우선순위 큐를 만들 수 있어요. 하지만 데이터가 들어올 때마다 비교하고 자리를 바꿔야 해서 복잡도에 오버헤드가 생겨요. 그래서 새 자료구조인 힙(heap)을 써요. 구현 방법별 비용은 <a href="#s0-impl">배열·연결 리스트·히프 구현 비교</a>에서 따져요.</p>
+<p><b>스택이나 FIFO 큐로도 우선순위 큐를 만들 수 있어요.</b> 하지만 데이터가 들어올 때마다 비교하고 자리를 바꿔야 해서 복잡도에 오버헤드가 생겨요. 그래서 새 자료구조인 힙(heap)을 써요. 구현 방법별 비용은 <a href="#s0-impl">배열·연결 리스트·히프 구현 비교</a>에서 따져요.</p>
 <p>응용 분야(S8 p2)는 세 가지예요.</p>
 <ul><li>시뮬레이션 시스템: 우선순위는 대개 사건이 일어나는 시각이에요.</li><li>네트워크 트래픽 제어</li><li>운영체제의 작업 스케줄링</li></ul>
 </div>
@@ -385,6 +400,7 @@
 
 <article class="topic" id="s0-adt"><h3>우선순위 큐 ADT와 최소·최대</h3>
 <div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p3</span></div>
+<dl class="gist"><dt>결론</dt><dd>우선순위 큐의 핵심 연산은 insert와 delete이고, 작은 값이 먼저면 최소, 큰 값이 먼저면 최대 우선순위 큐예요.</dd><dt>왜</dt><dd>결국 저장은 insert, 꺼내기는 delete이고, 무엇을 먼저 꺼낼지에 따라 최소와 최대가 갈리기 때문이에요.</dd><dt>주의</dt><dd>정의상 우선순위 큐가 곧 힙은 아니지만, 스택이나 큐로 구현하면 대이동이 일어나 실제로는 힙으로 구현해요.</dd></dl>
 <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">등수는 숫자가 작을수록 좋고, 시험 점수는 클수록 좋아요.</p><p>작은 쪽을 먼저 내보낼지, 큰 쪽을 먼저 내보낼지 정하면 돼요.</p>
 <figure class="figure"><svg id="fig-adt-rank-score" viewBox="0 0 440 170" role="img" aria-label="위 줄은 1등, 2등, 3등 칸에서 1등 칸만 강조색 테두리, 아래 줄은 100점, 90점, 80점 칸에서 100점 칸만 강조색 테두리"><text class="fig-text" x="16" y="52" font-size="14">등수</text><rect class="fig-accent" x="70" y="28" width="70" height="38" rx="6"/><text class="fig-text" x="91" y="52" font-size="14">1등</text><rect class="fig-ink" x="150" y="28" width="70" height="38" rx="6"/><text class="fig-text" x="171" y="52" font-size="14">2등</text><rect class="fig-ink" x="230" y="28" width="70" height="38" rx="6"/><text class="fig-text" x="251" y="52" font-size="14">3등</text><text class="fig-muted" x="314" y="52" font-size="13">작을수록 먼저</text><text class="fig-text" x="16" y="126" font-size="14">점수</text><rect class="fig-accent" x="70" y="102" width="70" height="38" rx="6"/><text class="fig-text" x="86" y="126" font-size="14">100점</text><rect class="fig-ink" x="150" y="102" width="70" height="38" rx="6"/><text class="fig-text" x="169" y="126" font-size="14">90점</text><rect class="fig-ink" x="230" y="102" width="70" height="38" rx="6"/><text class="fig-text" x="249" y="126" font-size="14">80점</text><text class="fig-muted" x="314" y="126" font-size="13">클수록 먼저</text></svg><figcaption>테두리가 강조된 칸이 먼저 나가요.</figcaption></figure>
 </div>
@@ -393,11 +409,11 @@
 <p><strong>객체</strong>: n개의 element형의 우선순위를 가진 요소들의 모임이에요.</p>
 <p><strong>연산</strong>:</p>
 <ul><li><code>create()</code> ::= 우선순위 큐를 생성해요.</li><li><code>init(q)</code> ::= 우선순위 큐 q를 초기화해요.</li><li><code>is_empty(q)</code> ::= 우선순위 큐 q가 비어 있는지 검사해요.</li><li><code>is_full(q)</code> ::= 우선순위 큐 q가 가득 찼는지 검사해요.</li><li><code>insert(q, x)</code> ::= 우선순위 큐 q에 요소 x를 추가해요.</li><li><code>delete(q)</code> ::= 우선순위가 가장 높은 요소를 삭제하고 그 요소를 반환해요.</li><li><code>find(q)</code> ::= 우선순위가 가장 높은 요소를 반환해요(삭제하지 않아요).</li></ul>
-<p>가장 중요한 연산은 insert(요소 삽입)와 delete(요소 삭제)예요. 저장하고 꺼내는 연산이기 때문이에요.</p>
-<p>배열·스택·큐·우선순위 큐의 객체와 연산이 비슷해 보이는 이유도 여기 있어요. 결국 저장은 insert, 꺼내기는 delete예요. 자료구조마다 다른 것은 어떤 식으로 저장하고 무엇을 먼저 꺼낼지라는 개념이에요. 우선순위를 빼면 객체는 배열·스택·큐와 같아요.</p>
+<p><b>가장 중요한 연산은 insert(요소 삽입)와 delete(요소 삭제)예요.</b> 저장하고 꺼내는 연산이기 때문이에요.</p>
+<p><b>배열·스택·큐·우선순위 큐의 객체와 연산이 비슷해 보이는 이유도 여기 있어요.</b> 결국 저장은 insert, 꺼내기는 delete예요. 자료구조마다 다른 것은 어떤 식으로 저장하고 무엇을 먼저 꺼낼지라는 개념이에요. 우선순위를 빼면 객체는 배열·스택·큐와 같아요.</p>
 <p>우선순위 큐는 두 가지로 나뉘어요.</p>
 <div class="table-wrap"><table><thead><tr><th>종류</th><th>먼저 나가는 것</th><th>예</th></tr></thead><tbody><tr><td>최소 우선순위 큐(min heap)</td><td>값이 가장 작은 요소</td><td>등수(1등이 100등보다 앞)</td></tr><tr><td>최대 우선순위 큐(max heap)</td><td>값이 가장 큰 요소</td><td>시험 점수</td></tr></tbody></table></div>
-<p>우선순위 큐가 정의상 곧 힙은 아니에요. 그래도 스택이나 큐로 구현하면 insert·delete마다 데이터의 대이동이 일어나요. 그래서 실제로는 우선순위 큐를 힙으로 구현한다고 생각해도 돼요. 힙의 모양은 <a href="#s1-heap-def">최대 힙과 최소 힙</a>에서 다뤄요.</p>
+<p><b>우선순위 큐가 정의상 곧 힙은 아니에요.</b> 그래도 스택이나 큐로 구현하면 insert·delete마다 데이터의 대이동이 일어나요. 그래서 실제로는 우선순위 큐를 힙으로 구현한다고 생각해도 돼요. 힙의 모양은 <a href="#s1-heap-def">최대 힙과 최소 힙</a>에서 다뤄요.</p>
 </div>
 <div class="layer prof"><span class="layer-title">교수님 말씀</span>
 <p>등수는 작을수록 좋고 시험 점수는 클수록 좋아요. 값이 작은 쪽에 우선순위를 두면 min heap, 큰 쪽에 두면 max heap이라고 설명했어요.</p>
@@ -412,22 +428,23 @@
 
 <article class="topic" id="s0-impl"><h3>배열·연결 리스트·히프 구현 비교</h3>
 <div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p4</span></div>
+<dl class="gist"><dt>결론</dt><dd>배열·연결 리스트는 삽입이나 삭제 중 한쪽이 $O(n)$이지만, 히프는 둘 다 $O(\log n)$이라 예측 가능해서 가장 좋아요.</dd><dt>왜</dt><dd>$O(n)$은 $n$이 커지면 처리 용량을 넘겨 데이터 손실이 날 수 있지만, $O(\log n)$은 증가가 완만하게 꺾여 실행 가능 여부를 예측할 수 있기 때문이에요.</dd><dt>시간</dt><dd>히프는 높이가 $O(\log n)$이고 두 연산이 높이만큼만 움직여 삽입·삭제 모두 $O(\log n)$이에요.</dd></dl>
 <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">칸막이로 정리된 서랍은 넣을 때 고민하지만 꺼낼 때 빨라요.</p><p>아무렇게나 넣은 서랍은 넣기는 빠르지만, 찾을 때 오래 걸려요.</p>
 <figure class="figure"><svg id="fig-impl-drawer" viewBox="0 0 440 190" role="img" aria-label="왼쪽 서랍은 칸막이 선으로 나뉘어 물건이 한 칸에 하나씩 놓여 있고, 오른쪽 서랍은 칸막이 없이 물건 테두리가 이리저리 겹쳐 있는 모습"><rect class="fig-ink" x="16" y="30" width="190" height="110" rx="8"/><path class="fig-ink" d="M63 30V140M111 30V140M158 30V140"/><rect class="fig-ink" x="27" y="72" width="26" height="26" rx="4"/><rect class="fig-ink" x="74" y="72" width="26" height="26" rx="4"/><rect class="fig-ink" x="121" y="72" width="26" height="26" rx="4"/><rect class="fig-ink" x="169" y="72" width="26" height="26" rx="4"/><text class="fig-text" x="58" y="20" font-size="13">칸막이 서랍</text><text class="fig-muted" x="40" y="165" font-size="12">넣을 때 고민, 꺼낼 때 빨라요</text><rect class="fig-ink" x="234" y="30" width="190" height="110" rx="8"/><rect class="fig-ink" x="252" y="48" width="30" height="24" rx="4" transform="rotate(-12 267 60)"/><rect class="fig-ink" x="296" y="82" width="34" height="26" rx="4" transform="rotate(18 313 95)"/><rect class="fig-ink" x="345" y="52" width="28" height="30" rx="4" transform="rotate(8 359 67)"/><rect class="fig-ink" x="372" y="96" width="32" height="24" rx="4" transform="rotate(-20 388 108)"/><rect class="fig-ink" x="262" y="98" width="26" height="26" rx="4" transform="rotate(30 275 111)"/><text class="fig-text" x="272" y="20" font-size="13">막 넣은 서랍</text><text class="fig-muted" x="256" y="165" font-size="12">넣기는 빠르고, 찾기는 오래</text></svg><figcaption>꺼내 쓰는 사람을 생각하면 정리된 서랍이 나아요.</figcaption></figure>
 </div>
 <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-<p>우선순위 큐는 세 가지 방법으로 구현할 수 있어요(S8 p4). 실제로 고르는 기본 자료형은 늘 배열 아니면 연결 리스트예요.</p>
+<p><b>우선순위 큐는 세 가지 방법으로 구현할 수 있어요(S8 p4).</b> 실제로 고르는 기본 자료형은 늘 배열 아니면 연결 리스트예요.</p>
 <ul><li>배열을 이용한 우선순위 큐</li><li>연결 리스트를 이용한 우선순위 큐</li><li>히프(heap)를 이용한 우선순위 큐</li></ul>
 <div class="table-wrap"><table><thead><tr><th>표현 방법</th><th>삽입</th><th>삭제</th></tr></thead><tbody><tr><td>순서 없는 배열</td><td>$O(1)$</td><td>$O(n)$</td></tr><tr><td>순서 없는 연결 리스트</td><td>$O(1)$</td><td>$O(n)$</td></tr><tr><td>정렬된 배열</td><td>$O(n)$</td><td>$O(1)$</td></tr><tr><td>정렬된 연결 리스트</td><td>$O(n)$</td><td>$O(1)$</td></tr><tr><td>히프</td><td>$O(\log n)$</td><td>$O(\log n)$</td></tr></tbody></table></div>
 <h4>순서 없는 배열·연결 리스트</h4>
-<p>삽입은 맨 끝 빈칸에 넣으면 되므로 $O(1)$이에요. 삭제는 우선순위가 가장 높은 요소, 곧 제일 크거나 작은 요소를 전부 훑어 찾아야 하므로 $O(n)$이에요. 교수님은 이 방식을 아무렇게나 때려 넣는 서랍에 빗댔어요. 칸막이로 정리된 서랍은 넣을 때 고민하지만 꺼낼 때 빨라요.</p>
+<p><b>삽입은 맨 끝 빈칸에 넣으면 되므로 $O(1)$이에요.</b> 삭제는 우선순위가 가장 높은 요소, 곧 제일 크거나 작은 요소를 전부 훑어 찾아야 하므로 $O(n)$이에요. 교수님은 이 방식을 아무렇게나 때려 넣는 서랍에 빗댔어요. 칸막이로 정리된 서랍은 넣을 때 고민하지만 꺼낼 때 빨라요.</p>
 <h4>정렬된 배열·연결 리스트</h4>
-<p>삽입은 들어갈 자리를 찾아 나가야 하므로 $O(n)$이에요. 슬라이드 그림의 배열처럼 작은 값이 우선이라 앞에 두는 정렬된 배열 [2, 5, 7, 10, 12]에 우선순위 1이 들어오는 경우를 따라가 봐요.</p>
+<p><b>삽입은 들어갈 자리를 찾아 나가야 하므로 $O(n)$이에요.</b> 슬라이드 그림의 배열처럼 작은 값이 우선이라 앞에 두는 정렬된 배열 [2, 5, 7, 10, 12]에 우선순위 1이 들어오는 경우를 따라가 봐요.</p>
 <ol class="steps"><li>1과 12 비교 → 12를 한 칸 뒤로: [2, 5, 7, 10, _, 12]</li><li>1과 10 비교 → 10을 뒤로: [2, 5, 7, _, 10, 12]</li><li>1과 7 비교 → 7을 뒤로: [2, 5, _, 7, 10, 12]</li><li>1과 5 비교 → 5를 뒤로: [2, _, 5, 7, 10, 12]</li><li>1과 2 비교 → 2를 뒤로, 맨 앞에 1: [1, 2, 5, 7, 10, 12]</li></ol>
-<p>비교 5번, 이동 5번으로 모든 요소가 움직였어요. 연결 리스트도 같아요. 큰 값이 우선인 리스트에서도 들어갈 자리를 찾으려면 최악에는 처음부터 끝까지 비교해야 해요. 새 값이 비교 한 번 만에 끝자리에 들어가는 경우는 최선의 경우일 뿐이에요.</p>
-<p>삭제는 맨 앞 요소를 꺼내면 되므로 $O(1)$이에요. 다만 표는 찾아내는 데까지만 센 값이에요. 정렬된 배열은 꺼낸 뒤 나머지를 앞으로 당기는 뒤처리가 따로 일어나요.</p>
+<p><b>비교 5번, 이동 5번으로 모든 요소가 움직였어요.</b> 연결 리스트도 같아요. 큰 값이 우선인 리스트에서도 들어갈 자리를 찾으려면 최악에는 처음부터 끝까지 비교해야 해요. 새 값이 비교 한 번 만에 끝자리에 들어가는 경우는 최선의 경우일 뿐이에요.</p>
+<p><b>삭제는 맨 앞 요소를 꺼내면 되므로 $O(1)$이에요.</b> 다만 표는 찾아내는 데까지만 센 값이에요. 정렬된 배열은 꺼낸 뒤 나머지를 앞으로 당기는 뒤처리가 따로 일어나요.</p>
 <h4>히프</h4>
-<p>힙은 삽입과 삭제가 모두 $O(\log n)$이에요. 힙의 높이가 $O(\log n)$이고, 두 연산이 높이만큼만 움직이기 때문이에요(<a href="#s1-height">힙의 높이는 O(log n)</a>).</p>
+<p><b>힙은 삽입과 삭제가 모두 $O(\log n)$이에요.</b> 힙의 높이가 $O(\log n)$이고, 두 연산이 높이만큼만 움직이기 때문이에요(<a href="#s1-height">힙의 높이는 O(log n)</a>).</p>
 <h4>왜 한쪽이 $O(1)$인 것보다 둘 다 $O(\log n)$이 나은가</h4>
 <p>알고리즘 복잡도에서 가장 중요한 것은 예측 가능하다는 점이에요.</p>
 <ul><li>$O(n)$은 n이 100만, 1000만으로 커지면 계속 늘어나 처리 용량(capacity)을 넘을 수 있어요. 소프트웨어는 이때 생길 수 있는 데이터 손실(data loss)을 최악으로 봐요.</li><li>$O(\log n)$은 n이 커져도 증가가 꺾여 완만해져요. 그래서 컴퓨팅 파워만 받쳐 주면 실행할 수 있다고 예측할 수 있어요.</li><li>비교 대상에 $O(n)$이 있으면 애매하지만, $\log n$이 나오면 무조건 그쪽을 골라요.</li><li>정렬된 배열은 삭제가 $O(1)$이어도 뒤처리(대이동)가 필요해요.</li></ul>
@@ -447,9 +464,10 @@
     </section>
     <section id="s1"><h2>2. 힙의 모양과 배열</h2>
 <article class="topic" id="s1-heap-def"><h3>최대 힙과 최소 힙</h3><div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p5</span></div>
+  <dl class="gist"><dt>결론</dt><dd>힙은 부모와 자식의 키가 한 방향으로 정렬된 완전 이진 트리이고, 같은 값을 허용해요.</dd><dt>왜</dt><dd>모양 조건(완전 이진 트리)과 값 조건(부모·자식 부등식)을 함께 만족하며, BST와 달리 키가 유일할 필요가 없기 때문이에요.</dd><dt>조건</dt><dd>최대 히프는 $\text{key}(\text{부모}) \ge \text{key}(\text{자식})$, 최소 히프는 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$를 만족해야 해요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">윗자리에 앉은 수가 바로 아래 수보다 늘 크거나 같게 줄 세운 나무예요.</p><figure class="figure"><svg id="fig-heapdef-maxmin" viewBox="0 0 620 220" role="img" aria-label="왼쪽 나무는 맨 위 9 아래로 7과 6, 그 아래 5, 4, 3, 2, 맨 아래 줄 왼쪽부터 2, 1, 3이 있고 위로 갈수록 수가 크거나 같아요. 오른쪽 나무는 맨 위 1 아래로 4와 2, 그 아래 7, 5, 3, 3, 맨 아래 줄 왼쪽부터 7, 8, 9가 있고 위로 갈수록 수가 작거나 같아요. 두 나무의 맨 위 동그라미는 강조색 테두리예요."><path class="fig-ink" d="M 143.3 31.7 L 94.2 64.3" fill="none"/><path class="fig-ink" d="M 166.7 31.7 L 215.8 64.3" fill="none"/><path class="fig-ink" d="M 74.1 83.2 L 54.7 108.8" fill="none"/><path class="fig-ink" d="M 90.9 83.2 L 110.3 108.8" fill="none"/><path class="fig-ink" d="M 219.1 83.2 L 199.7 108.8" fill="none"/><path class="fig-ink" d="M 235.9 83.2 L 255.3 108.8" fill="none"/><path class="fig-ink" d="M 41.3 133.1 L 33.1 154.9" fill="none"/><path class="fig-ink" d="M 51.2 133.1 L 59.4 154.9" fill="none"/><path class="fig-ink" d="M 113.8 133.1 L 105.6 154.9" fill="none"/><circle class="fig-accent" cx="155.0" cy="24.0" r="14" fill="none"/><text class="fig-text" x="155.0" y="29.0" text-anchor="middle" font-size="13">9</text><circle class="fig-ink" cx="82.5" cy="72.0" r="14" fill="none"/><text class="fig-text" x="82.5" y="77.0" text-anchor="middle" font-size="13">7</text><circle class="fig-ink" cx="227.5" cy="72.0" r="14" fill="none"/><text class="fig-text" x="227.5" y="77.0" text-anchor="middle" font-size="13">6</text><circle class="fig-ink" cx="46.2" cy="120.0" r="14" fill="none"/><text class="fig-text" x="46.2" y="125.0" text-anchor="middle" font-size="13">5</text><circle class="fig-ink" cx="118.8" cy="120.0" r="14" fill="none"/><text class="fig-text" x="118.8" y="125.0" text-anchor="middle" font-size="13">4</text><circle class="fig-ink" cx="191.2" cy="120.0" r="14" fill="none"/><text class="fig-text" x="191.2" y="125.0" text-anchor="middle" font-size="13">3</text><circle class="fig-ink" cx="263.8" cy="120.0" r="14" fill="none"/><text class="fig-text" x="263.8" y="125.0" text-anchor="middle" font-size="13">2</text><circle class="fig-ink" cx="28.1" cy="168.0" r="14" fill="none"/><text class="fig-text" x="28.1" y="173.0" text-anchor="middle" font-size="13">2</text><circle class="fig-ink" cx="64.4" cy="168.0" r="14" fill="none"/><text class="fig-text" x="64.4" y="173.0" text-anchor="middle" font-size="13">1</text><circle class="fig-ink" cx="100.6" cy="168.0" r="14" fill="none"/><text class="fig-text" x="100.6" y="173.0" text-anchor="middle" font-size="13">3</text><path class="fig-ink" d="M 453.3 31.7 L 404.2 64.3" fill="none"/><path class="fig-ink" d="M 476.7 31.7 L 525.8 64.3" fill="none"/><path class="fig-ink" d="M 384.1 83.2 L 364.7 108.8" fill="none"/><path class="fig-ink" d="M 400.9 83.2 L 420.3 108.8" fill="none"/><path class="fig-ink" d="M 529.1 83.2 L 509.7 108.8" fill="none"/><path class="fig-ink" d="M 545.9 83.2 L 565.3 108.8" fill="none"/><path class="fig-ink" d="M 351.3 133.1 L 343.1 154.9" fill="none"/><path class="fig-ink" d="M 361.2 133.1 L 369.4 154.9" fill="none"/><path class="fig-ink" d="M 423.8 133.1 L 415.6 154.9" fill="none"/><circle class="fig-accent" cx="465.0" cy="24.0" r="14" fill="none"/><text class="fig-text" x="465.0" y="29.0" text-anchor="middle" font-size="13">1</text><circle class="fig-ink" cx="392.5" cy="72.0" r="14" fill="none"/><text class="fig-text" x="392.5" y="77.0" text-anchor="middle" font-size="13">4</text><circle class="fig-ink" cx="537.5" cy="72.0" r="14" fill="none"/><text class="fig-text" x="537.5" y="77.0" text-anchor="middle" font-size="13">2</text><circle class="fig-ink" cx="356.2" cy="120.0" r="14" fill="none"/><text class="fig-text" x="356.2" y="125.0" text-anchor="middle" font-size="13">7</text><circle class="fig-ink" cx="428.8" cy="120.0" r="14" fill="none"/><text class="fig-text" x="428.8" y="125.0" text-anchor="middle" font-size="13">5</text><circle class="fig-ink" cx="501.2" cy="120.0" r="14" fill="none"/><text class="fig-text" x="501.2" y="125.0" text-anchor="middle" font-size="13">3</text><circle class="fig-ink" cx="573.8" cy="120.0" r="14" fill="none"/><text class="fig-text" x="573.8" y="125.0" text-anchor="middle" font-size="13">3</text><circle class="fig-ink" cx="338.1" cy="168.0" r="14" fill="none"/><text class="fig-text" x="338.1" y="173.0" text-anchor="middle" font-size="13">7</text><circle class="fig-ink" cx="374.4" cy="168.0" r="14" fill="none"/><text class="fig-text" x="374.4" y="173.0" text-anchor="middle" font-size="13">8</text><circle class="fig-ink" cx="410.6" cy="168.0" r="14" fill="none"/><text class="fig-text" x="410.6" y="173.0" text-anchor="middle" font-size="13">9</text><text class="fig-muted" x="155" y="208" text-anchor="middle" font-size="13">위로 갈수록 큰 수</text><text class="fig-muted" x="465" y="208" text-anchor="middle" font-size="13">위로 갈수록 작은 수</text></svg><figcaption>왼쪽은 위로 갈수록 큰 수가, 오른쪽은 위로 갈수록 작은 수가 앉아요.</figcaption></figure></div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-    <p>힙(heap, 슬라이드 표기 히프)은 노드들이 저장한 키(key)가 정해진 부등식을 만족하는 완전 이진 트리(complete binary tree)예요. 힙에는 두 종류가 있어요.</p>
+    <p><b>힙(heap, 슬라이드 표기 히프)은 노드들이 저장한 키(key)가 정해진 부등식을 만족하는 완전 이진 트리(complete binary tree)예요.</b> 힙에는 두 종류가 있어요.</p>
     <ul>
       <li>최대 히프(max heap): 부모 노드의 키값이 자식 노드의 키값보다 크거나 같은 완전 이진 트리예요. $\text{key}(\text{부모}) \ge \text{key}(\text{자식})$</li>
       <li>최소 히프(min heap): 부모 노드의 키값이 자식 노드의 키값보다 작거나 같은 완전 이진 트리예요. $\text{key}(\text{부모}) \le \text{key}(\text{자식})$</li>
@@ -459,8 +477,8 @@
       <li>모양 조건: 완전 이진 트리예요. 마지막 레벨 바로 위 레벨까지는 꽉 차 있고, 마지막 레벨은 왼쪽부터 채워져요.</li>
       <li>값 조건: 모든 부모·자식 쌍이 위 부등식을 만족해요.</li>
     </ol>
-    <p>완전 이진 트리는 포화 이진 트리(full binary tree)와 달라요. 포화 이진 트리는 단말 노드(leaf node)까지 모든 레벨이 꽉 찬 트리예요. 완전 이진 트리는 마지막 레벨이 덜 차도 되지만, 왼쪽부터 빈틈없이 채워야 해요. 두 트리의 구분은 <a href="../1029/정리노트_1029_Tree.html#s2-kinds">1029 포화·완전·기타 이진 트리</a>에서 자세히 다뤘어요.</p>
-    <p><strong>같은 값을 허용해요.</strong> 이진 탐색 트리(BST)는 키를 유일(unique)하게 두기로 했지만, 힙은 키가 겹쳐도 돼요.</p>
+    <p><b>완전 이진 트리는 포화 이진 트리(full binary tree)와 달라요.</b> 포화 이진 트리는 단말 노드(leaf node)까지 모든 레벨이 꽉 찬 트리예요. 완전 이진 트리는 마지막 레벨이 덜 차도 되지만, 왼쪽부터 빈틈없이 채워야 해요. 두 트리의 구분은 <a href="../1029/정리노트_1029_Tree.html#s2-kinds">1029 포화·완전·기타 이진 트리</a>에서 자세히 다뤘어요.</p>
+    <p><b>같은 값을 허용해요.</b> 이진 탐색 트리(BST)는 키를 유일(unique)하게 두기로 했지만, 힙은 키가 겹쳐도 돼요.</p>
     <p>삽입 때 같은 값이면 위로 올리지 않을 뿐, 같은 우선순위끼리 꺼내는 순서까지 보장하지는 않아요.</p>
     <p>슬라이드의 최대 히프(9, 7, 6, 5, 4, 3, 2, 2, 1, 3)를 재귀적으로 확인해요.</p>
     <ol class="steps">
@@ -469,7 +487,7 @@
       <li>이렇게 단말 노드까지 내려가요. 자식이 NULL이면 조건을 항상 만족해요.</li>
       <li>값 2가 레벨 3과 레벨 4에 따로 있어도 최대 히프예요.</li>
     </ol>
-    <p>슬라이드의 최소 히프(1, 4, 2, 7, 5, 3, 3, 7, 8, 9)는 방향만 반대예요. 형제 3과 3, 부모 7과 자식 7처럼 같은 값이 있어도 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$를 만족해요.</p>
+    <p><b>슬라이드의 최소 히프(1, 4, 2, 7, 5, 3, 3, 7, 8, 9)는 방향만 반대예요.</b> 형제 3과 3, 부모 7과 자식 7처럼 같은 값이 있어도 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$를 만족해요.</p>
     <p>값을 넣고 꺼낼 때 이 두 조건을 어떻게 지키는지는 <a href="#s2-upheap">삽입과 upheap</a>에서 이어서 봐요.</p>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
@@ -503,17 +521,18 @@
   </div>
 </article>
 <article class="topic" id="s1-height"><h3>힙의 높이는 O(log n)</h3><div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p6</span></div>
+  <dl class="gist"><dt>결론</dt><dd>힙은 완전 이진 트리라서 높이가 $O(\log n)$이고, 높이에 비례하는 연산도 $O(\log n)$이에요.</dd><dt>왜</dt><dd>마지막 레벨을 뺀 각 레벨 $i$에 $2^{i-1}$개의 노드가 들어가 레벨마다 노드 수가 두 배씩 늘기 때문이에요.</dd><dt>시간</dt><dd>노드 $n$개인 완전 이진 트리의 높이는 $h = \lceil \log_2(n+1) \rceil$이고, 경사 트리가 만들어지지 않아요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">줄마다 자리가 두 배씩 늘어서, 사람이 많아져도 줄 수는 조금만 늘어요.</p><figure class="figure"><svg id="fig-height-rows" viewBox="0 0 580 200" role="img" aria-label="네 줄짜리 나무. 왼쪽에 1줄 1개, 2줄 2개, 3줄 4개, 4줄 3개라고 적혀 있어요. 위 세 줄은 꽉 차 있고, 맨 아래 줄은 왼쪽부터 세 자리만 차 있으며 나머지 다섯 자리는 점선 동그라미 빈자리예요."><text class="fig-muted" x="4" y="31" font-size="13">1줄 1개</text><text class="fig-muted" x="4" y="81" font-size="13">2줄 2개</text><text class="fig-muted" x="4" y="131" font-size="13">3줄 4개</text><text class="fig-muted" x="4" y="181" font-size="13">4줄 3개</text><circle class="fig-ink" cx="300.0" cy="176.0" r="14" fill="none" stroke-dasharray="4 3"/><circle class="fig-ink" cx="360.0" cy="176.0" r="14" fill="none" stroke-dasharray="4 3"/><circle class="fig-ink" cx="420.0" cy="176.0" r="14" fill="none" stroke-dasharray="4 3"/><circle class="fig-ink" cx="480.0" cy="176.0" r="14" fill="none" stroke-dasharray="4 3"/><circle class="fig-ink" cx="540.0" cy="176.0" r="14" fill="none" stroke-dasharray="4 3"/><path class="fig-ink" d="M 317.1 31.4 L 222.9 70.6" fill="none"/><path class="fig-ink" d="M 342.9 31.4 L 437.1 70.6" fill="none"/><path class="fig-ink" d="M 199.2 85.0 L 160.8 117.0" fill="none"/><path class="fig-ink" d="M 220.8 85.0 L 259.2 117.0" fill="none"/><path class="fig-ink" d="M 439.2 85.0 L 400.8 117.0" fill="none"/><path class="fig-ink" d="M 460.8 85.0 L 499.2 117.0" fill="none"/><path class="fig-ink" d="M 142.8 138.0 L 127.2 164.0" fill="none"/><path class="fig-ink" d="M 157.2 138.0 L 172.8 164.0" fill="none"/><path class="fig-ink" d="M 262.8 138.0 L 247.2 164.0" fill="none"/><circle class="fig-ink" cx="330.0" cy="26.0" r="14" fill="none"/><text class="fig-text" x="330.0" y="31.0" text-anchor="middle" font-size="13">9</text><circle class="fig-ink" cx="210.0" cy="76.0" r="14" fill="none"/><text class="fig-text" x="210.0" y="81.0" text-anchor="middle" font-size="13">7</text><circle class="fig-ink" cx="450.0" cy="76.0" r="14" fill="none"/><text class="fig-text" x="450.0" y="81.0" text-anchor="middle" font-size="13">6</text><circle class="fig-ink" cx="150.0" cy="126.0" r="14" fill="none"/><text class="fig-text" x="150.0" y="131.0" text-anchor="middle" font-size="13">5</text><circle class="fig-ink" cx="270.0" cy="126.0" r="14" fill="none"/><text class="fig-text" x="270.0" y="131.0" text-anchor="middle" font-size="13">4</text><circle class="fig-ink" cx="390.0" cy="126.0" r="14" fill="none"/><text class="fig-text" x="390.0" y="131.0" text-anchor="middle" font-size="13">3</text><circle class="fig-ink" cx="510.0" cy="126.0" r="14" fill="none"/><text class="fig-text" x="510.0" y="131.0" text-anchor="middle" font-size="13">2</text><circle class="fig-ink" cx="120.0" cy="176.0" r="14" fill="none"/><text class="fig-text" x="120.0" y="181.0" text-anchor="middle" font-size="13">2</text><circle class="fig-ink" cx="180.0" cy="176.0" r="14" fill="none"/><text class="fig-text" x="180.0" y="181.0" text-anchor="middle" font-size="13">1</text><circle class="fig-ink" cx="240.0" cy="176.0" r="14" fill="none"/><text class="fig-text" x="240.0" y="181.0" text-anchor="middle" font-size="13">3</text></svg><figcaption>맨 아래 줄만 왼쪽부터 덜 채워져 있어요.</figcaption></figure></div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-    <p>$n$개의 노드를 가진 힙의 높이는 $O(\log n)$이에요. 힙은 완전 이진 트리이므로, 마지막 레벨 $h$를 제외하고 각 레벨 $i$에는 $2^{i-1}$개의 노드가 있어요.</p>
+    <p><b>$n$개의 노드를 가진 힙의 높이는 $O(\log n)$이에요.</b> 힙은 완전 이진 트리이므로, 마지막 레벨 $h$를 제외하고 각 레벨 $i$에는 $2^{i-1}$개의 노드가 있어요.</p>
     <div class="table-wrap"><table><thead><tr><th>깊이</th><th>노드의 개수</th></tr></thead><tbody>
       <tr><td>1</td><td>$1 = 2^0$</td></tr>
       <tr><td>2</td><td>$2 = 2^1$</td></tr>
       <tr><td>3</td><td>$4 = 2^2$</td></tr>
       <tr><td>4 (마지막 레벨)</td><td>3 (꽉 차면 $2^3 = 8$이지만 왼쪽부터 일부만 채움)</td></tr>
     </tbody></table></div>
-    <p>마지막 레벨을 뺀 레벨마다 노드 수가 두 배씩 늘어요. 그래서 노드가 많아져도 높이는 $\log n$ 정도로만 자라요. 1029 수업에서 본 대로 노드 $n$개인 완전 이진 트리의 높이는 $h = \lceil \log_2(n+1) \rceil$이에요. 슬라이드 예는 $n = 10$, $h = \lceil \log_2 11 \rceil = 4$예요.</p>
-    <p>힙은 완전 이진 트리라서 한쪽으로 치우친 경사 트리(skewed tree)가 만들어지지 않아요. 삽입은 늘 마지막 자리에 붙이고, 삭제는 마지막 노드를 루트로 올리기 때문이에요. 자세한 절차는 <a href="#s2-upheap">삽입과 upheap</a>에서 봐요.</p>
+    <p><b>마지막 레벨을 뺀 레벨마다 노드 수가 두 배씩 늘어요.</b> 그래서 노드가 많아져도 높이는 $\log n$ 정도로만 자라요. 1029 수업에서 본 대로 노드 $n$개인 완전 이진 트리의 높이는 $h = \lceil \log_2(n+1) \rceil$이에요. 슬라이드 예는 $n = 10$, $h = \lceil \log_2 11 \rceil = 4$예요.</p>
+    <p><b>힙은 완전 이진 트리라서 한쪽으로 치우친 경사 트리(skewed tree)가 만들어지지 않아요.</b> 삽입은 늘 마지막 자리에 붙이고, 삭제는 마지막 노드를 루트로 올리기 때문이에요. 자세한 절차는 <a href="#s2-upheap">삽입과 upheap</a>에서 봐요.</p>
     <p>따라서 루트와 단말 노드 사이의 경로만 따라가는 연산, 곧 높이에 비례하는 알고리즘은 $O(\log n)$이에요.</p>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
@@ -538,10 +557,11 @@
   </div>
 </article>
 <article class="topic" id="s1-array"><h3>배열로 구현한 힙의 인덱스</h3><div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p7</span></div>
+  <dl class="gist"><dt>결론</dt><dd>힙은 배열의 0번을 비우고 1번부터 채우며, 곱하기 2와 나누기 2로 부모·자식을 찾아요.</dd><dt>왜</dt><dd>완전 이진 트리에 1번부터 번호를 매기면 빈칸 없이 배열에 차고 왼쪽 $2i$, 오른쪽 $2i+1$, 부모 $\lfloor i/2 \rfloor$ 식이 그대로 맞기 때문이에요.</dd><dt>주의</dt><dd>부모 인덱스 식의 <code>/2</code>는 C의 정수 나눗셈이라 소수점 아래를 버려 짝수·홀수 자식 모두 같은 부모를 얻어요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">나무 자리 번호를 그대로 사물함 번호로 쓰고, 맨 앞 사물함은 비워 둬요.</p><figure class="figure"><svg id="fig-array-index" viewBox="0 0 580 280" role="img" aria-label="위에는 자리마다 1부터 10까지 번호가 붙은 나무, 아래에는 0번부터 10번까지 칸이 있는 배열이에요. 0번 칸은 점선이고 비어 있어요. 1번부터 10번 칸에는 9, 7, 6, 5, 4, 3, 2, 2, 1, 3이 들어 있어요. 3번 자리의 6은 강조색 테두리이고, 그 아이인 6번 자리의 3과 7번 자리의 2는 빨간 테두리예요. 3번 칸에서 6번 칸과 7번 칸으로 선 화살표가 이어져요."><path class="fig-ink" d="M 276.9 34.8 L 178.1 71.2" fill="none"/><path class="fig-ink" d="M 303.1 34.8 L 401.9 71.2" fill="none"/><path class="fig-ink" d="M 153.7 84.3 L 113.8 113.7" fill="none"/><path class="fig-ink" d="M 176.3 84.3 L 216.2 113.7" fill="none"/><path class="fig-ink" d="M 403.7 84.3 L 363.8 113.7" fill="none"/><path class="fig-ink" d="M 426.3 84.3 L 466.2 113.7" fill="none"/><path class="fig-ink" d="M 94.6 133.6 L 79.1 156.4" fill="none"/><path class="fig-ink" d="M 110.4 133.6 L 125.9 156.4" fill="none"/><path class="fig-ink" d="M 219.6 133.6 L 204.1 156.4" fill="none"/><circle class="fig-ink" cx="290.0" cy="30.0" r="14" fill="none"/><text class="fig-text" x="290.0" y="35.0" text-anchor="middle" font-size="13">9</text><circle class="fig-ink" cx="165.0" cy="76.0" r="14" fill="none"/><text class="fig-text" x="165.0" y="81.0" text-anchor="middle" font-size="13">7</text><circle class="fig-accent" cx="415.0" cy="76.0" r="14" fill="none"/><text class="fig-text" x="415.0" y="81.0" text-anchor="middle" font-size="13">6</text><circle class="fig-ink" cx="102.5" cy="122.0" r="14" fill="none"/><text class="fig-text" x="102.5" y="127.0" text-anchor="middle" font-size="13">5</text><circle class="fig-ink" cx="227.5" cy="122.0" r="14" fill="none"/><text class="fig-text" x="227.5" y="127.0" text-anchor="middle" font-size="13">4</text><circle class="fig-danger" cx="352.5" cy="122.0" r="14" fill="none"/><text class="fig-text" x="352.5" y="127.0" text-anchor="middle" font-size="13">3</text><circle class="fig-danger" cx="477.5" cy="122.0" r="14" fill="none"/><text class="fig-text" x="477.5" y="127.0" text-anchor="middle" font-size="13">2</text><circle class="fig-ink" cx="71.2" cy="168.0" r="14" fill="none"/><text class="fig-text" x="71.2" y="173.0" text-anchor="middle" font-size="13">2</text><circle class="fig-ink" cx="133.8" cy="168.0" r="14" fill="none"/><text class="fig-text" x="133.8" y="173.0" text-anchor="middle" font-size="13">1</text><circle class="fig-ink" cx="196.2" cy="168.0" r="14" fill="none"/><text class="fig-text" x="196.2" y="173.0" text-anchor="middle" font-size="13">3</text><text class="fig-muted" x="273.0" y="17.0" text-anchor="end" font-size="12">1</text><text class="fig-muted" x="148.0" y="63.0" text-anchor="end" font-size="12">2</text><text class="fig-muted" x="432.0" y="63.0" text-anchor="start" font-size="12">3</text><text class="fig-muted" x="85.5" y="109.0" text-anchor="end" font-size="12">4</text><text class="fig-muted" x="244.5" y="109.0" text-anchor="start" font-size="12">5</text><text class="fig-muted" x="335.5" y="109.0" text-anchor="end" font-size="12">6</text><text class="fig-muted" x="494.5" y="109.0" text-anchor="start" font-size="12">7</text><text class="fig-muted" x="54.2" y="155.0" text-anchor="end" font-size="12">8</text><text class="fig-muted" x="150.8" y="155.0" text-anchor="start" font-size="12">9</text><text class="fig-muted" x="179.2" y="155.0" text-anchor="end" font-size="12">10</text><rect class="fig-ink" x="37" y="200" width="46" height="30" fill="none" stroke-dasharray="4 3"/><text class="fig-muted" x="60.0" y="194" text-anchor="middle" font-size="12">0</text><text class="fig-muted" x="60.0" y="220" text-anchor="middle" font-size="13">비움</text><rect class="fig-ink" x="83" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="106.0" y="194" text-anchor="middle" font-size="12">1</text><text class="fig-text" x="106.0" y="220" text-anchor="middle" font-size="13">9</text><rect class="fig-ink" x="129" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="152.0" y="194" text-anchor="middle" font-size="12">2</text><text class="fig-text" x="152.0" y="220" text-anchor="middle" font-size="13">7</text><rect class="fig-accent" x="175" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="198.0" y="194" text-anchor="middle" font-size="12">3</text><text class="fig-text" x="198.0" y="220" text-anchor="middle" font-size="13">6</text><rect class="fig-ink" x="221" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="244.0" y="194" text-anchor="middle" font-size="12">4</text><text class="fig-text" x="244.0" y="220" text-anchor="middle" font-size="13">5</text><rect class="fig-ink" x="267" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="290.0" y="194" text-anchor="middle" font-size="12">5</text><text class="fig-text" x="290.0" y="220" text-anchor="middle" font-size="13">4</text><rect class="fig-danger" x="313" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="336.0" y="194" text-anchor="middle" font-size="12">6</text><text class="fig-text" x="336.0" y="220" text-anchor="middle" font-size="13">3</text><rect class="fig-danger" x="359" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="382.0" y="194" text-anchor="middle" font-size="12">7</text><text class="fig-text" x="382.0" y="220" text-anchor="middle" font-size="13">2</text><rect class="fig-ink" x="405" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="428.0" y="194" text-anchor="middle" font-size="12">8</text><text class="fig-text" x="428.0" y="220" text-anchor="middle" font-size="13">2</text><rect class="fig-ink" x="451" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="474.0" y="194" text-anchor="middle" font-size="12">9</text><text class="fig-text" x="474.0" y="220" text-anchor="middle" font-size="13">1</text><rect class="fig-ink" x="497" y="200" width="46" height="30" fill="none"/><text class="fig-muted" x="520.0" y="194" text-anchor="middle" font-size="12">10</text><text class="fig-text" x="520.0" y="220" text-anchor="middle" font-size="13">3</text><path class="fig-danger" d="M 198.0 230 L 198.0 252 L 336.0 252 L 336.0 232" fill="none"/><path class="fig-danger" d="M 340.0 240.0 L 336.0 232.0 L 332.0 240.0" fill="none"/><path class="fig-danger" d="M 198.0 230 L 198.0 268 L 382.0 268 L 382.0 232" fill="none"/><path class="fig-danger" d="M 386.0 240.0 L 382.0 232.0 L 378.0 240.0" fill="none"/><text class="fig-muted" x="412.0" y="256" font-size="12">3번의 아이들은 6번과 7번</text></svg><figcaption>3번 사물함의 아이들은 6번과 7번 사물함에 있어요.</figcaption></figure></div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-    <p>힙은 배열(array)로 구현해요. 완전 이진 트리이므로 각 노드에 번호를 붙일 수 있고, 이 번호를 배열의 인덱스로 생각해요. 번호는 루트가 1번이고 위 레벨부터, 같은 레벨에서는 왼쪽부터 매겨요(<a href="../1029/정리노트_1029_Tree.html#s2-numbering">1029 노드 번호 매기기</a>).</p>
-    <p>배열의 0번 자리는 비우고 1번부터 채워요. 완전 이진 트리라서 1번부터 노드 수만큼 빈칸 없이 꽉 차요. 슬라이드 예는 다음과 같아요.</p>
+    <p><b>힙은 배열(array)로 구현해요.</b> 완전 이진 트리이므로 각 노드에 번호를 붙일 수 있고, 이 번호를 배열의 인덱스로 생각해요. 번호는 루트가 1번이고 위 레벨부터, 같은 레벨에서는 왼쪽부터 매겨요(<a href="../1029/정리노트_1029_Tree.html#s2-numbering">1029 노드 번호 매기기</a>).</p>
+    <p><b>배열의 0번 자리는 비우고 1번부터 채워요.</b> 완전 이진 트리라서 1번부터 노드 수만큼 빈칸 없이 꽉 차요. 슬라이드 예는 다음과 같아요.</p>
     <div class="table-wrap"><table><thead><tr><th>인덱스</th><th>값</th></tr></thead><tbody>
       <tr><td>0</td><td>(비움)</td></tr>
       <tr><td>1</td><td>9</td></tr>
@@ -555,20 +575,20 @@
       <tr><td>9</td><td>1</td></tr>
       <tr><td>10</td><td>3</td></tr>
     </tbody></table></div>
-    <p>부모 노드와 자식 노드를 찾기가 쉬워요. 슬라이드 표기 그대로 쓰면 다음과 같아요.</p>
+    <p><b>부모 노드와 자식 노드를 찾기가 쉬워요.</b> 슬라이드 표기 그대로 쓰면 다음과 같아요.</p>
     <ul>
       <li>왼쪽 자식의 인덱스 = <code>(부모의 인덱스)*2</code></li>
       <li>오른쪽 자식의 인덱스 = <code>(부모의 인덱스)*2 + 1</code></li>
       <li>부모의 인덱스 = <code>(자식의 인덱스)/2</code></li>
     </ul>
-    <p>노드의 인덱스를 $i$로 두면 왼쪽 자식은 $2i$, 오른쪽 자식은 $2i+1$, 부모는 $\lfloor i/2 \rfloor$예요. 부모 식의 <code>/2</code>는 정수 나눗셈(integer division)이에요. C에서 <code>int</code>끼리 나누면 소수점 아래를 버리므로 <code>7/2</code>는 3이에요. 그래서 왼쪽 자식(짝수 인덱스)과 오른쪽 자식(홀수 인덱스) 모두 같은 부모를 얻어요.</p>
+    <p><b>노드의 인덱스를 $i$로 두면 왼쪽 자식은 $2i$, 오른쪽 자식은 $2i+1$, 부모는 $\lfloor i/2 \rfloor$예요.</b> 부모 식의 <code>/2</code>는 정수 나눗셈(integer division)이에요. C에서 <code>int</code>끼리 나누면 소수점 아래를 버리므로 <code>7/2</code>는 3이에요. 그래서 왼쪽 자식(짝수 인덱스)과 오른쪽 자식(홀수 인덱스) 모두 같은 부모를 얻어요.</p>
     <ol class="steps">
       <li>3번 자리의 6 → 왼쪽 자식 <code>3*2</code> = 6번(값 3)</li>
       <li>3번 자리의 6 → 오른쪽 자식 <code>3*2 + 1</code> = 7번(값 2)</li>
       <li>6번과 7번 → 부모 <code>6/2</code> = <code>7/2</code> = 3번(값 6)</li>
       <li>10번 자리의 3 → 부모 <code>10/2</code> = 5번(값 4)</li>
     </ol>
-    <p>루트를 1번에 두어야 이 세 식이 그대로 맞아요. 루트 1번의 자식은 <code>1*2</code> = 2번과 <code>1*2 + 1</code> = 3번이에요. 삽입·삭제 코드의 <code>PARENT(i)</code>와 <code>CHILD</code>가 이 식을 써요(<a href="#s2-upheap">삽입과 upheap</a>).</p>
+    <p><b>루트를 1번에 두어야 이 세 식이 그대로 맞아요.</b> 루트 1번의 자식은 <code>1*2</code> = 2번과 <code>1*2 + 1</code> = 3번이에요. 삽입·삭제 코드의 <code>PARENT(i)</code>와 <code>CHILD</code>가 이 식을 써요(<a href="#s2-upheap">삽입과 upheap</a>).</p>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>배열로 구현하면 부모와 자식을 곱하기와 나누기만으로 바로 찾을 수 있다고 했어요.</p>
@@ -595,6 +615,7 @@
     </section>
     <section id="s2"><h2>3. 넣고 꺼내기와 힙 정렬</h2>
 <article class="topic" id="s2-upheap"><h3>삽입과 upheap</h3><div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p8–10</span></div>
+  <dl class="gist"><dt>결론</dt><dd>새 값은 마지막 노드 다음 칸에 넣고, 부모보다 크면 교환하며 루트 쪽으로 올라가요(upheap).</dd><dt>왜</dt><dd>형제와는 비교하지 않고 루트까지의 경로에 있는 부모와만 비교·교환해도 완전 이진 트리와 힙 성질을 함께 복원할 수 있기 때문이에요.</dd><dt>시간</dt><dd>힙의 높이가 $O(\log n)$이므로 upheap 연산도 $O(\log n)$이고, 같은 값이면 교환하지 않고 멈춰요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">새 값은 맨 끝 빈자리에 먼저 앉고, 바로 위 값보다 크면 자리를 바꿔 올라가요.</p>
     <figure class="figure"><svg id="fig-upheap-climb" viewBox="0 0 600 225" role="img" aria-label="번호가 붙은 원(테두리) 열한 개로 된 트리. 1번 9, 2번 7, 3번 6, 4번 5, 5번 4, 6번 3, 7번 2, 8번 2, 9번 1, 10번 3이 있고, 맨 끝 11번 자리에 새 값 8이 강조색 테두리 원으로 앉아 있음. 강조색 선 화살표가 11번에서 5번으로, 5번에서 2번으로 위를 향하고, 1번 9 옆에 멈춤이라는 글자가 있음."><line class="fig-ink" x1="285.3" y1="38.3" x2="184.7" y2="81.7"/><line class="fig-ink" x1="314.7" y1="38.3" x2="415.3" y2="81.7"/><line class="fig-ink" x1="157.9" y1="98.4" x2="117.1" y2="133.6"/><line class="fig-ink" x1="182.1" y1="98.4" x2="222.9" y2="133.6"/><line class="fig-ink" x1="417.9" y1="98.4" x2="377.1" y2="133.6"/><line class="fig-ink" x1="442.1" y1="98.4" x2="482.9" y2="133.6"/><line class="fig-ink" x1="97" y1="157.8" x2="80.5" y2="186.2"/><line class="fig-ink" x1="113" y1="157.8" x2="129.5" y2="186.2"/><line class="fig-ink" x1="227" y1="157.8" x2="210.5" y2="186.2"/><line class="fig-ink" x1="243" y1="157.8" x2="259.5" y2="186.2"/><circle class="fig-ink" cx="300" cy="32" r="16"/><text class="fig-text" x="300" y="37" text-anchor="middle" style="font-size:14px">9</text><text class="fig-muted" x="322" y="20" text-anchor="middle" style="font-size:12px">1</text><circle class="fig-ink" cx="170" cy="88" r="16"/><text class="fig-text" x="170" y="93" text-anchor="middle" style="font-size:14px">7</text><text class="fig-muted" x="192" y="76" text-anchor="middle" style="font-size:12px">2</text><circle class="fig-ink" cx="430" cy="88" r="16"/><text class="fig-text" x="430" y="93" text-anchor="middle" style="font-size:14px">6</text><text class="fig-muted" x="452" y="76" text-anchor="middle" style="font-size:12px">3</text><circle class="fig-ink" cx="105" cy="144" r="16"/><text class="fig-text" x="105" y="149" text-anchor="middle" style="font-size:14px">5</text><text class="fig-muted" x="127" y="132" text-anchor="middle" style="font-size:12px">4</text><circle class="fig-ink" cx="235" cy="144" r="16"/><text class="fig-text" x="235" y="149" text-anchor="middle" style="font-size:14px">4</text><text class="fig-muted" x="257" y="132" text-anchor="middle" style="font-size:12px">5</text><circle class="fig-ink" cx="365" cy="144" r="16"/><text class="fig-text" x="365" y="149" text-anchor="middle" style="font-size:14px">3</text><text class="fig-muted" x="387" y="132" text-anchor="middle" style="font-size:12px">6</text><circle class="fig-ink" cx="495" cy="144" r="16"/><text class="fig-text" x="495" y="149" text-anchor="middle" style="font-size:14px">2</text><text class="fig-muted" x="517" y="132" text-anchor="middle" style="font-size:12px">7</text><circle class="fig-ink" cx="72.5" cy="200" r="16"/><text class="fig-text" x="72.5" y="205" text-anchor="middle" style="font-size:14px">2</text><text class="fig-muted" x="94.5" y="188" text-anchor="middle" style="font-size:12px">8</text><circle class="fig-ink" cx="137.5" cy="200" r="16"/><text class="fig-text" x="137.5" y="205" text-anchor="middle" style="font-size:14px">1</text><text class="fig-muted" x="159.5" y="188" text-anchor="middle" style="font-size:12px">9</text><circle class="fig-ink" cx="202.5" cy="200" r="16"/><text class="fig-text" x="202.5" y="205" text-anchor="middle" style="font-size:14px">3</text><text class="fig-muted" x="224.5" y="188" text-anchor="middle" style="font-size:12px">10</text><circle class="fig-accent" cx="267.5" cy="200" r="16"/><text class="fig-text" x="267.5" y="205" text-anchor="middle" style="font-size:14px">8</text><text class="fig-muted" x="289.5" y="188" text-anchor="middle" style="font-size:12px">11</text><path class="fig-accent" d="M244.5,190.2 L232.1,168.8"/><path class="fig-accent" d="M240.4,173.2 L232.1,168.8 L231.8,178.3"/><path class="fig-accent" d="M210.1,142.3 L175.4,112.4"/><path class="fig-accent" d="M184.7,113.9 L175.4,112.4 L178.2,121.4"/><text class="fig-muted" x="330" y="37" style="font-size:13px">9 아래에서 멈춤</text></svg><figcaption>새로 온 8은 맨 끝에 앉았다가 위 값과 두 번 자리를 바꾸고, 9 아래에서 멈춰요.</figcaption></figure>
   </div>
@@ -609,7 +630,7 @@
       <li>올라가다 옆 노드를 건너뛰어도 괜찮아요. 트리는 한쪽으로 내려가는 순간 다른 쪽이 후보에서 빠지는 자료구조예요.</li>
       <li>더 이상 교환할 필요가 없으면 멈추고, 그 자리가 새 노드의 자리예요.</li>
     </ul>
-    <p>예제(S8 p8–9): 노드 10개인 최대 힙 <code>[9, 7, 6, 5, 4, 3, 2, 2, 1, 3]</code>(1번부터)에 8을 넣어요. 인덱스 식은 <a href="#s1-array">배열로 구현한 힙의 인덱스</a>와 같아요.</p>
+    <p><b>예제(S8 p8–9): 노드 10개인 최대 힙 <code>[9, 7, 6, 5, 4, 3, 2, 2, 1, 3]</code>(1번부터)에 8을 넣어요.</b> 인덱스 식은 <a href="#s1-array">배열로 구현한 힙의 인덱스</a>와 같아요.</p>
     <ol class="steps">
       <li>다음 말단 자리인 <strong>11번</strong>에 8을 앉혀요 → <code>[9, 7, 6, 5, 4, 3, 2, 2, 1, 3, 8]</code>. 완전 이진 트리는 맞지만 부모 4 &lt; 자식 8이라 최대 힙은 깨져요.</li>
       <li>8 &gt; 부모 4(5번) → 교환 → <code>[9, 7, 6, 5, 8, 3, 2, 2, 1, 3, 4]</code></li>
@@ -617,14 +638,14 @@
       <li>8 &lt; 루트 9 → 정지. 결과 <code>[9, 8, 6, 5, 7, 3, 2, 2, 1, 3, 4]</code></li>
     </ol>
     <figure class="figure"><svg id="fig-upheap-result" viewBox="0 0 600 225" role="img" aria-label="8 삽입이 끝난 트리. 원(테두리) 안 값이 1번부터 9, 8, 6, 5, 7, 3, 2, 2, 1, 3, 4. 자리를 바꾼 2번 8, 5번 7, 11번 4는 강조색 테두리 원."><line class="fig-ink" x1="285.3" y1="38.3" x2="184.7" y2="81.7"/><line class="fig-ink" x1="314.7" y1="38.3" x2="415.3" y2="81.7"/><line class="fig-ink" x1="157.9" y1="98.4" x2="117.1" y2="133.6"/><line class="fig-ink" x1="182.1" y1="98.4" x2="222.9" y2="133.6"/><line class="fig-ink" x1="417.9" y1="98.4" x2="377.1" y2="133.6"/><line class="fig-ink" x1="442.1" y1="98.4" x2="482.9" y2="133.6"/><line class="fig-ink" x1="97" y1="157.8" x2="80.5" y2="186.2"/><line class="fig-ink" x1="113" y1="157.8" x2="129.5" y2="186.2"/><line class="fig-ink" x1="227" y1="157.8" x2="210.5" y2="186.2"/><line class="fig-ink" x1="243" y1="157.8" x2="259.5" y2="186.2"/><circle class="fig-ink" cx="300" cy="32" r="16"/><text class="fig-text" x="300" y="37" text-anchor="middle" style="font-size:14px">9</text><text class="fig-muted" x="322" y="20" text-anchor="middle" style="font-size:12px">1</text><circle class="fig-accent" cx="170" cy="88" r="16"/><text class="fig-text" x="170" y="93" text-anchor="middle" style="font-size:14px">8</text><text class="fig-muted" x="192" y="76" text-anchor="middle" style="font-size:12px">2</text><circle class="fig-ink" cx="430" cy="88" r="16"/><text class="fig-text" x="430" y="93" text-anchor="middle" style="font-size:14px">6</text><text class="fig-muted" x="452" y="76" text-anchor="middle" style="font-size:12px">3</text><circle class="fig-ink" cx="105" cy="144" r="16"/><text class="fig-text" x="105" y="149" text-anchor="middle" style="font-size:14px">5</text><text class="fig-muted" x="127" y="132" text-anchor="middle" style="font-size:12px">4</text><circle class="fig-accent" cx="235" cy="144" r="16"/><text class="fig-text" x="235" y="149" text-anchor="middle" style="font-size:14px">7</text><text class="fig-muted" x="257" y="132" text-anchor="middle" style="font-size:12px">5</text><circle class="fig-ink" cx="365" cy="144" r="16"/><text class="fig-text" x="365" y="149" text-anchor="middle" style="font-size:14px">3</text><text class="fig-muted" x="387" y="132" text-anchor="middle" style="font-size:12px">6</text><circle class="fig-ink" cx="495" cy="144" r="16"/><text class="fig-text" x="495" y="149" text-anchor="middle" style="font-size:14px">2</text><text class="fig-muted" x="517" y="132" text-anchor="middle" style="font-size:12px">7</text><circle class="fig-ink" cx="72.5" cy="200" r="16"/><text class="fig-text" x="72.5" y="205" text-anchor="middle" style="font-size:14px">2</text><text class="fig-muted" x="94.5" y="188" text-anchor="middle" style="font-size:12px">8</text><circle class="fig-ink" cx="137.5" cy="200" r="16"/><text class="fig-text" x="137.5" y="205" text-anchor="middle" style="font-size:14px">1</text><text class="fig-muted" x="159.5" y="188" text-anchor="middle" style="font-size:12px">9</text><circle class="fig-ink" cx="202.5" cy="200" r="16"/><text class="fig-text" x="202.5" y="205" text-anchor="middle" style="font-size:14px">3</text><text class="fig-muted" x="224.5" y="188" text-anchor="middle" style="font-size:12px">10</text><circle class="fig-accent" cx="267.5" cy="200" r="16"/><text class="fig-text" x="267.5" y="205" text-anchor="middle" style="font-size:14px">4</text><text class="fig-muted" x="289.5" y="188" text-anchor="middle" style="font-size:12px">11</text></svg><figcaption>8 삽입이 끝난 최대 힙이에요. 강조색 테두리 원은 자리를 바꾼 노드예요.</figcaption></figure>
-    <p>비교는 3번이에요. 선형 구조였다면 11번째 값이 들어올 때 최악 10번 비교해야 해요.</p>
-    <p><strong>upheap</strong>(S8 p9): 새로운 키 k를 삽입한 뒤에는 히프의 성질이 만족되지 않을 수 있어요. upheap는 삽입된 노드로부터 루트까지의 <strong>경로</strong>에 있는 노드들을 k와 비교·교환해 히프의 성질을 복원해요. 키 k가 부모 노드보다 작거나 같으면 upheap는 끝나요.</p>
+    <p><b>비교는 3번이에요.</b> 선형 구조였다면 11번째 값이 들어올 때 최악 10번 비교해야 해요.</p>
+    <p><b>upheap(S8 p9): 새로운 키 k를 삽입한 뒤에는 히프의 성질이 만족되지 않을 수 있어요.</b> upheap는 삽입된 노드로부터 루트까지의 <strong>경로</strong>에 있는 노드들을 k와 비교·교환해 히프의 성질을 복원해요. 키 k가 부모 노드보다 작거나 같으면 upheap는 끝나요.</p>
     <ul>
       <li>히프의 높이가 $O(\log n)$이므로 upheap 연산은 $O(\log n)$이에요.</li>
       <li>부모만 따라가도 트리가 한쪽으로 치우쳐 있으면 느릴 수 있어요. 힙은 완전 이진 트리라서 높이가 $O(\log n)$으로 보장돼요.</li>
       <li>"upheap"은 교재가 붙인 이름일 뿐 표준 함수 이름은 아니에요. insert_queue 같은 이름도 써요.</li>
     </ul>
-    <p>슬라이드 알고리즘(S8 p10)이에요. C가 아니라 의사코드(pseudocode)라서 ←(대입), ↔(교환), ≠, ≤ 같은 기호를 그대로 써요. 위쪽은 같은 쪽에 실린 C 자료형 선언이에요.</p>
+    <p><b>슬라이드 알고리즘(S8 p10)이에요.</b> C가 아니라 의사코드(pseudocode)라서 ←(대입), ↔(교환), ≠, ≤ 같은 기호를 그대로 써요. 위쪽은 같은 쪽에 실린 C 자료형 선언이에요.</p>
     <pre><code class="language-c">#define MAX_ELEMENT 200
 typedef struct {
     int key;
@@ -641,14 +662,16 @@ typedef struct {
     while i ≠ 1 and A[i] &gt; A[PARENT(i)] do
         A[i] ↔ A[PARENT];
         i ← PARENT(i);</code></pre>
-    <p class="footnote">슬라이드의 <code>A[i] ↔ A[PARENT];</code>는 표기 오류예요. 뜻은 <code>A[i] ↔ A[PARENT(i)];</code>(자기와 부모를 교환)예요.</p>
-    <ul>
-      <li><code>heap_size ← heap_size + 1;</code>: 새 값이 앉을 말단 자리를 하나 마련해요.</li>
-      <li><code>i ← heap_size;</code> <code>A[i] ← key;</code>: 예제라면 i = 11이고 <code>A[11]</code>에 8이 들어가요.</li>
-      <li><code>while</code>: i가 1(루트)이 아니고 자기가 부모보다 크면 부모와 교환(↔)해요.</li>
-      <li><code>i ← PARENT(i);</code>: 한 칸 올라가요. 루트에 닿거나 부모보다 크지 않으면 반복이 끝나요.</li>
-      <li>같은 값이면 올리지 않고 멈춰요. 하지만 이것이 같은 값끼리 꺼내는 순서까지 보장하지는 않아요. 예를 들어 9, 5a, 8, 1, 1, 5b를 차례로 넣고 슬라이드 downheap으로 꺼내면 9, 8, 5b, 5a 순서로 나와 나중에 들어온 5b가 먼저 나와요.</li>
-    </ul>
+    <p><b>같은 값이면 올리지 않고 멈춰요.</b> 하지만 이것이 같은 값끼리 꺼내는 순서까지 보장하지는 않아요. 예를 들어 9, 5a, 8, 1, 1, 5b를 차례로 넣고 슬라이드 downheap으로 꺼내면 9, 8, 5b, 5a 순서로 나와 나중에 들어온 5b가 먼저 나와요.</p>
+    <details class="more"><summary>더 보기 · 슬라이드 표기 오류와 코드 줄별 풀이</summary>
+      <p class="footnote"><b>슬라이드의 <code>A[i] ↔ A[PARENT];</code>는 표기 오류예요.</b> 뜻은 <code>A[i] ↔ A[PARENT(i)];</code>(자기와 부모를 교환)예요.</p>
+      <ul>
+        <li><code>heap_size ← heap_size + 1;</code>: 새 값이 앉을 말단 자리를 하나 마련해요.</li>
+        <li><code>i ← heap_size;</code> <code>A[i] ← key;</code>: 예제라면 i = 11이고 <code>A[11]</code>에 8이 들어가요.</li>
+        <li><code>while</code>: i가 1(루트)이 아니고 자기가 부모보다 크면 부모와 교환(↔)해요.</li>
+        <li><code>i ← PARENT(i);</code>: 한 칸 올라가요. 루트에 닿거나 부모보다 크지 않으면 반복이 끝나요.</li>
+      </ul>
+    </details>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <ul>
@@ -670,11 +693,12 @@ typedef struct {
 </article>
 
 <article class="topic" id="s2-downheap"><h3>삭제와 downheap</h3><div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p11–13</span></div>
+  <dl class="gist"><dt>결론</dt><dd>루트를 꺼낸 뒤 말단을 루트로 올리고, 두 자식 중 큰 쪽(largest)과 교환하며 내려가요(downheap).</dd><dt>왜</dt><dd>루트를 비워 두면 트리가 갈라져 포레스트가 되므로 마지막 노드로 자리를 메운 뒤 경로를 따라 힙 성질을 복원해야 하기 때문이에요.</dd><dt>시간</dt><dd>두 자식 중 큰 쪽만 따라 내려가므로 높이에 비례해 $O(\log n)$이 걸려요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">맨 위 값을 꺼내면 맨 끝 값을 꼭대기에 올리고, 아래 둘 중 더 큰 값과 자리를 바꾸며 내려가요.</p>
     <figure class="figure"><svg id="fig-downheap-sink" viewBox="0 0 600 255" role="img" aria-label="번호가 붙은 원(테두리) 아홉 개로 된 트리. 꼭대기 1번 자리에 맨 끝에서 올라온 3이 강조색 테두리 원으로 있고, 2번 7, 3번 6, 4번 5, 5번 4, 6번 3, 7번 2, 8번 2, 9번 1이 있음. 강조색 선 화살표가 1번에서 2번으로, 2번에서 4번으로 아래를 향하고, 그림 아래에 3은 4번 자리에서 아래 값 2보다 커서 멈춤이라는 글자가 있음."><line class="fig-ink" x1="285.3" y1="38.3" x2="184.7" y2="81.7"/><line class="fig-ink" x1="314.7" y1="38.3" x2="415.3" y2="81.7"/><line class="fig-ink" x1="157.9" y1="98.4" x2="117.1" y2="133.6"/><line class="fig-ink" x1="182.1" y1="98.4" x2="222.9" y2="133.6"/><line class="fig-ink" x1="417.9" y1="98.4" x2="377.1" y2="133.6"/><line class="fig-ink" x1="442.1" y1="98.4" x2="482.9" y2="133.6"/><line class="fig-ink" x1="97" y1="157.8" x2="80.5" y2="186.2"/><line class="fig-ink" x1="113" y1="157.8" x2="129.5" y2="186.2"/><circle class="fig-accent" cx="300" cy="32" r="16"/><text class="fig-text" x="300" y="37" text-anchor="middle" style="font-size:14px">3</text><text class="fig-muted" x="322" y="20" text-anchor="middle" style="font-size:12px">1</text><circle class="fig-ink" cx="170" cy="88" r="16"/><text class="fig-text" x="170" y="93" text-anchor="middle" style="font-size:14px">7</text><text class="fig-muted" x="192" y="76" text-anchor="middle" style="font-size:12px">2</text><circle class="fig-ink" cx="430" cy="88" r="16"/><text class="fig-text" x="430" y="93" text-anchor="middle" style="font-size:14px">6</text><text class="fig-muted" x="452" y="76" text-anchor="middle" style="font-size:12px">3</text><circle class="fig-ink" cx="105" cy="144" r="16"/><text class="fig-text" x="105" y="149" text-anchor="middle" style="font-size:14px">5</text><text class="fig-muted" x="127" y="132" text-anchor="middle" style="font-size:12px">4</text><circle class="fig-ink" cx="235" cy="144" r="16"/><text class="fig-text" x="235" y="149" text-anchor="middle" style="font-size:14px">4</text><text class="fig-muted" x="257" y="132" text-anchor="middle" style="font-size:12px">5</text><circle class="fig-ink" cx="365" cy="144" r="16"/><text class="fig-text" x="365" y="149" text-anchor="middle" style="font-size:14px">3</text><text class="fig-muted" x="387" y="132" text-anchor="middle" style="font-size:12px">6</text><circle class="fig-ink" cx="495" cy="144" r="16"/><text class="fig-text" x="495" y="149" text-anchor="middle" style="font-size:14px">2</text><text class="fig-muted" x="517" y="132" text-anchor="middle" style="font-size:12px">7</text><circle class="fig-ink" cx="72.5" cy="200" r="16"/><text class="fig-text" x="72.5" y="205" text-anchor="middle" style="font-size:14px">2</text><text class="fig-muted" x="94.5" y="188" text-anchor="middle" style="font-size:12px">8</text><circle class="fig-ink" cx="137.5" cy="200" r="16"/><text class="fig-text" x="137.5" y="205" text-anchor="middle" style="font-size:14px">1</text><text class="fig-muted" x="159.5" y="188" text-anchor="middle" style="font-size:12px">9</text><path class="fig-accent" d="M275.7,26.1 L182.4,66.3"/><path class="fig-accent" d="M187.8,58.6 L182.4,66.3 L191.8,67.7"/><path class="fig-accent" d="M145.1,89.7 L110.4,119.6"/><path class="fig-accent" d="M113.2,110.6 L110.4,119.6 L119.7,118.1"/><text class="fig-muted" x="300" y="242" text-anchor="middle" style="font-size:13px">3은 4번 자리에서 아래 값 2보다 커서 멈춤</text></svg><figcaption>꼭대기에 올라온 3은 두 번 내려간 뒤, 아래 값 2보다 커서 멈춰요.</figcaption></figure>
   </div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-    <p>최대 히프에서의 삭제는 가장 큰 키값을 가진 노드, 곧 <strong>루트</strong>를 삭제하는 거예요(S8 p11). 최대 힙이든 최소 힙이든 루트가 우선순위가 가장 높아요.</p>
+    <p><b>최대 히프에서의 삭제는 가장 큰 키값을 가진 노드, 곧 루트를 삭제하는 거예요(S8 p11).</b> 최대 힙이든 최소 힙이든 루트가 우선순위가 가장 높아요.</p>
     <ul>
       <li>자료구조에서 delete는 데이터를 없애는 것이 아니라 <strong>꺼내서 먼저 처리한다</strong>는 뜻이에요. 식당 줄의 맨 앞 사람을 먼저 밥 먹게 하는 것이지, 그 사람을 지우는 게 아니에요.</li>
       <li>루트를 꺼내고 자리를 채우지 않으면 서브트리 두 개로 갈라져 트리가 아니게 돼요. 이렇게 트리 여러 개가 모인 것을 고급 자료구조에서는 <strong>포레스트(forest)</strong>라고 불러요.</li>
@@ -685,7 +709,7 @@ typedef struct {
       <li>마지막 노드를 루트 노드로 이동해요.</li>
       <li>루트에서부터 단말 노드까지의 경로에 있는 노드들을 교환하여 히프 성질을 만족시켜요.</li>
     </ol>
-    <p>내려갈 때는 두 자식 중 <strong>큰 쪽</strong>과 비교해 교환해요(슬라이드 "자식 중에 더 큰 값과 change"). 한쪽을 고르면 다른 쪽 서브트리는 후보에서 빠져요. 경로만 따라가므로 시간은 높이에 비례해요.</p>
+    <p><b>내려갈 때는 두 자식 중 큰 쪽과 비교해 교환해요(슬라이드 "자식 중에 더 큰 값과 change").</b> 한쪽을 고르면 다른 쪽 서브트리는 후보에서 빠져요. 경로만 따라가므로 시간은 높이에 비례해요.</p>
     <p>예제(S8 p12): 최대 힙 <code>[9, 7, 6, 5, 4, 3, 2, 2, 1, 3]</code>에서 루트 9를 삭제해요.</p>
     <ol class="steps">
       <li>9를 꺼내고 마지막 노드 3(10번)을 루트에 앉혀요 → <code>[3, 7, 6, 5, 4, 3, 2, 2, 1]</code>. 완전 이진 트리는 맞지만 최대 힙은 깨져요.</li>
@@ -699,7 +723,7 @@ typedef struct {
       <li>같은 값 2가 서로 다른 레벨(8번 자리와 7번 자리)에 있어도 최대 힙 조건만 맞으면 괜찮아요.</li>
       <li>히프의 높이가 $O(\log n)$이므로 <strong>downheap</strong> 연산도 $O(\log n)$이에요(S8 p12).</li>
     </ul>
-    <p>슬라이드 알고리즘(S8 p13)이에요. 이것도 C가 아닌 의사코드예요.</p>
+    <p><b>슬라이드 알고리즘(S8 p13)이에요.</b> 이것도 C가 아닌 의사코드예요.</p>
     <pre><code class="language-c">delete_max_heap(A)
 
 item ← A[1];                  // root를 삭제
@@ -716,16 +740,18 @@ while i ≤ heap_size do
     i ← CHILD(largest); // left_child of largest
 
 return item;</code></pre>
-    <ul>
-      <li><code>item ← A[1];</code>: 루트를 꺼내 둬요.</li>
-      <li><code>A[1] ← A[heap_size];</code>: 맨 마지막 요소(예제의 10번)를 루트로 올리고, <code>heap_size</code>를 10에서 9로 줄여요.</li>
-      <li><code>i ← 2;</code>: 1×2, 곧 루트의 왼쪽 자식부터 시작해요. 반복 안에서 i를 바꾸는 문장은 <code>i ← CHILD(largest);</code> 하나뿐이에요.</li>
-      <li><code>A[i]</code>(왼쪽 자식)와 <code>A[i+1]</code>(오른쪽 자식) 중 큰 쪽의 인덱스를 <code>largest</code>에 둬요.</li>
-      <li>부모가 <code>largest</code>보다 크면 최대 힙을 만족하므로 <code>break</code>해요. 아니면 교환하고 한 단계 내려가요.</li>
-      <li>마지막에 처음 꺼내 둔 <code>item</code>을 돌려줘요.</li>
-      <li>비교 연산자에 =를 넣어도 되냐는 질문에는 괜찮다고 했어요. 다만 등호를 어디에 두느냐에 따라 같은 값이 있을 때 결과가 조금 달라져요. 슬라이드 조건은 부모와 <code>largest</code>가 같으면 교환해요.</li>
-    </ul>
-    <p><strong>주의:</strong> 오른쪽 자식이 없을 때(<code>i == heap_size</code>) 슬라이드 조건은 else로 빠져 <code>largest ← i+1</code>이 힙 밖의 칸을 가리켜요. 교수님은 칠판에서 오른쪽 자식이 없으면 왼쪽 자식과만 비교했어요.</p>
+    <p><b>비교 연산자에 =를 넣어도 되냐는 질문에는 괜찮다고 했어요.</b> 다만 등호를 어디에 두느냐에 따라 같은 값이 있을 때 결과가 조금 달라져요. 슬라이드 조건은 부모와 <code>largest</code>가 같으면 교환해요.</p>
+    <p><b>주의: 오른쪽 자식이 없을 때(<code>i == heap_size</code>) 슬라이드 조건은 else로 빠져 <code>largest ← i+1</code>이 힙 밖의 칸을 가리켜요.</b> 교수님은 칠판에서 오른쪽 자식이 없으면 왼쪽 자식과만 비교했어요.</p>
+    <details class="more"><summary>더 보기 · 코드 줄별 풀이</summary>
+      <ul>
+        <li><code>item ← A[1];</code>: 루트를 꺼내 둬요.</li>
+        <li><code>A[1] ← A[heap_size];</code>: 맨 마지막 요소(예제의 10번)를 루트로 올리고, <code>heap_size</code>를 10에서 9로 줄여요.</li>
+        <li><code>i ← 2;</code>: 1×2, 곧 루트의 왼쪽 자식부터 시작해요. 반복 안에서 i를 바꾸는 문장은 <code>i ← CHILD(largest);</code> 하나뿐이에요.</li>
+        <li><code>A[i]</code>(왼쪽 자식)와 <code>A[i+1]</code>(오른쪽 자식) 중 큰 쪽의 인덱스를 <code>largest</code>에 둬요.</li>
+        <li>부모가 <code>largest</code>보다 크면 최대 힙을 만족하므로 <code>break</code>해요. 아니면 교환하고 한 단계 내려가요.</li>
+        <li>마지막에 처음 꺼내 둔 <code>item</code>을 돌려줘요.</li>
+      </ul>
+    </details>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <ul>
@@ -733,13 +759,13 @@ return item;</code></pre>
       <li>페어한 알고리즘이에요. 기존에 자리 잡은 노드는 최소한으로 움직이고, 새로 올라간 데이터만 자기 경로를 따라 이동해요. 경로에 없는 노드는 보지도 않아요.</li>
     </ul>
   </div>
-  <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span>
+  <details class="layer supp"><summary><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span> · 오른쪽 자식 없는 경계 조건 수정</summary>
     <p>수업에서 코드로 고쳐 쓰지는 않았어요. 칠판 추적처럼 오른쪽 자식이 없으면 왼쪽 자식을 고르게 하려면 <code>largest</code>를 고르는 조건을 이렇게 바꿀 수 있어요.</p>
     <pre><code class="language-c">if i &lt; heap_size and A[i+1] &gt; A[i]
     then largest ← i+1;
     else largest ← i;</code></pre>
     <p>오른쪽 자식이 있고(<code>i &lt; heap_size</code>) 그쪽이 더 클 때만 <code>i+1</code>을 고르고, 나머지 경우는 모두 왼쪽 자식 <code>i</code>를 골라요.</p>
-  </div>
+  </details>
   <div class="sum" hidden>
     <p class="sum-lead">루트를 꺼낸 뒤 말단을 루트로 올리고, 두 자식 중 큰 쪽(largest)과 교환하며 내려가요(downheap).</p>
     <p class="panel-label">핵심 식</p>
@@ -750,6 +776,7 @@ return item;</code></pre>
 </article>
 
 <article class="topic" id="s2-readability"><h3>CHILD 함수와 읽기 쉬운 코드</h3><div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p13</span></div>
+  <dl class="gist"><dt>결론</dt><dd>CHILD는 2를 곱할 뿐이지만, 이름을 붙여 readability를 높이고 모듈화하는 것이 프로그래머의 의무예요.</dd><dt>왜</dt><dd><code>* 2</code> 같은 매직 넘버 대신 <code>CHILD</code>처럼 뜻이 드러나는 함수로 묶어야 다른 사람이나 한 달 뒤의 나도 코드를 바로 이해하기 때문이에요.</dd><dt>언제</dt><dd>함수로 보따리처럼 묶어 모듈화할 수 있는 부분이라면 언제든 적용해요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">숫자 계산을 그대로 쓰는 대신 하는 일에 이름을 붙이면, 나중에 읽는 사람이 바로 알아봐요.</p>
     <figure class="figure"><svg id="fig-readable-name" viewBox="0 0 600 150" role="img" aria-label="왼쪽 테두리 상자 안에 곱하기 2라는 글자와 그 아래 왜 2지라는 물음, 강조색 선 화살표를 지나 오른쪽 강조색 테두리 상자 안에 아래 칸 찾기라는 이름과 그 아래 바로 읽혀요라는 글자가 있음."><rect class="fig-ink" x="40" y="35" width="200" height="70" rx="8"/><text class="fig-text" x="140" y="68" text-anchor="middle" style="font-size:14px">곱하기 2</text><text class="fig-muted" x="140" y="92" text-anchor="middle" style="font-size:13px">왜 2지?</text><path class="fig-accent" d="M255,70 L340,70"/><path class="fig-accent" d="M331,64 L340,70 L331,76"/><rect class="fig-accent" x="360" y="35" width="200" height="70" rx="8"/><text class="fig-text" x="460" y="68" text-anchor="middle" style="font-size:14px">아래 칸 찾기</text><text class="fig-muted" x="460" y="92" text-anchor="middle" style="font-size:13px">바로 읽혀요</text><text class="fig-muted" x="300" y="135" text-anchor="middle" style="font-size:12px">하는 일은 같아요</text></svg><figcaption>둘이 하는 일은 같지만 오른쪽은 이름만 보고도 뜻을 알 수 있어요.</figcaption></figure>
   </div>
@@ -785,12 +812,13 @@ return item;</code></pre>
 </article>
 
 <article class="topic" id="s2-heapsort"><h3>힙 정렬 칠판 예제</h3><div class="tags"><span class="tag date">1109 수업</span><span class="tag slide">S8 p14</span></div>
+  <dl class="gist"><dt>결론</dt><dd>n개를 최대 힙에 넣고 루트를 하나씩 꺼내면 23, 20, 8, 7, 1처럼 큰 순서로 정렬돼요.</dd><dt>왜</dt><dd>매번 가장 큰 루트를 꺼내고 downheap으로 재정렬하면 큰 값부터 차례로 나오기 때문이에요.</dd><dt>시간</dt><dd>$n$개 삽입($n\log n$)과 $n$개 삭제($n\log n$)를 차례로 해 $2n\log n \Rightarrow O(n\log n)$이 걸려 $O(n^2)$ 버블 정렬보다 빨라요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">값을 모두 큰 값이 꼭대기에 오는 더미에 넣었다가 꼭대기를 하나씩 꺼내면, 큰 것부터 차례로 나와요.</p>
     <figure class="figure"><svg id="fig-heapsort-flow" viewBox="0 0 600 250" role="img" aria-label="위쪽 테두리 칸 다섯 개에 1, 23, 7, 8, 20이 있고, 강조색 선 화살표가 가운데 더미라고 적힌 테두리 삼각형으로 들어감. 삼각형에서 다시 강조색 선 화살표가 나와 아래쪽 강조색 테두리 칸 다섯 개에 23, 20, 8, 7, 1이 있음."><rect class="fig-ink" x="154" y="10" width="52" height="34" rx="4"/><text class="fig-text" x="180" y="33" text-anchor="middle" style="font-size:14px">1</text><rect class="fig-ink" x="214" y="10" width="52" height="34" rx="4"/><text class="fig-text" x="240" y="33" text-anchor="middle" style="font-size:14px">23</text><rect class="fig-ink" x="274" y="10" width="52" height="34" rx="4"/><text class="fig-text" x="300" y="33" text-anchor="middle" style="font-size:14px">7</text><rect class="fig-ink" x="334" y="10" width="52" height="34" rx="4"/><text class="fig-text" x="360" y="33" text-anchor="middle" style="font-size:14px">8</text><rect class="fig-ink" x="394" y="10" width="52" height="34" rx="4"/><text class="fig-text" x="420" y="33" text-anchor="middle" style="font-size:14px">20</text><text class="fig-muted" x="40" y="32" style="font-size:12px">넣기</text><path class="fig-accent" d="M300,50 L300,78"/><path class="fig-accent" d="M294,70 L300,78 L306,70"/><path class="fig-ink" d="M300,88 L360,160 L240,160 Z"/><text class="fig-text" x="300" y="146" text-anchor="middle" style="font-size:14px">더미</text><path class="fig-accent" d="M300,166 L300,196"/><path class="fig-accent" d="M294,188 L300,196 L306,188"/><rect class="fig-accent" x="154" y="204" width="52" height="34" rx="4"/><text class="fig-text" x="180" y="227" text-anchor="middle" style="font-size:14px">23</text><rect class="fig-accent" x="214" y="204" width="52" height="34" rx="4"/><text class="fig-text" x="240" y="227" text-anchor="middle" style="font-size:14px">20</text><rect class="fig-accent" x="274" y="204" width="52" height="34" rx="4"/><text class="fig-text" x="300" y="227" text-anchor="middle" style="font-size:14px">8</text><rect class="fig-accent" x="334" y="204" width="52" height="34" rx="4"/><text class="fig-text" x="360" y="227" text-anchor="middle" style="font-size:14px">7</text><rect class="fig-accent" x="394" y="204" width="52" height="34" rx="4"/><text class="fig-text" x="420" y="227" text-anchor="middle" style="font-size:14px">1</text><text class="fig-muted" x="40" y="226" style="font-size:12px">꺼내기</text></svg><figcaption>뒤죽박죽 들어간 다섯 값이 큰 순서로 줄 서서 나와요.</figcaption></figure>
   </div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-    <p><strong>힙 정렬</strong>(heap sort)은 정렬할 n개의 요소를 최대 히프에 삽입한 뒤, 한 번에 하나씩 삭제하며 꺼내는 정렬이에요(S8 p14). 순차 비교 대신 힙의 $O(\log n)$을 가져다 쓰겠다는 뜻이에요.</p>
-    <p>칠판 예제: 데이터 1, 23, 7, 8, 20을 차례로 최대 힙에 삽입해요(배열은 1번부터). 삽입은 <a href="#s2-upheap">삽입과 upheap</a>, 삭제는 <a href="#s2-downheap">삭제와 downheap</a>과 같아요.</p>
+    <p><b>힙 정렬(heap sort)은 정렬할 n개의 요소를 최대 히프에 삽입한 뒤, 한 번에 하나씩 삭제하며 꺼내는 정렬이에요(S8 p14).</b> 순차 비교 대신 힙의 $O(\log n)$을 가져다 쓰겠다는 뜻이에요.</p>
+    <p><b>칠판 예제: 데이터 1, 23, 7, 8, 20을 차례로 최대 힙에 삽입해요(배열은 1번부터).</b> 삽입은 <a href="#s2-upheap">삽입과 upheap</a>, 삭제는 <a href="#s2-downheap">삭제와 downheap</a>과 같아요.</p>
     <div class="table-wrap"><table>
       <tr><th style="white-space:nowrap">삽입</th><th style="white-space:nowrap">동작</th><th style="white-space:nowrap">힙 배열</th></tr>
       <tr><td>1</td><td>빈 트리에 삽입. 하나뿐이라 만족(NULL은 항상 만족)</td><td>[1]</td></tr>
@@ -843,13 +871,13 @@ return item;</code></pre>
     <blockquote>"이거 너무 데이터가 쉬웠나 보네요."</blockquote>
     <blockquote>"여러분들 실습 시간에 버블 정렬 숙제한 적 있죠? 버블 정렬은 n제곱 시간 걸리는 애거든요?"</blockquote>
   </div>
-  <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span>
+  <details class="layer supp"><summary><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span> · 최소 히프 정렬과 상위 몇 개 추출</summary>
     <p>S8 p14의 나머지 두 문장은 수업에서 설명하지 않았어요. 슬라이드 내용만 짧게 옮겨요.</p>
     <ul>
       <li>최소 히프로 하면 삭제되는 요소들이 값이 증가하는 순서로 나와요.</li>
       <li>힙 정렬이 가장 유용한 경우는 전체 자료를 정렬할 때가 아니라 가장 큰 값 몇 개만 필요할 때예요. 필요한 개수만큼만 꺼내면 되기 때문이에요.</li>
     </ul>
-  </div>
+  </details>
   <div class="sum" hidden>
     <p class="sum-lead">n개를 최대 힙에 넣고 루트를 하나씩 꺼내면 23, 20, 8, 7, 1처럼 큰 순서로 정렬돼요.</p>
     <p class="panel-label">핵심 식</p>

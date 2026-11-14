@@ -91,6 +91,20 @@
     .layer.supp .badge.supp { margin-bottom: var(--s2); }
     .badge { display: inline-block; font-size: var(--fs-label); font-weight: 600; line-height: 1.5; padding: 2px var(--s2); border-radius: 6px; background: var(--surface); color: var(--ink-2); }
     .badge.supp { color: var(--supp); }
+    /* layout-v2: 결론 상자 · 굵은 첫머리 · 곁가지 접기 */
+    .gist { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--s2) var(--s4); margin: var(--s4) 0 var(--s5); padding: var(--s4); background: var(--surface); border-radius: var(--radius); }
+    .gist dt { font-size: var(--fs-label); font-weight: 700; line-height: 1.7; color: var(--accent-ink); padding-top: 3px; white-space: nowrap; }
+    .gist dd { margin: 0; font-size: var(--fs-body); font-weight: 600; line-height: 1.6; }
+    .layer.formal p > b:first-child { display: block; }
+    details.more { margin-top: var(--s4); border-top: 1px solid var(--line); font-size: var(--fs-sub); line-height: 1.7; }
+    details.more + details.more { margin-top: 0; }
+    details.more > summary, details.layer > summary { cursor: pointer; padding: var(--s3) 0; font-size: var(--fs-sub); font-weight: 600; color: var(--ink-2); }
+    details.more[open] { padding-bottom: var(--s2); }
+    details.more[open] > summary { color: var(--ink); }
+    details.layer.supp { font-size: var(--fs-sub); line-height: 1.7; }
+    details.layer > summary .layer-title { display: inline; margin: 0; }
+    details.layer > summary .badge.supp { margin-bottom: 0; }
+    @media print { details.more > :not(summary), details.layer > :not(summary) { display: block; } }
     blockquote { margin: var(--s3) 0; padding: 0 0 0 var(--s3); border-left: 2px solid var(--line); color: var(--ink-2); }
     pre { margin: var(--s3) 0; padding: var(--s3) var(--s4); overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
       font: var(--fs-small)/1.6 ui-monospace, 'SF Mono', Menlo, Consolas, monospace; white-space: pre; word-break: normal; overflow-wrap: normal; tab-size: 4; }
@@ -362,6 +376,7 @@
     </div>
     <section id="s0"><h2>1. 힙 정렬</h2>
 <article class="topic" id="s0-store"><h3>힙은 꺼내기 좋게 넣어 두는 자료구조</h3><div class="tags"><span class="tag date">1112 수업</span><span class="tag slide">S8 p14</span></div>
+  <dl class="gist"><dt>결론</dt><dd>힙은 넣을 때 정리해 두는 스토어 쪽 자료구조라서, 가장 큰 값 몇 개만 필요할 때 가장 쓸모 있어요.</dd><dt>왜</dt><dd>삽입할 때마다 힙 모양을 유지하고 루트를 하나 삭제할 때마다 마지막 노드가 내려오며 힙을 다시 만들어 필요한 개수만큼만 꺼내면 되기 때문이에요.</dd><dt>시간</dt><dd>요소 하나 삽입·삭제는 $O(\log n)$, $n$개 전체 정렬은 $O(n\log n)$이에요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">물건을 넣을 때 서랍을 정리해 두면, 꺼낼 때 빨라요.</p>
     <figure class="figure"><svg id="fig-store-drawer" viewBox="0 0 600 225" role="img" aria-label="왼쪽 테두리 서랍 안에 숫자가 적힌 테두리 원 일곱 개가 아무렇게나 흩어져 있음. 오른쪽 테두리 서랍에서는 가장 큰 23만 맨 앞에 있다가 강조색 테두리 원으로 강조색 선 화살표를 따라 위로 꺼내져 있고, 나머지 20, 15, 7, 9, 1, 4 테두리 원은 순서 없이 대충 놓여 있음."><rect class="fig-ink" x="20" y="50" width="250" height="160" rx="6"/><text class="fig-muted" x="145" y="36" text-anchor="middle" style="font-size:13px">아무렇게나 넣은 서랍</text><circle class="fig-ink" cx="60" cy="90" r="15"/><text class="fig-text" x="60" y="95" text-anchor="middle" style="font-size:13px">7</text><circle class="fig-ink" cx="120" cy="160" r="15"/><text class="fig-text" x="120" y="165" text-anchor="middle" style="font-size:13px">23</text><circle class="fig-ink" cx="175" cy="85" r="15"/><text class="fig-text" x="175" y="90" text-anchor="middle" style="font-size:13px">1</text><circle class="fig-ink" cx="230" cy="150" r="15"/><text class="fig-text" x="230" y="155" text-anchor="middle" style="font-size:13px">15</text><circle class="fig-ink" cx="75" cy="175" r="15"/><text class="fig-text" x="75" y="180" text-anchor="middle" style="font-size:13px">4</text><circle class="fig-ink" cx="185" cy="125" r="15"/><text class="fig-text" x="185" y="130" text-anchor="middle" style="font-size:13px">20</text><circle class="fig-ink" cx="130" cy="100" r="15"/><text class="fig-text" x="130" y="105" text-anchor="middle" style="font-size:13px">9</text><rect class="fig-ink" x="330" y="50" width="250" height="160" rx="6"/><text class="fig-muted" x="455" y="36" text-anchor="middle" style="font-size:13px">큰 것만 앞에 둔 서랍</text><circle class="fig-accent" cx="360" cy="95" r="15"/><text class="fig-text" x="360" y="100" text-anchor="middle" style="font-size:13px">23</text><path class="fig-accent" d="M360,168 L360,116"/><path class="fig-accent" d="M364.0,122.9 L360,116 L356.0,122.9"/><circle class="fig-ink" cx="410" cy="175" r="15"/><text class="fig-text" x="410" y="180" text-anchor="middle" style="font-size:13px">20</text><circle class="fig-ink" cx="450" cy="140" r="15"/><text class="fig-text" x="450" y="145" text-anchor="middle" style="font-size:13px">15</text><circle class="fig-ink" cx="490" cy="180" r="15"/><text class="fig-text" x="490" y="185" text-anchor="middle" style="font-size:13px">7</text><circle class="fig-ink" cx="525" cy="135" r="15"/><text class="fig-text" x="525" y="140" text-anchor="middle" style="font-size:13px">9</text><circle class="fig-ink" cx="455" cy="185" r="15"/><text class="fig-text" x="455" y="190" text-anchor="middle" style="font-size:13px">1</text><circle class="fig-ink" cx="550" cy="178" r="15"/><text class="fig-text" x="550" y="183" text-anchor="middle" style="font-size:13px">4</text><text class="fig-muted" x="390" y="100" text-anchor="start" style="font-size:13px">제일 큰 것 바로</text></svg><figcaption>다 줄 세우지 않고 제일 큰 것만 늘 맨 앞에 두니, 큰 것을 하나씩 바로 꺼낼 수 있어요.</figcaption></figure>
   </div>
@@ -372,9 +387,11 @@
       <li>히프에서 요소를 한 번에 하나씩 삭제해 저장해요.</li>
       <li>최소 히프라면 삭제되는 요소가 값이 커지는 순서로 나와요.</li>
     </ol>
-    <p>요소 하나를 삽입하거나 삭제하는 데 $O(\log n)$이 걸려요. 요소가 $n$개이므로 전체는 $O(n\log n)$이에요. 슬라이드는 이 속도를 "빠른 편"이라고 적었어요.</p>
-    <p>힙 정렬이 가장 쓸모 있는 때는 전체 자료를 정렬할 때가 아니라 가장 큰 값 몇 개만 필요할 때예요(S8 p14). 루트를 하나 삭제하면 마지막 노드가 루트로 올라가 내려오면서 힙을 다시 만들어요. 그래서 필요한 개수만큼만 삭제하면 돼요.</p>
-    <p><strong>로드</strong>(load)는 메모리에서 데이터를 가져오는 명령이에요. <strong>스토어</strong>(store)는 계산한 값을 메모리의 정해진 번지에 쓰는(write) 명령이에요. 힙은 넣을 때마다 힙 모양을 유지해 두는 구조라서, 이 관점에서는 스토어에 공을 들이는 자료구조예요.</p>
+    <p><b>요소 하나를 삽입하거나 삭제하는 데 $O(\log n)$이 걸려요.</b> 요소가 $n$개이므로 전체는 $O(n\log n)$이에요. 슬라이드는 이 속도를 "빠른 편"이라고 적었어요.</p>
+    <p><b>힙 정렬이 가장 쓸모 있는 때는 전체 자료를 정렬할 때가 아니라 가장 큰 값 몇 개만 필요할 때예요(S8 p14).</b> 루트를 하나 삭제하면 마지막 노드가 루트로 올라가 내려오면서 힙을 다시 만들어요. 그래서 필요한 개수만큼만 삭제하면 돼요.</p>
+    <details class="more"><summary>더 보기 · 로드·스토어 관점</summary>
+      <p><b><strong>로드</strong>(load)는 메모리에서 데이터를 가져오는 명령이에요.</b> <strong>스토어</strong>(store)는 계산한 값을 메모리의 정해진 번지에 쓰는(write) 명령이에요. 힙은 넣을 때마다 힙 모양을 유지해 두는 구조라서, 이 관점에서는 스토어에 공을 들이는 자료구조예요.</p>
+    </details>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>교수님은 프로세서의 컨트롤러 블록을 설계하면서 명령어를 분석해 보셨대요. RISC에서 명령어의 85%가 로드·스토어였고, ALU 명령은 15% 이내였어요.</p>
@@ -398,11 +415,12 @@
 </article>
 
 <article class="topic" id="s0-heapsort-code"><h3>heap_sort 프로그램</h3><div class="tags"><span class="tag date">1112 수업</span><span class="tag slide">S8 p15</span></div>
+  <dl class="gist"><dt>결론</dt><dd>heap_sort는 최대 힙에 insert를 n번, delete를 n번 해서 배열을 뒤에서부터 채워 오름차순으로 만들어요.</dd><dt>왜</dt><dd>최대 힙이 가장 큰 값부터 내놓기 때문에 맨 뒤 칸부터 앞쪽으로 채워야 오름차순이 되기 때문이에요.</dd><dt>시간</dt><dd>삽입 $n$번과 삭제 $n$번이 각각 $O(\log n)$이므로 전체 시간은 $O(n\log n)$이에요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">모두 더미에 넣은 뒤, 제일 큰 것부터 꺼내 줄의 맨 뒤 칸부터 채워요.</p>
     <figure class="figure"><svg id="fig-heapsort-fillback" viewBox="0 0 600 230" role="img" aria-label="위쪽 테두리 삼각형 더미에서 강조색 선 화살표 다섯 개가 아래 테두리 칸 다섯 개로 내려감. 칸 밑에 오른쪽 끝부터 첫째, 둘째, 셋째, 넷째, 다섯째가 적혀 있고, 칸에는 왼쪽부터 1, 7, 8, 20, 23이 들어 있음."><path class="fig-ink" d="M300,12 L370,84 L230,84 Z"/><text class="fig-text" x="300" y="72" text-anchor="middle" style="font-size:14px">더미</text><rect class="fig-ink" x="120" y="160" width="60" height="36" rx="4"/><text class="fig-text" x="150" y="184" text-anchor="middle" style="font-size:14px">1</text><text class="fig-muted" x="150" y="216" text-anchor="middle" style="font-size:12px">다섯째</text><path class="fig-accent" d="M248,92 L150,152"/><path class="fig-accent" d="M153.8,145.0 L150,152 L158.0,151.8"/><rect class="fig-ink" x="195" y="160" width="60" height="36" rx="4"/><text class="fig-text" x="225" y="184" text-anchor="middle" style="font-size:14px">7</text><text class="fig-muted" x="225" y="216" text-anchor="middle" style="font-size:12px">넷째</text><path class="fig-accent" d="M274,92 L225,152"/><path class="fig-accent" d="M226.3,144.1 L225,152 L232.5,149.1"/><rect class="fig-ink" x="270" y="160" width="60" height="36" rx="4"/><text class="fig-text" x="300" y="184" text-anchor="middle" style="font-size:14px">8</text><text class="fig-muted" x="300" y="216" text-anchor="middle" style="font-size:12px">셋째</text><path class="fig-accent" d="M300,92 L300,152"/><path class="fig-accent" d="M296.0,145.1 L300,152 L304.0,145.1"/><rect class="fig-ink" x="345" y="160" width="60" height="36" rx="4"/><text class="fig-text" x="375" y="184" text-anchor="middle" style="font-size:14px">20</text><text class="fig-muted" x="375" y="216" text-anchor="middle" style="font-size:12px">둘째</text><path class="fig-accent" d="M326,92 L375,152"/><path class="fig-accent" d="M367.5,149.1 L375,152 L373.7,144.1"/><rect class="fig-ink" x="420" y="160" width="60" height="36" rx="4"/><text class="fig-text" x="450" y="184" text-anchor="middle" style="font-size:14px">23</text><text class="fig-muted" x="450" y="216" text-anchor="middle" style="font-size:12px">첫째</text><path class="fig-accent" d="M352,92 L450,152"/><path class="fig-accent" d="M442.0,151.8 L450,152 L446.2,145.0"/><text class="fig-muted" x="30" y="184" text-anchor="start" style="font-size:12px">줄</text></svg><figcaption>다 채우고 나면 줄이 작은 것부터 큰 것 순서가 돼요.</figcaption></figure>
   </div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-    <p><code>heap_sort</code>는 배열 <code>a</code>의 요소 <code>n</code>개를 최대 힙으로 정렬해 다시 <code>a</code>에 오름차순(ascending order)으로 담는 함수예요(S8 p15). 슬라이드 주석도 "오름차순으로 a[i] 정렬"이에요.</p>
+    <p><b><code>heap_sort</code>는 배열 <code>a</code>의 요소 <code>n</code>개를 최대 힙으로 정렬해 다시 <code>a</code>에 오름차순(ascending order)으로 담는 함수예요(S8 p15).</b> 슬라이드 주석도 "오름차순으로 a[i] 정렬"이에요.</p>
 <pre><code class="language-c">// 우선순위 큐인 히프를 이용한 정렬
 void heap_sort(element a[], int n)
 {
@@ -427,17 +445,10 @@ typedef struct{
     element heap[MAX_ELEMENT];
     int heap_size;
 } HeapType;</code></pre>
-    <p>슬라이드 코드는 그대로는 컴파일되지 않아요. <code>typedef</code>가 함수 뒤에 있으니 앞으로 옮겨야 하고, <code>MAX_ELEMENT</code> 200은 p10에, <code>insert_max_heap</code>·<code>delete_max_heap</code>은 p10–13(p10·p13 의사코드)에 있어요.</p>
-    <ol class="steps">
-      <li><code>init(&amp;h)</code>는 <code>h -&gt; heap_size = 0;</code>으로 빈 힙을 만들어요.</li>
-      <li>첫 번째 for 루프는 <code>i</code>를 0부터 <code>n-1</code>까지 늘리며 <code>insert_max_heap(&amp;h, a[i]);</code>를 실행해요. 삽입이 $n$번이에요.</li>
-      <li>두 번째 for 루프는 첫 번째 루프가 끝난 뒤 이어서 돌아요. <code>for(i=(n-1);i&gt;=0;i--){</code>로 <code>i</code>를 <code>n-1</code>부터 0까지 줄이며 <code>a[i] = delete_max_heap(&amp;h);</code>를 실행해요. 삭제가 $n$번이에요.</li>
-      <li><code>delete_max_heap</code>은 마지막 노드를 루트로 올려 내려보내며 힙을 다시 만들고, 원래 루트(남은 값 중 최댓값)를 돌려줘요.</li>
-    </ol>
-    <p>최대 힙은 가장 큰 값부터 내놓아요. 그래서 맨 뒤 칸 <code>a[n-1]</code>부터 앞쪽으로 채우면 결과가 오름차순이 돼요. 첫 번째 루프가 <code>a</code>의 값을 모두 힙에 옮긴 뒤라서 <code>a</code>를 덮어써도 값을 잃지 않아요.</p>
+    <p><b>최대 힙은 가장 큰 값부터 내놓아요.</b> 그래서 맨 뒤 칸 <code>a[n-1]</code>부터 앞쪽으로 채우면 결과가 오름차순이 돼요. 첫 번째 루프가 <code>a</code>의 값을 모두 힙에 옮긴 뒤라서 <code>a</code>를 덮어써도 값을 잃지 않아요.</p>
     <p>삽입 $n$번과 삭제 $n$번이 각각 $O(\log n)$이므로 전체 시간은 다음과 같아요.</p>
     $$n \cdot O(\log n) + n \cdot O(\log n) = O(n\log n)$$
-    <p>추적: 입력 <code>a</code> = 1, 23, 7, 8, 20 (<code>n</code> = 5). 첫 번째 루프 뒤 힙 배열이에요.</p>
+    <p>입력 <code>a</code> = 1, 23, 7, 8, 20 (<code>n</code> = 5)에 대한 첫 번째 루프 뒤 힙 배열 추적이에요.</p>
     <ol class="steps">
       <li>i=0, 1 삽입 → 힙 [1]</li>
       <li>i=1, 23 삽입 → 힙 [23, 1]</li>
@@ -454,6 +465,15 @@ typedef struct{
       <li>i=0, 1 꺼냄 → a[0] = 1, 남은 힙 []</li>
     </ol>
     <p>결과 <code>a</code> = 1, 7, 8, 20, 23으로 오름차순이에요.</p>
+    <details class="more"><summary>더 보기 · 코드 한 줄 풀이와 컴파일 메모</summary>
+      <p><b>슬라이드 코드는 그대로는 컴파일되지 않아요.</b> <code>typedef</code>가 함수 뒤에 있으니 앞으로 옮겨야 하고, <code>MAX_ELEMENT</code> 200은 p10에, <code>insert_max_heap</code>·<code>delete_max_heap</code>은 p10–13(p10·p13 의사코드)에 있어요.</p>
+      <ol class="steps">
+        <li><code>init(&amp;h)</code>는 <code>h -&gt; heap_size = 0;</code>으로 빈 힙을 만들어요.</li>
+        <li>첫 번째 for 루프는 <code>i</code>를 0부터 <code>n-1</code>까지 늘리며 <code>insert_max_heap(&amp;h, a[i]);</code>를 실행해요. 삽입이 $n$번이에요.</li>
+        <li>두 번째 for 루프는 첫 번째 루프가 끝난 뒤 이어서 돌아요. <code>for(i=(n-1);i&gt;=0;i--){</code>로 <code>i</code>를 <code>n-1</code>부터 0까지 줄이며 <code>a[i] = delete_max_heap(&amp;h);</code>를 실행해요. 삭제가 $n$번이에요.</li>
+        <li><code>delete_max_heap</code>은 마지막 노드를 루트로 올려 내려보내며 힙을 다시 만들고, 원래 루트(남은 값 중 최댓값)를 돌려줘요.</li>
+      </ol>
+    </details>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>교수님은 두 루프를 이렇게 읽으셨어요. 데이터가 하나씩 <code>n</code>개까지 들어올 때마다 insert 알고리즘을 돌려요. 그게 다 끝나면 두 번째 for 루프에서 말단 사원을 하나씩 올리면서 루트를 리턴하게 해요.</p>
@@ -472,26 +492,27 @@ typedef struct{
     <section id="s1"><h2>2. 이산 이벤트 시뮬레이션</h2>
 <article class="topic" id="s1-event-sim"><h3>아이스크림 가게와 우선순위 큐</h3>
 <div class="tags"><span class="tag date">1112 수업</span><span class="tag slide">S8 p16</span></div>
+<dl class="gist"><dt>결론</dt><dd>여러 이벤트가 구별되는 시각에 일어나는 이산 이벤트 시뮬레이션은 하나의 큐로 표현할 수 없어서 우선순위 큐를 써요.</dd><dt>왜</dt><dd>도착과 달리 take-out 손님이나 시각이 다른 이벤트처럼 들어온 순서와 무관한 우선순위를 한 구조에서 다뤄야 하기 때문이에요.</dd><dt>언제</dt><dd>구별되는 시점에 여러 이벤트가 발생해 시각이나 우선순위 순서대로 처리할 때 써요.</dd></dl>
 <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">아이스크림 가게에서는 손님이 오고, 주문하고, 떠나는 일이 뚝뚝 끊긴 순간마다 하나씩 일어나요.</p><p>그래서 줄 선 순서만 보지 않고, 가장 먼저 일어날 일부터 꺼내 처리해요.</p>
 <figure class="figure"><svg id="fig-event-sim-timeline" viewBox="0 0 460 170" role="img" aria-label="도착 1분, 도착 3분, 도착 6분이라고 적힌 테두리 상자 세 개가 줄을 서 있고, 맨 뒤에 나중에 생긴 주문 2분 상자가 강조색 테두리로 있으며, 곡선 화살표가 그 상자에서 도착 1분과 도착 3분 사이로 향하는 모습"><path class="fig-muted" d="M10 150H450"/><text class="fig-muted" x="22" y="166" font-size="12">앞</text><text class="fig-muted" x="420" y="166" font-size="12">뒤</text><rect class="fig-ink" x="20" y="95" width="80" height="40" rx="6"/><text class="fig-text" x="32" y="120" font-size="14">도착 1분</text><rect class="fig-ink" x="130" y="95" width="80" height="40" rx="6"/><text class="fig-text" x="142" y="120" font-size="14">도착 3분</text><rect class="fig-ink" x="240" y="95" width="80" height="40" rx="6"/><text class="fig-text" x="252" y="120" font-size="14">도착 6분</text><rect class="fig-accent" x="360" y="95" width="80" height="40" rx="6"/><text class="fig-text" x="372" y="120" font-size="14">주문 2분</text><path class="fig-accent" d="M400 91Q260 0 115 90"/><path class="fig-accent" d="M115 90L128 89M115 90L122 78"/></svg><figcaption>나중에 생긴 2분 주문이 먼저 일어날 일이라 3분 도착보다 앞으로 가요.</figcaption></figure>
 </div>
 <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-<p>이산 사건(discrete event)은 시간 위에서 연속(continuous)으로 일어나지 않고, 구별되는 시점에 딱딱 일어나는 사건이에요. "이 시각에 고객이 들어왔다", "그다음 시각에 아이스크림을 주문했다"처럼요.</p>
-<p>간격이 작아도 괜찮아요. 5초 다음에 0.0002초처럼 짧아도 서로 구별할 수 있으면 이산이에요.</p>
-<p>이런 사건들을 시각 순서대로 흉내 내는 것이 이산 이벤트 시뮬레이션(discrete event simulation)이에요. 슬라이드(S8 p16)는 큐가 많이 쓰이는 분야로 시뮬레이션을 꼽고, 세 종류를 나눠요.</p>
+<p><b>이산 사건(discrete event)은 시간 위에서 연속(continuous)으로 일어나지 않고, 구별되는 시점에 딱딱 일어나는 사건이에요.</b> "이 시각에 고객이 들어왔다", "그다음 시각에 아이스크림을 주문했다"처럼요.</p>
+<p><b>간격이 작아도 괜찮아요.</b> 5초 다음에 0.0002초처럼 짧아도 서로 구별할 수 있으면 이산이에요.</p>
+<p><b>이런 사건들을 시각 순서대로 흉내 내는 것이 이산 이벤트 시뮬레이션(discrete event simulation)이에요.</b> 슬라이드(S8 p16)는 큐가 많이 쓰이는 분야로 시뮬레이션을 꼽고, 세 종류를 나눠요.</p>
 <ul><li>연속 시간 시뮬레이션</li><li>이산 시간 시뮬레이션</li><li>이산 이벤트 시뮬레이션: 많은 이벤트가 발생하고, 이벤트의 우선순위에 따라 처리해요.</li></ul>
-<p>줄 서기는 큐(queue)로 모델링해요. 큐(S6)는 먼저 들어온 데이터가 먼저 나가는 FIFO(First In, First Out) 구조라서, 들어온 순서대로 처리하는 줄과 맞아요.</p>
+<p><b>줄 서기는 큐(queue)로 모델링해요.</b> 큐(S6)는 먼저 들어온 데이터가 먼저 나가는 FIFO(First In, First Out) 구조라서, 들어온 순서대로 처리하는 줄과 맞아요.</p>
 <p>그런데 실제 아이스크림 가게에는 이벤트가 하나만 있지 않아요.</p>
 <ul><li>손님이 도착해요.</li><li>주문하고 들고 나가요.</li><li>착석해서 먹고 싶을 수 있어요. 가게가 "드실 거면 자리부터 잡고 주문하세요"라고 하면, 줄에서 이탈했다가 다시 들어와요.</li><li>"저는 take-out 할게요"라고 하면 우선순위가 더 빨라질 수 있어요.</li><li>자리가 없어서 들어왔다가 그냥 나가는 손님도 있어요.</li></ul>
-<p>이것을 하나의 큐로는 다 표현할 수 없어요. 큐를 여러 개 쓰면 그 큐들을 서로 어떻게 연관시킬지가 문제예요.</p>
-<p>그래서 우선순위 큐(priority queue)를 써요. 들어온 순서를 기본으로 지키면서, take-out 손님은 맨 앞으로 보내는 식으로 우선순위를 줄 수 있어요. 그러면 우선순위가 있는 다양한 이벤트를 한 구조에서 다룰 수 있어요.</p>
-<p>슬라이드의 예는 아이스크림 가게 시뮬레이션이에요. 각 이벤트에는 발생한 시각이 붙고, 이벤트는 세 종류예요.</p>
+<p><b>이것을 하나의 큐로는 다 표현할 수 없어요.</b> 큐를 여러 개 쓰면 그 큐들을 서로 어떻게 연관시킬지가 문제예요.</p>
+<p><b>그래서 우선순위 큐(priority queue)를 써요.</b> 들어온 순서를 기본으로 지키면서, take-out 손님은 맨 앞으로 보내는 식으로 우선순위를 줄 수 있어요. 그러면 우선순위가 있는 다양한 이벤트를 한 구조에서 다룰 수 있어요.</p>
+<p><b>슬라이드의 예는 아이스크림 가게 시뮬레이션이에요.</b> 각 이벤트에는 발생한 시각이 붙고, 이벤트는 세 종류예요.</p>
 <div class="table-wrap"><table><thead><tr><th>이벤트</th><th>뜻</th><th>처리 규칙(S8 p16)</th></tr></thead><tbody>
 <tr><td>arrival</td><td>손님 도착</td><td>남아 있는 의자 수 &gt; 도착 인원이면 의자 수를 줄여요. 의자 수가 더 적으면 손님은 주문 없이 나가요.</td></tr>
 <tr><td>order</td><td>손님 주문</td><td>손님 수대로 주문하고, 주문 뒤에는 leave 이벤트가 생겨요.</td></tr>
 <tr><td>leave</td><td>손님이 가게를 떠남</td><td>leave 이벤트의 손님 수만큼 의자 수를 늘려요.</td></tr>
 </tbody></table></div>
-<p>수업에서는 개념과 우선순위 큐를 쓰는 이유까지 다뤘어요. 의자 수 규칙은 수업에서 자세히 짚지 않았고, 시뮬레이션 코드(슬라이드 표기 "p328")는 교재로 미뤘어요.</p>
+<p><b>수업에서는 개념과 우선순위 큐를 쓰는 이유까지 다뤘어요.</b> 의자 수 규칙은 수업에서 자세히 짚지 않았고, 시뮬레이션 코드(슬라이드 표기 "p328")는 교재로 미뤘어요.</p>
 </div>
 <div class="layer prof"><span class="layer-title">교수님 말씀</span>
 <p>이산수학(discrete mathematics)을 수강한 사람은 손을 들어 보라고 했는데, 몇 명뿐이었어요. 옛날에는 이산수학이 필수였다고 했어요.</p>
@@ -500,7 +521,7 @@ typedef struct{
 <blockquote>“이산 이벤트 시뮬레이션에 priority queue를 쓰면 … 우선순위가 있는 이벤트들을 다룰 수 있다”</blockquote>
 <blockquote>“실제 코드는 여러분들 그 책에 있는 코드를 보고 한번 해보세요.”</blockquote>
 </div>
-<div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span>
+<details class="layer supp"><summary><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span> · 의자 수 규칙 보충 추적</summary>
 <p>교재로 미룬 부분을 슬라이드의 의자 수 규칙만으로 짧게 따라가 봐요. 교재 코드를 옮긴 것이 아니라, 아래 숫자와 시각 간격은 이 노트가 정한 예예요.</p>
 <ul><li>의자는 처음 4개예요.</li><li>이벤트는 (시각, 종류, 인원)이고, 시각이 가장 이른 이벤트부터 꺼내는 우선순위 큐에 들어 있어요.</li><li>처음 큐: (1, arrival, 2), (3, arrival, 3), (6, arrival, 1)</li><li>order는 arrival 1분 뒤, leave는 order 2분 뒤에 생긴다고 정해요(슬라이드에는 시각 간격이 없어요).</li><li>슬라이드 규칙이 "의자 수 &gt; 도착 인원"이라 같을 때는 정해져 있지 않아요. 이 예에서는 같은 경우가 나오지 않아요.</li></ul>
 <div class="table-wrap"><table><thead><tr><th>꺼낸 이벤트</th><th>처리</th><th>남은 의자 수</th><th>큐에 남은 이벤트</th></tr></thead><tbody>
@@ -514,19 +535,20 @@ typedef struct{
 </tbody></table></div>
 <p>결과는 주문 없이 나간 손님 3명, 마지막 의자 수 4개예요.</p>
 <p>(2, order, 2)와 (4, leave, 2)는 처음 큐보다 늦게 들어왔지만, 먼저 넣어 둔 (6, arrival, 1)보다 먼저 꺼내져요. 넣은 순서대로 꺼내는 큐였다면 6분 도착을 먼저 처리해 버려요. 그래서 시각을 우선순위로 쓰는 우선순위 큐가 필요해요.</p>
-</div>
+</details>
 <div class="sum" hidden><p class="sum-lead">여러 이벤트가 구별되는 시각에 일어나는 이산 이벤트 시뮬레이션은 하나의 큐로 표현할 수 없어서 우선순위 큐를 써요.</p><p class="panel-label">용어</p><dl class="terms"><dt>이산 사건(discrete event)</dt><dd>연속이 아니라 구별되는 시점에 딱딱 일어나는 사건이에요.</dd><dt>이산 이벤트 시뮬레이션(discrete event simulation)</dt><dd>많은 이벤트가 발생하고, 이벤트의 우선순위에 따라 처리해요.</dd><dt>큐(queue)</dt><dd>들어온 순서대로 처리하는 줄 서기를 모델링해요. 이벤트가 여럿이면 하나의 큐로 다 표현할 수 없어요.</dd><dt>우선순위 큐(priority queue)</dt><dd>들어온 순서를 기본으로 지키면서 take-out 손님처럼 우선순위를 줄 수 있어요.</dd><dt>arrival</dt><dd>남아 있는 의자 수 &gt; 도착 인원이면 의자 수를 줄이고, 의자 수가 더 적으면 주문 없이 나가요.</dd><dt>order</dt><dd>손님 수대로 주문하고, 주문 뒤에 leave 이벤트가 생겨요.</dd><dt>leave</dt><dd>손님 수만큼 의자 수를 늘려요.</dd><dt>보충 추적</dt><dd>나중에 생긴 order·leave가 먼저 넣은 arrival보다 이를 수 있어서, 시각이 가장 이른 이벤트부터 꺼내야 해요(이 노트가 정한 예).</dd></dl></div>
 </article>
     </section>
     <section id="s2"><h2>3. 허프만 코드</h2>
 <article class="topic" id="s2-huffman-why"><h3>자주 나오는 글자에 짧은 코드</h3><div class="tags"><span class="tag date">1112 수업</span><span class="tag slide">S8 p17</span></div>
+  <dl class="gist"><dt>결론</dt><dd>자주 나오는 글자에 짧은 비트열을 주면 전체 비트 수가 줄어요.</dd><dt>왜</dt><dd>모든 글자를 같은 길이로 적는 고정 길이 대신 빈도가 높은 글자에 더 적은 비트를 배정하기 때문이에요.</dd><dt>언제</dt><dd>각 글자의 빈도가 알려진 메시지를 압축할 때 써요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">자주 나오는 글자는 짧게, 드물게 나오는 글자는 길게 적으면 글 전체가 짧아져요.</p>
     <figure class="figure"><svg id="fig-huffman-freq" viewBox="0 0 520 220" role="img" aria-label="테두리 막대 다섯 개. 글자 e는 15번, t는 12번, n은 8번, i는 6번, s는 4번 나와 막대 길이가 그 횟수만큼 길어요."><text class="fig-text" x="40" y="36" text-anchor="middle" style="font-size:14px">e</text><rect class="fig-ink" x="64" y="16" width="390" height="28" rx="4"/><text class="fig-muted" x="464" y="36" style="font-size:13px">15번</text><text class="fig-text" x="40" y="76" text-anchor="middle" style="font-size:14px">t</text><rect class="fig-ink" x="64" y="56" width="312" height="28" rx="4"/><text class="fig-muted" x="386" y="76" style="font-size:13px">12번</text><text class="fig-text" x="40" y="116" text-anchor="middle" style="font-size:14px">n</text><rect class="fig-ink" x="64" y="96" width="208" height="28" rx="4"/><text class="fig-muted" x="282" y="116" style="font-size:13px">8번</text><text class="fig-text" x="40" y="156" text-anchor="middle" style="font-size:14px">i</text><rect class="fig-ink" x="64" y="136" width="156" height="28" rx="4"/><text class="fig-muted" x="230" y="156" style="font-size:13px">6번</text><text class="fig-text" x="40" y="196" text-anchor="middle" style="font-size:14px">s</text><rect class="fig-ink" x="64" y="176" width="104" height="28" rx="4"/><text class="fig-muted" x="178" y="196" style="font-size:13px">4번</text></svg><figcaption>자주 나오는 글자일수록 막대가 길어요.</figcaption></figure>
   </div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-    <p>코드(code)의 원래 뜻은 <strong>암호</strong>예요. 사람들끼리 정한 약속이라는 뜻이에요. 문자를 숫자로 나타내는 ASCII 표에서 대문자 A를 65로 정한 것도 이유 없이 정한 약속, 곧 코드예요. 논리회로에서 배운 1의 보수, 2의 보수, 부호와 크기(sign and magnitude)도 모두 코드예요.</p>
-    <p>이진 트리는 각 글자의 <strong>빈도</strong>(frequency)가 알려진 메시지를 압축하는 데도 쓰여요. 이렇게 만든 트리가 허프만 코딩 트리(Huffman coding tree)이고, 거기서 얻는 코드가 <strong>허프만 코드</strong>(Huffman code)예요(S8 p17). 압축 기술(예: MPEG)에서 이런 코딩을 써요.</p>
-    <p>빈도표는 한 문서에서 글자마다 나온 횟수를 센 표예요. 슬라이드 예: A 80, B 16, C 32, D 36, E 123, …, Z 1.</p>
+    <p><b>코드(code)의 원래 뜻은 <strong>암호</strong>예요.</b> 사람들끼리 정한 약속이라는 뜻이에요. 문자를 숫자로 나타내는 ASCII 표에서 대문자 A를 65로 정한 것도 이유 없이 정한 약속, 곧 코드예요.</p>
+    <p><b>이진 트리는 각 글자의 <strong>빈도</strong>(frequency)가 알려진 메시지를 압축하는 데도 쓰여요.</b> 이렇게 만든 트리가 허프만 코딩 트리(Huffman coding tree)이고, 거기서 얻는 코드가 <strong>허프만 코드</strong>(Huffman code)예요(S8 p17). 압축 기술(예: MPEG)에서 이런 코딩을 써요.</p>
+    <p><b>빈도표는 한 문서에서 글자마다 나온 횟수를 센 표예요.</b> 슬라이드 예: A 80, B 16, C 32, D 36, E 123, …, Z 1.</p>
     <p>예제 텍스트 "etnis"의 빈도는 다음과 같아요.</p>
     <div class="table-wrap"><table>
       <tr><th>글자</th><th>e</th><th>t</th><th>n</th><th>i</th><th>s</th></tr>
@@ -540,7 +562,10 @@ typedef struct{
       <li>허프만 코드를 쓰면 100 bits면 돼요(<a href="#s2-huffman-code">비트 코드와 100비트</a>).</li>
     </ol>
     $$45 \times 3 = 135 \text{ bits}$$
-    <p>원리는 빈도가 높은 글자에 짧은 비트열을, 빈도가 낮은 글자에 긴 비트열을 주는 거예요. 트리를 만드는 방법은 <a href="#s2-huffman-build">가장 작은 두 개를 묶어 트리 만들기</a>에 있어요.</p>
+    <p><b>원리는 빈도가 높은 글자에 짧은 비트열을, 빈도가 낮은 글자에 긴 비트열을 주는 거예요.</b> 트리를 만드는 방법은 <a href="#s2-huffman-build">가장 작은 두 개를 묶어 트리 만들기</a>에 있어요.</p>
+    <details class="more"><summary>더 보기 · 논리회로 코드 연결</summary>
+      <p>논리회로에서 배운 1의 보수, 2의 보수, 부호와 크기(sign and magnitude)도 모두 코드예요.</p>
+    </details>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <p>코드를 "이유를 묻지 않는 약속"으로 설명하셨어요.</p>
@@ -557,6 +582,7 @@ typedef struct{
 </article>
 
 <article class="topic" id="s2-huffman-build"><h3>가장 작은 두 개를 묶어 트리 만들기</h3><div class="tags"><span class="tag date">1112 수업</span><span class="tag slide">S8 p18</span></div>
+  <dl class="gist"><dt>결론</dt><dd>최소 힙에서 가장 작은 두 빈도를 꺼내 합을 다시 넣는 일을 하나가 남을 때까지 반복해요.</dd><dt>왜</dt><dd>매 단계마다 가장 작은 두 노드를 꺼내고 그 합을 다시 넣는 일에 매번 정렬하는 대신 최소 힙이 딱 맞기 때문이에요.</dd><dt>주의</dt><dd>방금 만든 노드와 무조건 묶는 것이 아니라 남은 노드 전체에서 가장 작은 두 개를 골라야 해요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">가장 작은 두 덩이를 하나로 묶는 일을 한 덩이만 남을 때까지 되풀이해요.</p>
     <figure class="figure"><svg id="fig-huffman-merge" viewBox="0 0 560 170" role="img" aria-label="아래 줄에 테두리 원 다섯 개 4, 6, 8, 12, 15가 있어요. 가장 작은 4와 6은 강조색 테두리이고, 두 선으로 위쪽 강조색 테두리 둥근 사각형 10에 이어져 있어요."><line class="fig-accent" x1="80" y1="58" x2="64" y2="113"/><line class="fig-accent" x1="104" y1="58" x2="140" y2="114"/><rect class="fig-accent" x="70" y="22" width="44" height="36" rx="10"/><text class="fig-text" x="92" y="45" text-anchor="middle" style="font-size:15px">10</text><circle class="fig-accent" cx="60" cy="130" r="20"/><text class="fig-text" x="60" y="135" text-anchor="middle" style="font-size:15px">4</text><circle class="fig-accent" cx="150" cy="130" r="20"/><text class="fig-text" x="150" y="135" text-anchor="middle" style="font-size:15px">6</text><circle class="fig-ink" cx="260" cy="130" r="20"/><text class="fig-text" x="260" y="135" text-anchor="middle" style="font-size:15px">8</text><circle class="fig-ink" cx="370" cy="130" r="20"/><text class="fig-text" x="370" y="135" text-anchor="middle" style="font-size:15px">12</text><circle class="fig-ink" cx="480" cy="130" r="20"/><text class="fig-text" x="480" y="135" text-anchor="middle" style="font-size:15px">15</text></svg><figcaption>가장 작은 둘이 먼저 손을 잡고, 둘을 더한 새 덩이가 생겨요.</figcaption></figure>
   </div>
@@ -568,7 +594,7 @@ typedef struct{
       <li>남은 노드를 다시 정렬해요: (10, 8, 12, 15) → (8, 10, 12, 15).</li>
       <li>노드가 하나 남을 때까지 2로 돌아가 반복해요.</li>
     </ol>
-    <p>"가장 작은 두 개를 꺼내고, 합을 다시 넣는다"를 반복하므로 매번 정렬하는 대신 <strong>최소 힙</strong>(min heap), 곧 우선순위 큐를 쓰면 딱 맞아요. 그래서 이 예제가 "히프 응용 3"이에요. 아래 표의 힙 배열은 1번 칸부터 적었어요.</p>
+    <p><b>"가장 작은 두 개를 꺼내고, 합을 다시 넣는다"를 반복하므로 매번 정렬하는 대신 <strong>최소 힙</strong>(min heap), 곧 우선순위 큐를 쓰면 딱 맞아요.</b> 그래서 이 예제가 "히프 응용 3"이에요. 아래 표의 힙 배열은 1번 칸부터 적었어요.</p>
     <div class="table-wrap"><table>
       <tr><th style="white-space:nowrap">단계</th><th style="white-space:nowrap">꺼낸 두 값</th><th style="white-space:nowrap">새 노드</th><th style="white-space:nowrap">최소 힙 배열</th></tr>
       <tr><td>시작</td><td>없음</td><td>없음</td><td>[4, 6, 8, 12, 15]</td></tr>
@@ -586,7 +612,7 @@ typedef struct{
     </ol>
     $$4+6=10,\quad 10+8=18,\quad 12+15=27,\quad 18+27=45$$
     <p>마지막에 남은 루트 45는 전체 빈도의 합 $15+12+8+6+4 = 45$와 같아요.</p>
-    <p>이 예제 트리(왼쪽 18 아래 10(4, 6)과 8, 오른쪽 27 아래 12와 15)는 마침 최대 힙 모양이에요. 완전 이진 트리이고, 부모 값이 두 자식의 합이라 부모 ≥ 자식도 만족해요. 하지만 허프만 트리가 늘 완전 이진 트리인 것은 아니에요. 예를 들어 빈도 1, 2, 4, 8이면 1+2=3, 3+4=7, 7+8=15로 한쪽으로만 깊어지는 트리가 나와요. 힙이 꼭 필요한 곳은 트리를 <strong>만드는 과정</strong>, 곧 가장 작은 둘을 꺼내는 과정이에요.</p>
+    <p><b>이 예제 트리(왼쪽 18 아래 10(4, 6)과 8, 오른쪽 27 아래 12와 15)는 마침 최대 힙 모양이에요.</b> 완전 이진 트리이고, 부모 값이 두 자식의 합이라 부모 ≥ 자식도 만족해요. 하지만 허프만 트리가 늘 완전 이진 트리인 것은 아니에요. 예를 들어 빈도 1, 2, 4, 8이면 1+2=3, 3+4=7, 7+8=15로 한쪽으로만 깊어지는 트리가 나와요. 힙이 꼭 필요한 곳은 트리를 <strong>만드는 과정</strong>, 곧 가장 작은 둘을 꺼내는 과정이에요.</p>
     <div class="widget" id="widget-huffman"><h4>직접 해 보기: 가장 작은 두 개 꺼내 합치기</h4>
       <p class="widget-help">"다음"을 누를 때마다 최소 힙에서 가장 작은 두 빈도를 꺼내 합친 노드를 다시 넣고, 위쪽 트리와 아래쪽 힙 배열이 함께 바뀌어요.</p>
       <div class="controls" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
@@ -624,11 +650,12 @@ typedef struct{
 </article>
 
 <article class="topic" id="s2-huffman-code"><h3>비트 코드와 100비트</h3><div class="tags"><span class="tag date">1112 수업</span><span class="tag slide">S8 p19</span></div>
+  <dl class="gist"><dt>결론</dt><dd>루트에서 단말까지의 비트를 이은 것이 코드이고, etnis는 135 bits에서 100 bits로 약 26% 줄어요.</dd><dt>왜</dt><dd>빈도가 작은 글자일수록 트리의 깊은 레벨에 놓여 긴 비트를 받고 빈도가 큰 글자일수록 짧은 비트를 받기 때문이에요.</dd><dt>주의</dt><dd>왼쪽 1·오른쪽 0을 0·1로 서로 바꿔 붙여도 코드 길이와 전체 비트 수 합 100 bits는 그대로예요.</dd></dl>
   <div class="layer eli5"><span class="layer-title">쉽게 말하면</span><p class="lead">덜 나오는 글자일수록 더 긴 이름을 받아요.</p>
     <figure class="figure"><svg id="fig-huffman-depth" viewBox="0 0 640 235" role="img" aria-label="나무 그림. 맨 위 작은 테두리 원에서 가지가 갈라져 내려가요. 둘째 줄 아래에 글자 n, t, e가 든 테두리 원이 있고, 한 줄 더 내려간 맨 아래에 글자 s, i가 든 테두리 원이 있어요. 오른쪽에 위 줄은 두 칸짜리 이름, 아래 줄은 세 칸짜리 이름이라고 적혀 있어요."><line class="fig-ink" x1="281.1" y1="34.5" x2="188.9" y2="80.5"/><line class="fig-ink" x1="298.9" y1="34.5" x2="391.1" y2="80.5"/><line class="fig-ink" x1="172.4" y1="91.5" x2="117.6" y2="138.5"/><line class="fig-ink" x1="187.6" y1="91.5" x2="234.8" y2="132.0"/><line class="fig-ink" x1="394.5" y1="93.3" x2="371.1" y2="128.4"/><line class="fig-ink" x1="406.4" y1="92.7" x2="437.2" y2="129.6"/><line class="fig-ink" x1="103.6" y1="152.7" x2="72.8" y2="189.6"/><line class="fig-ink" x1="116.4" y1="152.7" x2="147.2" y2="189.6"/><circle class="fig-ink" cx="290" cy="30" r="10"/><circle class="fig-ink" cx="180" cy="85" r="10"/><circle class="fig-ink" cx="400" cy="85" r="10"/><circle class="fig-ink" cx="110" cy="145" r="10"/><circle class="fig-ink" cx="250" cy="145" r="20"/><text class="fig-text" x="250" y="150" text-anchor="middle" style="font-size:15px">n</text><circle class="fig-ink" cx="360" cy="145" r="20"/><text class="fig-text" x="360" y="150" text-anchor="middle" style="font-size:15px">t</text><circle class="fig-ink" cx="450" cy="145" r="20"/><text class="fig-text" x="450" y="150" text-anchor="middle" style="font-size:15px">e</text><circle class="fig-ink" cx="60" cy="205" r="20"/><text class="fig-text" x="60" y="210" text-anchor="middle" style="font-size:15px">s</text><circle class="fig-ink" cx="160" cy="205" r="20"/><text class="fig-text" x="160" y="210" text-anchor="middle" style="font-size:15px">i</text><text class="fig-muted" x="630" y="150" text-anchor="end" style="font-size:13px">두 칸짜리 이름</text><text class="fig-muted" x="630" y="210" text-anchor="end" style="font-size:13px">세 칸짜리 이름</text></svg><figcaption>깊이 내려간 글자일수록 이름이 길어져요. 자주 나오는 글자는 위쪽에 있어서 이름이 짧아요.</figcaption></figure>
   </div>
   <div class="layer formal"><span class="layer-title">정확히 말하면</span>
-    <p>완성된 허프만 코딩 트리의 가지에 비트를 붙여요. 슬라이드 p19는 왼쪽 가지에 1, 오른쪽 가지에 0을 줬어요. 루트에서 단말 노드까지 내려가며 만나는 비트를 차례로 이으면 그 글자의 비트 코드(bit code)가 돼요.</p>
+    <p><b>완성된 허프만 코딩 트리의 가지에 비트를 붙여요.</b> 슬라이드 p19는 왼쪽 가지에 1, 오른쪽 가지에 0을 줬어요. 루트에서 단말 노드까지 내려가며 만나는 비트를 차례로 이으면 그 글자의 비트 코드(bit code)가 돼요.</p>
     <div class="table-wrap"><table>
       <tr><th>글자</th><th>비트 코드</th><th>빈도</th><th>비트 수</th></tr>
       <tr><td>e</td><td>00</td><td>15</td><td>30</td></tr>
@@ -639,20 +666,20 @@ typedef struct{
     </table></div>
     <p>슬라이드 표기로 <code>15*2+12*2+8*2+6*3+4*3 = 100bits</code>예요.</p>
     $$15\cdot2+12\cdot2+8\cdot2+6\cdot3+4\cdot3 = 100$$
-    <p>3비트 고정 길이의 135 bits에서 35 bits를 줄였어요. 줄어든 비율은 $35/135 \approx 0.259$, 곧 약 25.9%이고, 슬라이드는 이를 반올림해 26%라고 적었어요.</p>
+    <p><b>3비트 고정 길이의 135 bits에서 35 bits를 줄였어요.</b> 줄어든 비율은 $35/135 \approx 0.259$, 곧 약 25.9%이고, 슬라이드는 이를 반올림해 26%라고 적었어요.</p>
     $$\frac{135-100}{135} \approx 0.259$$
-    <p>빈도가 가장 작은 i(6), s(4)는 가장 마지막까지 합쳐져 가장 깊은 레벨에 놓여요. 경로가 길어지니 비트 수가 3이 되고, 나머지 e, t, n은 2비트예요. 그래서 가장 긴 비트열이 가장 작은 빈도에 배정돼요.</p>
-    <p>0과 1을 바꿔 붙여도 돼요. 왼쪽 0, 오른쪽 1로 하면 e 11, t 10, n 01, i 001, s 000이 되고, 코드 길이와 합 100 bits는 그대로예요.</p>
+    <p><b>빈도가 가장 작은 i(6), s(4)는 가장 마지막까지 합쳐져 가장 깊은 레벨에 놓여요.</b> 경로가 길어지니 비트 수가 3이 되고, 나머지 e, t, n은 2비트예요. 그래서 가장 긴 비트열이 가장 작은 빈도에 배정돼요.</p>
+    <p><b>0과 1을 바꿔 붙여도 돼요.</b> 왼쪽 0, 오른쪽 1로 하면 e 11, t 10, n 01, i 001, s 000이 되고, 코드 길이와 합 100 bits는 그대로예요.</p>
   </div>
   <div class="layer prof"><span class="layer-title">교수님 말씀</span>
     <blockquote>왼쪽 가지에 1을 주고 오른쪽에 0을 줘도 상관이 없습니다.</blockquote>
     <blockquote>135비트를 100비트로 했기 때문에 26% 줄일 수 있었다라고 얘기하는 겁니다.</blockquote>
-    <p>엄밀히는 글자를 나누는 delimiter도 들어가야 한다고 덧붙이셨어요. 이 부분은 보충에서 표준 설명으로 이어서 정리했어요.</p>
+    <p>엄밀히는 글자를 나누는 delimiter도 들어가야 한다고 덧붙이셨어요. 이 부분은 보충에서 접두어 코드(prefix code) 표준 설명으로 이어서 정리했어요.</p>
   </div>
   <div class="layer warn"><span class="layer-title">꼭 기억해요</span>
     <blockquote>표현하는 비트 수가 가장 긴 애가 가장 작은 빈도를 가진 애한테 할당이 되는 겁니다.</blockquote>
   </div>
-  <div class="layer supp"><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span>
+  <details class="layer supp"><summary><span class="badge supp">보충 · 수업에서 유도하진 않았어요</span> · 접두어 코드와 디코딩</summary>
     <p>수업에서는 delimiter(구분자)가 있어야 한다고 하셨지만, 표준 허프만 코드 설명은 이와 달라요. 허프만 코드는 <strong>접두어</strong> 코드(prefix code)예요. 00, 01, 10, 110, 111 중 어느 것도 다른 코드의 앞부분이 아니에요.</p>
     <p>그래서 구분자 없이 앞에서부터 읽으며 트리를 따라 내려가다 단말 노드에 닿는 순간 글자 하나가 확정돼요. 비트열 100011101을 풀면 이렇게 돼요.</p>
     <ol class="steps">
@@ -663,7 +690,7 @@ typedef struct{
     </ol>
     <p>결과는 "nest" 하나뿐이에요. 같은 방식으로 0101110111은 01, 01, 110, 111로 끊겨 "ttis"로만 풀려요.</p>
     <p>반대로 접두어 조건이 깨진 코드(예: e 0, t 01, n 1)라면 01을 t로도, e 다음 n으로도 읽을 수 있어 구분자가 필요해져요. 다만 받는 쪽이 풀려면 어떤 트리(코드표)를 썼는지는 알아야 해요.</p>
-  </div>
+  </details>
   <div class="sum" hidden>
     <p class="sum-lead">루트에서 단말까지의 비트를 이은 것이 코드이고, etnis는 135 bits에서 100 bits로 약 26% 줄어요.</p>
     <p class="panel-label">핵심 식</p>

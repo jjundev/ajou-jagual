@@ -1,558 +1,561 @@
 {
- "course": "자료구조및알고리즘이해",
- "range": "1109",
- "slug": "Heap",
- "note_title": "우선순위 큐와 힙 — 5살도 이해하는 정리노트",
- "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1109 수업 (Software_8 Heap)",
- "review_title": "복습문제 11선 — 1109 수업 범위",
- "review_intro": "이정원 교수님 기출 1개, 다른 기출 4개, 교과서 4개와 강의 예제 기반 자체 문제 2개예요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
- "footer_note": "출처: 이정원 교수님 강의록(Software_8) · 수업 녹음 전사(1109).",
- "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2015(이정원), 2017 기말(김도희), 2017 기말·2019 기말(출제자 미상), 기말(이태권) · 교과서 9장 2·7·12·13번 · Software_8 강의 예제. 풀이는 자체 작성하며 답은 Python 힙 시뮬레이션·C11 실행·강의 근거 대조로 검증했습니다.",
- "sessions": [
-  {
-   "date": "1109",
-   "stt": "STT/1109 자구알.md",
-   "summary": "summaries/stt-1109.md",
-   "slides": "S8 p1–14"
-  }
- ],
- "sections": [
-  {
-   "id": "s0",
-   "title": "1. 우선순위가 먼저인 큐",
-   "short": "1 우선순위 큐",
-   "topics": [
+  "course": "자료구조및알고리즘이해",
+  "range": "1109",
+  "slug": "Heap",
+  "note_title": "우선순위 큐와 힙 — 5살도 이해하는 정리노트",
+  "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1109 수업 (Software_8 Heap)",
+  "review_title": "복습문제 11선 — 1109 수업 범위",
+  "review_intro": "이정원 교수님 기출 1개, 다른 기출 4개, 교과서 4개와 강의 예제 기반 자체 문제 2개예요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
+  "footer_note": "출처: 이정원 교수님 강의록(Software_8) · 수업 녹음 전사(1109).",
+  "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2015(이정원), 2017 기말(김도희), 2017 기말·2019 기말(출제자 미상), 기말(이태권) · 교과서 9장 2·7·12·13번 · Software_8 강의 예제. 풀이는 자체 작성하며 답은 Python 힙 시뮬레이션·C11 실행·강의 근거 대조로 검증했습니다.",
+  "sessions": [
     {
-     "id": "s0-pq",
-     "title": "우선순위 큐란",
-     "required_terms": [
-      "우선순위 큐",
-      "FIFO",
-      "우선순위가 높은 데이터",
-      "구급차"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
-    },
-    {
-     "id": "s0-adt",
-     "title": "우선순위 큐 ADT와 최소·최대",
-     "required_terms": [
-      "insert",
-      "delete",
-      "find(q)",
-      "최대 우선순위 큐",
-      "최소 우선순위 큐",
-      "등수"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
-    },
-    {
-     "id": "s0-impl",
-     "title": "배열·연결 리스트·히프 구현 비교",
-     "required_terms": [
-      "순서 없는 배열",
-      "정렬된 배열",
-      "O(\\log n)",
-      "O(n)",
-      "예측 가능",
-      "서랍"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "date": "1109",
+      "stt": "STT/1109 자구알.md",
+      "summary": "summaries/stt-1109.md",
+      "slides": "S8 p1–14"
     }
-   ]
-  },
-  {
-   "id": "s1",
-   "title": "2. 힙의 모양과 배열",
-   "short": "2 힙 정의·배열",
-   "topics": [
+  ],
+  "sections": [
     {
-     "id": "s1-heap-def",
-     "title": "최대 힙과 최소 힙",
-     "required_terms": [
-      "최대 히프",
-      "최소 히프",
-      "완전 이진 트리",
-      "\\text{key}(\\text{부모}) \\ge \\text{key}(\\text{자식})",
-      "같은 값"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s0",
+      "title": "1. 우선순위가 먼저인 큐",
+      "short": "1 우선순위 큐",
+      "topics": [
+        {
+          "id": "s0-pq",
+          "title": "우선순위 큐란",
+          "required_terms": [
+            "우선순위 큐",
+            "FIFO",
+            "우선순위가 높은 데이터",
+            "구급차"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-adt",
+          "title": "우선순위 큐 ADT와 최소·최대",
+          "required_terms": [
+            "insert",
+            "delete",
+            "find(q)",
+            "최대 우선순위 큐",
+            "최소 우선순위 큐",
+            "등수"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-impl",
+          "title": "배열·연결 리스트·히프 구현 비교",
+          "required_terms": [
+            "순서 없는 배열",
+            "정렬된 배열",
+            "O(\\log n)",
+            "O(n)",
+            "예측 가능",
+            "서랍"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
     },
     {
-     "id": "s1-height",
-     "title": "힙의 높이는 O(log n)",
-     "required_terms": [
-      "2^{i-1}",
-      "O(\\log n)",
-      "높이",
-      "마지막 레벨"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s1",
+      "title": "2. 힙의 모양과 배열",
+      "short": "2 힙 정의·배열",
+      "topics": [
+        {
+          "id": "s1-heap-def",
+          "title": "최대 힙과 최소 힙",
+          "required_terms": [
+            "최대 히프",
+            "최소 히프",
+            "완전 이진 트리",
+            "\\text{key}(\\text{부모}) \\ge \\text{key}(\\text{자식})",
+            "같은 값"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-height",
+          "title": "힙의 높이는 O(log n)",
+          "required_terms": [
+            "2^{i-1}",
+            "O(\\log n)",
+            "높이",
+            "마지막 레벨"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-array",
+          "title": "배열로 구현한 힙의 인덱스",
+          "required_terms": [
+            "왼쪽 자식",
+            "오른쪽 자식",
+            "부모의 인덱스",
+            "0번",
+            "(부모의 인덱스)*2 + 1"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
     },
     {
-     "id": "s1-array",
-     "title": "배열로 구현한 힙의 인덱스",
-     "required_terms": [
-      "왼쪽 자식",
-      "오른쪽 자식",
-      "부모의 인덱스",
-      "0번",
-      "(부모의 인덱스)*2 + 1"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s2",
+      "title": "3. 넣고 꺼내기와 힙 정렬",
+      "short": "3 삽입·삭제·정렬",
+      "topics": [
+        {
+          "id": "s2-upheap",
+          "title": "삽입과 upheap",
+          "required_terms": [
+            "upheap",
+            "마지막 노드",
+            "신입사원",
+            "heap_size ← heap_size + 1;",
+            "i ← PARENT(i);",
+            "11번"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-downheap",
+          "title": "삭제와 downheap",
+          "required_terms": [
+            "downheap",
+            "루트",
+            "말단 사원",
+            "item ← A[1];",
+            "A[1] ← A[heap_size];",
+            "largest",
+            "포레스트"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": true
+        },
+        {
+          "id": "s2-readability",
+          "title": "CHILD 함수와 읽기 쉬운 코드",
+          "required_terms": [
+            "CHILD",
+            "readability",
+            "i ← CHILD(largest);",
+            "모듈화"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-heapsort",
+          "title": "힙 정렬 칠판 예제",
+          "required_terms": [
+            "힙 정렬",
+            "1, 23, 7, 8, 20",
+            "23, 20, 8, 7, 1",
+            "O(n\\log n)",
+            "O(n^2)",
+            "버블 정렬"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": true
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 요약 · 예고",
+      "short": "4 요약·예고",
+      "topics": [
+        {
+          "id": "s3-cheatsheet",
+          "title": "한 장 요약",
+          "required_terms": [
+            "upheap",
+            "downheap",
+            "O(\\log n)"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "허프만",
+            "이산 이벤트",
+            "heap_sort"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "복습문제",
+            "강의록"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "s2",
-   "title": "3. 넣고 꺼내기와 힙 정렬",
-   "short": "3 삽입·삭제·정렬",
-   "topics": [
+  ],
+  "preview_topic": "s3-next",
+  "forbidden_outside_preview": [
+    "허프만",
+    "Huffman",
+    "이산 이벤트",
+    "heap_sort"
+  ],
+  "parts": [
     {
-     "id": "s2-upheap",
-     "title": "삽입과 upheap",
-     "required_terms": [
-      "upheap",
-      "마지막 노드",
-      "신입사원",
-      "heap_size ← heap_size + 1;",
-      "i ← PARENT(i);",
-      "11번"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "partA",
+      "title": "A. 이정원 교수님 기출",
+      "short": "A 이정원 기출"
     },
     {
-     "id": "s2-downheap",
-     "title": "삭제와 downheap",
-     "required_terms": [
-      "downheap",
-      "루트",
-      "말단 사원",
-      "item ← A[1];",
-      "A[1] ← A[heap_size];",
-      "largest",
-      "포레스트"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": true
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B 다른 기출"
     },
     {
-     "id": "s2-readability",
-     "title": "CHILD 함수와 읽기 쉬운 코드",
-     "required_terms": [
-      "CHILD",
-      "readability",
-      "i ← CHILD(largest);",
-      "모듈화"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
     },
     {
-     "id": "s2-heapsort",
-     "title": "힙 정렬 칠판 예제",
-     "required_terms": [
-      "힙 정렬",
-      "1, 23, 7, 8, 20",
-      "23, 20, 8, 7, 1",
-      "O(n\\log n)",
-      "O(n^2)",
-      "버블 정렬"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": true
+      "id": "partL",
+      "title": "E. 강의 예제 기반 자체 문제",
+      "short": "E 강의 예제"
     }
-   ]
-  },
-  {
-   "id": "s3",
-   "title": "4. 요약 · 예고",
-   "short": "4 요약·예고",
-   "topics": [
+  ],
+  "problems": [
     {
-     "id": "s3-cheatsheet",
-     "title": "한 장 요약",
-     "required_terms": [
-      "upheap",
-      "downheap",
-      "O(\\log n)"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p1",
+      "part": "partA",
+      "source": "2015-ljw-q4",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-heapsort",
+      "level": 3,
+      "date": "1109",
+      "terms": [
+        "20 18 19 15 17 16 12",
+        "19 18 16 15 17 12",
+        "20, 19, 18, 17, 16, 15, 12",
+        "12, 15, 16, 17, 18, 19, 20"
+      ],
+      "answer": "1) 삽입마다 [15] → [16,15] → [18,15,16] → [18,17,16,15] → [19,18,16,15,17] → [20,18,19,15,17,16] → 20 18 19 15 17 16 12; 2) 삭제마다 19 18 16 15 17 12 → 18 17 16 15 12 → 17 15 16 12 → 16 15 12 → 15 12 → 12 → 빈 힙, 제거 순서 20, 19, 18, 17, 16, 15, 12 → 정렬 12, 15, 16, 17, 18, 19, 20",
+      "objectives": [
+        "삽입마다 upheap 추적",
+        "루트 반복 삭제로 정렬"
+      ],
+      "task_family": "2015-ljw-q4"
     },
     {
-     "id": "s3-next",
-     "title": "다음 시간 예고",
-     "required_terms": [
-      "허프만",
-      "이산 이벤트",
-      "heap_sort"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p2",
+      "part": "partB",
+      "source": "2017-final-kdh-q1",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-downheap",
+      "level": 3,
+      "date": "1109",
+      "terms": [
+        "41 25 28 16 20",
+        "41 25 30 16 20 28",
+        "30 25 28 16 20",
+        "[1]=30"
+      ],
+      "answer": "(a) 41 25 28 16 20 (b) 41 25 30 16 20 28 (c) 30 25 28 16 20 (d) [0] 비움, [1]=30, [2]=25, [3]=28, [4]=16, [5]=20, [6]~[12] 비움",
+      "objectives": [
+        "삽입·삭제·1번부터 배열 표현"
+      ],
+      "task_family": "2017-final-kdh-q1"
     },
     {
-     "id": "s3-links",
-     "title": "함께 보면 좋은 자료",
-     "required_terms": [
-      "복습문제",
-      "강의록"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p3",
+      "part": "partB",
+      "source": "2017-final2-q1",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-upheap",
+      "level": 2,
+      "date": "1109",
+      "terms": [
+        "60 15 40 12 10 6 30 5",
+        "40 15 30 12 10 6 5"
+      ],
+      "answer": "(a) 60 15 40 12 10 6 30 5 (b) 40 15 30 12 10 6 5",
+      "objectives": [
+        "8개 삽입 upheap",
+        "한 번 삭제 downheap"
+      ],
+      "task_family": "2017-final2-q1"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "2019-final-q6",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-downheap",
+      "level": 3,
+      "date": "1109",
+      "terms": [
+        "50 48 31 9 41 16 24",
+        "48 41 31 9 24 16",
+        "71 68 48 50 64 16 31 9 41 24 53",
+        "64 53 48 50 24 16 31 9 41"
+      ],
+      "answer": "64 53 48 50 24 16 31 9 41 (중간: 7개 삽입 50 48 31 9 41 16 24, 삭제 1번 48 41 31 9 24 16, 5개 삽입 71 68 48 50 64 16 31 9 41 24 53, 삭제 2번 71·68)",
+      "objectives": [
+        "삽입·삭제가 섞인 순서 추적"
+      ],
+      "task_family": "2019-final-q6"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "unk-final-ltk-q5",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s1-heap-def",
+      "level": 2,
+      "date": "1109",
+      "terms": [
+        "65 75 70 90 80 85",
+        "70 75 85 90 80"
+      ],
+      "answer": "삽입 후 65 75 70 90 80 85, 한 번 삭제 후 70 75 85 90 80",
+      "objectives": [
+        "최소 힙 삽입·삭제"
+      ],
+      "task_family": "unk-final-ltk-q5"
+    },
+    {
+      "id": "p6",
+      "part": "partD",
+      "source": "textbook-ch09-q02",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-array",
+      "level": 1,
+      "date": "1109",
+      "terms": [
+        "①",
+        "완전 이진 트리"
+      ],
+      "answer": "① 완전 이진 트리이기 때문에",
+      "objectives": [
+        "완전 이진 트리와 빈칸 없는 배열"
+      ],
+      "task_family": "textbook-ch09-q02"
+    },
+    {
+      "id": "p7",
+      "part": "partD",
+      "source": "textbook-ch09-q07",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-height",
+      "level": 2,
+      "date": "1109",
+      "terms": [
+        "4",
+        "1+2+4"
+      ],
+      "answer": "4 (깊이 1~3에 1+2+4=7개, 깊이 4에 3개)",
+      "objectives": [
+        "노드 수와 높이"
+      ],
+      "task_family": "textbook-ch09-q07"
+    },
+    {
+      "id": "p8",
+      "part": "partD",
+      "source": "textbook-ch09-q12",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-heap-def",
+      "level": 2,
+      "date": "1109",
+      "terms": [
+        "아니다",
+        "6",
+        "5"
+      ],
+      "answer": "아니다. 6의 왼쪽 자식 5가 6보다 작아 부모 ≤ 자식 조건을 어긴다",
+      "objectives": [
+        "최소 힙 조건의 재귀 판정"
+      ],
+      "task_family": "textbook-ch09-q12"
+    },
+    {
+      "id": "p9",
+      "part": "partD",
+      "source": "textbook-ch09-q13",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s2-downheap",
+      "level": 2,
+      "date": "1109",
+      "terms": [
+        "1 5 12 20 16",
+        "3 20 12",
+        "5 16 12 20"
+      ],
+      "answer": "레벨 순서 1 5 12 20 16 (is_empty() 결과는 거짓)",
+      "objectives": [
+        "최소 힙 연산 순서 추적"
+      ],
+      "task_family": "textbook-ch09-q13"
+    },
+    {
+      "id": "p10",
+      "part": "partL",
+      "source": "lecture-s08-p04-pq-implementations",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-impl",
+      "level": 2,
+      "date": "1109",
+      "terms": [
+        "O(1)",
+        "O(n)",
+        "O(\\log n)",
+        "예측",
+        "10",
+        "없음"
+      ],
+      "answer": "(a) 순서 없는 배열·연결 리스트 삽입 O(1)·삭제 O(n), 정렬된 배열·연결 리스트 삽입 O(n)·삭제 O(1), 히프 삽입·삭제 O(log n) (b) 예측 가능성: 히프는 최악에도 높이 O(log n)만큼만 움직인다 (c) 왼쪽 10, 오른쪽 없음, 부모 2",
+      "objectives": [
+        "구현별 삽입·삭제 복잡도",
+        "O(log n) 선택 이유",
+        "배열 인덱스 식"
+      ],
+      "task_family": "lecture-s08-p04-pq-implementations",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+        "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
+        "pdf_page": 4,
+        "extra_pages": [
+          2,
+          7
+        ],
+        "example": "pq-implementation-table",
+        "taught_on": "1109"
+      }
+    },
+    {
+      "id": "p11",
+      "part": "partL",
+      "source": "lecture-s08-p13-delete-max-heap",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-downheap",
+      "level": 2,
+      "date": "1109",
+      "terms": [
+        "7 5 6 3 4 3 2 2 1",
+        "40 10 30 20",
+        "40 20 30 10",
+        "largest ← i+1",
+        "i == heap_size"
+      ],
+      "answer": "(a) (i=2, largest=2, 교환) → (4, 4, 교환) → (8, 8, break), 결과 7 5 6 3 4 3 2 2 1, 리턴 9 (b) 글자 그대로면 40 10 30 20으로 최대 힙 아님(i == heap_size 일 때 largest ← i+1 이 힙 밖 칸을 읽음). 오른쪽 자식이 없으면 왼쪽 i를 고르게 고치면 40 20 30 10",
+      "objectives": [
+        "delete_max_heap의 i·largest 추적",
+        "오른쪽 자식 없는 경계의 결함과 수정"
+      ],
+      "task_family": "lecture-s08-p13-delete-max-heap",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+        "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
+        "pdf_page": 13,
+        "extra_pages": [
+          11,
+          12
+        ],
+        "example": "delete-max-heap",
+        "taught_on": "1109"
+      }
     }
-   ]
-  }
- ],
- "preview_topic": "s3-next",
- "forbidden_outside_preview": [
-  "허프만",
-  "Huffman",
-  "이산 이벤트",
-  "heap_sort"
- ],
- "parts": [
-  {
-   "id": "partA",
-   "title": "A. 이정원 교수님 기출",
-   "short": "A 이정원 기출"
-  },
-  {
-   "id": "partB",
-   "title": "B. 다른 기출",
-   "short": "B 다른 기출"
-  },
-  {
-   "id": "partD",
-   "title": "D. 교과서 연습문제",
-   "short": "D 교과서"
-  },
-  {
-   "id": "partL",
-   "title": "E. 강의 예제 기반 자체 문제",
-   "short": "E 강의 예제"
-  }
- ],
- "problems": [
-  {
-   "id": "p1",
-   "part": "partA",
-   "source": "2015-ljw-q4",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s2-heapsort",
-   "level": 3,
-   "date": "1109",
-   "terms": [
-    "20 18 19 15 17 16 12",
-    "19 18 16 15 17 12",
-    "20, 19, 18, 17, 16, 15, 12",
-    "12, 15, 16, 17, 18, 19, 20"
-   ],
-   "answer": "1) 삽입마다 [15] → [16,15] → [18,15,16] → [18,17,16,15] → [19,18,16,15,17] → [20,18,19,15,17,16] → 20 18 19 15 17 16 12; 2) 삭제마다 19 18 16 15 17 12 → 18 17 16 15 12 → 17 15 16 12 → 16 15 12 → 15 12 → 12 → 빈 힙, 제거 순서 20, 19, 18, 17, 16, 15, 12 → 정렬 12, 15, 16, 17, 18, 19, 20",
-   "objectives": [
-    "삽입마다 upheap 추적",
-    "루트 반복 삭제로 정렬"
-   ],
-   "task_family": "2015-ljw-q4"
-  },
-  {
-   "id": "p2",
-   "part": "partB",
-   "source": "2017-final-kdh-q1",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s2-downheap",
-   "level": 3,
-   "date": "1109",
-   "terms": [
-    "41 25 28 16 20",
-    "41 25 30 16 20 28",
-    "30 25 28 16 20",
-    "[1]=30"
-   ],
-   "answer": "(a) 41 25 28 16 20 (b) 41 25 30 16 20 28 (c) 30 25 28 16 20 (d) [0] 비움, [1]=30, [2]=25, [3]=28, [4]=16, [5]=20, [6]~[12] 비움",
-   "objectives": [
-    "삽입·삭제·1번부터 배열 표현"
-   ],
-   "task_family": "2017-final-kdh-q1"
-  },
-  {
-   "id": "p3",
-   "part": "partB",
-   "source": "2017-final2-q1",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s2-upheap",
-   "level": 2,
-   "date": "1109",
-   "terms": [
-    "60 15 40 12 10 6 30 5",
-    "40 15 30 12 10 6 5"
-   ],
-   "answer": "(a) 60 15 40 12 10 6 30 5 (b) 40 15 30 12 10 6 5",
-   "objectives": [
-    "8개 삽입 upheap",
-    "한 번 삭제 downheap"
-   ],
-   "task_family": "2017-final2-q1"
-  },
-  {
-   "id": "p4",
-   "part": "partB",
-   "source": "2019-final-q6",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s2-downheap",
-   "level": 3,
-   "date": "1109",
-   "terms": [
-    "50 48 31 9 41 16 24",
-    "48 41 31 9 24 16",
-    "71 68 48 50 64 16 31 9 41 24 53",
-    "64 53 48 50 24 16 31 9 41"
-   ],
-   "answer": "64 53 48 50 24 16 31 9 41 (중간: 7개 삽입 50 48 31 9 41 16 24, 삭제 1번 48 41 31 9 24 16, 5개 삽입 71 68 48 50 64 16 31 9 41 24 53, 삭제 2번 71·68)",
-   "objectives": [
-    "삽입·삭제가 섞인 순서 추적"
-   ],
-   "task_family": "2019-final-q6"
-  },
-  {
-   "id": "p5",
-   "part": "partB",
-   "source": "unk-final-ltk-q5",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s1-heap-def",
-   "level": 2,
-   "date": "1109",
-   "terms": [
-    "65 75 70 90 80 85",
-    "70 75 85 90 80"
-   ],
-   "answer": "삽입 후 65 75 70 90 80 85, 한 번 삭제 후 70 75 85 90 80",
-   "objectives": [
-    "최소 힙 삽입·삭제"
-   ],
-   "task_family": "unk-final-ltk-q5"
-  },
-  {
-   "id": "p6",
-   "part": "partD",
-   "source": "textbook-ch09-q02",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s1-array",
-   "level": 1,
-   "date": "1109",
-   "terms": [
-    "①",
-    "완전 이진 트리"
-   ],
-   "answer": "① 완전 이진 트리이기 때문에",
-   "objectives": [
-    "완전 이진 트리와 빈칸 없는 배열"
-   ],
-   "task_family": "textbook-ch09-q02"
-  },
-  {
-   "id": "p7",
-   "part": "partD",
-   "source": "textbook-ch09-q07",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s1-height",
-   "level": 2,
-   "date": "1109",
-   "terms": [
-    "4",
-    "1+2+4"
-   ],
-   "answer": "4 (깊이 1~3에 1+2+4=7개, 깊이 4에 3개)",
-   "objectives": [
-    "노드 수와 높이"
-   ],
-   "task_family": "textbook-ch09-q07"
-  },
-  {
-   "id": "p8",
-   "part": "partD",
-   "source": "textbook-ch09-q12",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s1-heap-def",
-   "level": 2,
-   "date": "1109",
-   "terms": [
-    "아니다",
-    "6",
-    "5"
-   ],
-   "answer": "아니다. 6의 왼쪽 자식 5가 6보다 작아 부모 ≤ 자식 조건을 어긴다",
-   "objectives": [
-    "최소 힙 조건의 재귀 판정"
-   ],
-   "task_family": "textbook-ch09-q12"
-  },
-  {
-   "id": "p9",
-   "part": "partD",
-   "source": "textbook-ch09-q13",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s2-downheap",
-   "level": 2,
-   "date": "1109",
-   "terms": [
-    "1 5 12 20 16",
-    "3 20 12",
-    "5 16 12 20"
-   ],
-   "answer": "레벨 순서 1 5 12 20 16 (is_empty() 결과는 거짓)",
-   "objectives": [
-    "최소 힙 연산 순서 추적"
-   ],
-   "task_family": "textbook-ch09-q13"
-  },
-  {
-   "id": "p10",
-   "part": "partL",
-   "source": "lecture-s08-p04-pq-implementations",
-   "source_kind": "lecture-code",
-   "variant": false,
-   "anchor": "s0-impl",
-   "level": 2,
-   "date": "1109",
-   "terms": [
-    "O(1)",
-    "O(n)",
-    "O(\\log n)",
-    "예측",
-    "10",
-    "없음"
-   ],
-   "answer": "(a) 순서 없는 배열·연결 리스트 삽입 O(1)·삭제 O(n), 정렬된 배열·연결 리스트 삽입 O(n)·삭제 O(1), 히프 삽입·삭제 O(log n) (b) 예측 가능성: 히프는 최악에도 높이 O(log n)만큼만 움직인다 (c) 왼쪽 10, 오른쪽 없음, 부모 2",
-   "objectives": [
-    "구현별 삽입·삭제 복잡도",
-    "O(log n) 선택 이유",
-    "배열 인덱스 식"
-   ],
-   "task_family": "lecture-s08-p04-pq-implementations",
-   "lecture_ref": {
-    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
-    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
-    "pdf_page": 4,
-    "extra_pages": [
-     2,
-     7
-    ],
-    "example": "pq-implementation-table",
-    "taught_on": "1109"
-   }
-  },
-  {
-   "id": "p11",
-   "part": "partL",
-   "source": "lecture-s08-p13-delete-max-heap",
-   "source_kind": "lecture-code",
-   "variant": false,
-   "anchor": "s2-downheap",
-   "level": 2,
-   "date": "1109",
-   "terms": [
-    "7 5 6 3 4 3 2 2 1",
-    "40 10 30 20",
-    "40 20 30 10",
-    "largest ← i+1",
-    "i == heap_size"
-   ],
-   "answer": "(a) (i=2, largest=2, 교환) → (4, 4, 교환) → (8, 8, break), 결과 7 5 6 3 4 3 2 2 1, 리턴 9 (b) 글자 그대로면 40 10 30 20으로 최대 힙 아님(i == heap_size 일 때 largest ← i+1 이 힙 밖 칸을 읽음). 오른쪽 자식이 없으면 왼쪽 i를 고르게 고치면 40 20 30 10",
-   "objectives": [
-    "delete_max_heap의 i·largest 추적",
-    "오른쪽 자식 없는 경계의 결함과 수정"
-   ],
-   "task_family": "lecture-s08-p13-delete-max-heap",
-   "lecture_ref": {
-    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
-    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
-    "pdf_page": 13,
-    "extra_pages": [
-     11,
-     12
-    ],
-    "example": "delete-max-heap",
-    "taught_on": "1109"
-   }
-  }
- ],
- "links": [
-  {
-   "topic": "s3-links",
-   "href": "복습문제_1109_Heap.html"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../../자료구조_강의록_2026/Software_8_Heap.pdf"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../1029/정리노트_1029_Tree.html#s2-kinds"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../1102/정리노트_1102_Tree.html#s0-array"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../1105/정리노트_1105_Tree.html#s0-bst"
-  }
- ]
+  ],
+  "links": [
+    {
+      "topic": "s3-links",
+      "href": "복습문제_1109_Heap.html"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../../자료구조_강의록_2026/Software_8_Heap.pdf"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../1029/정리노트_1029_Tree.html#s2-kinds"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../1102/정리노트_1102_Tree.html#s0-array"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../1105/정리노트_1105_Tree.html#s0-bst"
+    }
+  ],
+  "rules": [
+    "layout-v2"
+  ]
 }

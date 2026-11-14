@@ -122,6 +122,29 @@ def build_review(m: dict, run_dir: Path, out_dir: Path | None = None) -> str:
 
 
 
+def _sync_traces_and_sources(run_dir: Path, out_dir: Path) -> None:
+    # trace 재생기 조각을 검사하는 check_html 이 <노트 폴더>/.pack/자료_복습팩/traces/ 에서 JSON 을 찾는다.
+    traces = sorted((run_dir / "traces").glob("*.json"))
+    if traces:
+        dest = out_dir / ".pack" / "자료_복습팩" / "traces"
+        dest.mkdir(parents=True, exist_ok=True)
+        for t in traces:
+            shutil.copyfile(t, dest / t.name)
+    copy_pack_sources(run_dir, out_dir)
+
+
+def assemble_note(run_dir: Path | str, out_dir: Path | str) -> Path:
+    """정리노트 HTML과 manifest·trace 근거만 조립하고 기존 복습문제는 건드리지 않는다."""
+    run_dir, out_dir = Path(run_dir), Path(out_dir)
+    m = manifest_mod.load(run_dir / "manifest.json")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    note_path = out_dir / manifest_mod.note_name(m)
+    note_html = build_note(m, run_dir, out_dir)
+    note_path.write_text(note_html, encoding="utf-8")
+    _sync_traces_and_sources(run_dir, out_dir)
+    return note_path
+
+
 def assemble(run_dir: Path | str, out_dir: Path | str) -> tuple[Path, Path]:
     run_dir, out_dir = Path(run_dir), Path(out_dir)
     m = manifest_mod.load(run_dir / "manifest.json")
@@ -133,14 +156,7 @@ def assemble(run_dir: Path | str, out_dir: Path | str) -> tuple[Path, Path]:
     review_html = build_review(m, run_dir, out_dir)
     note_path.write_text(note_html, encoding="utf-8")
     review_path.write_text(review_html, encoding="utf-8")
-    # trace 재생기 조각을 검사하는 check_html 이 <노트 폴더>/.pack/자료_복습팩/traces/ 에서 JSON 을 찾는다.
-    traces = sorted((run_dir / "traces").glob("*.json"))
-    if traces:
-        dest = out_dir / ".pack" / "자료_복습팩" / "traces"
-        dest.mkdir(parents=True, exist_ok=True)
-        for t in traces:
-            shutil.copyfile(t, dest / t.name)
-    copy_pack_sources(run_dir, out_dir)
+    _sync_traces_and_sources(run_dir, out_dir)
     return note_path, review_path
 
 
@@ -162,9 +178,11 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--run", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--note-only", action="store_true", help="정리노트 HTML만 조립하고 기존 복습문제는 보존")
     args = ap.parse_args(argv)
     try:
-        for path in assemble(args.run, args.out):
+        paths = (assemble_note(args.run, args.out),) if args.note_only else assemble(args.run, args.out)
+        for path in paths:
             print(path)
     except (AssembleError, manifest_mod.ManifestError) as e:
         print(f"assemble 실패: {e}", file=sys.stderr)

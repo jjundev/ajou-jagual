@@ -1,555 +1,558 @@
 {
- "course": "자료구조및알고리즘이해",
- "range": "1102",
- "slug": "Tree",
- "note_title": "이진 트리의 표현과 순회 — 5살도 이해하는 정리노트",
- "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1102 수업 (Software_7 Tree)",
- "review_title": "복습문제 12선 — 1102 수업 범위",
- "review_intro": "다른 기출 6개, 교과서 연습문제 4개, 강의 예제 기반 자체 출제 2개로 <b>이진 트리의 배열 표현</b>과 <b>네 가지 순회</b>, <b>순회로 계산하기</b>를 복습해요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
- "footer_note": "출처: 이정원 교수님 강의록(Software_7 Tree p7–18) · 수업 녹음 전사(1102). 전사에 시각 정보가 없어 인용은 Part 기준이에요.",
- "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2017 중간(출제자 미상), 2018 중간(출제자 미상), 2019 중간(출제자 미상), 2021 기말 모의 1회(출제자 미상). 교과서 8장 트리 연습문제 1·2·3·12번. 강의 예제 기반 자체 출제는 Software_7 Tree p13·p16 근거입니다. 풀이는 자체 작성이며 답은 Python 시뮬레이션(answers.py)·C11 실행과 강의 근거 대조로 검증했습니다.",
- "sessions": [
-  {
-   "date": "1102",
-   "stt": "STT/1102 자구알.md",
-   "summary": "summaries/stt-1102.md",
-   "slides": "S7 p7–17"
-  }
- ],
- "sections": [
-  {
-   "id": "s0",
-   "title": "1. 이진 트리를 컴퓨터에 담는 법",
-   "short": "1 트리 표현",
-   "topics": [
+  "course": "자료구조및알고리즘이해",
+  "range": "1102",
+  "slug": "Tree",
+  "note_title": "이진 트리의 표현과 순회 — 5살도 이해하는 정리노트",
+  "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1102 수업 (Software_7 Tree)",
+  "review_title": "복습문제 12선 — 1102 수업 범위",
+  "review_intro": "다른 기출 6개, 교과서 연습문제 4개, 강의 예제 기반 자체 출제 2개로 <b>이진 트리의 배열 표현</b>과 <b>네 가지 순회</b>, <b>순회로 계산하기</b>를 복습해요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
+  "footer_note": "출처: 이정원 교수님 강의록(Software_7 Tree p7–18) · 수업 녹음 전사(1102). 전사에 시각 정보가 없어 인용은 Part 기준이에요.",
+  "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2017 중간(출제자 미상), 2018 중간(출제자 미상), 2019 중간(출제자 미상), 2021 기말 모의 1회(출제자 미상). 교과서 8장 트리 연습문제 1·2·3·12번. 강의 예제 기반 자체 출제는 Software_7 Tree p13·p16 근거입니다. 풀이는 자체 작성이며 답은 Python 시뮬레이션(answers.py)·C11 실행과 강의 근거 대조로 검증했습니다.",
+  "sessions": [
     {
-     "id": "s0-array",
-     "title": "1. 배열 표현법",
-     "required_terms": [
-      "배열 표현법",
-      "포화 이진 트리",
-      "0번",
-      "2i",
-      "2i+1",
-      "\\lfloor i/2 \\rfloor",
-      "빈칸",
-      "그릴 수 있어야"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
-    },
-    {
-     "id": "s0-link",
-     "title": "2. 링크 표현법",
-     "required_terms": [
-      "링크 표현법",
-      "struct TreeNode *left, *right;",
-      "NULL",
-      "경사 이진 트리",
-      "높이가 중요"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "date": "1102",
+      "stt": "STT/1102 자구알.md",
+      "summary": "summaries/stt-1102.md",
+      "slides": "S7 p7–17"
     }
-   ]
-  },
-  {
-   "id": "s1",
-   "title": "2. 이진 트리의 순회",
-   "short": "2 순회",
-   "topics": [
+  ],
+  "sections": [
     {
-     "id": "s1-traversal",
-     "title": "3. 순회와 VLR·LVR·LRV",
-     "required_terms": [
-      "순회",
-      "체계적",
-      "VLR",
-      "LVR",
-      "LRV",
-      "레프트가 우선",
-      "내부 스택",
-      "나뭇가지"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s0",
+      "title": "1. 이진 트리를 컴퓨터에 담는 법",
+      "short": "1 트리 표현",
+      "topics": [
+        {
+          "id": "s0-array",
+          "title": "1. 배열 표현법",
+          "required_terms": [
+            "배열 표현법",
+            "포화 이진 트리",
+            "0번",
+            "2i",
+            "2i+1",
+            "\\lfloor i/2 \\rfloor",
+            "빈칸",
+            "그릴 수 있어야"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-link",
+          "title": "2. 링크 표현법",
+          "required_terms": [
+            "링크 표현법",
+            "struct TreeNode *left, *right;",
+            "NULL",
+            "경사 이진 트리",
+            "높이가 중요"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
     },
     {
-     "id": "s1-preorder",
-     "title": "4. 전위 순회와 목차",
-     "required_terms": [
-      "전위 순회",
-      "목차",
-      "preorder( root->left );",
-      "종결 조건",
-      "수렴",
-      "바닥"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s1",
+      "title": "2. 이진 트리의 순회",
+      "short": "2 순회",
+      "topics": [
+        {
+          "id": "s1-traversal",
+          "title": "3. 순회와 VLR·LVR·LRV",
+          "required_terms": [
+            "순회",
+            "체계적",
+            "VLR",
+            "LVR",
+            "LRV",
+            "레프트가 우선",
+            "내부 스택",
+            "나뭇가지"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-preorder",
+          "title": "4. 전위 순회와 목차",
+          "required_terms": [
+            "전위 순회",
+            "목차",
+            "preorder( root->left );",
+            "종결 조건",
+            "수렴",
+            "바닥"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-inorder",
+          "title": "5. 중위 순회와 수식 a*b + c/d",
+          "required_terms": [
+            "중위 순회",
+            "a * b + c / d",
+            "inorder( root->left );",
+            "바닥을 치지",
+            "사이클"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-postorder",
+          "title": "6. 후위 순회와 디렉토리 용량",
+          "required_terms": [
+            "후위 순회",
+            "디렉토리 용량",
+            "postorder( root->left );",
+            "LRV"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-levelorder",
+          "title": "7. 레벨 순회와 큐",
+          "required_terms": [
+            "레벨 순회",
+            "큐",
+            "표준 순회 방법이 아니",
+            "+ * / a b c d",
+            "업다운 게임",
+            "후보"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
     },
     {
-     "id": "s1-inorder",
-     "title": "5. 중위 순회와 수식 a*b + c/d",
-     "required_terms": [
-      "중위 순회",
-      "a * b + c / d",
-      "inorder( root->left );",
-      "바닥을 치지",
-      "사이클"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s2",
+      "title": "3. 순회로 계산하기",
+      "short": "3 순회 응용",
+      "topics": [
+        {
+          "id": "s2-expr-tree",
+          "title": "8. 수식 트리",
+          "required_terms": [
+            "수식 트리",
+            "연산자",
+            "피연산자",
+            "+ a b",
+            "a b c × -",
+            "연장선"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-evaluate",
+          "title": "9. 수식 트리 계산 evaluate",
+          "required_terms": [
+            "evaluate",
+            "후위 순회",
+            "return (x op y);",
+            "exp = NULL",
+            "재귀 호출"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-count",
+          "title": "10. 노드 개수 get_node_count",
+          "required_terms": [
+            "get_node_count(node->left)",
+            "node != NULL",
+            "3 + 2 + 1",
+            "노드의 개수"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-height",
+          "title": "11. 높이 get_height",
+          "required_terms": [
+            "get_height(node->left)",
+            "max",
+            "1 + \\max(h(L), h(R))",
+            "루트",
+            "반복문"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
     },
     {
-     "id": "s1-postorder",
-     "title": "6. 후위 순회와 디렉토리 용량",
-     "required_terms": [
-      "후위 순회",
-      "디렉토리 용량",
-      "postorder( root->left );",
-      "LRV"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
-    },
-    {
-     "id": "s1-levelorder",
-     "title": "7. 레벨 순회와 큐",
-     "required_terms": [
-      "레벨 순회",
-      "큐",
-      "표준 순회 방법이 아니",
-      "+ * / a b c d",
-      "업다운 게임",
-      "후보"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "s3",
+      "title": "4. 요약 · 예고",
+      "short": "4 요약·예고",
+      "topics": [
+        {
+          "id": "s3-cheatsheet",
+          "title": "한눈에 보는 이진 트리 표현과 순회",
+          "required_terms": [
+            "2i+1",
+            "VLR",
+            "LRV"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "이진 탐색 트리"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "복습문제"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "s2",
-   "title": "3. 순회로 계산하기",
-   "short": "3 순회 응용",
-   "topics": [
+  ],
+  "preview_topic": "s3-next",
+  "forbidden_outside_preview": [
+    "이진 탐색 트리",
+    "이진탐색트리",
+    "binary search tree",
+    "DFS",
+    "BFS"
+  ],
+  "parts": [
     {
-     "id": "s2-expr-tree",
-     "title": "8. 수식 트리",
-     "required_terms": [
-      "수식 트리",
-      "연산자",
-      "피연산자",
-      "+ a b",
-      "a b c × -",
-      "연장선"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "partB",
+      "title": "A. 기출 문제",
+      "short": "A 기출"
     },
     {
-     "id": "s2-evaluate",
-     "title": "9. 수식 트리 계산 evaluate",
-     "required_terms": [
-      "evaluate",
-      "후위 순회",
-      "return (x op y);",
-      "exp = NULL",
-      "재귀 호출"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "partD",
+      "title": "B. 교과서 연습문제",
+      "short": "B 교과서"
     },
     {
-     "id": "s2-count",
-     "title": "10. 노드 개수 get_node_count",
-     "required_terms": [
-      "get_node_count(node->left)",
-      "node != NULL",
-      "3 + 2 + 1",
-      "노드의 개수"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
-    },
-    {
-     "id": "s2-height",
-     "title": "11. 높이 get_height",
-     "required_terms": [
-      "get_height(node->left)",
-      "max",
-      "1 + \\max(h(L), h(R))",
-      "루트",
-      "반복문"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "partL",
+      "title": "C. 강의 예제 기반 자체 출제",
+      "short": "C 강의 예제"
     }
-   ]
-  },
-  {
-   "id": "s3",
-   "title": "4. 요약 · 예고",
-   "short": "4 요약·예고",
-   "topics": [
+  ],
+  "problems": [
     {
-     "id": "s3-cheatsheet",
-     "title": "한눈에 보는 이진 트리 표현과 순회",
-     "required_terms": [
-      "2i+1",
-      "VLR",
-      "LRV"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p1",
+      "part": "partB",
+      "source": "2018-mid-c024-q11",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 2,
+      "date": "1102",
+      "terms": [
+        "[11]=E",
+        "[12]=H",
+        "A, B, C, D, E, F, G, H",
+        "C, E, D, B, H, G, F, A",
+        "C, B, D, E, A, H, G, F"
+      ],
+      "answer": "(1) [1]=A, [2]=B, [3]=F, [4]=C, [5]=D, [6]=G, [11]=E, [12]=H (2) A, B, C, D, E, F, G, H (3) C, E, D, B, H, G, F, A (4) C, B, D, E, A, H, G, F"
     },
     {
-     "id": "s3-next",
-     "title": "다음 시간 예고",
-     "required_terms": [
-      "이진 탐색 트리"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p2",
+      "part": "partB",
+      "source": "2021-mock1-q6",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s1-postorder",
+      "level": 3,
+      "date": "1102",
+      "terms": [
+        "H G K D E M F N P T S R"
+      ],
+      "answer": "루트 H, 레벨 순서 H G K D E M F N P T S R"
     },
     {
-     "id": "s3-links",
-     "title": "함께 보면 좋은 자료",
-     "required_terms": [
-      "복습문제"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p3",
+      "part": "partB",
+      "source": "2019-mid-q11",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s0-array",
+      "level": 3,
+      "date": "1102",
+      "terms": [
+        "[16]=G",
+        "[30]=R",
+        "[31]=T",
+        "F"
+      ],
+      "answer": "[1]=B, [2]=C, [3]=D, [4]=E, [7]=M, [8]=F, [9]=K, [14]=O, [15]=P, [16]=G, [17]=H, [30]=R, [31]=T"
+    },
+    {
+      "id": "p4",
+      "part": "partB",
+      "source": "2018-mid-c024-q12",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s1-inorder",
+      "level": 2,
+      "date": "1102",
+      "terms": [
+        "A B C D E F G H"
+      ],
+      "answer": "루트 A, 레벨 순서 A B C D E F G H"
+    },
+    {
+      "id": "p5",
+      "part": "partB",
+      "source": "2018-mid-c024-q3",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s1-postorder",
+      "level": 1,
+      "date": "1102",
+      "terms": [
+        "후위 순회"
+      ],
+      "answer": "후위 순회"
+    },
+    {
+      "id": "p6",
+      "part": "partB",
+      "source": "2017-mid-c050-q5",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s1-preorder",
+      "level": 1,
+      "date": "1102",
+      "terms": [
+        "전위 순회"
+      ],
+      "answer": "전위 순회"
+    },
+    {
+      "id": "p7",
+      "part": "partD",
+      "source": "textbook-ch08-q01",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-inorder",
+      "level": 1,
+      "date": "1102",
+      "terms": [
+        "④",
+        "D B A E C F"
+      ],
+      "answer": "④ D B A E C F",
+      "objectives": [
+        "중위 순회(LVR) 방문 순서"
+      ],
+      "task_family": "textbook-ch08-q01"
+    },
+    {
+      "id": "p8",
+      "part": "partD",
+      "source": "textbook-ch08-q02",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-preorder",
+      "level": 1,
+      "date": "1102",
+      "terms": [
+        "②",
+        "A B D C E G H F"
+      ],
+      "answer": "② E",
+      "objectives": [
+        "전위 순회(VLR) 방문 순서"
+      ],
+      "task_family": "textbook-ch08-q02"
+    },
+    {
+      "id": "p9",
+      "part": "partD",
+      "source": "textbook-ch08-q03",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s2-expr-tree",
+      "level": 1,
+      "date": "1102",
+      "terms": [
+        "④",
+        "A B / C * D * E +"
+      ],
+      "answer": "④ A B / C * D * E +",
+      "objectives": [
+        "수식 트리의 후위 순회"
+      ],
+      "task_family": "textbook-ch08-q03"
+    },
+    {
+      "id": "p10",
+      "part": "partD",
+      "source": "textbook-ch08-q12",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s2-height",
+      "level": 2,
+      "date": "1102",
+      "terms": [
+        "8",
+        "단말 노드"
+      ],
+      "answer": "8",
+      "objectives": [
+        "재귀 트리 함수가 돌려주는 값 추적"
+      ],
+      "task_family": "textbook-ch08-q12"
+    },
+    {
+      "id": "p11",
+      "part": "partL",
+      "source": "lecture-s07-p13-level-order",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-levelorder",
+      "level": 2,
+      "date": "1102",
+      "terms": [
+        "+ * / a b c d",
+        "/ a b",
+        "+ * a b / c d",
+        "a b * c d / +"
+      ],
+      "answer": "(a) + * / a b c d (b) [/ a b] (c) 전위 + * a b / c d, 중위 a * b + c / d, 후위 a b * c d / +",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+        "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+        "pdf_page": 13,
+        "example": "level-order-expression-tree",
+        "taught_on": "1102",
+        "extra_pages": [
+          11,
+          14
+        ]
+      },
+      "objectives": [
+        "레벨 순회에서 큐에 넣고 꺼내는 순서 추적",
+        "같은 수식 트리의 전위·중위·후위 순회 결과 비교"
+      ],
+      "task_family": "level-order-queue-trace"
+    },
+    {
+      "id": "p12",
+      "part": "partL",
+      "source": "lecture-s07-p16-count-height",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-count",
+      "level": 2,
+      "date": "1102",
+      "terms": [
+        "X 3",
+        "Y 2",
+        "R 6",
+        "get_height"
+      ],
+      "answer": "(a) X 3, Y 2, R 6 (b) 3 (c) 1은 지금 노드(루트) 자신이 차지하는 한 층",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+        "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+        "pdf_page": 16,
+        "example": "get-node-count-and-height",
+        "taught_on": "1102",
+        "extra_pages": [
+          17
+        ]
+      },
+      "objectives": [
+        "get_node_count 의 서브트리별 반환값 추적",
+        "get_height 의 max + 1 재귀 계산"
+      ],
+      "task_family": "recursive-tree-count-height"
     }
-   ]
-  }
- ],
- "preview_topic": "s3-next",
- "forbidden_outside_preview": [
-  "이진 탐색 트리",
-  "이진탐색트리",
-  "binary search tree",
-  "DFS",
-  "BFS"
- ],
- "parts": [
-  {
-   "id": "partB",
-   "title": "A. 기출 문제",
-   "short": "A 기출"
-  },
-  {
-   "id": "partD",
-   "title": "B. 교과서 연습문제",
-   "short": "B 교과서"
-  },
-  {
-   "id": "partL",
-   "title": "C. 강의 예제 기반 자체 출제",
-   "short": "C 강의 예제"
-  }
- ],
- "problems": [
-  {
-   "id": "p1",
-   "part": "partB",
-   "source": "2018-mid-c024-q11",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s0-array",
-   "level": 2,
-   "date": "1102",
-   "terms": [
-    "[11]=E",
-    "[12]=H",
-    "A, B, C, D, E, F, G, H",
-    "C, E, D, B, H, G, F, A",
-    "C, B, D, E, A, H, G, F"
-   ],
-   "answer": "(1) [1]=A, [2]=B, [3]=F, [4]=C, [5]=D, [6]=G, [11]=E, [12]=H (2) A, B, C, D, E, F, G, H (3) C, E, D, B, H, G, F, A (4) C, B, D, E, A, H, G, F"
-  },
-  {
-   "id": "p2",
-   "part": "partB",
-   "source": "2021-mock1-q6",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s1-postorder",
-   "level": 3,
-   "date": "1102",
-   "terms": [
-    "H G K D E M F N P T S R"
-   ],
-   "answer": "루트 H, 레벨 순서 H G K D E M F N P T S R"
-  },
-  {
-   "id": "p3",
-   "part": "partB",
-   "source": "2019-mid-q11",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s0-array",
-   "level": 3,
-   "date": "1102",
-   "terms": [
-    "[16]=G",
-    "[30]=R",
-    "[31]=T",
-    "F"
-   ],
-   "answer": "[1]=B, [2]=C, [3]=D, [4]=E, [7]=M, [8]=F, [9]=K, [14]=O, [15]=P, [16]=G, [17]=H, [30]=R, [31]=T"
-  },
-  {
-   "id": "p4",
-   "part": "partB",
-   "source": "2018-mid-c024-q12",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s1-inorder",
-   "level": 2,
-   "date": "1102",
-   "terms": [
-    "A B C D E F G H"
-   ],
-   "answer": "루트 A, 레벨 순서 A B C D E F G H"
-  },
-  {
-   "id": "p5",
-   "part": "partB",
-   "source": "2018-mid-c024-q3",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s1-postorder",
-   "level": 1,
-   "date": "1102",
-   "terms": [
-    "후위 순회"
-   ],
-   "answer": "후위 순회"
-  },
-  {
-   "id": "p6",
-   "part": "partB",
-   "source": "2017-mid-c050-q5",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s1-preorder",
-   "level": 1,
-   "date": "1102",
-   "terms": [
-    "전위 순회"
-   ],
-   "answer": "전위 순회"
-  },
-  {
-   "id": "p7",
-   "part": "partD",
-   "source": "textbook-ch08-q01",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s1-inorder",
-   "level": 1,
-   "date": "1102",
-   "terms": [
-    "④",
-    "D B A E C F"
-   ],
-   "answer": "④ D B A E C F",
-   "objectives": [
-    "중위 순회(LVR) 방문 순서"
-   ],
-   "task_family": "textbook-ch08-q01"
-  },
-  {
-   "id": "p8",
-   "part": "partD",
-   "source": "textbook-ch08-q02",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s1-preorder",
-   "level": 1,
-   "date": "1102",
-   "terms": [
-    "②",
-    "A B D C E G H F"
-   ],
-   "answer": "② E",
-   "objectives": [
-    "전위 순회(VLR) 방문 순서"
-   ],
-   "task_family": "textbook-ch08-q02"
-  },
-  {
-   "id": "p9",
-   "part": "partD",
-   "source": "textbook-ch08-q03",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s2-expr-tree",
-   "level": 1,
-   "date": "1102",
-   "terms": [
-    "④",
-    "A B / C * D * E +"
-   ],
-   "answer": "④ A B / C * D * E +",
-   "objectives": [
-    "수식 트리의 후위 순회"
-   ],
-   "task_family": "textbook-ch08-q03"
-  },
-  {
-   "id": "p10",
-   "part": "partD",
-   "source": "textbook-ch08-q12",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s2-height",
-   "level": 2,
-   "date": "1102",
-   "terms": [
-    "8",
-    "단말 노드"
-   ],
-   "answer": "8",
-   "objectives": [
-    "재귀 트리 함수가 돌려주는 값 추적"
-   ],
-   "task_family": "textbook-ch08-q12"
-  },
-  {
-   "id": "p11",
-   "part": "partL",
-   "source": "lecture-s07-p13-level-order",
-   "source_kind": "lecture-code",
-   "variant": false,
-   "anchor": "s1-levelorder",
-   "level": 2,
-   "date": "1102",
-   "terms": [
-    "+ * / a b c d",
-    "/ a b",
-    "+ * a b / c d",
-    "a b * c d / +"
-   ],
-   "answer": "(a) + * / a b c d (b) [/ a b] (c) 전위 + * a b / c d, 중위 a * b + c / d, 후위 a b * c d / +",
-   "lecture_ref": {
-    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
-    "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
-    "pdf_page": 13,
-    "example": "level-order-expression-tree",
-    "taught_on": "1102",
-    "extra_pages": [
-     11,
-     14
-    ]
-   },
-   "objectives": [
-    "레벨 순회에서 큐에 넣고 꺼내는 순서 추적",
-    "같은 수식 트리의 전위·중위·후위 순회 결과 비교"
-   ],
-   "task_family": "level-order-queue-trace"
-  },
-  {
-   "id": "p12",
-   "part": "partL",
-   "source": "lecture-s07-p16-count-height",
-   "source_kind": "lecture-code",
-   "variant": false,
-   "anchor": "s2-count",
-   "level": 2,
-   "date": "1102",
-   "terms": [
-    "X 3",
-    "Y 2",
-    "R 6",
-    "get_height"
-   ],
-   "answer": "(a) X 3, Y 2, R 6 (b) 3 (c) 1은 지금 노드(루트) 자신이 차지하는 한 층",
-   "lecture_ref": {
-    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
-    "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
-    "pdf_page": 16,
-    "example": "get-node-count-and-height",
-    "taught_on": "1102",
-    "extra_pages": [
-     17
-    ]
-   },
-   "objectives": [
-    "get_node_count 의 서브트리별 반환값 추적",
-    "get_height 의 max + 1 재귀 계산"
-   ],
-   "task_family": "recursive-tree-count-height"
-  }
- ],
- "links": [
-  {
-   "topic": "s3-links",
-   "href": "복습문제_1102_Tree.html"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../../자료구조_강의록_2026/Software_7_Tree.pdf"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../1029/정리노트_1029_Tree.html#s2-numbering"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../1012/정리노트_1012_Queue.html#s1-notation"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../0914/정리노트_0914_Recursion.html#s4-two-conditions"
-  }
- ],
- "policy_version": "review-questions-2026-10-17",
- "exam_retention_policy": "same-exam-reuse-only"
+  ],
+  "links": [
+    {
+      "topic": "s3-links",
+      "href": "복습문제_1102_Tree.html"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../../자료구조_강의록_2026/Software_7_Tree.pdf"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../1029/정리노트_1029_Tree.html#s2-numbering"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../1012/정리노트_1012_Queue.html#s1-notation"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../0914/정리노트_0914_Recursion.html#s4-two-conditions"
+    }
+  ],
+  "policy_version": "review-questions-2026-10-17",
+  "exam_retention_policy": "same-exam-reuse-only",
+  "rules": [
+    "layout-v2"
+  ]
 }

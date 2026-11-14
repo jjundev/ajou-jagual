@@ -171,6 +171,20 @@ class TestAssemble(unittest.TestCase):
         assemble.assemble(run, out)
         self.assertEqual((dest / "inorder-1105.json").read_bytes(), (run / "traces" / "inorder-1105.json").read_bytes())
 
+    def test_assemble_note_only_preserves_existing_review(self):
+        run = self.tmp / "run_note"
+        shutil.copytree(MINI_RUN, run)
+        shutil.rmtree(run / "cards")
+        out = self.tmp / "note_only_out"
+        out.mkdir()
+        review = out / "복습문제_0101-0102_Mini_Test.html"
+        review.write_text("KEEP_ME", encoding="utf-8")
+        note = assemble.assemble_note(run, out)
+        self.assertEqual(note.name, "정리노트_0101-0102_Mini_Test.html")
+        self.assertEqual(review.read_text(encoding="utf-8"), "KEEP_ME")
+        self.assertIn("<h1>Mini — 테스트 정리노트</h1>", note.read_text(encoding="utf-8"))
+        self.assertTrue((out / ".pack" / "자료_복습팩" / "manifest.json").exists())
+
 
 if __name__ == "__main__":
     unittest.main()

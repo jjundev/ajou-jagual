@@ -1,425 +1,428 @@
 {
- "course": "자료구조및알고리즘이해",
- "range": "1112",
- "slug": "Heap",
- "note_title": "힙 정렬과 힙의 응용 — 5살도 이해하는 정리노트",
- "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1112 수업 (Software_8 Heap)",
- "review_title": "복습문제 8선 — 1112 수업 범위",
- "review_intro": "이정원 교수님 기출 1개, 다른 기출 1개, 교과서 3개와 강의 예제 기반 자체 문제 3개예요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
- "footer_note": "출처: 이정원 교수님 강의록(Software_8) · 수업 녹음 전사(1112).",
- "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2016 기말(이정원), 2021 모의(출제자 미상, 2018-2 기출) · 교과서 9장 4·10·17번 · Software_8 강의 예제. 풀이는 자체 작성하며 답은 Python 힙·허프만·이벤트 시뮬레이션과 C11 실행, 강의 근거 대조로 검증했습니다.",
- "sessions": [
-  {
-   "date": "1112",
-   "stt": "STT/1112 자구알.md",
-   "summary": "summaries/stt-1112.md",
-   "slides": "S8 p14–19"
-  }
- ],
- "sections": [
-  {
-   "id": "s0",
-   "title": "1. 힙 정렬",
-   "short": "1 힙 정렬",
-   "topics": [
+  "course": "자료구조및알고리즘이해",
+  "range": "1112",
+  "slug": "Heap",
+  "note_title": "힙 정렬과 힙의 응용 — 5살도 이해하는 정리노트",
+  "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1112 수업 (Software_8 Heap)",
+  "review_title": "복습문제 8선 — 1112 수업 범위",
+  "review_intro": "이정원 교수님 기출 1개, 다른 기출 1개, 교과서 3개와 강의 예제 기반 자체 문제 3개예요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
+  "footer_note": "출처: 이정원 교수님 강의록(Software_8) · 수업 녹음 전사(1112).",
+  "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2016 기말(이정원), 2021 모의(출제자 미상, 2018-2 기출) · 교과서 9장 4·10·17번 · Software_8 강의 예제. 풀이는 자체 작성하며 답은 Python 힙·허프만·이벤트 시뮬레이션과 C11 실행, 강의 근거 대조로 검증했습니다.",
+  "sessions": [
     {
-     "id": "s0-store",
-     "title": "힙은 꺼내기 좋게 넣어 두는 자료구조",
-     "required_terms": [
-      "서랍",
-      "스토어",
-      "로드",
-      "가장 큰 값 몇 개",
-      "O(\\log n)",
-      "O(n\\log n)"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
-    },
-    {
-     "id": "s0-heapsort-code",
-     "title": "heap_sort 프로그램",
-     "required_terms": [
-      "heap_sort",
-      "insert_max_heap(&h, a[i]);",
-      "a[i] = delete_max_heap(&h);",
-      "for(i=(n-1);i>=0;i--){",
-      "h -> heap_size = 0;",
-      "오름차순",
-      "parallel"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "date": "1112",
+      "stt": "STT/1112 자구알.md",
+      "summary": "summaries/stt-1112.md",
+      "slides": "S8 p14–19"
     }
-   ]
-  },
-  {
-   "id": "s1",
-   "title": "2. 이산 이벤트 시뮬레이션",
-   "short": "2 이벤트 시뮬레이션",
-   "topics": [
+  ],
+  "sections": [
     {
-     "id": "s1-event-sim",
-     "title": "아이스크림 가게와 우선순위 큐",
-     "required_terms": [
-      "이산 이벤트 시뮬레이션",
-      "arrival",
-      "order",
-      "leave",
-      "의자 수",
-      "take-out",
-      "우선순위 큐"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": true
+      "id": "s0",
+      "title": "1. 힙 정렬",
+      "short": "1 힙 정렬",
+      "topics": [
+        {
+          "id": "s0-store",
+          "title": "힙은 꺼내기 좋게 넣어 두는 자료구조",
+          "required_terms": [
+            "서랍",
+            "스토어",
+            "로드",
+            "가장 큰 값 몇 개",
+            "O(\\log n)",
+            "O(n\\log n)"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-heapsort-code",
+          "title": "heap_sort 프로그램",
+          "required_terms": [
+            "heap_sort",
+            "insert_max_heap(&h, a[i]);",
+            "a[i] = delete_max_heap(&h);",
+            "for(i=(n-1);i>=0;i--){",
+            "h -> heap_size = 0;",
+            "오름차순",
+            "parallel"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 이산 이벤트 시뮬레이션",
+      "short": "2 이벤트 시뮬레이션",
+      "topics": [
+        {
+          "id": "s1-event-sim",
+          "title": "아이스크림 가게와 우선순위 큐",
+          "required_terms": [
+            "이산 이벤트 시뮬레이션",
+            "arrival",
+            "order",
+            "leave",
+            "의자 수",
+            "take-out",
+            "우선순위 큐"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": true
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "3. 허프만 코드",
+      "short": "3 허프만 코드",
+      "topics": [
+        {
+          "id": "s2-huffman-why",
+          "title": "자주 나오는 글자에 짧은 코드",
+          "required_terms": [
+            "허프만 코드",
+            "빈도",
+            "암호",
+            "45 * 3 = 135",
+            "3비트",
+            "ASCII"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-huffman-build",
+          "title": "가장 작은 두 개를 묶어 트리 만들기",
+          "required_terms": [
+            "허프만 코딩 트리",
+            "4+6=10",
+            "10+8=18",
+            "12+15=27",
+            "18+27=45",
+            "최소 힙"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-huffman-code",
+          "title": "비트 코드와 100비트",
+          "required_terms": [
+            "110",
+            "111",
+            "100bits",
+            "26%",
+            "접두어",
+            "delimiter"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": true
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 요약 · 예고",
+      "short": "4 요약·예고",
+      "topics": [
+        {
+          "id": "s3-cheatsheet",
+          "title": "한 장 요약",
+          "required_terms": [
+            "heap_sort",
+            "허프만",
+            "우선순위 큐"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "정렬",
+            "Sorting",
+            "실습"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s3-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "복습문제",
+            "강의록"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "s2",
-   "title": "3. 허프만 코드",
-   "short": "3 허프만 코드",
-   "topics": [
+  ],
+  "preview_topic": "s3-next",
+  "forbidden_outside_preview": [
+    "선택 정렬",
+    "삽입 정렬",
+    "퀵 정렬",
+    "합병 정렬",
+    "기수 정렬"
+  ],
+  "parts": [
     {
-     "id": "s2-huffman-why",
-     "title": "자주 나오는 글자에 짧은 코드",
-     "required_terms": [
-      "허프만 코드",
-      "빈도",
-      "암호",
-      "45 * 3 = 135",
-      "3비트",
-      "ASCII"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "partA",
+      "title": "A. 이정원 교수님 기출",
+      "short": "A 이정원 기출"
     },
     {
-     "id": "s2-huffman-build",
-     "title": "가장 작은 두 개를 묶어 트리 만들기",
-     "required_terms": [
-      "허프만 코딩 트리",
-      "4+6=10",
-      "10+8=18",
-      "12+15=27",
-      "18+27=45",
-      "최소 힙"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": false
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B 다른 기출"
     },
     {
-     "id": "s2-huffman-code",
-     "title": "비트 코드와 100비트",
-     "required_terms": [
-      "110",
-      "111",
-      "100bits",
-      "26%",
-      "접두어",
-      "delimiter"
-     ],
-     "layers": [
-      "eli5",
-      "formal",
-      "prof"
-     ],
-     "supp": true
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    },
+    {
+      "id": "partL",
+      "title": "E. 강의 예제 기반 자체 문제",
+      "short": "E 강의 예제"
     }
-   ]
-  },
-  {
-   "id": "s3",
-   "title": "4. 요약 · 예고",
-   "short": "4 요약·예고",
-   "topics": [
+  ],
+  "problems": [
     {
-     "id": "s3-cheatsheet",
-     "title": "한 장 요약",
-     "required_terms": [
-      "heap_sort",
-      "허프만",
-      "우선순위 큐"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p1",
+      "part": "partA",
+      "source": "2016-final-ljw-q4",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-huffman-code",
+      "level": 3,
+      "date": "1112",
+      "terms": [
+        "300",
+        "247",
+        "40+60=100"
+      ],
+      "answer": "1) 3 bit, 300 bit (문제 글의 '7가지'는 오기, 문자는 8개) 2) 247 bit. 병합 1+2=3, 3+5=8, 8+8=16, 9+15=24, 16+20=36, 24+36=60, 40+60=100. 코드 길이 F 1, A·C·G 3, B 4, E 5, D·H 6. 코드 예(원본 시험지의 채점된 답안과 같은 배치): F 0, A 100, G 101, C 110, B 1110, E 11110, H 111110, D 111111 (합칠 때 좌우 배치에 따라 비트는 달라도 길이와 247은 같다)"
     },
     {
-     "id": "s3-next",
-     "title": "다음 시간 예고",
-     "required_terms": [
-      "정렬",
-      "Sorting",
-      "실습"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p2",
+      "part": "partB",
+      "source": "2021-mock1-q5",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-huffman-build",
+      "level": 3,
+      "date": "1112",
+      "terms": [
+        "250",
+        "0100",
+        "011",
+        "42+63=105"
+      ],
+      "answer": "1) 병합 4+8=12, 12+16=28, 19+23=42, 28+35=63, 42+63=105. 틀에 맞춰 루트 왼쪽 63(t 35, 28(12(u,v), s)), 오른쪽 42(x, w) 2) s 011, t 00, u 0100, v 0101, w 11, x 10 3) 250 bits"
     },
     {
-     "id": "s3-links",
-     "title": "함께 보면 좋은 자료",
-     "required_terms": [
-      "복습문제",
-      "강의록"
-     ],
-     "layers": [],
-     "supp": false
+      "id": "p3",
+      "part": "partD",
+      "source": "textbook-ch09-q04",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-store",
+      "level": 1,
+      "date": "1112",
+      "terms": [
+        "①"
+      ],
+      "answer": "① 데이터 100개 중에서 오름차순으로 20개만 뽑고자 할 때",
+      "objectives": [
+        "힙 정렬이 유용한 경우(전체가 아니라 앞쪽 몇 개만 필요할 때)"
+      ],
+      "task_family": "textbook-ch09-q04"
+    },
+    {
+      "id": "p4",
+      "part": "partD",
+      "source": "textbook-ch09-q10",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s0-heapsort-code",
+      "level": 2,
+      "date": "1112",
+      "terms": [
+        "60 40 30 12 10 6 15 5 9",
+        "40 12 30 9 10 6 15 5"
+      ],
+      "answer": "1) 삽입마다 10 → 40 10 → 40 10 30 → 40 10 30 5 → 40 12 30 5 10 → 40 12 30 5 10 6 → 40 12 30 5 10 6 15 → 40 12 30 9 10 6 15 5 → 60 40 30 12 10 6 15 5 9 2) 배열 [1..9] = 60 40 30 12 10 6 15 5 9 3) 루트 60 삭제, 마지막 9를 루트로 올리고 큰 자식과 교환(40, 12)해 40 12 30 9 10 6 15 5",
+      "objectives": [
+        "heap_sort 첫 단계(차례로 insert)로 최대 힙 만들기",
+        "최댓값 삭제와 downheap"
+      ],
+      "task_family": "textbook-ch09-q10"
+    },
+    {
+      "id": "p5",
+      "part": "partD",
+      "source": "textbook-ch09-q17",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s2-huffman-build",
+      "level": 2,
+      "date": "1112",
+      "terms": [
+        "132",
+        "21+33=54"
+      ],
+      "answer": "병합 1+1=2, 2+2=4, 3+4=7, 5+7=12, 8+12=20, 13+20=33, 21+33=54. 코드 길이 h 1, g 2, f 3, e 4, d 5, c 6, a·b 7 (먼저 꺼낸 쪽을 왼쪽(0)에 두면 h 0, g 10, f 110, e 1110, d 11110, c 111110, a 1111110, b 1111111 — 좌우 배치에 따라 비트는 달라도 길이는 같다). 총 132 bit (고정 3비트면 162 bit)",
+      "objectives": [
+        "허프만 트리 만들기(같은 빈도 처리 포함)",
+        "코드 길이와 총 비트 수"
+      ],
+      "task_family": "textbook-ch09-q17"
+    },
+    {
+      "id": "p6",
+      "part": "partL",
+      "source": "lecture-s08-p15-heap-sort",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s0-heapsort-code",
+      "level": 2,
+      "date": "1112",
+      "terms": [
+        "23 20 7 1 8",
+        "1 7 8 20 23",
+        "i=4"
+      ],
+      "answer": "(a) 첫 for 뒤 힙 배열 23 20 7 1 8 (b) i=4: a[4]=23, 힙 20 8 7 1 → i=3: a[3]=20, 힙 8 1 7 → i=2: a[2]=8, 힙 7 1 → i=1: a[1]=7, 힙 1 → i=0: a[0]=1, 결과 1 7 8 20 23 (c) 최대 힙은 큰 값부터 나오므로 뒤(n-1)부터 채워야 오름차순. insert·delete 각 O(log n)을 n번씩이라 O(n log n)",
+      "objectives": [
+        "heap_sort 두 for 루프 추적",
+        "i를 n-1부터 내려가며 채우는 이유와 시간 복잡도"
+      ],
+      "task_family": "lecture-s08-p15-heap-sort",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+        "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
+        "pdf_page": 15,
+        "example": "heap-sort",
+        "taught_on": "1112",
+        "extra_pages": [
+          14
+        ]
+      }
+    },
+    {
+      "id": "p7",
+      "part": "partL",
+      "source": "lecture-s08-p17-huffman-etnis",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s2-huffman-build",
+      "level": 2,
+      "date": "1112",
+      "terms": [
+        "135",
+        "100",
+        "25.9",
+        "8 10 15 12"
+      ],
+      "answer": "(a) 3비트, 45 × 3 = 135 bit (b) 최소 힙 4 6 8 12 15 → 4+6=10 후 8 10 15 12 → 8+10=18 후 12 15 18 → 12+15=27 후 18 27 → 18+27=45 후 45 (c) 코드 길이 e·t·n 2, i·s 3 (슬라이드 배치 e 00, t 01, n 10, i 110, s 111), 15·2+12·2+8·2+6·3+4·3 = 100 bit, 35 bit 절약(35/135 ≈ 25.9%)",
+      "objectives": [
+        "고정 길이 비트 수 계산",
+        "최소 힙으로 가장 작은 두 빈도를 꺼내 합치는 과정 추적",
+        "코드 배정과 압축률"
+      ],
+      "task_family": "lecture-s08-p17-huffman",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+        "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
+        "pdf_page": 17,
+        "example": "huffman-etnis",
+        "taught_on": "1112",
+        "extra_pages": [
+          18,
+          19
+        ]
+      }
+    },
+    {
+      "id": "p8",
+      "part": "partL",
+      "source": "lecture-s08-p16-event-sim",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-event-sim",
+      "level": 2,
+      "date": "1112",
+      "terms": [
+        "7명",
+        "t=8",
+        "5개"
+      ],
+      "answer": "(a) 나중에 생긴 order·leave 이벤트가 먼저 들어 있던 도착보다 먼저 일어나야 할 수 있어, 넣은 순서(FIFO)가 아니라 시각이 가장 이른 것을 꺼내는 우선순위 큐가 필요 (b) t=1 arrival 3명 착석(의자 2) → t=2 order → t=3 arrival 3명 그냥 나감 → t=5 leave(의자 5) → t=6 arrival 2명 착석(의자 3) → t=7 order → t=8 arrival 4명 그냥 나감 → t=10 leave(의자 5) (c) 그냥 나간 손님 7명, 마지막 남은 의자 5개",
+      "objectives": [
+        "이산 이벤트 시뮬레이션에서 큐 대신 우선순위 큐를 쓰는 이유",
+        "arrival·order·leave 이벤트 처리 순서와 의자 수 추적"
+      ],
+      "task_family": "lecture-s08-p16-event-sim",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
+        "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
+        "pdf_page": 16,
+        "example": "ice-cream-event-sim",
+        "taught_on": "1112"
+      }
     }
-   ]
-  }
- ],
- "preview_topic": "s3-next",
- "forbidden_outside_preview": [
-  "선택 정렬",
-  "삽입 정렬",
-  "퀵 정렬",
-  "합병 정렬",
-  "기수 정렬"
- ],
- "parts": [
-  {
-   "id": "partA",
-   "title": "A. 이정원 교수님 기출",
-   "short": "A 이정원 기출"
-  },
-  {
-   "id": "partB",
-   "title": "B. 다른 기출",
-   "short": "B 다른 기출"
-  },
-  {
-   "id": "partD",
-   "title": "D. 교과서 연습문제",
-   "short": "D 교과서"
-  },
-  {
-   "id": "partL",
-   "title": "E. 강의 예제 기반 자체 문제",
-   "short": "E 강의 예제"
-  }
- ],
- "problems": [
-  {
-   "id": "p1",
-   "part": "partA",
-   "source": "2016-final-ljw-q4",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s2-huffman-code",
-   "level": 3,
-   "date": "1112",
-   "terms": [
-    "300",
-    "247",
-    "40+60=100"
-   ],
-   "answer": "1) 3 bit, 300 bit (문제 글의 '7가지'는 오기, 문자는 8개) 2) 247 bit. 병합 1+2=3, 3+5=8, 8+8=16, 9+15=24, 16+20=36, 24+36=60, 40+60=100. 코드 길이 F 1, A·C·G 3, B 4, E 5, D·H 6. 코드 예(원본 시험지의 채점된 답안과 같은 배치): F 0, A 100, G 101, C 110, B 1110, E 11110, H 111110, D 111111 (합칠 때 좌우 배치에 따라 비트는 달라도 길이와 247은 같다)"
-  },
-  {
-   "id": "p2",
-   "part": "partB",
-   "source": "2021-mock1-q5",
-   "source_kind": "past-exam",
-   "variant": false,
-   "anchor": "s2-huffman-build",
-   "level": 3,
-   "date": "1112",
-   "terms": [
-    "250",
-    "0100",
-    "011",
-    "42+63=105"
-   ],
-   "answer": "1) 병합 4+8=12, 12+16=28, 19+23=42, 28+35=63, 42+63=105. 틀에 맞춰 루트 왼쪽 63(t 35, 28(12(u,v), s)), 오른쪽 42(x, w) 2) s 011, t 00, u 0100, v 0101, w 11, x 10 3) 250 bits"
-  },
-  {
-   "id": "p3",
-   "part": "partD",
-   "source": "textbook-ch09-q04",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s0-store",
-   "level": 1,
-   "date": "1112",
-   "terms": [
-    "①"
-   ],
-   "answer": "① 데이터 100개 중에서 오름차순으로 20개만 뽑고자 할 때",
-   "objectives": [
-    "힙 정렬이 유용한 경우(전체가 아니라 앞쪽 몇 개만 필요할 때)"
-   ],
-   "task_family": "textbook-ch09-q04"
-  },
-  {
-   "id": "p4",
-   "part": "partD",
-   "source": "textbook-ch09-q10",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s0-heapsort-code",
-   "level": 2,
-   "date": "1112",
-   "terms": [
-    "60 40 30 12 10 6 15 5 9",
-    "40 12 30 9 10 6 15 5"
-   ],
-   "answer": "1) 삽입마다 10 → 40 10 → 40 10 30 → 40 10 30 5 → 40 12 30 5 10 → 40 12 30 5 10 6 → 40 12 30 5 10 6 15 → 40 12 30 9 10 6 15 5 → 60 40 30 12 10 6 15 5 9 2) 배열 [1..9] = 60 40 30 12 10 6 15 5 9 3) 루트 60 삭제, 마지막 9를 루트로 올리고 큰 자식과 교환(40, 12)해 40 12 30 9 10 6 15 5",
-   "objectives": [
-    "heap_sort 첫 단계(차례로 insert)로 최대 힙 만들기",
-    "최댓값 삭제와 downheap"
-   ],
-   "task_family": "textbook-ch09-q10"
-  },
-  {
-   "id": "p5",
-   "part": "partD",
-   "source": "textbook-ch09-q17",
-   "source_kind": "textbook",
-   "variant": false,
-   "anchor": "s2-huffman-build",
-   "level": 2,
-   "date": "1112",
-   "terms": [
-    "132",
-    "21+33=54"
-   ],
-   "answer": "병합 1+1=2, 2+2=4, 3+4=7, 5+7=12, 8+12=20, 13+20=33, 21+33=54. 코드 길이 h 1, g 2, f 3, e 4, d 5, c 6, a·b 7 (먼저 꺼낸 쪽을 왼쪽(0)에 두면 h 0, g 10, f 110, e 1110, d 11110, c 111110, a 1111110, b 1111111 — 좌우 배치에 따라 비트는 달라도 길이는 같다). 총 132 bit (고정 3비트면 162 bit)",
-   "objectives": [
-    "허프만 트리 만들기(같은 빈도 처리 포함)",
-    "코드 길이와 총 비트 수"
-   ],
-   "task_family": "textbook-ch09-q17"
-  },
-  {
-   "id": "p6",
-   "part": "partL",
-   "source": "lecture-s08-p15-heap-sort",
-   "source_kind": "lecture-code",
-   "variant": false,
-   "anchor": "s0-heapsort-code",
-   "level": 2,
-   "date": "1112",
-   "terms": [
-    "23 20 7 1 8",
-    "1 7 8 20 23",
-    "i=4"
-   ],
-   "answer": "(a) 첫 for 뒤 힙 배열 23 20 7 1 8 (b) i=4: a[4]=23, 힙 20 8 7 1 → i=3: a[3]=20, 힙 8 1 7 → i=2: a[2]=8, 힙 7 1 → i=1: a[1]=7, 힙 1 → i=0: a[0]=1, 결과 1 7 8 20 23 (c) 최대 힙은 큰 값부터 나오므로 뒤(n-1)부터 채워야 오름차순. insert·delete 각 O(log n)을 n번씩이라 O(n log n)",
-   "objectives": [
-    "heap_sort 두 for 루프 추적",
-    "i를 n-1부터 내려가며 채우는 이유와 시간 복잡도"
-   ],
-   "task_family": "lecture-s08-p15-heap-sort",
-   "lecture_ref": {
-    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
-    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
-    "pdf_page": 15,
-    "example": "heap-sort",
-    "taught_on": "1112",
-    "extra_pages": [
-     14
-    ]
-   }
-  },
-  {
-   "id": "p7",
-   "part": "partL",
-   "source": "lecture-s08-p17-huffman-etnis",
-   "source_kind": "lecture-code",
-   "variant": false,
-   "anchor": "s2-huffman-build",
-   "level": 2,
-   "date": "1112",
-   "terms": [
-    "135",
-    "100",
-    "25.9",
-    "8 10 15 12"
-   ],
-   "answer": "(a) 3비트, 45 × 3 = 135 bit (b) 최소 힙 4 6 8 12 15 → 4+6=10 후 8 10 15 12 → 8+10=18 후 12 15 18 → 12+15=27 후 18 27 → 18+27=45 후 45 (c) 코드 길이 e·t·n 2, i·s 3 (슬라이드 배치 e 00, t 01, n 10, i 110, s 111), 15·2+12·2+8·2+6·3+4·3 = 100 bit, 35 bit 절약(35/135 ≈ 25.9%)",
-   "objectives": [
-    "고정 길이 비트 수 계산",
-    "최소 힙으로 가장 작은 두 빈도를 꺼내 합치는 과정 추적",
-    "코드 배정과 압축률"
-   ],
-   "task_family": "lecture-s08-p17-huffman",
-   "lecture_ref": {
-    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
-    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
-    "pdf_page": 17,
-    "example": "huffman-etnis",
-    "taught_on": "1112",
-    "extra_pages": [
-     18,
-     19
-    ]
-   }
-  },
-  {
-   "id": "p8",
-   "part": "partL",
-   "source": "lecture-s08-p16-event-sim",
-   "source_kind": "lecture-code",
-   "variant": false,
-   "anchor": "s1-event-sim",
-   "level": 2,
-   "date": "1112",
-   "terms": [
-    "7명",
-    "t=8",
-    "5개"
-   ],
-   "answer": "(a) 나중에 생긴 order·leave 이벤트가 먼저 들어 있던 도착보다 먼저 일어나야 할 수 있어, 넣은 순서(FIFO)가 아니라 시각이 가장 이른 것을 꺼내는 우선순위 큐가 필요 (b) t=1 arrival 3명 착석(의자 2) → t=2 order → t=3 arrival 3명 그냥 나감 → t=5 leave(의자 5) → t=6 arrival 2명 착석(의자 3) → t=7 order → t=8 arrival 4명 그냥 나감 → t=10 leave(의자 5) (c) 그냥 나간 손님 7명, 마지막 남은 의자 5개",
-   "objectives": [
-    "이산 이벤트 시뮬레이션에서 큐 대신 우선순위 큐를 쓰는 이유",
-    "arrival·order·leave 이벤트 처리 순서와 의자 수 추적"
-   ],
-   "task_family": "lecture-s08-p16-event-sim",
-   "lecture_ref": {
-    "path": "자료구조_강의록_2026/Software_8_Heap.pdf",
-    "sha256": "5ff0a712c9f93120ba297e6a6f4a81b3fe30bfb694b67062e4f4c7176f982492",
-    "pdf_page": 16,
-    "example": "ice-cream-event-sim",
-    "taught_on": "1112"
-   }
-  }
- ],
- "links": [
-  {
-   "topic": "s3-links",
-   "href": "복습문제_1112_Heap.html"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../../자료구조_강의록_2026/Software_8_Heap.pdf"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../1109/정리노트_1109_Heap.html#s2-heapsort"
-  },
-  {
-   "topic": "s3-links",
-   "href": "../1109/정리노트_1109_Heap.html#s2-downheap"
-  }
- ]
+  ],
+  "links": [
+    {
+      "topic": "s3-links",
+      "href": "복습문제_1112_Heap.html"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../../자료구조_강의록_2026/Software_8_Heap.pdf"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../1109/정리노트_1109_Heap.html#s2-heapsort"
+    },
+    {
+      "topic": "s3-links",
+      "href": "../1109/정리노트_1109_Heap.html#s2-downheap"
+    }
+  ],
+  "rules": [
+    "layout-v2"
+  ]
 }
