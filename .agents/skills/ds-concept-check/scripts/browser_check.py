@@ -108,18 +108,18 @@ def check_hint(run: Run, item: dict, shot: Path | None):
         summary = hint.get_by_text("힌트 보기", exact=True)
         body = hint.locator("p")
         solution = aid.locator("details.solution")
-        run.expect(hint.get_attribute("open") is None, f"{cid}: 첫 방문에 힌트가 펼쳐져 있음")
-        run.expect(not body.is_visible(), f"{cid}: 접힌 힌트의 내용이 보임")
-        summary.click()
+        run.expect(hint.get_attribute("open") is not None, f"{cid}: 첫 방문에 힌트가 접혀 있음")
         shown = body.text_content() or ""
         run.expect(body.is_visible() and bool(shown.strip()), f"{cid}: 펼친 힌트 내용이 보이지 않음")
         # KaTeX가 수식을 그리면 텍스트 노드는 원본의 $…$ 문자열과 달라진다.
         if body.locator(".katex").count() == 0:
             run.expect(shown == text, f"{cid}: 펼친 힌트가 원본과 다름")
-        run.expect(not solution.is_visible(), f"{cid}: 힌트를 열 때 채점 전 풀이도 보임")
+        run.expect(not solution.is_visible(), f"{cid}: 채점 전 풀이가 보임")
         run.page_checks(f"{cid} 힌트")
         if shot is not None:
             page.screenshot(path=str(shot), animations="disabled")
+        summary.click()
+        run.expect(hint.get_attribute("open") is None and not body.is_visible(), f"{cid}: 힌트가 접히지 않음")
     finally:
         if was_closed:
             close = page.locator("#panel-right [data-panel-close]")
@@ -204,12 +204,13 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
     if first_hint is not None:
         run.step("힌트 문항 다시 방문", lambda: run.go(first_hint))
         active_aid = page.locator(f".aid[data-card-id='{first_hint}']:not([hidden])")
-        run.expect(active_aid.locator("details.hint[open]").count() == 1, "다시 방문한 문항의 힌트가 접혀 있음")
+        run.expect(active_aid.locator("details.hint:not([open])").count() == 1, "다시 방문한 문항의 힌트가 펼쳐져 있음")
     run.step("새로고침", lambda: page.reload(wait_until="load"))
     progress = (page.locator("#progress-n").text_content() or "").strip()
     run.expect(progress == "0", f"새로고침 뒤 푼 문제 수가 {progress} (기대 0)")
     run.expect(page.locator(".review-choice[data-selected='true']").count() == 0, "새로고침 뒤 선택 남음")
-    run.expect(page.locator("details.hint[open]").count() == 0, "새로고침 뒤 힌트가 펼쳐져 있음")
+    run.expect(page.locator("details.hint[open]").count() == sum(bool(item.get("hint")) for item in items),
+               "새로고침 뒤 접힌 힌트가 있음")
     values = run.step("새로고침 뒤 입력값 읽기", lambda: page.locator(".short-input input[type=text]").evaluate_all(
         "els => els.map(e => e.value)")) or []
     run.expect(all(v == "" for v in values), f"새로고침 뒤 입력값 남음: {values}")

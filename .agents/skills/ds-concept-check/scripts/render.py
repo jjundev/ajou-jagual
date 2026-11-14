@@ -78,7 +78,7 @@ def note_link(note_name: str, topic_id: str) -> str:
 def card_html(item: dict, objective: dict, number: int, note_name: str) -> str:
     attrs, choices, after, solution = _short(item) if item["format"] == "short" else _mcq(item)
     hint = item.get("hint")
-    hint_block = (f'<details class="hint"><summary>힌트 보기</summary><p>{esc(hint)}</p></details>'
+    hint_block = (f'<details class="hint" open><summary>힌트 보기</summary><p>{esc(hint)}</p></details>'
                   if hint else "")
     solution += note_link(note_name, objective["topic_id"])
     return (f'<article class="card" id="{esc(item["id"])}" data-objective="{esc(objective["id"])}"{attrs}>'
