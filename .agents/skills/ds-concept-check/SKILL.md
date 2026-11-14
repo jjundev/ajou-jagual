@@ -83,7 +83,7 @@ python3 .agents/skills/ds-concept-check/scripts/blind.py status SRC SRC/blind-le
 ```
 python3 .agents/skills/ds-concept-check/scripts/browser_check.py 복습노트/<range>/확인문제_<range>_<slug>.html --src SRC --out SRC/browser.json --shots RUN/shots
 ```
-- 1280×900·375×812 × light·dark 4회. 채점 전 힌트 기본 펼침과 수동 접기, 풀이 숨김, 객관식 오답→설명→`다시 풀기`→정답, 단답 변형 입력→`자동 일치`, 채점 뒤 풀이의 정리노트 토픽 링크(해시·같은 창), 문항 재방문 시 접힘 유지와 새로고침 시 다시 펼침, 복기 버튼, 콘솔 오류·KaTeX 오류·가로 넘침을 본다. `browser: pass`여야 한다.
+- 1280×900·375×812 × light·dark 4회. 채점 전 힌트 기본 펼침과 수동 접기, 풀이 숨김, 객관식 오답→설명→`다시 풀기`→정답, 단답 변형 입력→`자동 일치`, 채점 뒤 풀이의 정리노트 토픽 링크(해시·같은 창), 문항 재방문 시 접힘 유지와 새로고침 시 다시 펼침, 마지막 문항 제출 시 복기 창 한 번 열기와 미응답 수·재열기·복사, 콘솔 오류·KaTeX 오류·가로 넘침을 본다. `browser: pass`여야 한다.
 - 각 화면 크기와 테마의 스크린샷(`RUN/shots/<폭>x<높이>-<테마>-<첫 문항>.png`, `…-<첫 문항>-hint.png`, `…-last.png`)을 열어 겹침·잘림·트리 그림을 확인한다.
 - HTML을 다시 빌드했으면 이 단계도 다시 한다(`browser.json`에 HTML 해시가 남는다).
 

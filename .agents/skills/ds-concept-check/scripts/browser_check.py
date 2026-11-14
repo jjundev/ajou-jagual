@@ -8,7 +8,8 @@ CLI: browser_check.py <확인문제 html> --src <자료_확인문제 폴더> --o
 - 우측 패널: 채점 전에 현재 문항의 힌트를 열고, 풀이가 가려져 있는지 본다.
 - 객관식: 오답 클릭 → 상태 문구·보기별 설명 → 다시 풀기 → 정답 클릭.
 - 값 입력(short): 허용답의 소문자·공백 변형을 넣고 '답 확인' → 맞음 상태('자동 일치').
-- 새로고침하면 선택·입력이 비어야 한다(저장소 null). 복기 버튼이 있어야 한다.
+- 마지막 문항 제출 뒤 복기 창이 한 번 열리고 미응답 수를 보여 준다.
+- 새로고침하면 선택·입력이 비어야 한다(저장소 null).
 - 실패는 멈추지 않고 모아 JSON 에 남기며 하나라도 있으면 exit 1.
 """
 from __future__ import annotations
@@ -173,6 +174,68 @@ def check_note_link(run: Run, item: dict):
     return True
 
 
+def check_review_dialog(run: Run, item: dict, total: int, shot: Path | None):
+    page, cid = run.page, item["id"]
+    run.go(cid)
+    opener = page.get_by_role("button", name="복기 열기", exact=True)
+    dialog = page.get_by_role("dialog", name="복기할 준비가 됐어요")
+    run.expect(not page.get_by_role("button", name="복기 프롬프트 복사").is_visible(),
+               "마지막 문항 채점 전에 복사 버튼이 보임")
+    run.expect(not opener.is_visible() and not dialog.is_visible(), "채점 전에 복기 기능이 열림")
+
+    def answer():
+        if item["format"] == "short":
+            field = page.locator(f"#{cid} .short-input input[type=text]")
+            field.fill(short_variant(item["answer"]))
+            field.press("Enter")
+        else:
+            page.locator(f"#{cid} .review-choice").first.click()
+
+    answer()
+    if not run.expect(dialog.is_visible(), "마지막 문항을 제출해도 복기 창이 열리지 않음"):
+        return
+    if total > 1:
+        run.expect(dialog.get_by_text(f"미응답 {total - 1}문항", exact=True).is_visible(),
+                   "복기 창의 미응답 문항 수가 다름")
+    if shot is not None:
+        page.screenshot(path=str(shot), animations="disabled")
+    page.keyboard.press("Escape")
+    run.expect(not dialog.is_visible() and opener.is_visible(), "복기 창을 닫은 뒤 다시 열기 버튼이 보이지 않음")
+    page.locator(f"#{cid} .review-reset").click()
+    answer()
+    run.expect(not dialog.is_visible(), "마지막 문항을 다시 제출하자 복기 창이 자동으로 다시 열림")
+    opener.click()
+    run.expect(dialog.is_visible(), "복기 열기 버튼으로 복기 창이 열리지 않음")
+    page.evaluate("""() => {
+        Object.defineProperty(navigator, 'clipboard', {configurable: true, value: {
+            writeText: async text => { window.testCopiedPrompt = text; }
+        }});
+    }""")
+    dialog.get_by_role("button", name="복기 프롬프트 복사").click()
+    message = "복사했어요. AI 채팅에 붙여 넣으세요"
+    toast = page.locator('.review-feedback[data-result="copied"]')
+    toast.get_by_text(message, exact=True).wait_for()
+    run.expect(not dialog.is_visible(), "복사 성공 후 복기 창이 닫히지 않음")
+    run.expect(page.evaluate("window.testCopiedPrompt.includes('미응답 ' + " + str(total - 1) + ")"),
+               "복사된 프롬프트의 미응답 문항 수가 다름")
+    page.evaluate("""() => {
+        navigator.clipboard.writeText = async () => { throw new Error('clipboard denied'); };
+        document.execCommand = () => false;
+    }""")
+    opener.click()
+    dialog.get_by_role("button", name="복기 프롬프트 복사").click()
+    area = dialog.get_by_role("textbox", name="복기 프롬프트")
+    area.wait_for()
+    run.expect(area.input_value() == page.evaluate("window.testCopiedPrompt"), "직접 복사할 프롬프트가 다름")
+    page.evaluate("""() => {
+        delete navigator.clipboard;
+        delete document.execCommand;
+        delete window.testCopiedPrompt;
+    }""")
+    dialog.get_by_role("button", name="닫기", exact=True).click()
+    page.locator(f"#{cid} .review-reset").click()
+
+
 def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: str) -> dict:
     page = run.page
     page.goto(url, wait_until="load")
@@ -180,6 +243,8 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
                     .some(font => font.family === 'Pretendard' && font.status === 'loaded')"""), "Pretendard 로드 실패")
     run.expect(page.evaluate("typeof renderMathInElement === 'function'"), "KaTeX 자동 렌더 로드 실패")
     run.page_checks("시작 화면")
+    review_shot = shots / f"{tag}-review.png" if shots is not None else None
+    run.step("복기 창", lambda: check_review_dialog(run, items[-1], len(items), review_shot))
     checked = 0
     hints_checked = 0
     for n, item in enumerate(items):
@@ -194,7 +259,16 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
             shot = shots / f"{tag}-{item['id']}.png"
             run.step("스크린샷 첫 문항", lambda: (page.wait_for_timeout(SETTLE_MS), page.screenshot(path=str(shot))))
         run.page_checks(item["id"])
-    run.expect(page.locator('button:has-text("복기")').count() >= 1, "복기 프롬프트 버튼 없음")
+    opener = page.get_by_role("button", name="복기 열기", exact=True)
+    if run.expect(opener.is_visible(), "복기 열기 버튼 없음"):
+        def check_full_review():
+            opener.click()
+            dialog = page.get_by_role("dialog", name="복기할 준비가 됐어요")
+            run.expect(dialog.is_visible(), "모든 문항을 제출한 뒤 복기 창을 열 수 없음")
+            run.expect(dialog.get_by_text("미응답", exact=False).count() == 0,
+                       "모든 문항을 제출했지만 미응답이 표시됨")
+            dialog.get_by_role("button", name="닫기", exact=True).click()
+        run.step("전체 제출 뒤 복기 창", check_full_review)
     if shots is not None:
         shot = shots / f"{tag}-last.png"
         run.step("스크린샷 마지막 화면", lambda: (page.wait_for_timeout(SETTLE_MS), page.screenshot(path=str(shot))))

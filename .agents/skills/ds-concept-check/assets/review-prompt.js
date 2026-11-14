@@ -105,7 +105,7 @@
     return clone.textContent.replace(/\s+/g, ' ').trim();
   }
 
-  function execCopy(win, text) {
+  function execCopy(win, text, container) {
     const doc = win.document;
     const area = doc.createElement('textarea');
     area.value = text;
@@ -114,7 +114,8 @@
     area.style.top = '0';
     area.style.left = '-9999px';
     area.style.opacity = '0';
-    doc.body.append(area);
+    const focused = doc.activeElement;
+    container.append(area);
     try {
       area.select();
       return doc.execCommand('copy') === true;
@@ -122,9 +123,10 @@
       return false;
     } finally {
       area.remove();
+      if (focused) focused.focus();
     }
   }
-  async function copyText(win, text) {
+  async function copyText(win, text, container = win.document.body) {
     const clipboard = win.navigator && win.navigator.clipboard;
     if (clipboard && typeof clipboard.writeText === 'function') {
       try {
@@ -132,55 +134,81 @@
         return true;
       } catch (_) {}
     }
-    return execCopy(win, text);
+    return execCopy(win, text, container);
   }
 
   const DIALOG_CSS = `
-.review-prompt-dialog{width:min(44rem,calc(100vw - 2rem));max-height:calc(100vh - 2rem);padding:1rem 1.1rem;border:1px solid #c9ccd3;border-radius:10px;background:#fff;color:#1d2330;box-shadow:0 12px 36px rgba(0,0,0,.18)}
+.review-prompt-dialog{width:min(25rem,calc(100vw - 2rem));max-height:calc(100vh - 2rem);padding:1.25rem;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink);box-shadow:0 12px 36px rgba(0,0,0,.18)}
 .review-prompt-dialog::backdrop{background:rgba(15,20,30,.45)}
-.review-prompt-dialog h2{margin:0 0 .35rem;font-size:1.05rem}
-.review-prompt-dialog p{margin:0 0 .6rem;font-size:.9rem;color:#4a5263}
-.review-prompt-dialog textarea{display:block;box-sizing:border-box;width:100%;height:min(55vh,28rem);padding:.6rem;border:1px solid #c9ccd3;border-radius:6px;font:13px/1.5 ui-monospace,Consolas,monospace;resize:vertical}
-.review-prompt-dialog .review-prompt-actions{display:flex;justify-content:flex-end;margin-top:.7rem}
-.review-prompt-dialog button{padding:.4rem 1rem;border:1px solid #c9ccd3;border-radius:6px;background:#f4f5f7;color:inherit;font:inherit;cursor:pointer}
-@media (prefers-color-scheme:dark){.review-prompt-dialog{background:#1e222b;color:#e6e8ee;border-color:#3a404d}.review-prompt-dialog p{color:#aab1c0}.review-prompt-dialog textarea{background:#14171d;color:#e6e8ee;border-color:#3a404d}.review-prompt-dialog button{background:#2a2f3a;border-color:#3a404d}}
+.review-prompt-dialog h2{margin:0;font-size:1.15rem}
+.review-prompt-dialog p{margin:.5rem 0 0;font-size:.9rem;color:var(--ink-2)}
+.review-prompt-dialog p:empty{display:none}
+.review-prompt-dialog textarea{width:100%;height:min(32vh,14rem);margin-top:.75rem;padding:.6rem;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);color:inherit;font:inherit;resize:vertical}
+.review-prompt-actions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.review-prompt-actions .btn{min-width:0;padding-inline:.9rem}
+@media print{.review-prompt-dialog{display:none!important}}
 `;
-  function openPromptDialog(doc, text) {
+  function openPromptDialog(doc, record, onCopied) {
     if (!doc.getElementById('review-prompt-style')) {
       const style = doc.createElement('style');
       style.id = 'review-prompt-style';
       style.textContent = DIALOG_CSS;
       doc.head.append(style);
     }
-    let dialog = doc.querySelector('dialog.review-prompt-dialog');
-    if (!dialog) {
-      dialog = doc.createElement('dialog');
-      dialog.className = 'review-prompt-dialog';
-      dialog.setAttribute('aria-labelledby', 'review-prompt-title');
-      const title = doc.createElement('h2');
-      title.id = 'review-prompt-title';
-      title.textContent = '복기 프롬프트';
-      const note = doc.createElement('p');
-      note.textContent = 'Ctrl+C(⌘C)로 복사해 AI 채팅에 붙여 넣으세요.';
-      const area = doc.createElement('textarea');
-      area.readOnly = true;
-      area.setAttribute('aria-label', '복기 프롬프트');
-      const actions = doc.createElement('div');
-      actions.className = 'review-prompt-actions';
-      const close = doc.createElement('button');
-      close.type = 'button';
-      close.textContent = '닫기';
-      close.addEventListener('click', () => dialog.close());
-      actions.append(close);
-      dialog.append(title, note, area, actions);
-      doc.body.append(dialog);
+    const dialog = doc.createElement('dialog');
+    dialog.className = 'review-prompt-dialog';
+    dialog.setAttribute('aria-labelledby', 'review-prompt-title');
+    const title = doc.createElement('h2');
+    title.id = 'review-prompt-title';
+    title.textContent = '복기할 준비가 됐어요';
+    dialog.append(title);
+    const unanswered = record.items.filter(item => item.status === 'unanswered').length;
+    if (unanswered) {
+      const summary = doc.createElement('p');
+      summary.id = 'review-prompt-unanswered';
+      summary.textContent = `미응답 ${unanswered}문항`;
+      dialog.setAttribute('aria-describedby', summary.id);
+      dialog.append(summary);
     }
-    const area = dialog.querySelector('textarea');
-    area.value = text;
-    if (!dialog.open) dialog.showModal();
-    area.focus();
-    area.select();
-    return dialog;
+    const status = doc.createElement('p');
+    status.setAttribute('role', 'status');
+    const area = doc.createElement('textarea');
+    area.hidden = true;
+    area.readOnly = true;
+    area.setAttribute('aria-label', '복기 프롬프트');
+    const actions = doc.createElement('div');
+    actions.className = 'review-prompt-actions';
+    const close = doc.createElement('button');
+    close.className = 'btn btn-ghost';
+    close.type = 'button';
+    close.textContent = '닫기';
+    close.addEventListener('click', () => dialog.close());
+    const copy = doc.createElement('button');
+    copy.className = 'btn btn-primary';
+    copy.type = 'button';
+    copy.textContent = '복기 프롬프트 복사';
+    const text = buildReviewPrompt(record);
+    copy.addEventListener('click', async () => {
+      copy.disabled = true;
+      const copied = await copyText(doc.defaultView, text, dialog);
+      copy.disabled = false;
+      if (copied) {
+        dialog.close();
+        onCopied();
+        return;
+      }
+      if (!dialog.open) return;
+      status.textContent = 'Ctrl+C(⌘C)로 복사해 AI 채팅에 붙여 넣으세요.';
+      area.hidden = false;
+      area.value = text;
+      area.focus();
+      area.select();
+    });
+    actions.append(close, copy);
+    dialog.append(status, area, actions);
+    dialog.addEventListener('close', () => dialog.remove(), {once:true});
+    doc.body.append(dialog);
+    dialog.showModal();
   }
 
   const api = {buildReviewPrompt, problemText, copyText, openPromptDialog};

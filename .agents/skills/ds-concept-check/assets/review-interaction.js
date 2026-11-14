@@ -142,7 +142,8 @@
       feedback = element('div', 'review-feedback');
       feedback.dataset.reviewFeedback = '';
       feedback.dataset.result = result;
-      feedback.setAttribute('aria-hidden', 'true');
+      if (result === 'copied') feedback.setAttribute('role', 'status');
+      else feedback.setAttribute('aria-hidden', 'true');
       feedback.append(
         element('span', 'review-feedback-icon'),
         element('span', 'review-feedback-text', message || (result === 'correct' ? '정답이에요' : '다시 확인해요'))
@@ -398,29 +399,23 @@
     if (prompt && exportCards.length && pager && !pager.querySelector('.review-export-bar')) {
       const ids = exportCards.map(el => el.id);
       const bar = element('div', 'review-export-bar');
-      const button = element('button', 'btn btn-primary review-export', '복기 프롬프트 복사');
+      bar.hidden = true;
+      const button = element('button', 'btn btn-ghost review-export', '복기 열기');
       button.type = 'button';
-      const note = element('p', 'review-export-note sr-only');
-      note.setAttribute('role', 'status');
-      note.setAttribute('aria-live', 'polite');
-      bar.append(button, note);
+      button.setAttribute('aria-haspopup', 'dialog');
+      bar.append(button);
       pager.prepend(bar);
-      root.addEventListener('od:screen', () => { note.textContent = ''; });
-      button.addEventListener('click', async () => {
-        if (button.disabled) return;
-        button.disabled = true;
-        let outcome;
-        try {
-          const record = buildPromptRecord(model, texts, ids, selectedById, unsureById, root.body.dataset.range || '');
-          const text = prompt.buildReviewPrompt(record);
-          outcome = await prompt.copyText(win, text) ? 'copied' : 'manual';
-          if (outcome === 'manual') prompt.openPromptDialog(root, text);
-        }
-        finally { button.disabled = false; }
-        const message = outcome === 'copied' ? '복기 프롬프트를 복사했어요. AI 채팅에 붙여 넣으세요'
-          : '자동 복사가 막혀 있어요. 열린 창에서 직접 복사해 주세요';
-        note.textContent = message + '.';
-        showFeedback(outcome, 'export', message, 2200);
+      const openReview = () => {
+        const record = buildPromptRecord(model, texts, ids, selectedById, unsureById, root.body.dataset.range || '');
+        prompt.openPromptDialog(root, record, () => {
+          showFeedback('copied', 'export', '복사했어요. AI 채팅에 붙여 넣으세요', 3000);
+        });
+      };
+      button.addEventListener('click', openReview);
+      root.addEventListener('od:answer', ({detail}) => {
+        if (!bar.hidden || detail.id !== ids.at(-1) || detail.restored || detail.result === null) return;
+        bar.hidden = false;
+        openReview();
       });
     }
     // Existing page CSS hides side panels when printing. Move original details,

@@ -97,9 +97,7 @@
   display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:12px;
   max-width:var(--measure); margin:0 auto; padding:12px 16px 0;
 }
-body:not(.at-end) .review-export-bar { display:none; }
-.review-export-note { margin:0; font-size:var(--fs-small); color:var(--ink-2); }
-.review-export-note:empty { display:none; }
+.review-export-bar[hidden], body:not(.at-end) .review-export-bar { display:none; }
 @media print {
   .review-export-bar { display:none !important; }
   .review-feedback { display:none !important; }
