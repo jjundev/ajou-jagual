@@ -8,7 +8,8 @@ from html import escape
 Tree = list  # list[str | None]
 
 OPS = ("preorder", "inorder", "postorder", "levelorder", "height", "node_count",
-       "evaluate", "lecture_number", "parent_index", "left_index", "right_index")
+       "evaluate", "lecture_number", "parent_index", "left_index", "right_index",
+       "huffman_bits")
 
 _OPERATORS = ("+", "-", "*", "/")
 
@@ -118,6 +119,14 @@ def right_index(i):
     return 2 * i + 1
 
 
+def huffman_bits(code: str, frequency: int) -> int:
+    if not isinstance(code, str) or not code or set(code) - {"0", "1"}:
+        raise ValueError("비어 있지 않은 0과 1의 비트열을 써야 해요")
+    if type(frequency) is not int or frequency < 0:
+        raise ValueError("빈도는 0 이상의 정수여야 해요")
+    return len(code) * frequency
+
+
 def compute(spec, tree):
     op = spec["op"]
     if op in ("preorder", "inorder", "postorder", "levelorder"):
@@ -128,6 +137,8 @@ def compute(spec, tree):
         return str(lecture_number(tree, spec["arg"]))
     if op in ("parent_index", "left_index", "right_index"):
         return str(globals()[op](int(spec["arg"])))
+    if op == "huffman_bits":
+        return str(huffman_bits(**spec["arg"]))
     raise ValueError(f"알 수 없는 op: {op!r}")
 
 
@@ -150,6 +161,8 @@ def steps(spec, tree):
         return _depth(lecture_number(tree, spec["arg"]) - 1) + 1
     if op in ("parent_index", "left_index", "right_index"):
         return 1
+    if op == "huffman_bits":  # 코드 길이 세기, 빈도 곱하기
+        return 2
     raise ValueError(f"알 수 없는 op: {op!r}")
 
 

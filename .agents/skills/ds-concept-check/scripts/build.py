@@ -95,7 +95,7 @@ def render_page(src: Path) -> str:
         NOTE_HREF=assemble.esc(note),
         INTRO=f"이번 수업에서 처음 배운 개념을 {len(s['items'])}문항으로 확인해요. 고르면 바로 채점돼요.",
         PARTS=f'<section id="check"><h2>확인문제</h2>{cards}</section>',
-        FOOTER="<p>Claude가 강의 근거로 만든 문항이에요. 근거: 강의록·수업 녹음 요약.</p>",
+        FOOTER="<p>AI가 강의록과 수업 녹음 요약을 바탕으로 만든 문항이에요.</p>",
         SCRIPTS="", RANGE=assemble.esc(f"{range_}-확인")))
     return interaction.install(swap_brand(page), output_name(range_, slug).removesuffix(".html"))
 

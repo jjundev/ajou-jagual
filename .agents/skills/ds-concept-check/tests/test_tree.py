@@ -43,8 +43,14 @@ def test_compute_joins_sequences():
     assert tree.compute({"op": "lecture_number", "arg": "F"}, T) == "7"
 
 
+def test_huffman_bits_counts_leading_zero_without_a_display_tree():
+    spec = {"op": "huffman_bits", "arg": {"code": "0110", "frequency": 7}}
+    assert tree.compute(spec, None) == "28"
+    assert tree.steps(spec, None) == 2
+
+
 def test_ops_cover_compute():
-    assert "evaluate" in tree.OPS and len(tree.OPS) == 11
+    assert "evaluate" in tree.OPS and len(tree.OPS) == 12
     for op in ("height", "node_count", "evaluate"):
         assert tree.compute({"op": op}, NUM).isdigit() or op == "evaluate"
 
