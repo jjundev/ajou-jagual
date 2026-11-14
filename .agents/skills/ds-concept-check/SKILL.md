@@ -25,7 +25,10 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 - `RUN` = `<scratchpad>/ds-concept-check/<range>/` (저장소 밖. 블라인드 사본·답안표·작성자 초안·스크린샷·백업을 둔다)
 - `python3` = homebrew `python3`(Playwright가 있다). 저장소 `.venv`에는 Playwright가 없다.
 
-**에이전트**: 문항 작성자와 블라인드 풀이자는 각각 `general-purpose` 서브에이전트 1명, 모델 **opus**. fork가 아니라 새 에이전트로 띄운다(이 세션의 목표·정답을 물려받지 않게).
+**에이전트**: 문항 작성자와 블라인드 풀이자는 각각 `general-purpose` 서브에이전트 1명을 새 컨텍스트에서 시작해 이 세션의 목표와 정답이 전달되지 않게 한다.
+
+- 문항 작성자와 블라인드 풀이자(재풀이 포함)를 호출할 때, 현재 환경에서 서브에이전트에 지정할 수 있는 모든 모델을 실행 환경이 제공하는 등급순으로 보고 **두 번째로 높은 모델**을 사용한다.
+- 지정 가능한 모델이 하나면 그 모델을 사용한다. 모델 순위를 확인할 수 없으면 실행 환경의 기본 모델을 사용하고, 그 이유를 최종 보고에 적는다.
 
 **진행 표시**: 단계마다 한 줄. 예: `3/9 문항 작성 중 (작성자 1명)`, `6/9 블라인드 r1 풀이 중`.
 
@@ -40,7 +43,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 - `stt-summary.md`(총평·절), manifest 토픽 순서, 정리노트 MD를 읽고 `SRC/objectives.json`을 쓴다. 모양·종류·제외 대상은 [item-rules.md](references/item-rules.md) 1~3절.
 - 수업 흐름 순서로 6~16개가 보통이다(1102 ≈ 14). 6개 미만이면 만든 만큼 쓰고 보고에 사유를 적는다.
 
-### 3. 문항 (작성자 1명, opus)
+### 3. 문항 (작성자 1명)
 - 작성자에게 [item-rules.md](references/item-rules.md) 8절 “작성자 브리프”를 `<SRC>`·`<RUN>`·`<range>`·`<slug>`를 채워 넘기고, 이 파일 전체를 읽게 한다. 작성자가 읽는 것은 브리프에 적힌 것뿐이다.
 - 오답 보기 오개념의 출처는 STT 절(`stt:`), 정리노트 토픽(`note:`), `from_the_past/기출/문제은행.json`의 같은 장 문항(`bank:`) 세 가지다.
 - 작성자는 `RUN/items.json`만 쓴다. 메인 에이전트가 `SRC/items.json`으로 복사한다.
@@ -58,7 +61,7 @@ python3 .agents/skills/ds-concept-check/scripts/build.py SRC
 ```
 - 출력 경로(`복습노트/<range>/확인문제_<range>_<slug>.html`)가 한 줄 찍힌다. 문항을 고칠 때마다 4→5를 다시 한다.
 
-### 6. 블라인드 풀이 (풀이자 1명, opus)
+### 6. 블라인드 풀이 (풀이자 1명)
 ```
 python3 .agents/skills/ds-concept-check/scripts/blind.py make SRC RUN/blind-r1.md
 ```
