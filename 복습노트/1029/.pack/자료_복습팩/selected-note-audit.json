@@ -1,0 +1,535 @@
+{
+  "schema_version": 1,
+  "scope": "selected-diff-semantic-preservation",
+  "baseline_commit": "2b384389fd3a88c99c6a6d951903736196ebd63c",
+  "baseline_html": "/workspace/.scratch/note-main-selected-20261114/1029/정리노트_1029_Tree.html",
+  "baseline_sha256": "781d7f56e8e583fd404725b19f1f9d9f3d509cfc81c626f3a32a9782d85a9975",
+  "html": "/workspace/ajou-jagual/복습노트/1029/정리노트_1029_Tree.html",
+  "html_sha256": "76ec7f0eb1d8b2f330cc94a54f25e62e480a4e1cd19c9ee1acd2290b523ef7d9",
+  "md": "/workspace/ajou-jagual/복습노트/1029/.pack/정리노트_1029_Tree.md",
+  "md_sha256": "0489044881e602d1a4e518c59882498500554712057c9838946f713609ea9322",
+  "status": "pass",
+  "topic_count": 8,
+  "category_row_count": 32,
+  "selected_topic_count": 2,
+  "changedareas": {
+    "s1-height": "gist 왜만: 임의 n의 최대/최소 배치 원리로 단순화; formal·주의·sum 보존",
+    "s2-numbering": "gist 왜/언제만: 완전 트리 다음 삽입 순서와 연결; formal의 A~J 및 K=11 근거"
+  },
+  "preservation_evidence": {
+    "baseline_matches_remote_main": true,
+    "outside_topic_bytes_identical": true,
+    "unselected_topic_bytes_identical": true,
+    "pre_svg_script_style_footer_bytes_identical": true,
+    "widget_prof_warn_supp_bytes_identical": true,
+    "ids_hrefs_src_order_identical": true,
+    "manifest_bytes_identical": true,
+    "formal_word_multiset_excluding_details_summary_identical": true,
+    "sum_unchanged_except_two_authorized_leads": true,
+    "note_md_check": "pass",
+    "note_md_manual_diff": "pass: read all three Markdown diffs; matches authorized HTML text changes and details placement; code/links/qualifiers preserved"
+  },
+  "topics": [
+    {
+      "id": "s0-why",
+      "selected": false,
+      "status": "pass",
+      "line": 378,
+      "gist_sum_exact": true,
+      "gist_rows": [
+        "트리는 계층적 구조와 포함 관계를 함께 나타내는 자료구조예요.",
+        "부모–자식 관계로 층을 나누어 위 노드가 아래 노드를 품도록 모델링하기 때문이에요.",
+        "조직도, 가계도, 파일 시스템, 결정 트리처럼 위아래 계층이 있는 현실 문제를 다룰 때 써요."
+      ],
+      "gist_grounding": "현재 formal의 정의·절차·조건 또는 그 직접적인 축약과 대조 완료; 선정 밖 기존 표현은 의미 재작성하지 않음",
+      "sum_preservation": "byte-identical to main"
+    },
+    {
+      "id": "s0-terms-structure",
+      "selected": false,
+      "status": "pass",
+      "line": 410,
+      "gist_sum_exact": true,
+      "gist_rows": [
+        "루트에서 갈라져 단말 노드에서 끝나고, 떼어 낸 조각도 다시 트리예요.",
+        "부모가 없는 루트 아래로 자식들이 뻗어 나가다가 자식이 없는 단말 노드에서 멈추고, 한 노드와 자손을 떼어 내도 같은 구조의 서브트리가 되기 때문이에요.",
+        "노드 하나만 남아도 서브트리이고, 아무것도 없는 공백도 서브트리예요."
+      ],
+      "gist_grounding": "현재 formal의 정의·절차·조건 또는 그 직접적인 축약과 대조 완료; 선정 밖 기존 표현은 의미 재작성하지 않음",
+      "sum_preservation": "byte-identical to main"
+    },
+    {
+      "id": "s0-terms-measure",
+      "selected": false,
+      "status": "pass",
+      "line": 444,
+      "gist_sum_exact": true,
+      "gist_rows": [
+        "높이는 최대 레벨이고, 트리의 차수는 노드 차수의 최댓값이에요.",
+        "루트를 레벨 1로 한 층씩 내려가며 가장 긴 가지의 끝까지 센 값이 최대 레벨이자 높이이고, 각 노드의 자식 수인 차수 중 가장 큰 값이 트리의 차수이기 때문이에요.",
+        "형제는 같은 레벨이 아니라 같은 부모를 가진 노드이고, 높이는 리프가 많은 층이 아니라 가장 긴 가지 끝까지 재요."
+      ],
+      "gist_grounding": "현재 formal의 정의·절차·조건 또는 그 직접적인 축약과 대조 완료; 선정 밖 기존 표현은 의미 재작성하지 않음",
+      "sum_preservation": "byte-identical to main"
+    },
+    {
+      "id": "s1-binary",
+      "selected": false,
+      "status": "pass",
+      "line": 492,
+      "gist_sum_exact": true,
+      "gist_rows": [
+        "이진 트리는 모든 노드의 자식이 2개 이하이고, 왼쪽 서브트리가 오른쪽 서브트리보다 우선해요.",
+        "노드마다 왼쪽과 오른쪽 두 서브트리를 두되 공집합을 허용하기 때문에 자식이 0·1·2개 모두 가능하고, 두 서브트리 사이에 순서가 정해져 있기 때문이에요.",
+        "자식이 3개 이상이면 이진 트리가 아니며, 모든 노드의 차수가 2 이하라 구현이 편리해요."
+      ],
+      "gist_grounding": "현재 formal의 정의·절차·조건 또는 그 직접적인 축약과 대조 완료; 선정 밖 기존 표현은 의미 재작성하지 않음",
+      "sum_preservation": "byte-identical to main"
+    },
+    {
+      "id": "s1-props",
+      "selected": false,
+      "status": "pass",
+      "line": 500,
+      "gist_sum_exact": true,
+      "gist_rows": [
+        "노드 $n$개 트리의 간선은 $e = n - 1$개이고, 높이 $h$ 이진 트리의 노드는 $h$개부터 $2^h - 1$개까지예요.",
+        "루트를 뺀 모든 노드가 부모와 간선 하나로 이어져 $e = n - 1$이 되고, 각 레벨 $i$에는 최소 $1$개부터 최대 $2^{i-1}$개의 노드가 들어갈 수 있기 때문이에요.",
+        "간선 수 공식 $e = n - 1$은 이진 트리뿐 아니라 모든 트리에서 성립해요."
+      ],
+      "gist_grounding": "현재 formal의 정의·절차·조건 또는 그 직접적인 축약과 대조 완료; 선정 밖 기존 표현은 의미 재작성하지 않음",
+      "sum_preservation": "byte-identical to main"
+    },
+    {
+      "id": "s1-height",
+      "selected": true,
+      "status": "pass",
+      "line": 508,
+      "gist_sum_exact": true,
+      "gist_rows": [
+        "노드 $n$개 이진 트리의 높이는 최대 $n$, 최소 $h = \\lceil \\log_2(n+1) \\rceil$이고, 높이를 낮게 만드는 것이 중요해요.",
+        "한 레벨에 하나씩 놓으면 가장 높아지고 위 레벨부터 꽉 채우면 가장 낮아지기 때문이에요.",
+        "높이가 알고리즘 성능을 좌우하므로 $h$를 최소 높이인 upper bound 쪽으로 낮게 유지해야 해요."
+      ],
+      "gist_grounding": "현재 formal의 정의·절차·조건 또는 그 직접적인 축약과 대조 완료; 선정 밖 기존 표현은 의미 재작성하지 않음",
+      "sum_preservation": "byte-identical to main"
+    },
+    {
+      "id": "s2-kinds",
+      "selected": false,
+      "status": "pass",
+      "line": 518,
+      "gist_sum_exact": true,
+      "gist_rows": [
+        "포화는 모든 레벨이 꽉 찬 트리, 완전은 마지막 레벨만 왼쪽부터 채우는 중인 트리예요.",
+        "노드 개수가 $2^h - 1$로 딱 떨어지면 모든 레벨이 꽉 차 포화 이진 트리가 되고, 그로 가는 중간 단계에서 마지막 레벨을 왼쪽부터 채우면 완전 이진 트리가 되기 때문이에요.",
+        "포화 이진 트리는 완전 이진 트리의 조건도 만족하지만, 중간 자리를 비우고 아래에 노드를 둔 트리는 기타 이진 트리예요."
+      ],
+      "gist_grounding": "현재 formal의 정의·절차·조건 또는 그 직접적인 축약과 대조 완료; 선정 밖 기존 표현은 의미 재작성하지 않음",
+      "sum_preservation": "byte-identical to main"
+    },
+    {
+      "id": "s2-numbering",
+      "selected": true,
+      "status": "pass",
+      "line": 573,
+      "gist_sum_exact": true,
+      "gist_rows": [
+        "포화 이진 트리 모양에서 위 레벨부터, 같은 레벨은 왼쪽부터 1, 2, 3, … 번호를 붙여요.",
+        "이 번호 순서가 완전 이진 트리에서 다음 노드를 채우는 순서와 같기 때문이에요.",
+        "완전 이진 트리에서 다음 노드가 들어갈 자리를 정할 때 써요."
+      ],
+      "gist_grounding": "현재 formal의 정의·절차·조건 또는 그 직접적인 축약과 대조 완료; 선정 밖 기존 표현은 의미 재작성하지 않음",
+      "sum_preservation": "byte-identical to main"
+    }
+  ],
+  "topiccategoryrows": [
+    {
+      "date": "1029",
+      "topic": "s0-why",
+      "category": "general",
+      "status": "pass",
+      "core": "계층·포함 관계, 부모–자식, 트리 용어와 조직·가계도·파일·결정 트리 응용",
+      "sum_comparison": "대응 sum에 동일 핵심과 조건을 압축; 긴 코드/추적은 본문 보존",
+      "summary_evidence": "트리는 계층적 구조와 포함 관계를 함께 나타내는 자료구조예요. 용어 트리(tree)부모–자식 관계의 노드들로 이루어진 계층적 구조예요. 루트(root)·리프(leaf)·브랜치(branch)거꾸로 뒤집은 나무의 뿌리·나뭇잎·나뭇가지예요. 응용계층적인 조직 표현, 가계도, 파일 시스템, 결정 트리(decision tree)예요. 조건·구분과 확인아래에서 루트 쪽으로 올라갈수록 위 노드가 아래 노드를 포함해요. 파일 시스템은 트리를 옆으로 눕힌 모양이에요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-why",
+      "category": "prof",
+      "status": "pass",
+      "core": "교수님 말씀 결정 트리는 딥러닝 이전, 1970년대 무렵부터 쓰인 인공지능 알고리즘 가운데 단순하지만 많이 쓰인 방법이라고 소개했어요. 곁가지로 뉴럴 네트워크(neural network)의 층을 깊게 쌓은 것이 딥러닝이라는 이야기와, 알파고 이전에 인간이 체스에서 컴퓨터에게 진 일화도 들려줬어요. 트리부터는 이렇게 생각하니까 이렇게 편리해지는구나를 많이 느낄 자료구조입니다. 수업 첫머리에 스택·큐와 운영체제 알고리즘을 연습하는 과제가 나온다고 예고했어요. 수업 끝에 조교가 과제 안내를 하러 들어왔어요.",
+      "sum_comparison": "결정 트리·딥러닝·체스 일화와 과제 예고는 본문에 그대로 남음; 기존 요약은 개념·응용만 선택",
+      "summary_evidence": "트리는 계층적 구조와 포함 관계를 함께 나타내는 자료구조예요. 용어 트리(tree)부모–자식 관계의 노드들로 이루어진 계층적 구조예요. 루트(root)·리프(leaf)·브랜치(branch)거꾸로 뒤집은 나무의 뿌리·나뭇잎·나뭇가지예요. 응용계층적인 조직 표현, 가계도, 파일 시스템, 결정 트리(decision tree)예요. 조건·구분과 확인아래에서 루트 쪽으로 올라갈수록 위 노드가 아래 노드를 포함해요. 파일 시스템은 트리를 옆으로 눕힌 모양이에요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-why",
+      "category": "warn",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-why",
+      "category": "supp",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-terms-structure",
+      "category": "general",
+      "status": "pass",
+      "core": "노드·부모 없는 루트·재귀적 서브트리·단말/비단말과 공백 서브트리",
+      "sum_comparison": "대응 sum에 동일 핵심과 조건을 압축; 긴 코드/추적은 본문 보존",
+      "summary_evidence": "루트에서 갈라져 단말 노드에서 끝나고, 떼어 낸 조각도 다시 트리예요. 용어 노드(node)트리의 구성 요소예요. 루트(root)부모가 없는 노드예요(예시의 A). 서브트리(subtree)하나의 노드와 그 노드의 자손들로 이루어진 트리예요. 정의가 재귀적(recursive)이에요. 단말 노드(terminal node)자식이 없는 노드로, 리프 노드(leaf node)와 같아요(E, F, G, H, I, J). 비단말 노드(non-terminal node)적어도 하나의 자식을 가지는 노드예요(A, B, C, D). 조건·구분과 확인노드 하나만 남아도, 아무것도 없는 공백도 서브트리예요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-terms-structure",
+      "category": "prof",
+      "status": "pass",
+      "core": "교수님 말씀 단말 노드의 \"터미널\"을 고속버스 터미널, 곧 종점에 비유했어요. 더는 뻗어 나갈 수 없는 끝 노드라는 뜻이에요. 터미널 노드는 곧 리프 노드입니다. 루트를 잘라 내면 나무 세 개가 생기고 각각이 또 트리라서, 정의가 재귀적(recursive)이라고 강조했어요. 이 강조는 슬라이드에 없는 설명이에요. 이 용어를 다 써서 앞으로 알고리즘을 생각해야 된다는 겁니다.",
+      "sum_comparison": "터미널 종점 비유와 재귀성 강조 유지; 요약에 재귀성과 단말=리프 유지",
+      "summary_evidence": "루트에서 갈라져 단말 노드에서 끝나고, 떼어 낸 조각도 다시 트리예요. 용어 노드(node)트리의 구성 요소예요. 루트(root)부모가 없는 노드예요(예시의 A). 서브트리(subtree)하나의 노드와 그 노드의 자손들로 이루어진 트리예요. 정의가 재귀적(recursive)이에요. 단말 노드(terminal node)자식이 없는 노드로, 리프 노드(leaf node)와 같아요(E, F, G, H, I, J). 비단말 노드(non-terminal node)적어도 하나의 자식을 가지는 노드예요(A, B, C, D). 조건·구분과 확인노드 하나만 남아도, 아무것도 없는 공백도 서브트리예요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-terms-structure",
+      "category": "warn",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-terms-structure",
+      "category": "supp",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-terms-measure",
+      "category": "general",
+      "status": "pass",
+      "core": "부모/자식/형제/조상/자손, 루트 레벨1, 최대 레벨 높이, 노드/트리 차수",
+      "sum_comparison": "대응 sum에 동일 핵심과 조건을 압축; 긴 코드/추적은 본문 보존",
+      "summary_evidence": "높이는 최대 레벨이고, 트리의 차수는 노드 차수의 최댓값이에요. 핵심 식 예시 트리의 차수$$\\max(3, 3, 1, 2, 0) = 3$$ 용어 형제(sibling)같은 부모를 가진 노드예요. 조상(ancestor)·자손(descendant)루트까지 올라가는 길의 노드, 아래로 이어진 모든 노드예요. 레벨(level)트리의 각 층의 번호예요. 루트가 레벨 1이에요. 높이(height)트리의 최대 레벨로, 가장 긴 가지의 끝까지 재요. 차수(degree)노드가 가지고 있는 자식 노드의 개수예요. 조건·구분과 확인같은 레벨이어도 부모가 다르면(사촌) 형제가 아니에요. 높이는 리프가 많이 모인 층이 아니라 가장 긴 가지 끝까지 재요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-terms-measure",
+      "category": "prof",
+      "status": "pass",
+      "core": "교수님 말씀 잎이 듬성한 나무를 뒤집어 키를 잰다고 생각하면, 가장 길게 뻗은 가지 끝까지 재야 한다고 비유했어요. \"사촌 아니에요?\"라는 질문을 스스로 던지고 같은 레벨이면 형제라고 답했지만, 사촌은 부모가 달라 형제가 아니에요.",
+      "sum_comparison": "가장 긴 가지 비유, 같은 레벨/다른 부모 구분과 레벨 정렬 강조 유지; 요약은 형제 구분과 긴 가지 기준 포함",
+      "summary_evidence": "높이는 최대 레벨이고, 트리의 차수는 노드 차수의 최댓값이에요. 핵심 식 예시 트리의 차수$$\\max(3, 3, 1, 2, 0) = 3$$ 용어 형제(sibling)같은 부모를 가진 노드예요. 조상(ancestor)·자손(descendant)루트까지 올라가는 길의 노드, 아래로 이어진 모든 노드예요. 레벨(level)트리의 각 층의 번호예요. 루트가 레벨 1이에요. 높이(height)트리의 최대 레벨로, 가장 긴 가지의 끝까지 재요. 차수(degree)노드가 가지고 있는 자식 노드의 개수예요. 조건·구분과 확인같은 레벨이어도 부모가 다르면(사촌) 형제가 아니에요. 높이는 리프가 많이 모인 층이 아니라 가장 긴 가지 끝까지 재요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-terms-measure",
+      "category": "warn",
+      "status": "pass",
+      "core": "꼭 기억해요 이제 굉장히 중요한 용어 두 개가 나옵니다. 레벨. 아무렇게나 삐죽삐죽 그릴 수 없고요, 레벨을 맞춰서 그리셔야 돼요. 대다수의 리프 노드가 있는 곳까지가 아니라요, 가장 긴 애가 하이트가 되는 거예요.",
+      "sum_comparison": "대응 sum의 조건·구분/주의와 같은 의미; 교수님 발언의 범위 유지",
+      "summary_evidence": "높이는 최대 레벨이고, 트리의 차수는 노드 차수의 최댓값이에요. 핵심 식 예시 트리의 차수$$\\max(3, 3, 1, 2, 0) = 3$$ 용어 형제(sibling)같은 부모를 가진 노드예요. 조상(ancestor)·자손(descendant)루트까지 올라가는 길의 노드, 아래로 이어진 모든 노드예요. 레벨(level)트리의 각 층의 번호예요. 루트가 레벨 1이에요. 높이(height)트리의 최대 레벨로, 가장 긴 가지의 끝까지 재요. 차수(degree)노드가 가지고 있는 자식 노드의 개수예요. 조건·구분과 확인같은 레벨이어도 부모가 다르면(사촌) 형제가 아니에요. 높이는 리프가 많이 모인 층이 아니라 가장 긴 가지 끝까지 재요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s0-terms-measure",
+      "category": "supp",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-binary",
+      "category": "general",
+      "status": "pass",
+      "core": "자식0·1·2, 공집합 서브트리, 순서 있는 좌우와 이진 단순화",
+      "sum_comparison": "대응 sum에 동일 핵심과 조건을 압축; 긴 코드/추적은 본문 보존",
+      "summary_evidence": "이진 트리는 모든 노드의 자식이 2개 이하이고, 왼쪽 서브트리가 오른쪽 서브트리보다 우선해요.용어이진 트리(binary tree)모든 노드가 2개 이하의 서브트리를 가지는 트리예요.공집합 서브트리서브트리는 비어 있어도 돼요. 그래서 자식이 0개, 1개여도 이진 트리예요.3진 트리(ternary tree)자식을 3개까지 두는 트리로, 이진 트리가 아니에요.조건·구분과 확인슬라이드의 \"2개의 서브트리\"는 공집합을 허용하므로 자식 0·1·2개를 뜻해요.차수가 2 이하라 구현하기 편리해요.0과 1, if–else처럼 현실을 이진으로 단순화해 모델링해요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-binary",
+      "category": "prof",
+      "status": "pass",
+      "core": "교수님 말씀이진 트리는 가장 쉬운 트리지만 \"엄청 강력한 트리\"라고 했어요.아날로그 세상을 전기 신호를 넣고 끊는 0과 1로 디지털화하듯, 자료구조 모델링도 이진을 쓴다고 비유했어요. if–else도 사실 이진 분기이고, else if가 여러 개여도 중첩(nested)하면 전부 0과 1로 표현할 수 있다고 했어요.가계도를 큰아버지, 둘째 큰아버지, 아빠 순으로 왼쪽부터 그리듯 왼쪽 서브트리가 우선한다고 설명했어요. 이 순서가 무엇을 뜻하는지는 \"뒤에서 봅시다\"라며 미뤘어요.",
+      "sum_comparison": "강력함·디지털·if–else·가계도 비유 유지; 요약은 이진 단순화·if–else·차수 제한 포함",
+      "summary_evidence": "이진 트리는 모든 노드의 자식이 2개 이하이고, 왼쪽 서브트리가 오른쪽 서브트리보다 우선해요.용어이진 트리(binary tree)모든 노드가 2개 이하의 서브트리를 가지는 트리예요.공집합 서브트리서브트리는 비어 있어도 돼요. 그래서 자식이 0개, 1개여도 이진 트리예요.3진 트리(ternary tree)자식을 3개까지 두는 트리로, 이진 트리가 아니에요.조건·구분과 확인슬라이드의 \"2개의 서브트리\"는 공집합을 허용하므로 자식 0·1·2개를 뜻해요.차수가 2 이하라 구현하기 편리해요.0과 1, if–else처럼 현실을 이진으로 단순화해 모델링해요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-binary",
+      "category": "warn",
+      "status": "pass",
+      "core": "꼭 기억해요\"이진 트리는 무조건 자식의 개수가 2개 이하를 개런티(guarantee)해야 됩니다.\"",
+      "sum_comparison": "대응 sum의 조건·구분/주의와 같은 의미; 교수님 발언의 범위 유지",
+      "summary_evidence": "이진 트리는 모든 노드의 자식이 2개 이하이고, 왼쪽 서브트리가 오른쪽 서브트리보다 우선해요.용어이진 트리(binary tree)모든 노드가 2개 이하의 서브트리를 가지는 트리예요.공집합 서브트리서브트리는 비어 있어도 돼요. 그래서 자식이 0개, 1개여도 이진 트리예요.3진 트리(ternary tree)자식을 3개까지 두는 트리로, 이진 트리가 아니에요.조건·구분과 확인슬라이드의 \"2개의 서브트리\"는 공집합을 허용하므로 자식 0·1·2개를 뜻해요.차수가 2 이하라 구현하기 편리해요.0과 1, if–else처럼 현실을 이진으로 단순화해 모델링해요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-binary",
+      "category": "supp",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-props",
+      "category": "general",
+      "status": "pass",
+      "core": "모든 트리 e=n−1, h≤n≤2^h−1, 경사/꽉 찬 트리와 레벨 합·높이3 예",
+      "sum_comparison": "대응 sum에 동일 핵심과 조건을 압축; 긴 코드/추적은 본문 보존",
+      "summary_evidence": "노드 $n$개 트리의 간선은 $e = n - 1$개이고, 높이 $h$ 이진 트리의 노드는 $h$개부터 $2^h - 1$개까지예요.핵심 식간선 수$$e = n - 1$$노드 수 범위$$h \\le n \\le 2^h - 1$$레벨 i의 최대 노드 수$$2^{i-1}$$최대 노드 수$$\\sum_{i=1}^{h} 2^{i-1} = 2^h - 1$$용어간선(edge)노드와 노드를 잇는 선이에요.경사 트리(skewed tree)레벨마다 노드가 하나뿐인 트리로, 노드 수가 최소인 $h$개예요.조건·구분과 확인$e = n - 1$은 이진 트리뿐 아니라 모든 트리에서 성립해요.높이 3이면 최대 7개, 노드 7개면 간선 6개예요.경사 트리는 못생긴 트리, 꽉 찬 트리는 아름드리나무처럼 예쁜 트리예요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-props",
+      "category": "prof",
+      "status": "pass",
+      "core": "교수님 말씀경사 트리는 \"기껏 만들었는데 경사가 져 있어서\" 알고리즘 퍼포먼스에 도움이 안 되는 못생긴 트리라고 했어요. 꽉 찬 트리는 아름드리나무처럼 풍성해서 예쁜 트리라고 비유했어요.나무가 공중에 떠 있을 수 없듯, 연결 없이 뺀 노드는 트리의 노드가 아니라고 설명했어요. 자료구조를 쓰는 이유는 \"누구는 100분이 걸리는 걸 나는 10분 만에\" 끝내는 좋은 알고리즘을 만들기 위해서라고 했어요.",
+      "sum_comparison": "못생긴/아름드리나무 비유와 노드7개 모양 강조 유지; 요약에 두 비유와 수치 예 포함, 100분/10분 비유는 기존처럼 본문에만",
+      "summary_evidence": "노드 $n$개 트리의 간선은 $e = n - 1$개이고, 높이 $h$ 이진 트리의 노드는 $h$개부터 $2^h - 1$개까지예요.핵심 식간선 수$$e = n - 1$$노드 수 범위$$h \\le n \\le 2^h - 1$$레벨 i의 최대 노드 수$$2^{i-1}$$최대 노드 수$$\\sum_{i=1}^{h} 2^{i-1} = 2^h - 1$$용어간선(edge)노드와 노드를 잇는 선이에요.경사 트리(skewed tree)레벨마다 노드가 하나뿐인 트리로, 노드 수가 최소인 $h$개예요.조건·구분과 확인$e = n - 1$은 이진 트리뿐 아니라 모든 트리에서 성립해요.높이 3이면 최대 7개, 노드 7개면 간선 6개예요.경사 트리는 못생긴 트리, 꽉 찬 트리는 아름드리나무처럼 예쁜 트리예요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-props",
+      "category": "warn",
+      "status": "pass",
+      "core": "꼭 기억해요\"노드의 개수가 7개인데… 얘보다는 요렇게 만드는 게 굉장히 중요합니다.\"노드 7개로 트리를 만들 때 경사 트리보다 꽉 찬 트리로 만들라는 뜻이에요.",
+      "sum_comparison": "대응 sum의 조건·구분/주의와 같은 의미; 교수님 발언의 범위 유지",
+      "summary_evidence": "노드 $n$개 트리의 간선은 $e = n - 1$개이고, 높이 $h$ 이진 트리의 노드는 $h$개부터 $2^h - 1$개까지예요.핵심 식간선 수$$e = n - 1$$노드 수 범위$$h \\le n \\le 2^h - 1$$레벨 i의 최대 노드 수$$2^{i-1}$$최대 노드 수$$\\sum_{i=1}^{h} 2^{i-1} = 2^h - 1$$용어간선(edge)노드와 노드를 잇는 선이에요.경사 트리(skewed tree)레벨마다 노드가 하나뿐인 트리로, 노드 수가 최소인 $h$개예요.조건·구분과 확인$e = n - 1$은 이진 트리뿐 아니라 모든 트리에서 성립해요.높이 3이면 최대 7개, 노드 7개면 간선 6개예요.경사 트리는 못생긴 트리, 꽉 찬 트리는 아름드리나무처럼 예쁜 트리예요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-props",
+      "category": "supp",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-height",
+      "category": "general",
+      "status": "pass",
+      "core": "최대n·최소올림log2(n+1), 유도·upper bound·n=7/5와 높이 성능",
+      "sum_comparison": "대응 sum에 동일 핵심과 조건을 압축; 긴 코드/추적은 본문 보존",
+      "summary_evidence": "노드 $n$개 이진 트리의 높이는 최대 $n$, 최소 $h = \\lceil \\log_2(n+1) \\rceil$이고, 높이를 낮게 만드는 것이 중요해요.핵심 식유도$$n = 2^h - 1$$$$2^h = n + 1$$최소 높이$$h = \\lceil \\log_2(n+1) \\rceil$$용어높이(height)트리의 최대 레벨로, 교수님이 꼽은 트리의 가장 중요한 터미놀로지예요.upper bound슬라이드 표기로, 올림 기호를 뜻해요.조건·구분과 확인경사 트리가 최대 높이 n, 위 레벨부터 꽉 채운 트리가 최소 높이예요. 마지막 레벨만 덜 찰 수 있어요.노드 7개면 최소 높이 3, 최대 높이 7이에요.왜 성능을 높이로 재는지는 뒤에서 배워요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "선정 항목만 변경; 나머지 본문/발언/주의/보충 보존",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-height",
+      "category": "prof",
+      "status": "pass",
+      "core": "교수님 말씀양변에 로그를 씌워 $h$를 왼편에 두고 upper bound 값을 만든다고 설명했어요. \"왜 근데 높이로 하지? 그건 뒤에 설명을 하고\"라며 이유는 미뤘어요.",
+      "sum_comparison": "높이가 성능 좌우한다는 강조 유지; 요약에 높이 중요성·용어·이유 다음 수업 범위 포함",
+      "summary_evidence": "노드 $n$개 이진 트리의 높이는 최대 $n$, 최소 $h = \\lceil \\log_2(n+1) \\rceil$이고, 높이를 낮게 만드는 것이 중요해요.핵심 식유도$$n = 2^h - 1$$$$2^h = n + 1$$최소 높이$$h = \\lceil \\log_2(n+1) \\rceil$$용어높이(height)트리의 최대 레벨로, 교수님이 꼽은 트리의 가장 중요한 터미놀로지예요.upper bound슬라이드 표기로, 올림 기호를 뜻해요.조건·구분과 확인경사 트리가 최대 높이 n, 위 레벨부터 꽉 채운 트리가 최소 높이예요. 마지막 레벨만 덜 찰 수 있어요.노드 7개면 최소 높이 3, 최대 높이 7이에요.왜 성능을 높이로 재는지는 뒤에서 배워요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "선정 항목만 변경; 나머지 본문/발언/주의/보충 보존",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-height",
+      "category": "warn",
+      "status": "pass",
+      "core": "꼭 기억해요\"트리에서 가장 중요한 터미놀로지가 뭐냐라고 한다면 높이입니다.\"\"나무의 높이가 너무 중요해요. 이게 알고리즘의 퍼포먼스를 좌지우지합니다.\"\"upper bound 얘를 넘어가지 않도록 하는 h를 만드는 게 굉장히 중요합니다.\"",
+      "sum_comparison": "대응 sum의 조건·구분/주의와 같은 의미; 교수님 발언의 범위 유지",
+      "summary_evidence": "노드 $n$개 이진 트리의 높이는 최대 $n$, 최소 $h = \\lceil \\log_2(n+1) \\rceil$이고, 높이를 낮게 만드는 것이 중요해요.핵심 식유도$$n = 2^h - 1$$$$2^h = n + 1$$최소 높이$$h = \\lceil \\log_2(n+1) \\rceil$$용어높이(height)트리의 최대 레벨로, 교수님이 꼽은 트리의 가장 중요한 터미놀로지예요.upper bound슬라이드 표기로, 올림 기호를 뜻해요.조건·구분과 확인경사 트리가 최대 높이 n, 위 레벨부터 꽉 채운 트리가 최소 높이예요. 마지막 레벨만 덜 찰 수 있어요.노드 7개면 최소 높이 3, 최대 높이 7이에요.왜 성능을 높이로 재는지는 뒤에서 배워요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "선정 항목만 변경; 나머지 본문/발언/주의/보충 보존",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s1-height",
+      "category": "supp",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "선정 항목만 변경; 나머지 본문/발언/주의/보충 보존",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s2-kinds",
+      "category": "general",
+      "status": "pass",
+      "core": "포화/완전/기타와 경사도 이진, H~O 삽입 추적 및 위젯",
+      "sum_comparison": "대응 sum에 동일 핵심과 조건을 압축; 긴 코드/추적은 본문 보존",
+      "summary_evidence": "포화는 모든 레벨이 꽉 찬 트리, 완전은 마지막 레벨만 왼쪽부터 채우는 중인 트리예요. 핵심 식 높이 $h$ 포화 이진 트리의 노드 수$$2^h - 1$$ 용어 포화 이진 트리(full binary tree)트리의 각 레벨에 노드가 꽉 차 있어요. 완전 이진 트리(complete binary tree)레벨 1부터 레벨 $h-1$까지는 꽉 차 있고 마지막 레벨은 왼쪽부터 오른쪽으로 채워져요. 기타 이진 트리이진 트리이지만 왼쪽부터 채우지 않은 트리예요. 조건·구분과 확인 경사 트리도 자식이 2개 이하라 이진 트리예요. G까지 찬 뒤 H·I는 D의 왼쪽·오른쪽, J·K는 E의 왼쪽·오른쪽 자식이에요. 마지막 레벨까지 다 차면 완전 이진 트리가 포화 이진 트리가 돼요. 기타 이진 트리는 데이터를 꺼내 쓰는 중간 과정에서 생겨요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s2-kinds",
+      "category": "prof",
+      "status": "pass",
+      "core": "교수님 말씀 경사 트리도 이진 트리이고, 못생겼을 뿐이라고 했어요. 완전 이진 트리는 데이터 개수가 딱 맞지 않아 아직 꽉 차지 못한 트리라는 뜻으로 설명했어요. \"full로 가는 과정에 있는 트리\" 기타 이진 트리 그림을 두고 \"왼쪽 자식부터 안 채웠어요?\"라고 스스로 묻고, 맞다고 답했어요. 노드를 꺼내 쓰다 보면 이런 모양이 생긴다고 덧붙였어요.",
+      "sum_comparison": "full로 가는 과정, 기타 모양이 삭제 중 생긴다는 설명 유지; 요약에 조건과 H/I/J/K 추적 포함",
+      "summary_evidence": "포화는 모든 레벨이 꽉 찬 트리, 완전은 마지막 레벨만 왼쪽부터 채우는 중인 트리예요. 핵심 식 높이 $h$ 포화 이진 트리의 노드 수$$2^h - 1$$ 용어 포화 이진 트리(full binary tree)트리의 각 레벨에 노드가 꽉 차 있어요. 완전 이진 트리(complete binary tree)레벨 1부터 레벨 $h-1$까지는 꽉 차 있고 마지막 레벨은 왼쪽부터 오른쪽으로 채워져요. 기타 이진 트리이진 트리이지만 왼쪽부터 채우지 않은 트리예요. 조건·구분과 확인 경사 트리도 자식이 2개 이하라 이진 트리예요. G까지 찬 뒤 H·I는 D의 왼쪽·오른쪽, J·K는 E의 왼쪽·오른쪽 자식이에요. 마지막 레벨까지 다 차면 완전 이진 트리가 포화 이진 트리가 돼요. 기타 이진 트리는 데이터를 꺼내 쓰는 중간 과정에서 생겨요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s2-kinds",
+      "category": "warn",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s2-kinds",
+      "category": "supp",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "본문과 sum main 동일",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s2-numbering",
+      "category": "general",
+      "status": "pass",
+      "core": "포화 자리 기준 위→아래/좌→우 번호, 레벨1~4, 다음K=11, 차시 구현법 예고",
+      "sum_comparison": "대응 sum에 동일 핵심과 조건을 압축; 긴 코드/추적은 본문 보존",
+      "summary_evidence": "포화 이진 트리 모양에서 위 레벨부터, 같은 레벨은 왼쪽부터 1, 2, 3, … 번호를 붙여요. 용어 노드 번호포화 이진 트리 모양을 기준으로 위에서 아래, 왼쪽에서 오른쪽으로 매긴 번호예요. 배열(array)·연결 리스트(linked list)트리를 구현하는 두 가지 방법이에요. 자세한 표현법은 다음 시간이에요. 조건·구분과 확인 레벨 1은 1번, 레벨 2는 2·3번, 레벨 3은 4~7번, 레벨 4는 8~15번이에요. 같은 레벨에서는 왼쪽 자식이 먼저예요. 완전 이진 트리는 이 번호 순서대로 자리를 채운 모양이에요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "선정 항목만 변경; 나머지 본문/발언/주의/보충 보존",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s2-numbering",
+      "category": "prof",
+      "status": "pass",
+      "core": "교수님 말씀 번호는 상식적으로 붙이면 된다고 했어요. 교실의 1분단·2분단·3분단, 1열·2열·3열처럼 정해진 순서로 세는 것과 같아요. \"이진 트리의 표현은 다음 시간부터 할게요.\"",
+      "sum_comparison": "교실 분단·열 비유 유지; 요약에 번호 순서·좌우·배열/링크 구현 예고 포함, 교실 비유는 기존처럼 본문에만",
+      "summary_evidence": "포화 이진 트리 모양에서 위 레벨부터, 같은 레벨은 왼쪽부터 1, 2, 3, … 번호를 붙여요. 용어 노드 번호포화 이진 트리 모양을 기준으로 위에서 아래, 왼쪽에서 오른쪽으로 매긴 번호예요. 배열(array)·연결 리스트(linked list)트리를 구현하는 두 가지 방법이에요. 자세한 표현법은 다음 시간이에요. 조건·구분과 확인 레벨 1은 1번, 레벨 2는 2·3번, 레벨 3은 4~7번, 레벨 4는 8~15번이에요. 같은 레벨에서는 왼쪽 자식이 먼저예요. 완전 이진 트리는 이 번호 순서대로 자리를 채운 모양이에요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "선정 항목만 변경; 나머지 본문/발언/주의/보충 보존",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s2-numbering",
+      "category": "warn",
+      "status": "pass",
+      "core": "꼭 기억해요 트리도 결국 두 가지 방법 중 하나로 구현해요. \"배열(array) 아니면 링크드 리스트(linked list)로 구현합니다. 더는 없어요.\"",
+      "sum_comparison": "대응 sum의 조건·구분/주의와 같은 의미; 교수님 발언의 범위 유지",
+      "summary_evidence": "포화 이진 트리 모양에서 위 레벨부터, 같은 레벨은 왼쪽부터 1, 2, 3, … 번호를 붙여요. 용어 노드 번호포화 이진 트리 모양을 기준으로 위에서 아래, 왼쪽에서 오른쪽으로 매긴 번호예요. 배열(array)·연결 리스트(linked list)트리를 구현하는 두 가지 방법이에요. 자세한 표현법은 다음 시간이에요. 조건·구분과 확인 레벨 1은 1번, 레벨 2는 2·3번, 레벨 3은 4~7번, 레벨 4는 8~15번이에요. 같은 레벨에서는 왼쪽 자식이 먼저예요. 완전 이진 트리는 이 번호 순서대로 자리를 채운 모양이에요.",
+      "qualifiers": "기존 수업/슬라이드/보충·구현 예시·불확실성 범위 보존; 새로운 일반화 없음",
+      "preservation": "선정 항목만 변경; 나머지 본문/발언/주의/보충 보존",
+      "baseline_summary_changed": false
+    },
+    {
+      "date": "1029",
+      "topic": "s2-numbering",
+      "category": "supp",
+      "status": "not_applicable",
+      "core": "해당 레이어 없음; inline 보충은 general 행에서 범위까지 검토",
+      "sum_comparison": "비교할 해당 레이어 없음",
+      "summary_evidence": null,
+      "qualifiers": null,
+      "preservation": "선정 항목만 변경; 나머지 본문/발언/주의/보충 보존",
+      "baseline_summary_changed": false
+    }
+  ],
+  "findings": [],
+  "unresolved": [],
+  "baseline_observations": "Pass applies to selected diff preservation only. Existing upper_bound, BFS/levelorder wording, DB/response-time folding, max compiler supplemental folding and BST strict-inequality correction scope remain main-owned and unmodified."
+}
