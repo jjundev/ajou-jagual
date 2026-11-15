@@ -5,8 +5,8 @@
 JSON의 `input_hash`는 현재 원본과 설명 조각에 묶여요. build 출력의 `artifact_hashes`도 그대로 검토 대상이에요. 조각·원본·렌더링 파일을 바꿨다면 다시 build하고 검토해요. 예전 검토 보고서는 통과하지 않아요.
 
 - `source_visual`: 문항 조건·그림·소문항을 원 기출·강의록의 실제 페이지와 대조. reviewer와 evidence에 자료/페이지/대조 결과.
-- `content`: 상위 status/reviewer/evidence 및 items의 모든 `pN:a` 또는 `pN:main`. recall의 문제 단서와 개념 연결·공식·기호의 뜻·적용 가정·선택 이유·소문항별 누락 여부, 첫 줄·유도 이유·모든 답·검산·가정·충돌 여부 확인. recall은 정의/판단 기준만 필요한 문항도 허용하지만 제목만으로는 충분하지 않아요. start와 긴 설명을 복제하지 않았는지, 요약의 핵심 개념·공식이 본문과 일치하는지 확인해요.
-- `independent`: 같은 모든 items, method=`exact|symbolic|numerical|proof|qualitative`, conclusion과 evidence. 검산 스크립트·출력·자료 위치를 구체적으로 기록.
+- `content`: 상위 status/reviewer/evidence 및 items의 모든 `pN:a` 또는 `pN:main`. `understand`의 1~2문장·단서 압축 여부(전문 복사·서론 금지), `recall`의 문제 단서–도구–적용 이유 1줄 연결·기호·적용 가정·소문항별 누락 여부, `start`와 본문의 메타 선언(“먼저 ~를 살펴보아요” 등) 제거 및 첫 대입·초기 상태 직시 여부를 확인해요. `solve`는 상태 추적·비교 문항의 표/상태 비교(`<table class="cmp">` 등) 활용과 1~2줄 단답·선지 판별의 간결 글머리 유연성을 함께 확인하고, 표 셀 경계 `$...$` 공백/줄바꿈 또는 `<code>` 처리로 `$$` 오탐이 없는지 점검해요. `verify`는 결론 재진술에 그치지 않고 단위·경계값($n=0,1$, 빈 구조)·역연산·선지 소거 등 실질 검산(학생용 본문에 내부 QA 로그 비노출)이 있는지, `pitfall`은 오해 이유→반례 구조인지, `retry`는 행동형/질문형 체크리스트인지, 객관식 선지 소거와 예외·disputed/오기 주석이 누락되지 않았는지, 요약(`sum`) 1~2줄이 본문과 일치하는지 확인해요.
+- `independent`: 같은 모든 items, method=`exact|symbolic|numerical|proof|qualitative`, conclusion과 evidence. 팩의 `evidence/` 스크립트·검산 재실행 결과와 출력·자료 위치를 구체적으로 기록하고, `references`에는 현재 실행 환경(Windows 경로 포함) 기준 저장소 내부 참조 파일과 최신 SHA-256을 기록해요.
 - `browser`: 1280×900 및 375×812, light/dark. 모든 문항의 목차·이전/다음·요약·수식·표·그림·링크를 확인. 콘솔·KaTeX 오류·누락 자원·문서 가로 넘침은 0. 짧은 인라인 수식의 스크롤 컨테이너와 수식 영역의 보이는 스크롤바는 0. 구역 24px·제목 아래 12px·소문항 16px 간격, 행렬 잘림과 겹침을 실제 렌더링으로 확인. 긴 수식은 의미 단위 줄바꿈을 우선하고, 더 나눌 수 없는 긴 수식만 안내와 함께 스크롤바 없는 국소 이동을 허용. 외부 요청 없이 로컬 자원으로 렌더링. 1280·1024에서 본문 왼쪽 문제 패널이 기본으로 열리고 목차와 동시에 열리는지, 원문 탭 전환(원문 없는 문항은 원문 탭 숨김)과 오른쪽 요약 패널 열기가 되는지, 문제 패널 세 방식 전환(왼쪽·오른쪽 붙이기·띄우기, 오른쪽일 때 문제·요약 동시 열림)과 띄운 창 이동·크기 조절·화면 안 clamp가 되는지, 375에서 '문제 보기' 토글이 해설 위에 있고 긴 코드가 패널 안에서만 스크롤되는지 확인. 문제 그림은 눌러 확대되는지 확인.
 
 각 단계와 items는 status=`pass`, 비어 있지 않은 reviewer/evidence여야 발행돼요. `not_run`, `fail`, `disputed`는 발행을 보류해요. numerical은 유한한 tolerance>0, 0<=residual<=tolerance도 필요해요. proof에 숫자 예제 확인만 있는 evidence는 수동 검토에서 승인하면 안 돼요.
@@ -21,7 +21,7 @@ JSON의 `input_hash`는 현재 원본과 설명 조각에 묶여요. build 출�
 }
 ```
 
-사용한 근거 파일은 대상 작업 디렉터리의 `evidence/` 아래 보관해요. `references`에는 읽은 저장소 내부 자료의 절대 path와 SHA-256을 기록해요. 발행 직전 재확인돼요. `artifact_hashes`에는 manifest를 포함한 현재 stage 파일의 상대경로→SHA-256을 기록해요. build가 넣은 값을 승인 전 점검하며 임의로 오래된 검토에 새 해시만 덮어씌우지 않아요.
+사용한 근거 파일은 대상 작업 디렉터리의 `evidence/` 아래 보관하고 재실행 결과를 확인해요. `references`에는 읽은 저장소 내부 자료(`authoring.md`·`verification.md` 등 규칙 문서 및 원 기출·정리노트)의 현재 작업 환경(Windows 경로 기준) 절대 path와 최신 SHA-256을 기록하며, 타 OS 경로나 구 해시를 복사하지 않아요. 발행 직전 재확인돼요. `artifact_hashes`에는 manifest를 포함한 현재 stage 파일의 상대경로→SHA-256을 기록해요. build가 넣은 값을 승인 전 점검하며 임의로 오래된 검토에 새 해시만 덮어씌우지 않아요.
 
 답 충돌·조건 모호함·원문 미확인은 해당 팩을 disputed로 표시하고 이유를 보고해요. 다른 독립 팩은 통과하면 발행할 수 있어요. 기존 파일은 변경하지 않고 설명 소유 파일만 백업 후 교체하며 실패 시 복구해요.
 
@@ -36,7 +36,7 @@ JSON의 `input_hash`는 현재 원본과 설명 조각에 묶여요. build 출�
 
 현재 `review_policy_version`은 `problem-explain-2026-10-15`다. 새 review.json·manifest의 버전이 일치해야 발행된다. 구버전/버전 없는 검토를 단순히 현재 버전으로 바꾸거나 pass를 복사하지 않는다. 기준 변경은 실제 content·independent 재검토를 요구한다.
 
-content는 recall의 근거 있는 명칭 대응, pitfall의 오답 판별 기준, 부정형의 참·거짓과 선택 적합성, understand·solve·verify·pitfall·sum의 결함 공개·공식 답 확인 여부가 일관적인지 확인한다. 과목별 disputed 규칙은 유지한다. 독립 검산은 작성자와 다른 검산자가 정답·참고 풀이·설명 조각을 보지 않고 문제·그림·필요한 이론 자료만으로 먼저 수행한다. 컨트롤러가 그 결과를 참고 답과 대조한다.
+content는 recall의 근거 있는 단서–도구 연결, start·본문의 메타 선언 제거, solve의 표/글머리 유연성과 표 셀 `$` 공백 규칙, verify의 실질 검산(단순 반복·QA 로그 노출 금지), pitfall의 오해 이유→반례 구조, 객관식 전 선지 소거 및 부정형의 참·거짓·선택 적합성, understand·solve·verify·pitfall·sum의 결함·예외 주석·공식 답 확인 여부 일관성을 확인한다. 과목별 disputed 규칙은 유지한다. 독립 검산은 작성자와 다른 검산자가 정답·참고 풀이·설명 조각을 보지 않고 문제·그림·필요한 이론 자료만으로 먼저 수행하거나 `evidence/` 독립 스크립트를 재실행해 검증한다. 컨트롤러가 그 결과를 참고 답과 대조한다.
 
 rerender의 검토 재사용은 동일한 입력·조각·입력 그림과 무결한 발행 자료, 검증된 모든 참조, 같은 검토 기준을 전제로 한다. 참조가 없거나 바뀌면 content·independent도 not_run으로 두고 다시 검토한다. 전자회로2는 problems.txt가 같더라도 문제 MD·그림이 바뀌면 재사용하지 않는다. source_visual·browser는 매번 새 stage에서 수행한다. 구조 검사는 내용 검증이 아니다.
 

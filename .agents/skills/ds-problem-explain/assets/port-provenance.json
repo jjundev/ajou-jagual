@@ -2086,6 +2086,58 @@
           "new": "    stem = artifacts.html.stem\n    data = dest / '.pack' / stem.replace('문제설명_', '자료_문제설명_', 1)\n    assert (data / 'manifest.json').is_file() and (data / 'validation.json').is_file()\n    assert '../_assets/problem-explain/v1/katex/katex.min.js' in artifacts.html.read_text(encoding='utf-8')\n    assert not (data / 'vendor').exists()\n\n\n@pytest.mark.parametrize('remove', [True, False], ids=['missing', 'modified'])\ndef test_shared_font_changes_block_check_and_publish(tmp_path, remove):\n    from mpe_render import check_artifacts\n\n    pack, fragments, artifacts = setup(tmp_path)\n    reviews = approved(pack, fragments, artifacts)\n    font = pack.path.parent.parent / '_assets/problem-explain/v1/pretendard/woff2/Pretendard-Regular.woff2'\n    assert font.is_file()\n    font.write_bytes(b'changed')\n    if remove:\n        font.unlink()\n    assert any(font.name in error for error in check_artifacts(pack, artifacts))\n    with pytest.raises(ExplainError, match=font.name):\n        publish_explanation(pack, artifacts, fragments, reviews, pack.path.parent, tmp_path / 'backup')\n    assert not (pack.path.parent / artifacts.html.name).exists()\n\ndef test_replace_failure_rolls_back_pair(tmp_path, monkeypatch):\n    pack, fragments, artifacts = setup(tmp_path)\n"
         }
       ]
+    },
+    {
+      "destination": "references/authoring.md",
+      "base_sha256": "34e58788a9a79bb881e4ee3c9a311433f329c66e8be814c0711d4c8ab10378da",
+      "current_sha256": "b50bc4fb13315037c58a2c108b762595b8d521dcc6cf2fcee2fa8438028d40b9",
+      "reason": "2026-11-15: Option 1 student-oriented compression and visualization authoring rules; original port bytes retained.",
+      "replacements": [
+        {
+          "old": "| understand | 주어진 조건과 구할 것을 내 말로 읽어요. `layer eli5` |\n| recall | 문제의 단서 → 개념의 뜻 → 공식과 기호 → 적용 조건과 선택 이유. `layer formal` |\n| start | 종이에 쓸 실제 첫 식·문장·표의 첫 행, 필요한 개념 |\n| solve | 한 줄에 한 식, 변형 이유·성질·적용 가정. `layer formal` |\n| verify | 완성 답과 실제 대입·독립 계산·특수 경우 등 검산 |\n| pitfall | 이 문항에서 하기 쉬운 오류. `layer warn` |\n| retry | 설명을 닫고 수행할 1~3개 체크리스트 |\n",
+          "new": "| understand | 핵심 요구사항과 주어진 조건을 1~2문장 + 단서 글머리(또는 2열 표)로 압축해요. 문제 전문 복사나 불필요한 서론은 금지해요. `layer eli5` |\n| recall | 정의·공식 제시에 그치지 않고 이 문제에서 왜 쓰이는지, 어떤 단서가 어디에 대입되는지 1줄 연결을 필수로 적어요. `layer formal` |\n| start | “먼저 ~를 살펴보아요” 같은 메타 선언 없이 구체적 첫 대입·초기 상태·첫 그림을 첫 문장부터 바로 제시해요. |\n| solve | 번호 매긴 상태 변화/추론 단계로 쓰고, 상태 추적·트리/힙 연산·다중 조건 비교는 `<table class=\"cmp\">` 등 표/상태 비교를 우선해요. 단순 1~2줄 선지 판별·단답형은 간결한 글머리 리스트를 허용해요. `layer formal` |\n| verify | 결론 숫자/답 재진술만 하지 말고 단위·경계값($n=0,1$, 빈 트리/배열)·역연산·선지 소거 교차검산을 구체적 값으로 확인해요. |\n| pitfall | 단순 “조심하세요”를 금지하고 오해하는 이유 → 실제 반례/틀린 결과 구조로 1~2항목 적어요. `layer warn` |\n| retry | 개념명 나열이나 본문 지시 반복을 금지하고 “문제에서 X를 보면 → Y부터 적는다” 식의 행동형 체크리스트(또는 자가 점검 질문) 1~3개를 적어요. |\n"
+        },
+        {
+          "old": "표 순서대로 일곱 구역을 작성해요. recall의 제목은 **이 문제를 봤을 때 떠올릴 개념과 공식**이에요. 개념 이름이나 공식만 나열하지 말고, 문제의 어떤 표현·조건이 그 개념을 떠올리게 하는지부터 설명해요. 영어 전문용어, 각 기호의 뜻, 공식이 성립하는 조건과 이 문제에 적용하는 이유를 입문형으로 연결해요. recall은 일반 개념을 고르는 과정이고 start는 주어진 값·기호로 종이에 적는 실제 첫 줄이에요. 긴 설명을 두 구역에 복제하지 않아요.\n",
+          "new": "표 순서대로 일곱 구역을 작성해요. 각 구역은 왼쪽 문제 패널의 원문을 전제로 학생 관점에서 압축·시각화해요.\n\n- **understand**: 구할 것과 핵심 제약·단서만 1~2문장 + 단서 글머리(또는 2열 표)로 압축해요. 문제 전문을 풀어서 다시 번역하거나 불필요한 서론을 붙이지 않아요. 원문 오기·주석·단위 조건이 있으면 여기에서 1줄로 짚어요.\n- **recall**: 제목은 **이 문제를 봤을 때 떠올릴 개념과 공식**이에요. 개념 이름·정의·공식만 나열하지 말고, `[문제 단서] → [꺼낼 도구·공식] → [이유와 조건]` 표나 1줄 연결로 **이 문제에서 왜 쓰이는지, 어떤 단서가 어디에 대입되는지**를 반드시 연결해요. 영어 전문용어, 각 기호의 뜻, 적용 조건을 입문형으로 밝히되 `start`와 긴 설명을 복제하지 않아요.\n- **start**: “먼저 ~를 살펴보아요”, “이제 ~해 봅시다” 같은 메타 선언을 금지해요. 주어진 값·기호·초기 상태로 종이에 적을 **구체적 첫 대입·초기 상태·첫 그림**을 첫 문장(또는 `<pre><code>` 첫 줄)부터 바로 제시해요.\n- **solve**: 번호 매긴 상태 변화 또는 추론 단계로 작성해요. 연산 추적·트리/힙 변화·다중 조건 비교는 `<div class=\"table-wrap\"><table class=\"cmp\">` 등 표와 상태 비교를 우선 사용하고(다음 단계에 뽑힐 후보를 `<b>` 등으로 강조), 단순 1~2줄짜리 선지 판별·단답형은 과잉 표 대신 간결한 글머리 리스트를 허용해요. 객관식은 정답 근거뿐 아니라 오답 선지 소거 이유를 빠짐없이 명시해요.\n- **verify**: 결론 숫자나 완성 답을 다시 적고 끝내지 않아요. 단위 일치, 경계값($n=0,1$, 빈 트리/배열), 역연산(내부 노드 합 = 총 비트, 삽입-삭제 원소 수 보존 등), 선지 소거 교차검산을 **구체적 값으로 확인**해요. 내부 검산 스크립트 파일명(`evidence/*.py`)이나 제작자 QA 로그는 학생용 본문에 노출하지 않고 `.pack/`과 `review.json`에만 남겨요.\n- **pitfall**: “실수하기 쉬워요”, “조심하세요” 같은 일반 경고를 금지해요. **오해하는 이유(잘못된 습관·코드 패턴) → 실제 반례/틀린 결과(망가지는 수치·인덱스)** 구조로 1~2항목을 적어요.\n- **retry**: 개념명 나열이나 본문 지시사항 복제를 금지해요. 해설을 가리고 바로 손이 움직이도록 **“문제에서 X를 보면 → Y부터 적는다”** 식의 행동형 체크리스트 또는 조건 변화를 묻는 자가 점검 질문 1~3개를 적어요.\n"
+        },
+        {
+          "old": "  <p>‘push 후 pop’이라는 단서에서 스택(stack)의 후입선출(LIFO)을 떠올려요.</p>\n  <p>top은 가장 최근에 들어온 원소의 위치예요. push는 top을 늘리고 저장하고, pop은 top의 원소를 꺼내요.</p>\n  <p>비어 있거나 가득 찬 경우의 조건부터 확인하고, 연산마다 top과 원소 상태를 표로 적어요.</p>\n",
+          "new": "  <div class=\"table-wrap\">\n    <table class=\"cmp\">\n      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>\n      <tbody>\n        <tr><td>‘push 후 pop’</td><td>스택(stack)의 후입선출(LIFO)</td><td>나중에 넣은 원소가 <code>top</code>에서 먼저 나와 연산 순서를 결정해요.</td></tr>\n        <tr><td>초기 <code>top = -1</code></td><td>선증가(<code>push</code>) / 선읽기(<code>pop</code>)</td><td><code>top</code>이 맨 위 원소의 인덱스를 가리키므로 공백·포화 검사를 먼저 확인해요.</td></tr>\n      </tbody>\n    </table>\n  </div>\n"
+        },
+        {
+          "old": "공통 개념은 한 번 설명하고, 서로 다른 개념을 요구하는 소문항은 (a), (b)처럼 구분해요. 개념 수를 고정하지 않아요. 공식이 필요 없는 정성·증명 문항에서는 정의·판단 기준과 논증 조건을 설명해요. 우측 sum에 `summary-group`을 추가해 `<h4>떠올릴 개념·공식</h4>` 아래 핵심 개념·공식을 짧게 적어요. 본문 전체를 요약에 복제하지 않아요.\n",
+          "new": "공통 개념은 한 번 설명하고, 서로 다른 개념을 요구하는 소문항은 (a), (b)처럼 구분해요. 개념 수를 고정하지 않아요. 공식이 필요 없는 정성·증명 문항에서는 정의·판단 기준과 논증 조건이 문제의 어떤 단서와 맞물리는지 1줄로 연결해요. 우측 `sum`(`<div class=\"sum\" hidden>`)에는 `summary-group`을 두고 핵심 개념·공식·첫 줄·판단·검산을 **1~2줄 요약**으로 유지해요. 본문 전체를 요약에 복제하지 않아요.\n"
+        },
+        {
+          "old": "짧은 수식은 문장 안에 두고 수식마다 스크롤 컨테이너를 만들지 않아요. 여러 행렬 답은 각각 독립된 줄에 배치해요. 긴 유도는 의미가 유지되는 등호·항을 기준으로 여러 식으로 나눠요. 한 수식의 여러 줄이 필요하면 `aligned`를 사용하고 수식 내용을 생략하지 않아요. 원문은 다시 쓰지 않고 템플릿의 표시 규칙으로 배치해요.\n",
+          "new": "짧은 수식은 문장 안에 두고 수식마다 스크롤 컨테이너를 만들지 않아요. 여러 행렬 답은 각각 독립된 줄에 배치해요. 긴 유도는 의미가 유지되는 등호·항을 기준으로 여러 식으로 나눠요. 한 수식의 여러 줄이 필요하면 `aligned`를 사용하고 수식 내용을 생략하지 않아요. 표 셀(`<td>`, `<th>`) 경계에서 인접한 `$...$`가 `$$`로 합쳐지면 `unbalanced $$` 오류가 나므로, 셀 내부 앞뒤에 공백이나 줄바꿈을 두거나(`<td> $x$ </td>`) `<code>` 표기를 사용해요. 원문은 다시 쓰지 않고 템플릿의 표시 규칙으로 배치해요.\n"
+        },
+        {
+          "old": "객관식은 understand에서 긍정/부정 질문 방향과 단일/복수 선택 조건을 밝힌다. solve에서는 보기마다 근거를 판정하고, 진술의 참·거짓과 질문에 대한 선택 적합성을 구별한다. ‘항상’ 같은 절대 표현만으로 오답으로 정하지 않는다. ㄱㄴㄷ형은 개별 진술을 판정한 뒤 조합을 고른다. 선택지 목록을 소문항으로 바꾸지 않는다.\n",
+          "new": "객관식은 understand에서 긍정/부정 질문 방향과 단일/복수 선택 조건을 밝힌다. solve에서는 정답 근거뿐 아니라 오답 보기마다 소거 이유를 판정하고, 진술의 참·거짓과 질문에 대한 선택 적합성을 구별한다. ‘항상’ 같은 절대 표현만으로 오답으로 정하지 않는다. ㄱㄴㄷ형은 개별 진술을 판정한 뒤 조합을 고른다. 선택지 목록을 소문항으로 바꾸지 않는다.\n"
+        }
+      ]
+    },
+    {
+      "destination": "references/verification.md",
+      "base_sha256": "057f18c5891a2a5f4612ba511ac821be85ec48134307d711b8cb169d096a9500",
+      "current_sha256": "8762005ad80cd1355859178d526ddb64ec424bc6cc40fe662f95d747f3f97780",
+      "reason": "2026-11-15: Option 1 verification checklist and Windows/evidence references alignment; original port bytes retained.",
+      "replacements": [
+        {
+          "old": "- `content`: 상위 status/reviewer/evidence 및 items의 모든 `pN:a` 또는 `pN:main`. recall의 문제 단서와 개념 연결·공식·기호의 뜻·적용 가정·선택 이유·소문항별 누락 여부, 첫 줄·유도 이유·모든 답·검산·가정·충돌 여부 확인. recall은 정의/판단 기준만 필요한 문항도 허용하지만 제목만으로는 충분하지 않아요. start와 긴 설명을 복제하지 않았는지, 요약의 핵심 개념·공식이 본문과 일치하는지 확인해요.\n- `independent`: 같은 모든 items, method=`exact|symbolic|numerical|proof|qualitative`, conclusion과 evidence. 검산 스크립트·출력·자료 위치를 구체적으로 기록.\n",
+          "new": "- `content`: 상위 status/reviewer/evidence 및 items의 모든 `pN:a` 또는 `pN:main`. `understand`의 1~2문장·단서 압축 여부(전문 복사·서론 금지), `recall`의 문제 단서–도구–적용 이유 1줄 연결·기호·적용 가정·소문항별 누락 여부, `start`와 본문의 메타 선언(“먼저 ~를 살펴보아요” 등) 제거 및 첫 대입·초기 상태 직시 여부를 확인해요. `solve`는 상태 추적·비교 문항의 표/상태 비교(`<table class=\"cmp\">` 등) 활용과 1~2줄 단답·선지 판별의 간결 글머리 유연성을 함께 확인하고, 표 셀 경계 `$...$` 공백/줄바꿈 또는 `<code>` 처리로 `$$` 오탐이 없는지 점검해요. `verify`는 결론 재진술에 그치지 않고 단위·경계값($n=0,1$, 빈 구조)·역연산·선지 소거 등 실질 검산(학생용 본문에 내부 QA 로그 비노출)이 있는지, `pitfall`은 오해 이유→반례 구조인지, `retry`는 행동형/질문형 체크리스트인지, 객관식 선지 소거와 예외·disputed/오기 주석이 누락되지 않았는지, 요약(`sum`) 1~2줄이 본문과 일치하는지 확인해요.\n- `independent`: 같은 모든 items, method=`exact|symbolic|numerical|proof|qualitative`, conclusion과 evidence. 팩의 `evidence/` 스크립트·검산 재실행 결과와 출력·자료 위치를 구체적으로 기록하고, `references`에는 현재 실행 환경(Windows 경로 포함) 기준 저장소 내부 참조 파일과 최신 SHA-256을 기록해요.\n"
+        },
+        {
+          "old": "사용한 근거 파일은 대상 작업 디렉터리의 `evidence/` 아래 보관해요. `references`에는 읽은 저장소 내부 자료의 절대 path와 SHA-256을 기록해요. 발행 직전 재확인돼요. `artifact_hashes`에는 manifest를 포함한 현재 stage 파일의 상대경로→SHA-256을 기록해요. build가 넣은 값을 승인 전 점검하며 임의로 오래된 검토에 새 해시만 덮어씌우지 않아요.\n",
+          "new": "사용한 근거 파일은 대상 작업 디렉터리의 `evidence/` 아래 보관하고 재실행 결과를 확인해요. `references`에는 읽은 저장소 내부 자료(`authoring.md`·`verification.md` 등 규칙 문서 및 원 기출·정리노트)의 현재 작업 환경(Windows 경로 기준) 절대 path와 최신 SHA-256을 기록하며, 타 OS 경로나 구 해시를 복사하지 않아요. 발행 직전 재확인돼요. `artifact_hashes`에는 manifest를 포함한 현재 stage 파일의 상대경로→SHA-256을 기록해요. build가 넣은 값을 승인 전 점검하며 임의로 오래된 검토에 새 해시만 덮어씌우지 않아요.\n"
+        },
+        {
+          "old": "content는 recall의 근거 있는 명칭 대응, pitfall의 오답 판별 기준, 부정형의 참·거짓과 선택 적합성, understand·solve·verify·pitfall·sum의 결함 공개·공식 답 확인 여부가 일관적인지 확인한다. 과목별 disputed 규칙은 유지한다. 독립 검산은 작성자와 다른 검산자가 정답·참고 풀이·설명 조각을 보지 않고 문제·그림·필요한 이론 자료만으로 먼저 수행한다. 컨트롤러가 그 결과를 참고 답과 대조한다.\n",
+          "new": "content는 recall의 근거 있는 단서–도구 연결, start·본문의 메타 선언 제거, solve의 표/글머리 유연성과 표 셀 `$` 공백 규칙, verify의 실질 검산(단순 반복·QA 로그 노출 금지), pitfall의 오해 이유→반례 구조, 객관식 전 선지 소거 및 부정형의 참·거짓·선택 적합성, understand·solve·verify·pitfall·sum의 결함·예외 주석·공식 답 확인 여부 일관성을 확인한다. 과목별 disputed 규칙은 유지한다. 독립 검산은 작성자와 다른 검산자가 정답·참고 풀이·설명 조각을 보지 않고 문제·그림·필요한 이론 자료만으로 먼저 수행하거나 `evidence/` 독립 스크립트를 재실행해 검증한다. 컨트롤러가 그 결과를 참고 답과 대조한다.\n"
+        }
+      ]
     }
   ],
   "common_sync": {
