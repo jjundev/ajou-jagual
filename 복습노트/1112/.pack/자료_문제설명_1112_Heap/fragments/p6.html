@@ -1,79 +1,122 @@
 <div class="layer eli5" data-explanation="understand">
-<h4>무엇을 따라가라는 문제일까요?</h4>
-<p>강의 S8 p15의 <code>heap_sort</code>에 key 1, 23, 7, 8, 20을 넣고 두 for 루프를 손으로 따라가는 문제예요. (a)는 첫 루프(삽입) 직후 힙 배열, (b)는 둘째 루프(삭제) 반복마다 바뀌는 값, (c)는 뒤에서부터 채우는 이유와 시간 복잡도를 묻는 거예요.</p>
-<p>원래 코드는 <code>typedef</code>가 함수 뒤에 있고, <code>heap_sort</code>가 아래에서 정의되는 <code>init</code>·<code>insert_max_heap</code>·<code>delete_max_heap</code>을 먼저 불러요. 그 순서 그대로면 C99 이후에는 타입을 모르고 선언 없이 호출하는 셈이라 컴파일되지 않아요. 그래서 문제는 <strong>두 <code>typedef</code>와 세 함수의 원형(선언)이 <code>heap_sort</code>보다 앞에 있다고 보고</strong> 풀자고 약속했어요. 원 슬라이드 p15가 프로그램 일부만 보여 준 것이라 출제 의도와도 맞고, 이 약속 아래에서 n = 5인 실행은 범위 밖 접근 없이 정의된 동작이에요.</p>
+  <h4>핵심 조건과 구할 것</h4>
+  <p>강의 S8 p15의 <code>heap_sort(a, 5)</code>에 입력 <code>1, 23, 7, 8, 20</code>을 넣었을 때 <strong>(a) 첫 <code>for</code> 루프 직후 힙 배열</strong>, <strong>(b) 둘째 <code>for</code> 루프의 단계별 변화와 최종 <code>a[]</code></strong>, <strong>(c) 뒤에서부터 채우는 이유와 시간 복잡도</strong>를 구해요.</p>
+  <ul>
+    <li><strong>컴파일·정의 동작 조건</strong>: 원 코드 순서 그대로는 C99 이후 선언 없는 호출·미정의 타입 오류가 나지만, 문제가 <strong>두 <code>typedef</code>와 세 함수(<code>init</code>, <code>insert_max_heap</code>, <code>delete_max_heap</code>)의 원형이 <code>heap_sort</code> 앞에 있다고 보고</strong> 풀기로 약속했어요. 이 전제에서 <code>n = 5</code> 실행은 범위 밖 접근 없는 정의된 동작(UB 없음)이에요(<code>0</code>번 칸 미사용, <code>MAX_ELEMENT = 200</code>).</li>
+  </ul>
 </div>
+
 <div class="layer formal" data-explanation="recall">
-<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
-<p>(a) <code>insert_max_heap</code>을 n번 부르는 첫 루프에서 <strong>최대 힙 삽입(upheap)</strong>을 떠올려요. 코드의 <code>i = ++(h-&gt;heap_size)</code>가 새 칸 번호이고, <code>h-&gt;heap[i / 2]</code>가 부모예요. 새 값이 부모보다 크면 부모를 아래로 내리고 한 칸 올라가요(<a href="../1109/정리노트_1109_Heap.html#s2-upheap">1109 정리노트: upheap</a>).</p>
-<p>(b) <code>a[i] = delete_max_heap(&amp;h);</code>에서 <strong>최대 힙 삭제(downheap)</strong>를 떠올려요. 루트를 돌려주고, 마지막 요소 <code>temp</code>를 루트 자리부터 내려보내요. <code>child &lt; h-&gt;heap_size</code>일 때만 오른쪽 자식과 비교해 큰 쪽을 고르고, <code>temp</code>가 그 자식보다 크거나 같으면 멈춰요(<a href="../1109/정리노트_1109_Heap.html#s2-downheap">1109 정리노트: downheap</a>).</p>
-<p>(c) ‘오름차순’과 ‘i를 n-1부터’라는 단서에서 <strong>최대 힙은 큰 값부터 내놓는다</strong>는 성질을 떠올려요. 시간은 S8 p14대로 삽입·삭제 한 번이 $O(\log n)$이고 요소가 n개라 전체 $O(n\log n)$이에요(<a href="정리노트_1112_Heap.html#s0-heapsort-code">정리노트: heap_sort 프로그램</a>).</p>
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·코드 규칙</th><th>이유와 조건</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>(a) 첫 루프: <code>insert_max_heap</code></td>
+          <td>1-indexed upheap: <code>i = ++heap_size</code>, 부모 <code>i / 2</code></td>
+          <td>새 값이 부모보다 크면 부모를 아래로 밀고 올라가며 최대 힙 불변식을 유지해요(<a href="../1109/정리노트_1109_Heap.html#s2-upheap">1109 정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>(b) 둘째 루프: <code>delete_max_heap</code></td>
+          <td>downheap: <code>child &lt; heap_size</code> 일 때만 오른쪽 비교</td>
+          <td>루트 반환 후 끝 원소 <code>temp</code>를 내리되, 줄어든 <code>heap_size</code> 경계 밖을 읽지 않도록 해요(<a href="../1109/정리노트_1109_Heap.html#s2-downheap">1109 정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>(c) <code>i = n-1</code>부터 <code>0</code>까지 + 복잡도</td>
+          <td>최대 힙 추출 순서 + $2n \cdot O(\log n) = O(n \log n)$ </td>
+          <td>최대 힙은 큰 값부터 나오므로 맨 뒤부터 채워야 오름차순이 되고, 두 루프는 순차 실행이에요(<a href="정리노트_1112_Heap.html#s0-heapsort-code">정리노트</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
 <div class="layer formal" data-explanation="start">
-<h4>종이에 쓰는 실제 첫 줄</h4>
-<p>첫 루프의 반복을 표로 적어요. 첫 행은 빈 힙에 1을 넣는 i = 0이에요.</p>
-<pre><code>i=0 | 넣은 key 1 | heap_size 1, 1번 칸, 부모 없음 | heap[1..1] = 1</code></pre>
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>init(&amp;h) → heap_size = 0
+i = 0: a[0] = 1 삽입 → i = 1, (i != 1) 거짓 → h.heap[1..1] = [1]</code></pre>
 </div>
+
 <div class="layer formal" data-explanation="solve">
-<h4>왜 이렇게 푸는지 함께 따라가요</h4>
-<div data-subpart="a">
-<h5>(a) 첫 번째 for 루프: 삽입 다섯 번</h5>
-<div class="table-wrap"><table><thead><tr><th>i</th><th>넣은 key</th><th>처음 칸</th><th>upheap</th><th>heap[1..]</th></tr></thead><tbody>
-<tr><td>0</td><td>1</td><td>1</td><td>빈 힙이라 루트</td><td>1</td></tr>
-<tr><td>1</td><td>23</td><td>2</td><td>부모 1보다 커서 올라감</td><td>23 1</td></tr>
-<tr><td>2</td><td>7</td><td>3</td><td>부모 23보다 작아 그대로</td><td>23 1 7</td></tr>
-<tr><td>3</td><td>8</td><td>4</td><td>부모 1보다 커서 올라감 → 23보다 작아 멈춤</td><td>23 8 7 1</td></tr>
-<tr><td>4</td><td>20</td><td>5</td><td>부모 8보다 커서 올라감 → 23보다 작아 멈춤</td><td>23 20 7 1 8</td></tr>
-</tbody></table></div>
-<p>코드에서는 ‘교환’이 아니라 부모를 한 칸 내리고(<code>h-&gt;heap[i] = h-&gt;heap[i / 2]</code>) 마지막에 새 값을 한 번 놓아요. 결과는 교환으로 따라간 것과 같아요. 첫 루프 직후 heap[1..5]는 23 20 7 1 8이에요.</p>
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) 첫 번째 <code>for</code> 루프: 삽입 5회</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th><code>i</code></th><th>넣은 <code>key</code></th><th>처음 칸</th><th>코드 동작 (부모 <code>i/2</code> 비교)</th><th><code>h.heap[1..]</code></th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>1</td><td>1</td><td><code>i == 1</code> → 루트 저장</td><td>1</td></tr>
+          <tr><td>1</td><td>23</td><td>2</td><td>부모 1(1) &lt; 23 → 1을 내리고 1번 칸에 저장</td><td>23 1</td></tr>
+          <tr><td>2</td><td>7</td><td>3</td><td>부모 1(23) ≥ 7 → 3번 칸 유지</td><td>23 1 7</td></tr>
+          <tr><td>3</td><td>8</td><td>4</td><td>부모 2(1) &lt; 8 → 1 내림, 부모 1(23)에서 멈춤</td><td>23 8 7 1</td></tr>
+          <tr><td>4</td><td>20</td><td>5</td><td>부모 2(8) &lt; 20 → 8 내림, 부모 1(23)에서 멈춤</td><td>23 20 7 1 8</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>따라서 첫 루프 직후 <code>h.heap[1..5]</code>는 <strong>23, 20, 7, 1, 8</strong>이에요.</p>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) 두 번째 <code>for</code> 루프: 삭제 5회 (<code>i = 4</code>부터 <code>0</code>까지)</h5>
+    <p><code>a[]</code>의 원소는 이미 모두 <code>h</code>에 복사되어 있으므로 뒤에서부터 덮어써도 데이터가 손실되지 않아요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th><code>i</code></th><th><code>a[i]</code> 저장값</th><th><code>temp</code> 이동 경로 (<code>child &lt;= heap_size</code>)</th><th>남은 <code>heap[1..]</code></th><th><code>a[0..4]</code></th></tr></thead>
+        <tbody>
+          <tr><td>4</td><td>23</td><td><code>temp=8</code>, <code>heap_size=4</code>: <code>child=2</code>(20&gt;7) 20 올림 → <code>child=4</code>(=<code>heap_size</code>, 오른쪽 미비교), 8≥1 멈춤</td><td>20 8 7 1</td><td>1 23 7 8 23</td></tr>
+          <tr><td>3</td><td>20</td><td><code>temp=1</code>, <code>heap_size=3</code>: <code>child=2</code>(8&gt;7) 8 올림 → <code>child=4 &gt; 3</code> 멈춤</td><td>8 1 7</td><td>1 23 7 20 23</td></tr>
+          <tr><td>2</td><td>8</td><td><code>temp=7</code>, <code>heap_size=2</code>: <code>child=2</code>(=<code>heap_size</code>), 7≥1 멈춤</td><td>7 1</td><td>1 23 8 20 23</td></tr>
+          <tr><td>1</td><td>7</td><td><code>temp=1</code>, <code>heap_size=1</code>: <code>child=2 &gt; 1</code> 루프 미진입</td><td>1</td><td>1 7 8 20 23</td></tr>
+          <tr><td>0</td><td>1</td><td><code>temp=1</code>, <code>heap_size=0</code>: 루프 미진입, 1 반환</td><td>빈 힙</td><td>1 7 8 20 23</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>최종 정렬된 배열 <code>a[0..4]</code>는 <strong>1, 7, 8, 20, 23</strong>이에요.</p>
+  </div>
+  <div data-subpart="c">
+    <h5>(c) 뒤에서부터 채우는 이유와 시간 복잡도</h5>
+    <ul>
+      <li><strong>뒤(<code>n-1</code>)부터 채우는 이유</strong>: <code>delete_max_heap</code>은 남은 원소 중 최댓값부터 꺼내므로, 가장 큰 <code>23</code>을 맨 뒤 <code>a[4]</code>에 놓고 인덱스를 줄여야 오름차순(<code>1, 7, 8, 20, 23</code>)이 돼요. <code>0</code>부터 채우면 내림차순(<code>23, 20, 8, 7, 1</code>)이 돼요.</li>
+      <li><strong>시간 복잡도 근거</strong>: 두 <code>for</code> 루프는 중첩이 아니라 순차 실행돼요. 삽입 1회(최대 높이 $\lfloor \log_2 n \rfloor$ 상승)와 삭제 1회(최대 높이 하강)가 각각 $O(\log n)$이므로, $n \cdot O(\log n) + n \cdot O(\log n) = O(n \log n)$이에요.</li>
+    </ul>
+  </div>
 </div>
-<div data-subpart="b">
-<h5>(b) 두 번째 for 루프: 삭제 다섯 번</h5>
-<p>i = 4부터 내려가며 꺼낸 값을 <code>a[i]</code>에 넣어요. <code>a[]</code>의 앞쪽 칸에 옛 값이 남아 있지만, 이미 모두 힙에 들어가 있어서 덮어써도 값을 잃지 않아요.</p>
-<div class="table-wrap"><table><thead><tr><th>i</th><th>a[i]에 저장</th><th>downheap</th><th>남은 heap[1..]</th><th>a[0..4]</th></tr></thead><tbody>
-<tr><td>4</td><td>23</td><td>temp 8, 자식 20·7 중 20과 비교해 20을 올림 → 2번 칸의 자식은 4번 칸 1 하나, 8이 커서 멈춤</td><td>20 8 7 1</td><td>1 23 7 8 23</td></tr>
-<tr><td>3</td><td>20</td><td>temp 1, 자식 8·7 중 8을 올림 → 2번 칸의 자식 4번 칸은 범위 밖이라 멈춤</td><td>8 1 7</td><td>1 23 7 20 23</td></tr>
-<tr><td>2</td><td>8</td><td>temp 7, 자식은 2번 칸 1 하나, 7이 커서 멈춤</td><td>7 1</td><td>1 23 8 20 23</td></tr>
-<tr><td>1</td><td>7</td><td>temp 1, heap_size가 1이 되어 루프에 들어가지 않음</td><td>1</td><td>1 7 8 20 23</td></tr>
-<tr><td>0</td><td>1</td><td>마지막 하나를 꺼냄, heap_size 0</td><td>빈 힙</td><td>1 7 8 20 23</td></tr>
-</tbody></table></div>
-<p>i = 4일 때 <code>child = 2</code>, <code>heap_size = 4</code>라 <code>child &lt; heap_size</code>가 참이어서 오른쪽 자식 3번 칸(7)과 비교해요. 두 번째 비교에서는 <code>child = 4</code>가 <code>heap_size</code>와 같아 오른쪽 자식 5번 칸(방금 빠진 옛 값)을 읽지 않아요. 끝난 뒤 <code>a[]</code>는 1 7 8 20 23이에요.</p>
-</div>
-<div data-subpart="c">
-<h5>(c) 뒤에서부터 채우는 이유와 시간 복잡도</h5>
-<p>최대 힙에서는 남은 값 중 가장 큰 값이 먼저 나와요. 첫 번째로 꺼낸 23은 오름차순 배열의 맨 뒤 <code>a[n-1]</code>에, 그다음 20은 그 앞에 들어가야 해요. 그래서 <code>i</code>를 n-1부터 0까지 줄여 가요. 앞에서부터 채우면 23 20 8 7 1, 곧 내림차순이 돼요.</p>
-<p>두 for 루프는 동시에(parallel) 도는 게 아니라 첫 루프가 끝난 뒤 이어서 돌아요. 삽입 한 번은 새 값이 최대 트리 높이만큼, 삭제 한 번은 <code>temp</code>가 최대 높이만큼 움직여요. 완전 이진 트리의 높이는 $\lfloor \log_2 n \rfloor$이라 각각 $O(\log n)$이에요.</p>
-<p>$$n \cdot O(\log n) + n \cdot O(\log n) = O(n\log n)$$</p>
-</div>
-</div>
+
 <div class="layer formal" data-explanation="verify">
-<h4>완성 답과 검산</h4>
-<div data-subpart="a">
-<p>(a) 완성 답: heap[1..5] = 23 20 7 1 8.</p>
-<p>검산: 문제의 두 코드를 그대로 옮기고 <code>#include &lt;stdio.h&gt;</code>, <code>#define MAX_ELEMENT 200</code>, typedef를 앞으로 옮긴 것, 함수 원형, 출력용 <code>main</code>만 더해 <code>cc -std=c11 -Wall -Wextra -fsanitize=address,undefined</code>로 실행했어요(<code>evidence/independent_heapsort.c</code>, 출력 <code>independent-heapsort-output.txt</code>). 출력 <code>(a) 첫 루프 직후 heap[1..5] = [23, 20, 7, 1, 8]</code>이 손 추적과 같고, 경고·새니타이저 보고 0, 종료 코드 0이에요. 부모 ≥ 자식 쌍 (23; 20, 7), (20; 1, 8)도 성립해요.</p>
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 완성 답</strong>: <code>h.heap[1..5] = [23, 20, 7, 1, 8]</code>.</p>
+    <p><strong>검산</strong>: 부모-자식 쌍 <code>(23; 20, 7)</code>, <code>(20; 1, 8)</code>이 모두 부모 ≥ 자식이고, 두 <code>typedef</code>와 세 함수 원형이 앞에 있다는 문제 약속 아래 C11 실행 결과와 100% 일치해요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 완성 답</strong>: <code>i=4: 23(20 8 7 1) → i=3: 20(8 1 7) → i=2: 8(7 1) → i=1: 7(1) → i=0: 1(빈 힙)</code>, 최종 <code>a[] = [1, 7, 8, 20, 23]</code>.</p>
+    <p><strong>검산</strong>: C11 실행 시 <code>0</code>번 칸과 힙 밖을 더미 값(<code>0xABABABAB</code>)으로 채워도 결과나 남은 힙에 섞이지 않아 범위 밖 읽기가 없음을 확인했고, 최종 <code>a[]</code>가 입력 5개의 오름차순 정렬과 일치해요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 완성 답</strong>: 최대 힙은 큰 값부터 나오므로 <code>a[n-1]</code>부터 채워 오름차순 완성, 시간 복잡도 $O(n \log n)$.</p>
+    <p><strong>검산(루프 불변식 및 경계)</strong>: 각 반복 후 <code>a[i..n-1]</code>에는 가장 큰 $n-i$개가 오름차순으로 놓이고 힙에는 나머지 $i$개가 남아요. <code>i=n-1</code>(최댓값)에서 성립하고, 매 반복 꺼낸 값은 남은 최댓값이므로 <code>a[i] &lt;= a[i+1]</code>이 유지돼 <code>i=0</code> 종료 시 전체 정렬이 보장돼요.</p>
+  </div>
 </div>
-<div data-subpart="b">
-<p>(b) 완성 답: i=4: a[4]=23, 힙 20 8 7 1 → i=3: a[3]=20, 힙 8 1 7 → i=2: a[2]=8, 힙 7 1 → i=1: a[1]=7, 힙 1 → i=0: a[0]=1, 빈 힙. 결과 a[] = 1 7 8 20 23.</p>
-<p>검산: 같은 실행의 반복별 출력이 다섯 행 모두 위 표와 같아요. 0번 칸과 힙 밖 칸을 표시값으로 채운 뒤 실행해도 그 값이 결과나 남은 힙에 나타나지 않아, 삭제가 범위 밖·쓰레기 칸을 읽지 않음을 확인했어요. 최종 <code>a[]</code>는 입력을 정렬한 1 7 8 20 23과 같아요.</p>
-</div>
-<div data-subpart="c">
-<p>(c) 완성 답: 최대 힙은 큰 값부터 나오므로 맨 뒤 <code>a[n-1]</code>부터 채워야 오름차순이 돼요. 삽입 n번·삭제 n번이 각각 $O(\log n)$이라 전체 $O(n\log n)$이에요.</p>
-<p>검산(논증): 둘째 루프의 불변식은 “반복을 마칠 때마다 <code>a[i..n-1]</code>은 가장 큰 $n-i$개가 오름차순으로 놓여 있고, 힙에는 나머지 $i$개가 남아 있다”예요. 처음 i = n-1에서 꺼낸 값은 전체 최댓값이라 성립하고, 다음 반복에서 꺼낸 값은 남은 값 중 최댓값이니 이미 채운 값들보다 작거나 같아 그 앞 칸에 놓여도 불변식이 유지돼요. i = 0까지 마치면 배열 전체가 오름차순이에요. 시간은 높이 $\lfloor\log_2 n\rfloor$ 상한으로 따졌고, S8 p14의 서술과 같아요.</p>
-</div>
-</div>
+
 <div class="layer warn" data-explanation="pitfall">
-<h4>이 문제에서 특히 조심할 점</h4>
-<p>(a)에서 8을 넣을 때 부모는 4/2 = 2번 칸(1)이에요. 3번 칸의 7과 비교하면 안 돼요. 20도 5/2 = 2번 칸(8)과 비교해요.</p>
-<p>(b)에서 남은 힙 크기가 줄어든다는 것을 잊고 빠진 칸까지 자식으로 비교하면 틀려요. i = 4의 두 번째 비교에서 5번 칸은 이미 힙 밖이에요. 코드의 <code>child &lt; h-&gt;heap_size</code>가 바로 이 경계를 지켜요.</p>
-<p>(c)에서 두 for 루프가 동시에 돈다고 생각하면 안 돼요. 첫 루프가 다 끝나 힙에 다섯 개가 모두 들어간 뒤에 둘째 루프가 시작해요. 또 ‘루프가 두 개라 $O(n^2)$’도 아니에요. 두 루프는 중첩이 아니라 차례로 놓여 있어요.</p>
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>(b)에서 <code>child &lt; h-&gt;heap_size</code> 조건을 놓치고 방금 빠진 끝 칸까지 비교하면</strong>: <code>i = 4</code>의 두 번째 내려가기에서 <code>child = 4</code>일 때 <code>heap_size = 4</code>인데 5번 칸(옛 값 <code>8</code> 또는 쓰레기 값)을 읽어 <code>heap[child+1]</code>과 잘못 비교하게 돼요.</li>
+    <li><strong>(c)에서 두 루프를 “중첩 루프”나 “동시 실행”으로 오해하면</strong>: 루프 2개가 나란히 있으므로 시간은 $O(n \cdot n) = O(n^2)$이 아니라 $O(n \log n) + O(n \log n) = O(n \log n)$이에요. 또 <code>n = 200</code>이면 <code>heap[200]</code>이 배열 크기 <code>MAX_ELEMENT=200</code> 범위를 벗어나므로 <code>n &lt;= 199</code>여야 안전해요.</li>
+  </ul>
 </div>
+
 <div class="layer formal" data-explanation="retry">
-<h4>해설을 닫고 다시 해 봐요</h4>
-<ol><li>1, 23, 7, 8, 20을 넣으며 칸 번호 i와 부모 칸 i/2를 적어 23 20 7 1 8을 만들어요.</li><li>i = 4부터 0까지 꺼낸 값, <code>temp</code>가 내려간 경로, 남은 힙, <code>a[]</code>를 한 행씩 써요.</li><li>뒤에서부터 채우는 이유를 ‘최대 힙은 큰 값부터’로 한 문장, 시간 복잡도를 식 한 줄로 써요.</li></ol>
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li><code>delete_max_heap</code> 코드를 볼 때 → <code>heap_size--</code>가 먼저 실행된다는 점에 표시하고, 매 반복마다 줄어든 <code>heap_size</code>로 <code>child &lt; heap_size</code>를 판정해 보세요.</li>
+    <li>만약 <code>delete_min_heap</code>(최소 힙)으로 바꾼다면 두 번째 루프의 인덱스 <code>i</code>는 <code>0</code>부터 올려야 할까요, <code>n-1</code>부터 내려야 할까요?</li>
+  </ol>
 </div>
+
 <div class="sum" hidden>
-<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>삽입: 새 칸 <code>++heap_size</code>, 부모 <code>i/2</code>보다 크면 올라감. 삭제: 루트 반환, 마지막 요소를 루트부터 큰 자식과 비교해 내림(<code>child &lt; heap_size</code>일 때만 오른쪽 비교). 전체 $n\cdot O(\log n)+n\cdot O(\log n)=O(n\log n)$.</p></div>
-<div class="summary-group"><h4>첫 줄</h4><p>i=0: 1을 1번 칸에, 부모 없음.</p></div>
-<div class="summary-group"><h4>핵심 판단</h4><p>(a) 23 20 7 1 8. (b) a[4]=23(힙 20 8 7 1), a[3]=20(8 1 7), a[2]=8(7 1), a[1]=7(1), a[0]=1, 결과 1 7 8 20 23. (c) 큰 값부터 나오니 뒤에서부터 채워 오름차순, 두 루프는 차례로 돌아요.</p></div>
-<div class="summary-group"><h4>검산</h4><p>C11 + ASan/UBSan 실행 출력이 모든 상태와 일치, 범위 밖 읽기 없음. 둘째 루프 불변식으로 오름차순을 논증했어요.</p></div>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>문제 약속(두 <code>typedef</code>·세 함수 원형 선행) 아래 정의된 C11 동작. upheap(<code>i/2</code>), downheap(<code>child &lt; heap_size</code>), 순차 2루프 $O(n\log n)$.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>i=0</code>: key 1을 1번 칸(루트)에 삽입 → <code>h.heap[1..1] = [1]</code>.</p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p>(a) <code>[23, 20, 7, 1, 8]</code>. (b) <code>a[4..0]</code>에 23, 20, 8, 7, 1 저장 → <code>[1, 7, 8, 20, 23]</code>. (c) 큰 값부터 나와 뒤부터 채움.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>C11 실행 출력·범위 밖 미접근 확인, 루프 불변식(<code>a[i..n-1]</code> 정렬) 성립.</p></div>
 </div>

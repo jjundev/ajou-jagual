@@ -1,8 +1,52 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>폴더 용량을 계산할 때 트리의 노드를 어떤 순서로 방문하는 게 가장 알맞은지, 순회 이름 하나를 빈칸에 쓰는 문제예요. 핵심은 “폴더 하나의 용량을 알려면 무엇을 먼저 알아야 하나”예요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘디렉토리 폴더의 용량 계산’이라는 단서에서 S7 p12의 <strong>후위 순회</strong> 응용 예를 떠올려요. 슬라이드는 후위 순회(postorder traversal)를 “왼쪽 서브트리 → 오른쪽 서브트리 → 루트” 순서(LRV)로 정의하고, 예로 디렉토리 용량 계산을 들어요.</p><p>판단 기준은 “지금 노드의 값을 구하는 데 자식들의 결과가 필요한가”예요. 폴더 용량 = 하위 폴더들의 용량 합 + 자기 파일 크기이므로, 자식(서브트리)을 먼저 끝내고 루트를 마지막에 처리하는 순서가 맞아요. 개념 위치: <a href="정리노트_1102_Tree.html#s1-postorder">후위 순회와 디렉토리 용량</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>“용량(폴더) = 용량(하위 폴더 1) + 용량(하위 폴더 2) + 자기 파일 크기 → 자식 먼저, 자신은 나중.”</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>폴더를 노드, 하위 폴더를 자식으로 보면 폴더 구조는 트리예요. 첫 줄의 식에서 오른쪽 항(하위 폴더 용량)을 모두 알아야 왼쪽(지금 폴더 용량)을 구할 수 있어요.</p><p>세 순회 중 루트(V)를 자식들(L, R)보다 <em>나중에</em> 방문하는 것은 LRV, 곧 후위 순회예요. 전위(VLR)는 루트를 먼저 찍어서 하위 폴더 용량을 모르는 채로 지금 폴더를 처리하게 되고, 중위(LVR)는 오른쪽 서브트리를 보기 전에 루트를 처리해요.</p><p>그래서 빈칸의 답은 <strong>후위 순회</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>후위 순회</strong>(postorder traversal, LRV).</p><p>작은 예로 확인해요. 1102 수업에서는 하위 폴더를 먼저 내려가 용량 50KB를 기억하고, 올라오면서 더해 250KB, 500KB를 만드는 순서로 따라갔어요. 이 순서는 자식이 끝난 뒤에 부모를 계산하는 LRV와 같아요.</p><p>원문 2018 중간 3번의 원본 답 “후위 순회”, S7 p12의 예시와도 같아요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>“위 폴더부터 열어 본다”는 동작에 끌려 전위 순회를 쓰기 쉬워요. 폴더를 <em>여는</em> 순서와 용량을 <em>계산하는</em> 순서는 달라요. 계산은 아래 결과가 있어야 끝나므로 루트가 마지막인 후위예요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>폴더 용량 식을 다시 써 보고, 어느 값이 먼저 필요한지 표시해 보세요.</li><li>VLR, LVR, LRV 중 루트가 맨 끝인 것을 고르세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>용량(폴더) = 하위 폴더 용량들의 합 + 자기 파일 크기.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>후위 순회 LRV: 왼쪽 → 오른쪽 → 루트</li><li>S7 p12: 후위 순회의 예가 디렉토리 용량 계산</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>후위 순회. 원본 답과 슬라이드 예시가 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>폴더를 여는 순서(위부터)와 용량을 계산하는 순서(아래부터)를 구별해요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>컴퓨터 디렉토리 폴더의 용량 계산에 가장 알맞은 이진 트리 순회 이름 하나를 빈칸에 적어요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <p>‘디렉토리 폴더의 용량 계산’이라는 단서에서 <strong>후위 순회(postorder traversal, LRV)</strong> 응용을 떠올려요. 폴더 용량은 하위 폴더 용량을 모두 구해 합친 뒤에야 자기 파일 크기를 더해 확정할 수 있으므로, 자식(L·R)을 먼저 끝내고 루트(V)를 마지막에 처리하는 순서가 맞아요(S7 p12, <a href="정리노트_1102_Tree.html#s1-postorder">정리노트</a>).</p>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>용량(현재 폴더) = 용량(왼쪽 하위) + 용량(오른쪽 하위) + 자기 파일 크기  →  L, R 먼저, V 나중</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ul>
+      <li><strong>전위 순회(VLR):</strong> 현재 폴더(V)를 먼저 방문하므로 하위 폴더(L, R) 용량을 아직 모르는 상태라 계산할 수 없어요.</li>
+      <li><strong>중위 순회(LVR):</strong> 왼쪽(L)만 구한 뒤 오른쪽(R)을 보기 전에 현재 폴더(V)를 처리하므로 합산이 끝나지 않아요.</li>
+      <li><strong>후위 순회(LRV):</strong> 왼쪽·오른쪽 하위 폴더 용량을 모두 반환받은 뒤 마지막에 자기 파일 크기를 더해 루트 용량을 확정해요 → 정답: <strong>후위 순회</strong>.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: <strong>후위 순회</strong> (postorder traversal, LRV).</p>
+    <p>구체적 수치로 확인해요. 왼쪽 하위 폴더가 50 KB, 오른쪽이 150 KB, 현재 폴더 자체 파일이 50 KB라면, 자식을 먼저 돌아 50과 150을 모은 뒤 루트에서 <code>50 + 150 + 50 = 250 KB</code>를 한 번에 계산할 수 있어요. 2018 중간 3번 원본 답(“후위 순회”) 및 S7 p12 예시와 일치해요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>“상위 폴더부터 열어 본다”는 탐색 순서에 끌려 전위를 적으면:</strong> 폴더를 <em>여는</em> 시점(V)에는 하위 폴더 용량이 아직 계산되지 않아 값을 구할 수 없어요. 계산이 <em>완료되어 돌아오는</em> 순서는 LRV예요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>트리 응용 문제를 보면 → “부모 값을 구할 때 자식의 반환값이 먼저 필요한가?”를 물어 LRV(후위) vs VLR(전위)를 즉시 가른다.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>후위 순회(LRV): 왼쪽·오른쪽 자식을 먼저 계산하고 마지막에 루트 합산(S7 p12).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>용량(현재) = 용량(L) + 용량(R) + 자기 크기</code> → 자식 먼저, 루트 나중.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>후위 순회</strong> (원본 답·S7 p12 일치).</p></div>
+  <div class="summary-group"><h4>검산</h4><p>하위 50KB + 150KB를 먼저 모아야 상위에서 + 50KB = 250KB 확정 가능.</p></div>
+</div>

@@ -1,8 +1,89 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 8개 트리를 전위 순회로 돌 때 <em>다섯 번째</em>로 방문하는 노드 하나를 고르는 문제예요. 그림에서 B는 왼쪽 자식 D만 있고, C 아래에 E·F, E 아래에 G·H가 있어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘전위 순회’라는 단서에서 S7 p10의 VLR을 떠올려요. 전위 순회(preorder traversal)는 루트를 먼저 방문하고, 왼쪽 서브트리를 끝까지 돈 다음 오른쪽 서브트리로 가요.</p><p>슬라이드는 이 순서를 책 목차(장 → 절)를 출력하는 예로 보여 줘요. 장 제목이 먼저, 그 아래 절이 차례로 나오는 것과 같아요. ‘다섯 번째’를 묻기 때문에 전체 순서를 다 적지 않고 다섯 개까지만 세어도 돼요. 개념 위치: <a href="정리노트_1102_Tree.html#s1-preorder">전위 순회와 목차</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>“1번째 A(루트) → 왼쪽 B 서브트리로 내려감.”</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>방문할 때마다 번호를 붙여요.</p><div class="table-wrap"><table><thead><tr><th>번째</th><th>방문 노드</th><th>이유</th></tr></thead><tbody><tr><td>1</td><td>A</td><td>루트 먼저</td></tr><tr><td>2</td><td>B</td><td>A의 왼쪽 서브트리의 루트</td></tr><tr><td>3</td><td>D</td><td>B의 왼쪽 자식, B의 오른쪽은 비어 있음</td></tr><tr><td>4</td><td>C</td><td>왼쪽이 끝나 A의 오른쪽 서브트리의 루트</td></tr><tr><td>5</td><td>E</td><td>C의 왼쪽 서브트리의 루트</td></tr><tr><td>6~8</td><td>G, H, F</td><td>E의 자식을 돈 뒤 C의 오른쪽 F</td></tr></tbody></table></div><p>다섯 번째는 <strong>E</strong>라서 ②예요. 나머지 보기는 C가 4번째, G가 6번째, H가 7번째예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>② E</strong>. 전체 전위 순서는 A B D C E G H F예요.</p><p>개수로 확인해요. A(1개) + B 서브트리(B, D 2개) = 3개를 지나야 C가 4번째이고, 그다음 C의 왼쪽 서브트리 루트 E가 5번째예요.</p><p>별도 프로그램으로 그림의 간선을 트리로 만들어 전위 순서를 계산했더니 A B D C E G H F였고 5번째가 E였어요. 교과서에는 인쇄된 정답이 없어서(순회 번호 필기와 보기의 연필 표시만 있음) 공식 답과의 대조는 하지 못했어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>층마다 읽는 레벨 순서(A B C D E …)로 세면 다섯 번째가 E로 같아 보여도 이유가 틀려요. 이 트리에서는 우연히 겹친 것이고, 전위는 B 아래 D를 C보다 먼저 방문해요.</li><li>G를 고르기 쉬워요. E를 찍은 <em>다음</em>에 G로 내려가므로 G는 6번째예요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>그림을 보고 방문 번호 1~8을 노드 옆에 직접 적어 보세요.</li><li>왼쪽 서브트리의 노드 수를 세어 C가 몇 번째인지 먼저 구해 보세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>1번째는 루트 A, 그다음 왼쪽 B 서브트리로 내려가요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>전위 순회 VLR: 루트 → 왼쪽 서브트리 전부 → 오른쪽 서브트리</li><li>책 목차 출력과 같은 순서예요.</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>② E. 전위 순서 A B D C E G H F. 교과서 인쇄 정답은 없어요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>레벨 순서로 세도 E가 5번째로 겹치지만, 그건 이 트리에서의 우연이에요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>8노드 트리를 <strong>전위 순회(VLR)</strong>할 때 <strong>5번째</strong>로 방문하는 노드 하나를 ①~④ 중 고르는 긍정형 단일 선택 객관식이에요(교과서 인쇄 정답은 없어요).</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead>
+        <tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이유와 조건</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>전위 순회 (VLR)</td>
+          <td>루트 → 왼쪽 전부 → 오른쪽</td>
+          <td>현재 노드를 찍고 바로 왼쪽 끝까지 내려간 뒤 돌아오며 오른쪽을 방문해요(<a href="정리노트_1102_Tree.html#s1-preorder">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>다섯 번째 방문 노드</td>
+          <td>1~5번 순서 추적 + 왼쪽 크기 계산</td>
+          <td>루트와 왼쪽 서브트리 노드 수를 알면 오른쪽 루트 C의 순번이 바로 정해져요.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>1번째: A (루트)  →  왼쪽 B 서브트리(B, D)로 바로 진입</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>순번</th><th>방문 노드</th><th>판단 근거</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>A</td><td>전체 루트 먼저</td></tr>
+          <tr><td>2</td><td>B</td><td>A의 왼쪽 서브트리 루트</td></tr>
+          <tr><td>3</td><td>D</td><td>B의 왼쪽 자식(B의 오른쪽 없음)</td></tr>
+          <tr><td>4</td><td>C</td><td>A의 왼쪽 끝 → 오른쪽 서브트리 루트</td></tr>
+          <tr><td><b>5</b></td><td><b>E</b></td><td>C의 왼쪽 서브트리 루트 (<b>정답 ②</b>)</td></tr>
+          <tr><td>6~8</td><td>G, H, F</td><td>E의 자식 G, H 방문 후 C의 오른쪽 F</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>보기별 소거 판정</strong></p>
+    <ul>
+      <li><strong>① C:</strong> 4번째 방문 노드(A와 B 서브트리 3개 직후)이므로 소거해요.</li>
+      <li><strong>② E:</strong> 5번째 방문 노드이므로 <strong>정답</strong>이에요.</li>
+      <li><strong>③ G:</strong> 6번째 방문 노드(E의 왼쪽 자식)이므로 소거해요.</li>
+      <li><strong>④ H:</strong> 7번째 방문 노드(E의 오른쪽 자식)이므로 소거해요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: <strong>② E</strong> (전체 전위 순서: <code>A B D C E G H F</code>, 교과서 인쇄 정답 미기재).</p>
+    <p><strong>서브트리 크기 검산</strong>: 루트 A(1개) + 왼쪽 B 서브트리(B, D 2개) = 3개를 지난 뒤 오른쪽 루트 C가 반드시 <strong>4번째</strong>이고, C의 왼쪽 자식 E가 바로 <strong>5번째</strong>예요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>레벨 순서(<code>A B C D E ...</code>)로 세어 ② E를 고르면:</strong> 이 트리에서는 5번째가 우연히 E로 같아도 풀이 순서가 틀려요(전위에서는 <code>D</code>가 <code>C</code>보다 앞인 3번째예요).</p>
+  <p><strong>E를 건너뛰고 단말 <code>G</code>를 5번째로 세면:</strong> 전위(VLR)는 부모 <code>E</code>를 자식 <code>G, H</code>보다 먼저 찍는다는 규칙을 빠뜨린 거예요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>전위 순회 $k$ 번째 노드를 물으면 → 왼쪽 서브트리 크기 $L$ 을 먼저 세어 오른쪽 루트가 $(1 + L + 1)$ 번째임을 즉시 구한다.</li>
+    <li>부모를 찍은 직후 → 자식 중 왼쪽 가지를 먼저 끝까지 내려간다는 VLR 규칙으로 번호를 이어 간다.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>전위 VLR: 루트 → 왼쪽 서브트리 전부 → 오른쪽 서브트리.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>1번째 A → 왼쪽 B(2) → D(3)</code>.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>② E</strong> (전위 <code>A B D C E G H F</code>; ① 4번째, ③ 6번째, ④ 7번째).</p></div>
+  <div class="summary-group"><h4>검산</h4><p>A(1) + 왼쪽(2) = 3개 지나 C가 4번째, 바로 다음 E가 5번째.</p></div>
+</div>

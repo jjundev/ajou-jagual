@@ -10,7 +10,7 @@ p8: 교과서 그림 SVG(교과서/assets/ch09-q12-tree.svg)의 선 끝점 좌�
 """
 import math, os, re, sys, unicodedata
 
-REPO = "/Users/hyunjun_macbook_pro/Documents/Univ/자구알"
+REPO = next(str(p) for p in [os.path.dirname(os.path.abspath(__file__)), *__import__("pathlib").Path(__file__).resolve().parents] if os.path.isdir(os.path.join(str(p), "교과서")))
 
 # ---------- p5 ----------
 def up(A, i):

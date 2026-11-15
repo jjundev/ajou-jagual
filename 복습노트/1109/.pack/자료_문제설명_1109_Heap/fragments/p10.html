@@ -1,13 +1,99 @@
-<div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>우선순위 큐(priority queue)를 만드는 다섯 방법의 삽입·삭제 비용을 비교하고, 히프를 고르는 이유를 말한 뒤, 배열 히프의 인덱스를 계산하는 문제예요. (b)는 숫자 답이 아니라 이유를 쓰는 정성 문항이에요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>(a) ‘순서 없는’과 ‘정렬된’이라는 단서는 <strong>정리하는 수고를 언제 치르느냐</strong>를 묻는 신호예요. 순서 없이 두면 넣을 때는 아무 데나 붙이고, 꺼낼 때 전부 훑어 가장 높은 우선순위를 찾아요. 정렬해 두면 넣을 때 자리를 찾고, 꺼낼 때는 한쪽 끝에서 바로 집어요. 수업의 책상 서랍 비유가 이 차이예요. 시간복잡도(time complexity) $O(\cdot)$는 요소 $n$개일 때 최악의 경우 기본 동작 수가 $n$에 따라 어떻게 늘어나는지를 나타내요(<a href="정리노트_1109_Heap.html#s0-impl">정리노트: 배열·연결 리스트·히프 구현 비교</a>).</p><p>‘히프’라는 단서에서는 높이(height)를 떠올려요. 히프는 완전 이진 트리라서 노드 $n$개의 높이가 $h = \lceil \log_2(n+1) \rceil$, 곧 $O(\log n)$이에요. 삽입(upheap)과 삭제(downheap)는 루트와 단말 사이의 한 경로만 따라가므로 높이에 비례해요(<a href="정리노트_1109_Heap.html#s1-height">정리노트: 힙의 높이는 O(log n)</a>).</p><p>(b) 정성 문항이라 공식 대신 판단 기준이 필요해요. 문제가 준 관점은 ‘<code>n</code>이 아주 커질 때 연산 한 번의 시간을 미리 짐작할 수 있는가’예요. 수업에서는 복잡도에서 가장 중요한 것이 예측 가능성이라고 했어요. 그러니 각 방법에서 <strong>가장 느린 연산</strong>이 $n$에 따라 얼마나 빨리 커지는지를 비교 기준으로 삼아요.</p><p>(c) ‘인덱스 <code>5</code>’와 ‘노드 <code>10</code>개’라는 단서에서 배열 히프의 인덱스 식과 존재 조건을 떠올려요. 왼쪽 자식 $2i$, 오른쪽 자식 $2i+1$, 부모 $\lfloor i/2 \rfloor$이고, 계산한 인덱스가 노드 수 $n$ 이하일 때만 그 노드가 있어요(<a href="정리노트_1109_Heap.html#s1-array">정리노트: 배열로 구현한 힙의 인덱스</a>).</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>방법          | 삽입 | 삭제
-순서 없는 배열 | O(1) | O(n)   ← 끝에 붙이기 / 전부 훑어 찾기</code></pre><p>(c)는 <code>left = 5*2 = 10</code>을 먼저 쓰고, 바로 옆에 <code>10 ≤ 10</code>인지 적어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 방법마다 ‘삽입 때 최악으로 몇 개를 보거나 옮기나’, ‘삭제 때 최악으로 몇 개를 보거나 옮기나’를 차례로 물어요.</p><p>순서 없는 배열·연결 리스트는 새 요소를 끝(연결 리스트는 앞도 가능)에 붙이면 끝나서 삽입 $O(1)$이에요. 삭제할 요소가 어디 있는지 모르니 $n$개를 모두 비교해야 해서 삭제 $O(n)$이에요.</p><p>정렬된 배열·연결 리스트는 넣을 자리를 비교하며 찾아야 해요. 배열은 그 뒤 요소를 한 칸씩 밀어야 해요. 최악에는 $n$개 모두를 비교하거나 옮기므로 삽입 $O(n)$이에요. 가장 높은 우선순위가 한쪽 끝에 있으니 찾아 꺼내기는 삭제 $O(1)$이에요.</p><p>히프는 삽입 때 마지막 자리에서 루트 쪽으로, 삭제 때 루트에서 단말 쪽으로 한 경로만 움직여요. 경로 길이가 높이 $O(\log n)$이라 둘 다 $O(\log n)$이에요.</p><div class="table-wrap"><table><thead><tr><th>방법</th><th>삽입</th><th>삭제</th></tr></thead><tbody><tr><td>순서 없는 배열</td><td>O(1)</td><td>O(n)</td></tr><tr><td>순서 없는 연결 리스트</td><td>O(1)</td><td>O(n)</td></tr><tr><td>정렬된 배열</td><td>O(n)</td><td>O(1)</td></tr><tr><td>정렬된 연결 리스트</td><td>O(n)</td><td>O(1)</td></tr><tr><td>히프</td><td>O(log n)</td><td>O(log n)</td></tr></tbody></table></div><p>정렬된 배열의 삭제 $O(1)$은 문제의 약속처럼 ‘찾아 꺼내기’까지만 센 값이에요. 가장 높은 우선순위를 배열 맨 앞에 두면 꺼낸 뒤 나머지를 앞으로 당기는 뒤처리가 따로 생기고, 맨 끝에 두면 그런 뒤처리가 없어요. 어느 쪽이든 삽입 $O(n)$은 그대로 남아요.</p></div><div data-subpart="b"><p>(b) 판단 기준은 ‘가장 느린 연산 한 번이 $n$이 커질 때 얼마나 커지나’예요. 정렬된 배열은 삭제가 $O(1)$이어도 삽입이 최악에 $n$개를 옮겨요. $n$이 100만에서 1000만으로 열 배가 되면 삽입 한 번의 최악 시간도 열 배가 돼요. 그래서 데이터가 얼마나 쌓일지 모르면 연산 한 번이 얼마나 걸릴지 미리 짐작하기 어려워요.</p><p>히프는 삽입·삭제 모두 최악에도 높이만큼만 움직여요. $\log_2$로 보면 $n$이 100만일 때 높이가 약 20, 1000만일 때 약 24예요. $n$이 열 배가 되어도 몇 단계만 늘어서, 연산 한 번의 시간 상한을 미리 예측할 수 있어요. 수업에서 log n이 나오면 그쪽을 고르라고 한 이유가 이 완만한 증가예요.</p><p>우선순위 큐는 넣기와 꺼내기를 번갈아 계속 쓰는 자료구조라 한쪽 연산만 빨라서는 이득이 작아요. 보충하면, 삽입·삭제를 합쳐 $m$번 하는 동안 정렬된 배열의 최악 합계는 $m \cdot n$에 비례하고 히프는 $m \log n$에 비례해요. 이 문장은 수업 밖에서 덧붙인 계산이에요.</p><p>답: 정렬된 배열은 삽입이 $O(n)$이라 $n$이 커질수록 연산 한 번의 최악 시간이 $n$에 비례해 계속 커져요. 히프는 삽입·삭제 모두 최악에도 $O(\log n)$이고 $\log n$은 완만하게 늘어서, 어떤 연산이든 걸리는 시간을 미리 짐작할 수 있어요. 그래서 히프를 골라요.</p></div><div data-subpart="c"><p>(c) 식을 대입한 뒤 존재 조건을 따로 검사해요.</p><pre><code>왼쪽 자식 = 5*2     = 10   → 10 ≤ 10 이라 있음
-오른쪽 자식 = 5*2 + 1 = 11   → 11 &gt; 10 이라 없음
-부모       = 5/2     = 2    (정수 나눗셈, 2.5 에서 소수점 아래를 버림)</code></pre><p>노드가 10개면 배열의 1~10번 칸만 채워져 있어요. 11번 칸은 힙 밖이므로 그 자리의 오른쪽 자식은 없어요. 부모는 루트가 아닌 노드에 늘 있고, 인덱스 5의 부모는 2번이에요.</p><p>답: 왼쪽 자식 10, 오른쪽 자식 없음, 부모 2예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="a"><p>(a) 독립 Python 검산으로 최악 경우의 기본 동작 수를 직접 셌어요. 순서 없는 배열에서 최댓값을 찾는 비교 수, 정렬된 배열에 새 최솟값을 넣을 때 옮기는 칸 수, 히프 경로의 최대 교환 수(높이 − 1)예요.</p><pre><code>n=10: unsorted-array delete compares=9, sorted-array insert moves=10, heap path swaps&lt;=3
-n=1000: unsorted-array delete compares=999, sorted-array insert moves=1000, heap path swaps&lt;=9
-n=1000000: unsorted-array delete compares=999999, sorted-array insert moves=1000000, heap path swaps&lt;=19</code></pre><p>앞의 두 열은 $n$에 비례하고 마지막 열은 $\log_2 n$ 정도로 늘어서 표의 $O(n)$, $O(\log n)$과 맞아요. 이 숫자는 증가 모양을 확인한 것이고, 표의 근거는 solve의 최악 경우 논증이에요. 강의록 S8 p4의 표와도 다섯 행 모두 일치해요.</p></div><div data-subpart="b"><p>(b) 논증이 기대는 조건을 다시 확인해요. 첫째, 히프의 $O(\log n)$은 완전 이진 트리라 높이가 $\lceil \log_2(n+1) \rceil$로 보장되기 때문이에요. 삽입은 마지막 자리에, 삭제는 마지막 노드를 루트로 옮기므로 모양이 한쪽으로 치우치지 않아요. 둘째, 정렬된 배열의 $O(n)$은 새 값이 맨 앞에 들어가는 입력이 실제로 있어서 최악이 일어날 수 있어요. 두 조건이 모두 성립하므로 ‘히프는 연산 한 번의 최악 시간이 $\log n$으로 묶인다’는 결론이 따라와요. 위의 $n=10^6$ 숫자 예는 설명을 돕는 예일 뿐 논증 자체는 아니에요.</p></div><div data-subpart="c"><p>(c) 정리노트의 노드 10개 예제 히프 <code>9 7 6 5 4 3 2 2 1 3</code>에 대입해 봐요. 5번 칸의 값 4는 트리에서 7의 오른쪽 자식이고, 아래에 3 하나만 달려 있어요. 그 3이 10번 칸, 위의 7이 2번 칸이라 계산과 같아요. 독립 Python 검산도 <code>left 10 right None parent 2</code>를 출력했어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>(a) 정렬된 배열의 삭제 $O(1)$을 보고 ‘정렬이 늘 빠르다’고 결론 내리지 않아요. 비용이 삽입 쪽으로 옮겨 갔을 뿐이에요. 순서 없는 연결 리스트의 삭제도 포인터만 바꾸면 끝난다고 $O(1)$로 쓰기 쉬운데, 꺼낼 요소를 찾는 데 $O(n)$이 들어요.</p><p>(b) ‘히프가 평균적으로 빠르다’나 ‘삭제가 $O(1)$보다 빠르다’로 쓰면 틀려요. 히프의 삭제는 정렬된 배열보다 느려요. 이유는 두 연산의 최악이 모두 완만하게 늘어 예측 가능하다는 데 있어요.</p><p>(c) 공식만 계산하고 11을 오른쪽 자식으로 답하지 않아요. 계산한 인덱스가 노드 수를 넘으면 ‘없음’이에요. 부모를 $5/2 = 2.5$로 쓰지 않고 정수 나눗셈 2로 써요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li>다섯 방법마다 삽입·삭제 때 최악으로 몇 개를 보거나 옮기는지 말하고 표를 채워 보세요.</li><li>‘가장 느린 연산이 $n$에 따라 얼마나 커지나’라는 기준으로 히프를 고르는 이유를 세 문장으로 써 보세요.</li><li>노드 10개 히프에서 인덱스 4와 5의 자식·부모를 존재 조건까지 포함해 구해 보세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>순서 없음은 넣기 $O(1)$·꺼내기 $O(n)$, 정렬은 넣기 $O(n)$·꺼내기 $O(1)$, 히프는 높이 $\lceil \log_2(n+1) \rceil$ 경로만 움직여 둘 다 $O(\log n)$이에요. 자식 $2i$, $2i+1$, 부모 $\lfloor i/2 \rfloor$이고 인덱스 ≤ $n$일 때만 있어요.</p></div><div class="summary-group"><h4>(a) 표</h4><p>순서 없는 배열·연결 리스트 $O(1)$ / $O(n)$, 정렬된 배열·연결 리스트 $O(n)$ / $O(1)$, 히프 $O(\log n)$ / $O(\log n)$이에요.</p></div><div class="summary-group"><h4>(b) 판단 기준</h4><p>가장 느린 연산의 최악 시간이 $n$에 따라 얼마나 커지나를 봐요. 정렬된 배열은 삽입이 $n$에 비례해 커지고, 히프는 둘 다 $\log n$으로 완만해 연산 한 번의 시간을 예측할 수 있어요.</p></div><div class="summary-group"><h4>(c) 답·검산</h4><p>왼쪽 10, 오른쪽 없음(11 &gt; 10), 부모 2예요. 정리노트 예제 히프와 Python 검산이 일치했어요. 동작 수 세기도 표의 증가 모양과 맞았어요.</p></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p><strong>(a)</strong> 우선순위 큐 구현 5종의 삽입·삭제 시간복잡도를 채우고, <strong>(b)</strong> 삭제가 $O(1)$ 인 정렬된 배열 대신 히프를 고르는 이유(<code>n</code>이 커질 때의 예측 가능성)를 서술하며, <strong>(c)</strong> <code>n=10</code> 히프에서 <code>i=5</code>의 자식·부모 인덱스를 구해요.</p>
+  <p>(a)의 삭제 비용은 문제 조건대로 ‘우선순위가 가장 높은 요소를 찾아 꺼내기’까지만 세고, (b)는 정성 서술 문항이에요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>(a) 순서 없는 / 정렬된 / 히프</td>
+          <td>정리 비용 시점(삽입 시 정렬 vs 삭제 시 탐색) · 히프 높이 $O(\log n)$</td>
+          <td>언제 $n$ 개를 훑거나 밀어야 하는지에 따라 $O(1)$ 과 $O(n)$ 이 갈리고, 히프만 양쪽 모두 높이 경로만 타요(<a href="정리노트_1109_Heap.html#s0-impl">구현 비교</a> · <a href="정리노트_1109_Heap.html#s1-height">힙의 높이</a>).</td>
+        </tr>
+        <tr>
+          <td>(b) 시간 미리 짐작 관점</td>
+          <td>두 연산 중 <strong>더 느린 연산의 최악 증가율</strong> 비교</td>
+          <td>삽입·삭제가 번갈아 일어날 때 최악 상한이 작아야 응답 시간을 예측할 수 있어요.</td>
+        </tr>
+        <tr>
+          <td>(c) <code>n=10</code>, 인덱스 <code>5</code></td>
+          <td>왼쪽 $2i$ , 오른쪽 $2i+1$ , 부모 $\lfloor i/2 \rfloor$ (단, 인덱스 $\le n$ 일 때만 존재)</td>
+          <td>공식으로 나온 숫자가 현재 힙 크기 <code>10</code>을 넘는지 반드시 경계 검사를 해야 ‘없음’을 판별해요(<a href="정리노트_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>(a) 순서 없는 배열: 삽입 O(1)(끝에 붙임) | 삭제 O(n)(최대/최소 찾기 위해 전체 탐색)
+(c) i = 5, n = 10 → 왼쪽 = 2*5 = 10 (≤ 10 있음)</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) 다섯 구현 방법의 최악 시간복잡도</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>방법</th><th>삽입</th><th>삭제 (찾아 꺼내기)</th><th>핵심 이유</th></tr></thead>
+        <tbody>
+          <tr><td>순서 없는 배열</td><td> $O(1)$ </td><td> $O(n)$ </td><td>맨 끝에 붙이면 끝 / 최우선 요소를 찾기 위해 최대 $n$ 개 비교</td></tr>
+          <tr><td>순서 없는 연결 리스트</td><td> $O(1)$ </td><td> $O(n)$ </td><td>앞(또는 끝)에 연결 / 최우선 노드를 찾기 위해 $n$ 개 순회</td></tr>
+          <tr><td>정렬된 배열</td><td> $O(n)$ </td><td> $O(1)$ </td><td>새 자리 탐색 + 뒤 원소 최대 $n$ 칸 이동 / 끝 원소 바로 꺼냄</td></tr>
+          <tr><td>정렬된 연결 리스트</td><td> $O(n)$ </td><td> $O(1)$ </td><td>삽입 위치를 순서대로 탐색(최대 $n$ 개) / 맨 앞 노드 바로 꺼냄</td></tr>
+          <tr><td><b>히프(Heap)</b></td><td><b> $O(\log n)$ </b></td><td><b> $O(\log n)$ </b></td><td>삽입(upheap)·삭제(downheap) 모두 완전 이진 트리 높이( $\lceil \log_2(n+1) \rceil$ ) 경로만 이동</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) 히프를 선택하는 이유 (예측 가능성)</h5>
+    <ul>
+      <li><strong>정렬된 배열의 한계</strong>: 삭제가 $O(1)$ 이어도 삽입은 최악 $n$ 칸을 이동하므로 $n$ 이 $10^6 \to 10^7$ 로 10배 커지면 삽입 최악 시간도 10배로 늘어나요.</li>
+      <li><strong>히프의 균형·예측성</strong>: 히프는 삽입·삭제 모두 높이 $O(\log n)$ 으로 묶여 $\log_2(10^6) \approx 20$, $\log_2(10^7) \approx 24$ 처럼 $n$ 이 10배가 되어도 몇 단계만 늘어요. 따라서 어떤 연산이 오더라도 걸리는 시간 상한을 미리 짐작할 수 있어요.</li>
+      <li><em>수업 밖 보충</em>: 삽입·삭제를 섞어 $m$ 번 호출하면 정렬된 배열은 최악 $\Theta(m \cdot n)$ 이지만 히프는 $O(m \log n)$ 이에요.</li>
+    </ul>
+  </div>
+  <div data-subpart="c">
+    <h5>(c) 인덱스 <code>5</code>의 자식·부모 (<code>n = 10</code>)</h5>
+    <pre><code>왼쪽 자식   = 2 * 5     = 10   (10 ≤ 10 → 10)
+오른쪽 자식 = 2 * 5 + 1 = 11   (11 &gt; 10 → 없음)
+부모        = 5 / 2     = 2    (정수 나눗셈 ⌊2.5⌋ = 2)</code></pre>
+    <p>(c) 답: <strong>왼쪽 자식 <code>10</code>, 오른쪽 자식 <code>없음</code>, 부모 <code>2</code></strong>.</p>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 검산</strong>: $n=1000$ 일 때 최악 비교/이동 수는 순서 없는 배열 삭제 $999$ 번, 정렬된 배열 삽입 $1000$ 번, 히프 경로 교환 $\le \lceil \log_2(1001) \rceil - 1 = 9$ 번으로 표의 $O(n)$ 대 $O(\log n)$ 차수가 일치해요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 논증 조건 검산</strong>: ① 히프가 완전 이진 트리를 유지해 높이가 $\lceil \log_2(n+1) \rceil$ 로 보장되고, ② 정렬된 배열에는 새 최솟값(또는 최댓값) 입력으로 실제 $n$ 칸 이동하는 최악 입력이 존재하므로 두 최악 상한의 비교가 성립해요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 구체 트리 대입 검산</strong>: 정리노트 10개 노드 예제 <code>[1..10] = 9 7 6 5 4 3 2 2 1 3</code>에서 <code>[5]=4</code>를 보면 부모는 <code>[2]=7</code>, 왼쪽 자식은 <code>[10]=3</code>, 오른쪽 자식은 없어 계산 결과(<code>10, 없음, 2</code>)와 일치해요.</p>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>(a) 순서 없는 연결 리스트 삭제를 $O(1)$ 로 쓰면</strong>: 포인터 연결 해제는 $O(1)$ 이지만, 우선순위가 가장 높은 노드를 <em>찾아가는 탐색</em>에 $O(n)$ 이 걸려요.</p>
+  <p><strong>(b) “히프가 평균적으로 빠르다” 또는 (c)에서 오른쪽 자식을 <code>11</code>로 쓰면</strong>: 히프는 삭제가 정렬 배열의 $O(1)$ 보다 느려 ‘예측 가능한 최악 상한’이 이유이며, (c)는 $11 &gt; n=10$ 범위 검사 없이 쓰면 힙 밖 칸을 답으로 적는 실수를 해요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>우선순위 큐 구현 표를 보면 → “정렬 유지 수고를 삽입과 삭제 중 어디서 치르는가”부터 짝지어 채운다.</li>
+    <li>(b)에서 정렬된 배열과 히프가 각각 강점을 가지는 극단적 상황(삭제만 엄청 많을 때 vs 삽입·삭제가 섞일 때)을 구분해 설명해 보세요.</li>
+    <li>(c)에서 만약 노드가 1개 추가되어 <code>n=11</code>이 되면 <code>i=5</code>의 오른쪽 자식은 무엇으로 바뀌나요?</li>
+  </ol>
+</div>
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>정렬 위치에 따라 $O(1)/O(n)$ 이 갈리고, 히프만 둘 다 $O(\log n)$ . 인덱스는 $2i, 2i+1, \lfloor i/2 \rfloor$ ( $\le n$ 검사).</p></div>
+  <div class="summary-group"><h4>(a) 표</h4><p>순서 없음 $O(1)/O(n)$ , 정렬됨 $O(n)/O(1)$ , 히프 $O(\log n)/O(\log n)$ .</p></div>
+  <div class="summary-group"><h4>(b) 판단 기준</h4><p>최악 시간 예측 가능성: 정렬 배열은 삽입이 $O(n)$ 으로 선형 폭증하나 히프는 양쪽 모두 $O(\log n)$ 으로 완만해요.</p></div>
+  <div class="summary-group"><h4>(c) 답·검산</h4><p>왼쪽 <code>10</code>, 오른쪽 <code>없음</code>( $11 &gt; 10$ ), 부모 <code>2</code>. 예제 히프(<code>n=10</code>) 대입 일치.</p></div>
+</div>

@@ -1,8 +1,81 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 A~H 8개짜리 트리 그림에서 단말 노드가 몇 개인지 세어, 보기 ①~④ 중 하나를 고르는 객관식이에요. 긍정형 질문이고 답은 하나만 골라요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘단말 노드 수’라는 단서에서 S7 p3의 정의를 떠올려요. <strong>단말 노드(terminal node)</strong>는 자식이 없는 노드이고, 수업에서는 리프 노드(leaf node)와 같은 말이라고 했어요. 반대로 자식이 하나 이상 있으면 <strong>비단말 노드</strong>예요.</p><p>판정 기준은 “맨 아래층에 있나”가 아니라 “아래로 이어진 선이 있나”예요. 그래서 노드마다 자식을 적어 보는 방법을 골라요. 개념 위치: <a href="정리노트_1029_Tree.html#s0-terms-structure">노드·루트·서브트리·단말 노드</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>노드마다 자식을 적어요. A → B, C / B → D / C → E, F / E → G, H.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>첫 줄에 왼쪽 자리(부모)로 등장한 노드는 A, B, C, E예요. 이 넷은 자식이 있으니 비단말 노드예요.</p><p>나머지 D, F, G, H는 아래로 이어진 선이 없어요. 그래서 단말 노드는 <strong>D, F, G, H 4개</strong>예요. D와 F는 레벨 3에 있지만 자식이 없으니 단말 노드에 들어가요.</p><p>보기마다 판정해요.</p><ul><li>① 2: 맨 아래층 G, H만 센 값이에요. D, F를 빠뜨려서 틀려요.</li><li>② 3: 실제 단말 노드 4개 중 하나를 빠뜨린 값이에요. 예를 들어 레벨 3의 D나 F 하나를 놓치면 3이 돼요.</li><li>③ 4: D, F, G, H를 센 값과 같아요. <strong>정답</strong>이에요.</li><li>④ 8: 전체 노드 수예요. 단말 노드 수가 아니에요.</li></ul></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>③ 4</strong> (D, F, G, H).</p><p>단말 4개와 비단말 4개(A, B, C, E)를 더하면 8로 전체 노드 수와 맞아서 빠뜨리거나 두 번 센 노드가 없어요. 그림 좌표에서 부모–자식을 다시 만든 별도 계산도 단말 노드 D, F, G, H를 돌려줬어요. 교과서 자료에는 인쇄된 공식 답이 없어서, 이 답은 정의에 따른 독립 계산으로 확인한 값이에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>그림 맨 아래층만 보고 2를 고르기 쉬워요. 단말 노드는 위치가 아니라 자식 유무로 정해져요. 중간 높이에 있어도 자식이 없으면 단말 노드예요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>노드마다 자식을 한 줄로 적으세요.</li><li>한 번도 부모로 나오지 않은 노드를 세세요.</li><li>단말 + 비단말 = 전체 노드 수인지 확인하세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>A → B, C / B → D / C → E, F / E → G, H를 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>단말 노드(리프): 자식이 없는 노드</li><li>비단말 노드: 자식이 하나 이상</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>③ 4 (D, F, G, H). 단말 4 + 비단말 4 = 전체 8이에요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>① 2는 맨 아래층만, ④ 8은 전체 노드를 센 값이에요.</li><li>교과서 공식 답은 없고 독립 계산으로 확인했어요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>노드 8개(<code>A~H</code>)가 주어진 트리 그림에서 <strong>단말 노드의 개수</strong>를 세어 보기 ①~④ 중 하나를 고르는 긍정형 단일 선택 객관식이에요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·정의</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>단말 노드 수</td><td>단말 노드(terminal / leaf node): 자식이 없는 노드(차수 0)</td><td>그림에서 “맨 아래층”이 아니라 <strong>아래로 뻗은 간선이 없는 노드</strong>를 전부 골라야 레벨 3의 <code>D, F</code>를 빠뜨리지 않아요(<a href="정리노트_1029_Tree.html#s0-terms-structure">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>A → B, C | B → D | C → E, F | E → G, H</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <p>그림의 8개 노드마다 레벨과 자식 노드를 정리하면 아래 표와 같아요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>노드</th><th>레벨</th><th>자식 노드</th><th>차수</th><th>분류</th></tr></thead>
+        <tbody>
+          <tr><td><code>A</code></td><td>1</td><td><code>B, C</code></td><td>2</td><td>비단말</td></tr>
+          <tr><td><code>B</code></td><td>2</td><td><code>D</code></td><td>1</td><td>비단말</td></tr>
+          <tr><td><code>C</code></td><td>2</td><td><code>E, F</code></td><td>2</td><td>비단말</td></tr>
+          <tr><td><b><code>D</code></b></td><td>3</td><td>없음</td><td>0</td><td><b>단말 노드</b></td></tr>
+          <tr><td><code>E</code></td><td>3</td><td><code>G, H</code></td><td>2</td><td>비단말</td></tr>
+          <tr><td><b><code>F</code></b></td><td>3</td><td>없음</td><td>0</td><td><b>단말 노드</b></td></tr>
+          <tr><td><b><code>G</code></b></td><td>4</td><td>없음</td><td>0</td><td><b>단말 노드</b></td></tr>
+          <tr><td><b><code>H</code></b></td><td>4</td><td>없음</td><td>0</td><td><b>단말 노드</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>자식이 없는 노드는 <code>D, F, G, H</code>로 <strong>4개</strong>예요. 보기마다 판정하면 다음과 같아요.</p>
+    <ul>
+      <li><strong>① 2</strong> (소거): 맨 아래층(레벨 4)의 <code>G, H</code>만 센 값이라 레벨 3에서 끝난 <code>D, F</code>가 빠졌어요.</li>
+      <li><strong>② 3</strong> (소거): 단말 4개 중 하나(<code>D</code> 또는 <code>F</code>)를 놓친 값이에요.</li>
+      <li><strong>③ 4</strong> (<strong>정답</strong>): 자식이 0개인 <code>D, F, G, H</code> 네 노드를 빠짐없이 센 개수예요.</li>
+      <li><strong>④ 8</strong> (소거): 트리의 전체 노드 수(<code>A~H</code>)예요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: ③ 4 (D, F, G, H)</strong> (교과서 자료에는 인쇄된 공식 답이 없어 정의에 따른 독립 계산으로 확인했어요).</p>
+    <ul>
+      <li><strong>합계 보존 검산</strong>: 단말 4개(<code>D, F, G, H</code>) + 비단말 4개(<code>A, B, C, E</code>) = 전체 8개와 일치해요.</li>
+      <li><strong>간선 수 검산</strong>: 비단말 노드의 자식 수 합 $2 + 1 + 2 + 2 = 7$이 트리 전체 간선 수 $8 - 1 = 7$과 맞아요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>단말 노드를 “맨 아래층(레벨 4) 노드”로 오해하면:</strong> <code>G, H</code>만 세어 보기 <strong>① 2</strong>를 고르게 돼요. <code>D</code>와 <code>F</code>는 레벨 3에 있지만 더 이상 내려가는 간선이 없으므로 단말 노드예요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>트리 그림에서 단말 노드를 셀 때 “맨 아래 줄” 대신 <strong>모든 노드의 아래 간선 유무</strong>부터 확인하나요?</li>
+    <li>단말 노드 수 + 비단말 노드 수 = 전체 노드 수(8)가 맞는지 마지막 1초 검산을 붙일 수 있나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>단말 노드(리프): 층 위치와 무관하게 자식이 없는(차수 0) 노드.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>A→B,C / B→D / C→E,F / E→G,H</code>에서 부모로 안 나온 노드를 찾아요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>③ 4</strong> (<code>D, F, G, H</code>). ① 2는 레벨 4만, ④ 8은 전체 노드를 센 오답이에요.</p></div>
+  <div class="summary-group"><h4>검산·고지</h4><p>단말 4 + 비단말 4 = 8 일치. 교과서 공식 답이 없어 독립 계산으로 확인했어요.</p></div>
+</div>

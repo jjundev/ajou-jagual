@@ -1,4 +1,3 @@
-### python3 -I author-p9-p11.py
 P9
   insert(20): [20]
   insert(12): [12, 20]
@@ -22,18 +21,3 @@ P11
   (b) fixed   log [(2, 2, 'swap'), (4, 4, 'swap')] result [40, 20, 30, 10] item 50 max-heap True
   random fixed: 3000 trials OK; literal broken cases: 246
 ALL OK
-
-### cc -std=c11 -Wall -Wextra author-p11.c && ./a.out (경고 0)
-(a) literal
-  (i=2, largest=2, swap) A[2] value moved up=7
-  (i=4, largest=4, swap) A[4] value moved up=5
-  (i=8, largest=8, break)
-  item=9 A[1..9]=7 5 6 3 4 3 2 2 1 max-heap=yes
-(b) literal
-  (i=2, largest=2, swap) A[2] value moved up=40
-  (i=4, largest=5, swap) A[5] value moved up=10 [outside heap]
-  item=50 A[1..4]=40 10 30 20 max-heap=no
-(b) fixed
-  (i=2, largest=2, swap) A[2] value moved up=40
-  (i=4, largest=4, swap) A[4] value moved up=20
-  item=50 A[1..4]=40 20 30 10 max-heap=yes

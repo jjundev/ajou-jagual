@@ -1,10 +1,83 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>열여섯 키를 모두 쓰면서, 가장 낮고 마지막 층도 왼쪽부터 채운 모양을 만들 입력 순서를 찾아요. 낮은 모양이라는 조건과 완전이진트리라는 조건을 둘 다 만족해야 해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“높이가 가장 작은”에서 높이별 최대 노드 수를 떠올려요. 루트를 1층으로 세면 높이 $h$까지 최대 $2^h-1$개를 담아요. 여기서 $h$는 레벨 수, $n$은 전체 노드 수예요.</p><p>“완전이진트리(complete binary tree)”는 마지막 층 전까지 모두 채우고 마지막 층은 왼쪽부터 채운 트리예요. 먼저 이 모양을 고정해야 해요. 최소 높이만 맞는 다른 모양도 있으므로 두 조건을 구별해요.</p><p>“이진 탐색 트리(binary search tree, BST)”는 왼쪽 서브트리의 모든 키가 루트보다 작고 오른쪽은 크며, 두 서브트리도 같은 규칙을 지켜요. 유일한 키를 정해진 모양의 중위 순서(LVR)에 오름차순으로 배치하면 이 조건을 만족해요.</p><p>그 뒤 부모가 자손보다 먼저 들어가도록 레벨 순서로 삽입하면 그 모양을 만들 수 있어요. 각 키는 조상들의 비교에서 자신의 서브트리로 내려가고, 아직 자식이 없는 부모 자리에서 연결돼요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 쓸 첫 줄</h4><p>먼저 네 층에 다 들어가는지 계산해요.</p>$$2^4-1=15\lt16\quad\Longrightarrow\quad h\ge5$$<p>이어서 “1–4층은 가득, 5층은 맨 왼쪽 한 자리”라고 적어요. 키를 고르기 전에 필요한 모양부터 정하는 첫 줄이에요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>앞의 네 층에 들어가는 수는 $1+2+4+8=15$예요. 남은 한 노드를 다섯째 층의 가장 왼쪽에 둬요.</li><li>루트를 위치 1, 왼쪽 자식을 $2i$, 오른쪽 자식을 $2i+1$로 번호 매겨요. 이 모양의 사용 위치는 빈칸 없이 1부터 16이에요.</li><li>루트의 왼쪽 서브트리는 위치 2·4·5·8·9·10·11·16의 여덟 자리예요. 따라서 왼쪽에 키 1–8이 들어가고, 그 다음인 9가 전체 루트예요.</li><li>왼쪽 서브트리의 루트도 같은 방식으로 고르면 5 예요. 오른쪽에는 10–16 일곱 키가 들어가므로 그 루트는 13이에요.</li><li>각 서브트리에서 같은 배치를 반복해 아래 레벨 표를 만들어요. 맨 아래의 1은 2의 왼쪽 자식이에요.</li></ol>
-<div class="table-wrap"><table><thead><tr><th>레벨</th><th>왼쪽부터의 키</th></tr></thead><tbody><tr><td>1</td><td>9</td></tr><tr><td>2</td><td>5, 13</td></tr><tr><td>3</td><td>3, 7, 11, 15</td></tr><tr><td>4</td><td>2, 4, 6, 8, 10, 12, 14, 16</td></tr><tr><td>5</td><td>1</td></tr></tbody></table></div>
-<p>레벨 순서로 부모부터 넣는 입력 순서의 한 가지 답이에요.</p><pre><code>9 5 13 3 7 11 15 2 4 6 8 10 12 14 16 1</code></pre><p>이 순서는 모든 부모를 자손보다 먼저 삽입해요. 예를 들어 마지막 1은 9·5·3·2보다 모두 작아서 각 단계에서 왼쪽을 골라 2의 왼쪽에 붙어요. 같은 최종 트리를 만드는 입력 순서는 하나뿐인 것은 아니에요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>최소 높이, 완전한 모양, BST 순서, 입력 누락 여부를 따로 확인해요.</p><ol class="steps"><li>높이 4는 최대 15개여서 불가능해요. 구성한 트리는 높이 5이므로 더 낮출 수 없어요.</li><li>배열 위치가 정확히 1–16이에요. 중간 빈칸이 없고, 5층의 한 노드는 가장 왼쪽이라 완전이진트리예요.</li><li>중위 순회 결과는 1부터 16까지 정확히 오름차순이에요. 유일 키 조건과 모든 서브트리의 BST 순서를 확인해요.</li><li>입력은 키 1–16을 각각 한 번 포함해요. 독립 검산의 재삽입 결과도 루트 9, 높이 5, 배열 위치 1–16 으로 같아요.</li></ol><p>이 구성은 최소 높이 5를 달성하는 완전이진탐색트리이며, 적은 입력 순서는 정답의 한 예예요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 헷갈리기 쉬운 점</h4><p>16개니까 중간쯤인 8을 루트로 고르면 되겠다고 바로 정하지 않아요. 완전한 모양의 왼쪽 서브트리에는 여덟 자리가 필요해 9가 루트여야 해요. 또 높이 5 라는 확인만으로 완전이진트리 조건까지 검증한 것은 아니에요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어 봐요</h4><ol><li>네 층에 16개가 들어가지 않는 이유를 첫 식으로 적어요.</li><li>빈 모양의 왼쪽 서브트리 자리를 세고 루트 키를 골라요.</li><li>입력 순서를 복원한 뒤 맨 마지막 1의 비교 경로를 확인해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최대 노드 수 $2^h-1$, 완전이진트리의 왼쪽 채움, BST의 엄격한 서브트리 순서가 세 판단 기준이에요. 고정한 모양의 중위 순서에 오름차순 키를 넣어요.</p></div><div class="summary-group"><h4>첫 줄</h4><p>$2^4-1=15\lt16$이므로 $h\ge5$예요. 1–4층을 채우고 5층 맨 왼쪽에 한 자리를 둬요.</p></div><div class="summary-group"><h4>구성과 답</h4><p>왼쪽 서브트리가 여덟 자리여서 루트는 9 예요. 다음 루트는 5·13이고 마지막 1은 2의 왼쪽이에요. 부모를 먼저 넣는 한 가지 답이에요.</p><pre><code>9 5 13 3 7 11 15 2 4 6 8 10 12 14 16 1</code></pre></div><div class="summary-group"><h4>검산·주의</h4><p>네 층은 불가능하고 구성은 다섯 층이에요. 위치 1–16에 빈칸이 없고 중위 결과가 1–16이며 각 키를 한 번 써요. 독립 재삽입과 일치해요. 높이만 맞추거나 루트를 임의로 8로 고르지 않아요. 입력 순서는 여러 개 가능해요.</p></div></div>
+<div class="layer eli5" data-explanation="understand">
+<h4>핵심 조건과 구할 것</h4>
+<p>키 <code>1..16</code>의 입력 순서를 조정해 <strong>최소 높이</strong>이면서 <strong>완전이진트리</strong>인 BST를 만드는 입력 순서를 구해요.</p>
+<ul>
+<li>1~4층(15칸)을 가득 채우고, 5층의 <strong>가장 왼쪽 한 자리(16번)</strong>에만 마지막 노드를 두어야 해요.</li>
+</ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<div class="table-wrap">
+<table class="cmp">
+<thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유와 조건</th></tr></thead>
+<tbody>
+<tr><td>가장 작은 높이</td><td>높이 $h$의 최대 노드 수 $2^h-1$ (<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1105_Tree.html#s2-complexity">정리노트</a>)</td><td>$2^4-1=15 &lt; 16 \le 2^5-1=31$이므로 최소 높이 <code>5</code>가 확정돼요.</td></tr>
+<tr><td>완전이진트리</td><td>인덱스 <code>1..16</code> 연속 점유 (<code>16</code>은 <code>8.left</code>)</td><td>모양이 하나로 고정되어 각 서브트리에 배분할 키 수가 결정돼요.</td></tr>
+<tr><td>BST 입력 순서</td><td>중위(LVR) 키 배정 + 부모-먼저(레벨) 삽입 (<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1105_Tree.html#s0-inorder">정리노트</a>)</td><td>고정한 모양에 <code>1..16</code>을 중위로 놓은 뒤 레벨 순서로 넣으면 그 모양 그대로 조립돼요.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<pre><code>2^4 - 1 = 15 &lt; 16 ≤ 31 = 2^5 - 1  ⇒  최소 높이 h = 5
+점유 인덱스: 1 ~ 16  (루트 1의 왼쪽 자리 = 2,4,5,8,9,10,11,16 → 8개)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="main">
+<h5>1. 1..16 모양에서 서브트리별 키 배분</h5>
+<p>루트(<code>1</code>) 왼쪽에 <code>8</code>자리(<code>1..8</code>), 오른쪽에 <code>7</code>자리(<code>10..16</code>)가 있으므로 전체 루트는 9번째 키인 <b><code>9</code></b>예요. 각 서브트리도 왼쪽 자리 수만큼 떼어 주면 레벨별 키가 정해져요.</p>
+<div class="table-wrap">
+<table class="cmp">
+<thead><tr><th>레벨</th><th>인덱스 범위</th><th>왼쪽부터 들어갈 키</th><th>비고</th></tr></thead>
+<tbody>
+<tr><td>1</td><td><code>1</code></td><td><b><code>9</code></b></td><td>왼쪽 8개(<code>1..8</code>), 오른쪽 7개(<code>10..16</code>)</td></tr>
+<tr><td>2</td><td><code>2..3</code></td><td><b><code>5</code>, <code>13</code></b></td><td><code>5</code> 왼쪽 4개(<code>1..4</code>), <code>13</code> 양쪽 3개씩</td></tr>
+<tr><td>3</td><td><code>4..7</code></td><td><code>3, 7, 11, 15</code></td><td>완전 채움</td></tr>
+<tr><td>4</td><td><code>8..15</code></td><td><code>2, 4, 6, 8, 10, 12, 14, 16</code></td><td><code>2</code>만 왼쪽 자식 자리가 하나 더 있음</td></tr>
+<tr><td>5</td><td><code>16</code></td><td><b><code>1</code></b></td><td><code>8</code>번 칸(키 <code>2</code>)의 왼쪽 자식</td></tr>
+</tbody>
+</table>
+</div>
+<h5>2. 부모-먼저 입력 순서 (레벨 순서)</h5>
+<pre><code>9 5 13 3 7 11 15 2 4 6 8 10 12 14 16 1</code></pre>
+<p>같은 트리를 만드는 다른 부모-먼저 순서(예: 전위 순서 <code>9 5 3 2 1 4 7 6 8 13 11 10 12 15 14 16</code>)도 정답이에요.</p>
+</div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="main">
+<p><strong>완성 답(예시)</strong>: <code>9 5 13 3 7 11 15 2 4 6 8 10 12 14 16 1</code></p>
+<ul>
+<li><strong>최소 높이 검산</strong>: <code>h=4</code> 최대 노드 <code>15 &lt; 16</code>이므로 높이 4는 불가능하고, <code>1</code>이 깊이 5에 있어 최소 높이 <code>5</code>예요.</li>
+<li><strong>완전이진트리 검산</strong>: 점유 인덱스가 <code>1..16</code> 연속이며 5층의 유일한 노드 <code>1</code>이 가장 왼쪽(<code>2.left</code>, 인덱스 16)이에요.</li>
+<li><strong>재삽입·개수 검산</strong>: 위 16개 키가 중복·누락 없이 각 1회씩 들어가고, 마지막 <code>1</code>은 <code>9→5→3→2</code> 왼쪽으로 내려가 <code>2.left</code>에 붙어 중위 순서가 <code>1..16</code>이에요.</li>
+</ul>
+</div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+<h4>실수하면 답이 이렇게 망가져요</h4>
+<p><strong>16개의 절반인 <code>8</code>을 루트로 잡으면:</strong> <code>8</code> 왼쪽에는 <code>1..7</code>(7개)만 있고 오른쪽에 8개가 남아, 5층 마지막 노드(16번)를 오른쪽 어딘가(<code>10</code>의 오른쪽 등)에 붙이게 되어 완전이진트리(1~16 연속)가 깨져요.</p>
+<p><strong>높이 5만 맞춘 트리를 내면:</strong> 예를 들어 <code>16</code>을 5층 맨 오른쪽(31번)에 두어도 높이는 5지만 완전이진트리가 아니므로 오답이에요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 가리고 스스로 확인해요</h4>
+<ol>
+<li><code>16</code>이 아니라 <code>17</code>개 키(<code>1..17</code>)라면 루트 키가 <code>9</code>에서 몇으로 바뀌는지 계산해 보세요.</li>
+<li>위 답의 마지막 원소 <code>1</code>을 맨 앞에 넣지 않고 맨 뒤에 넣어야 하는 이유를 설명해 보세요.</li>
+</ol>
+</div>
+
+<div class="sum" hidden>
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>높이 $h$ 최대 $2^h-1$개, 완전이진트리 인덱스 <code>1..16</code> 고정, 중위 배정 후 부모-먼저 삽입.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>$2^4-1=15&lt;16\le 31$이므로 최소 높이 5. 왼쪽 8자리라 루트는 <code>9</code>.</p></div>
+<div class="summary-group"><h4>핵심 답</h4><p>레벨별 삽입 답: <code>9 5 13 3 7 11 15 2 4 6 8 10 12 14 16 1</code> (전위 순서도 가능).</p></div>
+<div class="summary-group"><h4>검산</h4><p>높이 4 불가 + 실제 높이 5, 점유 인덱스 <code>1..16</code> 연속, 중위 <code>1..16</code> 및 16개 무누락 확인.</p></div>
+</div>

@@ -1,8 +1,93 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 12개의 후위순회와 중위순회 결과가 주어지고, 두 결과를 모두 만들어 내는 이진 트리를 그려야 해요. 트리 그림은 없고 두 줄의 글자 순서만이 단서예요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘후위순회와 중위순회 결과를 만드는 트리’라는 단서에서 두 순회의 정의를 거꾸로 쓰는 방법을 떠올려요.</p><ul><li>후위 순회(postorder traversal) LRV는 루트를 <strong>맨 끝</strong>에 찍어요. 그래서 후위 결과의 마지막 글자가 (서브)트리의 루트예요.</li><li>중위 순회(inorder traversal) LVR은 루트를 <strong>가운데</strong> 찍어요. 그래서 중위 결과에서 루트를 찾으면 그 왼쪽 글자들이 왼쪽 서브트리, 오른쪽 글자들이 오른쪽 서브트리예요.</li><li>후위 결과도 “왼쪽 서브트리 덩어리 → 오른쪽 서브트리 덩어리 → 루트” 순서라, 중위에서 센 왼쪽 개수만큼 앞에서 끊으면 왼쪽 서브트리의 후위가 돼요.</li></ul><p>이 분할을 서브트리마다 되풀이하면 트리가 한 층씩 정해져요. 두 순회에서 트리를 되살리는 이 절차는 수업 슬라이드에 직접 나오지는 않고, S7 p9~p12의 순회 정의에서 바로 끌어낸 <em>보충 방법</em>이에요. 개념 위치: <a href="정리노트_1102_Tree.html#s1-inorder">중위 순회</a>, <a href="정리노트_1102_Tree.html#s1-postorder">후위 순회</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>“후위 맨 끝 = H → 루트 H. 중위를 H에서 자르면 [D, F, G, E] | H | [R, T, N, S, M, P, K].”</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>각 줄에서 “후위의 마지막 = 루트”를 찾고 “중위에서 그 루트의 왼쪽·오른쪽”으로 나눠요. 왼쪽 개수만큼 후위 앞부분을 떼어 왼쪽 서브트리에 줘요.</p><div class="table-wrap"><table><thead><tr><th>서브트리의 후위</th><th>루트</th><th>중위: 왼쪽 | 루트 | 오른쪽</th></tr></thead><tbody><tr><td>F D E G R T S N P M K H</td><td>H</td><td>D F G E | H | R T N S M P K</td></tr><tr><td>F D E G</td><td>G</td><td>D F | G | E</td></tr><tr><td>F D</td><td>D</td><td>(없음) | D | F</td></tr><tr><td>R T S N P M K</td><td>K</td><td>R T N S M P | K | (없음)</td></tr><tr><td>R T S N P M</td><td>M</td><td>R T N S | M | P</td></tr><tr><td>R T S N</td><td>N</td><td>R T | N | S</td></tr><tr><td>R T</td><td>T</td><td>R | T | (없음)</td></tr></tbody></table></div><p>표를 위에서부터 읽으면 H의 왼쪽 G·오른쪽 K, G의 왼쪽 D·오른쪽 E, D의 오른쪽 F, K의 왼쪽 M(오른쪽 없음), M의 왼쪽 N·오른쪽 P, N의 왼쪽 T·오른쪽 S, T의 왼쪽 R이에요. 한 글자만 남은 E, F, P, S, R은 단말 노드예요.</p><p>D는 중위에서 D, F 순서라 F가 D의 <em>오른쪽</em>이에요. K는 중위의 맨 끝이라 오른쪽 서브트리가 비어 있어요.</p><figure class="figure"><svg viewBox="0 0 496 316" role="img" aria-label="복원한 이진 트리: 루트 H, H의 왼쪽 G 오른쪽 K, G의 왼쪽 D 오른쪽 E, D의 오른쪽 F, K의 왼쪽 M, M의 왼쪽 N 오른쪽 P, N의 왼쪽 T 오른쪽 S, T의 왼쪽 R"><g fill="none" stroke="currentColor" stroke-width="2"><line x1="173.7" y1="37.3" x2="122.3" y2="70.7"/><line x1="204.7" y1="31.1" x2="451.3" y2="76.9"/><line x1="93.7" y1="89.3" x2="42.3" y2="122.7"/><line x1="118.4" y1="93.5" x2="137.6" y2="118.5"/><line x1="38.4" y1="145.5" x2="57.6" y2="170.5"/><line x1="453.7" y1="89.3" x2="402.3" y2="122.7"/><line x1="373.7" y1="141.3" x2="322.3" y2="174.7"/><line x1="398.4" y1="145.5" x2="417.6" y2="170.5"/><line x1="297.6" y1="197.5" x2="278.4" y2="222.5"/><line x1="318.4" y1="197.5" x2="337.6" y2="222.5"/><line x1="257.6" y1="249.5" x2="238.4" y2="274.5"/><circle cx="28" cy="132" r="17"/><circle cx="68" cy="184" r="17"/><circle cx="108" cy="80" r="17"/><circle cx="148" cy="132" r="17"/><circle cx="188" cy="28" r="17"/><circle cx="228" cy="288" r="17"/><circle cx="268" cy="236" r="17"/><circle cx="308" cy="184" r="17"/><circle cx="348" cy="236" r="17"/><circle cx="388" cy="132" r="17"/><circle cx="428" cy="184" r="17"/><circle cx="468" cy="80" r="17"/></g><g fill="currentColor" font-size="22" text-anchor="middle" dominant-baseline="central"><text x="28" y="132">D</text><text x="68" y="184">F</text><text x="108" y="80">G</text><text x="148" y="132">E</text><text x="188" y="28">H</text><text x="228" y="288">R</text><text x="268" y="236">T</text><text x="308" y="184">N</text><text x="348" y="236">S</text><text x="388" y="132">M</text><text x="428" y="184">P</text><text x="468" y="80">K</text></g></svg><figcaption>노드를 중위 순서대로 왼쪽에서 오른쪽에 놓았어요. 위에서 아래로 그림자를 내리면 중위 결과 D F G E H R T N S M P K가 그대로 읽혀요.</figcaption></figure></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: 루트 H. H(G, K), G(D, E), D(오른쪽 F), K(왼쪽 M), M(N, P), N(T, S), T(왼쪽 R). 층마다 왼쪽부터 읽으면 H / G K / D E M / F N P / T S / R이에요.</p><p>그린 트리를 다시 후위로 돌려요. G 서브트리 F, D, E, G → K 서브트리 R, T, S, N, P, M, K → H. 이어 붙이면 F, D, E, G, R, T, S, N, P, M, K, H로 주어진 후위와 같아요. 그림을 왼쪽부터 읽은 중위도 주어진 중위와 같아요.</p><p>별도 프로그램으로 두 순회와 맞는 트리를 루트·왼쪽 크기의 모든 경우로 세었더니 정확히 1개였고, 그 트리가 위와 같았어요. 2021 기말 모의 원본과 같은 문제가 실린 이태권 기말 3번에는 공식 답이 없어서, 공식 답과의 대조는 하지 못했어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>후위의 <em>첫</em> 글자 F를 루트로 잡기 쉬워요. 후위는 루트가 맨 끝이에요(전위라면 맨 앞이에요).</li><li>F를 D의 왼쪽에 두기 쉬워요. 중위가 D, F라서 F는 D 뒤에 찍혀야 하고, 그러려면 오른쪽이어야 해요.</li><li>오른쪽 무리의 후위를 떼어 줄 때 개수를 세지 않으면 덩어리가 어긋나요. 중위에서 센 왼쪽 개수만큼 후위 앞에서 끊어요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>후위 맨 끝으로 루트를 잡고, 중위를 그 루트에서 잘라 보세요.</li><li>표의 각 줄을 다시 채워 트리를 그린 뒤, 후위로 돌려 입력과 비교해 보세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>후위 맨 끝 H가 루트, 중위를 H에서 잘라 왼쪽 [D F G E], 오른쪽 [R T N S M P K]로 나눠요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>후위 LRV: 마지막 글자가 루트</li><li>중위 LVR: 루트 왼쪽이 왼쪽 서브트리, 오른쪽이 오른쪽 서브트리</li><li>두 순회로 되살리기는 정의에서 끌어낸 보충 방법이에요.</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>H(G, K), G(D, E), D(오른쪽 F), K(왼쪽 M), M(N, P), N(T, S), T(왼쪽 R). 다시 후위로 돌리면 입력과 같고, 맞는 트리는 하나뿐이에요. 공식 답은 원본에 없어요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>F는 D의 오른쪽, K는 오른쪽 서브트리가 비어 있어요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>12노드의 <strong>후위순회</strong>와 <strong>중위순회</strong> 문자열을 만족하는 이진 트리 하나를 그려요. 원본(2021 모의 1회·이태권 기말)에 공식 답은 없어요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <p>두 순회로 트리를 되살리는 절차는 순회 정의(S7 p9~p12)에서 끌어낸 <em>수업 밖 보충 방법</em>이에요.</p>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead>
+        <tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이유와 조건</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>후위순회 (LRV)</td>
+          <td>맨 끝 글자 = 현재 서브트리 루트</td>
+          <td>LRV는 왼쪽·오른쪽을 다 돈 맨 마지막에 루트 V를 찍어요(<a href="정리노트_1102_Tree.html#s1-postorder">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>중위순회 (LVR)</td>
+          <td>루트 기준 <code>왼쪽 | 루트 | 오른쪽</code> 분할</td>
+          <td>중위에서 센 왼쪽 노드 개수 $k$ 만큼 후위 앞부분을 잘라 왼쪽 서브트리에 줘요(<a href="정리노트_1102_Tree.html#s1-inorder">정리노트</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>후위 끝 = H  →  루트 H
+중위 분할: [D, F, G, E] | H | [R, T, N, S, M, P, K]   (왼쪽 4개, 오른쪽 7개)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <p>후위 끝에서 루트를 뽑고, 중위에서 왼쪽 개수 $k$ 를 세어 후위 앞 $k$ 개를 왼쪽으로 떼어 내는 분할을 표로 따라가요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>서브트리 후위</th><th>루트</th><th>중위 분할 (왼쪽 | 루트 | 오른쪽)</th><th>확정된 자식</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>F D E G R T S N P M K <b>H</b></td><td><b>H</b></td><td>D F G E (4) | H | R T N S M P K (7)</td><td>L: G, R: K</td></tr>
+          <tr><td>F D E <b>G</b></td><td><b>G</b></td><td>D F (2) | G | E (1)</td><td>L: D, R: E</td></tr>
+          <tr><td>F <b>D</b></td><td><b>D</b></td><td>없음 | D | F (1)</td><td>L: -, R: F</td></tr>
+          <tr><td>R T S N P M <b>K</b></td><td><b>K</b></td><td>R T N S M P (6) | K | 없음</td><td>L: M, R: -</td></tr>
+          <tr><td>R T S N P <b>M</b></td><td><b>M</b></td><td>R T N S (4) | M | P (1)</td><td>L: N, R: P</td></tr>
+          <tr><td>R T S <b>N</b></td><td><b>N</b></td><td>R T (2) | N | S (1)</td><td>L: T, R: S</td></tr>
+          <tr><td>R <b>T</b></td><td><b>T</b></td><td>R (1) | T | 없음</td><td>L: R, R: -</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>1개만 남은 <code>E, F, P, S, R</code>은 모두 단말 노드예요. D는 중위가 <code>D, F</code>이므로 F가 D의 <em>오른쪽</em> 자식이고, K는 중위의 맨 끝이라 오른쪽 자식이 없어요.</p>
+    <figure class="figure"><svg viewBox="0 0 496 316" role="img" aria-label="복원한 이진 트리: 루트 H, H의 왼쪽 G 오른쪽 K, G의 왼쪽 D 오른쪽 E, D의 오른쪽 F, K의 왼쪽 M, M의 왼쪽 N 오른쪽 P, N의 왼쪽 T 오른쪽 S, T의 왼쪽 R"><g fill="none" stroke="currentColor" stroke-width="2"><line x1="173.7" y1="37.3" x2="122.3" y2="70.7"/><line x1="204.7" y1="31.1" x2="451.3" y2="76.9"/><line x1="93.7" y1="89.3" x2="42.3" y2="122.7"/><line x1="118.4" y1="93.5" x2="137.6" y2="118.5"/><line x1="38.4" y1="145.5" x2="57.6" y2="170.5"/><line x1="453.7" y1="89.3" x2="402.3" y2="122.7"/><line x1="373.7" y1="141.3" x2="322.3" y2="174.7"/><line x1="398.4" y1="145.5" x2="417.6" y2="170.5"/><line x1="297.6" y1="197.5" x2="278.4" y2="222.5"/><line x1="318.4" y1="197.5" x2="337.6" y2="222.5"/><line x1="257.6" y1="249.5" x2="238.4" y2="274.5"/><circle cx="28" cy="132" r="17"/><circle cx="68" cy="184" r="17"/><circle cx="108" cy="80" r="17"/><circle cx="148" cy="132" r="17"/><circle cx="188" cy="28" r="17"/><circle cx="228" cy="288" r="17"/><circle cx="268" cy="236" r="17"/><circle cx="308" cy="184" r="17"/><circle cx="348" cy="236" r="17"/><circle cx="388" cy="132" r="17"/><circle cx="428" cy="184" r="17"/><circle cx="468" cy="80" r="17"/></g><g fill="currentColor" font-size="22" text-anchor="middle" dominant-baseline="central"><text x="28" y="132">D</text><text x="68" y="184">F</text><text x="108" y="80">G</text><text x="148" y="132">E</text><text x="188" y="28">H</text><text x="228" y="288">R</text><text x="268" y="236">T</text><text x="308" y="184">N</text><text x="348" y="236">S</text><text x="388" y="132">M</text><text x="428" y="184">P</text><text x="468" y="80">K</text></g></svg><figcaption>노드를 중위 순서대로 왼쪽부터 놓은 그림이에요. 위에서 아래로 그림자를 내리면 중위 D F G E H R T N S M P K가 그대로 읽혀요.</figcaption></figure>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: 루트 H — <code>H(G, K), G(D, E), D(-, F), K(M, -), M(N, P), N(T, S), T(R, -)</code> (층별 순서: <code>H / G K / D E M / F N P / T S / R</code>). 원본에 공식 답은 없어요.</p>
+    <ul>
+      <li><strong>노드 수 보존</strong>: 루트 1 + 왼쪽 4 + 오른쪽 7 = 12노드로 입력 길이와 같아요.</li>
+      <li><strong>후위 재순회 검산</strong>: G 서브트리(<code>F, D, E, G</code>) + K 서브트리(<code>R, T, S, N, P, M, K</code>) + H = <code>F, D, E, G, R, T, S, N, P, M, K, H</code>로 입력과 12글자 모두 일치해요.</li>
+      <li><strong>중위 재순회 검산</strong>: 그림의 x좌표를 왼쪽부터 읽으면 <code>D, F, G, E, H, R, T, N, S, M, P, K</code>로 입력과 일치해요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>후위 첫 글자 <code>F</code>를 루트로 잡으면:</strong> 전위와 반대로 읽은 것이며, F로 중위를 자르면 왼쪽 1개(<code>D</code>)·오른쪽 10개가 되어 후위 분할이 성립하지 않아요.</p>
+  <p><strong>중위 <code>D, F</code>에서 F를 D의 왼쪽에 두면:</strong> LVR 순회 결과가 <code>F, D</code>로 뒤집혀 입력(<code>D, F</code>)과 충돌해요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>후위+중위 복원을 보면 → 후위 맨 끝으로 루트를 먼저 확정하고 중위에서 왼쪽 개수 $k$ 를 센다.</li>
+    <li>후위에서 왼쪽 덩어리를 뗄 때 → 앞에서 $k$ 개를 잘라 왼쪽에, 나머지(맨 끝 제외)를 오른쪽에 넘긴다.</li>
+    <li>트리를 그린 뒤 → 아래에서 위로 후위 순회를 다시 적어 입력 12글자와 대조한다.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>후위 LRV 끝 = 루트, 중위 LVR로 <code>왼쪽(k) | 루트 | 오른쪽</code> 분할(보충 방법).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>후위 끝 H → 루트 H, 중위 <code>[D F G E] | H | [R T N S M P K]</code> (4개 / 7개).</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>레벨 순서 <code>H / G K / D E M / F N P / T S / R</code> (유일한 트리, 공식 답 미기재).</p></div>
+  <div class="summary-group"><h4>검산</h4><p>노드 1+4+7=12개, 그림 x좌표 중위와 재순회 후위가 입력과 12글자 일치.</p></div>
+</div>

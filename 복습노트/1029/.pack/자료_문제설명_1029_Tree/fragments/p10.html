@@ -1,13 +1,86 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 A~J 10개, 높이 4인 이진 트리 그림을 보고 세 가지를 판단해요. (a) 포화 이진 트리인지 완전 이진 트리인지, (b) 완전 이진 트리 모양을 지키며 K를 하나 더 넣을 자리, (c) J를 E의 오른쪽 자식으로 옮긴 뒤에도 이진 트리·완전 이진 트리인지예요. 그림에서 J는 E의 <em>왼쪽</em> 자식이에요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘포화’, ‘완전’, ‘왼쪽·오른쪽 자식 자리’라는 단서에서 S7 p7의 분류와 p4의 이진 트리 정의를 떠올려요.</p><ul><li><strong>이진 트리(binary tree)</strong>: 모든 노드의 자식이 2개 이하이고, 서브트리는 비어 있을 수 있어요. 왼쪽 자식과 오른쪽 자식은 서로 다른 자리로 구별해요.</li><li><strong>포화 이진 트리(full binary tree)</strong>: 모든 레벨이 꽉 찬 것이에요. 높이 $h$면 노드가 $2^h - 1$개예요.</li><li><strong>완전 이진 트리(complete binary tree)</strong>: 레벨 1 ~ $h-1$은 꽉 차 있고, 마지막 레벨 $h$는 왼쪽부터 오른쪽으로 빈칸 없이 순서대로 찬 것이에요.</li><li><strong>기타 이진 트리</strong>: 이진 트리는 맞지만 위 두 모양이 아닌 것이에요(1029 수업 설명).</li></ul><p>완전 여부는 “마지막 레벨의 자리를 왼쪽부터 늘어놓았을 때 중간에 빈칸이 있나”로 판단해요. 그래서 마지막 레벨의 자리를 한 줄로 적는 방법을 골라요. 개념 위치: <a href="정리노트_1029_Tree.html#s2-kinds">포화·완전·기타 이진 트리</a>, <a href="정리노트_1029_Tree.html#s2-numbering">노드 번호 매기기</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>레벨별 노드를 적어요. 레벨 1: A / 레벨 2: B, C / 레벨 3: D, E, F, G / 레벨 4: H, I, J.</p><p>그 아래에 레벨 4의 여덟 자리를 왼쪽부터 써요. D왼 · D오 · E왼 · E오 · F왼 · F오 · G왼 · G오.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 레벨 1~3의 노드 수는 1, 2, 4개로 각 레벨의 최대 $2^{i-1}$과 같아서 꽉 차 있어요.</p><p>레벨 4의 여덟 자리에 H, I, J를 놓으면 다음과 같아요.</p><table><thead><tr><th>D왼</th><th>D오</th><th>E왼</th><th>E오</th><th>F왼</th><th>F오</th><th>G왼</th><th>G오</th></tr></thead><tbody><tr><td>H</td><td>I</td><td>J</td><td>빈칸</td><td>빈칸</td><td>빈칸</td><td>빈칸</td><td>빈칸</td></tr></tbody></table><p>앞 세 칸이 빈틈없이 차 있고 그 뒤는 모두 비어 있어요. 왼쪽부터 순서대로 채워졌으니 <strong>완전 이진 트리</strong>예요.</p><p>포화 이진 트리라면 레벨 4까지 꽉 차서 $2^4 - 1 = 15$개여야 해요. 노드가 10개라 <strong>포화 이진 트리는 아니에요</strong>.</p></div>
-<div data-subpart="b"><p>(b) 완전 이진 트리를 유지하려면 새 노드는 마지막 레벨의 빈칸 중 가장 왼쪽에 들어가야 해요. 위 표에서 첫 빈칸은 E오예요.</p><p>그래서 K는 <strong>E의 오른쪽 자식</strong> 자리에 넣어요. 위에서 아래로, 같은 레벨에서는 왼쪽부터 번호를 붙이면 A가 1번, J가 10번이고 K는 그다음 11번째 노드가 돼요.</p></div>
-<div data-subpart="c"><p>(c) J를 E의 오른쪽으로 옮기면 E는 오른쪽 자식 J 하나만 가져요. 모든 노드의 자식이 여전히 2개 이하이니 <strong>이진 트리는 맞아요</strong>.</p><p>레벨 4의 자리는 이렇게 바뀌어요: H · I · 빈칸(E왼) · J(E오) · 빈칸 …. J 앞에 빈칸이 끼어서 “왼쪽부터 순서대로 채워짐”이 깨져요. 그래서 <strong>완전 이진 트리가 아니고</strong>, 수업에서 부른 이름으로는 기타 이진 트리예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>정답: (a) 완전 이진 트리(포화 이진 트리는 아님) (b) E의 오른쪽 자식 (c) 이진 트리는 맞지만 완전 이진 트리는 아님, 기타 이진 트리. 강의 예제 기반 자체 출제라 외부 공식 답은 없고, 아래 별도 계산으로 확인했어요.</p><p>별도 계산은 그림 좌표로 부모와 왼쪽·오른쪽 자식을 다시 만든 뒤, 레벨마다 차 있는 자리를 모아 정의대로 판정했어요.</p>
-<div data-subpart="a"><p>(a) 계산 결과 노드 10개, 높이 4, 포화 아님, 완전 맞음이었어요. 레벨별 개수 $1+2+4+3 = 10$도 그림과 맞아요.</p></div>
-<div data-subpart="b"><p>(b) 레벨 4의 첫 빈칸은 왼쪽에서 네 번째 자리였고 그 부모는 E, 방향은 오른쪽이었어요. K를 넣은 뒤 다시 판정해도 완전 이진 트리였어요. 1029 수업에서 같은 모양을 따라가며 K를 E의 오른쪽 자식에 넣은 것과도 같아요.</p></div>
-<div data-subpart="c"><p>(c) J를 오른쪽으로 바꾼 트리는 모든 노드의 자식이 2개 이하였고, 레벨 4에서 차 있는 자리가 첫째·둘째·넷째라 완전 판정이 거짓이었어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>(a) 마지막 레벨이 덜 찼다고 “완전도 아니다”라고 하기 쉬워요. 완전 이진 트리는 마지막 레벨이 왼쪽부터 차 있기만 하면 돼요.</li><li>(b) F의 왼쪽처럼 “아무 빈자리”에 넣으면 E오가 빈 채로 남아 완전 모양이 깨져요.</li><li>(c) 노드 수와 높이가 그대로라 같은 모양이라고 생각하기 쉬워요. 이진 트리에서는 왼쪽과 오른쪽 자리가 달라서, 빈칸의 위치가 판정을 바꿔요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>레벨별 노드 수를 적고 레벨 1~3이 꽉 찼는지 확인하세요.</li><li>마지막 레벨의 여덟 자리를 왼쪽부터 쓰고 H, I, J를 놓으세요.</li><li>첫 빈칸으로 K의 자리를 정하고, J를 옮긴 경우 빈칸이 어디에 생기는지 표시하세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>레벨별 노드를 적고, 레벨 4의 여덟 자리 D왼 · D오 · E왼 · E오 · …를 왼쪽부터 써요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>이진 트리: 모든 노드의 자식 2개 이하, 왼쪽·오른쪽 자리 구별</li><li>포화: 모든 레벨 꽉 참, 노드 $2^h - 1$개</li><li>완전: 레벨 1 ~ $h-1$ 꽉 참, 마지막 레벨 왼쪽부터 빈칸 없이</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>(a) 완전 이진 트리, 포화 아님(10 ≠ 15) (b) E의 오른쪽 자식 (c) 이진 트리지만 완전 아님 → 기타 이진 트리. 좌표로 다시 만든 트리의 정의 판정과 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>새 노드는 마지막 레벨의 가장 왼쪽 빈칸에 들어가요.</li><li>마지막 레벨 중간에 빈칸이 생기면 완전 이진 트리가 아니에요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>노드 10개(<code>A~J</code>, <code>J</code>는 <code>E</code>의 <strong>왼쪽</strong> 자식), 높이 4인 이진 트리에서 <strong>(a) 포화/완전 여부</strong>, <strong>(b) 완전 유지하며 <code>K</code>를 넣을 자리</strong>, <strong>(c) <code>J</code>를 <code>E</code>의 오른쪽으로 옮긴 뒤 이진·완전 여부</strong>를 판정해요(강의 예제 기반 자체 출제).</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·정의</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>포화 vs 완전 이진 트리</td><td>포화(모든 층 꽉 참) / 완전(1~ $h-1$ 층 꽉 참 + 마지막 층 왼쪽부터)</td><td>위층(1~3)과 마지막 층(4)의 칸 채움 상태를 분리해 봐야 두 분류를 헷갈리지 않아요(<a href="정리노트_1029_Tree.html#s2-kinds">정리노트</a>).</td></tr>
+        <tr><td><code>K</code> 넣을 자리</td><td>레벨 순서(위→아래, 왼쪽→오른쪽) 다음 빈칸</td><td>완전 이진 트리는 마지막 레벨의 가장 왼쪽 빈칸부터 채워야 연속성이 유지돼요(<a href="정리노트_1029_Tree.html#s2-numbering">정리노트</a>).</td></tr>
+        <tr><td><code>J</code>를 <code>E</code>의 오른쪽으로 이동</td><td>이진 트리(자식 $\le 2$, 왼/오 구별) / 기타 이진 트리</td><td>이진 트리는 왼쪽·오른쪽 자리가 별개이므로 중간에 빈칸이 끼면 완전이 깨져 기타 이진 트리가 돼요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>레벨 1: A (1/1) | 레벨 2: B, C (2/2) | 레벨 3: D, E, F, G (4/4)
+레벨 4 (8칸): [D왼: H] [D오: I] [E왼: J] [E오: _] [F왼: _] [F오: _] [G왼: _] [G오: _]</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <p>레벨 1~3은 모두 $1+2+4 = 7$개로 꽉 차 있으므로, (a)~(c)의 판정은 모두 <strong>레벨 4의 여덟 칸</strong>만 비교하면 결정돼요.</p>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>경우</th><th>D왼</th><th>D오</th><th>E왼</th><th>E오</th><th>F왼~G오</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td><b>(a) 원래 그림</b></td><td>H</td><td>I</td><td>J</td><td>빈칸</td><td>빈칸</td><td>앞 3칸 연속 → <b>완전 O</b>, 10≠15 → <b>포화 X</b></td></tr>
+        <tr><td><b>(b) K 추가</b></td><td>H</td><td>I</td><td>J</td><td><b>K</b></td><td>빈칸</td><td>첫 빈칸 <b>E의 오른쪽</b>에 넣으면 4칸 연속 유지</td></tr>
+        <tr><td><b>(c) J→E오 이동</b></td><td>H</td><td>I</td><td><b>빈칸</b></td><td>J</td><td>빈칸</td><td><code>E왼</code> 중간 공백 → <b>이진 O, 완전 X (기타)</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div data-subpart="a">
+    <p><strong>(a) 포화/완전 판정</strong>: 레벨 1~3이 꽉 차 있고 레벨 4가 왼쪽부터 <code>H, I, J</code> 세 칸을 빈틈없이 채웠으므로 <strong>완전 이진 트리</strong>예요. 반면 포화 이진 트리(높이 4)는 $2^4 - 1 = 15$개여야 하므로 노드 10개인 이 트리는 <strong>포화 이진 트리가 아니에요</strong>.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) <code>K</code>를 넣을 자리</strong>: 레벨 4에서 가장 왼쪽 빈칸은 네 번째 자리인 <strong><code>E</code>의 오른쪽 자식</strong>이에요. 위에서 아래로, 같은 레벨 왼쪽부터 번호를 매기면 <code>A</code>=1 … <code>J</code>=10 다음 11번째 노드가 돼요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) <code>J</code>를 <code>E</code>의 오른쪽으로 옮긴 뒤</strong>: <code>E</code>는 오른쪽 자식 <code>J</code> 하나만 가지므로 모든 노드의 자식 수 $\le 2$ 조건을 만족해 <strong>이진 트리는 맞아요</strong>. 하지만 레벨 4가 <code>H, I, 빈칸, J</code>가 되어 왼쪽부터 차례로 채운 조건이 깨지므로 <strong>완전 이진 트리는 아니에요</strong>(수업 분류상 <strong>기타 이진 트리</strong>).</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 완성 답: 완전 이진 트리(포화 아님)</strong> — 레벨별 노드 수 합 $1 + 2 + 4 + 3 = 10$이 그림 노드 수(10)와 같고, 포화 기준 $2^4 - 1 = 15$보다 5개 적으므로 포화가 아니에요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 완성 답: <code>E</code>의 오른쪽 자식</strong> — <code>D왼(1)·D오(2)·E왼(3)</code> 다음 네 번째 자리는 부모 <code>E</code>의 오른쪽이며, <code>K</code>를 넣으면 레벨 4의 점유 칸이 앞 4칸 연속으로 이어져 완전 조건이 그대로 유지돼요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 완성 답: 이진 트리는 맞지만 완전 이진 트리는 아님(기타 이진 트리)</strong> — 각 노드 차수는 최대 2로 이진 트리 조건은 유지되지만, 레벨 4에서 채워진 칸 번호가 1·2·4번째로 3번째 칸(<code>E왼</code>)에 공백이 생겨 완전 판정이 거짓이 돼요. 강의 예제 기반 자체 출제라 외부 공식 답은 없어요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <ul>
+    <li><strong>(a) 마지막 층이 비었다고 완전도 아니라고 쓰면:</strong> 포화(전부 꽉 참)와 완전(마지막 층 왼쪽부터)의 차이를 지워 버려 오답이 돼요.</li>
+    <li><strong>(b) <code>F</code>의 왼쪽 같은 아무 빈칸에 넣으면:</strong> <code>E</code>의 오른쪽이 빈 채로 남아 완전 이진 트리가 깨져요.</li>
+    <li><strong>(c) 노드 수·높이가 같다고 완전이라 답하면:</strong> 일반 트리와 달리 이진 트리는 왼쪽·오른쪽 자식이 구별되므로 <code>E왼</code>의 빈칸 하나만으로 완전 이진 트리가 아니게 돼요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>완전 이진 트리 판정 문제를 보면 → 먼저 <strong>마지막 레벨의 $2^{h-1}$개 칸을 왼쪽부터 한 줄로 써서</strong> 빈칸 위치를 눈으로 확인하나요?</li>
+    <li>만약 처음 트리에서 <code>I</code>(<code>D</code>의 오른쪽)를 지우고 <code>J</code>만 남긴다면 이 트리는 완전 이진 트리인가요?</li>
+    <li><code>K</code>를 넣은 뒤 그다음 12번째 노드 <code>L</code>은 어느 노드의 어느 쪽 자식 자리에 들어가나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>포화: 전 층 꽉 참($2^h-1$) / 완전: $1\sim h-1$ 꽉 참 + 마지막 층 왼쪽부터 / 이진: 왼·오 구별.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>레벨 4의 8칸 <code>[D왼 H, D오 I, E왼 J, E오 _, ...]</code>를 왼쪽부터 나열해요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>(a) 완전 O, 포화 X (10≠15) (b) <code>E</code>의 오른쪽 자식 (c) 이진 O, 완전 X(기타).</p></div>
+  <div class="summary-group"><h4>검산·고지</h4><p>(b) 추가 후 앞 4칸 연속, (c) 이동 후 3번째 칸(<code>E왼</code>) 공백. 자체 출제 문항이에요.</p></div>
+</div>

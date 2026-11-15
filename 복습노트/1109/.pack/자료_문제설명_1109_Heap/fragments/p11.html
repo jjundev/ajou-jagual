@@ -1,22 +1,97 @@
-<div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>슬라이드의 루트 삭제 의사코드를 두 입력에 글자 그대로 실행해 보는 문제예요. (a)는 반복마다 변수 값을 기록하고, (b)는 오른쪽 자식이 없는 순간에 의사코드가 무엇을 읽는지 찾아 결과가 최대 힙인지 판정하고 고친 조건을 써요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘루트를 꺼내는’과 ‘최대 힙’이라는 단서에서 삭제와 downheap을 떠올려요. 루트를 <code>item</code>에 보관하고, 마지막 요소를 루트로 옮기고, <code>heap_size</code>를 1 줄인 뒤, 두 자식 중 큰 쪽과 비교하며 내려가요. 부모가 그 자식보다 크면 멈춰요(<a href="정리노트_1109_Heap.html#s2-downheap">정리노트: 삭제와 downheap</a>).</p><p>‘반복마다 <code>(i, largest, 교환 또는 break)</code>’라는 단서는 반복문 추적이에요. 이 의사코드에서 <code>i</code>는 현재 내려가는 값의 <strong>왼쪽 자식</strong> 인덱스예요. 처음 <code>i ← 2</code>는 루트의 왼쪽 자식이고, 교환 뒤 <code>i ← CHILD(largest)</code>는 새 위치의 왼쪽 자식이에요. 그래서 <code>i</code>는 늘 짝수이고, 지금 내려가는 값의 위치는 <code>PARENT(i)</code>예요.</p><p>조건식 두 개는 자식이 있는지를 뜻해요. 배열 히프의 인덱스 식(<a href="정리노트_1109_Heap.html#s1-array">정리노트: 배열로 구현한 힙의 인덱스</a>)에서 노드는 1번부터 <code>heap_size</code>번 칸까지예요.</p><ul><li><code>i ≤ heap_size</code>: 왼쪽 자식이 힙 안에 있어요. 반복을 계속할 조건이에요.</li><li><code>i &lt; heap_size</code>, 곧 <code>i+1 ≤ heap_size</code>: 오른쪽 자식도 힙 안에 있어요.</li></ul><p>그러면 <code>if</code>가 거짓이 되는 경우는 두 가지예요. 오른쪽 자식이 있고 그쪽이 크거나 같을 때, 그리고 <strong>오른쪽 자식이 아예 없을 때</strong>예요. 두 번째 경우를 따로 확인하는 것이 (b)의 핵심이에요.</p><p>‘배열은 <code>200</code>칸’이라는 조건은 C의 정의된 동작(defined behavior)을 따지는 단서예요. 배열 범위 안의 칸은 힙 밖이어도 읽을 수 있고, 옛 값이 그대로 남아 있어요. 범위를 넘는 칸을 읽을 때만 미정의 동작(undefined behavior)이에요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>(a) item ← 9,  A[1] ← A[10] = 3,  heap_size = 9
-    A[1..9] = 3 7 6 5 4 3 2 2 1,  i = 2</code></pre><p>반복표의 열은 <code>i</code>, 두 자식 값, <code>largest</code>, 부모 비교, 교환/break, 다음 <code>i</code>로 잡아요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 준비 단계에서 루트 9를 <code>item</code>에 보관하고, 10번 칸의 3을 루트로 옮기고, <code>heap_size</code>를 9로 줄여요. 이제 3이 내려갈 차례예요.</p><div class="table-wrap"><table><thead><tr><th><code>i</code></th><th><code>i &lt; heap_size</code>, <code>A[i] &gt; A[i+1]</code></th><th><code>largest</code></th><th>부모 비교</th><th>결과</th><th><code>A[1..9]</code></th></tr></thead><tbody><tr><td>2</td><td><code>2 &lt; 9</code> 참, <code>7 &gt; 6</code> 참</td><td>2</td><td><code>A[1] = 3 &gt; 7</code> 거짓</td><td>교환, <code>i ← 4</code></td><td>7 3 6 5 4 3 2 2 1</td></tr><tr><td>4</td><td><code>4 &lt; 9</code> 참, <code>5 &gt; 4</code> 참</td><td>4</td><td><code>A[2] = 3 &gt; 5</code> 거짓</td><td>교환, <code>i ← 8</code></td><td>7 5 6 3 4 3 2 2 1</td></tr><tr><td>8</td><td><code>8 &lt; 9</code> 참, <code>2 &gt; 1</code> 참</td><td>8</td><td><code>A[4] = 3 &gt; 2</code> 참</td><td>break</td><td>7 5 6 3 4 3 2 2 1</td></tr></tbody></table></div><p>세 반복 모두 오른쪽 자식이 힙 안에 있어서 <code>if</code>가 두 자식을 제대로 비교했어요. 마지막 반복에서 3이 큰 자식 2보다 크니 더 내려갈 필요가 없어 멈춰요.</p><p>답: <code>(2, 2, 교환)</code> → <code>(4, 4, 교환)</code> → <code>(8, 8, break)</code>, 끝난 뒤 <code>A[1..9] = 7 5 6 3 4 3 2 2 1</code>, 리턴값 9예요. 강의록 S8 p12 그림의 삭제 결과와 같아요.</p></div><div data-subpart="b"><p>(b) 준비: <code>item ← 50</code>, <code>A[1] ← A[5] = 10</code>, <code>heap_size = 4</code>예요. <code>A[1..4] = 10 40 30 20</code>이고, 힙 밖이 된 5번 칸에는 방금 루트로 옮긴 그 값 10이 그대로 남아 있어요.</p><div class="table-wrap"><table><thead><tr><th><code>i</code></th><th><code>i &lt; heap_size</code>, <code>A[i] &gt; A[i+1]</code></th><th><code>largest</code></th><th>부모 비교</th><th>결과</th><th><code>A[1..4]</code></th></tr></thead><tbody><tr><td>2</td><td><code>2 &lt; 4</code> 참, <code>40 &gt; 30</code> 참</td><td>2</td><td><code>A[1] = 10 &gt; 40</code> 거짓</td><td>교환, <code>i ← 4</code></td><td>40 10 30 20</td></tr><tr><td>4</td><td><code>4 &lt; 4</code> 거짓</td><td>5 (<code>else</code>)</td><td><code>A[2] = 10 &gt; A[5] = 10</code> 거짓</td><td>2번·5번 교환, <code>i ← 10</code></td><td>40 10 30 20</td></tr></tbody></table></div><p><code>i = 4</code>에서 10의 왼쪽 자식 <code>A[4] = 20</code>은 있지만 오른쪽 자식 5번은 힙 밖이에요. <code>i &lt; heap_size</code>가 거짓이라 <code>and</code> 전체가 거짓이 되고, <code>else</code>로 가서 <code>largest ← i+1 = 5</code>가 돼요. 슬라이드 주석은 이 줄을 ‘오른쪽 자식이 더 크다’는 뜻으로 썼지만, 오른쪽 자식이 없는 경우도 같은 갈래로 들어와요.</p><p>5번 칸의 옛 값은 바로 루트로 올렸던 10이에요. 지금 내려가는 값도 10이라 비교 <code>10 &gt; 10</code>이 거짓이고, 같은 값끼리 맞바꿔 겉보기엔 변화가 없어요. <code>i ← 10</code>이 <code>heap_size = 4</code>보다 커서 반복이 끝나요. 진짜 왼쪽 자식 20은 한 번도 비교되지 않았어요.</p><p>결과 <code>A[1..4] = 40 10 30 20</code>은 최대 힙이 아니에요. 2번 칸의 10이 왼쪽 자식인 4번 칸의 20보다 작아요. 리턴값은 50으로 맞지만 남은 힙이 깨졌어요.</p><p>원인을 일반화해요. <code>i</code>는 늘 짝수라 <code>PARENT(i+1) = PARENT(i)</code>, 곧 지금 내려가는 값의 위치예요. 그리고 <code>i == heap_size</code>이면 <code>i+1</code>은 삭제 전 마지막 칸이라 그 안에는 루트로 올린 값이 남아 있어요. 그래서 이 경우 의사코드는 ‘내려가는 값과 그 자신의 옛 사본’을 비교하게 되고, 하나뿐인 왼쪽 자식은 건너뛰어요. 그 왼쪽 자식이 내려가는 값보다 크면 늘 최대 힙이 깨져요.</p><p>정의된 동작인지도 확인해요. 위 이유로 <code>i+1</code>은 삭제 전 <code>heap_size</code> 이하이고, 그 칸은 원래 힙이 쓰던 칸이라 200칸 배열 범위 안이에요. 이 입력에서는 <code>A[5]</code>를 읽고 써요. 따라서 미정의 동작이 아니라, 정의된 동작으로 늘 같은 잘못된 결과를 내는 논리 결함이에요.</p><p>고친 조건: 오른쪽 자식이 있고 그쪽이 더 클 때만 오른쪽을 골라요.</p><pre><code>if i &lt; heap_size and A[i+1] &gt; A[i]
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>슬라이드 <code>delete_max_heap(A)</code> 의사코드를 <strong>(a) 10개 입력</strong>과 <strong>(b) 5개 입력</strong>에 글자 그대로 실행해 추적하고, (b)에서 최대 힙이 깨지는 원인과 고친 조건을 구해요.</p>
+  <p>배열은 <code>200</code>칸으로 선언되어 <code>heap_size</code> 뒤 칸에도 옛 값이 남아 있고, 그 칸 읽기는 미정의 동작(UB)이 아닌 <strong>정의된 동작</strong>이에요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>i ← 2</code> · <code>CHILD(largest)</code></td>
+          <td><code>i</code> = 내려가는 노드의 <strong>왼쪽 자식</strong> 인덱스(짝수), 부모 = <code>i/2</code></td>
+          <td>표의 <code>(i, largest)</code>에서 현재 비교 중인 두 자식이 <code>i</code>(왼)와 <code>i+1</code>(오)임을 바로 알 수 있어요(<a href="정리노트_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+        <tr>
+          <td><code>while i ≤ heap_size</code> · <code>if i &lt; heap_size and A[i] &gt; A[i+1]</code></td>
+          <td><code>i ≤ heap_size</code>(왼쪽 자식 존재) vs <code>i &lt; heap_size</code>(오른쪽 자식 존재)</td>
+          <td><code>i == heap_size</code>(왼쪽 자식만 있음)이면 <code>i &lt; heap_size</code>가 거짓이 되어 <code>else largest ← i+1</code>로 빠지는 결함을 포착해요(<a href="정리노트_1109_Heap.html#s2-downheap">downheap</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>(a) item ← A[1]=9,  A[1] ← A[10]=3,  heap_size ← 9,  i ← 2
+    A[1..9] = 3 7 6 5 4 3 2 2 1</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) <code>A[1..10] = 9 7 6 5 4 3 2 2 1 3</code> 추적</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th><code>i</code></th><th>조건 <code>i &lt; 9 and A[i] &gt; A[i+1]</code></th><th><code>largest</code></th><th>부모 <code>A[largest/2] &gt; A[largest]</code></th><th>동작</th><th>직후 <code>A[1..9]</code></th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td><code>2 &lt; 9</code> 참, <code>7 &gt; 6</code> 참</td><td><b>2</b></td><td><code>A[1]=3 &gt; 7</code> 거짓</td><td>교환, <code>i ← 4</code></td><td>7 3 6 5 4 3 2 2 1</td></tr>
+          <tr><td>4</td><td><code>4 &lt; 9</code> 참, <code>5 &gt; 4</code> 참</td><td><b>4</b></td><td><code>A[2]=3 &gt; 5</code> 거짓</td><td>교환, <code>i ← 8</code></td><td>7 5 6 3 4 3 2 2 1</td></tr>
+          <tr><td>8</td><td><code>8 &lt; 9</code> 참, <code>2 &gt; 1</code> 참</td><td><b>8</b></td><td><code>A[4]=3 &gt; 2</code> 참</td><td><b>break</b></td><td>7 5 6 3 4 3 2 2 1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>(a) 답: <code>(2, 2, 교환) → (4, 4, 교환) → (8, 8, break)</code> / 최종 <code>A[1..9] = 7 5 6 3 4 3 2 2 1</code> / 리턴 <code>9</code>.</p>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) <code>A[1..5] = 50 40 30 20 10</code> 글자 그대로 실행 및 수정</h5>
+    <p>준비: <code>item ← 50</code>, <code>A[1] ← A[5] = 10</code>, <code>heap_size ← 4</code>. 힙 밖 칸 <code>A[5]</code>에는 옛 값 <code>10</code>이 그대로 남아 있어요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th><code>i</code></th><th>조건 <code>i &lt; 4 and A[i] &gt; A[i+1]</code></th><th><code>largest</code></th><th>부모 비교</th><th>동작</th><th>직후 <code>A[1..4]</code></th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td><code>2 &lt; 4</code> 참, <code>40 &gt; 30</code> 참</td><td><b>2</b></td><td><code>A[1]=10 &gt; 40</code> 거짓</td><td>교환, <code>i ← 4</code></td><td>40 10 30 20</td></tr>
+          <tr><td>4</td><td><b><code>4 &lt; 4</code> 거짓</b></td><td><b>5</b> (<code>else</code>)</td><td><code>A[2]=10 &gt; A[5]=10</code> 거짓</td><td><code>A[2]↔A[5]</code> 교환, <code>i ← 10</code></td><td>40 10 30 20</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li><strong>결과 및 판정</strong>: <code>A[1..4] = 40 10 30 20</code>(리턴 <code>50</code>). <code>A[2]=10 &lt; A[4]=20</code> 이므로 <strong>최대 힙이 아니에요</strong>.</li>
+      <li><strong>원인</strong>: <code>i == heap_size</code>(오른쪽 자식 없음)일 때 <code>i &lt; heap_size</code>가 거짓이 되어 <code>else</code> 분기가 실행되고, <code>largest ← i+1 = 5</code>가 되어 힙 밖 옛 값 <code>A[5]=10</code>을 골라요. 결국 내려가는 값 <code>10</code>을 자기 옛 사본과 비교하고 진짜 왼쪽 자식 <code>A[4]=20</code>을 건너뛰어요(200칸 배열 범위 내 접근이라 UB가 아닌 논리 결함).</li>
+      <li><strong>고친 조건</strong>: 오른쪽 자식이 존재하고 왼쪽보다 클 때만 <code>i+1</code>을 선택하도록 바꿔요.</li>
+    </ul>
+    <pre><code>if i &lt; heap_size and A[i+1] &gt; A[i]
     then largest ← i+1;
-    else largest ← i;</code></pre><p>이제 <code>else</code>는 ‘오른쪽이 없거나 왼쪽이 크거나 같음’이라 왼쪽 자식 <code>i</code>를 골라요. 다시 따라가면 <code>i = 2</code>는 그대로 교환해 <code>40 10 30 20</code>이 되고, <code>i = 4</code>에서 <code>largest = 4</code>, <code>A[2] = 10 &gt; A[4] = 20</code>이 거짓이라 교환해 <code>40 20 30 10</code>이 돼요. <code>i ← 8</code>이 4보다 커서 끝나요.</p><p>답: 글자 그대로면 <code>40 10 30 20</code>이고 최대 힙이 아니에요. 원인은 <code>i == heap_size</code>(오른쪽 자식 없음)일 때 <code>else</code>로 <code>largest ← i+1</code>이 되어 힙 밖 칸 <code>A[5]</code>의 옛 값 10을 읽는 것이에요. 고친 조건이면 <code>40 20 30 10</code>이에요. 수업 칠판 추적에서도 오른쪽 자식이 없으면 왼쪽 자식과만 비교했어요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="a"><p>(a) 결과 <code>7 5 6 3 4 3 2 2 1</code>의 부모·자식 쌍을 대입해요. $7 \ge 5, 6$, $5 \ge 3, 4$, $6 \ge 3, 2$, $3 \ge 2, 1$이 모두 참이라 최대 힙이에요. 리턴값 9는 원래 배열의 최댓값이고, 남은 9개의 값은 원래 10개에서 9 하나를 뺀 것과 같아요.</p><p>독립 C11 번역(<code>cc -std=c11 -Wall -Wextra</code>, 경고 0)은 의사코드를 줄 단위로 옮기고 모든 배열 접근을 범위 검사했어요. 별도로 작성한 Python 추적도 같은 반복 기록을 냈어요.</p><pre><code>(a) literal
-  (i=2, largest=2, swap) A[2] value moved up=7
-  (i=4, largest=4, swap) A[4] value moved up=5
-  (i=8, largest=8, break)
-  item=9 A[1..9]=7 5 6 3 4 3 2 2 1 max-heap=yes</code></pre></div><div data-subpart="b"><p>(b) 같은 C11 번역에서 글자 그대로의 조건과 고친 조건을 각각 실행했어요. 글자 그대로는 <code>i = 4</code>에서 <code>largest = 5</code>가 되고, 그 칸이 힙 밖이라는 표시가 찍혔어요. 범위 검사(<code>assert</code>)는 통과했으니 접근은 200칸 안이었어요.</p><pre><code>(b) literal
-  (i=2, largest=2, swap) A[2] value moved up=40
-  (i=4, largest=5, swap) A[5] value moved up=10 [outside heap]
-  item=50 A[1..4]=40 10 30 20 max-heap=no
-(b) fixed
-  (i=2, largest=2, swap) A[2] value moved up=40
-  (i=4, largest=4, swap) A[4] value moved up=20
-  item=50 A[1..4]=40 20 30 10 max-heap=yes</code></pre><p>고친 결과 <code>40 20 30 10</code>은 $40 \ge 20, 30$, $20 \ge 10$이라 최대 힙이에요. 독립 Python 추적도 두 결과를 똑같이 냈어요.</p><p>고친 조건이 다른 입력에서도 맞는 이유는 숫자 예가 아니라 조건의 뜻에 있어요. 반복 안에서 <code>largest</code>는 늘 힙 안에 있는 자식 중 큰 쪽의 인덱스예요. 그래서 교환한 뒤 위로 올라간 값은 형제보다 크거나 같고, 내려간 값만 다음 반복에서 다시 검사하면 돼요. 보조로 무작위 최대 힙 3000개에 한 번씩 삭제를 실행해 봤어요. 고친 조건은 모두 최댓값을 돌려주고 최대 힙을 유지했고, 글자 그대로의 조건은 246개에서 힙이 깨졌어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>(b)를 손으로 추적할 때 습관대로 ‘오른쪽 자식이 없으니 왼쪽과 비교’해 버리면 <code>40 20 30 10</code>이 나와요. 이건 고친 코드의 결과예요. 문제는 의사코드를 글자 그대로 실행하라고 했으니 <code>else</code> 줄이 실제로 무엇을 대입하는지 따라가야 해요.</p><p>‘힙 밖 칸을 읽었으니 미정의 동작’이라고 답하지 않아요. 이 문제의 배열은 200칸이고, <code>i+1</code>은 삭제 전 마지막 칸이라 범위 안이에요. 결함은 잘못된 값을 비교하는 논리 오류예요.</p><p>(a)의 마지막 반복을 <code>i = 8</code>에서 오른쪽 자식이 없다고 착각하지 않아요. <code>heap_size = 9</code>라 9번 칸이 오른쪽 자식으로 있어요. 또 비교식 <code>A[PARENT(largest)] &gt; A[largest]</code>는 같은 값이면 교환해요. 같은 값끼리 바꿔도 힙은 깨지지 않지만, 표에는 break가 아니라 교환으로 적어요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li><code>i ≤ heap_size</code>와 <code>i &lt; heap_size</code>가 각각 어떤 자식이 있다는 뜻인지 말해 보세요.</li><li>(a)의 세 반복을 표로 다시 적고, 결과와 리턴값을 확인하세요.</li><li>(b)를 글자 그대로 추적해 <code>i = 4</code>에서 <code>largest</code>가 몇이 되는지 보이고, 고친 조건으로 다시 실행해 보세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>downheap은 루트를 보관하고 마지막 요소를 루트로 옮긴 뒤 큰 자식과 비교하며 내려가요. <code>i</code>는 내려가는 값의 왼쪽 자식이고, <code>i ≤ heap_size</code>는 왼쪽, <code>i &lt; heap_size</code>는 오른쪽 자식이 있다는 뜻이에요.</p></div><div class="summary-group"><h4>(a) 답</h4><p><code>(2, 2, 교환)</code> → <code>(4, 4, 교환)</code> → <code>(8, 8, break)</code>, 결과 <code>7 5 6 3 4 3 2 2 1</code>, 리턴 9예요.</p></div><div class="summary-group"><h4>(b) 결함과 고침</h4><p>글자 그대로면 <code>i == heap_size</code>에서 <code>else</code>로 <code>largest ← i+1 = 5</code>, 힙 밖 칸의 옛 값 10을 읽어 <code>40 10 30 20</code>으로 최대 힙이 아니에요. <code>A[i+1] &gt; A[i]</code>일 때만 오른쪽을 고르게 고치면 <code>40 20 30 10</code>이에요.</p></div><div class="summary-group"><h4>검산·주의</h4><p>200칸 배열 안의 읽기라 정의된 동작이에요. 독립 C11 번역과 Python 추적이 모두 일치했어요. 손 추적 때 습관대로 왼쪽과 비교하지 말고 <code>else</code>가 대입하는 값을 따라가요.</p></div></div>
+    else largest ← i;</code></pre>
+    <p>고친 조건으로 다시 실행하면 <code>i=4</code>에서 <code>largest = 4</code>가 선택되어 <code>A[2]=10</code>과 <code>A[4]=20</code>이 교환되고, <strong><code>40 20 30 10</code></strong>(최대 힙)이 돼요.</p>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 검산</strong>: <code>7 5 6 3 4 3 2 2 1</code>에서 $7 \ge 5, 6$, $5 \ge 3, 4$, $6 \ge 3, 2$, $3 \ge 2, 1$ 모두 성립하고, 리턴 <code>9</code>는 초기 배열 최댓값이며 남은 9개는 초기 10개에서 <code>9</code>만 뺀 집합과 같아요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 검산</strong>: 글자 그대로 결과 <code>40 10 30 20</code>은 <code>[2]=10 &lt; [4]=20</code>에서 즉시 실패하고, 고친 결과 <code>40 20 30 10</code>은 $40 \ge 20, 30$, $20 \ge 10$ 이 모두 성립해요. 일반 경계 <code>i == heap_size</code>(외자식 상태)에서도 고친 조건은 <code>i &lt; heap_size</code>가 거짓일 때 항상 <code>else largest ← i</code>로 왼쪽 자식만 비교하므로 <code>largest</code>가 <code>[1..heap_size]</code> 밖으로 나가지 않아요.</p>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>(b)를 손 추적할 때 습관대로 “오른쪽 자식이 없으니 왼쪽과 비교”하면</strong>: 글자 그대로의 답(<code>40 10 30 20</code>) 대신 고친 결과(<code>40 20 30 10</code>)가 나와요. 코드 추론에서는 반드시 <code>if</code>가 거짓일 때 <code>else</code>가 대입하는 실제 인덱스를 적어야 해요.</p>
+  <p><strong>힙 밖 <code>A[5]</code> 읽기를 “배열 범위 초과(UB)”라고 답하면</strong>: 배열 크기가 <code>200</code>이고 <code>i+1</code>은 삭제 직전 <code>heap_size</code> 위치이므로 메모리는 유효하고, 옛 값이 남아 결정적으로 힙이 깨지는 <strong>논리 오류</strong>예요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li><code>if 조건1 and 조건2 then A else B</code> 형태를 보면 → <code>조건1</code>(범위 검사)이 거짓일 때 <code>else</code>가 안전한 기본값을 고르는지부터 확인한다.</li>
+    <li>(a)의 <code>i=8</code>에서 <code>A[4] &gt; A[8]</code> 대신 <code>A[4] == A[8]</code>이었다면 의사코드는 <code>break</code>와 교환 중 어느 쪽을 실행하나요?</li>
+    <li>고친 조건과 같은 뜻이 되도록 조건식을 <code>i == heap_size or ...</code> 형태로 바꿔 써 보세요.</li>
+  </ol>
+</div>
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p><code>i</code>는 왼쪽 자식, <code>i ≤ heap_size</code>는 왼쪽 존재, <code>i &lt; heap_size</code>는 오른쪽 존재. <code>and</code> 거짓 시 <code>else</code>가 <code>i+1</code>을 고르면 외자식 때 힙 밖 옛 값을 읽어요.</p></div>
+  <div class="summary-group"><h4>(a) 답</h4><p><code>(2,2,교환) → (4,4,교환) → (8,8,break)</code>, 결과 <code>7 5 6 3 4 3 2 2 1</code>, 리턴 9.</p></div>
+  <div class="summary-group"><h4>(b) 결함과 수정</h4><p>글자 그대로 <code>40 10 30 20</code>(최대 힙 아님: <code>10 &lt; 20</code>). <code>if i &lt; heap_size and A[i+1] &gt; A[i] then i+1 else i</code>로 고치면 <code>40 20 30 10</code>.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>200칸 배열 내 접근이라 UB 아님(논리 결함). 고친 조건은 <code>largest ≤ heap_size</code>를 항상 보장해요.</p></div>
+</div>
