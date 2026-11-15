@@ -23,7 +23,7 @@
 
 ### P1. 두 정수 바꾸기
 
-textbook-ch01-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p1)
+textbook-ch01-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms-%EB%AC%B8%EC%A0%9C.pdf#page=1)
 
 2개의 정수를 서로 교환하는 알고리즘을 의사 코드로 작성해보자.
 
@@ -92,7 +92,7 @@ temp ← a
 
 ### P2. 1부터 n까지 더하기
 
-textbook-ch01-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p2)
+textbook-ch01-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms-%EB%AC%B8%EC%A0%9C.pdf#page=2)
 
 1부터 n까지의 합을 계산하는 알고리즘을 의사 코드로 작성해보자.
 
@@ -163,7 +163,7 @@ sum ← 0
 
 ### P3. 큐에서 꺼내는 순서
 
-textbook-ch05-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p3)
+textbook-ch05-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms-%EB%AC%B8%EC%A0%9C.pdf#page=3)
 
 문자 A, B, C, D, E를 큐에 넣었다가 다시 꺼내어 출력하면 어떻게 되는가?
 
@@ -274,7 +274,7 @@ FIFO → (a) ABCDE
 
 ### P5. 자료구조·알고리즘과 설계·분석 구별
 
-lecture-s01-p6-design-analysis-contract · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p5)
+lecture-s01-p6-design-analysis-contract · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms-%EB%AC%B8%EC%A0%9C.pdf#page=4)
 
 **강의 예제 기반 자체 출제** S1 p6
 
@@ -350,7 +350,7 @@ S1 p6 · 추가 근거 p2,5,7 · Software_1_자료구조및알고리즘.pdf. 강
 
 ### P6. 지역 변수·함수 분리와 자원 공유
 
-lecture-s01-p7-resource-scope-sharing · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p6)
+lecture-s01-p7-resource-scope-sharing · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms-%EB%AC%B8%EC%A0%9C.pdf#page=5)
 
 **강의 예제 기반 자체 출제** S1 p7
 
@@ -421,7 +421,7 @@ S1 p7 · 추가 근거 p6 · Software_1_자료구조및알고리즘.pdf. 강의�
 
 ### P7. 일상 예제로 고르는 자료구조
 
-lecture-s01-p13-everyday-structure-selection · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p7)
+lecture-s01-p13-everyday-structure-selection · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms-%EB%AC%B8%EC%A0%9C.pdf#page=6)
 
 **강의 예제 기반 자체 출제** S1 p13
 
@@ -496,7 +496,7 @@ S1 p13 · 추가 근거 p14 · Software_1_자료구조및알고리즘.pdf. 강�
 
 ### P4. 최대값 탐색의 초기값과 종료 조건
 
-lecture-s01-p21-find-max · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms.html#p4)
+lecture-s01-p21-find-max · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms-%EB%AC%B8%EC%A0%9C.pdf#page=7)
 
 **후속 수업 보충:** 이 최대값 알고리즘의 분석은 0914 수업에서 다뤘어요. 이 문항은 보존하되 0907 핵심 범위의 평가 문항으로 세지 않아요.
 

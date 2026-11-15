@@ -13,12 +13,14 @@ def verify(repo):
         result=module.verify(repo)
         subprocess.run([sys.executable,str(repo/'docs/verify/exam-restore-20261017/verify_restored.py')],check=True)
         return result
-    if not list((repo/'복습노트').glob('*/복습문제_*.html')):
+    notes=repo/'복습노트'
+    if not (any(notes.glob('*/복습문제_*.html')) or any(notes.glob('*/.pack/자료_복습팩/복습문제_*.json'))):
         raise ValueError('zero question inputs')
     sys.path.insert(0,str(repo/'.agents/skills/ds-review-pack/scripts'))
     from review_inventory import collect_reviews
     from review_audit import audit_reviews
     from update_review import extract_cards
+    from review_input import read_review
     evidence=repo/'docs/verify/exam-restore-20261017'
     required=json.loads((evidence/'required-exams.json').read_text())
     baseline=json.loads((evidence/'baseline.json').read_text(encoding='utf-8'))
@@ -34,7 +36,7 @@ def verify(repo):
     for row in rows:
         path=Path(row['review_path']);relative=path.relative_to(repo).as_posix()
         previous=subprocess.check_output(['git','show','c3a1e8f:'+relative],cwd=repo).decode('utf-8')
-        current={q['source']:q['raw'] for q in extract_cards(path.read_text(encoding='utf-8'))}
+        current={q['source']:q['raw'] for q in extract_cards(read_review(path))}
         for q in extract_cards(previous):
             assert current[q['source']]==q['raw'],('existing card changed',row['range'],q['source'])
             preserved+=1

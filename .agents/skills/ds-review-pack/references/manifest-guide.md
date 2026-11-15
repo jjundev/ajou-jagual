@@ -46,7 +46,7 @@ manifest는 이번 팩의 계약이다. 작성자, 검사기, 조립기가 모�
 
 ## links
 - `href`는 작성자가 `<a href="…">`에 **글자 그대로** 넣을 값이다(검사기가 해당 `topic` 안의 링크와 정확히 비교한다). `%20` 같은 인코딩도 그대로.
-- `{"topic": "s<N>-links", "href": "복습문제_<range>_<slug>.html"}`는 항상. 파일명은 `manifest.py`의 `review_name`이 만드는 것과 정확히 같아야 한다.
+- `{"topic": "s<N>-links", "href": "복습문제_<range>_<slug>.html"}`는 항상. 작업 중에는 `manifest.py`의 `review_name`을 사용한다. 발행기는 이 링크를 PDF로 바꾼다. 문항이 0개인 팩은 이 항목을 생략한다.
 - 이번 범위 강의록 중 파일명이 영문인 것(2~12장)은 `s<N>-links`에 `../../자료구조_강의록_2026/Software_<N>_<이름>.pdf`를 건다. 1장 PDF는 파일명이 한글이라 걸지 않는다.
 - 이전 복습팩과 이어지는 개념이면 `../<이전 range>/정리노트_<이전 range>_<slug>.html#<토픽>` 링크를 건다(팩마다 `복습노트/<range>/` 폴더라 한 단계 위로 올라간다). 토픽은 기본 `s<N>-links`, 특정 토픽에 거는 편이 분명하면 그 토픽 id.
 
@@ -55,6 +55,6 @@ manifest는 이번 팩의 계약이다. 작성자, 검사기, 조립기가 모�
 
 ## 강의 예제·전역 검토 연동
 
-신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 최종 전체 날짜 audit를 통과한 정확한 최종 HTML 경로만 설명·PDF 입력으로 사용한다. update-existing의 기존 카드 보존 계약은 유지한다.
+신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 전체 날짜 audit를 통과한 작업용 HTML로 PDF를 만들고, 발행한 JSON 원고에서 문제설명을 만든다. update-existing의 기존 카드 보존 계약은 유지한다.
 
 lecture-code는 source=lecture-sNN-pN-example, lecture_ref(path,pdf_page,sha256,example,taught_on), objectives, task_family를 필수로 기록한다. 경로는 저장소 상대 경로이며 --repo로 실제 PDF를 검사한다.

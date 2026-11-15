@@ -33,6 +33,6 @@ def choice_models(html_text, statements):
         result[id_] = ChoiceModel(card['answer'],card['mode'],tuple(o['id'] for o in sorted(options,key=lambda o:o['index'])))
     return result
 
-def with_choices(path, problems):
-    models = choice_models(path.read_text(encoding='utf-8'), {p.id:p.conditions_html + p.ask_html for p in problems})
+def with_choices(text, problems):
+    models = choice_models(text, {p.id:p.conditions_html + p.ask_html for p in problems})
     return tuple(replace(p,choice=models.get(p.id)) for p in problems)

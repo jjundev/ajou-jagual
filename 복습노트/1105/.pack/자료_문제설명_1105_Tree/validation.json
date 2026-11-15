@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "0840b46660ee5cb94f4ef5e2907b36f65f3fc133ae1b36a0698a5111a92c0a82",
+  "input_hash": "8e9c5a006f200ff7fdba0963bfe6fc3a5d66905b268a3ed87a2a2f4160060238",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\.agents\\skills\\ds-problem-explain\\references\\authoring.md",
@@ -11,12 +11,12 @@
       "sha256": "8762005ad80cd1355859178d526ddb64ec424bc6cc40fe662f95d747f3f97780"
     },
     {
-      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1105\\복습문제_1105_Tree.html",
-      "sha256": "2986b64303471c2195a33d11162610f693e690109229d9dc26a0b6aa3bd026ee"
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1105\\.pack\\자료_복습팩\\복습문제_1105_Tree.json",
+      "sha256": "136b43a5e0847a1f1bbc3af8fadc8fb3486bb315b368443c8fca6a4012771c2d"
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1105\\정리노트_1105_Tree.html",
-      "sha256": "ae96191a642684d33c60183ff33f5603655603e44a68b4a03c508109579fd321"
+      "sha256": "e7e0982bdd99046c1658784682cfee2f33f385721f43a3bdbbc07542bd708e05"
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\교과서\\assets\\ch08-q09-complexity.svg",
@@ -41,22 +41,26 @@
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1105\\.pack\\자료_복습팩\\evidence\\2018-mid-c024-original-hwp-text.txt",
       "sha256": "2211182f63ce063dcb1596fad0db1d3fba3b479cc7215e23bc8ed951f10870c2"
+    },
+    {
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1105\\복습문제_1105_Tree-문제.pdf",
+      "sha256": "9c419698f37980861bb371b07adf58e69be802d8b2f9a8384282754b11e57fb6"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Task4 implementer (Windows worktree)",
-    "evidence": "source.json의 12문항(p1~p12) 조건·질문·SVG 그림·원문(2015-ljw-q2, 2019-mid-q1/q10/q12, 2018-mid-c024-q5/q13/q14, 2017-mid-c050-q9, textbook ch08-q09/q10, lecture S7 p18-21)과 대조 일치; p9 표 머리글 오기(삭제연산알고리즘) 보존 및 p10 8<9 그림 구조 보존 확인."
+    "reviewer": "Codex",
+    "evidence": "evidence/pdf-integration-check.json: all archived question fields and source figure hashes matched, and every PDF start page matched its question title and source."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Task4 implementer (Playwright Chromium)",
-    "evidence": "mpe_cli.py preview --port 41105에서 1280x900, 1024x900, 375x812 x light/dark 6조합 전 12문항 검증 통과: console/page/404/외부요청/KaTeX오류 0건, 문서 가로 넘침(scrollWidth<=innerWidth) 0건, 이미지·표시 SVG 정상, 데스크톱 좌/우/띄우기 dock·접기·원문탭·요약패널 및 모바일 문제보기/원문접기 토글 확인."
+    "reviewer": "Codex",
+    "evidence": "evidence/pdf-integration-check.json: rendered all questions in Chromium at 1280, 1024 and 375 px in light and dark mode. Verified PDF links, sections, panel controls, images, math and page width."
   },
   "content": {
     "status": "pass",
     "reviewer": "Task4 implementer (authoring.md v2 self-audit + fragment-audit.json)",
-    "evidence": "전 12문항 25소문항 fragment가 개정 authoring.md(7구역, 비메타 start, recall 단서-도구 연결, 표/글머리 유연성, 실질 verify·QA로그 비노출, 반례 pitfall, 행동형 retry, td 수식 여백, .sum 요약) 및 fragment-audit.json을 통과함.",
+    "evidence": "전 12문항 25소문항 fragment가 개정 authoring.md(7구역, 비메타 start, recall 단서-도구 연결, 표/글머리 유연성, 실질 verify·QA로그 비노출, 반례 pitfall, 행동형 retry, td 수식 여백, .sum 요약) 및 fragment-audit.json을 통과함. PDF integration: unchanged questions, fragments, and evidence verified in evidence/pdf-integration-check.json.",
     "items": {
       "p1:main": {
         "status": "pass",
@@ -188,7 +192,7 @@
   "independent": {
     "status": "pass",
     "reviewer": "Task4 implementer (independent_verify.py + verify_lecture.c + fragment-audit.json)",
-    "evidence": "Windows 환경에서 evidence/independent_verify.py 재실행(independent-results.json, independent-output.txt), gcc -std=c11 evidence/verify_lecture.c 컴파일·실행(verify_lecture-output.txt), evidence/fragment-audit.json 12/12 대조 모두 통과.",
+    "evidence": "Windows 환경에서 evidence/independent_verify.py 재실행(independent-results.json, independent-output.txt), gcc -std=c11 evidence/verify_lecture.c 컴파일·실행(verify_lecture-output.txt), evidence/fragment-audit.json 12/12 대조 모두 통과. PDF integration: unchanged questions, fragments, and evidence verified in evidence/pdf-integration-check.json.",
     "items": {
       "p1:main": {
         "status": "pass",
@@ -380,11 +384,18 @@
     ".pack/figures_문제설명_1105_Tree/p6-source-fig-p6-question.svg": "e9cd548197d2145dc67af9dccc42b7cd1e361e7c04c2d9018b48065787d50c3e",
     ".pack/figures_문제설명_1105_Tree/p7-explain-fig-explain-p7-heights.svg": "52e04704af5e67941ba907ad28229967c1f4b7dac52358f129cb1313375ee17c",
     ".pack/figures_문제설명_1105_Tree/p8-explain-fig-explain-p8-heights.svg": "52e04704af5e67941ba907ad28229967c1f4b7dac52358f129cb1313375ee17c",
-    ".pack/문제설명_1105_Tree.md": "356d5098c91bf9035b0411f6fbf94252907dc4b7d687e8d6b12f718585c23e41",
+    ".pack/문제설명_1105_Tree.md": "8f4bee272f3dddb4e87bdc12c4486952a2662a154f77d83da034495364b4ac22",
+    ".pack/자료_문제설명_1105_Tree/evidence/answer-data.json": "d9f001e671cac0c3fd4376eca7f6cc98a92941868a6880c31fa00dca73f1a842",
+    ".pack/자료_문제설명_1105_Tree/evidence/answers-output.json": "30957a81dfa5123af122ee21e8cefd1ae91f54cd13e6c6792ca211490a398ef3",
+    ".pack/자료_문제설명_1105_Tree/evidence/answers.py": "e17cea7f10239fe1bc0d5baf37ddc5fc4f1d9cb9952e644e1a2418d772fa05a6",
+    ".pack/자료_문제설명_1105_Tree/evidence/author-p1-p4-hwp-extracted.txt": "bd4787b598044420b7de3f02d00b46507cdf6b571f3be041fc4295a7bbb7f066",
+    ".pack/자료_문제설명_1105_Tree/evidence/author-p1-p4.py": "47005f9e30ed7c724a00f5bb67d711077c95c2592e0f9e2875a8cde103ad8197",
     ".pack/자료_문제설명_1105_Tree/evidence/fragment-audit.json": "617b96c1bdc2e4efb1be21721c74929bc985034d0b8535df8c67ab27c55e86cc",
+    ".pack/자료_문제설명_1105_Tree/evidence/independent-comparison.json": "b3fff228d5611507e45077771b4b286de4bbe48463a6a0875e491895cb103a0c",
     ".pack/자료_문제설명_1105_Tree/evidence/independent-output.txt": "b2403462be76e3ba79cc573e234f79f8cf3c473ded3448a2c8e63ea6f52db950",
     ".pack/자료_문제설명_1105_Tree/evidence/independent-results.json": "891ddfee3ea3b4f445cf202d4acc888007867c0ec2465f1588f821860d8932b3",
     ".pack/자료_문제설명_1105_Tree/evidence/independent_verify.py": "26f9eb39f6533c8d39887f72a1c00c4ca14bddb61b19c761a8c0c56534054263",
+    ".pack/자료_문제설명_1105_Tree/evidence/pdf-integration-check.json": "9cb9edbbbfd37e3b3432f355bb834f1765d71fa0dd2a3bdd99d727568df4d1fc",
     ".pack/자료_문제설명_1105_Tree/evidence/verify_lecture-output.txt": "cb2af3a50d84f85f9686d3fd3c693844e5c85b3a3ecc87a40e4cc1836f015b50",
     ".pack/자료_문제설명_1105_Tree/evidence/verify_lecture.c": "7faa75ee39667a13a64acfbd5081dbf8f7e732cc00cfe261c342c95c16fcabf7",
     ".pack/자료_문제설명_1105_Tree/fragments/p1.html": "e12d6c7c50d5e966837b1f1caf115c86a4ddd1407055ac60d6958a42aa371a02",
@@ -400,7 +411,7 @@
     ".pack/자료_문제설명_1105_Tree/fragments/p8.html": "3e0af760116af96e834d25cd115f1f0302a9192fbe98d7707345f5301154ca34",
     ".pack/자료_문제설명_1105_Tree/fragments/p9.html": "8370be284d09245d04db796ab0596ad5c39ceff34b3bdfa3655aaf515ea7015c",
     ".pack/자료_문제설명_1105_Tree/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
-    "문제설명_1105_Tree.html": "0260ab0893aa7dab8598ac0e42f4d727975d76afc1eb8cddc881007061107f9c",
-    ".pack/자료_문제설명_1105_Tree/manifest.json": "03afad0143203830fad384ccf9de5a27334d2294d8b394bbe85da6dd78d3dcb0"
+    "문제설명_1105_Tree.html": "2a51718e3dc6fb4b725994adbc9826aa1f8e9cdb2186f12c6b44a0b070e0e415",
+    ".pack/자료_문제설명_1105_Tree/manifest.json": "d3689efbf6b112de8e44f6daf91c1616fff88f0e7939d3cc078de62cb11fca73"
   }
 }

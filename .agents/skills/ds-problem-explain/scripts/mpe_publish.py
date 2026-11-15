@@ -5,13 +5,13 @@ import json
 from pathlib import Path
 from mpe_contract import validate_fragment, validate_reviews, payload_hash
 from mpe_render import PACK_DIR, artifact_hashes, check_artifacts, dump, names
-from mpe_source import sha256, inside
+from mpe_source import source_digest, sha256, inside
 from mpe_shared import publish_files, ReviewPdfError
 from mpe_types import ExplainError
 
 def publish_explanation(pack, artifacts, fragments, reviews, destination, backup_dir):
     try:
-        if sha256(pack.path) != pack.sha256:
+        if source_digest(pack.path) != pack.sha256:
             raise ExplainError('입력 변경: 설명을 다시 검증하세요')
         destination = Path(destination).absolute()
         if destination != pack.path.parent.absolute():

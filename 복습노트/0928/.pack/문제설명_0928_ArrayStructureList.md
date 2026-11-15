@@ -25,7 +25,7 @@
 
 ### P1. 배열 크기를 sizeof로 비교
 
-textbook-ch03-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p1)
+textbook-ch03-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=1)
 
 다음 배열 중에서 크기가 가장 큰 배열은?
 
@@ -125,7 +125,7 @@ array1=10×4=40바이트라고 적어요.
 
 ### P2. 복소수 구조체 더하기
 
-textbook-ch03-q07 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p2)
+textbook-ch03-q07 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=2)
 
 복소수를 구조체로 표현해보자. 복소수 a와 복소수 b를 받아서 a+b를 계산하는 함수를 작성해보자. 함수는 구조체를 반환할 수 있다. 알다시피 복소수는 real+imag\*i와 같은 형태를 갖는다.
 
@@ -205,7 +205,7 @@ Complex result;
 
 ### P3. 구조체를 동적으로 만들고 반납
 
-textbook-ch03-q12 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p3)
+textbook-ch03-q12 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=3)
 
 1개의 정수와 최대 크기가 20인 문자열로 이루어진 구조체를 저장할 수 있도록 동적 메모리를 할당받고 여기에 정수 100과 문자열 “just testing”을 저장한 다음, 동적 메모리를 반납하는 프로그램을 작성하라.
 
@@ -283,7 +283,7 @@ malloc(sizeof \*p) → NULL 검사 → 저장 → free
 
 ### P4. 배열 접근·전체 방문의 복잡도
 
-textbook-ch01-q17 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p4)
+textbook-ch01-q17 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=4)
 
 배열에 정수가 들어 있다고 가정하고 다음의 작업의 최악, 최선의 시간복잡도를 빅오 표기법으로 말하라.
 
@@ -373,7 +373,7 @@ textbook-ch01-q17 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C
 
 ### P5. swap: 주소 전달과 값 전달
 
-lecture-s03-p22-swap · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p5)
+lecture-s03-p22-swap · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=5)
 
 **강의 예제 기반 자체 출제** S3 p22
 
@@ -463,7 +463,7 @@ S3 p22 · Software_3_ArrayStructureList.pdf. 강의 코드의 해당 연산을 �
 
 ### P6. 동적 구조체 배열의 두 원소
 
-lecture-s03-p31-malloc-record · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p6)
+lecture-s03-p31-malloc-record · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=6)
 
 **강의 예제 기반 자체 출제** S3 p31
 
@@ -558,7 +558,7 @@ free(p);`
 
 ### P7. 역참조·후위 증가·이중 포인터 추적
 
-lecture-s03-p20-pointer-expression-double · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p7)
+lecture-s03-p20-pointer-expression-double · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=7)
 
 **강의 예제 기반 자체 출제** S3 p20
 
@@ -642,7 +642,7 @@ int y = (*p)++;
 
 ### P8. 포인터 초기화·void 포인터와 할당 방식
 
-lecture-s03-p27-pointer-safety-allocation · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p8)
+lecture-s03-p27-pointer-safety-allocation · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=8)
 
 **강의 예제 기반 자체 출제** S3 p27
 
@@ -724,7 +724,7 @@ S3 p27 · 추가 근거 p21,28,29 · Software_3_ArrayStructureList.pdf. 강의�
 
 ### P9. sizeof·패딩과 배열 원소 수
 
-lecture-s03-p30-sizeof-alignment-count · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList.html#p9)
+lecture-s03-p30-sizeof-alignment-count · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=9)
 
 **강의 예제 기반 자체 출제** S3 p30
 

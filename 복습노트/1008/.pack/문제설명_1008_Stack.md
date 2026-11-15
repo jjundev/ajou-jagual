@@ -21,7 +21,7 @@
 
 ### P1. 스택의 공백과 포화
 
-textbook-ch04-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p1)
+textbook-ch04-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack-%EB%AC%B8%EC%A0%9C.pdf#page=1)
 
 다음 중 배열로 구현된 스택에서 공백상태에 해당하는 조건은? 또 포화상태에 해당되는 조건은?
 
@@ -119,7 +119,7 @@ empty −1, full M−1
 
 ### P2. ListType 삭제 래퍼의 메모리 누수 찾기
 
-lecture-s04-p48-list-delete-leak · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p2)
+lecture-s04-p48-list-delete-leak · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack-%EB%AC%B8%EC%A0%9C.pdf#page=2)
 
 **강의 예제 기반 자체 출제** S4 p48
 
@@ -213,7 +213,7 @@ list->length--;`
 
 ### P3. push·pop·peek의 순서 복원
 
-lecture-s05-p11-stack-adt · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p3)
+lecture-s05-p11-stack-adt · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack-%EB%AC%B8%EC%A0%9C.pdf#page=3)
 
 **강의 예제 기반 자체 출제** S5 p11
 
@@ -306,7 +306,7 @@ pop(S)
 
 ### P4. 위치 인자를 선행 노드로 바꾸기
 
-lecture-s04-p47-list-position-adapter · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p4)
+lecture-s04-p47-list-position-adapter · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack-%EB%AC%B8%EC%A0%9C.pdf#page=4)
 
 **강의 예제 기반 자체 출제** S4 p47
 
@@ -387,7 +387,7 @@ S4 p47 · 추가 근거 p44,45,46,25 · Software_4_List.pdf. 1008에 재강조�
 
 ### P5. 함수 호출과 복귀 순서의 스택
 
-lecture-s05-p8-activation-record-return · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack.html#p5)
+lecture-s05-p8-activation-record-return · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack-%EB%AC%B8%EC%A0%9C.pdf#page=5)
 
 **강의 예제 기반 자체 출제** S5 p8
 

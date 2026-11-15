@@ -1,6 +1,6 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "d35c92aeba1d78c0316f2c7b7fb50c5d493d8974218d2c715b57e831b3b9d6ef",
+  "input_hash": "44df74cd2394d18fee870d76ff6b6e58be2198df4177b229badc18ac2b76cffb",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\.agents\\skills\\ds-problem-explain\\references\\authoring.md",
@@ -11,16 +11,16 @@
       "sha256": "8762005ad80cd1355859178d526ddb64ec424bc6cc40fe662f95d747f3f97780"
     },
     {
-      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1112\\복습문제_1112_Heap.html",
-      "sha256": "084cf277b54abd72c1f41acd160748ea28169cd14cda5ce82c6296e24beb669c"
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1112\\.pack\\자료_복습팩\\복습문제_1112_Heap.json",
+      "sha256": "e5ce80868419815a1116ff89545231832fcaf9212540606b822b345e38f2f7f1"
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1112\\정리노트_1112_Heap.html",
-      "sha256": "54aff6b66d3e09d30c47adc34af64c57a8ca9503e6f7e8761cd04b7e66fca69c"
+      "sha256": "99b12d9d8a76b18b046c400360aca086959f760a09f0312ac061b3f6aea9b8db"
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1109\\정리노트_1109_Heap.html",
-      "sha256": "ca5c1f0f4fe07d7545cf35eb5d94b75fc90fad15196d24bf87338cf41180c210"
+      "sha256": "c6b693b1d3bd3a95ae2a64bebbf824f5561e5e7fd5614ff342c5608f914c6385"
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\자료구조_강의록_2026\\Software_8_Heap.pdf",
@@ -57,22 +57,26 @@
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\STT\\1112 자구알.md",
       "sha256": "197b243e513a4989b5552f369f3b97d93e6f0e02d0a6a48936eea8f7fa403c34"
+    },
+    {
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1112\\복습문제_1112_Heap-문제.pdf",
+      "sha256": "274ac9bb06c24ee9bd2bcb32a5ea73e6a8f236b1e6189a9b9c73248e7d80e42b"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "Task 6 SDD Implementer (1112 Heap rewrite)",
-    "evidence": "재추출 source.json(8문항, subparts 16개, choices=False)을 복습문제_1112_Heap.html 및 원자료(2016 기말 사진/전사, 2021 모의 PDF, 교과서 9장 origin/JSON, Software_8_Heap.pdf p14-19, STT 1112)와 대조 완료. disputed_mention=True 관련 조건/주의점 전부 보존 확인: P1 원문 \"7가지\" 오기(실제 A~H 8종) 및 left 0/right 1, P2 빈 틀 SVG 및 수업 기준 좌0/우1, P3/P5 교과서 인쇄 정답 미확인, P6 원 코드 순서(두 typedef + init/insert_max_heap/delete_max_heap 원형 선행 약속) 및 p13 의사코드 대비 자체 코드 차이, P7 (b) 자체 출제 및 슬라이드 p19(좌1/우0) 대조, P8 자체 수치·규칙 및 > vs >= 경계 조건."
+    "reviewer": "Codex",
+    "evidence": "evidence/pdf-integration-check.json: all archived question fields and source figure hashes matched, and every PDF start page matched its question title and source."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "Task 6 SDD Implementer (1112 Heap rewrite)",
-    "evidence": "mpe_cli.py preview --run tmp/ds-problem-explain-1112 --port 41112 서버에서 Playwright로 6개 뷰포트(1280x900, 1024x900, 375x812 x light/dark) 전 문항(p1~p8) 검증(evidence/browser-report.json): console error 0, pageerror 0, 404/network error 0(favicon 포함 0건), external request 0, KaTeX 107개 오류 0, scrollWidth<=innerWidth(1280/1024/375), .layout[data-prob-dock](left/right/float 이동·리사이즈·clamp·재로드·1023/1024 경계·닫힘 유지), 원문 탭(#tab-original), 모바일 접기 토글(.problem-toggle), 우측 요약 패널, 목차, 이전/다음, 그림 확대 정상. report 추가 재빌드 HTML(eece94fd...) 및 MD(64f48e56...)는 테스트본과 바이트 동일."
+    "reviewer": "Codex",
+    "evidence": "evidence/pdf-integration-check.json: rendered all questions in Chromium at 1280, 1024 and 375 px in light and dark mode. Verified PDF links, sections, panel controls, images, math and page width."
   },
   "content": {
     "status": "pass",
     "reviewer": "Task 6 SDD Implementer (1112 Heap rewrite)",
-    "evidence": "개정 authoring.md 기준 전 8문항 16소문항 재작성 및 전수 검수: understand 1~2문장+조건 압축(disputed_mention/오기/원형약속/정답미확인/보충/경계조건 일관 유지), recall 8문항 모두 <table class=\"cmp\">로 단서-도구-적용이유 연결, start 메타선언 제거 및 첫 대입 직시, solve 상태추적 cmp 표(<b> 다음 후보 강조) 및 P3 객관식 선지 소거 글머리 유연화, td 내 $ 앞뒤 공백 준수, verify 구체 검산(QA 로그·내부 스크립트명 미노출), pitfall 원인->반례 구조, retry 행동/질문형 1~3항, sum 일치 확인. mpe_cli.py check 0 errors 통과.",
+    "evidence": "개정 authoring.md 기준 전 8문항 16소문항 재작성 및 전수 검수: understand 1~2문장+조건 압축(disputed_mention/오기/원형약속/정답미확인/보충/경계조건 일관 유지), recall 8문항 모두 <table class=\"cmp\">로 단서-도구-적용이유 연결, start 메타선언 제거 및 첫 대입 직시, solve 상태추적 cmp 표(<b> 다음 후보 강조) 및 P3 객관식 선지 소거 글머리 유연화, td 내 $ 앞뒤 공백 준수, verify 구체 검산(QA 로그·내부 스크립트명 미노출), pitfall 원인->반례 구조, retry 행동/질문형 1~3항, sum 일치 확인. mpe_cli.py check 0 errors 통과. PDF integration: unchanged questions, fragments, and evidence verified in evidence/pdf-integration-check.json.",
     "items": {
       "p1:main": {
         "status": "pass",
@@ -159,7 +163,7 @@
   "independent": {
     "status": "pass",
     "reviewer": "Task 6 SDD Implementer (1112 Heap rewrite)",
-    "evidence": "Windows 작업 환경에서 evidence/independent_verify.py(228줄), gcc -std=c11 -Wall -Wextra -Werror independent_heapsort.c(경고 0, 종료 0, 0xABABABAB 독성값 미노출), controller_compare.py(16개 소문항 ALL OK)를 직접 재실행하여 evidence/{independent-output.txt, independent-heapsort-output.txt, controller-compare-output.txt}를 생성·대조 완료. P6는 원형 3줄 선행 조건과 일치, P1/P2/P5/P7 동점 변형 204종 불변, P8 FIFO 단조증가 False 및 최종값 우연일치 확인.",
+    "evidence": "Windows 작업 환경에서 evidence/independent_verify.py(228줄), gcc -std=c11 -Wall -Wextra -Werror independent_heapsort.c(경고 0, 종료 0, 0xABABABAB 독성값 미노출), controller_compare.py(16개 소문항 ALL OK)를 직접 재실행하여 evidence/{independent-output.txt, independent-heapsort-output.txt, controller-compare-output.txt}를 생성·대조 완료. P6는 원형 3줄 선행 조건과 일치, P1/P2/P5/P7 동점 변형 204종 불변, P8 FIFO 단조증가 False 및 최종값 우연일치 확인. PDF integration: unchanged questions, fragments, and evidence verified in evidence/pdf-integration-check.json.",
     "items": {
       "p1:main": {
         "status": "pass",
@@ -282,8 +286,10 @@
     ".pack/figures_문제설명_1112_Heap/p2-original-svg2-fig-p2-orig-codes.svg": "2798692afffe42eeeb2a5c8418145bbbc350e2ed10712d94e399495eb38236ce",
     ".pack/figures_문제설명_1112_Heap/p2-source-fig-p2-prob-frame.svg": "2f3558c8b12a9a21fc3eb8feb37af1cb285aaf4b40dddafea061abc434aaae81",
     ".pack/figures_문제설명_1112_Heap/p2-source-svg2-fig-p2-prob-codes.svg": "2798692afffe42eeeb2a5c8418145bbbc350e2ed10712d94e399495eb38236ce",
-    ".pack/문제설명_1112_Heap.md": "64f48e5677ae75eeea0ea91cbad7ae99e5ff60cffc55ed7eacf0f2d89ec7b29d",
+    ".pack/문제설명_1112_Heap.md": "c2dad18f916f189a79efba7a63141b130b6db524bf841be85ffddd84b0bd30d8",
     ".pack/자료_문제설명_1112_Heap/evidence/browser-report.json": "95e36978de717af884a010a26b958d3ebbaa7ac8a7961c8e833e65f0ce23f929",
+    ".pack/자료_문제설명_1112_Heap/evidence/browser_check.py": "313a37ab71a3fffc8247f2260eadba4f1756e1e8a2dee0c2944f1226daadc844",
+    ".pack/자료_문제설명_1112_Heap/evidence/content-review.json": "a83e6f9688ac08737456e89be1bf19d8d612a14d5e782e0f287952d77f860565",
     ".pack/자료_문제설명_1112_Heap/evidence/controller-compare-output.txt": "f8c3c11433df11a2c7ca04bd2d5974144ac552dbaa76b220970a9bae8b440056",
     ".pack/자료_문제설명_1112_Heap/evidence/controller_compare.py": "a078bef7c5a2cfc539da894fe898b222951b217e75a1af80fbd13e5f38ba840f",
     ".pack/자료_문제설명_1112_Heap/evidence/independent-heapsort-output.txt": "7f4e9c38c4a732563548cb0e5a89b6cdf25bbe058979a2a5541ed8a0671054b8",
@@ -291,6 +297,9 @@
     ".pack/자료_문제설명_1112_Heap/evidence/independent-results.json": "10c73f6ee93b0243dd0e189901bf52ed19c752e5ebb49b980f1576e182dc3c79",
     ".pack/자료_문제설명_1112_Heap/evidence/independent_heapsort.c": "a74b5c6713cf45d588bb7da2d7b3214816f729c97ab8f60c9e0211ce37013026",
     ".pack/자료_문제설명_1112_Heap/evidence/independent_verify.py": "033fb166e21bc63f429631afc5583b477d8dd1bcf6e97f5f00d7b227400d1b49",
+    ".pack/자료_문제설명_1112_Heap/evidence/pager_probe.py": "36955eb448ec6d76b480d30d56861af35c7aad3ba3b22279b287c54dbf6374ef",
+    ".pack/자료_문제설명_1112_Heap/evidence/pdf-integration-check.json": "5e8ef630e60a4ee3740ca1ba1eebe2f552d72acad680de40799219ed70d4e6d3",
+    ".pack/자료_문제설명_1112_Heap/evidence/recheck-p6-prototype.txt": "112d4ad09ed75ba04da04649d2aec022e6985e8ed8433743d609e0506326a3f8",
     ".pack/자료_문제설명_1112_Heap/fragments/p1.html": "2f47d4b23dc10d755e2d77fce8ab4746fc96fed7c4cc62dced50c360cb96e6e2",
     ".pack/자료_문제설명_1112_Heap/fragments/p2.html": "14850292a029980584b5e8b678d5deac3c30bdf5e6a660feaaa4e24daa10ef5c",
     ".pack/자료_문제설명_1112_Heap/fragments/p3.html": "9d001a93d78eae6958599b8bbfc45203957a3f08eb294d24950bb05220e3a237",
@@ -300,7 +309,7 @@
     ".pack/자료_문제설명_1112_Heap/fragments/p7.html": "c2aa62d000aaee4269980e64bba961c0a9f1860ddcfa1bf87a1a1da657554d4a",
     ".pack/자료_문제설명_1112_Heap/fragments/p8.html": "1e462e9eb59e65f121820a20d9c4a2e3170d26f70fd310c67237671328cf49f7",
     ".pack/자료_문제설명_1112_Heap/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
-    "문제설명_1112_Heap.html": "eece94fdb4e734309843d4099355ab3c888844779f8fd16d51571a21cc938372",
-    ".pack/자료_문제설명_1112_Heap/manifest.json": "a5e05f814ee2f00ceab4faa11341e0e7890e5db0cd5ba46768e9a0d67d67e4d4"
+    "문제설명_1112_Heap.html": "82b01694b09e14a5591df91ef07e335b46b60848913a91eb646c20ffd989b339",
+    ".pack/자료_문제설명_1112_Heap/manifest.json": "91c9cc8db27ac6990e26c8764916af1810a71c2a4a617fa65717446b1983b7ec"
   }
 }

@@ -26,7 +26,7 @@
 
 ### P1. j가 i에서 시작하는 세 겹 루프
 
-2018-mid-c024-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p1)
+2018-mid-c024-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=1)
 
 다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 나타내고, 빅오 표기법으로 표시해 보세요. (시간 복잡도를 구할 때 `buffer[i][j] = 0;`의 대입 연산만 고려해요.)
 
@@ -115,7 +115,7 @@ i=0일 때 j는 n번, i=1일 때 n−1번이라고 적어요.
 
 ### P2. 자기 자신을 다시 부르는 기법
 
-2018-mid-c102-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p2)
+2018-mid-c102-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=2)
 
 함수가 수행 도중에 자기 자신을 다시 호출하여 문제를 해결하는 기법을 ( )이라고 해요. 빈칸을 채워 보세요.
 
@@ -182,7 +182,7 @@ i=0일 때 j는 n번, i=1일 때 n−1번이라고 적어요.
 
 ### P3. 성장률이 작은 순서
 
-textbook-ch01-q12 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p3)
+textbook-ch01-q12 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=3)
 
 다음의 빅오표기법들을 수행시간이 적게 걸리는 것부터 나열하라.
 
@@ -253,7 +253,7 @@ n=16에서 1,4,16,64,256,65536,20922789888000 순서예요. 이 예는 직관 �
 
 ### P4. 시간 복잡도 함수의 뜻
 
-textbook-ch01-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p4)
+textbook-ch01-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=4)
 
 시간 복잡도 함수가 7n+10이라면 이것이 나타내는 것은 무엇인가?
 
@@ -351,7 +351,7 @@ n=3일 때 T(3)=31회라고 적어요.
 
 ### P5. 줄어들지 않는 순환 호출
 
-textbook-ch02-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p5)
+textbook-ch02-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=5)
 
 다음의 순환호출 함수에서 잘못된 점은 무엇인가?
 
@@ -430,7 +430,7 @@ n=2에서 2×recursive(2)를 적어요.
 
 ### P6. 자연수 ADT의 연산 계약
 
-lecture-s01-p24-nat-no · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p6)
+lecture-s01-p24-nat-no · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=6)
 
 **강의 예제 기반 자체 출제** S1 p24
 
@@ -519,7 +519,7 @@ add(x,y) ::= if((x+y)<=INT_MAX) return x+y;
 
 ### P7. 같은 n²를 계산하는 세 알고리즘
 
-lecture-s01-p29-square-cost · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p7)
+lecture-s01-p29-square-cost · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=7)
 
 **강의 예제 기반 자체 출제** S1 p29
 
@@ -608,7 +608,7 @@ C: sum <- 0
 
 ### P8. 팩토리얼의 호출과 반환을 분리하기
 
-lecture-s02-p4-factorial · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p8)
+lecture-s02-p4-factorial · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=8)
 
 **강의 예제 기반 자체 출제** S2 p4
 
@@ -695,7 +695,7 @@ S2 p4 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 �
 
 ### P9. 네 겹 루프의 시간 복잡도
 
-2019-mid-q9 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p9)
+2019-mid-q9 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=9)
 
 다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 표현하고, 빅오 표기법으로도 써 보세요.
 
@@ -788,7 +788,7 @@ for(i=0; i<n; i++){
 
 ### P10. 1부터 시작하는 네 겹 루프
 
-unk-final-ltk-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion.html#p10)
+unk-final-ltk-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0914_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=10)
 
 다음 코드의 시간 복잡도를 n에 대한 함수 T(n)으로 써 보세요. 또한 빅오 표기법으로 써 보세요. (시간 복잡도를 구할 때 `buffer[i][j] = 0;`의 대입 연산만 고려해요.)
 

@@ -1,4 +1,5 @@
 from _util import SCRIPTS
+from review_source import review_paths, read_review
 from check_html import check_review,parse_html
 
 def test_lecture_original_label_and_extra_cards():
@@ -49,7 +50,7 @@ def test_repo_lecture_cards_are_standalone():
     bad = []
     for m in sorted((REPO/'복습노트').glob('*/.pack/자료_복습팩/manifest.json')):
         rng = m.parents[2]
-        html = next(rng.glob('복습문제_*.html')).read_text(encoding='utf-8')
+        html = read_review(review_paths(rng)[0])
         bad += [(rng.name, e.where, e.detail) for e in check_review(parse_html(html), json.loads(m.read_text(encoding='utf-8'))) if e.code == 'lecture-standalone']
     assert bad == []
 

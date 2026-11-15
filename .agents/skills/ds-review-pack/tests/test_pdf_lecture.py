@@ -1,6 +1,8 @@
 import html, json, re, tempfile
 from pathlib import Path
 from _util import REPO
+from review_source import review_paths
+from review_pdf import discover_reviews
 from pdf_cards import read_pack, to_payload
 from pdf_lecture import split_lecture_problem
 from pdf_types import Block, PageSlice
@@ -9,7 +11,7 @@ def strip(s): return html.unescape(re.sub(r'<[^>]+>', '', s)).strip()
 def squash(s): return re.sub(r'\s+', '', strip(s))
 def P(h): return Block('prose', h, strip(h))
 def lecture(range_, pid):
-    pack = read_pack(next((REPO / '복습노트' / range_).glob('복습문제_*.html')))
+    pack = read_pack(review_paths(REPO / '복습노트' / range_)[0])
     card = next(c for c in pack.cards if c.id == pid and c.kind == '강의 코드')
     return tuple(b for b in card.problem if b.kind == 'prose')
 
@@ -63,7 +65,7 @@ def test_list_before_prose_keeps_original_order():
 
 def test_all_lecture_cards_lossless_and_badge_free():
     n = 0
-    for src in sorted((REPO / '복습노트').glob('*/복습문제_*.html')):
+    for src in discover_reviews(REPO, 'all'):
         for c in read_pack(src).cards:
             if c.kind != '강의 코드': continue
             prose = tuple(b for b in c.problem if b.kind == 'prose')
@@ -76,7 +78,7 @@ def test_all_lecture_cards_lossless_and_badge_free():
     assert n == 47
 
 def payload(range_, mode='problems'):
-    pack = read_pack(next((REPO / '복습노트' / range_).glob('복습문제_*.html')))
+    pack = read_pack(review_paths(REPO / '복습노트' / range_)[0])
     pages = tuple(PageSlice(c.id, c.id, 1, c.problem, c.solution, True, True) for c in pack.cards)
     return pack, to_payload(pack, mode, pages, Path(tempfile.mkdtemp()) / 'assets')
 
@@ -124,7 +126,7 @@ def test_lecture_wrapped_figure_in_conditions_extracted(tmp_path):
 def test_lecture_long_card_renders(tmp_path):
     import pdf_render
     from pdf_layout import plan_pages, check_coverage
-    pack = read_pack(next((REPO / '복습노트/1001').glob('복습문제_*.html')))
+    pack = read_pack(review_paths(REPO / '복습노트/1001')[0])
     pack = pack.__class__(pack.source, pack.source_sha256, pack.range, pack.slug, tuple(c for c in pack.cards if c.id == 'p5'))
     with pdf_render.render_session():
         pages = plan_pages(pack, tmp_path / 'layout')

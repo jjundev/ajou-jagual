@@ -2088,6 +2088,102 @@
       ]
     },
     {
+      "destination": "scripts/mpe_source.py",
+      "base_sha256": "aa75a50b265c5b9b11e9a45ce1bebe709fcc57c828cdfaac6bfdfb07f497f723",
+      "current_sha256": "bcfba32728fbb71d86f18170b751747dbd18abfe6f759d24d13b31806388f5eb",
+      "reason": "Read archived practice cards and link explanations to the published worksheet PDF.",
+      "replacements": [
+        {
+          "old": "from pathlib import Path\nfrom mpe_choices import with_choices\nfrom mpe_types import ExplainError, Problem, SourcePack\nfrom mpe_shared import HOMEWORK, REVIEW, Node, ReviewPdfError, read_cards, normalize_cards, outer, parse\n\ndef nfc(value):\n    return unicodedata.normalize('NFC', str(value))\n\n",
+          "new": "from pathlib import Path\nfrom mpe_choices import with_choices\nfrom mpe_types import ExplainError, Problem, SourcePack\nfrom mpe_shared import HOMEWORK, REVIEW, Node, ReviewPdfError, read_cards, normalize_cards, outer, parse\n\nfrom review_input import pack_folders, read_review, review_path, review_paths, source_digest, source_file\n\n\ndef nfc(value):\n    return unicodedata.normalize('NFC', str(value))\n\n"
+        },
+        {
+          "old": "    return value\n\ndef resolve_sources(repo: Path, target: str | None) -> tuple[Path, ...]:\n    repo = repo.resolve()\n    if target and target.lower().endswith('.html'):\n        path = Path(target)\n        path = path if path.is_absolute() else repo / path\n        path = inside(path, repo)\n        if not path.is_file():\n            try:\n                path = inside(existing_path(path), repo)\n            except ExplainError as exc:\n                raise ExplainError(f'대상 없음: {path}') from exc\n        return (path,)\n    candidates = []\n    for path in repo.rglob('*.html'):\n        rel = nfc(path.relative_to(repo))\n        if rel.split('\\\\')[0].split('/')[0] not in ('복습노트',):\n            continue\n        for profile in (REVIEW,):\n            match = re.fullmatch(profile.filename_re, nfc(path.name))\n            if match:\n                candidates.append((profile.name, match[1], path))\n    if target == 'all':\n        found = [path for kind, _, path in candidates if kind == 'review']\n    elif target and re.fullmatch(r'(?:과제|hw)\\s*[1-9]\\d*', target, re.I):\n        raise ExplainError('과제 입력 미지원: 기존 복습문제 HTML을 선택하세요.')\n    else:\n        reviews = [(value, path) for kind, value, path in candidates if kind == 'review']\n        if target is None:\n            latest = max((value.split('-')[-1] for value, _ in reviews), default='')\n",
+          "new": "    return value\n\ndef resolve_sources(repo: Path, target: str | None) -> tuple[Path, ...]:\n    repo = repo.resolve()\n    if target and target.lower().endswith(('.html', '.json')):\n        path = Path(target)\n        path = path if path.is_absolute() else repo / path\n        path = inside(path, repo)\n        path = review_path(path)\n        if not inside(source_file(path), repo).is_file():\n            try:\n                path = inside(existing_path(path), repo)\n            except ExplainError as exc:\n                raise ExplainError(f'대상 없음: {path}') from exc\n        return (path,)\n    candidates = []\n    for root in pack_folders(repo):\n        for path in review_paths(root):\n            match = re.fullmatch(REVIEW.filename_re, nfc(path.name))\n            if match:\n                candidates.append(('review', match[1], path))\n    if target == 'all':\n        found = [path for kind, _, path in candidates if kind == 'review']\n    elif target and re.fullmatch(r'(?:과제|hw)\\s*[1-9]\\d*', target, re.I):\n        raise ExplainError('과제 입력 미지원: 복습문제 팩을 선택하세요.')\n    else:\n        reviews = [(value, path) for kind, value, path in candidates if kind == 'review']\n        if target is None:\n            latest = max((value.split('-')[-1] for value, _ in reviews), default='')\n"
+        },
+        {
+          "old": "    for path in found:\n        match = re.fullmatch((HOMEWORK if nfc(path.name).startswith('과제') else REVIEW).filename_re, nfc(path.name))\n        by_range.setdefault(match[1], []).append(path)\n    if any(len(group) > 1 for group in by_range.values()):\n        raise ExplainError('여러 후보: HTML 경로를 명시하세요.\\n' + '\\n'.join(map(str, found)))\n    if target == 'all':\n        found.sort(key=lambda p: (re.fullmatch(REVIEW.filename_re,nfc(p.name))[1].split('-')[-1],nfc(p.name)),reverse=True)\n        return tuple(inside(path,repo) for path in found)\n    return tuple(inside(path, repo) for path in sorted(found, key=lambda p: nfc(p.name)))\n",
+          "new": "    for path in found:\n        match = re.fullmatch((HOMEWORK if nfc(path.name).startswith('과제') else REVIEW).filename_re, nfc(path.name))\n        by_range.setdefault(match[1], []).append(path)\n    if any(len(group) > 1 for group in by_range.values()):\n        raise ExplainError('여러 후보: 복습문제 원고 경로를 명시하세요.\\n' + '\\n'.join(map(str, found)))\n    if target == 'all':\n        found.sort(key=lambda p: (re.fullmatch(REVIEW.filename_re,nfc(p.name))[1].split('-')[-1],nfc(p.name)),reverse=True)\n        return tuple(inside(path,repo) for path in found)\n    return tuple(inside(path, repo) for path in sorted(found, key=lambda p: nfc(p.name)))\n"
+        },
+        {
+          "old": "        return ''.join(outer(b) for b in blocks[:-1]), outer(blocks[-1])\n    return statement_html, ''\n\ndef load_source(path: Path, repo: Path) -> SourcePack:\n    path = inside(existing_path(Path(path)), Path(repo))\n    if not re.fullmatch(REVIEW.filename_re,nfc(path.name)):\n        raise ExplainError('복습문제 HTML만 지원해요: '+str(path))\n    try:\n        pack = read_cards(path, REVIEW)\n        problems = tuple(\n            Problem(c.id, int(c.id[1:]), c.title, c.source, c.original_html,\n                    *split_lecture_statement(c.statement_html, c.source), (), c.steps, c.answer_html,\n                    subparts(c.statement_html, c.original_html))\n            for c in pack.cards\n        )\n        return SourcePack('review',pack.range,pack.slug,path,sha256(path),with_choices(path,problems))\n    except (ReviewPdfError,OSError) as exc:\n        if 'no review cards' in str(exc):\n            candidates=[]\n            for p in repo.rglob('*.html'):\n                if re.fullmatch(REVIEW.filename_re,nfc(p.name)) and p!=path:\n                    try: read_cards(p, REVIEW); candidates.append(str(p.relative_to(repo)))\n                    except (ReviewPdfError,OSError): pass\n            raise ExplainError('문항 없음: '+str(path)+'\\n비어 있지 않은 후보(자동 이동 없음):\\n'+'\\n'.join(sorted(candidates))) from exc\n        raise ExplainError(str(exc)) from exc\n",
+          "new": "        return ''.join(outer(b) for b in blocks[:-1]), outer(blocks[-1])\n    return statement_html, ''\n\ndef load_source(path: Path, repo: Path) -> SourcePack:\n    path = inside(review_path(Path(path)), Path(repo))\n    actual = inside(source_file(path), Path(repo))\n    if not actual.is_file():\n        raise ExplainError('복습문제 원고 없음: '+str(path))\n    try:\n        text = read_review(path)\n        pack = read_cards(path, REVIEW, text=text)\n        problems = tuple(\n            Problem(c.id, int(c.id[1:]), c.title, c.source, c.original_html,\n                    *split_lecture_statement(c.statement_html, c.source), (), c.steps, c.answer_html,\n                    subparts(c.statement_html, c.original_html))\n            for c in pack.cards\n        )\n        return SourcePack('review',pack.range,pack.slug,path,source_digest(path),with_choices(text,problems))\n    except (ReviewPdfError,OSError) as exc:\n        if 'no review cards' in str(exc):\n            candidates=[]\n            for root in pack_folders(repo):\n                for p in review_paths(root):\n                    if p == path:\n                        continue\n                    try: read_cards(p, REVIEW, text=read_review(p)); candidates.append(str(source_file(p).relative_to(repo)))\n                    except (ReviewPdfError, OSError): pass\n            raise ExplainError('문항 없음: '+str(path)+'\\n비어 있지 않은 후보(자동 이동 없음):\\n'+'\\n'.join(sorted(candidates))) from exc\n        raise ExplainError(str(exc)) from exc\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/mpe_choices.py",
+      "base_sha256": "02e64f8791eb8bb3cb1c43697bf16605247ed7162b4a1b1d8e85d4695b87a0b5",
+      "current_sha256": "3bf6af6550309469997d578ad0f661f9be56f17237277de427ad5f8848fe844c",
+      "reason": "Read archived practice cards and link explanations to the published worksheet PDF.",
+      "replacements": [
+        {
+          "old": "            continue\n        result[id_] = ChoiceModel(card['answer'],card['mode'],tuple(o['id'] for o in sorted(options,key=lambda o:o['index'])))\n    return result\n\ndef with_choices(path, problems):\n    models = choice_models(path.read_text(encoding='utf-8'), {p.id:p.conditions_html + p.ask_html for p in problems})\n    return tuple(replace(p,choice=models.get(p.id)) for p in problems)\n",
+          "new": "            continue\n        result[id_] = ChoiceModel(card['answer'],card['mode'],tuple(o['id'] for o in sorted(options,key=lambda o:o['index'])))\n    return result\n\ndef with_choices(text, problems):\n    models = choice_models(text, {p.id:p.conditions_html + p.ask_html for p in problems})\n    return tuple(replace(p,choice=models.get(p.id)) for p in problems)\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/mpe_render.py",
+      "base_sha256": "ccd78a3b1198cd97a878ea079a46ec41f3e7810c1b0c15425c1cc3f68a042692",
+      "current_sha256": "ed335984a0ceefa3010299d61238fd8bcc2b78cad9e9a6634697beb6338ac587",
+      "reason": "Read archived practice cards and link explanations to the published worksheet PDF.",
+      "replacements": [
+        {
+          "old": "from mpe_assets import PAGE_ASSETS, shared_assets, vendor_url, verify_shared_assets\nfrom mpe_contract import validate_fragment, payload_hash, markup_errors\nfrom mpe_shared import Node, parse, inner, outer, compact, Ctx, convert, check_md\nfrom mpe_source import sha256, inside, existing_path\nfrom mpe_types import ExplainError, Artifacts\n\nASSETS = Path(__file__).resolve().parents[1] / 'assets'\nASK_LABEL = re.compile(r'\\s*\\([a-z]\\)')\n",
+          "new": "from mpe_assets import PAGE_ASSETS, shared_assets, vendor_url, verify_shared_assets\nfrom mpe_contract import validate_fragment, payload_hash, markup_errors\nfrom mpe_shared import Node, parse, inner, outer, compact, Ctx, convert, check_md\nfrom mpe_source import sha256, inside, existing_path\nfrom review_input import problem_href, problem_pdf_pages, source_file\nfrom mpe_types import ExplainError, Artifacts\n\nASSETS = Path(__file__).resolve().parents[1] / 'assets'\nASK_LABEL = re.compile(r'\\s*\\([a-z]\\)')\n"
+        },
+        {
+          "old": "    if traces is not None:\n        shutil.copytree(traces, data_dir / 'traces', ignore=lambda d, names: [n for n in names if not n.endswith('.json')])\n    articles = []\n    toc = []\n    for p in pack.problems:\n        reading = (f'<div class=\"layer formal\" data-source-problem=\"{p.id}\">'\n                   + '<div data-source-field=\"conditions\">' + p.conditions_html + '</div>'\n                   + ('<h4>구할 것</h4><div data-source-field=\"ask\"' + (' data-labeled' if labeled_asks(p.ask_html) else '') + '>'\n",
+          "new": "    if traces is not None:\n        shutil.copytree(traces, data_dir / 'traces', ignore=lambda d, names: [n for n in names if not n.endswith('.json')])\n    articles = []\n    toc = []\n    archived = source_file(pack.path).suffix == '.json'\n    pdf_pages = problem_pdf_pages(pack.path) if archived else {}\n    for p in pack.problems:\n        reading = (f'<div class=\"layer formal\" data-source-problem=\"{p.id}\">'\n                   + '<div data-source-field=\"conditions\">' + p.conditions_html + '</div>'\n                   + ('<h4>구할 것</h4><div data-source-field=\"ask\"' + (' data-labeled' if labeled_asks(p.ask_html) else '') + '>'\n"
+        },
+        {
+          "old": "            reading += ('<details class=\"original\" data-original-problem=\"' + p.id + '\"><summary>'+original_label+'</summary>'\n                        + original + '</details>')\n        reading = f'<div class=\"problem-pane\" data-problem-for=\"{p.id}\">' + reading + '</div>'\n        explanation = resources(fragments[p.id], p, pack, repo, stage, fig_rel, pack.path.parent, 'explain')\n        original_link = quote(pack.path.name, safe='') + '#' + p.id\n        articles.append(f'<article class=\"topic\" id=\"{p.id}\"><h3>{html.escape(p.title)}</h3>'\n                        + f'<p class=\"panel-meta\">{html.escape(p.source)} · <a href=\"{original_link}\">원 문제 보기</a></p>'\n                        + reading + explanation + '</article>')\n        toc.append(f'<li><a href=\"#{p.id}\">{html.escape(p.title)}</a></li>')\n",
+          "new": "            reading += ('<details class=\"original\" data-original-problem=\"' + p.id + '\"><summary>'+original_label+'</summary>'\n                        + original + '</details>')\n        reading = f'<div class=\"problem-pane\" data-problem-for=\"{p.id}\">' + reading + '</div>'\n        explanation = resources(fragments[p.id], p, pack, repo, stage, fig_rel, pack.path.parent, 'explain')\n        original_link = (problem_href(pack.path, p.id, pdf_pages)\n                         if archived else quote(pack.path.name, safe='') + '#' + p.id)\n        articles.append(f'<article class=\"topic\" id=\"{p.id}\"><h3>{html.escape(p.title)}</h3>'\n                        + f'<p class=\"panel-meta\">{html.escape(p.source)} · <a href=\"{original_link}\">원 문제 보기</a></p>'\n                        + reading + explanation + '</article>')\n        toc.append(f'<li><a href=\"#{p.id}\">{html.escape(p.title)}</a></li>')\n"
+        },
+        {
+          "old": "            if node.tag != 'a' and not path.resolve().is_relative_to(root):\n                errors.append('산출 폴더 밖 자원: ' + href)\n            elif not path.is_file():\n                errors.append('자원 없음: ' + href)\n            elif node.tag == 'a' and url.fragment:\n                target_ids = {n.attrs.get('id') for n in parse(path.read_text(encoding='utf-8')).find_all(lambda n: True)}\n                if unquote(url.fragment) not in target_ids:\n                    errors.append('링크 앵커 없음: ' + href)\n",
+          "new": "            if node.tag != 'a' and not path.resolve().is_relative_to(root):\n                errors.append('산출 폴더 밖 자원: ' + href)\n            elif not path.is_file():\n                errors.append('자원 없음: ' + href)\n            elif node.tag == 'a' and url.fragment and path.suffix == '.pdf':\n                import fitz\n                with fitz.open(path) as pdf:\n                    match = re.fullmatch(r'page=([1-9]\\d*)', unquote(url.fragment))\n                    if not match or int(match[1]) > len(pdf):\n                        errors.append('PDF 페이지 없음: ' + href)\n            elif node.tag == 'a' and url.fragment:\n                target_ids = {n.attrs.get('id') for n in parse(path.read_text(encoding='utf-8')).find_all(lambda n: True)}\n                if unquote(url.fragment) not in target_ids:\n                    errors.append('링크 앵커 없음: ' + href)\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/mpe_publish.py",
+      "base_sha256": "6887fd21a904ea7c2ba3f306a7d5bed9c0304b48410f360707d7cd0f30cbc712",
+      "current_sha256": "db01c89c162b23f08a014fb80f46f44c8e4b3877ac91d244bcfbcc8cfe10da4f",
+      "reason": "Read archived practice cards and link explanations to the published worksheet PDF.",
+      "replacements": [
+        {
+          "old": "import json\nfrom pathlib import Path\nfrom mpe_contract import validate_fragment, validate_reviews, payload_hash\nfrom mpe_render import PACK_DIR, artifact_hashes, check_artifacts, dump, names\nfrom mpe_source import sha256, inside\nfrom mpe_shared import publish_files, ReviewPdfError\nfrom mpe_types import ExplainError\n\ndef publish_explanation(pack, artifacts, fragments, reviews, destination, backup_dir):\n    try:\n        if sha256(pack.path) != pack.sha256:\n            raise ExplainError('입력 변경: 설명을 다시 검증하세요')\n        destination = Path(destination).absolute()\n        if destination != pack.path.parent.absolute():\n            raise ExplainError('발행 위치는 입력 카드의 디렉터리여야 해요')\n",
+          "new": "import json\nfrom pathlib import Path\nfrom mpe_contract import validate_fragment, validate_reviews, payload_hash\nfrom mpe_render import PACK_DIR, artifact_hashes, check_artifacts, dump, names\nfrom mpe_source import source_digest, sha256, inside\nfrom mpe_shared import publish_files, ReviewPdfError\nfrom mpe_types import ExplainError\n\ndef publish_explanation(pack, artifacts, fragments, reviews, destination, backup_dir):\n    try:\n        if source_digest(pack.path) != pack.sha256:\n            raise ExplainError('입력 변경: 설명을 다시 검증하세요')\n        destination = Path(destination).absolute()\n        if destination != pack.path.parent.absolute():\n            raise ExplainError('발행 위치는 입력 카드의 디렉터리여야 해요')\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/vendor/review_pdf_cards.py",
+      "base_sha256": "c4edd430e748dca0addf9bd153071be853612e2fd638c74aab514f055c2bf1dd",
+      "current_sha256": "a2a0dc27764f575a29d0d0cf2fc3e52bc953ef22375452cd68eb6cafb173f6b7",
+      "reason": "Read archived practice cards and link explanations to the published worksheet PDF.",
+      "replacements": [
+        {
+          "old": "def compact(text):\n    return re.sub(r'\\s+','',parse(text).text())\n\n\ndef read_cards(path: Path, profile: CardProfile = REVIEW) -> ReviewPack:\n    path=Path(path)\n    m=re.fullmatch(profile.filename_re,unicodedata.normalize('NFC',path.name))\n    if not m:raise ReviewPdfError(f'invalid {profile.name} filename: {path.name}')\n    root=parse(path.read_text(encoding='utf-8'));cards=[];seen=set()\n    for node in root.find_all(lambda n:n.tag=='article' and 'card' in n.classes):\n        id_=node.attrs.get('id','')\n        if not re.fullmatch(r'p[1-9]\\d*',id_) or id_ in seen:raise ReviewPdfError(f'{m[1]} {id_}: invalid/duplicate id')\n        seen.add(id_);source=node.attrs.get('data-source','')\n",
+          "new": "def compact(text):\n    return re.sub(r'\\s+','',parse(text).text())\n\n\ndef read_cards(path: Path, profile: CardProfile = REVIEW, *, text: str | None = None) -> ReviewPack:\n    path=Path(path)\n    m=re.fullmatch(profile.filename_re,unicodedata.normalize('NFC',path.name))\n    if not m:raise ReviewPdfError(f'invalid {profile.name} filename: {path.name}')\n    root=parse(path.read_text(encoding='utf-8') if text is None else text);cards=[];seen=set()\n    for node in root.find_all(lambda n:n.tag=='article' and 'card' in n.classes):\n        id_=node.attrs.get('id','')\n        if not re.fullmatch(r'p[1-9]\\d*',id_) or id_ in seen:raise ReviewPdfError(f'{m[1]} {id_}: invalid/duplicate id')\n        seen.add(id_);source=node.attrs.get('data-source','')\n"
+        }
+      ]
+    },
+    {
+      "destination": "SKILL.md",
+      "base_sha256": "c18685b7bef929f089501cb97780047a3e6df24824339c55747067105e8235e5",
+      "current_sha256": "199b4675700ef86cae5604fefbd3203af72b5c5c18f23ef0bfcf68f45f5fb13c",
+      "reason": "Document the archived practice input.",
+      "replacements": [
+        {
+          "old": "---\nname: ds-problem-explain\ndescription: 자구알의 기존 복습문제 HTML로 문제 단서, 떠올릴 개념과 공식, 첫 줄, 단계별 이유, 완성 답과 검산을 펼친 문제설명 HTML·MD를 만든다. 문제해설, 입문 풀이 설명 또는 /ds-problem-explain [날짜|기간|HTML경로]에 사용한다. 복습팩 생성과 과제·실습 PDF 추출에는 사용하지 않는다.\n---\n\n# 자구알 문제풀이 입문 설명\n\n이론을 읽었지만 풀이 경험이 부족한 학생에게 문제의 단서 → 개념·공식 → 실제 첫 줄 → 단계별 이유 → 완성 답 → 검산을 보여 준다. 기존 복습문제 HTML을 입력으로 사용하며 머신러닝기초 문제설명 템플릿과 로컬 KaTeX/Pretendard를 그대로 사용한다.\n\n## 대상과 보존\n\n- `0917`: 해당 날짜. `0914-0917`: 양끝을 포함한 기간의 팩을 각각 처리한다.\n- 저장소 내부 HTML 경로: 해당 복습문제 파일을 명시한다.\n- 인자 없음: 파일명 날짜 기준 최신 복습문제 팩.\n\n여러 slug 또는 통합/개별 팩이 겹치면 후보를 보여 주고 경로를 명시하게 한다. 최신 또는 명시한 팩이 0문항이면 **문항 없음**과 비어 있지 않은 후보를 안내하고 중단한다. 이전 날짜로 자동 이동하지 않는다. 과제·실습 PDF와 과제 카드는 이번 스킬의 입력이 아니다. 새로운 문제를 출제하지 않는다.\n",
+          "new": "---\nname: ds-problem-explain\ndescription: 자구알의 기존 복습문제 원고로 문제 단서, 떠올릴 개념과 공식, 첫 줄, 단계별 이유, 완성 답과 검산을 펼친 문제설명 HTML·MD를 만든다. 문제해설, 입문 풀이 설명 또는 /ds-problem-explain [날짜|기간|JSON경로]에 사용한다. 복습팩 생성과 과제·실습 PDF 추출에는 사용하지 않는다.\n---\n\n# 자구알 문제풀이 입문 설명\n\n이론을 읽었지만 풀이 경험이 부족한 학생에게 문제의 단서 → 개념·공식 → 실제 첫 줄 → 단계별 이유 → 완성 답 → 검산을 보여 준다. 기존 복습문제 원고을 입력으로 사용하며 머신러닝기초 문제설명 템플릿과 로컬 KaTeX/Pretendard를 그대로 사용한다.\n\n## 대상과 보존\n\n- `0917`: 해당 날짜. `0914-0917`: 양끝을 포함한 기간의 팩을 각각 처리한다.\n- 저장소 내부 JSON 경로를 지정할 때는 발행 팩의 `.pack/자료_복습팩/복습문제_<range>_<slug>.json`을 선택한다. 예전 복습문제 HTML 경로도 지원한다.\n- 인자 없음: 파일명 날짜 기준 최신 복습문제 팩.\n\n여러 slug 또는 통합/개별 팩이 겹치면 후보를 보여 주고 경로를 명시하게 한다. 최신 또는 명시한 팩이 0문항이면 **문항 없음**과 비어 있지 않은 후보를 안내하고 중단한다. 이전 날짜로 자동 이동하지 않는다. 과제·실습 PDF와 과제 카드는 이번 스킬의 입력이 아니다. 새로운 문제를 출제하지 않는다.\n"
+        }
+      ]
+    },
+    {
       "destination": "references/authoring.md",
       "base_sha256": "34e58788a9a79bb881e4ee3c9a311433f329c66e8be814c0711d4c8ab10378da",
       "current_sha256": "b50bc4fb13315037c58a2c108b762595b8d521dcc6cf2fcee2fa8438028d40b9",
@@ -2136,6 +2232,34 @@
         {
           "old": "content는 recall의 근거 있는 명칭 대응, pitfall의 오답 판별 기준, 부정형의 참·거짓과 선택 적합성, understand·solve·verify·pitfall·sum의 결함 공개·공식 답 확인 여부가 일관적인지 확인한다. 과목별 disputed 규칙은 유지한다. 독립 검산은 작성자와 다른 검산자가 정답·참고 풀이·설명 조각을 보지 않고 문제·그림·필요한 이론 자료만으로 먼저 수행한다. 컨트롤러가 그 결과를 참고 답과 대조한다.\n",
           "new": "content는 recall의 근거 있는 단서–도구 연결, start·본문의 메타 선언 제거, solve의 표/글머리 유연성과 표 셀 `$` 공백 규칙, verify의 실질 검산(단순 반복·QA 로그 노출 금지), pitfall의 오해 이유→반례 구조, 객관식 전 선지 소거 및 부정형의 참·거짓·선택 적합성, understand·solve·verify·pitfall·sum의 결함·예외 주석·공식 답 확인 여부 일관성을 확인한다. 과목별 disputed 규칙은 유지한다. 독립 검산은 작성자와 다른 검산자가 정답·참고 풀이·설명 조각을 보지 않고 문제·그림·필요한 이론 자료만으로 먼저 수행하거나 `evidence/` 독립 스크립트를 재실행해 검증한다. 컨트롤러가 그 결과를 참고 답과 대조한다.\n"
+        }
+      ]
+    },
+    {
+      "destination": "scripts/vendor/html2md.py",
+      "base_sha256": "8d0dd91b629cdf4a3bca52ac20c993a7d0adaa1136a24ae7dc4a5a1d3160600c",
+      "current_sha256": "bd57977c9ef398e7bc6c42221ea159f2dae18637970671724415aae610ceca0b",
+      "reason": "Record the existing prose-only Markdown link validation from f0cd849.",
+      "replacements": [
+        {
+          "old": "    for target in re.findall(r\"(?<!!)\\[[^\\]]*\\]\\(([^)]+)\\)\", md):\n",
+          "new": "    for target in re.findall(r\"(?<!!)\\[[^\\]]*\\]\\(([^)]+)\\)\", prose):\n"
+        }
+      ]
+    },
+    {
+      "destination": "tests/test_cli.py",
+      "base_sha256": "3958137e6beafe2e39ee2f850342cb6649baa11a47ce629ca7a5e46e799d7647",
+      "current_sha256": "ac618191036208801381c1547bbde3b174b0d007660d8a9524312758a82fddac",
+      "reason": "Record the existing PDF-first test fixture update from 9cecc87.",
+      "replacements": [
+        {
+          "old": "from mpe_source import load_source\nfrom mpe_cli import load_run\n",
+          "new": "from mpe_source import load_source\nfrom review_input import read_review\nfrom mpe_cli import load_run\n"
+        },
+        {
+          "old": "        source.parent.mkdir(parents=True)\n        source.write_bytes((ROOT / '복습노트/0917/복습문제_0917_Recursion.html').read_bytes())\n    run = tmp_path / 'run'\n",
+          "new": "        source.parent.mkdir(parents=True)\n        source.write_text(read_review(ROOT / '복습노트/0917/복습문제_0917_Recursion.html'), encoding='utf-8')\n    run = tmp_path / 'run'\n"
         }
       ]
     }

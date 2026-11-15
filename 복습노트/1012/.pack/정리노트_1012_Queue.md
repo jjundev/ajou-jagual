@@ -1058,3 +1058,5 @@ int eval(char exp[])
 ---
 
 출처: 이정원 교수님 강의록(Software_5–6) · 수업 녹음 전사(1012). 전사본에 시각 정보가 없어 교수님 발언은 Part 번호로 표시해요.
+
+[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%8B%B5%EC%95%88.pdf)

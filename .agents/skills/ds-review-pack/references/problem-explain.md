@@ -2,7 +2,7 @@
 
 bank는 이 절차를 실행하지 않는다. 신규·update-existing·lite는 모두 전체 절차를 실행한다. 생성 시작 전에 EXPLAIN_SKILL = SKILL의 형제 ds-problem-explain 절대 경로로 정하고 SKILL.md와 scripts/mpe_cli.py 존재를 확인한다. 누락 시 경로와 오류를 보고하며 시작하지 않는다.
 
-검증·발행·MD 변환이 끝난 최종 복습문제 HTML의 절대 경로를 ABS_REVIEW로 받는다. REPO는 저장소 절대 경로, EXPLAIN_RUN은 팩마다 다른 비어 있는 작업 폴더다. 미해결 기계·내용·브라우저 검사나 0문항 팩은 발행하지 않는다. backfill은 기존 HTML만 입력으로 쓰며 update-existing all을 실행하지 않는다.
+검증·발행·MD 변환이 끝난 복습문제 JSON 원고의 절대 경로를 ABS_REVIEW로 받는다. REPO는 저장소 절대 경로, EXPLAIN_RUN은 팩마다 다른 비어 있는 작업 폴더다. 미해결 기계·내용·브라우저 검사나 0문항 팩은 발행하지 않는다. backfill은 발행된 문항 원고를 입력으로 쓰며 update-existing all을 실행하지 않는다.
 
 1. EXPLAIN_SKILL/SKILL.md와 references/authoring.md, references/verification.md를 읽고 해당 스킬을 실제 적용한다.
 2. Python 3.10+로 `python3 ABS_CLI extract --repo ABS_REPO --target ABS_REVIEW --run EXPLAIN_RUN`을 실행한다. 모든 ABS 자리는 실제 절대 경로다. 날짜·최신 팩 선택에 맡기지 않는다.
@@ -16,4 +16,4 @@ bank는 이 절차를 실행하지 않는다. 신규·update-existing·lite는 �
 
 ## 강의 예제·전역 검토 연동
 
-신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 최종 전체 날짜 audit를 통과한 정확한 최종 HTML 경로만 설명·PDF 입력으로 사용한다. update-existing의 기존 카드 보존 계약은 유지한다.
+신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 전체 날짜 audit를 통과하고 발행된 정확한 JSON 경로를 해설 입력으로 사용한다. update-existing의 기존 카드 보존 계약은 유지한다.

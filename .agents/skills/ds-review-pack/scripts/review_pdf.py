@@ -14,18 +14,16 @@ from pdf_layout import plan_pages,check_coverage
 from pdf_render import render,render_session,ASSETS
 from pdf_publish import dump,stage_hashes,publish_stage
 from pdf_ds_layout import extension_hash,check_extension
+from pack_layout import pack_folders
+from review_source import review_paths, review_path, source_file, source_digest, read_review
 from pdf_code import font_manifest,check_font_assets,check_pdf_code,check_vendor_assets
 
 
 def discover_reviews(repo,target):
     repo=Path(repo).resolve();found=[]
-    pattern=re.compile(r'복습문제_(\d{4}(?:-\d{4})?)_(.+)\.html$')
-    for path in repo.rglob('*.html'):
-        rel=path.relative_to(repo)
-        if unicodedata.normalize('NFC',rel.parts[0])!='복습노트':continue
-        m=pattern.fullmatch(unicodedata.normalize('NFC',path.name))
-        if not m:continue
-        if target=='all' or m[1]==target:found.append(path)
+    for root in pack_folders(repo):
+        if target == 'all' or root.name == target:
+            found.extend(review_paths(root))
     groups={}
     for path in found:groups.setdefault(path.parent,[]).append(path)
     if any(len(v)>1 for v in groups.values()):raise PdfError('자료_PDF report collision: multiple reviews in same folder')
@@ -50,7 +48,8 @@ def check_stage(run):
     run=Path(run);r=json.loads((run/'report.json').read_text());errors=[]
     if r['status']=='skipped':return []
     if r.get('failure'):return [r['failure']]
-    if not Path(r['source']).is_file() or digest(r['source'])!=r['source_sha256']:errors.append('Source changed')
+    if not source_file(r['source']).is_file() or source_digest(r['source'])!=r['source_sha256']:
+        return ['Source changed']
     if 'layout_extension_sha256' in r:
         try:check_extension(r)
         except PdfError as exc:errors.append(str(exc))
@@ -94,12 +93,12 @@ def build_pack(review,run):
     run=Path(run).resolve()
     if run.exists() and any(run.iterdir()):raise PdfError('RUN must be fresh/empty')
     run.mkdir(parents=True,exist_ok=True);stage=run/'stage';stage.mkdir()
-    source=Path(review).resolve()
+    source=review_path(review).resolve()
     try:
         pack=read_pack(source)
     except (PdfError,OSError,ValueError) as exc:
         report={'version':1,'source':str(source),'dest':str(source.parent),
-                'source_sha256':digest(source) if source.is_file() else None,
+                'source_sha256':source_digest(source) if source_file(source).is_file() else None,
                 'status':failure_status(source),
                 'failure':str(exc),'checks':{'status':'fail','errors':[str(exc)]},'artifact_hashes':{}}
         dump(run/'report.json',report);dump(run/'review.json',{'status':'not_run'})
@@ -117,7 +116,7 @@ def build_pack(review,run):
         # Track external local source images, as well as inline figure coverage.
         from html2md import Builder
         from urllib.parse import unquote,urlparse
-        builder=Builder();builder.feed(pack.source.read_text())
+        builder=Builder();builder.feed(read_review(pack.source))
         for img in builder.root.find_all(lambda n:n.tag=='img'):
             src=img.attrs.get('src','');url=urlparse(src)
             if not url.scheme:

@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 from helpers import fragment, approved, source_file, install_fixture_assets
 from mpe_source import load_source
+from review_input import read_review
 from mpe_cli import load_run
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -77,7 +78,7 @@ def test_one_stale_pack_does_not_block_other_pack(tmp_path):
     for date in ('0914', '0917'):
         source = repo / '복습노트' / date / f'복습문제_{date}_Recursion.html'
         source.parent.mkdir(parents=True)
-        source.write_bytes((ROOT / '복습노트/0917/복습문제_0917_Recursion.html').read_bytes())
+        source.write_text(read_review(ROOT / '복습노트/0917/복습문제_0917_Recursion.html'), encoding='utf-8')
     run = tmp_path / 'run'
     assert call('extract', '--repo', repo, '--target', '0914-0917', '--run', run).returncode == 0
     for item in load_run(run):

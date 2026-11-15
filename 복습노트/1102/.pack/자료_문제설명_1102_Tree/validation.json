@@ -1,10 +1,10 @@
 {
   "review_policy_version": "problem-explain-2026-10-15",
-  "input_hash": "601030a6afdc4b1348e639d255d316c5bd5f23aa45041e43660785f249a8cd3b",
+  "input_hash": "51678fa5f06d204d292089bfbcf4fafc1ef206af87b6183909b53f5f0fe19eb1",
   "references": [
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\.agents\\skills\\ds-problem-explain\\SKILL.md",
-      "sha256": "c18685b7bef929f089501cb97780047a3e6df24824339c55747067105e8235e5"
+      "sha256": "199b4675700ef86cae5604fefbd3203af72b5c5c18f23ef0bfcf68f45f5fb13c"
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\.agents\\skills\\ds-problem-explain\\references\\authoring.md",
@@ -16,15 +16,15 @@
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\.agents\\skills\\ds-review-pack\\references\\problem-explain.md",
-      "sha256": "85b9fb464aca73dfb3d78fd3aa8adf4438d39257ad0a500eca5cb385646bfc10"
+      "sha256": "e5c2dba417339075d45b3ecefb82dfaa66fbc7648efc35b9ea57bc9f0390ec77"
     },
     {
-      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1102\\복습문제_1102_Tree.html",
-      "sha256": "f6270ebd64a5eef9cdaa5b7a9899cbd4df9069a10918ea064d4d90f42f4db93e"
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1102\\.pack\\자료_복습팩\\복습문제_1102_Tree.json",
+      "sha256": "180326f680132fb6f361ea795986594c3b578e4854368fe11d02eba9156b9993"
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1102\\정리노트_1102_Tree.html",
-      "sha256": "fa58b0622ebc86d3910e331b08466b2cbc1afc217432b65e8b88e4156d50278f"
+      "sha256": "3b555f1c3e3d1870de44b94fe8f9a232af77a34caf6369312cf67953036bf667"
     },
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\from_the_past\\기출\\_전사\\2018-mid-c024.md",
@@ -85,22 +85,26 @@
     {
       "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\자료구조_강의록_2026\\Software_7_Tree.pdf",
       "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde"
+    },
+    {
+      "path": "C:\\Users\\Hyunjun\\Desktop\\현준대학\\26-2\\ajou-jagual\\.worktrees\\ds-problem-explain-nov-rewrite\\복습노트\\1102\\복습문제_1102_Tree-문제.pdf",
+      "sha256": "c422a870cd27bb3df1a53be0253753ad8df82a373f2783bc39b4295ddb2c4361"
     }
   ],
   "source_visual": {
     "status": "pass",
-    "reviewer": "implementer subagent (1102-Tree rewrite)",
-    "evidence": "복습문제_1102_Tree.html 및 source.json(sha256 f6270ebd64a5...)의 12문항 조건·그림·원문·소문항(p1:1-4, p2-p10:main, p11-p12:a-c)을 대조함. evidence/independent-checks.json에서 p2(11간선)·p3(12간선)·p4(7간선) inline SVG의 원 좌표·선 끝점을 역추적해 정답 트리와 일치 확인. evidence/source-links-check.json에서 정리노트_1102_Tree.html 앵커 19건 모두 실재 확인."
+    "reviewer": "Codex",
+    "evidence": "evidence/pdf-integration-check.json: all archived question fields and source figure hashes matched, and every PDF start page matched its question title and source."
   },
   "browser": {
     "status": "pass",
-    "reviewer": "implementer subagent (1102-Tree rewrite)",
-    "evidence": "mpe_cli.py preview --run tmp/ds-problem-explain-1102 --port 41102 로 서빙 후 Playwright로 1280x900, 1024x900, 375x812 × light/dark 6조합 전수 검사(evidence/browser-checks.json). 12문항 전부 7구역, KaTeX 오류 0, 콘솔/페이지/HTTP/외부요청 오류 0, 수평 오버플로 0, 인라인 수식 스크롤바 0 확인. 요약 패널(#toggle-right, sum-group 48개), 데스크톱 원문 탭(#tab-original)·패널 도킹(.layout[data-prob-dock]=left/right/float)·목차 접기(#toggle-left), 모바일 375px 요약 드로어 닫기 및 .problem-toggle 확장 정상."
+    "reviewer": "Codex",
+    "evidence": "evidence/pdf-integration-check.json: rendered all questions in Chromium at 1280, 1024 and 375 px in light and dark mode. Verified PDF links, sections, panel controls, images, math and page width."
   },
   "content": {
     "status": "pass",
     "reviewer": "implementer subagent (1102-Tree rewrite)",
-    "evidence": "개정 authoring.md v2 체크리스트 전 12문항·19소문항 전수 확인 및 evidence/independent-checks.json content_checks all_passed=true 확인.",
+    "evidence": "개정 authoring.md v2 체크리스트 전 12문항·19소문항 전수 확인 및 evidence/independent-checks.json content_checks all_passed=true 확인. PDF integration: unchanged questions, fragments, and evidence verified in evidence/pdf-integration-check.json.",
     "items": {
       "p1:1": {
         "status": "pass",
@@ -202,7 +206,7 @@
   "independent": {
     "status": "pass",
     "reviewer": "implementer subagent (1102-Tree rewrite)",
-    "evidence": "evidence/independent/solve.py, p10.c, p12.c (gcc -std=c11 -Wall -Wextra 경고 0) 및 evidence/verify_1102.py 재실행 결과(evidence/independent-checks.json) 전 항목 일치.",
+    "evidence": "evidence/independent/solve.py, p10.c, p12.c (gcc -std=c11 -Wall -Wextra 경고 0) 및 evidence/verify_1102.py 재실행 결과(evidence/independent-checks.json) 전 항목 일치. PDF integration: unchanged questions, fragments, and evidence verified in evidence/pdf-integration-check.json.",
     "items": {
       "p1:1": {
         "status": "pass",
@@ -355,7 +359,8 @@
     ".pack/figures_문제설명_1102_Tree/p11-original-fig-p11-orig-tree.svg": "2094d66b8a514ff145085ccc91dcaa752329c5d58975f273541b55c788b081f7",
     ".pack/figures_문제설명_1102_Tree/p11-source-fig-p11-tree.svg": "475de8840e411144711a2df19423080d2eac45923148e1e9b7ba391d21fd0777",
     ".pack/figures_문제설명_1102_Tree/p12-source-fig-p12-tree.svg": "7009c2e40d5d198668bc09c6cc5fe495b0aaa8522dd73328ffaacf1283f620a4",
-    ".pack/문제설명_1102_Tree.md": "ea421589215ed3dbb3fbb38220ba0a08df329215675b48302bc6b125b92afab4",
+    ".pack/문제설명_1102_Tree.md": "baccda01f379b3ad800856fedcf10d29316be75903013b3af2a6f512f60ff472",
+    ".pack/자료_문제설명_1102_Tree/evidence/author-rerun.txt": "e54908c255462bf9bb8ba7d2b930d9482794156f569d2aa5f52beff3c800d9e8",
     ".pack/자료_문제설명_1102_Tree/evidence/browser-checks.json": "8b880359e6b9aad4ff36aa843cf86a15cc671289624bbeea4c42e7cd5cbf3f41",
     ".pack/자료_문제설명_1102_Tree/evidence/browser_verify.py": "4991678726d763dfe334211e9dc65f13f37bef54415ad86b6fd028a902d8bbe1",
     ".pack/자료_문제설명_1102_Tree/evidence/independent/c-output.txt": "cc0b74fe24d38bf057d2e89cbe5f8698a0265668338f9efe8fdebed5c6542487",
@@ -365,7 +370,10 @@
     ".pack/자료_문제설명_1102_Tree/evidence/independent/solve-output.txt": "033befa2e1901dc8479c489bb94bbd782f8b56c6deca162408b20c248b0c4a07",
     ".pack/자료_문제설명_1102_Tree/evidence/independent/solve.py": "0964b0f5b8b8e52d8ba16b0bf606027457fef96835747530853f137c54da7257",
     ".pack/자료_문제설명_1102_Tree/evidence/independent-checks.json": "3deb260ed6d03e220c6b8ffd11f1923844921cd5c7e7ace04d498b18b0c7cfec",
+    ".pack/자료_문제설명_1102_Tree/evidence/links-check.txt": "75366fea9dbf25f4057a9c1c6b785930d0fcfe5dd4c8e77654b12e61feb04812",
+    ".pack/자료_문제설명_1102_Tree/evidence/pdf-integration-check.json": "f7e6641ee0bb2df8c08701cfeaeef3fd41a4f114464943a86644ae9901f77f83",
     ".pack/자료_문제설명_1102_Tree/evidence/source-links-check.json": "cc85a552eca53f7baa320ce540049cf50b3c9bb458b9efbb6049798f58f144cd",
+    ".pack/자료_문제설명_1102_Tree/evidence/svg-edges.txt": "bfd2d1ea2a941e2a058ef054ed8a8325c1a9512b7d5655128a9450fc126cf303",
     ".pack/자료_문제설명_1102_Tree/evidence/verify_1102.py": "7d8bde23c752847296af402d8502d643314c39f911a233304266507de43f787b",
     ".pack/자료_문제설명_1102_Tree/fragments/p1.html": "28d82529f4ed3fb4fb2b9bb51103fb320a29e2e9874966b97a3bd6edb6ecf6d3",
     ".pack/자료_문제설명_1102_Tree/fragments/p10.html": "6a00049dbf3bdef78a59d48ca861d932242a7a78db3435ebe55705ff0e51e1ec",
@@ -380,7 +388,7 @@
     ".pack/자료_문제설명_1102_Tree/fragments/p8.html": "cf5c5c504941b6e2e887615b6380520613f05bc51bee63a449d9015e0b3900ea",
     ".pack/자료_문제설명_1102_Tree/fragments/p9.html": "a090bae968ab3faf5755984a5d149d91e9dd37c9c14f7f2fcd249c068cac2cb9",
     ".pack/자료_문제설명_1102_Tree/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
-    "문제설명_1102_Tree.html": "4e924b94e33ce13f1f3675a559d2bb809f443578692411132d8e34ac338c42ff",
-    ".pack/자료_문제설명_1102_Tree/manifest.json": "f1dc8c5d8e19019580e2f651a762866d636b2501b6a54d833b713dd322053068"
+    "문제설명_1102_Tree.html": "047fc3b2d2821e5fd364209c48a095344acdfdc6f58098a12f970e85d2644d33",
+    ".pack/자료_문제설명_1102_Tree/manifest.json": "e71d75a5c347837419ec6dc0cd82d1513d35be4969c76108c4c455ed4d106bd1"
   }
 }

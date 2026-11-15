@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import re
 import sys
-import unicodedata
 from html import unescape
 from html.parser import HTMLParser
 from pathlib import Path
@@ -63,13 +62,13 @@ class _CardStems(HTMLParser):
 
 
 def _card_texts(pack_root: Path) -> list[str]:
+    from review_source import read_review, review_paths
+
     out = []
-    for f in sorted(Path(pack_root).iterdir()):
-        name = unicodedata.normalize("NFC", f.name)
-        if f.is_file() and name.startswith("복습문제_") and name.endswith(".html"):
-            p = _CardStems()
-            p.feed(f.read_text(encoding="utf-8"))
-            out.extend(p.stems)
+    for path in review_paths(pack_root):
+        parser = _CardStems()
+        parser.feed(read_review(path))
+        out.extend(parser.stems)
     return out
 
 

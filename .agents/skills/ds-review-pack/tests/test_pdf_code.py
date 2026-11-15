@@ -5,6 +5,7 @@ from unittest.mock import patch
 import pytest
 import fitz
 from _util import SKILL
+from review_source import review_paths, read_review
 import pdf_render
 from pdf_types import PdfError
 
@@ -131,8 +132,8 @@ def test_pretendard_mutation_blocks_build_check_and_publish(tmp_path):
     import shutil,pdf_code,review_pdf,pdf_publish
     from _util import REPO
     from pdf_cards import digest
-    source=next((REPO/'복습노트/0907').glob('복습문제_*.html'))
-    repo=tmp_path/'repo';repo.mkdir();src=repo/source.name;shutil.copyfile(source,src)
+    source=review_paths(REPO/'복습노트/0907')[0]
+    repo=tmp_path/'repo';repo.mkdir();src=repo/source.name;src.write_text(read_review(source), encoding="utf-8")
     run=tmp_path/'run';review_pdf.build_pack(src,run)
     report=json.loads((run/'report.json').read_text());assert report['checks']['status']=='pass'
     pdf_publish.dump(run/'review.json',{'status':'pass','reviewer':'fixture','evidence':'controlled fixture','artifact_hashes':report['artifact_hashes'],'report_sha256':digest(run/'report.json')})

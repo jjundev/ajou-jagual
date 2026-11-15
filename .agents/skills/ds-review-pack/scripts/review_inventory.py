@@ -7,6 +7,7 @@ from urllib.parse import unquote,urlsplit
 from html2md import Builder
 from pack_layout import pack_folders, nfc, normalized_child
 from update_review import Spans
+from review_source import NAME, review_paths, read_review, source_digest
 
 def digest(text):
     return hashlib.sha256(text.encode('utf-8')).hexdigest()
@@ -28,13 +29,13 @@ def collect_reviews(repo: Path, *, overlays=None):
         raise ValueError('overlay has unknown range')
     for root in roots:
         date=nfc(root.name)
-        matches=[p for p in root.iterdir() if p.is_file() and nfc(p.name).startswith(f'복습문제_{date}_') and p.suffix=='.html']
+        matches=[p for p in review_paths(root) if NAME.fullmatch(nfc(p.name))[1] == date]
         if len(matches)!=1: raise ValueError(f'{date}: ambiguous review/manifest')
         review=Path(overlays.get(date,matches[0])).resolve()
         manifest=normalized_child(review.parent/'.pack','자료_복습팩')/'manifest.json'
         m=json.loads(manifest.read_text(encoding='utf-8'))
         if m.get('range')!=date: raise ValueError(f'{date}: manifest range mismatch')
-        text=review.read_text(encoding='utf-8')
+        text=read_review(review)
         cards=[]
         for t,a,s,e in sorted(Spans(text).spans,key=lambda r:r[2]):
             if t!='article' or 'card' not in a.get('class','').split(): continue
@@ -54,5 +55,5 @@ def collect_reviews(repo: Path, *, overlays=None):
         if [(q['id'],q['source'],q['source_kind']) for q in cards]!=expected:
             raise ValueError(f'{date}: manifest/card mismatch')
         if len({q['id'] for q in cards})!=len(cards): raise ValueError(f'{date}: manifest duplicate ID')
-        rows.append(dict(range=date,review_path=str(review),manifest_path=str(manifest),source_sha256=digest(text),manifest_sha256=digest(manifest.read_text(encoding='utf-8')),cards=cards))
+        rows.append(dict(range=date,review_path=str(review),manifest_path=str(manifest),source_sha256=source_digest(review),manifest_sha256=digest(manifest.read_text(encoding='utf-8')),cards=cards))
     return rows

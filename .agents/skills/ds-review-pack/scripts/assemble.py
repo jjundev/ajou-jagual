@@ -24,6 +24,7 @@ from urllib.parse import quote
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import manifest as manifest_mod  # noqa: E402
+from pack_layout import RANGE_RE, nfc
 
 ASSETS = Path(__file__).resolve().parent.parent / "assets"
 NOTES = ASSETS.parents[3] / "복습노트"
@@ -181,6 +182,9 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--note-only", action="store_true", help="정리노트 HTML만 조립하고 기존 복습문제는 보존")
     args = ap.parse_args(argv)
     try:
+        target = Path(args.out).resolve()
+        if not args.note_only and nfc(target.parent.name) == "복습노트" and RANGE_RE.fullmatch(nfc(target.name)):
+            raise AssembleError("작업 폴더를 준비하려면 release_review.py prepare를 사용하세요.")
         paths = (assemble_note(args.run, args.out),) if args.note_only else assemble(args.run, args.out)
         for path in paths:
             print(path)

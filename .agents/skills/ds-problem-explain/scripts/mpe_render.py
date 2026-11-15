@@ -14,6 +14,7 @@ from mpe_assets import PAGE_ASSETS, shared_assets, vendor_url, verify_shared_ass
 from mpe_contract import validate_fragment, payload_hash, markup_errors
 from mpe_shared import Node, parse, inner, outer, compact, Ctx, convert, check_md
 from mpe_source import sha256, inside, existing_path
+from review_input import problem_href, problem_pdf_pages, source_file
 from mpe_types import ExplainError, Artifacts
 
 ASSETS = Path(__file__).resolve().parents[1] / 'assets'
@@ -176,6 +177,8 @@ def build_explanation(pack, fragments, stage: Path, repo: Path, traces: Path | N
         shutil.copytree(traces, data_dir / 'traces', ignore=lambda d, names: [n for n in names if not n.endswith('.json')])
     articles = []
     toc = []
+    archived = source_file(pack.path).suffix == '.json'
+    pdf_pages = problem_pdf_pages(pack.path) if archived else {}
     for p in pack.problems:
         reading = (f'<div class="layer formal" data-source-problem="{p.id}">'
                    + '<div data-source-field="conditions">' + p.conditions_html + '</div>'
@@ -191,7 +194,8 @@ def build_explanation(pack, fragments, stage: Path, repo: Path, traces: Path | N
                         + original + '</details>')
         reading = f'<div class="problem-pane" data-problem-for="{p.id}">' + reading + '</div>'
         explanation = resources(fragments[p.id], p, pack, repo, stage, fig_rel, pack.path.parent, 'explain')
-        original_link = quote(pack.path.name, safe='') + '#' + p.id
+        original_link = (problem_href(pack.path, p.id, pdf_pages)
+                         if archived else quote(pack.path.name, safe='') + '#' + p.id)
         articles.append(f'<article class="topic" id="{p.id}"><h3>{html.escape(p.title)}</h3>'
                         + f'<p class="panel-meta">{html.escape(p.source)} · <a href="{original_link}">원 문제 보기</a></p>'
                         + reading + explanation + '</article>')
@@ -295,6 +299,12 @@ def check_artifacts(pack, artifacts):
                 errors.append('산출 폴더 밖 자원: ' + href)
             elif not path.is_file():
                 errors.append('자원 없음: ' + href)
+            elif node.tag == 'a' and url.fragment and path.suffix == '.pdf':
+                import fitz
+                with fitz.open(path) as pdf:
+                    match = re.fullmatch(r'page=([1-9]\d*)', unquote(url.fragment))
+                    if not match or int(match[1]) > len(pdf):
+                        errors.append('PDF 페이지 없음: ' + href)
             elif node.tag == 'a' and url.fragment:
                 target_ids = {n.attrs.get('id') for n in parse(path.read_text(encoding='utf-8')).find_all(lambda n: True)}
                 if unquote(url.fragment) not in target_ids:

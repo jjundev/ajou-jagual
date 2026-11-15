@@ -12,6 +12,7 @@ from html2md import Builder, Node, serialize, VOID, SVG_CSS
 from pdf_types import Block, Card, Pack, PageSlice, PdfError
 from pack_layout import pdf_report_path
 from pdf_lecture import split_lecture_problem
+from review_source import read_review, review_paths, review_path, source_digest
 
 
 def digest(path):
@@ -62,24 +63,23 @@ def blocks(node):
 def ensure_report_owner(source):
     """A folder's shared report must describe exactly this one review."""
     source=Path(source).resolve()
-    peers=[p for p in source.parent.iterdir() if p.is_file() and
-           re.fullmatch(r'복습문제_\d{4}(?:-\d{4})?_.+\.html',unicodedata.normalize('NFC',p.name))]
+    peers=review_paths(source.parent)
     if len(peers)>1:
         raise PdfError('자료_PDF report collision: multiple reviews in same folder')
     report=pdf_report_path(source.parent)
     if report.exists():
         old=json.loads(report.read_text(encoding='utf-8'))
-        owner=unicodedata.normalize('NFC',Path(old.get('source','')).name)
+        owner=unicodedata.normalize('NFC',Path(old.get('source','').replace('\\', '/')).name)
         if owner!=unicodedata.normalize('NFC',source.name):
             raise PdfError('자료_PDF report collision: existing report belongs to another source')
 
 
 def read_pack(review: Path) -> Pack:
-    review=Path(review).resolve()
+    review=review_path(review).resolve()
     match=re.fullmatch(r'복습문제_(\d{4}(?:-\d{4})?)_(.+)\.html',unicodedata.normalize('NFC',review.name))
     if not match: raise PdfError(f'Invalid review filename: {review}')
     ensure_report_owner(review)
-    builder=Builder();builder.feed(review.read_text(encoding='utf-8'))
+    builder=Builder();builder.feed(read_review(review))
     cards=[];seen=set()
     for node in builder.root.find_all(lambda n:n.tag=='article' and 'card' in n.classes):
         pid=node.attrs.get('id','')
@@ -95,7 +95,7 @@ def read_pack(review: Path) -> Pack:
         title=re.sub(r'^P\d+\.\s*','',title.text() if title else pid)
         cards.append(Card(pid,source,kind,title,blocks(problem),blocks(solution),markup(answer),
                           ''.join(markup(c) for c in hint.children if not isinstance(c,Node) or c.tag!='summary') if hint else ''))
-    return Pack(review,digest(review),match[1],match[2],tuple(cards))
+    return Pack(review,source_digest(review),match[1],match[2],tuple(cards))
 
 
 def figures_from(raw, source, assets):

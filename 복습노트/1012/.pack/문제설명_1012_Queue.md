@@ -29,7 +29,7 @@
 
 ### P1. 후위식 계산 횟수
 
-2019-mid-q6 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p1)
+2019-mid-q6 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=1)
 
 수식 5 \* 6 + 4 / 2 - 1 을 후위표기법 (Postfix Notation)으로 바꾼 다음에 스택을 이용해서 수식 계산을 하였다.<br>이 경우에 스택을 이용한 수식의 계산을 위하여 ( )번의 push 연산과 ( )번의 pop 연산을 한다.<br>(최종 결과 값은 스태에 존재해야 함) (4점)
 
@@ -107,7 +107,7 @@ push 9,pop 8,결과 31 남음
 
 ### P2. 중위식 변환과 후위식 계산
 
-2018-mid-c024-q9 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p2)
+2018-mid-c024-q9 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=2)
 
 다음 postfix 형태의 식을 stack을 사용하여 계산하는 과정을 아래의 테이블 형태를 이용하여 보이시오. [10 points]
 
@@ -221,7 +221,7 @@ push 9,pop 8,결과 31 남음
 
 ### P3. 괄호 검사의 도구
 
-2018-mid-c024-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p3)
+2018-mid-c024-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=3)
 
 괄호 검사에 가장 적합한 자료구조는 ( ) 이다. [2 points]
 
@@ -287,7 +287,7 @@ push 9,pop 8,결과 31 남음
 
 ### P4. 스택 C 코드 완성
 
-2017-mid-c050-q10 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p4)
+2017-mid-c050-q10 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=4)
 
 정상 경로의 빈칸은 길이 99 이하의 올바른 후위식이며 모든 중간 계산이 int 범위 안이라는 조건으로 완성하세요. 원문의 오류 경로 반환 누락·입력 폭 제한은 풀이에서 별도 보완 사항으로 구분해요.
 
@@ -433,7 +433,7 @@ if (str[i] == '+' || str[i] == '*') {
 
 ### P5. 큐에서 세 번 꺼내기
 
-textbook-ch05-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p5)
+textbook-ch05-q03 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=7)
 
 10, 20, 30, 40, 50을 큐에 넣었다고 가정하고 3개의 항목을 삭제하였다. 남아 있는 항목은?
 
@@ -499,7 +499,7 @@ rear에서 제거하지 않아요.
 
 ### P6. 괄호의 번호를 짝 맞추기
 
-textbook-ch04-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p6)
+textbook-ch04-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=8)
 
 수식에 있는 괄호의 번호를 출력하는 프로그램을 작성하라. 왼쪽 괄호가 나올 때마다 괄호 번호는 하나씩 증가한다. 오른쪽 괄호가 나오면 매칭되는 왼쪽 괄호 번호를 출력한다.
 
@@ -596,7 +596,7 @@ int next_id=0, top=-1;
 
 ### P7. 배열 스택의 전위·후위 연산
 
-lecture-s05-p14-stack-c · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p7)
+lecture-s05-p14-stack-c · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=9)
 
 **강의 예제 기반 자체 출제** S5 p14
 
@@ -685,7 +685,7 @@ return s->stack[s->top];`
 
 ### P8. 연결 스택의 두 링크 갱신
 
-lecture-s05-p17-linked-stack · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p8)
+lecture-s05-p17-linked-stack · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=10)
 
 **강의 예제 기반 자체 출제** S5 p17
 
@@ -779,7 +779,7 @@ return item;`
 
 ### P9. 후위식 계산 코드의 입력 계약
 
-lecture-s05-p27-postfix-code · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p9)
+lecture-s05-p27-postfix-code · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=11)
 
 **강의 예제 기반 자체 출제** S5 p27
 
@@ -880,7 +880,7 @@ if(ch!='+' && ch!='-' && ch!='*' && ch!='/') {
 
 ### P10. 후위식 스택 상태
 
-2017-mid-c050-q6 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p10)
+2017-mid-c050-q6 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=12)
 
 6. 다음 postfix 형태의 수식을 stack을 사용하여 계산하는 과정을 아래의 테이블 형태를 이용하여 보이시오. [10 points]
 
@@ -986,7 +986,7 @@ postfix 수식: 7 6 2 / – 5 4 \* +
 
 ### P11. 후위식 계산의 도구
 
-2017-mid-c050-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p11)
+2017-mid-c050-q1 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=13)
 
 1. 후위 표기식의 계산을 위해 적합한 자료구조는 ( )이다. [2 points]
 
@@ -1052,7 +1052,7 @@ postfix 수식: 7 6 2 / – 5 4 \* +
 
 ### P12. 은행 대기열의 도구
 
-2017-mid-c050-q2 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p12)
+2017-mid-c050-q2 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=14)
 
 2. 은행창구에서 고객들이 서비스를 받기 위해 들어오고 나가는 상황을 시뮬레이션하기 위해 적합한 자료구조는 ( )이다. [2 points]
 
@@ -1118,7 +1118,7 @@ A 도착→[A],B 도착→[A,B],C 도착→[A,B,C]이면 서비스 순서는 A,B
 
 ### P13. 스택과 큐의 순서
 
-2019-mid-q4 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue.html#p13)
+2019-mid-q4 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1012_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=15)
 
 선입선출 (First-In First-Out)의 특징을 가지는 스택(Stack)은 괄호 검사에 이용될 수 있다. ( ) (2점)
 

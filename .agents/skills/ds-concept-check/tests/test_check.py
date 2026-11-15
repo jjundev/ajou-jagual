@@ -99,6 +99,21 @@ def test_duplicate_nfd_card_file(tmp_path):
     assert any(x.startswith("[duplicate]") for x in check.check(src))
 
 
+def test_duplicate_against_archived_review(tmp_path):
+    from review_source import archive_review
+
+    root = copy_fixture(tmp_path)
+    card = root / "복습문제_9999_Mini.html"
+    archive_review(card)
+    card.unlink()
+    source = nfd_path(root, ".pack/자료_확인문제_9999_Mini")
+    items = source / "items.json"
+    data = json.loads(items.read_text(encoding="utf-8"))
+    data["items"][1]["stem_html"] = "<p>다음 트리를 후위 순회한 결과를 쓰시오. 루트는 A이다.</p>"
+    items.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    assert any(error.startswith("[duplicate]") for error in check.check(source))
+
+
 def test_cli_ok_and_fail(tmp_path, capsys):
     assert check.main(["check.py", str(fixture_src(tmp_path))]) == 0
     assert capsys.readouterr().out.strip() == "OK"

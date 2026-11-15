@@ -731,3 +731,5 @@ print_stat();
 ---
 
 출처: 이정원 교수님 강의록(Software_6 Queue) · 수업 녹음 전사(1015). 전사에 시각 정보가 없어 인용은 Part 기준이에요.
+
+[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%8B%B5%EC%95%88.pdf)

@@ -122,14 +122,20 @@ def publish_update(files,*,backup):
     temporaries={};published=[]
     try:
         for p,data in files.items():
+            if data is None:
+                continue
             p.parent.mkdir(parents=True,exist_ok=True)
             fd,name=tempfile.mkstemp(prefix='.review-update-',dir=p.parent)
             with os.fdopen(fd,'wb') as f:f.write(data)
             temporaries[p]=Path(name)
-        for p,temp in temporaries.items():
+        for p,data in files.items():
             current=p.read_bytes() if p.exists() else None
             if current!=originals[p]:raise ValueError(f'target changed after backup: {p}')
-            os.replace(temp,p);published.append(p)
+            if data is None:
+                p.unlink(missing_ok=True)
+            else:
+                os.replace(temporaries[p],p)
+            published.append(p)
     except BaseException:
         for p in reversed(published):
             if originals[p] is None:p.unlink()
