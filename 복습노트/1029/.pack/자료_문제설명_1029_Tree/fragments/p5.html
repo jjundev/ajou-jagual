@@ -1,8 +1,68 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>높이가 K이고 노드가 $2^K - 1$개인 이진 트리를 두고 “완전 이진 트리가 아니다”라는 문장이 맞는지(O) 틀리는지(X) 판정하는 문제예요.</p><p>원문은 “높이나 K이며”라고 적었는데 “높이가 K이며”의 오타로 읽어요. 이렇게 읽어도 다르게 읽을 여지가 없어서 답에는 영향이 없어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘높이 K’와 ‘$2^K - 1$개’가 같이 나오면 S7 p5의 노드 수 범위를 떠올려요. 높이가 $h$인 이진 트리는 최소 $h$개, 최대 $2^h - 1$개의 노드를 가져요.</p><p>최대 개수의 이유는 레벨마다 들어갈 수 있는 노드 수가 정해져 있기 때문이에요. 이진 트리는 노드마다 자식이 2개 이하라서 레벨 $i$에는 최대 $2^{i-1}$개가 들어가요.</p><p>‘완전이진트리가 아니다’라는 판정 단어에서는 S7 p7의 분류를 떠올려요. 포화 이진 트리(full binary tree)는 모든 레벨이 꽉 찬 것, 완전 이진 트리(complete binary tree)는 레벨 1 ~ $h-1$이 꽉 차고 마지막 레벨이 왼쪽부터 순서대로 찬 것이에요. 개념 위치: <a href="정리노트_1029_Tree.html#s1-props">간선 수와 노드 수의 범위</a>, <a href="정리노트_1029_Tree.html#s2-kinds">포화·완전·기타 이진 트리</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>높이 K인 이진 트리의 레벨별 최대 개수를 더해 적어요.</p><p>$$1 + 2 + 4 + \cdots + 2^{K-1} = 2^K - 1$$</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>첫 줄의 합은 레벨 1부터 K까지 <em>모든</em> 레벨을 최대로 채웠을 때의 개수예요.</p><p>문제의 트리는 높이 K 안에 정확히 $2^K - 1$개가 있으니, 어느 레벨에도 빈자리가 있을 수 없어요. 한 자리라도 비면 개수가 $2^K - 1$보다 작아지기 때문이에요. 그래서 이 트리는 모든 레벨이 꽉 찬 포화 이진 트리예요.</p><p>이제 완전 이진 트리 조건을 하나씩 대조해요. 레벨 1 ~ K-1은 꽉 차 있어요. 마지막 레벨 K도 왼쪽 끝부터 오른쪽 끝까지 빈칸 없이 차 있으니 “왼쪽부터 순서대로 채워짐”을 만족해요. 그래서 이 트리는 완전 이진 트리예요.</p><p>“완전이진트리가 아니다”는 거짓 문장이니 답은 <strong>X</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>X</strong>. 2019 중간 5번 문제은행 원본 답과 같아요.</p><p>K=3이면 $2^3 - 1 = 7$개이고 레벨별로 1, 2, 4개가 들어가 꽉 찬 모양 하나뿐이에요. 별도 계산으로 K=1~4에서 높이 K, 노드 $2^K - 1$개인 이진 트리 모양을 모두 늘어놓아 봤는데, 각 K마다 모양은 하나뿐이고 모두 포화이자 완전 이진 트리였어요. 일반적인 K에 대한 근거는 위의 “한 자리라도 비면 개수가 모자란다”는 논증이에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>“포화 이진 트리이니 완전 이진 트리는 아니다”라고 두 분류를 서로 배타적으로 생각하기 쉬워요. 완전 이진 트리 정의는 마지막 레벨이 꽉 차는 경우를 막지 않아서, 포화 이진 트리는 완전 이진 트리의 특별한 경우예요. 부정문이라 O/X 방향도 한 번 더 확인해요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>높이 K 이진 트리의 최대 노드 수를 레벨별 합으로 적으세요.</li><li>노드 수가 그 최대와 같으면 어떤 모양인지 쓰세요.</li><li>그 모양이 완전 이진 트리 정의의 두 조건을 만족하는지 확인하세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>$1 + 2 + \cdots + 2^{K-1} = 2^K - 1$을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>높이 $h$ 이진 트리 노드 수: 최소 $h$, 최대 $2^h - 1$</li><li>포화: 모든 레벨 꽉 참 / 완전: 레벨 1 ~ $h-1$ 꽉 참, 마지막 레벨 왼쪽부터</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>X. 노드가 최대 개수라 포화이고, 포화는 완전의 조건도 만족해요. K=1~4 모양 열거와 문제은행 답이 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>원문 “높이나 K”는 “높이가 K”의 오타로 읽어요.</li><li>포화 이진 트리는 완전 이진 트리이기도 해요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>높이가 $K$이고 노드가 $2^K - 1$개인 이진 트리를 두고, <strong>“완전이진트리가 아니다”</strong>라는 진술의 참(O)·거짓(X)을 판정해요.</p>
+  <p>원문의 “높이나 K이며”는 “높이가 K이며”의 오타이며 다른 해석 여지가 없어 답에 영향을 주지 않아요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>높이 $K$, 노드 $2^K - 1$개</td><td> 이진 트리 최대 노드 수: $\sum_{i=1}^{K} 2^{i-1} = 2^K - 1$ </td><td>주어진 노드 수가 높이 $K$의 <em>이론상 최댓값</em>과 같은지 확인하면 트리 모양이 하나로 고정돼요(<a href="정리노트_1029_Tree.html#s1-props">정리노트</a>).</td></tr>
+        <tr><td>완전이진트리가 아니다</td><td>포화 $\subset$ 완전 이진 트리 포함 관계</td><td>포화 이진 트리는 모든 레벨이 꽉 차 있으므로 완전 이진 트리의 조건도 자동으로 만족해요(<a href="정리노트_1029_Tree.html#s2-kinds">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>높이 K 이진 트리의 레벨별 최대 노드 합:
+1 + 2 + 4 + ... + 2^(K-1) = 2^K - 1  (주어진 노드 수와 정확히 같음!)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li><strong>모양 확정</strong>: 이진 트리의 레벨 $i$에는 최대 $2^{i-1}$개의 노드가 들어가므로, 높이 $K$에서 가질 수 있는 최대 노드 수는 $1 + 2 + \cdots + 2^{K-1} = 2^K - 1$개예요.</li>
+      <li><strong>포화 이진 트리 판정</strong>: 노드가 정확히 $2^K - 1$개라면 어느 레벨에도 빈자리가 하나라도 있을 수 없어요(한 자리라도 비면 전체 노드 수가 $2^K - 1$보다 작아짐). 즉 모든 레벨이 꽉 찬 <strong>포화 이진 트리</strong>예요.</li>
+      <li><strong>완전 이진 트리 대조</strong>: 포화 이진 트리는 ① 레벨 $1 \sim K-1$이 꽉 차 있고, ② 마지막 레벨 $K$도 왼쪽부터 빈칸 없이(끝까지) 차 있으므로 <strong>완전 이진 트리</strong> 조건을 모두 만족해요.</li>
+      <li><strong>부정문 판정</strong>: 따라서 “완전이진트리가 <em>아니다</em>”라는 명제는 거짓이므로 답은 <strong>X</strong>예요.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: X</strong> (2019 기출 답안과 일치).</p>
+    <ul>
+      <li><strong>경계값 대입 ($K=1, 2, 3$)</strong>: $K=1$이면 $2^1-1=1$개(루트 1개, 완전 O), $K=2$이면 $2^2-1=3$개(레벨별 1, 2개, 완전 O), $K=3$이면 $2^3-1=7$개(레벨별 1, 2, 4개, 완전 O)로 작은 $K$에서도 반례가 없어요.</li>
+      <li><strong>일반 $K$ 논증 확인</strong>: 어떤 레벨에 빈칸이 $d \ge 1$개 있으면 전체 노드는 $(2^K - 1) - d &lt; 2^K - 1$이므로 노드 $2^K - 1$개인 높이 $K$ 이진 트리는 포화 모양 단 하나뿐이고 항상 완전 이진 트리예요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>포화와 완전을 서로 배타적(남남)이라고 생각하면:</strong> “이 트리는 포화 이진 트리니까 완전 이진 트리가 아니지!”라고 판단해 <strong>O</strong>를 쓰게 돼요. 완전 이진 트리는 마지막 레벨이 덜 찬 것만 뜻하는 게 아니라 꽉 찬 포화 이진 트리도 포함하는 개념이고, 문장 끝이 “아니다”라는 부정문인지도 함께 봐야 해요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “높이 $K$에 노드 $2^K - 1$개”를 보면 → 레벨별 최대 합 공식과 비교해 빈자리가 몇 개 남는지 바로 계산할 수 있나요?</li>
+    <li>모든 포화 이진 트리는 완전 이진 트리인가요, 아니면 그 반대인가요?</li>
+    <li>문장 끝이 “완전이진트리<strong>이다</strong>”로 바뀌면 O/X 답은 어떻게 바뀌나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>높이 $K$ 최대 노드 수 $2^K - 1$ / 포화 이진 트리는 완전 이진 트리에 포함돼요.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>$1 + 2 + \cdots + 2^{K-1} = 2^K - 1$이 주어진 노드 수와 같아 빈칸이 0개예요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>X</strong>. 모든 레벨이 꽉 찬 포화 이진 트리이므로 완전 이진 트리이기도 해요.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>$K=1,2,3$ 대입(1, 3, 7개) 모두 완전 만족. 원문 “높이나 K”는 “높이가 K”의 오타예요.</p></div>
+</div>

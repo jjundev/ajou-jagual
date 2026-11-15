@@ -1,10 +1,75 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 내 말로 읽어요</h4><p>맞으면 O, 틀리면 X를 쓰는 문항이에요. 노드 수만 같으면 모든 이진트리의 높이가 같아지는지 판단해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>“노드의 개수가 n”과 “높이가 일정”을 나눠 읽어요. 노드 수는 전체 개수이고, 높이(height)는 루트부터 가장 깊은 노드까지의 레벨 수예요. 이 강의에서는 루트 레벨이 1이에요.</p><p>“이진트리(binary tree)”는 각 노드의 자식이 최대 둘인 트리예요. 키의 대소 순서나 완전한 모양을 요구하지 않아요. 이 조건을 만족하는 서로 다른 모양만 만들면 돼요. 이진 탐색 트리에 추가되는 키의 순서 조건을 이 문항에 강제로 붙이지 않아요.</p><p>‘항상’이라는 주장은 허용되는 모든 트리에 적용돼요. 이를 반박하려면 같은 노드 수로 서로 다른 높이를 가진 두 트리를 제시해야 해요. 단어만 보고 X를 고르는 것이 아니라 조건에 맞는 반례(counterexample)를 확인해요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 쓸 첫 줄</h4><p>“$n=3$으로 고정하고, 높이 2인 모양과 높이 3인 모양을 만든다”라고 적어요. 비교하는 동안 노드 수는 바꾸지 않아요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><ol class="steps"><li>첫 트리는 루트 2에 왼쪽 자식 1, 오른쪽 자식 3을 붙여요. 노드 수는 3, 가장 깊은 레벨은 2 예요.</li><li>둘째 트리는 루트 1의 오른쪽에 2, 그 오른쪽에 3을 붙여요. 노드 수는 역시 3이고 가장 깊은 레벨은 3이에요.</li></ol><figure class="figure"><svg id="fig-explain-p8-heights" viewBox="0 0 360 245" role="img" aria-label="왼쪽은 루트 2에 자식 1과 3이 있어 높이 2이며, 오른쪽은 1의 오른쪽 2,2의 오른쪽 3 으로 이어져 높이 3이에요."><path class="fig-ink" d="M85 53L45 95 M85 53L125 95 M235 53L265 95 M265 125L295 170"/><circle class="fig-ink" cx="85" cy="35" r="18"/><circle class="fig-ink" cx="45" cy="110" r="18"/><circle class="fig-ink" cx="125" cy="110" r="18"/><circle class="fig-ink" cx="235" cy="35" r="18"/><circle class="fig-ink" cx="265" cy="110" r="18"/><circle class="fig-ink" cx="295" cy="185" r="18"/><text class="fig-text" x="85" y="40" text-anchor="middle">2</text><text class="fig-text" x="45" y="115" text-anchor="middle">1</text><text class="fig-text" x="125" y="115" text-anchor="middle">3</text><text class="fig-text" x="235" y="40" text-anchor="middle">1</text><text class="fig-text" x="265" y="115" text-anchor="middle">2</text><text class="fig-text" x="295" y="190" text-anchor="middle">3</text><text class="fig-muted" x="85" y="225" text-anchor="middle">높이 2</text><text class="fig-muted" x="265" y="225" text-anchor="middle">높이 3</text></svg><figcaption>노드 수는 둘 다 3개이지만 가장 깊은 레벨은 달라요.</figcaption></figure><p>두 트리의 레벨 순서는 각각 다음과 같아요.</p><pre><code>2 1 3
-1 2 3</code></pre><p>두 트리의 모든 노드는 자식이 둘 이하예요. 따라서 둘 다 일반 이진트리라는 조건을 만족해요. 이 반례에서 숫자는 노드 이름으로 보아도 돼요.</p><p>같은 $n=3$에서 높이가 2와 3 으로 달라요. 모든 모양에서 높이가 같다는 원래 주장을 깨는 반례이므로 정답은 <strong>X</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p><strong>완성 답은 X</strong>예요. 반례의 입력 조건과 결론을 따로 검사해요.</p><div class="table-wrap"><table><thead><tr><th>트리</th><th>노드 수</th><th>가장 긴 경로</th><th>높이</th></tr></thead><tbody><tr><td>2의 자식이 1·3</td><td>3</td><td>2에서 1 또는 3</td><td>2</td></tr><tr><td>1의 오른쪽 2, 그 오른쪽 3</td><td>3</td><td>1에서 2를 거쳐 3</td><td>3</td></tr></tbody></table></div><p>두 트리의 모든 노드는 자식이 둘 이하예요. 따라서 둘 다 일반 이진트리라는 조건을 만족해요. 이 반례에서 숫자는 노드 이름으로 보아도 돼요.</p><p>독립 검산도 두 높이를 각각 2와 3 으로 계산했어요. 이진트리 조건을 지키면서 동일한 개수에서 높이가 다르므로 반박이 성립해요. 이 두 예는 모든 트리의 성질을 증명하는 예시가 아니라, 보편적 주장을 반박하는 반례예요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>이 문제에서 헷갈리기 쉬운 점</h4><p>완전이진트리는 같은 노드 수에서 높이가 정해지지만, 이 문제는 일반 이진트리예요. 완전하다는 조건을 임의로 더하지 않아요. 또 노드가 셋이면 높이도 셋이라는 계산은 한 줄로 이어진 모양에만 맞아요. ‘항상’이라는 단어만으로 X를 정하지 않아요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어 봐요</h4><ol><li>노드 수를 3 으로 고정한 두 모양을 그려요.</li><li>각 모양이 문제의 트리 정의를 만족하는지 먼저 확인해요.</li><li>루트부터 레벨을 세고 다른 높이 하나로 주장을 반박해요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>높이는 가장 깊은 레벨이고 루트를 1로 세요. 노드 수와 연결 모양을 구별해요. 이진트리의 정의를 만족하는 반례여야 해요.</p></div><div class="summary-group"><h4>첫 줄</h4><p>$n=3$을 고정하고 높이 2와 높이 3인 모양을 만들어요.</p></div><div class="summary-group"><h4>판단과 답</h4><p>2의 왼쪽 1·오른쪽 3은 높이 2, 1의 오른쪽 2의 오른쪽 3은 높이 3이에요. 같은 세 노드에서 높이가 달라 정답은 X예요. 두 형태의 레벨 순서예요.</p><pre><code>2 1 3
-1 2 3</code></pre></div><div class="summary-group"><h4>검산·주의</h4><p>모든 노드의 자식이 둘 이하라 두 모양 모두 일반 이진트리예요. 독립 높이 계산도 2·3이에요. 키 순서나 완전한 모양은 이 문항의 조건이 아니에요. 반례를 확인해X를 고르며, 모든 트리를 예시 두 개로 증명한 것은 아니에요.</p></div></div>
+<div class="layer eli5" data-explanation="understand">
+<h4>핵심 조건과 구할 것</h4>
+<p>“노드의 개수가 $n$인 <strong>이진트리(binary tree)</strong>의 높이는 항상 일정하다”의 O/X를 판별해요.</p>
+<ul>
+<li>일반 이진트리는 <strong>각 노드의 자식이 최대 2개</strong>라는 조건뿐이며, BST 키 순서나 완전이진트리 조건은 없어요.</li>
+</ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+<div class="table-wrap">
+<table class="cmp">
+<thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유와 조건</th></tr></thead>
+<tbody>
+<tr><td>이진트리 (binary tree)</td><td>각 노드가 최대 2개의 자식(left/right)을 가지는 트리</td><td>키 대소 조건이 없으므로 자식 2개 이하 제약만 지키는 서로 다른 모양을 자유롭게 만들 수 있어요.</td></tr>
+<tr><td>높이 $h$ 범위</td><td>$\lceil\log_2(n+1)\rceil \le h \le n$ (루트 레벨 1) (<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1105_Tree.html#s2-complexity">정리노트</a>)</td><td>같은 $n$에서도 포화·완전에 가까우면 낮고, 한쪽으로 치우친 경사 트리는 높이 $n$이 돼요.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+<h4>종이에 쓰는 실제 첫 줄</h4>
+<pre><code>n = 3 고정 (각 노드 자식 ≤ 2)
+모양 A: 루트 2에 자식 1, 3 (높이 2)  vs  모양 B: 1 → 2 → 3 한 줄 (높이 3)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+<h4>왜 이렇게 푸는지 함께 따라가요</h4>
+<div data-subpart="main">
+<div class="table-wrap">
+<table class="cmp">
+<thead><tr><th>구분</th><th>노드 수 $n$</th><th>자식 수 제약</th><th>가장 깊은 경로</th><th>높이</th></tr></thead>
+<tbody>
+<tr><td>모양 A</td><td>3</td><td>루트 2개, 단말 0개 ($\le 2$)</td><td><code>2 → 1</code> (또는 <code>2 → 3</code>)</td><td><b><code>2</code></b></td></tr>
+<tr><td>모양 B</td><td>3</td><td>각 노드 1개 또는 0개 ($\le 2$)</td><td><code>1 → 2 → 3</code></td><td><b><code>3</code></b></td></tr>
+</tbody>
+</table>
+</div>
+<figure class="figure"><svg id="fig-explain-p8-heights" viewBox="0 0 360 245" role="img" aria-label="왼쪽은 루트 2에 자식 1과 3이 있어 높이 2이며, 오른쪽은 1의 오른쪽 2, 2의 오른쪽 3으로 이어져 높이 3이에요."><path class="fig-ink" d="M85 53L45 95 M85 53L125 95 M235 53L265 95 M265 125L295 170"/><circle class="fig-ink" cx="85" cy="35" r="18"/><circle class="fig-ink" cx="45" cy="110" r="18"/><circle class="fig-ink" cx="125" cy="110" r="18"/><circle class="fig-ink" cx="235" cy="35" r="18"/><circle class="fig-ink" cx="265" cy="110" r="18"/><circle class="fig-ink" cx="295" cy="185" r="18"/><text class="fig-text" x="85" y="40" text-anchor="middle">2</text><text class="fig-text" x="45" y="115" text-anchor="middle">1</text><text class="fig-text" x="125" y="115" text-anchor="middle">3</text><text class="fig-text" x="235" y="40" text-anchor="middle">1</text><text class="fig-text" x="265" y="115" text-anchor="middle">2</text><text class="fig-text" x="295" y="190" text-anchor="middle">3</text><text class="fig-muted" x="85" y="225" text-anchor="middle">높이 2</text><text class="fig-muted" x="265" y="225" text-anchor="middle">높이 3</text></svg><figcaption>둘 다 자식 2개 이하인 일반 이진트리이지만 높이가 달라요.</figcaption></figure>
+<p>같은 $n=3$에서 높이가 <code>2</code>와 <code>3</code>으로 다르므로 정답은 <strong>X</strong>예요.</p>
+</div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+<h4>완성 답과 검산</h4>
+<div data-subpart="main">
+<p><strong>완성 답</strong>: <strong>X</strong></p>
+<ul>
+<li><strong>정의 적합성 검산</strong>: 모양 A·B 모두 각 노드의 자식 수가 0, 1, 2개 중 하나이므로 일반 이진트리 정의에 100% 맞아요(숫자는 노드 구분 이름일 뿐 키 순서 제약 불필요).</li>
+<li><strong>높이 범위 검산</strong>: $n=3$의 이론 범위 $\lceil\log_2(3+1)\rceil = 2 \le h \le 3$의 양 끝값인 <code>2</code>와 <code>3</code>이 실제로 모두 만들어져요.</li>
+</ul>
+</div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+<h4>실수하면 답이 이렇게 망가져요</h4>
+<p><strong>이진트리를 완전이진트리로 착각하면:</strong> 완전이진트리는 $n$이 정해지면 $h=\lceil\log_2(n+1)\rceil$로 높이가 고정되지만, 문제에는 ‘완전’ 조건이 없어요.</p>
+<p><strong>“‘항상’이 들어갔으니 무조건 X”라고만 답하면:</strong> 조건(예: 포화이진트리)에 따라 참이 될 수도 있으므로 반드시 같은 $n$에서 높이가 다른 반례로 확인해야 해요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+<h4>해설을 가리고 스스로 확인해요</h4>
+<ol>
+<li>$n=4$인 일반 이진트리에서 나올 수 있는 최소 높이와 최대 높이를 공식 $\lceil\log_2(n+1)\rceil \le h \le n$으로 구해 보세요.</li>
+<li>7번(BST)과 8번(일반 이진트리)의 반례가 같아도, 8번에서 키 크기 순서를 검사하지 않아도 되는 이유를 설명해 보세요.</li>
+</ol>
+</div>
+
+<div class="sum" hidden>
+<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>일반 이진트리는 자식 $\le 2$개 제약만 있고 높이는 $\lceil\log_2(n+1)\rceil \le h \le n$ 범위.</p></div>
+<div class="summary-group"><h4>첫 줄</h4><p>$n=3$ 고정: 자식 2개 달린 <code>2(1,3)</code>(높이 2) vs 한 줄 <code>1→2→3</code>(높이 3).</p></div>
+<div class="summary-group"><h4>핵심 답</h4><p><strong>X</strong> — 같은 $n=3$에서도 연결 모양에 따라 높이가 2와 3으로 달라요.</p></div>
+<div class="summary-group"><h4>검산</h4><p>양쪽 모두 자식 $\le 2$개 충족, $n=3$ 범위 $[2, 3]$의 두 끝값 확인.</p></div>
+</div>

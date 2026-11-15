@@ -1,8 +1,63 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>가장 깊은 레벨이 K인 이진 트리에서 위쪽 레벨 1 ~ K-1은 빈칸 없이 꽉 차 있고, 마지막 레벨 K만 왼쪽부터 차례로 채워진 모양이에요. 이런 이진 트리의 이름을 묻는 빈칸 문제예요.</p><p>원문의 “트리의 레벨은 K”는 가장 깊은 레벨, 곧 높이가 K라는 뜻으로 읽어요. 대문자 K와 소문자 k는 같은 값을 가리켜요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘레벨 1부터 K-1까지 모두 채워짐’과 ‘마지막 레벨은 왼쪽부터 순서대로’라는 두 조건이 S7 p7의 정의 문장과 거의 같아요. 그래서 이진 트리의 분류를 떠올려요.</p><ul><li><strong>포화 이진 트리(full binary tree)</strong>: 모든 레벨에 노드가 꽉 찬 이진 트리예요.</li><li><strong>완전 이진 트리(complete binary tree)</strong>: 높이가 $h$일 때 레벨 1 ~ $h-1$은 꽉 차 있고, 마지막 레벨 $h$는 왼쪽부터 오른쪽으로 순서대로 채워진 이진 트리예요.</li><li><strong>기타 이진 트리</strong>: 자식이 2개 이하라 이진 트리는 맞지만 위 두 모양이 아닌 것이에요.</li></ul><p>두 분류를 가르는 질문은 “마지막 레벨이 반드시 꽉 차야 하나?”예요. 개념 위치: <a href="정리노트_1029_Tree.html#s2-kinds">포화·완전·기타 이진 트리</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>문제의 조건을 두 줄로 나눠 적어요. “① 레벨 1 ~ K-1: 꽉 참 ② 레벨 K: 왼쪽부터 순서대로, 다 찰 필요는 없음.”</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>조건 ①만 보면 포화와 완전 모두 만족해요. 갈림은 조건 ②에서 나와요.</p><p>포화 이진 트리라면 마지막 레벨 K도 꽉 차 있어야 해요. 문제는 마지막 레벨이 왼쪽부터 채워지는 중인 모양까지 허용하니, 포화보다 넓은 분류가 필요해요.</p><p>①과 ②를 그대로 담은 정의는 완전 이진 트리예요. 수업에서도 완전 이진 트리를 “포화로 가는 과정에 있는 트리”라고 했어요. 답은 <strong>완전 이진 트리</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>완전 이진 트리</strong>. 2017 중간 4번 문제은행 원본 답(“완전이진트리”)과 같아요.</p><p>작은 예로 정의를 대조해요. K=3에서 레벨 1·2가 꽉 차고 레벨 3에 맨 왼쪽 두 자리만 차 있으면 조건 ①②를 만족하고, 레벨 3이 다 찬 게 아니라 포화는 아니에요. 그래서 “포화”라고 답하면 이런 모양을 놓쳐요. 레벨 3을 다 채운 경우도 ①②를 만족하니, 포화 이진 트리도 완전 이진 트리에 들어가요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>‘꽉 채워져 있다’는 말에 끌려 포화 이진 트리라고 쓰기 쉬워요. 포화는 마지막 레벨까지 꽉 차야 하고, 문제는 마지막 레벨이 왼쪽부터 순서대로만 차 있으면 돼요. 또 왼쪽부터가 아니라 중간에 빈칸을 두고 채우면 완전 이진 트리도 아니에요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>포화와 완전 이진 트리의 정의를 각각 한 문장으로 적으세요.</li><li>두 정의에서 다른 부분 하나에 밑줄을 그으세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>조건을 ‘레벨 1 ~ K-1 꽉 참’과 ‘레벨 K는 왼쪽부터’로 나눠 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>포화: 모든 레벨이 꽉 참</li><li>완전: 레벨 1 ~ $h-1$ 꽉 참, 레벨 $h$는 왼쪽부터 순서대로</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>완전 이진 트리. 마지막 레벨이 덜 찬 K=3 예가 포화가 아님을 보여 줘요. 문제은행 답과 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>“트리의 레벨은 K”는 높이 K로 읽어요.</li><li>포화 이진 트리도 완전 이진 트리의 한 경우예요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>높이가 $K$인 이진 트리에서 <strong>(1) 레벨 $1 \sim K-1$은 꽉 차 있고</strong>, <strong>(2) 마지막 레벨 $K$는 왼쪽부터 오른쪽으로 순서대로 채워진</strong> 이진 트리의 이름을 쓰는 문제예요.</p>
+  <p>원문의 “트리의 레벨은 K”는 최대 레벨(높이 $K$)을 뜻하며, 대문자 <code>K</code>와 소문자 <code>k</code>는 같은 값으로 읽어요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·분류</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>레벨 1 ~ $K-1$ 꽉 참 + 레벨 $K$ 왼쪽부터</td><td>이진 트리 3분류: 포화 / 완전 / 기타</td><td>마지막 레벨이 <em>반드시 다 차야</em> 하는지(포화) 아니면 <em>왼쪽부터 차례로</em> 차기만 하면 되는지(완전)를 가르는 조건이에요(<a href="정리노트_1029_Tree.html#s2-kinds">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>조건 ① 레벨 1 ~ K-1: 빈칸 없이 모두 참
+조건 ② 레벨 K: 왼쪽부터 순서대로 참 (다 찰 필요 없음)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ul>
+      <li><strong>포화 이진 트리(full binary tree) 소거</strong>: 조건 ②에서 마지막 레벨 $K$가 덜 차도(왼쪽부터만 차 있으면) 허용하므로, 모든 레벨이 꽉 차야 하는 포화 이진 트리는 좁은 조건이라 맞지 않아요.</li>
+      <li><strong>기타 이진 트리 소거</strong>: 조건 ①과 ②가 중간 빈칸을 허용하지 않으므로 무작위 이진 트리보다 구체적이에요.</li>
+      <li><strong>완전 이진 트리(complete binary tree) 일치</strong>: 위층은 꽉 차고 마지막 층만 왼쪽부터 빈틈없이 채워지는 정의와 정확히 같아요.</li>
+    </ul>
+    <p>따라서 빈칸의 답은 <strong>완전 이진 트리</strong>(<code>완전이진트리</code>)예요.</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: 완전이진트리</strong> (2017 기출 모범답안과 일치).</p>
+    <p><strong>경계 반례 검산 ($K = 3$)</strong>: 레벨 1(1개)·레벨 2(2개)가 꽉 차고 레벨 3에 맨 왼쪽 2개만 채운 노드 5개짜리 트리는 문제의 조건 ①·②를 모두 만족하지만, 마지막 층이 4개가 아니라 2개이므로 포화 이진 트리가 아니에요. 따라서 “포화”가 아닌 “완전”만 정확히 일치해요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>“모두 채워져 있고”라는 앞 구절만 보고 포화 이진 트리를 쓰면:</strong> $K=3$에서 노드 5개짜리 트리처럼 마지막 레벨이 왼쪽 절반만 찬 사례를 설명에서 빠뜨려 오답이 돼요. 반대로 마지막 레벨 중간이 비어 있으면 완전 이진 트리도 아니에요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “레벨 $1 \sim K-1$”과 “마지막 레벨 $K$”를 따로 떼어 설명하면 → 포화(전부 꽉 참)와 완전(마지막만 왼쪽부터) 중 어느 정의인지 바로 고를 수 있나요?</li>
+    <li>높이 3에 노드 5개가 왼쪽부터 채워진 트리를 머릿속에 그렸을 때, 포화와 완전 중 어느 쪽에만 속하나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>포화: 모든 레벨 꽉 참 / 완전: 레벨 $1 \sim h-1$ 꽉 참 + 마지막 레벨 왼쪽부터.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>① 레벨 $1 \sim K-1$ 꽉 참, ② 레벨 $K$ 왼쪽부터 순서대로.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>완전 이진 트리</strong> ($K=3$, 노드 5개인 트리는 조건을 만족하지만 포화는 아님).</p></div>
+  <div class="summary-group"><h4>조건·구분</h4><p>“트리의 레벨은 K”는 높이 $K$, 대소문자 <code>K/k</code>는 같은 값으로 읽어요.</p></div>
+</div>

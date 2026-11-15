@@ -1,9 +1,78 @@
-<div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>그림의 이진 트리가 최소 히프(min heap)인지 예/아니요로 판정하고, 그 이유를 쓰는 문제예요. 판정하려면 모양과 값 두 조건을 모두 봐야 하고, “아니요”라면 어느 노드에서 어떤 조건이 깨지는지 짚어 줘야 해요. 그림을 고치지 않고 있는 그대로 읽어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘최소 히프 트리인가’라는 질문에서 히프의 정의를 그대로 판정 기준으로 써요. 히프는 (1) 모양 조건: 완전 이진 트리(complete binary tree)이고, (2) 값 조건: 모든 부모·자식 쌍에서 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$인 트리예요. 둘 중 하나라도 깨지면 최소 히프가 아니에요. 개념 위치: <a href="정리노트_1109_Heap.html#s1-heap-def">최대 힙과 최소 힙</a>.</p><p>모양은 레벨 순서로 번호를 붙여 확인해요. 노드 $n$개가 번호 1..n을 빈칸 없이 차지하고, 번호 $i$의 자식이 $2i$, $2i+1$이면 완전 이진 트리예요. 개념 위치: <a href="정리노트_1109_Heap.html#s1-array">배열로 구현한 힙의 인덱스</a>.</p><p>값 조건은 바로 위아래 쌍만 비교하면 충분해요. 부모 ≤ 자식이 모든 간선에서 성립하면 ≤가 이어져서 조상 ≤ 자손도 저절로 성립하기 때문이에요. 반대로 한 쌍이라도 어기면 바로 “아니요”예요. 같은 값은 ≤에 포함되므로 허용돼요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>번호:  1  2   3  4  5   6   7  8  9  10  11
-값:    1  2  10  4  6  11  12  6  7   5   9</code></pre><p>그림을 위 레벨부터 왼쪽부터 읽어 배열로 옮겨요. 이 배열 하나로 모양과 값 조건을 모두 확인할 수 있어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>먼저 모양을 봐요. 레벨 1에 1개, 레벨 2에 2개, 레벨 3에 4개가 꽉 차 있고, 레벨 4에는 4개가 왼쪽부터 들어 있어요. 레벨 4의 노드는 레벨 3의 왼쪽 두 노드(4와 6) 아래에 있고 중간에 빈자리가 없어요. 그래서 번호 1..11이 빈칸 없이 차고, 완전 이진 트리 조건은 만족해요.</p><p>다음으로 값 조건을 모든 부모·자식 쌍에서 확인해요. 번호 $i$의 자식은 $2i$, $2i+1$이고, 자식이 있는 노드는 1~5번이에요.</p><div class="table-wrap"><table><thead><tr><th>부모 (번호)</th><th>왼쪽 자식 (번호)</th><th>오른쪽 자식 (번호)</th><th>부모 ≤ 자식?</th></tr></thead><tbody><tr><td>1 (1)</td><td>2 (2)</td><td>10 (3)</td><td>1 ≤ 2, 1 ≤ 10 → 맞아요</td></tr><tr><td>2 (2)</td><td>4 (4)</td><td>6 (5)</td><td>2 ≤ 4, 2 ≤ 6 → 맞아요</td></tr><tr><td>10 (3)</td><td>11 (6)</td><td>12 (7)</td><td>10 ≤ 11, 10 ≤ 12 → 맞아요</td></tr><tr><td>4 (4)</td><td>6 (8)</td><td>7 (9)</td><td>4 ≤ 6, 4 ≤ 7 → 맞아요</td></tr><tr><td>6 (5)</td><td>5 (10)</td><td>9 (11)</td><td><strong>6 ≤ 5는 거짓 → 위반</strong>, 6 ≤ 9는 맞아요</td></tr></tbody></table></div><p>모두 10개 간선 중 9개는 조건을 지키지만, 5번 노드 6(레벨 3에서 왼쪽에서 두 번째, 2의 오른쪽 자식)의 왼쪽 자식 5가 부모보다 작아요. 최소 히프는 부모가 자식보다 작거나 같아야 하므로 이 한 쌍 때문에 값 조건이 깨져요.</p><p>값 6이 4번 노드 아래(8번)와 5번에 두 번 나오는 것은 문제가 아니에요. 히프는 같은 키를 허용해요.</p><p>완성 답은 “최소 히프가 아니에요”예요. 이유: 완전 이진 트리 조건은 만족하지만, 노드 6의 왼쪽 자식 5가 6보다 작아 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$를 어겨요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>교과서의 공식 답은 제공되지 않아 확인하지 못했고, 이 답은 독립 검산한 자체 풀이예요.</p><div data-subpart="main"><p>완성 답은 “아니요, 6의 왼쪽 자식 5가 6보다 작아 최소 히프 조건을 어겨요”예요.</p><p>레벨 순서 가정에 기대지 않으려고, 별도 스크립트(<code>evidence/author-p5-p8.py</code>)가 교과서 그림 파일 <code>ch09-q12-tree.svg</code>의 선 끝점 좌표에서 부모·자식 관계를 직접 복원했어요. 노드 11개, 간선 10개가 나왔고 레벨은 [1], [2, 10], [4, 6, 11, 12], [6, 7, 5, 9]였어요. 레벨 순서 번호로 다시 매겼을 때 모든 자식이 $2i$, $2i+1$ 자리에 있어 완전 이진 트리 판정은 참이었고, 10개 쌍 중 위반은 (6 → 왼쪽 5) 하나뿐이었어요. 위 표와 복습팩 참고 답과도 일치해요.</p><p>반대 방향 확인으로, 5와 6의 자리를 바꾸면 그 노드는 5가 되고 부모 2 ≤ 5, 자식 6 ≥ 5, 9 ≥ 5가 모두 성립해요. 위반이 이 한 곳뿐임을 다시 보여 주는 확인일 뿐, 문제는 원래 그림을 판정하는 거예요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>레벨별로 값이 대체로 커지는지만 훑으면 놓쳐요. 레벨 4의 5는 레벨 3의 4보다 커서 괜찮아 보이지만, 5의 부모는 4가 아니라 6이에요. 값 비교는 레벨끼리가 아니라 실제 부모·자식 쌍끼리 해요. 또 모양이 완전 이진 트리라는 것만 보고 “히프다”라고 답하지 않아요. 두 조건을 모두 확인해야 하고, 이유에는 깨진 쌍을 구체적으로 적어요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li>그림을 레벨 순서 배열로 옮기고 번호 1..11이 빈칸 없이 차는지 확인해 보세요.</li><li>자식이 있는 1~5번 노드마다 부모 ≤ 두 자식을 표로 적어 보세요.</li><li>깨진 쌍을 찾아 “어느 노드의 어느 자식이 왜”로 이유를 한 문장에 써 보세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 히프 = 완전 이진 트리 + 모든 간선에서 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$. 같은 값은 허용해요. 번호 $i$의 자식은 $2i$, $2i+1$이에요.</p></div><div class="summary-group"><h4>첫 줄</h4><p>레벨 순서 배열 <code>1 2 10 4 6 11 12 6 7 5 9</code>를 번호 1..11과 함께 적어요.</p></div><div class="summary-group"><h4>답과 이유</h4><p>최소 히프가 아니에요. 모양은 완전 이진 트리지만, 5번 노드 6의 왼쪽 자식 5가 6보다 작아 값 조건을 어겨요.</p></div><div class="summary-group"><h4>검산·주의</h4><p>그림 파일에서 복원한 10개 쌍 중 위반은 (6, 5) 하나뿐이에요. 레벨끼리가 아니라 실제 부모·자식끼리 비교해요. 교과서 공식 답은 확인하지 못했어요.</p></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>주어진 11개 노드의 이진 트리가 <strong>최소 히프 트리인지 판정</strong>하고, 그 이유를 설명하는 문제예요.</p>
+  <p>모양(완전 이진 트리)과 값(모든 부모 $\le$ 자식) 두 조건을 모두 확인해, 깨지는 지점이 있으면 정확한 노드 쌍을 짚어야 해요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>이진 트리 그림</td>
+          <td>레벨 순서 번호 <code>1..n</code> 및 자식 인덱스 $2i, 2i+1$</td>
+          <td>그림을 배열 <code>[1..11]</code>로 옮겨 빈칸이 없으면 모양 조건(완전 이진 트리)이 참이에요(<a href="정리노트_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+        <tr>
+          <td>최소 히프트리인가?</td>
+          <td>모든 간선에서 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$ (중복 값 허용)</td>
+          <td>레벨 간 대소가 아니라 실제 간선(부모-자식 쌍)을 전수 점검해야 단 한 곳의 위반도 잡아요(<a href="정리노트_1109_Heap.html#s1-heap-def">힙의 정의</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>인덱스:  1   2   3   4   5   6   7   8   9  10  11
+값:      1   2  10   4   6  11  12   6   7   5   9</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <p><strong>1) 모양 조건 확인</strong>: 레벨 1~3에 $1+2+4=7$ 개가 꽉 차 있고 레벨 4의 4개(<code>6, 7, 5, 9</code>)가 왼쪽부터 빈칸 없이 <code>[8..11]</code>을 채우므로 <strong>완전 이진 트리 조건은 만족</strong>해요.</p>
+    <p><strong>2) 값 조건(부모 $\le$ 자식) 전수 검사</strong>: 자식이 있는 <code>[1]~[5]</code>번 노드 10개 간선을 확인해요(굵은 행이 위반).</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>부모 <code>[i]</code></th><th>왼쪽 자식 <code>[2i]</code></th><th>오른쪽 자식 <code>[2i+1]</code></th><th>부모 $\le$ 자식 판정</th></tr></thead>
+        <tbody>
+          <tr><td><code>[1]=1</code></td><td><code>[2]=2</code></td><td><code>[3]=10</code></td><td>$1 \le 2$ , $1 \le 10$ (만족)</td></tr>
+          <tr><td><code>[2]=2</code></td><td><code>[4]=4</code></td><td><code>[5]=6</code></td><td>$2 \le 4$ , $2 \le 6$ (만족)</td></tr>
+          <tr><td><code>[3]=10</code></td><td><code>[6]=11</code></td><td><code>[7]=12</code></td><td>$10 \le 11$ , $10 \le 12$ (만족)</td></tr>
+          <tr><td><code>[4]=4</code></td><td><code>[8]=6</code></td><td><code>[9]=7</code></td><td>$4 \le 6$ , $4 \le 7$ (만족)</td></tr>
+          <tr><td><b><code>[5]=6</code></b></td><td><b><code>[10]=5</code></b></td><td><code>[11]=9</code></td><td><b>$6 &gt; 5$ 위반</b> ( $6 \le 9$ 는 만족)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>값 <code>6</code>이 두 번 나오는 것은 허용되지만, <code>[5]</code>번 노드 <code>6</code>의 왼쪽 자식 <code>[10]</code>이 <code>5</code>여서 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$ 을 어겨요.</p>
+    <p>완성 답: <strong>최소 히프 트리가 아니다</strong>. 완전 이진 트리 조건은 만족하지만, 노드 <code>6</code>의 왼쪽 자식 <code>5</code>가 부모보다 작아요.</p>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>(교과서 공식 답 미확인): <strong>아니다</strong> (5번 노드 <code>6</code> &gt; 왼쪽 자식 10번 노드 <code>5</code>).</p>
+    <ul>
+      <li><strong>간선 수 전수 대조</strong>: 노드 11개 트리의 간선은 $11 - 1 = 10$ 개이고, 위 표에서 10개 간선 모두를 확인해 9개는 참, <code>(6 → 5)</code> 1개만 거짓임을 확인했어요.</li>
+      <li><strong>역방향 확인</strong>: 만약 <code>5</code>와 <code>6</code>만 맞바꾸면 부모 <code>2 ≤ 5</code>, 자식 <code>5 ≤ 6, 9</code>가 모두 성립해 위반 지점이 이 한 쌍뿐임을 확인할 수 있어요.</li>
+    </ul>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>레벨 전체 숫자끼리만 눈으로 비교하면</strong>: 레벨 4의 <code>5</code>가 레벨 3의 <code>4</code>보다 커서 이상 없어 보이지만, <code>5</code>의 실제 부모는 <code>4</code>가 아니라 <code>6</code>이에요. 반드시 인덱스 $2i, 2i+1$ 로 연결된 실제 부모·자식 쌍끼리 비교해야 해요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>트리가 히프인지 묻는 문제를 보면 → 레벨 순서 배열 <code>[1..n]</code>부터 적어 빈칸 유무(모양)와 <code>1..⌊n/2⌋</code>의 자식 쌍(값)을 차례로 검사한다.</li>
+    <li>트리에 값 <code>6</code>이 두 번(<code>[5]</code>와 <code>[8]</code>) 들어 있는 것은 최소 히프 위반인가요?</li>
+  </ol>
+</div>
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 히프 = 완전 이진 트리(<code>1..n</code> 완비) + 모든 간선에서 부모 $\le$ 자식(중복 값 허용).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>레벨 순서 배열 <code>[1..11] = 1 2 10 4 6 11 12 6 7 5 9</code>.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>최소 히프 아님</strong>. 완전 이진 트리는 맞지만, <code>[5]=6</code>의 왼쪽 자식 <code>[10]=5</code>가 더 작아요.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>10개 간선 중 위반은 <code>(6, 5)</code> 1쌍뿐. 레벨끼리가 아닌 실제 부모·자식 쌍 비교, 교과서 공식 답 미확인.</p></div>
+</div>

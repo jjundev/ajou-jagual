@@ -1,0 +1,18 @@
+(a) (literal)
+    i=2 largest=2 swap A[1]<->A[2]
+    i=4 largest=4 swap A[2]<->A[4]
+    i=8 largest=8 break
+    return=9 A[1..9]=7 5 6 3 4 3 2 2 1 | max-heap=yes | A[10](stale)=3
+(a) (fixed)
+    i=2 largest=2 swap A[1]<->A[2]
+    i=4 largest=4 swap A[2]<->A[4]
+    i=8 largest=8 break
+    return=9 A[1..9]=7 5 6 3 4 3 2 2 1 | max-heap=yes | A[10](stale)=3
+(b) (literal)
+    i=2 largest=2 swap A[1]<->A[2]
+    i=4 largest=5 swap A[2]<->A[5]
+    return=50 A[1..4]=40 10 30 20 | max-heap=no | A[5](stale)=10
+(b) (fixed)
+    i=2 largest=2 swap A[1]<->A[2]
+    i=4 largest=4 swap A[2]<->A[4]
+    return=50 A[1..4]=40 20 30 10 | max-heap=yes | A[5](stale)=10

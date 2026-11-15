@@ -1,8 +1,114 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 13개의 중위순회와 후위순회로 이진 트리를 되살리고, 그 트리를 1~40번 칸 배열에 적는 문제예요. 그림은 안 그려도 되지만 머릿속(또는 연습장)에서는 트리를 먼저 세워야 칸 번호가 나와요.</p><p>원문 후위순회에는 P가 두 번 있고 F가 없어요. 문제의 안내대로 <strong>셋째 자리 P를 F의 오기</strong>로 보고 G, H, F, K, E, C, O, R, T, P, M, D, B로 읽어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘중위순회와 후위순회 결과를 생성하는 트리’라는 단서에서 두 순회의 정의를 거꾸로 써요.</p><ul><li>후위 순회(postorder traversal) LRV: 마지막 글자가 (서브)트리의 루트예요.</li><li>중위 순회(inorder traversal) LVR: 루트를 기준으로 왼쪽 글자는 왼쪽 서브트리, 오른쪽 글자는 오른쪽 서브트리예요.</li></ul><p>이 분할을 되풀이해 트리를 되살리는 절차는 슬라이드에 직접 나오지 않고 순회 정의에서 끌어낸 <em>보충 방법</em>이에요.</p><p>‘배열로 표현’이라는 단서에서는 S7 p8의 <strong>배열 표현법</strong>을 떠올려요. 루트는 1번, 노드 $i$의 왼쪽 자식은 $2i$, 오른쪽 자식은 $2i+1$이고 없는 자리는 빈칸이에요. 한쪽으로 치우친 가지가 있으면 노드 수보다 훨씬 큰 칸 번호까지 쓰게 돼요.</p><p>개념 위치: <a href="정리노트_1102_Tree.html#s0-array">배열 표현법</a>, <a href="정리노트_1102_Tree.html#s1-postorder">후위 순회</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>“두 순회의 글자 집합 비교: 중위에 F가 있고 후위엔 P가 2번 → 셋째 P를 F로 읽음. 후위 맨 끝 B → 루트 B, [1]=B.”</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p><strong>오기 판단.</strong> 두 순회는 같은 노드 13개를 담아야 해요. 중위의 13글자는 모두 달라요. 후위에는 F가 없고 P가 두 번 있으니 P 중 하나가 F예요. 셋째 자리를 F로 바꾸면 아래 분할이 끝까지 모순 없이 맞고, 열째 자리를 F로 바꾸면 D의 오른쪽 덩어리에 F가 들어가 중위(F는 B의 왼쪽)와 어긋나요. 그래서 셋째 P만 F로 읽어요.</p><p><strong>트리 되살리기.</strong> 각 줄에서 후위 마지막이 루트, 중위에서 그 루트의 왼쪽·오른쪽으로 나눠요.</p><div class="table-wrap"><table><thead><tr><th>서브트리의 후위</th><th>루트</th><th>중위: 왼쪽 | 루트 | 오른쪽</th></tr></thead><tbody><tr><td>G H F K E C O R T P M D B</td><td>B</td><td>G F H E K C | B | D O M R P T</td></tr><tr><td>G H F K E C</td><td>C</td><td>G F H E K | C | (없음)</td></tr><tr><td>G H F K E</td><td>E</td><td>G F H | E | K</td></tr><tr><td>G H F</td><td>F</td><td>G | F | H</td></tr><tr><td>O R T P M D</td><td>D</td><td>(없음) | D | O M R P T</td></tr><tr><td>O R T P M</td><td>M</td><td>O | M | R P T</td></tr><tr><td>R T P</td><td>P</td><td>R | P | T</td></tr></tbody></table></div><figure class="figure"><svg viewBox="0 0 512 264" role="img" aria-label="복원한 이진 트리: 루트 B, B의 왼쪽 C 오른쪽 D, C의 왼쪽 E, D의 오른쪽 M, E의 왼쪽 F 오른쪽 K, M의 왼쪽 O 오른쪽 P, F의 왼쪽 G 오른쪽 H, P의 왼쪽 R 오른쪽 T"><g fill="none" stroke="currentColor" stroke-width="2"><line x1="246.0" y1="41.7" x2="228.0" y2="66.3"/><line x1="266.0" y1="41.7" x2="284.0" y2="66.3"/><line x1="204.0" y1="89.6" x2="156.0" y2="122.4"/><line x1="308.0" y1="89.6" x2="356.0" y2="122.4"/><line x1="128.0" y1="141.6" x2="80.0" y2="174.4"/><line x1="152.0" y1="145.7" x2="170.0" y2="170.3"/><line x1="360.0" y1="145.7" x2="342.0" y2="170.3"/><line x1="384.0" y1="141.6" x2="432.0" y2="174.4"/><line x1="56.0" y1="197.7" x2="38.0" y2="222.3"/><line x1="76.0" y1="197.7" x2="94.0" y2="222.3"/><line x1="436.0" y1="197.7" x2="418.0" y2="222.3"/><line x1="456.0" y1="197.7" x2="474.0" y2="222.3"/><circle cx="28" cy="236" r="17"/><circle cx="66" cy="184" r="17"/><circle cx="104" cy="236" r="17"/><circle cx="142" cy="132" r="17"/><circle cx="180" cy="184" r="17"/><circle cx="218" cy="80" r="17"/><circle cx="256" cy="28" r="17"/><circle cx="294" cy="80" r="17"/><circle cx="332" cy="184" r="17"/><circle cx="370" cy="132" r="17"/><circle cx="408" cy="236" r="17"/><circle cx="446" cy="184" r="17"/><circle cx="484" cy="236" r="17"/></g><g fill="currentColor" font-size="22" text-anchor="middle" dominant-baseline="central"><text x="28" y="236">G</text><text x="66" y="184">F</text><text x="104" y="236">H</text><text x="142" y="132">E</text><text x="180" y="184">K</text><text x="218" y="80">C</text><text x="256" y="28">B</text><text x="294" y="80">D</text><text x="332" y="184">O</text><text x="370" y="132">M</text><text x="408" y="236">R</text><text x="446" y="184">P</text><text x="484" y="236">T</text></g></svg><figcaption>노드를 중위 순서대로 왼쪽부터 놓은 그림이에요. C는 왼쪽 자식만, D는 오른쪽 자식만 있어요.</figcaption></figure><p><strong>배열 칸 번호.</strong> 부모 번호에 $2i$, $2i+1$을 적용해 내려가요.</p><div class="table-wrap"><table><thead><tr><th>부모(번호)</th><th>왼쪽 $2i$</th><th>오른쪽 $2i+1$</th></tr></thead><tbody><tr><td>B(1)</td><td>C → 2</td><td>D → 3</td></tr><tr><td>C(2)</td><td>E → 4</td><td>없음(5)</td></tr><tr><td>D(3)</td><td>없음(6)</td><td>M → 7</td></tr><tr><td>E(4)</td><td>F → 8</td><td>K → 9</td></tr><tr><td>M(7)</td><td>O → 14</td><td>P → 15</td></tr><tr><td>F(8)</td><td>G → 16</td><td>H → 17</td></tr><tr><td>P(15)</td><td>R → 30</td><td>T → 31</td></tr></tbody></table></div><p>그래서 [1]=B, [2]=C, [3]=D, [4]=E, [7]=M, [8]=F, [9]=K, [14]=O, [15]=P, [16]=G, [17]=H, [30]=R, [31]=T이고 나머지 칸은 빈칸이에요. D가 오른쪽 자식만 가져서 M이 7번, 그 아래 P가 15번, P의 자식이 30·31번까지 내려가요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답(셋째 P를 F로 읽을 때): [1]=B, [2]=C, [3]=D, [4]=E, [7]=M, [8]=F, [9]=K, [14]=O, [15]=P, [16]=G, [17]=H, [30]=R, [31]=T, 나머지 빈칸.</p><p>부모 공식으로 거꾸로 확인해요. $\lfloor 31/2 \rfloor = 15$라 T의 부모는 P(오른쪽), $\lfloor 15/2 \rfloor = 7$이라 P의 부모는 M(오른쪽), $\lfloor 7/2 \rfloor = 3$이라 M의 부모는 D(오른쪽)예요. 트리와 같아요.</p><p>되살린 트리를 다시 후위로 돌리면 G, H, F, K, E, C, O, R, T, P, M, D, B, 중위로 돌리면 G, F, H, E, K, C, B, D, O, M, R, P, T가 나와 (고친) 입력과 같아요.</p><p>별도 프로그램으로 확인했어요. 원문 그대로(P 두 번)는 맞는 트리가 0개, 셋째 P→F는 정확히 1개, 열째 P→F는 0개였어요. 원 복원본(19-1 중간 복원.txt)의 괄호 답 1:B, 2:C, 3:D, 4:E, 7:M, 8:F, 9:K, 14:O, 15:P, 16:G, 17:H, 30:R, 31:T와도 같아요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>두 P 중 아무거나 F로 바꾸면 안 돼요. 열째 P를 바꾸면 F가 D 쪽 덩어리에 들어가 중위와 모순돼요.</li><li>C는 왼쪽 자식만 있어서 E가 4번이고 5번이 비어요. 노드 수(13)만 보고 1~13번을 꽉 채우면 틀려요.</li><li>M을 6번에 넣기 쉬워요. D의 자식 M은 오른쪽이라 $2\cdot3+1=7$번이에요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>두 순회의 글자를 비교해 어느 P가 오기인지 직접 판단해 보세요.</li><li>되살린 트리의 칸 번호를 B=1부터 다시 계산하고, 31번에서 부모 공식으로 거꾸로 올라가 보세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>두 순회의 글자 집합을 비교해 셋째 P를 F로 읽고, 후위 맨 끝 B를 [1]에 둬요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>후위 LRV 마지막 = 루트, 중위 LVR로 왼쪽·오른쪽 분할(정의에서 끌어낸 보충 방법)</li><li>배열 표현법: 왼쪽 $2i$, 오른쪽 $2i+1$, 없는 자리는 빈칸</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>[1]B [2]C [3]D [4]E [7]M [8]F [9]K [14]O [15]P [16]G [17]H [30]R [31]T. 다시 순회하면 입력과 같고, 원 복원본 답과도 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>원문 후위의 셋째 P는 F의 오기예요. 열째 P를 바꾸면 트리가 성립하지 않아요.</li><li>치우친 가지 때문에 13개 노드가 31번 칸까지 써요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>13노드의 중위·후위 순회로 트리를 복원해 <strong>1~40번 1차원 배열</strong>에 채워요(트리는 제출하지 않고 배열만 적어요).</p>
+  <p>원문 후위순회에는 F가 없고 P가 두 번 나오므로, 문제 안내대로 <strong>셋째 P를 F의 오기</strong>로 보고 <code>G, H, F, K, E, C, O, R, T, P, M, D, B</code>로 풀어요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead>
+        <tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이유와 조건</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>후위에 P 2회, F 0회</td>
+          <td>두 순회의 글자 집합 비교</td>
+          <td>같은 트리이므로 노드 13개 집합이 일치해야 해요. 덩어리 경계로 어느 P가 F인지 확정해요.</td>
+        </tr>
+        <tr>
+          <td>중위+후위로 트리 복원</td>
+          <td>후위 끝 = 루트, 중위 좌우 분할 (보충)</td>
+          <td>LRV·LVR 정의에서 유도한 절차예요(<a href="정리노트_1102_Tree.html#s1-postorder">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>1~40번 배열 표현</td>
+          <td>루트 1, 왼쪽 $2i$, 오른쪽 $2i+1$ </td>
+          <td>없는 자식은 빈칸으로 두고, 한쪽으로 치우친 가지는 깊은 인덱스까지 써요(<a href="정리노트_1102_Tree.html#s0-array">정리노트</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>집합 대조: 중위에 F 있음, 후위에 P 2회  →  셋째 P를 F로 교정 (G, H, F, K, E, C, O, R, T, P, M, D, B)
+후위 끝 = B  →  [1] = B,  중위 분할: [G, F, H, E, K, C] | B | [D, O, M, R, P, T]</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <h5>1) 오기 위치 확정 및 트리 복원</h5>
+    <p>두 P 중 <strong>셋째 자리</strong>를 F로 고치면 앞의 <code>[G, H, F]</code>가 중위 <code>[G, F, H]</code>와 3글자 집합이 맞물려 F 아래 G, H가 돼요. 반면 열째 자리를 F로 고치면 F가 B의 오른쪽 덩어리로 들어가 중위(<code>F</code>는 B 왼쪽)와 모순돼요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>서브트리 후위</th><th>루트</th><th>중위 분할 (왼쪽 | 루트 | 오른쪽)</th><th>자식</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>G H F K E C O R T P M D <b>B</b></td><td><b>B</b></td><td>G F H E K C (6) | B | D O M R P T (6)</td><td>L: C, R: D</td></tr>
+          <tr><td>G H F K E <b>C</b></td><td><b>C</b></td><td>G F H E K (5) | C | 없음</td><td>L: E, R: -</td></tr>
+          <tr><td>G H F K <b>E</b></td><td><b>E</b></td><td>G F H (3) | E | K (1)</td><td>L: F, R: K</td></tr>
+          <tr><td>G H <b>F</b></td><td><b>F</b></td><td>G (1) | F | H (1)</td><td>L: G, R: H</td></tr>
+          <tr><td>O R T P M <b>D</b></td><td><b>D</b></td><td>없음 | D | O M R P T (5)</td><td>L: -, R: M</td></tr>
+          <tr><td>O R T P <b>M</b></td><td><b>M</b></td><td>O (1) | M | R P T (3)</td><td>L: O, R: P</td></tr>
+          <tr><td>R T <b>P</b></td><td><b>P</b></td><td>R (1) | P | T (1)</td><td>L: R, R: T</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="figure"><svg viewBox="0 0 512 264" role="img" aria-label="복원한 이진 트리: 루트 B, B의 왼쪽 C 오른쪽 D, C의 왼쪽 E, D의 오른쪽 M, E의 왼쪽 F 오른쪽 K, M의 왼쪽 O 오른쪽 P, F의 왼쪽 G 오른쪽 H, P의 왼쪽 R 오른쪽 T"><g fill="none" stroke="currentColor" stroke-width="2"><line x1="246.0" y1="41.7" x2="228.0" y2="66.3"/><line x1="266.0" y1="41.7" x2="284.0" y2="66.3"/><line x1="204.0" y1="89.6" x2="156.0" y2="122.4"/><line x1="308.0" y1="89.6" x2="356.0" y2="122.4"/><line x1="128.0" y1="141.6" x2="80.0" y2="174.4"/><line x1="152.0" y1="145.7" x2="170.0" y2="170.3"/><line x1="360.0" y1="145.7" x2="342.0" y2="170.3"/><line x1="384.0" y1="141.6" x2="432.0" y2="174.4"/><line x1="56.0" y1="197.7" x2="38.0" y2="222.3"/><line x1="76.0" y1="197.7" x2="94.0" y2="222.3"/><line x1="436.0" y1="197.7" x2="418.0" y2="222.3"/><line x1="456.0" y1="197.7" x2="474.0" y2="222.3"/><circle cx="28" cy="236" r="17"/><circle cx="66" cy="184" r="17"/><circle cx="104" cy="236" r="17"/><circle cx="142" cy="132" r="17"/><circle cx="180" cy="184" r="17"/><circle cx="218" cy="80" r="17"/><circle cx="256" cy="28" r="17"/><circle cx="294" cy="80" r="17"/><circle cx="332" cy="184" r="17"/><circle cx="370" cy="132" r="17"/><circle cx="408" cy="236" r="17"/><circle cx="446" cy="184" r="17"/><circle cx="484" cy="236" r="17"/></g><g fill="currentColor" font-size="22" text-anchor="middle" dominant-baseline="central"><text x="28" y="236">G</text><text x="66" y="184">F</text><text x="104" y="236">H</text><text x="142" y="132">E</text><text x="180" y="184">K</text><text x="218" y="80">C</text><text x="256" y="28">B</text><text x="294" y="80">D</text><text x="332" y="184">O</text><text x="370" y="132">M</text><text x="408" y="236">R</text><text x="446" y="184">P</text><text x="484" y="236">T</text></g></svg><figcaption>노드를 중위 순서대로 왼쪽부터 놓은 그림이에요. C는 왼쪽 자식만, D는 오른쪽 자식만 있어요.</figcaption></figure>
+    <h5>2) 배열 인덱스 매핑 ($2i$, $2i+1$)</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>부모(인덱스)</th><th>왼쪽 ( $2i$ )</th><th>오른쪽 ( $2i+1$ )</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>B(1)</td><td><b>C</b> → 2</td><td><b>D</b> → 3</td></tr>
+          <tr><td>C(2)</td><td><b>E</b> → 4</td><td>없음 (5 빈칸)</td></tr>
+          <tr><td>D(3)</td><td>없음 (6 빈칸)</td><td><b>M</b> → 7</td></tr>
+          <tr><td>E(4)</td><td><b>F</b> → 8</td><td><b>K</b> → 9</td></tr>
+          <tr><td>M(7)</td><td><b>O</b> → 14</td><td><b>P</b> → 15</td></tr>
+          <tr><td>F(8)</td><td><b>G</b> → 16</td><td><b>H</b> → 17</td></tr>
+          <tr><td>P(15)</td><td><b>R</b> → 30</td><td><b>T</b> → 31</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong> (셋째 P→F 기준): <code>[1]=B, [2]=C, [3]=D, [4]=E, [7]=M, [8]=F, [9]=K, [14]=O, [15]=P, [16]=G, [17]=H, [30]=R, [31]=T</code> (나머지 1~40번 빈칸).</p>
+    <ul>
+      <li><strong>부모 역산 검산</strong>: $\lfloor 31/2 \rfloor = 15$ (P의 오른쪽 T), $\lfloor 15/2 \rfloor = 7$ (M의 오른쪽 P), $\lfloor 7/2 \rfloor = 3$ (D의 오른쪽 M)이 트리와 일치하고, 채운 칸 13개가 노드 수와 같아요.</li>
+      <li><strong>재순회·원본 대조</strong>: 복원 트리의 후위(교정본)·중위가 입력과 같고, 19-1 복원본 괄호 답과도 일치해요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>열째 P를 F로 고치면:</strong> F가 B의 오른쪽 서브트리에 배정되어 중위(F는 B의 왼쪽)와 충돌하므로 트리가 성립하지 않아요.</p>
+  <p><strong>C·D의 빈 자식을 건너뛰고 M을 6번에 적으면:</strong> M이 D의 왼쪽 자식이 되고, P(13)·R(26)·T(27)까지 뒤쪽 인덱스가 전부 밀려 틀려요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>두 순회의 글자 집합이 다르면 → 루트 기준 왼쪽/오른쪽 덩어리 경계 안에 어떤 글자가 있는지 대조해 오기 자리를 먼저 확정한다.</li>
+    <li>배열 번호를 매길 때 → 외자식 노드(C, D)의 빈 자리는 <code>(5), (6)</code>처럼 번호를 먼저 비워 두고 다음 자식을 적는다.</li>
+    <li>최대 인덱스 31을 적었으면 → $\lfloor i/2 \rfloor$ 로 루트 1까지 올라가며 짝수(L)/홀수(R)가 그림과 맞는지 확인한다.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>글자 대조로 셋째 P→F 확정, 후위 끝=루트·중위 분할(보충), 배열 L $2i$ / R $2i+1$.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>셋째 P→F 교정 후 후위 끝 B를 <code>[1]=B</code>에 두고 <code>[6개] | B | [6개]</code>로 나눠요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><code>[1]B [2]C [3]D [4]E [7]M [8]F [9]K [14]O [15]P [16]G [17]H [30]R [31]T</code> (나머지 빈칸).</p></div>
+  <div class="summary-group"><h4>검산</h4><p>$\lfloor 31/2 \rfloor=15 \to 7 \to 3$ 역산과 재순회 모두 일치, 19-1 복원본 답과 같아요.</p></div>
+</div>

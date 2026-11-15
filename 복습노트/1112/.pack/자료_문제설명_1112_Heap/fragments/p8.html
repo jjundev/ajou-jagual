@@ -1,76 +1,105 @@
 <div class="layer eli5" data-explanation="understand">
-<h4>무엇을 구하라는 문제일까요?</h4>
-<p>의자 5개인 아이스크림 가게에서 손님 도착(arrival), 주문(order), 떠남(leave) 이벤트를 시각 순서대로 처리해요. 처음 큐에는 도착 이벤트 네 개가 시각 6, 1, 8, 3 순서로 들어 있고, 처리하면서 order·leave 이벤트가 새로 생겨요. (a)는 보통의 FIFO 큐가 왜 안 되는지, (b)는 실제로 꺼내지는 이벤트 순서와 남은 의자 수, (c)는 그냥 나간 손님 수와 마지막 의자 수를 묻는 거예요.</p>
-<p>의자 5개, 시각 규칙(order는 도착 1분 뒤, leave는 order 3분 뒤), “남은 의자가 k개 이상이면 앉는다”는 이 문제를 위해 정한 값이에요. 슬라이드 p16은 남은 의자 수가 도착 인원보다 ‘클 때’ 앉는다고만 적었는데, 이 데이터에서는 두 수가 같은 경우가 나오지 않아 어느 쪽으로 읽어도 답이 같아요.</p>
+  <h4>핵심 조건과 구할 것</h4>
+  <p>의자 5개짜리 아이스크림 가게 시뮬레이션(초기 도착 4건: 시각 <code>6, 1, 8, 3</code> 순 삽입)에서 <strong>(a) FIFO 큐가 틀리는 이유</strong>, <strong>(b) 시각 순 처리 과정과 남은 의자 수</strong>, <strong>(c) 그냥 나간 손님 수와 마지막 의자 수</strong>를 구해요.</p>
+  <ul>
+    <li><strong>자체 설정 및 경계 조건</strong>: 의자 5개, <code>order=t+1</code>, <code>leave=t+3</code>, “<code>남은 의자 >= k</code>이면 착석”은 이 문제를 위해 정한 규칙이에요(S8 p16은 “<code>></code>(클 때)”만 서술했으나 이번 입력은 두 수가 같은 경우가 없어 두 해석의 답이 같아요).</li>
+  </ul>
 </div>
+
 <div class="layer formal" data-explanation="recall">
-<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
-<p>‘이산 이벤트 시뮬레이션’과 ‘시각이 가장 이른 이벤트부터 꺼내는’이라는 단서에서 <strong>우선순위 큐(priority queue)</strong>를 떠올려요. 이산 사건은 구별되는 시점에 딱딱 일어나는 사건이고, 시뮬레이션은 그 사건들을 일어나는 시각 순서대로 처리해야 해요. 여기서는 시각이 우선순위이고, 작은 시각이 먼저 나오므로 최소 우선순위 큐(최소 힙으로 구현)예요(<a href="정리노트_1112_Heap.html#s1-event-sim">정리노트: 아이스크림 가게와 우선순위 큐</a>).</p>
-<p>(a)의 ‘보통의 큐(FIFO)’는 먼저 넣은 것이 먼저 나오는 구조예요. 넣은 순서와 일어나는 시각 순서가 다를 수 있다는 점이 두 구조를 가르는 기준이에요. 1112 수업에서도 줄 서기는 큐로 모델링하지만 이벤트가 여러 종류인 가게는 하나의 큐로 표현할 수 없어 우선순위 큐를 쓴다고 했어요.</p>
-<p>(b)·(c)는 상태가 ‘남은 의자 수’ 하나뿐이라, 이벤트를 꺼낼 때마다 규칙을 적용하고 의자 수와 큐에 남은 이벤트를 표로 적으면 돼요.</p>
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·규칙</th><th>이유와 조건</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>(a) 넣은 순서 vs 일어나는 시각</td>
+          <td>최소 우선순위 큐(우선순위 = <code>시각</code>) vs FIFO</td>
+          <td>삽입 순서(<code>6, 1, 8, 3</code>)와 새로 생기는 <code>order·leave</code> 시각이 뒤섞여, FIFO는 시간이 역전되므로 시각이 이른 순으로 꺼내야 해요(<a href="정리노트_1112_Heap.html#s1-event-sim">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>(b)(c) 이벤트 규칙 3종</td>
+          <td>상태 변수 <code>의자 = 5</code> 추적표</td>
+          <td><code>arrival(t, k)</code>는 착석/이탈 결정, <code>order(t, k)</code>는 <code>t+3 leave</code> 생성, <code>leave(t, k)</code>는 의자 반납을 수행해요.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
 <div class="layer formal" data-explanation="start">
-<h4>종이에 쓰는 실제 첫 줄</h4>
-<p>큐 안의 이벤트를 시각 순으로 다시 적고, 가장 이른 t=1 도착을 처리하는 첫 행을 써요.</p>
-<pre><code>큐(시각 순): (1 arrival 3) (3 arrival 3) (6 arrival 2) (8 arrival 4), 의자 5
-1단계: t=1 arrival 3명 → 5 ≥ 3 앉음, 의자 2, (2 order 3) 넣음</code></pre>
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>초기 큐(시각 순 정렬): (1 arrival 3), (3 arrival 3), (6 arrival 2), (8 arrival 4) | 의자 = 5
+1단계: t=1 arrival 3명 → 의자 5 &gt;= 3 착석(남은 의자 2), (2 order 3) 삽입</code></pre>
 </div>
+
 <div class="layer formal" data-explanation="solve">
-<h4>왜 이렇게 푸는지 함께 따라가요</h4>
-<div data-subpart="a">
-<h5>(a) FIFO 큐로는 왜 틀릴까요</h5>
-<p>FIFO 큐는 넣은 순서대로 꺼내니 처음 넣은 (6, arrival, 2)를 (1, arrival, 3)보다 먼저 처리해 시간이 거꾸로 흘러요. 또 처리 중에 생긴 (2, order, 3), (5, leave, 3)은 큐 뒤에 붙어서, 먼저 넣어 둔 t=6, t=8 도착보다 늦게 처리돼요. 그래서 넣은 순서가 아니라 시각이 가장 이른 이벤트를 꺼내는 우선순위 큐가 필요해요.</p>
-<p>실제로 FIFO로 돌리면 처리 시각이 6, 1, 8, 3, 7, 2, 10, 5 순서가 돼요. t=3 도착을 처리할 때 의자가 실제(2개)와 달리 0개로 계산되는 등 중간 상태가 어긋나요. 이 데이터에서는 마지막 숫자(나간 손님, 남은 의자)가 우연히 같게 나오지만, 시각이 뒤섞인 처리는 시뮬레이션으로서 틀린 거예요.</p>
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) 보통의 FIFO 큐가 틀리는 이유</h5>
+    <p>FIFO 큐는 넣은 순서대로 꺼내므로 처음 들어온 <code>(6, arrival, 2)</code>를 <code>(1, arrival, 3)</code>보다 먼저 처리해 <strong>시간이 거꾸로</strong> 흘러요. 또 처리 중 생성되는 <code>(2, order, 3)</code>, <code>(5, leave, 3)</code>이 큐 맨 뒤에 쌓여 이미 대기 중인 <code>t=6, t=8</code> 도착보다 늦게 실행돼요(FIFO 처리 시각 열: <code>6, 1, 8, 3, 7, 2, 10, 5</code>).</p>
+    <p>실제와 달리 <code>t=3</code> 도착 시점에 의자가 <code>2</code>개가 아니라 <code>0</code>개로 계산되는 등 중간 인과 상태가 완전히 깨져요(이번 입력에서는 우연히 최종 나간 인원 7·남은 의자 5가 같지만 시뮬레이션으로 틀린 동작이에요). 따라서 <strong>시각이 가장 이른 이벤트</strong>를 꺼내는 최소 우선순위 큐가 필요해요.</p>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) 시각 순서 이벤트 추적 (남은 의자 초기 5개)</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>단계</th><th>꺼낸 이벤트</th><th>처리 내용</th><th>남은 의자</th><th>처리 후 큐 (시각 순)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>(1, arrival, 3)</td><td>5 ≥ 3 → 착석, (2, order, 3) 삽입</td><td>2</td><td>(2 order) (3 arrival) (6 arrival) (8 arrival)</td></tr>
+          <tr><td>2</td><td>(2, order, 3)</td><td>(5, leave, 3) 삽입</td><td>2</td><td>(3 arrival) (5 leave) (6 arrival) (8 arrival)</td></tr>
+          <tr><td>3</td><td>(3, arrival, 3)</td><td>2 &lt; 3 → 주문 없이 나감(3명)</td><td>2</td><td>(5 leave) (6 arrival) (8 arrival)</td></tr>
+          <tr><td>4</td><td>(5, leave, 3)</td><td>의자 +3 반납</td><td>5</td><td>(6 arrival) (8 arrival)</td></tr>
+          <tr><td>5</td><td>(6, arrival, 2)</td><td>5 ≥ 2 → 착석, (7, order, 2) 삽입</td><td>3</td><td>(7 order) (8 arrival)</td></tr>
+          <tr><td>6</td><td>(7, order, 2)</td><td>(10, leave, 2) 삽입</td><td>3</td><td>(8 arrival) (10 leave)</td></tr>
+          <tr><td>7</td><td>(8, arrival, 4)</td><td>3 &lt; 4 → 주문 없이 나감(4명)</td><td>3</td><td>(10 leave)</td></tr>
+          <tr><td>8</td><td>(10, leave, 2)</td><td>의자 +2 반납</td><td>5</td><td>빈 큐</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>2단계에서 새로 만든 <code>t=5 leave</code>가 먼저 들어 있던 <code>t=6 arrival</code>보다 앞서 꺼내지므로 <code>t=6</code> 손님이 빈 의자 5개를 만나 착석할 수 있어요.</p>
+  </div>
+  <div data-subpart="c">
+    <h5>(c) 주문 없이 나간 손님과 마지막 의자 수</h5>
+    <p>주문 없이 나간 손님은 <code>t=3</code>의 3명과 <code>t=8</code>의 4명으로 총 $3 + 4 = \mathbf{7}$명이고, 마지막 <code>leave</code> 후 남은 의자는 <strong>5개</strong>예요.</p>
+  </div>
 </div>
-<div data-subpart="b">
-<h5>(b) 시각 순서로 처리하기</h5>
-<p>매번 큐에서 시각이 가장 작은 이벤트를 꺼내요. 마지막 칸은 그 단계 뒤 큐에 남은 이벤트를 시각 순으로 적은 거예요.</p>
-<div class="table-wrap"><table><thead><tr><th>단계</th><th>꺼낸 이벤트</th><th>처리</th><th>남은 의자</th><th>큐에 남은 이벤트</th></tr></thead><tbody>
-<tr><td>1</td><td>t=1 arrival 3명</td><td>5 ≥ 3 → 앉음, (2 order 3) 넣음</td><td>2</td><td>(2 order) (3 arrival) (6 arrival) (8 arrival)</td></tr>
-<tr><td>2</td><td>t=2 order 3명</td><td>(5 leave 3) 넣음</td><td>2</td><td>(3 arrival) (5 leave) (6 arrival) (8 arrival)</td></tr>
-<tr><td>3</td><td>t=3 arrival 3명</td><td>2 &lt; 3 → 주문 없이 나감</td><td>2</td><td>(5 leave) (6 arrival) (8 arrival)</td></tr>
-<tr><td>4</td><td>t=5 leave 3명</td><td>의자 3개 늘림</td><td>5</td><td>(6 arrival) (8 arrival)</td></tr>
-<tr><td>5</td><td>t=6 arrival 2명</td><td>5 ≥ 2 → 앉음, (7 order 2) 넣음</td><td>3</td><td>(7 order) (8 arrival)</td></tr>
-<tr><td>6</td><td>t=7 order 2명</td><td>(10 leave 2) 넣음</td><td>3</td><td>(8 arrival) (10 leave)</td></tr>
-<tr><td>7</td><td>t=8 arrival 4명</td><td>3 &lt; 4 → 주문 없이 나감</td><td>3</td><td>(10 leave)</td></tr>
-<tr><td>8</td><td>t=10 leave 2명</td><td>의자 2개 늘림</td><td>5</td><td>빈 큐</td></tr>
-</tbody></table></div>
-<p>2단계에서 새로 넣은 t=5 leave가 이미 들어 있던 t=6 도착보다 앞에 놓이는 것이 우선순위 큐의 역할이에요. 덕분에 t=6 손님이 왔을 때 의자가 5개로 돌아와 있어 앉을 수 있어요. 같은 시각의 이벤트는 생기지 않아 꺼내는 순서가 하나로 정해져요.</p>
-</div>
-<div data-subpart="c">
-<h5>(c) 나간 손님과 마지막 의자</h5>
-<p>주문 없이 나간 것은 t=3 도착 3명과 t=8 도착 4명이라 모두 $3 + 4 = 7$명이에요. 마지막 leave 뒤 남은 의자는 5개예요.</p>
-</div>
-</div>
+
 <div class="layer formal" data-explanation="verify">
-<h4>완성 답과 검산</h4>
-<div data-subpart="a">
-<p>(a) 완성 답: 이벤트를 넣은 순서와 일어나는 시각 순서가 달라요. FIFO는 t=6 도착을 t=1 도착보다 먼저 처리하고, 나중에 생긴 order·leave를 먼저 넣은 도착보다 늦게 처리해서 시간이 뒤섞여요. 그래서 시각이 가장 이른 것을 꺼내는 우선순위 큐가 필요해요.</p>
-<p>검산: 문제만 보고 따로 짠 시뮬레이션(<code>evidence/independent_verify.py</code>의 p8 블록)이 FIFO 처리 시각 열 6, 1, 8, 3, 7, 2, 10, 5가 단조 증가가 아님을 확인했어요. 같은 검산에서 FIFO의 최종 숫자는 우연히 같다는 점도 확인돼, 답의 근거를 최종 숫자가 아니라 시각 순서에 두었어요.</p>
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 완성 답</strong>: 넣은 순서와 발생 시각 순서가 다르고 나중에 생긴 <code>order·leave</code>가 먼저 들어 있던 도착보다 먼저 일어나야 하므로, FIFO는 시간이 역전(처리 시각 <code>6, 1, 8, 3, 7, 2, 10, 5</code>)되어 시각 기준 최소 우선순위 큐가 필요해요.</p>
+    <p><strong>검산</strong>: 최소 우선순위 큐의 처리 시각 열 <code>[1, 2, 3, 5, 6, 7, 8, 10]</code>은 단조 증가하고 동점 시각도 없지만, FIFO는 단조 증가가 깨지며 <code>t=3</code> 시점 의자가 0(실제 2)으로 어긋나요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 완성 답</strong>: <code>1 arrival(2) → 2 order(2) → 3 arrival(2, 3명 이탈) → 5 leave(5) → 6 arrival(3) → 7 order(3) → 8 arrival(3, 4명 이탈) → 10 leave(5)</code>.</p>
+    <p><strong>검산</strong>: 모든 단계에서 의자 수가 <code>0 ≤ 의자 ≤ 5</code> 범위에 있고, 착석 조건 비교 <code>(5 vs 3), (2 vs 3), (5 vs 2), (3 vs 4)</code>에 같은 수가 없어 슬라이드의 <code>&gt;</code> 해석과 문제의 <code>&gt;=</code> 해석이 완전히 같은 결과를 내요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 완성 답</strong>: 나간 손님 7명, 마지막 남은 의자 5개.</p>
+    <p><strong>검산(보존 법칙)</strong>: 도착 총원 $3+3+2+4 = 12$명 = 착석 후 <code>leave</code> 완료 5명 + 이탈 7명, 그리고 착석한 5명 전원 반납으로 마지막 의자는 초기 5개로 복귀해요.</p>
+  </div>
 </div>
-<div data-subpart="b">
-<p>(b) 완성 답: t=1 arrival(의자 2) → t=2 order(2) → t=3 arrival 3명 그냥 나감(2) → t=5 leave(5) → t=6 arrival(3) → t=7 order(3) → t=8 arrival 4명 그냥 나감(3) → t=10 leave(5).</p>
-<p>검산: 독립 시뮬레이션(최소 우선순위 큐, 시각 기준)의 여덟 단계와 의자 수가 위 표와 모두 같고, 같은 시각 동점은 없었어요. 의자 수는 늘 0 이상 5 이하예요.</p>
-</div>
-<div data-subpart="c">
-<p>(c) 완성 답: 그냥 나간 손님 7명, 마지막 남은 의자 5개.</p>
-<p>검산: 앉은 손님 3 + 2 = 5명이 모두 leave로 의자를 돌려주니, 마지막 의자는 처음 5개로 돌아와야 해요. 도착 총원 $3+3+2+4 = 12$명 = 앉은 5명 + 나간 7명으로 맞아요.</p>
-</div>
-</div>
+
 <div class="layer warn" data-explanation="pitfall">
-<h4>이 문제에서 특히 조심할 점</h4>
-<p>(a)를 ‘FIFO로 하면 결과 숫자가 달라진다’로 쓰면 이 데이터에서는 사실과 달라요. 최종 숫자는 우연히 같아요. 틀리는 이유는 처리 순서가 실제 시각과 어긋난다는 데 있어요.</p>
-<p>(b)에서 처음 큐에 넣은 순서(6, 1, 8, 3)대로 처리하거나, 도착만 먼저 다 처리하고 order·leave를 나중에 몰아 처리하면 틀려요. t=5 leave는 t=6 도착보다 먼저예요. 이를 놓치면 t=6 손님 때 의자가 2개로 계산돼요.</p>
-<p>그 잘못된 경로에서는 t=6 손님 2명이 올 때 의자가 2개라, 슬라이드의 ‘클 때 앉는다’와 문제의 ‘이상이면 앉는다’가 서로 다른 결과를 내요. 올바른 시각 순서에서는 이런 같은 수 비교가 나오지 않아요.</p>
-<p>(c)에서 t=3 손님을 앉혔다고 착각하지 않도록 해요. 그때는 t=1 손님 3명이 아직 떠나지 않아(떠남은 t=5) 의자가 2개뿐이에요.</p>
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>(a)를 “FIFO로 풀면 최종 나간 손님·의자 숫자가 틀린다”로 쓰면</strong>: 이 데이터에서는 FIFO로 돌려도 우연히 마지막 숫자가 7명·5개로 같아요. 틀린 본질은 최종 우연치가 아니라 <strong>시각 순서(인과 관계)와 중간 의자 상태(<code>t=3</code>에 0 vs 2)가 깨진다는 점</strong>이에요.</li>
+    <li><strong>(b)에서 <code>order·leave</code> 생성 시점을 건너뛰고 초기 도착 4개만 먼저 처리하면</strong>: <code>t=5 leave</code>가 실행되기 전에 <code>t=6 arrival(2명)</code>을 처리하게 되어 의자가 <code>2</code>개만 남는 잘못된 경로로 빠지고, 이때는 <code>&gt;</code> vs <code>&gt;=</code> 해석 차이까지 생겨 답이 어긋나요.</li>
+  </ul>
 </div>
+
 <div class="layer formal" data-explanation="retry">
-<h4>해설을 닫고 다시 해 봐요</h4>
-<ol><li>처음 네 도착 이벤트를 시각 순으로 다시 적고, FIFO라면 어떤 순서로 처리되는지 옆에 적어 비교해요.</li><li>가장 이른 이벤트를 꺼낼 때마다 규칙을 적용해 의자 수와 남은 큐를 한 행씩 써요.</li><li>앉은 인원 + 나간 인원 = 도착 총원, 마지막 의자 = 5인지 확인해요.</li></ol>
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>이벤트 시뮬레이션 문제를 보면 → 초기 큐 목록을 <strong>시각 오름차순</strong>으로 다시 나열하고, <code>order</code>·<code>leave</code>가 생길 때마다 <strong>제 시각 자리에 끼워 넣으며</strong> 표를 채우세요.</li>
+    <li>검산할 때 → <code>도착 총원 = 착석 인원 + 이탈 인원</code>과 처리 시각 열의 단조 증가 여부를 두 줄로 확인해 보세요.</li>
+  </ol>
 </div>
+
 <div class="sum" hidden>
-<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>이산 이벤트 시뮬레이션은 사건을 일어나는 시각 순서로 처리해야 해서, 시각을 우선순위로 하는 최소 우선순위 큐(최소 힙)를 써요. FIFO는 넣은 순서대로 꺼내 시각이 뒤섞여요.</p></div>
-<div class="summary-group"><h4>첫 줄</h4><p>큐를 시각 순으로 (1 arrival 3) (3 arrival 3) (6 arrival 2) (8 arrival 4)로 다시 적고 t=1 도착부터 처리해요.</p></div>
-<div class="summary-group"><h4>핵심 판단</h4><p>순서 t=1 arrival → 2 order → 3 arrival(3명 나감) → 5 leave → 6 arrival → 7 order → 8 arrival(4명 나감) → 10 leave, 의자 2, 2, 2, 5, 3, 3, 3, 5. 새로 생긴 t=5 leave가 t=6 도착보다 먼저예요.</p></div>
-<div class="summary-group"><h4>검산</h4><p>나간 손님 7명, 마지막 의자 5개. 도착 12명 = 앉은 5명 + 나간 7명. FIFO는 최종 숫자가 우연히 같지만 처리 시각이 6, 1, 8, 3, …으로 뒤섞여요.</p></div>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>이산 이벤트 시뮬레이션은 시각 기준 최소 우선순위 큐 필수(FIFO는 처리 시각 역전). 이번 입력은 <code>&gt;=</code>와 <code>&gt;</code> 결과 동일.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>초기 큐 시각 순 <code>(1,a,3)(3,a,3)(6,a,2)(8,a,4)</code>, 의자 5 → <code>t=1 arrival 3</code> 착석(의자 2, <code>2 order</code> 삽입).</p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p><code>1a(2)→2o(2)→3a(2,3이탈)→5l(5)→6a(3)→7o(3)→8a(3,4이탈)→10l(5)</code>. <code>t=5 leave</code>가 <code>t=6 arrival</code>보다 먼저.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>이탈 7명, 마지막 의자 5개(도착 12 = 착석 5 + 이탈 7). FIFO는 최종 숫자가 우연히 같으나 시각 <code>6,1,8,3,...</code> 역전.</p></div>
 </div>

@@ -1,18 +1,83 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 19개짜리 트리 그림 하나를 두고 용어 다섯 개를 차례로 확인하는 문제예요. 레벨 3에 있는 노드, v8의 형제, v8의 자손, 트리의 높이, v8의 차수를 구해요.</p><p>원문 (c)는 “노드 8”이라고 적었지만 그림에 이름이 8인 노드는 없고 v8만 있어서 v8로 읽어요. 답을 바꾸는 모호함은 아니에요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘레벨’, ‘형제’, ‘자손’, ‘높이’, ‘차수’라는 단어가 그대로 나와요. 모두 S7 p3의 트리 용어라서 정의만 정확히 떠올리면 그림에서 바로 읽을 수 있어요.</p><ul><li><strong>레벨(level)</strong>: 트리의 각 층에 붙인 번호예요. 수업에서는 루트를 레벨 1로 두고 아래로 한 층 내려갈 때마다 1씩 늘려요.</li><li><strong>형제(sibling)</strong>: 부모가 같은 노드끼리예요. 수업 중 “같은 레벨이면 형제”처럼 들리는 말이 있었지만, 이 설명에서는 표준 정의인 <em>같은 부모</em>로 판정해요.</li><li><strong>자손(descendant)</strong>: 어떤 노드 아래로 내려가며 닿는 모든 노드예요. 자식뿐 아니라 자식의 자식까지 포함해요.</li><li><strong>높이(height)</strong>: 트리의 최대 레벨이에요. 단말 노드가 많이 모인 층이 아니라 가장 깊은 노드까지 재요.</li><li><strong>차수(degree)</strong>: 한 노드가 가진 자식 노드의 개수예요.</li></ul><p>개념 위치: <a href="정리노트_1029_Tree.html#s0-terms-measure">가족 관계·레벨·높이·차수</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>다섯 물음이 모두 “어느 층에 있나”와 “누가 누구의 자식인가”에서 나오니, 종이에 레벨별 목록부터 적어요.</p><p>레벨 1: v0 / 레벨 2: v1, v2, v3 / 레벨 3: … 처럼 루트에서 한 층씩 내려가며 채워요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><p>그림의 부모–자식 관계를 층별로 정리하면 다음과 같아요.</p><table><thead><tr><th>레벨</th><th>노드</th></tr></thead><tbody><tr><td>1</td><td>v0</td></tr><tr><td>2</td><td>v1, v2, v3</td></tr><tr><td>3</td><td>v4, v5, v6, v7, v8, v9</td></tr><tr><td>4</td><td>v10, v11, v12, v13, v14, v15, v16, v17</td></tr><tr><td>5</td><td>v18</td></tr></tbody></table>
-<div data-subpart="a"><p>(a) 레벨 3은 루트의 자식(레벨 2)의 자식들이에요. v1 아래 v4, v2 아래 v5·v6, v3 아래 v7·v8·v9를 모으면 <strong>v4, v5, v6, v7, v8, v9</strong>예요.</p></div>
-<div data-subpart="b"><p>(b) 먼저 v8의 부모를 찾아요. v8은 v3에 이어져 있어요. v3의 자식은 v7, v8, v9이고 자기 자신은 빼니 형제는 <strong>v7, v9</strong>예요. v4, v5, v6도 레벨 3이지만 부모가 v1·v2라서 형제가 아니에요.</p></div>
-<div data-subpart="c"><p>(c) v8에서 아래로만 내려가요. v8 → v16, v17이고, v16 → v18이에요. v17은 더 내려갈 곳이 없어요. 자손은 <strong>v16, v17, v18</strong>이에요.</p></div>
-<div data-subpart="d"><p>(d) 높이는 최대 레벨이에요. 표에서 가장 큰 레벨은 v18이 있는 5예요. 그래서 높이는 <strong>5</strong>예요.</p></div>
-<div data-subpart="e"><p>(e) v8에서 바로 아래로 이어진 선은 v16, v17 두 개예요. 손자 v18은 자식이 아니니 세지 않아요. 차수는 <strong>2</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>정답: (a) v4, v5, v6, v7, v8, v9 (b) v7, v9 (c) v16, v17, v18 (d) 5 (e) 2. 2017 중간 문제은행의 원본 답과 같아요.</p><p>그림 좌표에서 선분 양 끝에 가장 가까운 노드를 찾아 부모–자식을 다시 만든 별도 계산에서도 노드 19개, 간선 18개, 아래 값이 모두 같았어요.</p>
-<div data-subpart="a"><p>(a) 레벨 표의 개수 합 $1+3+6+8+1=19$가 전체 노드 수와 맞아서 빠뜨린 노드가 없어요. 레벨 3은 6개예요.</p></div>
-<div data-subpart="b"><p>(b) 거꾸로 v7과 v9의 부모도 v3인지 확인했어요. 둘 다 v3이에요.</p></div>
-<div data-subpart="c"><p>(c) 자손이라면 그 노드에서 v8까지 위로 올라가는 길이 있어야 해요. v16 → v8, v17 → v8, v18 → v16 → v8로 모두 v8에 닿아요.</p></div>
-<div data-subpart="d"><p>(d) 레벨 5에는 v18 하나뿐이고, v18은 자식이 없어 레벨 6은 없어요.</p></div>
-<div data-subpart="e"><p>(e) v16, v17의 부모가 모두 v8이고 다른 자식은 없어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>(b) 같은 레벨 노드를 전부 형제로 적으면 v4, v5, v6이 끼어들어 틀려요. 형제는 부모가 같아야 해요.</li><li>(c) 자식 v16, v17만 적고 손자 v18을 빼면 자손이 아니라 자식을 답한 거예요.</li><li>(d) 단말 노드가 많이 모인 레벨 4를 높이로 적기 쉬워요. 가장 깊은 v18까지 재야 해요.</li><li>(e) 차수에 자손 수 3을 쓰면 안 돼요. 차수는 바로 아래 자식만 세요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>그림만 보고 레벨별 노드 목록을 적고, 개수 합이 19인지 확인하세요.</li><li>v8의 부모를 먼저 찾은 뒤 형제와 차수를 적으세요.</li><li>v8에서 아래로 내려가며 자손을 모으고, 가장 깊은 노드의 레벨로 높이를 적으세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>루트 v0을 레벨 1로 두고 레벨별 노드 목록을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>레벨: 루트=1인 층 번호, 높이: 최대 레벨</li><li>형제: 부모가 같은 노드, 자손: 아래로 닿는 모든 노드</li><li>차수: 그 노드의 자식 수</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>(a) v4~v9 (b) v7, v9 (c) v16, v17, v18 (d) 5 (e) 2. 레벨별 개수 합 19와 좌표로 다시 만든 트리 계산이 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>원문 (c)의 “노드 8”은 그림의 v8로 읽어요.</li><li>같은 레벨이어도 부모가 다르면 형제가 아니에요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>19개 노드(<code>v0</code>~<code>v18</code>, 루트 <code>v0</code> = 레벨 1) 트리에서 <strong>(a) 레벨 3 노드</strong>, <strong>(b) <code>v8</code>의 형제</strong>, <strong>(c) <code>v8</code>의 자손</strong>, <strong>(d) 트리 높이</strong>, <strong>(e) <code>v8</code>의 차수</strong>를 구해요.</p>
+  <p>원문 (c)의 “노드 8”은 그림에 있는 <code>v8</code>을 가리키므로(답 변화 없음) <code>v8</code>로 읽어요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·정의</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>레벨 3</td><td>레벨(level): 루트 = 1, 한 층 아래마다 +1</td><td>층 번호를 매기면 (a)와 최대 층인 높이 (d)를 동시에 읽을 수 있어요(<a href="정리노트_1029_Tree.html#s0-terms-measure">정리노트</a>).</td></tr>
+        <tr><td>형제 노드</td><td>형제(sibling): <strong>같은 부모</strong>를 둔 다른 노드</td><td>같은 레벨이라도 부모가 다르면 형제가 아니므로 <code>v8</code>의 부모부터 찾아야 해요.</td></tr>
+        <tr><td>자손 노드</td><td>자손(descendant): 아래로 이어진 모든 노드</td><td>직계 자식뿐 아니라 손자 이하까지 끝까지 내려가며 모아야 해요.</td></tr>
+        <tr><td>트리의 높이</td><td>높이(height): 트리의 최대 레벨</td><td>단말 노드가 많은 층이 아니라 가장 깊은 노드까지 재야 해요.</td></tr>
+        <tr><td>노드의 차수</td><td>차수(degree): 그 노드의 직계 자식 수</td><td>손자 이하를 제외하고 바로 아래로 나간 간선 수만 세요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>레벨 1 (루트): v0
+레벨 2 (v0의 자식): v1, v2, v3</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <p>루트 <code>v0</code>에서 한 층씩 내려가며 부모–자식 연결을 표로 정리하면 다섯 물음의 근거가 한눈에 모여요.</p>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>레벨</th><th>부모 → 자식 연결</th><th>해당 레벨의 노드</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>루트</td><td><code>v0</code> (1개)</td></tr>
+        <tr><td>2</td><td><code>v0 → v1, v2, v3</code></td><td><code>v1, v2, v3</code> (3개)</td></tr>
+        <tr><td><b>3</b></td><td><code>v1 → v4</code> / <code>v2 → v5, v6</code> / <b><code>v3 → v7, v8, v9</code></b></td><td><b><code>v4, v5, v6, v7, v8, v9</code></b> (6개)</td></tr>
+        <tr><td>4</td><td><code>v4 → v10, v11</code> / <code>v5 → v12, v13</code> / <code>v6 → v14, v15</code> / <b><code>v8 → v16, v17</code></b></td><td><code>v10, v11, v12, v13, v14, v15, v16, v17</code> (8개)</td></tr>
+        <tr><td><b>5</b></td><td><b><code>v16 → v18</code></b></td><td><b><code>v18</code></b> (1개)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div data-subpart="a"><p><strong>(a) 레벨 3의 노드</strong>: 표의 레벨 3 행에 모인 <code>v1</code>의 자식(<code>v4</code>), <code>v2</code>의 자식(<code>v5, v6</code>), <code>v3</code>의 자식(<code>v7, v8, v9</code>)을 합치면 <strong><code>v4, v5, v6, v7, v8, v9</code></strong>예요.</p></div>
+  <div data-subpart="b"><p><strong>(b) <code>v8</code>의 형제 노드</strong>: <code>v8</code>의 부모는 <code>v3</code>이고, <code>v3</code>의 자식은 <code>v7, v8, v9</code>예요. 자기 자신을 빼면 <strong><code>v7, v9</code></strong>예요. 같은 레벨 3의 <code>v4, v5, v6</code>은 부모가 <code>v1, v2</code>로 달라 제외해요.</p></div>
+  <div data-subpart="c"><p><strong>(c) <code>v8</code>의 자손 노드</strong>: <code>v8</code> 아래로 내려가면 직계 자식 <code>v16, v17</code>이 있고, <code>v16</code> 아래에 <code>v18</code>이 있어요(<code>v17, v18</code> 아래는 없음). 모두 모으면 <strong><code>v16, v17, v18</code></strong>이에요.</p></div>
+  <div data-subpart="d"><p><strong>(d) 트리의 높이</strong>: 표의 마지막 층은 <code>v18</code>이 있는 레벨 5예요. 따라서 높이는 <strong><code>5</code></strong>예요.</p></div>
+  <div data-subpart="e"><p><strong>(e) <code>v8</code>의 차수</strong>: <code>v8</code>에서 바로 아래로 뻗은 간선은 <code>v16, v17</code>로 2개예요(손자 <code>v18</code>은 <code>v16</code>의 자식). 따라서 차수는 <strong><code>2</code></strong>예요.</p></div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a"><p><strong>(a) 완성 답: <code>v4, v5, v6, v7, v8, v9</code></strong> — 레벨별 노드 수 합 $1+3+6+8+1 = 19$가 전체 노드(<code>v0</code>~<code>v18</code>) 19개, 간선 수 $18 = 19 - 1$과 모두 일치해 빠뜨린 노드가 없어요.</p></div>
+  <div data-subpart="b"><p><strong>(b) 완성 답: <code>v7, v9</code></strong> — 역으로 <code>v7</code>과 <code>v9</code>에서 위로 한 칸 올라가면 둘 다 부모가 <code>v3</code>이고, <code>v3</code>의 나머지 자식은 <code>v8</code>뿐이에요.</p></div>
+  <div data-subpart="c"><p><strong>(c) 완성 답: <code>v16, v17, v18</code></strong> — 위로 거슬러 <code>v16 → v8</code>, <code>v17 → v8</code>, <code>v18 → v16 → v8</code>로 세 노드 모두 <code>v8</code>에 닿고, <code>v17·v18</code>은 단말이라 추가 자손이 없어요.</p></div>
+  <div data-subpart="d"><p><strong>(d) 완성 답: <code>5</code></strong> — 레벨 5 노드는 <code>v18</code> 하나뿐이며 자식이 없으므로 레벨 6은 존재하지 않아요.</p></div>
+  <div data-subpart="e"><p><strong>(e) 완성 답: <code>2</code></strong> — <code>v8</code> 아래로 그려진 간선이 <code>v8–v16</code>, <code>v8–v17</code> 정확히 2개임을 그림에서 바로 세어 확인할 수 있어요.</p></div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <ul>
+    <li><strong>(b) “같은 레벨 = 형제”로 오해하면:</strong> 레벨 3의 <code>v4, v5, v6</code>까지 함께 적어 5개(<code>v4, v5, v6, v7, v9</code>)로 틀려요. 형제는 반드시 같은 부모(<code>v3</code>) 아래에서만 찾아요.</li>
+    <li><strong>(c) 자손과 (e) 차수를 뒤섞으면:</strong> 직계 자식만 세어 (c)에서 손자 <code>v18</code>을 빠뜨리거나(<code>v16, v17</code>), 반대로 (e)에 <code>v18</code>까지 넣어 차수를 <code>3</code>으로 잘못 쓰게 돼요.</li>
+    <li><strong>(d) 단말 노드가 몰린 층을 높이로 읽으면:</strong> <code>v10~v15, v17</code>이 끝나는 레벨 4를 보고 높이를 <code>4</code>라고 쓰면 가장 깊은 <code>v18</code>(레벨 5)을 놓쳐요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “<code>v8</code>의 형제”를 보면, 같은 가로줄을 읽기 전에 먼저 <strong>부모 노드 이름부터</strong> 손가락으로 짚을 수 있나요?</li>
+    <li><code>v8</code>의 <strong>차수</strong>(1단계 아래 간선 수)와 <strong>자손</strong>(아래 끝까지 닿는 노드)을 서로 다른 값으로 구분해 말할 수 있나요?</li>
+    <li>트리의 높이를 정할 때 왜 레벨 4가 아니라 <code>v18</code>이 있는 레벨 5까지 내려가야 하나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>레벨(루트=1), 형제(같은 부모), 자손(아래 모든 노드), 높이(최대 레벨), 차수(직계 자식 수).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>레벨 1: <code>v0</code>, 레벨 2: <code>v1, v2, v3</code>부터 층별로 부모–자식을 정리해요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>(a) <code>v4~v9</code> (b) <code>v7, v9</code> (c) <code>v16, v17, v18</code> (d) <code>5</code> (e) <code>2</code>.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>층별 합 $1+3+6+8+1 = 19$개 일치. 원문 “노드 8”은 <code>v8</code>로 읽으며, 형제는 같은 부모만 인정해요.</p></div>
+</div>

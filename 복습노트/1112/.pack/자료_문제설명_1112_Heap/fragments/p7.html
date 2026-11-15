@@ -1,89 +1,128 @@
 <div class="layer eli5" data-explanation="understand">
-<h4>무엇을 구하라는 문제일까요?</h4>
-<p>강의 S8 p17–19의 etnis 예제(e 15, t 12, n 8, i 6, s 4, 모두 45글자)를 세 단계로 따라가요. (a)는 고정 길이 코드의 비트 수, (b)는 허프만 트리를 만들 때 ‘가장 작은 두 값’을 최소 힙으로 꺼내는 과정의 힙 배열, (c)는 완성된 트리의 코드 길이와 전체 비트 수, 그리고 (a)보다 얼마나 줄었는지예요.</p>
-<p>(b)의 최소 힙 추적은 이 문제를 위해 만든 질문이에요. 원래 슬라이드 p18은 매번 ‘정렬’해 가장 작은 둘을 고른다고만 적었어요.</p>
+  <h4>핵심 조건과 구할 것</h4>
+  <p>S8 p17–19의 <code>etnis</code> 예제(<code>e 15, t 12, n 8, i 6, s 4</code>, 총 45글자)에서 <strong>(a) 고정 길이 비트 수</strong>, <strong>(b) 최소 힙으로 허프만 병합을 추적한 힙 배열</strong>, <strong>(c) 코드 길이·총 비트·절감 비율</strong>을 구해요.</p>
+  <ul>
+    <li><strong>규칙·출처 주의</strong>: (b)의 최소 힙 배열 추적은 이 문제를 위한 자체 출제이며(원 슬라이드는 매 단계 정렬), (c)의 코드는 문제 규칙(<code>왼쪽 0, 오른쪽 1</code>)과 슬라이드 p19 그림(<code>왼쪽 1, 오른쪽 0</code>)의 0·1 배정이 반대지만 코드 길이와 총 비트는 같아요.</li>
+  </ul>
 </div>
+
 <div class="layer formal" data-explanation="recall">
-<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
-<p>(a) ‘같은 길이의 비트 코드’라는 단서에서 고정 길이 코드를 떠올려요. 비트 $b$개는 $2^b$가지를 구별하니 $2^b \ge 5$인 가장 작은 $b$가 필요해요. 슬라이드 p17의 “45 * 3 = 135 bits”가 이 계산이에요(<a href="정리노트_1112_Heap.html#s2-huffman-why">정리노트: 자주 나오는 글자에 짧은 코드</a>).</p>
-<p>(b) ‘삭제 두 번 → 합을 삽입’이라는 단서에서 <strong>최소 힙(min heap)</strong>의 두 연산을 떠올려요. 최소 힙은 완전 이진 트리이면서 부모 ≤ 자식이라 루트가 늘 가장 작은 값이에요. 삽입은 맨 끝에 놓고 부모보다 작으면 올리고(upheap), 삭제는 루트를 꺼낸 뒤 마지막 노드를 루트로 옮겨 <strong>더 작은</strong> 자식보다 크면 내려요(downheap). 최대 힙과 비교 방향만 반대예요(<a href="정리노트_1112_Heap.html#s2-huffman-build">정리노트: 가장 작은 두 개를 묶어 트리 만들기</a>).</p>
-<p>(c) 코드 길이는 글자의 깊이, 전체 비트는 $\sum(\text{빈도}\times\text{코드 길이})$, 줄어든 비율은 $\frac{135-100}{135}$처럼 ‘줄어든 양 ÷ 원래 양’이에요(<a href="정리노트_1112_Heap.html#s2-huffman-code">정리노트: 비트 코드와 100비트</a>).</p>
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이유와 조건</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>(a) 5글자, 같은 길이 코드</td>
+          <td> $2^b \ge 5$ 인 최소 정수 $b$, 총 비트 $45 \times b$ </td>
+          <td>2비트는 4종뿐이라 모자라고 3비트로 8종까지 표현해요(S8 p17, <a href="정리노트_1112_Heap.html#s2-huffman-why">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>(b) 삭제 2번 → 합 삽입</td>
+          <td>1-indexed 최소 힙: 부모 $\le$ 자식</td>
+          <td>삭제 시 끝 원소를 루트로 올리고 <strong>더 작은</strong> 자식과 교환해 downheap해요(<a href="정리노트_1112_Heap.html#s2-huffman-build">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>(c) 총 비트 / 감소 비율</td>
+          <td> $\sum(\text{빈도}\times\text{길이})$, 감소율 $= \frac{\text{줄어든 양}}{\text{원래 비트}}$ </td>
+          <td>원래 고정 길이 비트(135)를 분모로 삼아야 올바른 압축 절감률이에요(<a href="정리노트_1112_Heap.html#s2-huffman-code">정리노트</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
 <div class="layer formal" data-explanation="start">
-<h4>종이에 쓰는 실제 첫 줄</h4>
-<p>(a)는 식 한 줄이에요.</p>
-<pre><code>2^2 = 4 &lt; 5 &lt;= 2^3 = 8 → 3 bit, 45 × 3 = 135 bit</code></pre>
-<p>(b)는 삽입 다섯 번을 끝낸 힙 배열을 먼저 적어요: 4 6 8 12 15. 넣을 때마다 부모보다 커서 아무 값도 올라가지 않아요.</p>
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>(a) 2^2 = 4 &lt; 5 &lt;= 2^3 = 8  →  3 bit/글자,  45 × 3 = 135 bit
+(b) 4, 6, 8, 12, 15 순차 삽입(모두 부모보다 큼)  →  초기 heap[1..5] = [4, 6, 8, 12, 15]</code></pre>
 </div>
+
 <div class="layer formal" data-explanation="solve">
-<h4>왜 이렇게 푸는지 함께 따라가요</h4>
-<div data-subpart="a">
-<h5>(a) 고정 길이 코드</h5>
-<p>글자가 5개라 2비트(4가지)로는 모자라고 3비트(8가지)면 돼요. 45글자 × 3비트 = 135비트예요.</p>
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) 고정 길이 코드</h5>
+    <p>다섯 글자를 구별하려면 $2^2 = 4 &lt; 5 \le 2^3 = 8$이므로 글자당 <strong>3비트</strong>, 45글자 전체는 $45 \times 3 = \mathbf{135}$비트예요.</p>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) 최소 힙 기반 허프만 병합 추적 (1-indexed)</h5>
+    <p>매 반복마다 <code>삭제(최소 1) → 삭제(최소 2) → 두 값의 합 삽입</code>을 원소가 1개 남을 때까지 실행해요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>반복</th><th>첫 삭제 뒤 <code>heap</code></th><th>둘째 삭제 뒤 <code>heap</code></th><th>합친 두 값</th><th>합 삽입 직후 <code>heap</code></th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>6 12 8 15</td><td>8 12 15</td><td>4 + 6 = 10</td><td>8 10 15 12</td></tr>
+          <tr><td>2</td><td>10 12 15</td><td>12 15</td><td>8 + 10 = 18</td><td>12 15 18</td></tr>
+          <tr><td>3</td><td>15 18</td><td>18</td><td>12 + 15 = 27</td><td>18 27</td></tr>
+          <tr><td>4</td><td>27</td><td>빈 힙</td><td>18 + 27 = 45</td><td>45</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>1회차 첫 삭제에서는 4를 꺼낸 뒤 끝 원소 15를 루트로 옮기고, 자식 6·8 중 작은 6과 바꾼 다음 다시 자식 12와 바꿔 <code>6 12 8 15</code>가 돼요. 합 10을 4번 칸에 넣으면 부모 12보다 작아 올라가고 부모 8보다 커서 멈춰 <code>8 10 15 12</code>가 돼요.</p>
+  </div>
+  <div data-subpart="c">
+    <h5>(c) 코드 길이, 총 비트, 절감 비율</h5>
+    <pre><code>            [45]
+        0 /      \ 1
+       [18]      [27]
+     0 /  \ 1  0 /  \ 1
+    [10]   n    t    e
+   0 / \ 1
+    s   i</code></pre>
+    <p>슬라이드 p19 배치(18 왼쪽, 27 오른쪽)에 <strong>문제 규칙(왼쪽 0, 오른쪽 1)</strong>을 붙이면 <code>s 000, i 001, n 01, t 10, e 11</code>이고, <strong>슬라이드 규칙(왼쪽 1, 오른쪽 0)</strong>이면 <code>e 00, t 01, n 10, i 110, s 111</code>이에요. 두 경우 모두 코드 길이는 같습니다.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>글자</th><th>빈도</th><th>코드 (문제: 왼0)</th><th>코드 (슬라이드: 왼1)</th><th>코드 길이</th><th>비트 수</th></tr></thead>
+        <tbody>
+          <tr><td>e</td><td>15</td><td>11</td><td>00</td><td>2</td><td>30</td></tr>
+          <tr><td>t</td><td>12</td><td>10</td><td>01</td><td>2</td><td>24</td></tr>
+          <tr><td>n</td><td>8</td><td>01</td><td>10</td><td>2</td><td>16</td></tr>
+          <tr><td>i</td><td>6</td><td>001</td><td>110</td><td>3</td><td>18</td></tr>
+          <tr><td>s</td><td>4</td><td>000</td><td>111</td><td>3</td><td>12</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>총 비트는 $30+24+16+18+12 = \mathbf{100}$비트이고, $135 - 100 = \mathbf{35}$비트($\frac{35}{135} \approx \mathbf{25.9\%}$, 슬라이드 반올림 26%)가 줄었어요. 이 트리는 마침 완전 이진 트리·최대 힙 모양을 띠지만, 허프만 트리가 늘 힙 모양인 것은 아니에요(예: 빈도 1, 2, 4, 8).</p>
+    <p><em>보충 · 수업에서 유도하지 않은 표준 설명</em>: 어떤 코드도 다른 코드의 접두어가 아닌 접두어 코드(prefix code)이므로, <code>11000111</code>처럼 비트열을 붙여 써도 구분자(delimiter) 없이 <code>110|00|111</code>(<code>i, e, s</code>)로 유일하게 복호화돼요.</p>
+  </div>
 </div>
-<div data-subpart="b">
-<h5>(b) 최소 힙으로 가장 작은 둘 꺼내기</h5>
-<p>한 반복은 ‘삭제 → 삭제 → 합 삽입’이에요. 힙 배열은 1번 칸부터 적어요.</p>
-<div class="table-wrap"><table><thead><tr><th>반복</th><th>첫 삭제 뒤</th><th>둘째 삭제 뒤</th><th>합친 두 값</th><th>합 삽입 직후</th></tr></thead><tbody>
-<tr><td>1</td><td>6 12 8 15</td><td>8 12 15</td><td>4 + 6 = 10</td><td>8 10 15 12</td></tr>
-<tr><td>2</td><td>10 12 15</td><td>12 15</td><td>8 + 10 = 18</td><td>12 15 18</td></tr>
-<tr><td>3</td><td>15 18</td><td>18</td><td>12 + 15 = 27</td><td>18 27</td></tr>
-<tr><td>4</td><td>27</td><td>빈 힙</td><td>18 + 27 = 45</td><td>45</td></tr>
-</tbody></table></div>
-<p>1회차 첫 삭제를 자세히 보면, 4를 꺼내고 마지막 15를 루트로 옮겨 15 6 8 12가 돼요. 자식 6, 8 중 작은 6과 바꾸고(6 15 8 12), 다시 자식 12보다 커서 바꿔요(6 12 8 15). 1회차 삽입은 10을 4번 칸에 놓으면 부모 2번 칸 12보다 작아 올라가고, 부모 1번 칸 8보다는 커서 멈춰요 → 8 10 15 12.</p>
-<p>합친 순서 10, 18, 27, 45는 슬라이드 p18 그림의 합 노드와 같아요.</p>
-</div>
-<div data-subpart="c">
-<h5>(c) 코드 길이와 줄어든 비트</h5>
-<p>합친 순서대로 트리를 만들면 45 아래에 18(10(s, i), n)과 27(t, e)이 달려요. 슬라이드 p19 그림은 18을 왼쪽, 27을 오른쪽에 두고 가지 표시를 왼쪽 1, 오른쪽 0으로 붙였어요.</p>
-<pre><code>            45
-        1 /    \ 0
-        18      27
-     1 /  \ 0  1/ \0
-     10    n   t   e
-  1 /  \ 0
-   s    i</code></pre>
-<p>문제의 규칙(왼쪽 0, 오른쪽 1)으로 같은 트리를 읽으면 s 000, i 001, n 01, t 10, e 11이고, 슬라이드처럼 왼쪽 1로 읽으면 e 00, t 01, n 10, i 110, s 111이에요. 어느 쪽이든 코드 길이는 e·t·n 2, i·s 3이에요.</p>
-<div class="table-wrap"><table><thead><tr><th>글자</th><th>빈도</th><th>코드(왼쪽 0)</th><th>코드(슬라이드, 왼쪽 1)</th><th>길이</th><th>비트 수</th></tr></thead><tbody>
-<tr><td>e</td><td>15</td><td>11</td><td>00</td><td>2</td><td>30</td></tr>
-<tr><td>t</td><td>12</td><td>10</td><td>01</td><td>2</td><td>24</td></tr>
-<tr><td>n</td><td>8</td><td>01</td><td>10</td><td>2</td><td>16</td></tr>
-<tr><td>i</td><td>6</td><td>001</td><td>110</td><td>3</td><td>18</td></tr>
-<tr><td>s</td><td>4</td><td>000</td><td>111</td><td>3</td><td>12</td></tr>
-</tbody></table></div>
-<p>$15\cdot2+12\cdot2+8\cdot2+6\cdot3+4\cdot3 = 100$비트예요. $135-100 = 35$비트가 줄었고, $\frac{35}{135} \approx 0.259$, 곧 약 25.9%예요. 슬라이드는 반올림해 26%라고 적었어요.</p>
-<p>이 트리는 레벨 순서 45 18 27 10 8 12 15 4 6으로 빈칸 없이 차 있어 마침 완전 이진 트리이고, 부모가 두 자식보다 크거나 같아 최대 힙 모양이에요. 하지만 허프만 트리가 늘 그런 것은 아니에요. 빈도 1, 2, 4, 8이면 1+2=3, 3+4=7, 7+8=15로 한쪽으로 뻗어요. 힙이 허프만 코드에서 하는 일은 (b)처럼 가장 작은 두 빈도를 꺼내는 거예요.</p>
-<p>보충 · 수업에서 유도하진 않았어요: 이 코드는 어떤 코드도 다른 코드의 앞부분이 아닌 접두어 코드(prefix code)예요. 그래서 비트열을 앞에서부터 읽으면 글자 사이에 구분자(delimiter)가 없어도 하나로만 풀려요. 예를 들어 슬라이드 코드로 11000111은 110, 00, 111로만 끊겨 i, e, s예요. 수업에서 delimiter가 필요하다고 덧붙이신 부분은 정리노트의 보충에서 이 표준 설명으로 이어 정리했어요.</p>
-</div>
-</div>
+
 <div class="layer formal" data-explanation="verify">
-<h4>완성 답과 검산</h4>
-<div data-subpart="a">
-<p>(a) 완성 답: 글자당 3비트, 45 × 3 = 135비트.</p>
-<p>검산: 빈도 합 $15+12+8+6+4 = 45$이고, $2^2 = 4 &lt; 5$, $2^3 = 8 \ge 5$예요. 슬라이드 p17의 “45 * 3 = 135 bits”와 같아요.</p>
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 완성 답</strong>: 글자당 3비트, 총 135비트.</p>
+    <p><strong>검산</strong>: 빈도 합 $15+12+8+6+4 = 45$ 이고 $2^2=4 &lt; 5 \le 8=2^3$ 이므로 S8 p17(<code>45 * 3 = 135 bits</code>)과 일치해요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 완성 답</strong>: 초기 <code>4 6 8 12 15</code> → <code>8 10 15 12</code> → <code>12 15 18</code> → <code>18 27</code> → <code>45</code>.</p>
+    <p><strong>검산</strong>: 매 상태가 모든 $i \ge 2$에 대해 $A[\lfloor i/2 \rfloor] \le A[i]$ (최소 힙 성질)를 만족하고, 병합 순 <code>10, 18, 27, 45</code>가 S8 p18 그림과 일치하며 downheap 중 동점이 없어요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 완성 답</strong>: 길이 <code>e·t·n 2, i·s 3</code>, 총 100비트, 35비트(약 25.9%, 반올림 26%) 절약.</p>
+    <p><strong>검산</strong>: 내부 노드 합 $10+18+27+45 = \mathbf{100}$ 이 표의 비트 합과 같고, 슬라이드 p19의 100 bits·35 bit(26%)와 일치해요.</p>
+  </div>
 </div>
-<div data-subpart="b">
-<p>(b) 완성 답: 시작 4 6 8 12 15 → 4+6=10 후 8 10 15 12 → 8+10=18 후 12 15 18 → 12+15=27 후 18 27 → 18+27=45 후 45.</p>
-<p>검산: 문제에 적힌 규칙만으로 따로 짠 최소 힙 시뮬레이션(<code>evidence/independent_verify.py</code>의 p7 블록)이 네 반복의 합친 값과 삽입 직후 배열을 모두 같게 냈고, downheap에서 두 자식이 같은 값인 동점은 생기지 않았어요. 각 상태에서 모든 $i \ge 2$에 대해 $A[\lfloor i/2\rfloor] \le A[i]$가 성립해요.</p>
-</div>
-<div data-subpart="c">
-<p>(c) 완성 답: 코드 길이 e·t·n 2, i·s 3. 총 100비트, 35비트(약 25.9%, 반올림 26%) 감소.</p>
-<p>검산: 내부 노드 값의 합 $10+18+27+45 = 100$이 표의 비트 합과 같아요. 독립 시뮬레이션도 같은 길이와 100비트, 35비트, 25.9%를 냈고, 슬라이드 p19의 비트 코드 표·100bits·“35 bit, 즉 26% 줄임”과 일치해요.</p>
-</div>
-</div>
+
 <div class="layer warn" data-explanation="pitfall">
-<h4>이 문제에서 특히 조심할 점</h4>
-<p>(b)에서 최소 힙 삭제 때 큰 자식과 바꾸면 최대 힙 규칙이 섞인 거예요. 최소 힙은 <strong>더 작은</strong> 자식과 바꿔요. 1회차 첫 삭제에서 15를 8과 바꾸면 6이 루트의 자식으로 남아 부모 ≤ 자식이 깨져요.</p>
-<p>(b) 3회차에서 방금 만든 18을 무조건 다음 값 12와 합쳐 30을 만들면 안 돼요. 남은 값 12, 15, 18 중 가장 작은 둘은 12와 15라 27이 돼요. 최소 힙의 루트를 두 번 꺼내면 이 판단이 저절로 돼요.</p>
-<p>(c)에서 슬라이드 코드(e 00 …)를 그대로 쓰면서 ‘왼쪽 0’이라고 하면 서로 맞지 않아요. 같은 트리라도 0·1 배정에 따라 비트가 바뀌니, 어떤 규칙으로 읽었는지 밝혀요. 줄어든 비율은 $35/100$이 아니라 원래 양 135로 나눠요.</p>
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>(b) 삭제에서 최대 힙 습관으로 “큰 자식”과 바꾸면</strong>: 1회차 첫 삭제(<code>15, 6, 8, 12</code>)에서 15를 <code>8</code>과 바꿔 버리면 루트가 <code>8</code>이 되고 자식에 <code>6</code>이 남아 <strong>부모(8) &gt; 자식(6)</strong>으로 최소 힙이 깨져요.</li>
+    <li><strong>(b) 3회차에서 방금 만든 <code>18</code>을 다음 값 <code>12</code>와 무조건 합치면</strong>: 남은 <code>12, 15, 18</code> 중 최소 둘은 <code>12, 15</code>이므로 <code>27</code>이 맞아요. <code>18+12=30</code>으로 합치면 총 비트가 100을 넘겨요.</li>
+    <li><strong>(c) 감소 비율 분모를 100으로 잡거나 슬라이드 코드(<code>e=00</code>)에 “왼쪽 0”이라 적으면</strong>: $\frac{35}{100}=35\%$는 압축 후 크기로 나눈 잘못된 비율이고, 왼쪽 0 규칙에서는 <code>e=11</code>이 맞아요.</li>
+  </ul>
 </div>
+
 <div class="layer formal" data-explanation="retry">
-<h4>해설을 닫고 다시 해 봐요</h4>
-<ol><li>$2^b \ge 5$로 (a)의 3비트와 135비트를 써요.</li><li>4 6 8 12 15에서 시작해 ‘삭제, 삭제, 합 삽입’을 네 번 하며 매번 작은 자식과 바꾼 힙 배열을 적어요.</li><li>트리를 그려 왼쪽 0으로 코드를 읽고, 100비트와 $35/135$를 계산해요.</li></ol>
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>최소 힙 <code>delete_min</code>을 손으로 추적할 때 → 끝 원소를 1번 칸에 올리고 <strong>두 자식 중 작은 쪽</strong>을 동그라미 치며 내려가세요.</li>
+    <li>트리를 완성한 뒤 “왼쪽 0”과 “왼쪽 1” 중 문제 지시를 다시 확인하고, 감소율 분모가 <code>135</code>인지 점검하세요.</li>
+  </ol>
 </div>
+
 <div class="sum" hidden>
-<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>고정 길이: $2^b \ge 5$ → 3비트. 최소 힙: 부모 ≤ 자식, 삭제는 마지막 노드를 루트로 옮겨 더 작은 자식과 교환, 삽입은 끝에서 upheap. 총 비트 $\sum(\text{빈도}\times\text{길이})$, 감소율 = 줄어든 양 ÷ 135.</p></div>
-<div class="summary-group"><h4>첫 줄</h4><p>3비트, 45 × 3 = 135. 삽입 뒤 힙 4 6 8 12 15.</p></div>
-<div class="summary-group"><h4>핵심 판단</h4><p>(b) 10 → 8 10 15 12, 18 → 12 15 18, 27 → 18 27, 45 → 45. (c) e·t·n 2, i·s 3. 왼쪽 0이면 s 000, i 001, n 01, t 10, e 11. 슬라이드(왼쪽 1)는 e 00, t 01, n 10, i 110, s 111. 이 트리는 마침 최대 힙 모양이지만 허프만 트리가 늘 그렇진 않아요(예: 1, 2, 4, 8).</p></div>
-<div class="summary-group"><h4>검산</h4><p>100비트, 35비트·약 25.9%(26%) 감소. 내부 노드 합 10+18+27+45 = 100, 독립 시뮬레이션·슬라이드 p19와 일치. 접두어 코드라 구분자 없이 풀려요(보충).</p></div>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>$2^b \ge 5 \implies 3$비트(135 bit). 최소 힙은 작은 자식 쪽으로 downheap. 감소율 = 절감량 ÷ 원래 135 bit.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>(a) $45 \times 3 = 135$. (b) 4, 6, 8, 12, 15 삽입 후 <code>heap[1..5] = [4, 6, 8, 12, 15]</code>.</p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p>(b) 10→<code>[8,10,15,12]</code>, 18→<code>[12,15,18]</code>, 27→<code>[18,27]</code>, 45→<code>[45]</code>. (c) 길이 <code>e·t·n 2, i·s 3</code> (왼0과 슬라이드 왼1은 비트 반대, 길이·100 bit 동일).</p></div>
+  <div class="summary-group"><h4>검산</h4><p>내부 노드 합 $10+18+27+45 = 100$, $35/135 \approx 25.9\%$(슬라이드 26%). 접두어 코드 보충 설명 포함.</p></div>
 </div>

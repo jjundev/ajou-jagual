@@ -566,361 +566,917 @@
       <p>왼쪽 목차로 문항을 고르고, 오른쪽 문제를 보며 해설을 따라가요.</p>
     </div>
 <section id="problems"><h2>문항별 설명</h2><article class="topic" id="p1"><h3>P1. 하나씩 넣어 최대 힙 만들고 하나씩 꺼내 정렬하기</h3><p class="panel-meta">2015-ljw-q4 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=1">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p1"><div class="layer formal" data-source-problem="p1"><div data-source-field="conditions"><p>다음과 같은 순서로 숫자가 하나씩 들어와요. 각각에 답해 보세요.</p><p>15, 16, 18, 17, 19, 20, 12</p><ol><li>1) Max Heap을 구성해 보세요. 요소가 하나씩 삽입되면서 어떻게 upheap되는지 보여 주세요.</li><li>2) 1)에서 구성된 Max Heap을 이용해 힙정렬해 보세요. 반드시 단계별로 7개의 요소가 제거되면서 정렬되는 모습을 보여 주세요.</li></ol></div></div><details class="original" data-original-problem="p1"><summary>기출 원문 보기</summary><p>2015 4번 · 10점 · 이정원 교수님</p><p>"4. 다음과 같은 순서의 숫자가 하나씩 입력된다고 할 때, 각각에 답하시오. (10 점)</p><p>15, 16, 18, 17, 19, 20, 12</p><p>1) Max Heap을 구성하라. (요소 하나씩 삽입되면서 어떻게 upheap되는지 보이시오.)</p><p>2)에서 구성된 Max Heap을 이용하여 힙정렬하시오. (반드시 단계별로 7개의 요소가 제거되면서 정렬되는 모습을 보이시오.)"</p></details></div><div class="layer eli5" data-explanation="understand">
-<h4>무엇을 보여 달라는 문제일까요?</h4>
-<p>숫자 일곱 개가 15, 16, 18, 17, 19, 20, 12 순서로 하나씩 들어와요. 1)은 하나 넣을 때마다 최대 힙(max heap)이 어떻게 바뀌는지, 특히 새 값이 위로 올라가는 upheap 과정을 보여 달라는 거예요. 2)는 그렇게 만든 힙에서 값을 일곱 번 꺼내며 정렬되는 모습을 단계마다 보여 달라는 거예요.</p>
-<p>원문 2)는 “2)에서 구성된 Max Heap”이라고 적혀 있어요. 2)가 자기 자신을 가리킬 수는 없으니 <strong>원문 오기</strong>이고, 1)에서 만든 힙을 쓰라는 뜻으로 읽어요. 같은 문제를 다시 실은 2021 모의 2번(문제은행 <code>2021-mock1-q2</code>)은 “1)에서 구성된”으로 적혀 있어서 이 읽기를 받쳐 줘요. 원문 글자는 그대로 두고 해석만 이렇게 정해요.</p>
+  <h4>핵심 조건과 구할 것</h4>
+  <p>입력 <code>15, 16, 18, 17, 19, 20, 12</code>를 차례대로 넣어 <strong>1) Max Heap 구성 과정(upheap)</strong>과 <strong>2) 7개 원소를 하나씩 꺼내는 힙정렬 과정</strong>을 단계별로 보여 주는 문제예요.</p>
+  <ul>
+    <li><strong>원문 오기 주의</strong>: 원문 2)의 “2)에서 구성된”은 오기이며 <strong>1)에서 만든 Max Heap</strong>을 이어서 써요.</li>
+    <li><strong>표기 기준</strong>: 각 단계 결과는 배열 <code>1</code>번 칸부터 레벨 순서로 적어요.</li>
+  </ul>
 </div>
 <div class="layer formal" data-explanation="recall">
-<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
-<p>‘Max Heap을 구성하라’와 ‘하나씩 입력’이라는 단서에서 <strong>최대 힙의 정의와 삽입</strong>을 떠올려요. 최대 힙은 두 조건을 함께 지키는 트리예요. 하나는 모양 조건으로, 완전 이진 트리(complete binary tree)라서 위 레벨부터 꽉 채우고 마지막 레벨은 왼쪽부터 채워요. 다른 하나는 값 조건으로, 모든 부모와 자식 사이에서 $\text{key}(\text{부모}) \ge \text{key}(\text{자식})$이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">정리노트: 힙의 정의</a>).</p>
-<p>모양 조건 덕분에 노드를 레벨 순서로 배열 첨자 1, 2, 3, …에 담을 수 있어요. 첨자 $i$ 노드의 왼쪽 자식은 $2i$, 오른쪽 자식은 $2i+1$, 부모는 $\lfloor i/2 \rfloor$예요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">정리노트: 배열 표현</a>). 그래서 답을 레벨 순서 한 줄로 적으면 트리와 배열을 동시에 적은 셈이에요.</p>
-<p>‘어떻게 upheap되는지’라는 말은 삽입 절차를 그대로 가리켜요. 새 값을 다음 빈자리(배열 맨 끝)에 놓아 모양 조건을 먼저 지키고, 부모보다 크면 바꾸며 올라가 값 조건을 되살려요. 부모보다 작거나 같거나 루트에 닿으면 멈춰요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">정리노트: upheap</a>).</p>
-<p>‘7개의 요소가 제거되면서 정렬’이라는 말에서는 <strong>힙 정렬(heap sort)</strong>을 떠올려요. 최대 힙의 루트가 늘 가장 큰 값이니 루트를 계속 꺼내면 큰 값부터 나와요. 꺼내는 절차가 downheap이에요. 루트를 꺼내고, 마지막 노드를 루트로 올린 뒤, 두 자식 중 <strong>더 큰 쪽</strong>보다 작으면 바꾸며 내려가요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">정리노트: downheap</a>). 넣기와 꺼내기가 각각 높이만큼인 $O(\log n)$이고 $n$번씩 하니 전체는 $O(n\log n)$이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-heapsort">정리노트: 힙 정렬</a>).</p>
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Max Heap 구성 · 하나씩 입력</td>
+          <td>완전 이진 트리 + 최대 힙 조건( $\text{key}(\text{부모}) \ge \text{key}(\text{자식})$ )</td>
+          <td>모양과 값 조건이 매 삽입마다 지켜져야 해요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">정리노트: 힙의 정의</a>).</td>
+        </tr>
+        <tr>
+          <td>어떻게 upheap되는지</td>
+          <td>끝자리 <code>i</code>에 놓고 부모 $\lfloor i/2 \rfloor$ 와 비교·교환</td>
+          <td>부모보다 크면 올라가고, 작거나 같거나 루트(<code>1</code>)면 멈춰요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">정리노트: upheap</a>).</td>
+        </tr>
+        <tr>
+          <td>7개 제거하며 힙정렬</td>
+          <td>루트 삭제 + 마지막 노드를 <code>[1]</code>로 올려 큰 자식(<code>2i</code>, <code>2i+1</code> 중)과 downheap</td>
+          <td>꺼낸 최댓값을 배열 뒤(<code>a[n-1]</code>부터)에 채우면 $O(n\log n)$ 오름차순 정렬이 돼요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">downheap</a> · <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-heapsort">힙 정렬</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <div class="layer formal" data-explanation="start">
-<h4>종이에 쓰는 실제 첫 줄</h4>
-<p>삽입 과정을 표로 적을 준비를 하고, 첫 행을 이렇게 써요. 힙이 비어 있으니 15는 첨자 [1], 곧 루트에 놓이고 비교할 부모가 없어요.</p>
-<pre><code>단계 1 | 삽입 15 | [1]에 놓음, 부모 없음 | 힙: 15</code></pre>
-<p>표의 마지막 열은 늘 ‘그 단계가 끝난 뒤의 레벨 순서’로 적어요. 다음 행은 16을 [2]에 놓고 부모 [1]과 비교하는 데서 시작해요.</p>
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>1) 삽입 15 → [1]=15 (빈 힙, 부모 없음)  |  힙: 15
+   삽입 16 → [2]=16, 부모 [1]=15 &lt; 16 → 교환  |  힙: 16 15</code></pre>
 </div>
 <div class="layer formal" data-explanation="solve">
-<h4>왜 이렇게 푸는지 함께 따라가요</h4>
-<div data-subpart="main">
-<h5>1) 하나씩 넣으며 upheap</h5>
-<p>새 값이 처음 놓이는 첨자는 ‘지금까지의 노드 수 + 1’이에요. 그 자리의 부모 첨자를 $\lfloor i/2 \rfloor$로 찾아 비교해요.</p>
-<div class="table-wrap"><table><thead><tr><th>단계</th><th>삽입</th><th>처음 자리</th><th>비교와 교환</th><th>힙(레벨 순서)</th></tr></thead><tbody>
-<tr><td>1</td><td>15</td><td>[1]</td><td>부모 없음</td><td>15</td></tr>
-<tr><td>2</td><td>16</td><td>[2]</td><td>부모 [1]=15보다 커서 교환, 루트 도착</td><td>16 15</td></tr>
-<tr><td>3</td><td>18</td><td>[3]</td><td>부모 [1]=16보다 커서 교환, 루트 도착</td><td>18 15 16</td></tr>
-<tr><td>4</td><td>17</td><td>[4]</td><td>부모 [2]=15와 교환 → 부모 [1]=18보다 작아 멈춤</td><td>18 17 16 15</td></tr>
-<tr><td>5</td><td>19</td><td>[5]</td><td>부모 [2]=17과 교환 → 부모 [1]=18과 교환</td><td>19 18 16 15 17</td></tr>
-<tr><td>6</td><td>20</td><td>[6]</td><td>부모 [3]=16과 교환 → 부모 [1]=19와 교환</td><td>20 18 19 15 17 16</td></tr>
-<tr><td>7</td><td>12</td><td>[7]</td><td>부모 [3]=19보다 작아 그대로</td><td>20 18 19 15 17 16 12</td></tr>
-</tbody></table></div>
-<p>upheap은 새 값이 지나는 경로 하나만 건드려요. 예를 들어 5단계에서 19는 [5] → [2] → [1]로만 움직이고, 오른쪽의 16은 비교하지 않아요. 바뀌지 않은 쪽은 이미 값 조건을 지키고 있었고, 올라간 값은 원래 부모보다 크니 그 아래도 계속 지켜져요.</p>
-<p>1)의 완성 힙은 루트 20, 20의 자식 18·19, 18의 자식 15·17, 19의 자식 16·12예요. 레벨 순서로 <code>20 18 19 15 17 16 12</code>예요.</p>
-<h5>2) 일곱 번 꺼내며 정렬</h5><p>1)에서 만든 힙(원문 ‘2)에서’는 오기)에서 시작해요.</p>
-<p>꺼낼 때마다 ‘마지막 노드를 루트로 올리기’를 먼저 해서 노드 수를 하나 줄이면서도 완전 이진 트리 모양을 지켜요. 그 다음 내려가는 동안 두 자식 중 큰 쪽과만 비교해요. 오른쪽 자식이 없으면 왼쪽 자식과만 비교해요.</p>
-<div class="table-wrap"><table><thead><tr><th>단계</th><th>꺼낸 값</th><th>루트로 올린 값</th><th>downheap</th><th>남은 힙(레벨 순서)</th></tr></thead><tbody>
-<tr><td>1</td><td>20</td><td>12</td><td>자식 18·19 중 19와 교환 → [3]의 자식은 [6]=16 하나라 16과 교환</td><td>19 18 16 15 17 12</td></tr>
-<tr><td>2</td><td>19</td><td>12</td><td>자식 18·16 중 18과 교환 → 자식 15·17 중 17과 교환</td><td>18 17 16 15 12</td></tr>
-<tr><td>3</td><td>18</td><td>12</td><td>자식 17·16 중 17과 교환 → [2]의 자식은 [4]=15 하나라 15와 교환</td><td>17 15 16 12</td></tr>
-<tr><td>4</td><td>17</td><td>12</td><td>자식 15·16 중 16과 교환 → [3]은 자식 없음</td><td>16 15 12</td></tr>
-<tr><td>5</td><td>16</td><td>12</td><td>자식은 [2]=15 하나라 15와 교환</td><td>15 12</td></tr>
-<tr><td>6</td><td>15</td><td>12</td><td>자식이 없어 끝</td><td>12</td></tr>
-<tr><td>7</td><td>12</td><td>없음</td><td>마지막 하나를 꺼냄</td><td>빈 힙</td></tr>
-</tbody></table></div>
-<p>이 입력에서는 매번 마지막 자리에 12가 남아 있어서, 루트로 올라가는 값이 일곱 번 모두 12예요. 우연한 모양일 뿐 규칙은 아니에요.</p>
-<p>꺼낸 순서는 <code>20, 19, 18, 17, 16, 15, 12</code>예요. 강의 S8 p15의 힙 정렬 프로그램처럼 꺼낸 값을 배열의 맨 뒤 칸부터 채우면 결과는 오름차순 <code>12, 15, 16, 17, 18, 19, 20</code>이에요.</p>
-</div>
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <h5>1) 하나씩 넣으며 upheap (굵은 칸이 새 값 위치 변화)</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>단계</th><th>삽입</th><th>처음 자리</th><th>부모 비교·교환 경로</th><th>힙(레벨 순서)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>15</td><td><code>[1]</code></td><td>부모 없음</td><td><b>15</b></td></tr>
+          <tr><td>2</td><td>16</td><td><code>[2]</code></td><td><code>[1]=15</code>와 교환</td><td><b>16</b> 15</td></tr>
+          <tr><td>3</td><td>18</td><td><code>[3]</code></td><td><code>[1]=16</code>과 교환</td><td><b>18</b> 15 16</td></tr>
+          <tr><td>4</td><td>17</td><td><code>[4]</code></td><td><code>[2]=15</code>와 교환 → <code>[1]=18</code>보다 작아 멈춤</td><td>18 <b>17</b> 16 15</td></tr>
+          <tr><td>5</td><td>19</td><td><code>[5]</code></td><td><code>[2]=17</code> → <code>[1]=18</code>과 차례로 교환</td><td><b>19</b> 18 16 15 17</td></tr>
+          <tr><td>6</td><td>20</td><td><code>[6]</code></td><td><code>[3]=16</code> → <code>[1]=19</code>와 차례로 교환</td><td><b>20</b> 18 19 15 17 16</td></tr>
+          <tr><td>7</td><td>12</td><td><code>[7]</code></td><td><code>[3]=19</code>보다 작아 그대로</td><td>20 18 19 15 17 16 <b>12</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>1)의 완성 Max Heap은 루트 20, 자식 18·19, 18의 자식 15·17, 19의 자식 16·12인 <code>20 18 19 15 17 16 12</code>예요.</p>
+    <h5>2) 1)에서 만든 힙에서 7번 꺼내며 힙정렬 (굵은 값이 내려가는 끝 노드)</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>단계</th><th>꺼낸 값</th><th>루트로 올린 값</th><th>downheap 비교·교환</th><th>남은 힙(레벨 순서)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>20</td><td><b>12</b></td><td>18·<b>19</b> 중 19와 교환 → <code>[3]</code>의 외자식 <code>[6]=16</code>과 교환</td><td>19 18 16 15 17 <b>12</b></td></tr>
+          <tr><td>2</td><td>19</td><td><b>12</b></td><td><b>18</b>·16 중 18과 교환 → 15·<b>17</b> 중 17과 교환</td><td>18 17 16 15 <b>12</b></td></tr>
+          <tr><td>3</td><td>18</td><td><b>12</b></td><td><b>17</b>·16 중 17과 교환 → <code>[2]</code>의 외자식 <code>[4]=15</code>와 교환</td><td>17 15 16 <b>12</b></td></tr>
+          <tr><td>4</td><td>17</td><td><b>12</b></td><td>15·<b>16</b> 중 16과 교환 → <code>[3]</code> 자식 없음</td><td>16 15 <b>12</b></td></tr>
+          <tr><td>5</td><td>16</td><td><b>12</b></td><td>외자식 <code>[2]=15</code>와 교환</td><td>15 <b>12</b></td></tr>
+          <tr><td>6</td><td>15</td><td><b>12</b></td><td>자식 없음</td><td><b>12</b></td></tr>
+          <tr><td>7</td><td>12</td><td>없음</td><td>마지막 1개 제거</td><td>빈 힙</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>꺼낸 순서 <code>20, 19, 18, 17, 16, 15, 12</code>를 배열 뒤 칸(<code>a[6]</code> → <code>a[0]</code>)부터 채우면 오름차순 <strong><code>12, 15, 16, 17, 18, 19, 20</code></strong>이 돼요.</p>
+  </div>
 </div>
 <div class="layer formal" data-explanation="verify">
-<h4>완성 답과 검산</h4>
-<div data-subpart="main">
-<p>2)는 1)의 힙을 쓴다는 해석(원문 ‘2)에서’는 오기)으로, 완성 답은 1) 삽입마다 <code>15 → 16 15 → 18 15 16 → 18 17 16 15 → 19 18 16 15 17 → 20 18 19 15 17 16 → 20 18 19 15 17 16 12</code>, 2) 삭제마다 <code>19 18 16 15 17 12 → 18 17 16 15 12 → 17 15 16 12 → 16 15 12 → 15 12 → 12 → 빈 힙</code>, 정렬 결과 <code>12 15 16 17 18 19 20</code>이에요.</p>
-<p>검산은 기존 답안 코드를 쓰지 않고 새로 쓴 시뮬레이션(첨자 1부터, 삽입 upheap, 삭제 downheap)으로 했어요. 열네 번의 연산 뒤마다 모든 $i \ge 2$에 대해 $A[\lfloor i/2 \rfloor] \ge A[i]$를 검사했고 모두 통과했어요. 배열 [1]~[n]이 빈칸 없이 차므로 완전 이진 트리 모양도 지켜져요.</p>
-<pre><code>제거 순서 [20, 19, 18, 17, 16, 15, 12]
-a[n-1]부터 채운 결과 [12, 15, 16, 17, 18, 19, 20] == sorted? True</code></pre>
-<p>중간 상태 열네 개가 위 두 표와 모두 같았고, 2015 기출 원본 답과 문제은행의 답과도 같아요. 꺼낸 값이 매번 직전보다 작거나 같다는 점도 확인돼서, 루트가 늘 최댓값이라는 성질과 맞아요.</p>
-<p>덧붙여 S8 p13 의사코드를 글자 그대로 옮겨 돌려 보면 1·3·5단계처럼 오른쪽 자식이 없는 자리에서 힙 밖의 옛 칸을 오른쪽 자식으로 읽어 결과가 달라져요(예: 1단계 <code>19 18 12 15 17 16</code>, 최대 힙 아님). 이 문항의 답은 슬라이드 p12의 “자식 중 더 큰 값과 change” 규칙과 수업 칠판의 “오른쪽 자식이 없으면 왼쪽과 비교” 처리를 따른 결과예요. 의사코드의 이 경계 문제는 P11에서 따로 다뤄요.</p>
-</div>
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>(2)는 1)의 힙을 이어 사용): 1) 최종 <code>20 18 19 15 17 16 12</code> / 2) 제거 순서 <code>20, 19, 18, 17, 16, 15, 12</code> → 정렬 결과 <code>12, 15, 16, 17, 18, 19, 20</code>.</p>
+    <ul>
+      <li><strong>1) 힙 불변식 전수 확인</strong>: 모든 부모·자식 쌍에서 $20 \ge 18, 19$, $18 \ge 15, 17$, $19 \ge 16, 12$가 성립하고 인덱스 <code>[1..7]</code>이 빈칸 없이 차 있어요.</li>
+      <li><strong>2) 단조 감소·원소 보존 확인</strong>: 꺼낸 값이 $20 \ge 19 \ge 18 \ge 17 \ge 16 \ge 15 \ge 12$로 매번 직전 이하이고, 정렬 결과 7개 원소가 입력 multiset과 같아요.</li>
+      <li><strong>경계 상태 확인</strong>: 마지막 7단계( $n=1 \to 0$ )에서 <code>12</code>를 꺼내면 빈 힙이 되고, 1·3·5단계처럼 오른쪽 자식이 없을 때는 왼쪽 자식 하나와만 비교해 힙이 유지돼요.</li>
+    </ul>
+  </div>
 </div>
 <div class="layer warn" data-explanation="pitfall">
-<h4>이 문제에서 특히 조심할 점</h4>
-<p>최대 힙은 정렬된 트리가 아니에요. 1)의 답 <code>20 18 19 …</code>처럼 형제끼리는 순서가 없어요. 넣은 값을 먼저 정렬한 뒤 레벨 순서로 채우면 upheap 과정을 보이라는 요구를 놓치고 모양도 달라질 수 있어요.</p>
-<p>downheap에서 왼쪽 자식과만 비교하면 틀려요. 2)의 1단계에서 12를 왼쪽 18과 바꾸면 루트 18 아래에 19가 남아 값 조건이 깨져요. 두 자식 중 <strong>큰 쪽</strong>과 바꿔야 해요. 반대로 오른쪽 자식이 없는 자리(1·3·5단계)에서는 왼쪽 자식 하나와 비교하는 것을 잊지 말아요.</p>
-<p>꺼낼 때 비는 자리를 자식으로 채워 올리면 마지막 레벨에 구멍이 생길 수 있어요. 항상 마지막 노드를 루트로 올리는 데서 시작해요. 원문 “2)에서 구성된”을 글자 그대로 읽어 다른 힙을 찾지 말고 1)의 힙을 써요.</p>
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>1)을 입력 정렬 후 바로 채우면</strong>: <code>20 19 18 17 16 15 12</code>가 되어 upheap 경로와 무관한 다른 트리가 나오고, 문제의 “어떻게 upheap되는지” 요구를 놓쳐요.</p>
+  <p><strong>2) 1단계에서 두 자식 중 왼쪽(18)과만 비교해 12와 바꾸면</strong>: 루트가 18이 되고 오른쪽 자식 19가 남아 <code>18 &lt; 19</code>로 최대 힙 조건이 즉시 깨져요.</p>
 </div>
 <div class="layer formal" data-explanation="retry">
-<h4>해설을 닫고 다시 해 봐요</h4>
-<ol><li>15, 16, 18, 17, 19, 20, 12를 넣으며 각 값의 처음 첨자와 비교한 부모 첨자를 표로 적어요.</li><li>완성 힙에서 루트를 일곱 번 꺼내며, 매번 두 자식 중 어느 쪽과 바꿨는지 표시해요.</li><li>마지막에 모든 부모 ≥ 자식인지 한 번씩 확인하고 꺼낸 순서를 뒤집어 정렬 결과를 써요.</li></ol>
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>“하나씩 입력 + upheap”을 보면 → 표에 <code>[i]</code>와 부모 <code>[⌊i/2⌋]</code> 비교 열부터 세워 적는다.</li>
+    <li>삭제 1·3·5단계처럼 노드 수가 짝수(<code>n=6, 4, 2</code>)일 때 마지막 부모의 자식은 몇 개뿐인가요?</li>
+    <li>만약 1) 마지막에 <code>12</code> 대신 <code>25</code>가 들어왔다면 2)의 첫 삭제에서 어느 값들이 교환되나요?</li>
+  </ol>
 </div>
 <div class="sum" hidden="">
-<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최대 힙 = 완전 이진 트리 + $\text{key}(\text{부모}) \ge \text{key}(\text{자식})$. 첨자 1부터: 왼쪽 $2i$, 오른쪽 $2i+1$, 부모 $\lfloor i/2 \rfloor$. 삽입은 맨 끝에 놓고 upheap, 삭제는 마지막 노드를 루트로 올리고 큰 자식 쪽으로 downheap. 힙 정렬은 $n$번 넣고 $n$번 꺼내 $O(n\log n)$.</p></div>
-<div class="summary-group"><h4>첫 줄</h4><p>단계 1: 15를 [1]에 놓음, 부모 없음, 힙 15. 원문 “2)에서”는 오기라 1)의 힙을 써요.</p></div>
-<div class="summary-group"><h4>핵심 판단</h4><p>1) 결과 20 18 19 15 17 16 12. 2) 루트를 꺼낼 때마다 12를 올리고 큰 자식과 교환, 오른쪽 자식이 없으면 왼쪽과만 비교. 꺼낸 순서 20 19 18 17 16 15 12.</p></div>
-<div class="summary-group"><h4>검산</h4><p>독립 시뮬레이션 14개 상태와 원본 답 일치, 모든 연산 뒤 부모 ≥ 자식 성립. 정렬 결과 12 15 16 17 18 19 20이 입력을 정렬한 것과 같아요.</p></div>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최대 힙 = 완전 이진 트리 + 부모 $\ge$ 자식. upheap은 끝에서 $\lfloor i/2 \rfloor$와 비교, downheap은 마지막 노드를 루트로 올려 큰 자식과 비교.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>1) <code>[1]=15</code> → <code>[2]=16</code> 교환(<code>16 15</code>). 원문 “2)에서”는 1)의 오기예요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>1) <code>20 18 19 15 17 16 12</code>. 2) 제거 <code>20..12</code>, 뒤부터 채운 정렬 <code>12, 15, 16, 17, 18, 19, 20</code>.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>부모 $\ge$ 자식 6쌍 모두 성립, 꺼낸 값 단조 감소, 7개 원소 보존.</p></div>
 </div>
 </article><article class="topic" id="p2"><h3>P2. 최대 히프 트리 넣고 빼고 배열로 옮기기</h3><p class="panel-meta">2017-final-kdh-q1 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=2">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p2"><div class="layer formal" data-source-problem="p2"><div data-source-field="conditions"><p>최대 히프 트리(max heap)를 만들려고 해요. 다음 숫자들을 차례대로 이용해 보세요.</p><p>16, 28, 41, 20, 25</p><ol><li>(a) 위의 숫자들로 구성된 최대 히프 트리를 그려 보세요.</li><li>(b) 위의 (a)에서 구성된 최대 히프 트리에 30을 삽입한 결과로 만들어지는 최대 히프 트리를 그려 보세요.</li><li>(c) 위의 (b)에서 구성된 최대 히프 트리에서 최대값을 제거한 결과로 만들어지는 최대 히프 트리를 그려 보세요.</li><li>(d) 위의 (c)에서 구성된 최대 히프 트리를 아래 배열로 구현해 보세요.</li></ol><figure class="figure"><svg id="p2-source-fig-p2-prob-array" viewBox="0 0 540 74" role="img" aria-label="첨자 [0]부터 [12]까지 13칸의 빈 배열, 칸은 테두리만 있어요"><rect class="fig-ink" x="10" y="34" width="40" height="30"/><text class="fig-text" x="30" y="24" text-anchor="middle" font-size="13">[0]</text><rect class="fig-ink" x="50" y="34" width="40" height="30"/><text class="fig-text" x="70" y="24" text-anchor="middle" font-size="13">[1]</text><rect class="fig-ink" x="90" y="34" width="40" height="30"/><text class="fig-text" x="110" y="24" text-anchor="middle" font-size="13">[2]</text><rect class="fig-ink" x="130" y="34" width="40" height="30"/><text class="fig-text" x="150" y="24" text-anchor="middle" font-size="13">[3]</text><rect class="fig-ink" x="170" y="34" width="40" height="30"/><text class="fig-text" x="190" y="24" text-anchor="middle" font-size="13">[4]</text><rect class="fig-ink" x="210" y="34" width="40" height="30"/><text class="fig-text" x="230" y="24" text-anchor="middle" font-size="13">[5]</text><rect class="fig-ink" x="250" y="34" width="40" height="30"/><text class="fig-text" x="270" y="24" text-anchor="middle" font-size="13">[6]</text><rect class="fig-ink" x="290" y="34" width="40" height="30"/><text class="fig-text" x="310" y="24" text-anchor="middle" font-size="13">[7]</text><rect class="fig-ink" x="330" y="34" width="40" height="30"/><text class="fig-text" x="350" y="24" text-anchor="middle" font-size="13">[8]</text><rect class="fig-ink" x="370" y="34" width="40" height="30"/><text class="fig-text" x="390" y="24" text-anchor="middle" font-size="13">[9]</text><rect class="fig-ink" x="410" y="34" width="40" height="30"/><text class="fig-text" x="430" y="24" text-anchor="middle" font-size="13">[10]</text><rect class="fig-ink" x="450" y="34" width="40" height="30"/><text class="fig-text" x="470" y="24" text-anchor="middle" font-size="13">[11]</text><rect class="fig-ink" x="490" y="34" width="40" height="30"/><text class="fig-text" x="510" y="24" text-anchor="middle" font-size="13">[12]</text></svg></figure></div></div><details class="original" data-original-problem="p2"><summary>기출 원문 보기</summary><p>2017 기말 1번 · 20점 · 김도희 교수님</p><p>"1. 최대 히프 트리(max heap)를 구성하기 위해서 다음 숫자들을 차례대로 이용하시오. [20 points]</p><p>16, 28, 41, 20, 25</p><p>(a.) 위의 숫자들로 구성된 최대 히프 트리를 그리시오.[5 points]</p><p>(b.) 위의 (a)에서 구성된 최대 히프 트리에 30를 삽입한 결과로 만들어지는 최대 히프 트리를 그리시오.[5 points]</p><p>(c.) 위의 (b)에서 구성된 최대 히프 트리에서 최대값을 제거한 결과로 만들어지는 최대 히프 트리를 그리시오.[5 points]</p><p>(d.) 위의 (c)에서 구성된 최대 히프 트리를 배열로 구현하시오. [5 points]"</p><p>원문 그림: 첨자 [0]~[12]의 빈 배열 칸</p><figure class="figure"><svg id="p2-original-fig-p2-orig-array" viewBox="0 0 540 74" role="img" aria-label="첨자 [0]부터 [12]까지 13칸의 빈 배열, 칸은 테두리만 있어요"><rect class="fig-ink" x="10" y="34" width="40" height="30"/><text class="fig-text" x="30" y="24" text-anchor="middle" font-size="13">[0]</text><rect class="fig-ink" x="50" y="34" width="40" height="30"/><text class="fig-text" x="70" y="24" text-anchor="middle" font-size="13">[1]</text><rect class="fig-ink" x="90" y="34" width="40" height="30"/><text class="fig-text" x="110" y="24" text-anchor="middle" font-size="13">[2]</text><rect class="fig-ink" x="130" y="34" width="40" height="30"/><text class="fig-text" x="150" y="24" text-anchor="middle" font-size="13">[3]</text><rect class="fig-ink" x="170" y="34" width="40" height="30"/><text class="fig-text" x="190" y="24" text-anchor="middle" font-size="13">[4]</text><rect class="fig-ink" x="210" y="34" width="40" height="30"/><text class="fig-text" x="230" y="24" text-anchor="middle" font-size="13">[5]</text><rect class="fig-ink" x="250" y="34" width="40" height="30"/><text class="fig-text" x="270" y="24" text-anchor="middle" font-size="13">[6]</text><rect class="fig-ink" x="290" y="34" width="40" height="30"/><text class="fig-text" x="310" y="24" text-anchor="middle" font-size="13">[7]</text><rect class="fig-ink" x="330" y="34" width="40" height="30"/><text class="fig-text" x="350" y="24" text-anchor="middle" font-size="13">[8]</text><rect class="fig-ink" x="370" y="34" width="40" height="30"/><text class="fig-text" x="390" y="24" text-anchor="middle" font-size="13">[9]</text><rect class="fig-ink" x="410" y="34" width="40" height="30"/><text class="fig-text" x="430" y="24" text-anchor="middle" font-size="13">[10]</text><rect class="fig-ink" x="450" y="34" width="40" height="30"/><text class="fig-text" x="470" y="24" text-anchor="middle" font-size="13">[11]</text><rect class="fig-ink" x="490" y="34" width="40" height="30"/><text class="fig-text" x="510" y="24" text-anchor="middle" font-size="13">[12]</text></svg></figure></details></div><div class="layer eli5" data-explanation="understand">
-<h4>네 소문항이 어떻게 이어질까요?</h4>
-<p>16, 28, 41, 20, 25를 차례로 넣어 최대 히프(max heap)를 만들고 (a)에 그려요. (b)는 (a)의 트리에 30을 하나 더 넣은 결과, (c)는 (b)의 트리에서 최댓값을 하나 꺼낸 결과예요. (d)는 (c)의 트리를 첨자 [0]~[12]의 빈 배열 칸에 옮겨 적는 거예요.</p>
-<p>네 소문항은 따로 푸는 문제가 아니라 한 트리를 이어서 바꾸는 과정이에요. 앞 소문항의 결과가 다음 소문항의 출발점이에요. (d)는 첨자 1부터 채우고 [0]은 비워요. 기출 모범답안도 “첨자 0에서 시작하면 감점”이라고 적었어요.</p>
+  <h4>핵심 조건과 구할 것</h4>
+  <p><code>16, 28, 41, 20, 25</code>로 최대 히프(a)를 만든 뒤, <strong>(b) <code>30</code> 삽입 → (c) 최댓값 제거 → (d) <code>[0]~[12]</code> 배열 구현</strong>까지 한 트리를 이어서 바꾸는 연쇄 문항이에요.</p>
+  <p>(d)는 <code>[0]</code>을 비우고 <code>[1]</code>부터 채워요(첨자 0 시작 시 감점 기준).</p>
 </div>
 <div class="layer formal" data-explanation="recall">
-<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
-<p>‘최대 히프 트리’라는 단서에서 <strong>최대 힙의 두 조건</strong>을 떠올려요. 모양은 완전 이진 트리(complete binary tree), 값은 모든 부모·자식 쌍에서 $\text{key}(\text{부모}) \ge \text{key}(\text{자식})$이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">정리노트: 힙의 정의</a>). 힙(heap)과 히프는 같은 말이에요.</p>
-<p>(a)·(b)의 ‘숫자들을 차례대로 이용’, ‘30을 삽입’에서는 <strong>삽입과 upheap</strong>을 떠올려요. 새 값을 마지막 노드 다음 자리에 놓고, 부모보다 크면 바꾸며 올라가요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">정리노트: upheap</a>).</p>
-<p>(c)의 ‘최대값을 제거’는 최대 힙에서는 곧 <strong>루트 삭제와 downheap</strong>이에요. 루트를 꺼내고 마지막 노드를 루트로 올린 뒤, 두 자식 중 큰 쪽보다 작으면 바꾸며 내려가요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">정리노트: downheap</a>).</p>
-<p>(d)의 ‘배열로 구현’과 [0]부터 있는 칸에서는 <strong>배열 표현의 첨자 공식</strong>을 떠올려요. 루트를 [1]에 두면 첨자 $i$의 왼쪽 자식 $2i$, 오른쪽 자식 $2i+1$, 부모 $\lfloor i/2 \rfloor$가 딱 맞아요. 루트를 [0]에 두면 $2 \times 0 = 0$이라 루트의 왼쪽 자식이 자기 자신이 되어 이 공식이 깨져요. 그래서 수업에서도 [0]은 비운다고 했어요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">정리노트: 배열 표현</a>).</p>
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>(a)·(b) 차례대로 이용 · <code>30</code> 삽입</td>
+          <td>완전 이진 트리 끝자리 <code>[n+1]</code> 삽입 + upheap( $\lfloor i/2 \rfloor$ )</td>
+          <td>앞 소문항 트리의 다음 빈칸에 새 값을 놓고 부모보다 크면 올려요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">정리노트: upheap</a>).</td>
+        </tr>
+        <tr>
+          <td>(c) 최대값을 제거</td>
+          <td>루트 <code>[1]</code> 삭제 + 마지막 노드 올림 + 큰 자식과 downheap</td>
+          <td>최대 힙의 최댓값은 항상 루트에 있으므로 <code>[1]</code>을 꺼내고 모양부터 복구해요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">downheap</a>).</td>
+        </tr>
+        <tr>
+          <td>(d) <code>[0]~[12]</code> 빈 배열</td>
+          <td><code>[1]</code> 기준 인덱스 공식: 왼쪽 $2i$ , 오른쪽 $2i+1$ , 부모 $\lfloor i/2 \rfloor$</td>
+          <td>루트를 <code>[0]</code>에 두면 $2 \cdot 0 = 0$ 이 되어 자기 자신을 가리키므로 <code>[0]</code>을 비워요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <div class="layer formal" data-explanation="start">
-<h4>종이에 쓰는 실제 첫 줄</h4>
-<p>(a)부터 삽입 표를 만들고 첫 행을 이렇게 써요. 빈 힙이라 16은 [1]에 놓이고 비교할 부모가 없어요.</p>
-<pre><code>삽입 16 | [1]에 놓음, 부모 없음 | 힙: 16</code></pre>
-<p>이후 행도 ‘처음 첨자 → 부모 첨자 $\lfloor i/2 \rfloor$와 비교 → 결과 레벨 순서’ 순으로 적어요.</p>
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>(a) 삽입 16 → [1]=16 (부모 없음)  |  힙: 16
+    삽입 28 → [2]=28, 부모 [1]=16 &lt; 28 → 교환  |  힙: 28 16</code></pre>
 </div>
 <div class="layer formal" data-explanation="solve">
-<h4>왜 이렇게 푸는지 함께 따라가요</h4>
-<div data-subpart="a">
-<h5>(a) 다섯 값 넣기</h5>
-<div class="table-wrap"><table><thead><tr><th>삽입</th><th>처음 자리</th><th>비교와 교환</th><th>힙(레벨 순서)</th></tr></thead><tbody>
-<tr><td>16</td><td>[1]</td><td>부모 없음</td><td>16</td></tr>
-<tr><td>28</td><td>[2]</td><td>부모 [1]=16보다 커서 교환</td><td>28 16</td></tr>
-<tr><td>41</td><td>[3]</td><td>부모 [1]=28보다 커서 교환</td><td>41 16 28</td></tr>
-<tr><td>20</td><td>[4]</td><td>부모 [2]=16과 교환 → 부모 [1]=41보다 작아 멈춤</td><td>41 20 28 16</td></tr>
-<tr><td>25</td><td>[5]</td><td>부모 [2]=20과 교환 → 부모 [1]=41보다 작아 멈춤</td><td>41 25 28 16 20</td></tr>
-</tbody></table></div>
-<p>(a)의 트리는 루트 41, 41의 자식 25·28, 25의 자식 16·20이에요. 레벨 순서로 <code>41 25 28 16 20</code>이에요.</p>
-</div>
-<div data-subpart="b">
-<h5>(b) 30 삽입</h5>
-<p>노드가 5개이니 30은 [6]에 놓여요. [6]의 부모는 $\lfloor 6/2 \rfloor = 3$이라 28의 <strong>왼쪽</strong> 자식 자리예요. 30 &gt; 28이라 교환해 30이 [3]으로 올라가요. 다음 부모 [1]=41보다는 작아 멈춰요.</p>
-<p>(b)의 트리는 루트 41, 41의 자식 25·30, 25의 자식 16·20, 30의 왼쪽 자식 28이에요. 레벨 순서로 <code>41 25 30 16 20 28</code>이에요.</p>
-</div>
-<div data-subpart="c">
-<h5>(c) 최댓값 제거</h5>
-<p>최댓값은 루트 41이에요. 41을 꺼내고 마지막 노드 [6]=28을 루트로 올려요. 노드는 5개가 되어 <code>28 25 30 16 20</code>이에요. 모양은 완전 이진 트리지만 값 조건이 깨져 있어요.</p>
-<p>루트 28의 두 자식 25·30 중 큰 쪽은 30이에요. 28 &lt; 30이라 교환해요 → <code>30 25 28 16 20</code>. 28이 내려간 [3]의 자식 자리 [6]·[7]은 노드 수 5를 넘으니 자식이 없어 멈춰요.</p>
-<p>(c)의 트리는 루트 30, 30의 자식 25·28, 25의 자식 16·20이에요.</p>
-</div>
-<div data-subpart="d">
-<h5>(d) 배열로 옮기기</h5>
-<p>(c)의 트리를 레벨 순서로 [1]부터 채워요. [0]과 [6]~[12]는 비워요.</p>
-<div class="table-wrap"><table><thead><tr><th>[0]</th><th>[1]</th><th>[2]</th><th>[3]</th><th>[4]</th><th>[5]</th><th>[6]</th><th>[7]</th><th>[8]</th><th>[9]</th><th>[10]</th><th>[11]</th><th>[12]</th></tr></thead><tbody>
-<tr><td>비움</td><td>30</td><td>25</td><td>28</td><td>16</td><td>20</td><td>비움</td><td>비움</td><td>비움</td><td>비움</td><td>비움</td><td>비움</td><td>비움</td></tr>
-</tbody></table></div>
-<p>공식으로 확인하면 [1]=30의 자식은 [2]=25·[3]=28, [2]=25의 자식은 [4]=16·[5]=20이에요. 트리 그림과 같은 관계가 첨자 계산만으로 나와요.</p>
-</div>
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) 다섯 값 차례로 삽입</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>삽입</th><th>처음 자리</th><th>부모 비교·교환</th><th>힙(레벨 순서)</th></tr></thead>
+        <tbody>
+          <tr><td>16</td><td><code>[1]</code></td><td>부모 없음</td><td><b>16</b></td></tr>
+          <tr><td>28</td><td><code>[2]</code></td><td><code>[1]=16</code>과 교환</td><td><b>28</b> 16</td></tr>
+          <tr><td>41</td><td><code>[3]</code></td><td><code>[1]=28</code>과 교환</td><td><b>41</b> 16 28</td></tr>
+          <tr><td>20</td><td><code>[4]</code></td><td><code>[2]=16</code>과 교환 → <code>[1]=41</code>보다 작아 멈춤</td><td>41 <b>20</b> 28 16</td></tr>
+          <tr><td>25</td><td><code>[5]</code></td><td><code>[2]=20</code>과 교환 → <code>[1]=41</code>보다 작아 멈춤</td><td>41 <b>25</b> 28 16 20</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>(a) 답: 루트 41, 자식 25·28, 25의 자식 16·20 (레벨 순서 <code>41 25 28 16 20</code>).</p>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) <code>30</code> 삽입</h5>
+    <p>기존 노드가 5개이므로 <code>30</code>은 <strong><code>[6]</code></strong>(부모 $\lfloor 6/2 \rfloor = 3$ , 즉 <code>28</code>의 <strong>왼쪽 자식</strong>)에 놓여요. $30 &gt; 28$ 이라 <code>[3]</code>과 교환해 <code>30</code>이 올라가고, 새 부모 <code>[1]=41</code>보다 작아 멈춰요.</p>
+    <p>(b) 답: 루트 41, 자식 25·30, 25의 자식 16·20, 30의 왼쪽 자식 28 (레벨 순서 <code>41 25 30 16 20 28</code>).</p>
+  </div>
+  <div data-subpart="c">
+    <h5>(c) 최댓값 제거</h5>
+    <p>루트 <code>41</code>을 꺼내고 마지막 노드 <code>[6]=28</code>을 루트 <code>[1]</code>로 올려 <code>28 25 30 16 20</code>이 돼요. 두 자식 <code>[2]=25</code>, <code>[3]=30</code> 중 큰 쪽 <code>30</code>과 교환하면 <code>30 25 28 16 20</code>이 되고, <code>[3]</code>의 자식 칸 <code>[6], [7]</code>은 노드 수 5를 넘어 멈춰요.</p>
+    <p>(c) 답: 루트 30, 자식 25·28, 25의 자식 16·20 (레벨 순서 <code>30 25 28 16 20</code>).</p>
+  </div>
+  <div data-subpart="d">
+    <h5>(d) 배열 <code>[0]~[12]</code> 구현</h5>
+    <p>(c) 트리를 레벨 순서로 <code>[1]~[5]</code>에 채우고 <code>[0]</code>과 <code>[6]~[12]</code>는 비워요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>[0]</th><th>[1]</th><th>[2]</th><th>[3]</th><th>[4]</th><th>[5]</th><th>[6]~[12]</th></tr></thead>
+        <tbody><tr><td>비움</td><td><b>30</b></td><td><b>25</b></td><td><b>28</b></td><td><b>16</b></td><td><b>20</b></td><td>비움</td></tr></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 <div class="layer formal" data-explanation="verify">
-<h4>완성 답과 검산</h4>
-<div data-subpart="a">
-<p>(a) <code>41 25 28 16 20</code>. 새로 쓴 시뮬레이션의 다섯 삽입 상태가 표와 같았고, 각 삽입 뒤 모든 $i \ge 2$에서 $A[\lfloor i/2 \rfloor] \ge A[i]$가 성립했어요. 직접 대입하면 41 ≥ 25, 28이고 25 ≥ 16, 20이에요.</p>
-</div>
-<div data-subpart="b">
-<p>(b) <code>41 25 30 16 20 28</code>. 시뮬레이션에서 30의 교환 상대는 28 하나였어요. 41 ≥ 25, 30이고 25 ≥ 16, 20이고 30 ≥ 28이라 값 조건을 지켜요. 노드 6개가 [1]~[6]을 채우니 모양 조건도 지켜요.</p>
-</div>
-<div data-subpart="c">
-<p>(c) <code>30 25 28 16 20</code>. 시뮬레이션에서 꺼낸 값은 41, 루트로 올린 값은 28, 교환 상대는 30 하나였어요. S8 p13 의사코드를 글자 그대로 돌려도 같은 결과였어요. 30 ≥ 25, 28이고 25 ≥ 16, 20이에요. 남은 값 {30, 25, 28, 16, 20}은 넣은 여섯 값에서 41만 빠진 것과 같아요.</p>
-</div>
-<div data-subpart="d">
-<p>(d) [0] 비움, [1]=30, [2]=25, [3]=28, [4]=16, [5]=20, [6]~[12] 비움. 시뮬레이션이 첨자마다 부모·왼쪽·오른쪽을 출력했고, [1]의 자식 [2]·[3], [2]의 자식 [4]·[5], [3]·[4]·[5]는 자식 없음으로 트리와 같았어요. 기출 원본 답과 문제은행의 (a)~(d)와도 모두 같아요.</p>
-</div>
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 검산</strong>: <code>41 25 28 16 20</code> — $41 \ge 25, 28$ 이고 $25 \ge 16, 20$ 이며 <code>[1..5]</code>가 모두 차 있어요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 검산</strong>: <code>41 25 30 16 20 28</code> — $41 \ge 25, 30$ , $25 \ge 16, 20$ , $30 \ge 28$ 이고 6개 원소 집합 <code>{16, 20, 25, 28, 30, 41}</code>이 보존돼요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 검산</strong>: <code>30 25 28 16 20</code> — $30 \ge 25, 28$ , $25 \ge 16, 20$ 이고, (b)의 6개에서 최댓값 <code>41</code>만 빠진 5개가 남았어요.</p>
+  </div>
+  <div data-subpart="d">
+    <p><strong>(d) 검산</strong>: <code>[0]</code> 비움, <code>[1..5]=30,25,28,16,20</code>, <code>[6..12]</code> 비움 — 역으로 인덱스 공식을 적용하면 <code>[1]</code>의 자식 <code>[2]=25, [3]=28</code>, <code>[2]</code>의 자식 <code>[4]=16, [5]=20</code>으로 (c) 트리가 그대로 복원돼요.</p>
+  </div>
 </div>
 <div class="layer warn" data-explanation="pitfall">
-<h4>이 문제에서 특히 조심할 점</h4>
-<p>(b)에서 30의 자리는 28의 왼쪽 자식이에요. 28의 오른쪽 자식으로 그리면 마지막 레벨을 왼쪽부터 채운다는 모양 조건을 어겨요. (b)·(c)를 처음부터 다시 넣어 만들지 말고 앞 소문항의 트리에서 이어 가요.</p>
-<p>(c)에서 41 자리를 큰 자식 30으로 바로 채우고 30 자리를 다시 28로 채우는 식으로 올리면, 이번에는 결과가 우연히 같아도 일반적으로는 마지막 레벨에 구멍이 생길 수 있어요. 수업의 절차대로 마지막 노드를 루트로 올린 뒤 내려가요.</p>
-<p>(d)에서 [0]에 30을 넣으면 감점이에요. 루트를 [1]에 둬야 $2i$, $2i+1$, $\lfloor i/2 \rfloor$가 맞아요. 노드 사이에 빈칸을 두지도 않아요.</p>
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>(b)에서 <code>30</code>을 <code>28</code>의 오른쪽 자식으로 붙이면</strong>: 배열 인덱스 <code>[7]</code>이 차고 <code>[6]</code>이 비어 완전 이진 트리 모양 조건이 깨져요. <code>[6]</code>의 부모는 $\lfloor 6/2 \rfloor = 3$ 이므로 왼쪽 자식이에요.</p>
+  <p><strong>(d)에서 <code>[0]</code>부터 <code>30</code>을 적으면</strong>: <code>[0]</code>의 왼쪽 자식 $2 \times 0 = 0$ 이 자기 자신을 가리켜 인덱스 공식이 무너지고 감점돼요.</p>
 </div>
 <div class="layer formal" data-explanation="retry">
-<h4>해설을 닫고 다시 해 봐요</h4>
-<ol><li>16, 28, 41, 20, 25를 넣으며 처음 첨자와 비교한 부모 첨자를 적어요.</li><li>30이 [6]에 놓이는 이유와 41을 꺼낸 뒤 루트로 올라가는 값을 말해 봐요.</li><li>(c)의 트리를 [0]을 비운 배열에 옮기고, $2i$와 $2i+1$로 자식 관계를 확인해요.</li></ol>
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>(b)처럼 노드 5개인 트리에 새 값을 넣을 때 → <code>[6]</code>이 어느 노드의 어느 쪽 자식인지 $\lfloor 6/2 \rfloor$ 와 짝수 여부로 바로 맞혀 보세요.</li>
+    <li>(c)에서 루트 <code>41</code>을 뺀 뒤 <code>30</code>을 바로 올리지 않고 <code>28</code>을 먼저 루트로 올리는 이유를 말로 설명해 보세요.</li>
+    <li>(d) 표에서 인덱스 <code>[3]</code>의 부모와 두 자식이 존재한다면 각각 몇 번 칸인지 계산해 보세요.</li>
+  </ol>
 </div>
 <div class="sum" hidden="">
-<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최대 힙 = 완전 이진 트리 + 부모 ≥ 자식. 삽입은 맨 끝에 놓고 upheap, 최댓값 제거는 루트 삭제 후 마지막 노드를 올려 downheap. 배열은 [1]부터: 왼쪽 $2i$, 오른쪽 $2i+1$, 부모 $\lfloor i/2 \rfloor$, [0] 비움.</p></div>
-<div class="summary-group"><h4>첫 줄</h4><p>삽입 16 → [1], 부모 없음. 네 소문항은 앞 결과를 이어 받아요.</p></div>
-<div class="summary-group"><h4>핵심 판단</h4><p>(a) 41 25 28 16 20. (b) 30은 [6](28의 왼쪽)에 놓여 28과 교환 → 41 25 30 16 20 28. (c) 41을 꺼내고 28을 루트로, 큰 자식 30과 교환 → 30 25 28 16 20. (d) [0] 비움, [1]~[5] = 30 25 28 16 20.</p></div>
-<div class="summary-group"><h4>검산</h4><p>독립 시뮬레이션과 원본 답 일치, 매 연산 뒤 부모 ≥ 자식 성립. 첨자 공식으로 배열에서 트리 관계를 되살릴 수 있어요.</p></div>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>네 문항 연쇄 추적. 삽입은 <code>[n+1]</code>에서 upheap, 삭제는 <code>[n]</code>을 루트로 올려 큰 자식과 downheap, 배열은 <code>[0]</code> 비우고 <code>[1]</code>부터( $2i, 2i+1, \lfloor i/2 \rfloor$ ).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>(a) <code>[1]=16</code> → <code>[2]=28</code> 교환(<code>28 16</code>).</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>(a) <code>41 25 28 16 20</code> (b) <code>41 25 30 16 20 28</code> (c) <code>30 25 28 16 20</code> (d) <code>[0]</code> 비움, <code>[1..5]=30 25 28 16 20</code>.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>매 단계 부모 $\ge$ 자식 성립, (d) 배열에 인덱스 식을 대입하면 (c) 트리가 그대로 복원돼요.</p></div>
 </div>
 </article><article class="topic" id="p3"><h3>P3. 여덟 개 넣고 한 번 빼는 최대 히프</h3><p class="panel-meta">2017-final2-q1 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=3">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p3"><div class="layer formal" data-source-problem="p3"><div data-source-field="conditions"><p>최대 히프(max heap) 트리를 만들려고 해요. 다음 숫자들을 차례대로 이용해 보세요.</p><p>10, 40, 30, 5, 12, 6, 60, 15</p><ol><li>(a) 위의 숫자들로 구성된 최대 히프 트리를 그려 보세요.</li><li>(b) 위의 (a)에서 구성된 최대 히프 트리에서 히프 삭제를 한 결과로 만들어지는 최대 히프 트리를 그려 보세요.</li></ol></div></div><details class="original" data-original-problem="p3"><summary>기출 원문 보기</summary><p>2017 기말 1번 · 10점 · 출제자 미상</p><p>"1. 최대 히프(max heap)트리를 구성하기 위해서 다음 숫자들을 차례대로 이용하시오. [10 points]</p><p>10, 40, 30, 5, 12, 6, 60, 15</p><p>(a.) 위의 숫자들로 구성된 최대 히프 트리를 그리시오. [5 points]</p><p>(b.) 위의 (a)에서 구성된 최대 히프 트리에서 히프삭제를 한 결과로 만들어지는 최대 히프 트리를 그리시오. [5 points]"</p></details></div><div class="layer eli5" data-explanation="understand">
-<h4>무엇을 그리라는 문제일까요?</h4>
-<p>10, 40, 30, 5, 12, 6, 60, 15 여덟 개를 차례로 넣어 최대 히프(max heap)를 만들고 (a)에 그려요. (b)는 (a)의 트리에서 ‘히프 삭제’를 한 번 한 뒤의 트리를 그리는 거예요.</p>
-<p>최대 히프에서 삭제는 아무 노드나 지우는 게 아니라 루트, 곧 최댓값 하나를 꺼내는 연산이에요. (b)는 (a)의 결과에서 이어서 해요.</p>
+  <h4>핵심 조건과 구할 것</h4>
+  <p><code>10, 40, 30, 5, 12, 6, 60, 15</code> 여덟 개를 차례로 넣어 <strong>(a) 최대 히프 트리</strong>를 만들고, 그 트리에서 <strong>(b) 히프 삭제 1회</strong>를 수행한 결과를 그려요.</p>
+  <p>히프 삭제는 임의 노드가 아닌 <strong>루트(최댓값)</strong>를 꺼내는 연산이에요.</p>
 </div>
 <div class="layer formal" data-explanation="recall">
-<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
-<p>‘최대 히프 트리를 구성’, ‘숫자들을 차례대로’라는 단서에서 <strong>최대 힙의 정의와 삽입(upheap)</strong>을 떠올려요. 최대 힙은 완전 이진 트리(complete binary tree)이면서 모든 부모·자식 쌍에서 $\text{key}(\text{부모}) \ge \text{key}(\text{자식})$인 트리예요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">정리노트: 힙의 정의</a>). 새 값은 마지막 노드 다음 자리에 놓고 부모보다 크면 올라가요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">정리노트: upheap</a>). 수업에서는 신입사원을 말단 자리에 앉힌 뒤 바로 위 상사와만 비교해 승진시키는 것에 비유했어요.</p>
-<p>‘히프 삭제’에서는 <strong>루트 삭제와 downheap</strong>을 떠올려요. 루트를 꺼내고 마지막 노드를 루트로 올린 뒤, 두 자식 중 큰 쪽보다 작으면 바꾸며 내려가요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">정리노트: downheap</a>). 비유로는 말단 사원을 사장 자리에 앉힌 뒤 강등시키는 거예요.</p>
-<p>자리 계산에는 배열 첨자 공식을 써요. 첨자 $i$의 부모는 $\lfloor i/2 \rfloor$, 자식은 $2i$와 $2i+1$이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">정리노트: 배열 표현</a>). 노드가 여덟 개라 표로 적어야 실수가 줄어요.</p>
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>최대 히프 · 8개 차례대로</td>
+          <td>완전 이진 트리 + <code>[n+1]</code> 삽입 · upheap(부모 $\lfloor i/2 \rfloor$ )</td>
+          <td>8개 원소는 레벨 4까지 가므로 인덱스 <code>[i]</code>와 부모 $\lfloor i/2 \rfloor$ 를 추적해야 경로가 안 꼬여요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">정리노트: upheap</a>).</td>
+        </tr>
+        <tr>
+          <td>(a)에서 히프 삭제</td>
+          <td>루트 제거 → 끝 노드 <code>[n]</code>을 <code>[1]</code>로 올림 → 큰 자식(<code>2i</code>, <code>2i+1</code> 중)과 downheap</td>
+          <td>끝 노드를 올리면 완전 이진 트리 모양이 즉시 유지되고, 큰 자식과 바꿔야 값 조건이 복구돼요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">정리노트: downheap</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <div class="layer formal" data-explanation="start">
-<h4>종이에 쓰는 실제 첫 줄</h4>
-<p>삽입 표의 첫 행이에요. 빈 힙이라 10은 [1]에 놓여요.</p>
-<pre><code>삽입 10 | [1]에 놓음, 부모 없음 | 힙: 10</code></pre>
-<p>다음 행부터는 처음 첨자와 부모 첨자 $\lfloor i/2 \rfloor$를 함께 적어 비교 상대를 분명히 해요.</p>
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>삽입 10 → [1]=10 (부모 없음)  |  힙: 10
+삽입 40 → [2]=40, 부모 [1]=10 &lt; 40 → 교환  |  힙: 40 10</code></pre>
 </div>
 <div class="layer formal" data-explanation="solve">
-<h4>왜 이렇게 푸는지 함께 따라가요</h4>
-<div data-subpart="a">
-<h5>(a) 여덟 값 넣기</h5>
-<div class="table-wrap"><table><thead><tr><th>삽입</th><th>처음 자리</th><th>비교와 교환</th><th>힙(레벨 순서)</th></tr></thead><tbody>
-<tr><td>10</td><td>[1]</td><td>부모 없음</td><td>10</td></tr>
-<tr><td>40</td><td>[2]</td><td>부모 [1]=10보다 커서 교환</td><td>40 10</td></tr>
-<tr><td>30</td><td>[3]</td><td>부모 [1]=40보다 작아 그대로</td><td>40 10 30</td></tr>
-<tr><td>5</td><td>[4]</td><td>부모 [2]=10보다 작아 그대로</td><td>40 10 30 5</td></tr>
-<tr><td>12</td><td>[5]</td><td>부모 [2]=10과 교환 → 부모 [1]=40보다 작아 멈춤</td><td>40 12 30 5 10</td></tr>
-<tr><td>6</td><td>[6]</td><td>부모 [3]=30보다 작아 그대로</td><td>40 12 30 5 10 6</td></tr>
-<tr><td>60</td><td>[7]</td><td>부모 [3]=30과 교환 → 부모 [1]=40과 교환</td><td>60 12 40 5 10 6 30</td></tr>
-<tr><td>15</td><td>[8]</td><td>부모 [4]=5와 교환 → 부모 [2]=12와 교환 → 부모 [1]=60보다 작아 멈춤</td><td>60 15 40 12 10 6 30 5</td></tr>
-</tbody></table></div>
-<p>마지막 15는 [8]에서 시작해요. 레벨 1~3이 일곱 칸으로 꽉 찼으니 레벨 4의 맨 왼쪽, 곧 [4]의 왼쪽 자식 자리예요. 두 번 올라가 [2]에 자리 잡아요.</p>
-<p>(a)의 트리는 루트 60, 60의 자식 15·40, 15의 자식 12·10, 40의 자식 6·30, 12의 왼쪽 자식 5예요. 레벨 순서로 <code>60 15 40 12 10 6 30 5</code>예요.</p>
-</div>
-<div data-subpart="b">
-<h5>(b) 히프 삭제 한 번</h5>
-<p>루트 60을 꺼내고 마지막 노드 [8]=5를 루트로 올려요. 노드는 7개가 되어 <code>5 15 40 12 10 6 30</code>이에요.</p>
-<p>루트 5의 두 자식 15·40 중 큰 쪽은 40이에요. 5 &lt; 40이라 교환해요 → <code>40 15 5 12 10 6 30</code>. 5는 이제 [3]에 있어요.</p>
-<p>[3]의 두 자식 [6]=6·[7]=30 중 큰 쪽은 30이에요. 5 &lt; 30이라 교환해요 → <code>40 15 30 12 10 6 5</code>. 5가 간 [7]의 자식 자리 [14]·[15]는 노드 수 7을 넘으니 멈춰요.</p>
-<p>(b)의 트리는 루트 40, 40의 자식 15·30, 15의 자식 12·10, 30의 자식 6·5예요.</p>
-</div>
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) 8개 삽입 추적</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>단계</th><th>삽입</th><th>처음 자리</th><th>부모 비교·교환 경로</th><th>힙(레벨 순서)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>10</td><td><code>[1]</code></td><td>부모 없음</td><td><b>10</b></td></tr>
+          <tr><td>2</td><td>40</td><td><code>[2]</code></td><td><code>[1]=10</code>과 교환</td><td><b>40</b> 10</td></tr>
+          <tr><td>3</td><td>30</td><td><code>[3]</code></td><td><code>[1]=40</code>보다 작아 그대로</td><td>40 10 <b>30</b></td></tr>
+          <tr><td>4</td><td>5</td><td><code>[4]</code></td><td><code>[2]=10</code>보다 작아 그대로</td><td>40 10 30 <b>5</b></td></tr>
+          <tr><td>5</td><td>12</td><td><code>[5]</code></td><td><code>[2]=10</code>과 교환 → <code>[1]=40</code>보다 작아 멈춤</td><td>40 <b>12</b> 30 5 10</td></tr>
+          <tr><td>6</td><td>6</td><td><code>[6]</code></td><td><code>[3]=30</code>보다 작아 그대로</td><td>40 12 30 5 10 <b>6</b></td></tr>
+          <tr><td>7</td><td>60</td><td><code>[7]</code></td><td><code>[3]=30</code> → <code>[1]=40</code>과 차례로 교환</td><td><b>60</b> 12 40 5 10 6 30</td></tr>
+          <tr><td>8</td><td>15</td><td><code>[8]</code></td><td><code>[4]=5</code> → <code>[2]=12</code>와 차례로 교환 → <code>[1]=60</code>보다 작아 멈춤</td><td>60 <b>15</b> 40 12 10 6 30 5</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>(a) 답: 루트 60, 자식 15·40, 15의 자식 12·10, 40의 자식 6·30, 12의 왼쪽 자식 5 (레벨 순서 <code>60 15 40 12 10 6 30 5</code>).</p>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) 히프 삭제 1회</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>순서</th><th>동작</th><th>비교 대상(두 자식)</th><th>힙(레벨 순서)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>루트 60 꺼내고 <code>[8]=5</code>를 <code>[1]</code>로 올림</td><td><code>[2]=15</code>, <b><code>[3]=40</code></b></td><td><b>5</b> 15 40 12 10 6 30</td></tr>
+          <tr><td>2</td><td><code>5 &lt; 40</code> 이므로 <code>[3]</code>과 교환</td><td><code>[6]=6</code>, <b><code>[7]=30</code></b></td><td>40 15 <b>5</b> 12 10 6 30</td></tr>
+          <tr><td>3</td><td><code>5 &lt; 30</code> 이므로 <code>[7]</code>과 교환</td><td><code>[14], [15]</code> 없음($n=7$)</td><td>40 15 30 12 10 6 <b>5</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>(b) 답: 루트 40, 자식 15·30, 15의 자식 12·10, 30의 자식 6·5 (레벨 순서 <code>40 15 30 12 10 6 5</code>).</p>
+  </div>
 </div>
 <div class="layer formal" data-explanation="verify">
-<h4>완성 답과 검산</h4>
-<div data-subpart="a">
-<p>(a) <code>60 15 40 12 10 6 30 5</code>. 새로 쓴 시뮬레이션의 여덟 삽입 상태와 교환 상대(12는 [10], 60은 [30, 40], 15는 [5, 12])가 표와 같았어요. 삽입마다 모든 $i \ge 2$에서 $A[\lfloor i/2 \rfloor] \ge A[i]$가 성립했어요. 대입하면 60 ≥ 15, 40이고 15 ≥ 12, 10이고 40 ≥ 6, 30이고 12 ≥ 5예요.</p>
-</div>
-<div data-subpart="b">
-<p>(b) <code>40 15 30 12 10 6 5</code>. 시뮬레이션에서 꺼낸 값 60, 루트로 올린 값 5, 교환 상대 [40, 30]이었고, S8 p13 의사코드를 글자 그대로 돌려도 같았어요. 40 ≥ 15, 30이고 15 ≥ 12, 10이고 30 ≥ 6, 5예요. 새 루트 40은 남은 일곱 값 중 최댓값이에요. 기출 원본 답과 문제은행의 (a)·(b)와도 같아요.</p>
-</div>
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 검산</strong>: <code>60 15 40 12 10 6 30 5</code> — 부모·자식 7쌍($60 \ge 15, 40$, $15 \ge 12, 10$, $40 \ge 6, 30$, $12 \ge 5$)이 모두 성립하고, 8개 원소가 <code>[1..8]</code>에 들어 있어요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 검산</strong>: <code>40 15 30 12 10 6 5</code> — $40 \ge 15, 30$, $15 \ge 12, 10$, $30 \ge 6, 5$ 이고 새 루트 40이 남은 7개 <code>{5, 6, 10, 12, 15, 30, 40}</code> 중 최댓값이에요(기출 원본 답과도 일치해요).</p>
+  </div>
 </div>
 <div class="layer warn" data-explanation="pitfall">
-<h4>이 문제에서 특히 조심할 점</h4>
-<p>15를 넣을 때 부모 5와 한 번만 바꾸고 멈추면 15가 부모 12보다 큰 채로 남아요. upheap은 부모가 자기보다 크거나 같을 때까지, 또는 루트에 닿을 때까지 계속해요.</p>
-<p>(b)에서 5를 왼쪽 자식 15와 바꾸면 루트 15 아래에 40이 남아 값 조건이 깨져요. 두 자식 중 <strong>큰 쪽</strong> 40과 바꿔요. 한 번 바꾼 뒤에도 새 자리의 자식 6·30과 다시 비교해야 해요.</p>
-<p>히프 삭제를 ‘마지막 노드 5를 지우기’로 읽으면 안 돼요. 최대 히프의 삭제는 루트(최댓값)를 꺼내는 연산이에요.</p>
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>(a) 마지막 15를 <code>[4]=5</code>와 한 번만 바꾸고 멈추면</strong>: <code>[2]=12 &lt; [4]=15</code>가 되어 부모 $\ge$ 자식 조건이 깨져요. 부모보다 작거나 같아질 때까지 계속 올려야 해요.</p>
+  <p><strong>(b) 루트 5를 왼쪽 자식 15와 바꾸면</strong>: 루트 <code>15 &lt; 40</code>이 되어 힙 조건이 즉시 깨져요. 또한 ‘히프 삭제’를 마지막 노드 5 삭제(<code>60 15 40 12 10 6 30</code>)로 오독하지 마세요.</p>
 </div>
 <div class="layer formal" data-explanation="retry">
-<h4>해설을 닫고 다시 해 봐요</h4>
-<ol><li>여덟 값을 넣으며 60과 15가 각각 몇 번 올라가는지 첨자로 따라가요.</li><li>60을 꺼낸 뒤 5가 내려가는 경로를 두 자식 비교로 적어요.</li><li>(b)의 모든 부모·자식 쌍에서 부모 ≥ 자식인지 확인해요.</li></ol>
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>삽입 7·8단계(<code>60</code>, <code>15</code>)를 보면 → 처음 인덱스 <code>[7]</code>, <code>[8]</code>에서 루트까지 부모 인덱스(<code>3→1</code>, <code>4→2→1</code>)를 먼저 적는다.</li>
+    <li>(b)에서 5가 <code>[1]→[3]→[7]</code>로 내려갈 때, 매 단계 어느 자식과 비교해 버려졌는지 확인해 보세요.</li>
+    <li>만약 15를 넣기 전에 이미 40을 한 번 삭제했다면 15는 몇 번 칸에 들어가나요?</li>
+  </ol>
 </div>
 <div class="sum" hidden="">
-<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최대 힙 = 완전 이진 트리 + 부모 ≥ 자식. 삽입은 맨 끝에 놓고 부모보다 크면 계속 올라가요(upheap). 히프 삭제는 루트를 꺼내고 마지막 노드를 올린 뒤 큰 자식과 바꾸며 내려가요(downheap). 부모 $\lfloor i/2 \rfloor$, 자식 $2i$, $2i+1$.</p></div>
-<div class="summary-group"><h4>첫 줄</h4><p>삽입 10 → [1], 부모 없음.</p></div>
-<div class="summary-group"><h4>핵심 판단</h4><p>(a) 60은 [7]→[3]→[1], 15는 [8]→[4]→[2]로 올라가 60 15 40 12 10 6 30 5. (b) 60을 꺼내고 5를 루트로, 40과 교환 → 30과 교환 → 40 15 30 12 10 6 5.</p></div>
-<div class="summary-group"><h4>검산</h4><p>독립 시뮬레이션과 원본 답 일치, 매 연산 뒤 부모 ≥ 자식 성립. 새 루트 40이 남은 값의 최댓값이에요.</p></div>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최대 히프: 완전 이진 트리 + 부모 $\ge$ 자식. 삽입은 <code>[n+1]</code>에서 upheap, 히프 삭제는 루트 제거 후 <code>[n]</code>을 올려 큰 자식과 downheap.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>삽입 10 → <code>[1]=10</code>, 삽입 40 → <code>[2]=40</code> 교환(<code>40 10</code>).</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>(a) <code>60 15 40 12 10 6 30 5</code> (b) <code>40 15 30 12 10 6 5</code>.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>(a) 7쌍·(b) 6쌍 부모 $\ge$ 자식 성립, 새 루트 40 = 남은 7개 최댓값.</p></div>
 </div>
 </article><article class="topic" id="p4"><h3>P4. 추가와 삭제가 섞인 최대 히프</h3><p class="panel-meta">2019-final-q6 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=4">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p4"><div class="layer formal" data-source-problem="p4"><div data-source-field="conditions"><p>다음의 나열된 키를 주어진 순서대로 추가하고 삭제했을 때의 최대 히프 트리를 그려 보세요.</p><p>16, 9, 50, 41, 48, 24, 31을 차례대로 추가</p><p>삭제 1번</p><p>53, 71, 50, 68, 64를 차례대로 추가</p><p>삭제 2번</p></div></div><details class="original" data-original-problem="p4"><summary>기출 원문 보기</summary><p>2019 기말 6번 · 10점 · 출제자 미상</p><p>"6. 다음의 나열된 키(값)를 주어진 순서대로 추가 및 삭제했을 때의 최대 히프트리를 그리시오. (10점)<br>(키 값 정확치는 않음)</p><p>16 9 50 41 48 24 31<br>삭제 1번<br>53 71 50 68 64<br>삭제 2번"</p></details></div><div class="layer eli5" data-explanation="understand">
-<h4>연산 목록을 어떻게 읽을까요?</h4>
-<p>빈 최대 히프(max heap)에 16, 9, 50, 41, 48, 24, 31을 차례로 추가하고, ‘삭제 1번’을 한 뒤, 53, 71, 50, 68, 64를 추가하고, ‘삭제 2번’을 한 결과 트리를 그리는 문제예요. 연산은 모두 한 트리에 이어서 해요.</p>
-<p>이 문항은 수험생 기억으로 복원한 기출이라 원문에도 “키 값 정확치는 않음”이라고 적혀 있고, 전사에 공식 답이 없어요. 그래서 ‘삭제 2번’을 어떻게 읽는지 먼저 정해야 해요. 여기서는 ‘삭제 1번’이 한 번 삭제이듯 ‘삭제 2번’을 <strong>두 번 삭제</strong>로 읽어요(복원 기출의 횟수 표기). 문제은행의 검증 답도 이 해석이에요. ‘두 번째 삭제 한 번’이라는 순번으로 읽으면 마지막에 한 번만 꺼내서 답이 <code>68 64 48 50 53 16 31 9 41 24</code>가 돼요. 아래 풀이는 두 번 삭제를 기준으로 하고, 순번 해석의 답도 함께 확인해요.</p>
+  <h4>핵심 조건과 구할 것</h4>
+  <p>빈 최대 히프에 7개 추가 → <strong>삭제 1번</strong> → 5개 추가 → <strong>삭제 2번</strong>을 순서대로 수행한 최종 트리를 그려요.</p>
+  <ul>
+    <li><strong>복원 기출 주석</strong>: 원문에 “키 값 정확치는 않음” 주석이 있고, 전사에 공식 답은 없어요.</li>
+    <li><strong>해석 기준</strong>: ‘삭제 1번’이 1회 삭제이듯 <strong>‘삭제 2번’은 2회 삭제</strong>를 기본 기준으로 풀고, 순번(‘2번째 삭제 1회’) 해석 결과도 함께 확인해요.</li>
+  </ul>
 </div>
 <div class="layer formal" data-explanation="recall">
-<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
-<p>‘최대 히프트리’, ‘추가 및 삭제’라는 단서에서 <strong>최대 힙의 두 조건과 두 연산</strong>을 떠올려요. 모양은 완전 이진 트리(complete binary tree), 값은 $\text{key}(\text{부모}) \ge \text{key}(\text{자식})$이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">정리노트: 힙의 정의</a>). 연산이 섞여 있어도 매 연산이 끝날 때마다 두 조건이 다시 성립해야 해요. 이것이 추적의 불변식이에요.</p>
-<p>추가는 마지막 노드 다음 자리에 놓고 부모보다 크면 올라가는 upheap이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">정리노트: upheap</a>). 삭제는 최대 히프에서 늘 루트(최댓값)를 꺼내고, 마지막 노드를 루트로 올린 뒤 두 자식 중 큰 쪽과 바꾸며 내려가는 downheap이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">정리노트: downheap</a>).</p>
-<p>자리는 배열 첨자로 따라가요. 첨자 $i$의 부모는 $\lfloor i/2 \rfloor$, 자식은 $2i$, $2i+1$이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">정리노트: 배열 표현</a>). 같은 값 50이 두 번 나오지만 힙은 같은 값을 허용해요. 게다가 첫 50은 첫 삭제에서 이미 꺼내져서 두 번째 50이 들어올 때는 겹치지도 않아요.</p>
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>최대 히프 · 추가/삭제 혼합</td>
+          <td>매 연산 후 불변식: <code>[1..n]</code> 완비 + $\text{key}(\text{부모}) \ge \text{key}(\text{자식})$</td>
+          <td>중간 삭제가 힙 크기 <code>n</code>을 줄이므로, 다음 추가의 시작 인덱스 <code>[n+1]</code>이 매번 달라져요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+        <tr>
+          <td>키 추가 · 삭제</td>
+          <td>추가 = 끝자리 upheap / 삭제 = 루트 꺼내고 <code>[n]</code> 올린 뒤 큰 자식과 downheap</td>
+          <td>중복 키 <code>50</code>도 힙은 허용해요(게다가 첫 <code>50</code>은 8단계에서 이미 제거돼요)(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">upheap</a> · <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">downheap</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 <div class="layer formal" data-explanation="start">
-<h4>종이에 쓰는 실제 첫 줄</h4>
-<p>열다섯 단계(추가 12번, 삭제 3번)를 한 표로 적어요. 첫 행은 이렇게 써요.</p>
-<pre><code>단계 1 | 추가 16 | [1]에 놓음, 부모 없음 | 힙: 16</code></pre>
-<p>삭제 행은 ‘꺼낸 값, 루트로 올린 값, 교환한 자식’을 적어요. 그래야 다음 추가가 어느 첨자에서 시작하는지 바로 보여요.</p>
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>1 | 추가 16 | [1] 놓음 (n=1)           | 16
+2 | 추가  9 | [2] 놓음, [1]=16 &gt; 9 (n=2) | 16 9</code></pre>
 </div>
 <div class="layer formal" data-explanation="solve">
-<h4>왜 이렇게 푸는지 함께 따라가요</h4>
-<div data-subpart="main">
-<div class="table-wrap"><table><thead><tr><th>단계</th><th>연산</th><th>움직임</th><th>힙(레벨 순서)</th></tr></thead><tbody>
-<tr><td>1</td><td>추가 16</td><td>[1], 부모 없음</td><td>16</td></tr>
-<tr><td>2</td><td>추가 9</td><td>[2], 부모 16보다 작아 그대로</td><td>16 9</td></tr>
-<tr><td>3</td><td>추가 50</td><td>[3], 부모 16과 교환</td><td>50 9 16</td></tr>
-<tr><td>4</td><td>추가 41</td><td>[4], 부모 [2]=9와 교환 → 50보다 작아 멈춤</td><td>50 41 16 9</td></tr>
-<tr><td>5</td><td>추가 48</td><td>[5], 부모 [2]=41과 교환 → 50보다 작아 멈춤</td><td>50 48 16 9 41</td></tr>
-<tr><td>6</td><td>추가 24</td><td>[6], 부모 [3]=16과 교환 → 50보다 작아 멈춤</td><td>50 48 24 9 41 16</td></tr>
-<tr><td>7</td><td>추가 31</td><td>[7], 부모 [3]=24와 교환 → 50보다 작아 멈춤</td><td>50 48 31 9 41 16 24</td></tr>
-<tr><td>8</td><td>삭제 1번</td><td>50을 꺼내고 24를 루트로 → 자식 48·31 중 48과 교환 → 자식 9·41 중 41과 교환</td><td>48 41 31 9 24 16</td></tr>
-<tr><td>9</td><td>추가 53</td><td>[7], 부모 [3]=31과 교환 → 부모 [1]=48과 교환</td><td>53 41 48 9 24 16 31</td></tr>
-<tr><td>10</td><td>추가 71</td><td>[8], 부모 [4]=9 → [2]=41 → [1]=53과 차례로 교환</td><td>71 53 48 41 24 16 31 9</td></tr>
-<tr><td>11</td><td>추가 50</td><td>[9], 부모 [4]=41과 교환 → [2]=53보다 작아 멈춤</td><td>71 53 48 50 24 16 31 9 41</td></tr>
-<tr><td>12</td><td>추가 68</td><td>[10], 부모 [5]=24 → [2]=53과 차례로 교환 → 71보다 작아 멈춤</td><td>71 68 48 50 53 16 31 9 41 24</td></tr>
-<tr><td>13</td><td>추가 64</td><td>[11], 부모 [5]=53과 교환 → [2]=68보다 작아 멈춤</td><td>71 68 48 50 64 16 31 9 41 24 53</td></tr>
-<tr><td>14</td><td>삭제 2번 (첫째)</td><td>71을 꺼내고 53을 루트로 → 자식 68·48 중 68과 교환 → 자식 50·64 중 64와 교환 → [5]의 자식은 [10]=24 하나, 53이 더 커서 멈춤</td><td>68 64 48 50 53 16 31 9 41 24</td></tr>
-<tr><td>15</td><td>삭제 2번 (둘째)</td><td>68을 꺼내고 24를 루트로 → 자식 64·48 중 64와 교환 → 자식 50·53 중 53과 교환 → [5]는 자식 없음</td><td>64 53 48 50 24 16 31 9 41</td></tr>
-</tbody></table></div>
-<p>8단계 뒤 노드가 6개라 9단계의 53은 [7]에서 시작해요. 삭제로 줄어든 노드 수를 놓치면 이후 첨자가 모두 어긋나요. 14단계에서는 [5]에 오른쪽 자식이 없어서 왼쪽 자식 [10]=24 하나와만 비교해요.</p>
-<p>최종 트리는 루트 64, 64의 자식 53·48, 53의 자식 50·24, 48의 자식 16·31, 50의 자식 9·41이에요. 레벨 순서로 <code>64 53 48 50 24 16 31 9 41</code>이에요.</p>
-<p>‘삭제 2번’을 순번(두 번째 삭제 한 번)으로 읽으면 14단계에서 끝나요. 그때의 답은 <code>68 64 48 50 53 16 31 9 41 24</code>이고, 루트 68, 68의 자식 64·48, 64의 자식 50·53, 48의 자식 16·31, 50의 자식 9·41, 53의 왼쪽 자식 24예요.</p>
-</div>
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <p>삭제 시 <code>n</code>이 줄어든 뒤 다음 추가가 <code>[n+1]</code>에서 시작함에 유의해 15단계를 추적해요(횟수 해석 기준).</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>단계</th><th>연산 (<code>n</code>)</th><th>비교·교환 경로</th><th>힙(레벨 순서)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>추가 16 (1)</td><td><code>[1]</code>, 부모 없음</td><td>16</td></tr>
+          <tr><td>2</td><td>추가 9 (2)</td><td><code>[2]</code>, <code>[1]=16</code>보다 작아 그대로</td><td>16 9</td></tr>
+          <tr><td>3</td><td>추가 50 (3)</td><td><code>[3]</code>, <code>[1]=16</code>과 교환</td><td>50 9 16</td></tr>
+          <tr><td>4</td><td>추가 41 (4)</td><td><code>[4]</code>, <code>[2]=9</code>와 교환 → <code>[1]=50</code>보다 작아 멈춤</td><td>50 41 16 9</td></tr>
+          <tr><td>5</td><td>추가 48 (5)</td><td><code>[5]</code>, <code>[2]=41</code>과 교환 → <code>[1]=50</code>보다 작아 멈춤</td><td>50 48 16 9 41</td></tr>
+          <tr><td>6</td><td>추가 24 (6)</td><td><code>[6]</code>, <code>[3]=16</code>과 교환 → <code>[1]=50</code>보다 작아 멈춤</td><td>50 48 24 9 41 16</td></tr>
+          <tr><td>7</td><td>추가 31 (7)</td><td><code>[7]</code>, <code>[3]=24</code>와 교환 → <code>[1]=50</code>보다 작아 멈춤</td><td>50 48 31 9 41 16 24</td></tr>
+          <tr><td>8</td><td><b>삭제 1</b> (6)</td><td>50 꺼냄, 24→루트: <b>48</b>·31 중 48, 9·<b>41</b> 중 41과 교환</td><td>48 41 31 9 24 16</td></tr>
+          <tr><td>9</td><td>추가 53 (7)</td><td><code>[7]</code>, <code>[3]=31</code> → <code>[1]=48</code>과 교환</td><td>53 41 48 9 24 16 31</td></tr>
+          <tr><td>10</td><td>추가 71 (8)</td><td><code>[8]</code>, <code>[4]=9</code> → <code>[2]=41</code> → <code>[1]=53</code>과 교환</td><td>71 53 48 41 24 16 31 9</td></tr>
+          <tr><td>11</td><td>추가 50 (9)</td><td><code>[9]</code>, <code>[4]=41</code>과 교환 → <code>[2]=53</code>보다 작아 멈춤</td><td>71 53 48 50 24 16 31 9 41</td></tr>
+          <tr><td>12</td><td>추가 68 (10)</td><td><code>[10]</code>, <code>[5]=24</code> → <code>[2]=53</code>과 교환 → <code>[1]=71</code>보다 작아 멈춤</td><td>71 68 48 50 53 16 31 9 41 24</td></tr>
+          <tr><td>13</td><td>추가 64 (11)</td><td><code>[11]</code>, <code>[5]=53</code>과 교환 → <code>[2]=68</code>보다 작아 멈춤</td><td>71 68 48 50 64 16 31 9 41 24 53</td></tr>
+          <tr><td>14</td><td><b>삭제 2-①</b> (10)</td><td>71 꺼냄, 53→루트: <b>68</b>·48 중 68, 50·<b>64</b> 중 64와 교환 → <code>[5]</code> 외자식 <code>[10]=24</code>보다 커서 멈춤</td><td>68 64 48 50 53 16 31 9 41 24</td></tr>
+          <tr><td>15</td><td><b>삭제 2-②</b> (9)</td><td>68 꺼냄, 24→루트: <b>64</b>·48 중 64, 50·<b>53</b> 중 53과 교환 → <code>[5]</code> 자식 없음</td><td>64 53 48 50 24 16 31 9 41</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li><strong>횟수 해석(‘삭제 2번’ = 2회 삭제, 기본 답)</strong>: 15단계 결과 <code>64 53 48 50 24 16 31 9 41</code> (루트 64, 자식 53·48, 53의 자식 50·24, 48의 자식 16·31, 50의 자식 9·41).</li>
+      <li><strong>순번 해석(‘삭제 2번’ = 2번째 삭제 1회)</strong>: 14단계에서 끝나 <code>68 64 48 50 53 16 31 9 41 24</code>가 돼요.</li>
+    </ul>
+  </div>
 </div>
 <div class="layer formal" data-explanation="verify">
-<h4>완성 답과 검산</h4>
-<div data-subpart="main">
-<p>두 번 삭제 해석의 완성 답은 <code>64 53 48 50 24 16 31 9 41</code>(노드 9개)예요. 새로 쓴 시뮬레이션으로 열다섯 단계를 돌린 중간 상태가 표와 모두 같았고, 매 연산 뒤 모든 $i \ge 2$에서 $A[\lfloor i/2 \rfloor] \ge A[i]$가 성립했어요.</p>
-<pre><code>최종 64 53 48 50 24 16 31 9 41 (노드 9개)</code></pre>
-<p>개수로도 확인해요. 추가 12번, 삭제 3번이라 $12 - 3 = 9$개예요. 꺼낸 값은 50, 71, 68이고, 넣은 열두 값에서 이 셋을 뺀 {64, 53, 48, 50, 24, 16, 31, 9, 41}이 최종 트리의 값과 같아요. 최종 대입: 64 ≥ 53, 48이고 53 ≥ 50, 24이고 48 ≥ 16, 31이고 50 ≥ 9, 41이에요. 문제은행의 검증 답과도 같아요. 공식 답은 전사에 없어 확인하지 못했어요.</p>
-<p>같은 시뮬레이션을 순번 해석(14단계에서 끝)으로도 돌렸어요.</p>
-<pre><code>최종 68 64 48 50 53 16 31 9 41 24 (노드 10개)</code></pre>
-<p>두 해석의 결과는 서로 달라요. 어느 쪽이든 각 연산의 교환은 많아야 세 번이었고, S8 p13 의사코드를 글자 그대로 돌린 결과와도 세 번의 삭제 모두 같았어요.</p>
-</div>
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>(공식 답 전사 미확인; 2회 삭제 기준): <code>64 53 48 50 24 16 31 9 41</code> (순번 해석 시 <code>68 64 48 50 53 16 31 9 41 24</code>).</p>
+    <ul>
+      <li><strong>개수·원소 보존</strong>: 추가 12회 − 삭제 3회 = 9개. 꺼낸 최댓값 3개(<code>50, 71, 68</code>)를 넣은 12개에서 빼면 <code>{64, 53, 48, 50, 24, 16, 31, 9, 41}</code> 9개와 정확히 일치해요.</li>
+      <li><strong>부모 $\ge$ 자식 8쌍 전수 확인</strong>: $64 \ge 53, 48$, $53 \ge 50, 24$, $48 \ge 16, 31$, $50 \ge 9, 41$ 모두 성립해요(순번 해석 14단계에서도 $53 \ge 24$ 포함 9쌍 모두 성립).</li>
+    </ul>
+  </div>
 </div>
 <div class="layer warn" data-explanation="pitfall">
-<h4>이 문제에서 특히 조심할 점</h4>
-<p>‘삭제 2번’의 해석에 따라 답이 달라져요. 여기서는 횟수(두 번 삭제)로 읽어 <code>64 53 48 50 24 16 31 9 41</code>을 답으로 삼았고, 순번(두 번째 삭제 한 번)으로 읽으면 <code>68 64 48 50 53 16 31 9 41 24</code>예요. 시험에서는 어느 해석으로 풀었는지 한 줄 적어 두는 것이 안전해요.</p>
-<p>삭제 뒤 노드 수가 줄어든 것을 잊고 9단계의 53을 [8]에 놓으면 그 뒤 전부 틀려요. 매 단계 끝의 노드 수를 표에 함께 적어요.</p>
-<p>10단계의 71은 세 번, 12단계의 68은 두 번 올라가요. 한 번 바꾸고 멈추지 말고 루트 쪽 부모와 계속 비교해요. 14단계처럼 오른쪽 자식이 없는 자리에서는 왼쪽 자식 하나와만 비교해요. 두 번째 50을 이미 있는 값이라 건너뛰지도 않아요.</p>
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>8단계 삭제 뒤 노드 수 감소를 잊고 9단계 <code>53</code>을 <code>[8]</code>에 넣으면</strong>: 7번째 자리(<code>[7]</code>)가 비어 완전 이진 트리가 깨지고 이후 모든 부모·자식 인덱스가 어긋나요.</p>
+  <p><strong>14단계 <code>[5]=53</code>에서 오른쪽 자식이 없다고 멈추지 않거나 잘못 비교하면</strong>: 외자식 <code>[10]=24</code>가 있으므로 반드시 비교해야 해요(여기서는 $53 &gt; 24$ 라 멈추지만, 더 작은 값이 내려왔다면 교환해야 해요). 또한 ‘삭제 2번’의 해석 기준을 시험지에 밝혀 적지 않으면 채점자 해석과 어긋날 수 있어요.</p>
 </div>
 <div class="layer formal" data-explanation="retry">
-<h4>해설을 닫고 다시 해 봐요</h4>
-<ol><li>열다섯 단계 표를 노드 수 열까지 넣어 다시 채워요.</li><li>8·14·15단계에서 꺼낸 값과 루트로 올린 값, 교환한 자식을 적어요.</li><li>최종 트리의 값이 ‘넣은 열두 값 − 꺼낸 세 값’과 같은지, 순번 해석이면 어디서 멈추는지 확인해요.</li></ol>
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>중간에 삭제가 섞인 힙 문제를 보면 → 표에 <code>n</code>(현재 노드 수) 열을 함께 적어 다음 삽입 인덱스 <code>[n+1]</code>을 놓치지 않는다.</li>
+    <li>8단계 삭제 직후 <code>53</code>은 왜 <code>[8]</code>이 아니라 <code>[7]</code>에 놓이나요?</li>
+    <li>만약 ‘삭제 2번’을 순번(1회 삭제)으로 읽었다면 최종 트리의 원소 개수와 루트 값은 어떻게 달라지나요?</li>
+  </ol>
 </div>
 <div class="sum" hidden="">
-<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최대 힙 = 완전 이진 트리 + 부모 ≥ 자식, 매 연산 뒤 다시 성립해야 해요. 추가는 맨 끝에서 upheap, 삭제는 루트를 꺼내고 마지막 노드를 올려 큰 자식 쪽으로 downheap. 부모 $\lfloor i/2 \rfloor$, 자식 $2i$, $2i+1$.</p></div>
-<div class="summary-group"><h4>첫 줄</h4><p>‘삭제 2번’을 두 번 삭제로 읽는다고 밝히고, 단계 1: 추가 16 → [1].</p></div>
-<div class="summary-group"><h4>핵심 판단</h4><p>7개 추가 뒤 50 48 31 9 41 16 24, 삭제 1번 뒤 48 41 31 9 24 16, 5개 추가 뒤 71 68 48 50 64 16 31 9 41 24 53. 71과 68을 꺼내 64 53 48 50 24 16 31 9 41. 순번 해석(한 번만 삭제)이면 68 64 48 50 53 16 31 9 41 24.</p></div>
-<div class="summary-group"><h4>검산</h4><p>독립 시뮬레이션 15단계 일치, 매 연산 뒤 부모 ≥ 자식 성립. 12 − 3 = 9개, 남은 값 = 넣은 값 − {50, 71, 68}. 문제은행 검증 답과 같고 공식 답은 미확인이에요.</p></div>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>추가·삭제 혼합 시 매 단계 <code>n</code>을 갱신해 다음 삽입 칸 <code>[n+1]</code>을 정해요. 불변식은 <code>[1..n]</code> 완비 + 부모 $\ge$ 자식.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>‘삭제 2번’=2회 삭제 기준. 1: 추가 16 → <code>[1]</code>(<code>n=1</code>), 2: 추가 9 → <code>16 9</code>.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>7추가 <code>50 48 31 9 41 16 24</code> → 삭제1 <code>48 41 31 9 24 16</code> → 5추가 <code>71 68 48 50 64 16 31 9 41 24 53</code> → 삭제2회 <code>64 53 48 50 24 16 31 9 41</code>(순번 해석 시 <code>68 64 48 50 53 16 31 9 41 24</code>).</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>12−3=9개 보존, 부모 $\ge$ 자식 8쌍 성립. 전사에 공식 답은 미확인이에요.</p></div>
 </div>
-</article><article class="topic" id="p5"><h3>P5. 여섯 개 넣고 한 번 빼는 최소 히프</h3><p class="panel-meta">unk-final-ltk-q5 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=5">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p5"><div class="layer formal" data-source-problem="p5"><div data-source-field="conditions"><p>다음의 나열된 키를 주어진 순서대로 6개 삽입하고 한 번 삭제해서 만들어진 최소 히프(min heap) 트리를 그려 보세요.</p><p>삽입(삽입되는 키 순서): 90, 85, 80, 75, 70, 65</p><p>삭제: ( 한 번 삭제 )</p></div></div><details class="original" data-original-problem="p5"><summary>기출 원문 보기</summary><p>기말 5번 · 10점 · 이태권 교수님</p><p>"다음의 나열된 키(값)를 주어진 순서대로 6 개의 키를 삽입하고 한 번 삭제하여 만들어진 최소 히프(min heap)트리를 그리시오. [10 점]</p><p>삽입(삽입되는 키 순서): 90, 85, 80, 75, 70, 65<br>삭제: ( 한 번 삭제 )"</p></details></div><div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>빈 최소 히프(min heap)에 키 6개를 주어진 순서대로 하나씩 넣은 뒤, 삭제를 딱 한 번 해요. 그 결과 남은 5개 노드의 트리 모양과 각 자리의 키를 그리면 돼요. 삭제할 키를 고르라는 말이 없으니, 히프의 삭제는 언제나 루트를 꺼내는 연산이라는 점부터 기억해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘최소 히프’라는 단어에서 두 조건을 함께 떠올려요. 모양 조건은 완전 이진 트리(complete binary tree)이고, 값 조건은 모든 부모·자식 쌍에서 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$이에요. 그래서 루트에는 언제나 가장 작은 키가 있어요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">최대 힙과 최소 힙</a>.</p><p>‘삽입’이라는 단서에서는 upheap을 떠올려요. 새 키를 마지막 자리(배열의 다음 빈칸)에 붙여 모양 조건을 먼저 지키고, 부모보다 작으면 부모와 바꾸며 위로 올라가요. 부모보다 작지 않거나 루트에 닿으면 멈춰요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">삽입과 upheap</a>.</p><p>‘한 번 삭제’라는 단서에서는 downheap을 떠올려요. 루트를 꺼내고 마지막 노드를 루트로 옮긴 뒤, 두 자식 중 <strong>더 작은</strong> 쪽과 비교해 내가 더 크면 바꾸며 내려가요. 강의 예제는 최대 히프라서 ‘큰 자식’과 비교했지만, 최소 히프는 부등호만 반대예요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">삭제와 downheap</a>.</p><p>상태를 추적할 때는 1번부터 채우는 배열을 써요. 부모는 $\lfloor i/2 \rfloor$, 왼쪽 자식은 $2i$, 오른쪽 자식은 $2i+1$이에요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열로 구현한 힙의 인덱스</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>인덱스: 1  2  3  4  5  6
-insert 90 → [90]</code></pre><p>배열 칸 번호를 먼저 적고, 연산 하나마다 한 줄씩 배열 상태를 적어 나가요. 트리는 마지막에 배열에서 옮겨 그려요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>입력이 90, 85, 80, … 처럼 계속 작아지므로, 새 키는 매번 지금까지의 모든 키보다 작아요. 그래서 넣을 때마다 루트까지 올라가거나 그 근처까지 올라가요. 그래도 비교는 부모와만 하고, 형제(sibling)와는 비교하지 않아요.</p><div class="table-wrap"><table><thead><tr><th>연산</th><th>붙인 자리</th><th>교환 과정</th><th>배열 [1..]</th></tr></thead><tbody><tr><td>insert 90</td><td>1번</td><td>루트라 멈춤</td><td>90</td></tr><tr><td>insert 85</td><td>2번</td><td>85 &lt; 부모 90 → 교환, 루트 도착</td><td>85 90</td></tr><tr><td>insert 80</td><td>3번</td><td>80 &lt; 부모 85 → 교환, 루트 도착</td><td>80 90 85</td></tr><tr><td>insert 75</td><td>4번</td><td>75 &lt; 부모 90(2번) → 교환, 75 &lt; 부모 80(1번) → 교환</td><td>75 80 85 90</td></tr><tr><td>insert 70</td><td>5번</td><td>70 &lt; 부모 80(2번) → 교환, 70 &lt; 부모 75(1번) → 교환</td><td>70 75 85 90 80</td></tr><tr><td>insert 65</td><td>6번</td><td>65 &lt; 부모 85(3번) → 교환, 65 &lt; 부모 70(1번) → 교환</td><td>65 75 70 90 80 85</td></tr></tbody></table></div><p>6번 칸의 부모는 $\lfloor 6/2 \rfloor = 3$번이에요. 그래서 65는 2번의 75가 아니라 3번의 85와 먼저 비교해요. 삽입이 끝난 히프는 루트 65, 그 자식 75·70, 75의 자식 90·80, 70의 왼쪽 자식 85예요.</p><p>이제 한 번 삭제해요. 최소 히프의 삭제는 루트, 곧 가장 작은 키 65를 꺼내는 거예요. 루트 자리를 비워 두면 트리가 둘로 갈라지므로, 마지막 노드인 6번의 85를 루트로 옮겨요.</p><div class="table-wrap"><table><thead><tr><th>단계</th><th>비교</th><th>배열 [1..]</th></tr></thead><tbody><tr><td>65 꺼내고 85를 루트로</td><td>모양 조건만 맞춤</td><td>85 75 70 90 80</td></tr><tr><td>1번 85</td><td>자식 75·70 중 작은 70(3번)과 비교, 85 &gt; 70 → 교환</td><td>70 75 85 90 80</td></tr><tr><td>3번 85</td><td>자식 칸 6·7번이 없음(노드 5개) → 멈춤</td><td>70 75 85 90 80</td></tr></tbody></table></div><p>두 자식 중 작은 쪽을 고르는 이유는, 올라오는 자식이 다른 자식보다도 작거나 같아야 새 부모 자리에서 조건이 지켜지기 때문이에요. 75를 올리면 75 &gt; 70이 되어 오른쪽에서 조건이 깨져요.</p><p>완성 답은 배열 <code>70 75 85 90 80</code>이에요. 트리로 옮기면 루트 70, 루트의 왼쪽 자식 75와 오른쪽 자식 85, 75의 왼쪽 자식 90과 오른쪽 자식 80이에요.</p><figure class="figure"><svg id="p5-explain-fig-explain-p5-final" viewBox="0 0 240 200" role="img" aria-label="한 번 삭제 뒤 최소 히프: 루트 70, 왼쪽 자식 75, 오른쪽 자식 85, 75의 왼쪽 자식 90과 오른쪽 자식 80"><path class="fig-ink" d="M108 44L72 86 M132 44L168 86 M53 117L37 153 M67 117L83 153"/><circle class="fig-ink" cx="120" cy="30" r="18"/><circle class="fig-ink" cx="60" cy="100" r="18"/><circle class="fig-ink" cx="180" cy="100" r="18"/><circle class="fig-ink" cx="30" cy="170" r="18"/><circle class="fig-ink" cx="90" cy="170" r="18"/><text class="fig-text" x="120" y="35" text-anchor="middle">70</text><text class="fig-text" x="60" y="105" text-anchor="middle">75</text><text class="fig-text" x="180" y="105" text-anchor="middle">85</text><text class="fig-text" x="30" y="175" text-anchor="middle">90</text><text class="fig-text" x="90" y="175" text-anchor="middle">80</text></svg><figcaption>한 번 삭제한 뒤의 최소 히프예요. 85 아래에는 자식이 없어요.</figcaption></figure></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>완성 답은 삽입 뒤 <code>65 75 70 90 80 85</code>, 한 번 삭제 뒤 <code>70 75 85 90 80</code>이에요.</p><p>조건에 직접 대입해 확인해요. 모양은 노드 5개가 1~5번 칸을 빈칸 없이 채우므로 완전 이진 트리예요. 값은 70 ≤ 75, 70 ≤ 85, 75 ≤ 90, 75 ≤ 80이라 네 부모·자식 쌍이 모두 최소 히프 조건을 지켜요. 남은 키 집합도 처음 6개에서 65만 빠진 {70, 75, 80, 85, 90}이에요.</p><p>별도로 작성한 1-기반 upheap/downheap 시뮬레이션(<code>evidence/author-p5-p8.py</code>)도 삽입 단계마다 위 표와 같은 배열을 출력했고, 최종 배열과 히프 조건 검사 결과가 일치했어요. 복습팩의 참고 답, 기출 문제은행에 적힌 답과도 같아요. 시험지의 공식 채점 답은 자료에 없어 확인하지 못했어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>강의 예제의 최대 히프 습관대로 downheap에서 ‘큰 자식’과 바꾸면 75가 올라가 75 &gt; 70이 되어 틀려요. 최소 히프는 작은 자식과 비교해요. 또 삭제 뒤 남은 키를 정렬해서 70 75 80 85 90으로 다시 채우면, 히프 조건은 맞더라도 이 연산 순서가 만드는 트리가 아니에요. 마지막으로, 65를 넣을 때 2번의 75와 비교하는 실수가 잦아요. 6번의 부모는 3번이에요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li>칸 번호 1~6을 적고, 삽입마다 부모 칸 $\lfloor i/2 \rfloor$를 따라 교환하며 배열을 한 줄씩 적어 보세요.</li><li>루트를 꺼내고 마지막 노드를 올린 뒤, 작은 자식과 비교하며 멈출 때까지 내려 보세요.</li><li>완성 배열을 트리로 옮기고 모든 부모·자식 쌍에 ≤를 대입해 보세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 히프: 완전 이진 트리 + $\text{key}(\text{부모}) \le \text{key}(\text{자식})$. 삽입은 끝에 붙이고 upheap, 삭제는 루트를 꺼내고 마지막 노드를 올려 작은 자식 쪽으로 downheap해요. 부모 $\lfloor i/2 \rfloor$, 자식 $2i$, $2i+1$이에요.</p></div><div class="summary-group"><h4>첫 줄</h4><p>칸 번호 1~6을 적고 <code>insert 90 → [90]</code>부터 연산마다 배열을 한 줄씩 적어요.</p></div><div class="summary-group"><h4>답</h4><p>삽입 뒤 <code>65 75 70 90 80 85</code>, 한 번 삭제 뒤 <code>70 75 85 90 80</code>이에요. 루트 70, 자식 75·85, 75의 자식 90·80이에요.</p></div><div class="summary-group"><h4>검산·주의</h4><p>네 쌍 70≤75, 70≤85, 75≤90, 75≤80이 모두 성립하고 별도 시뮬레이션과 일치해요. downheap에서 큰 자식을 고르지 않아요.</p></div></div>
-</article><article class="topic" id="p6"><h3>P6. 히프를 배열로 담을 수 있는 이유</h3><p class="panel-meta">textbook-ch09-q02 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=6">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p6"><div class="layer formal" data-source-problem="p6"><div data-source-field="conditions"><p>히프를 배열로 표현할 수 있는 이유는 무엇인가요? 보기에서 골라 보세요.</p><div class="options"><div class="option"><p>(①)</p><p>완전 이진 트리이기 때문에</p></div><div class="option"><p>(②)</p><p>어느 정도 정렬되어 있기 때문에</p></div><div class="option"><p>(③)</p><p>이진 트리이기 때문에</p></div><div class="option"><p>(④)</p><p>히프 조건을 만족하기 때문에</p></div></div></div></div><details class="original" data-original-problem="p6"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 2번 · 책 356쪽</p><p>히프를 배열로 표현할 수 있는 이유는 무엇인가?</p><div class="options"><div class="option"><p>(①)</p><p>완전 이진 트리이기 때문에</p></div><div class="option"><p>(②)</p><p>어느 정도 정렬되어 있기 때문에</p></div><div class="option"><p>(③)</p><p>이진 트리이기 때문에</p></div><div class="option"><p>(④)</p><p>히프 조건을 만족하기 때문에</p></div></div></details></div><div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>보기 넷 중 하나를 고르는 단일 선택 객관식이에요. 질문은 “배열로 표현할 수 있는 <strong>이유</strong>”를 묻는 긍정 질문이라, 참인 진술 중에서도 배열 표현을 가능하게 하는 원인을 골라야 해요. 히프에 대해 맞는 말이라고 해서 모두 정답이 되지는 않아요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘배열로 표현’이라는 단서에서 노드 번호를 그대로 배열 인덱스로 쓰는 방법을 떠올려요. 루트를 1번으로 두고 위 레벨부터, 같은 레벨에서는 왼쪽부터 번호를 붙이면 왼쪽 자식은 $2i$, 오른쪽 자식은 $2i+1$, 부모는 $\lfloor i/2 \rfloor$예요. 이 식은 노드의 ‘위치’만으로 정해지고 키 값과는 상관없어요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열로 구현한 힙의 인덱스</a>.</p><p>‘히프’라는 단어에서는 히프가 두 조건을 함께 가진다는 정의를 떠올려요. 모양 조건은 완전 이진 트리(complete binary tree), 곧 마지막 레벨 바로 위까지 꽉 차고 마지막 레벨은 왼쪽부터 채운 트리예요. 값 조건(히프 조건)은 부모·자식 키의 대소 관계예요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">최대 힙과 최소 힙</a>.</p><p>배열 표현의 효율을 정하는 것은 노드가 배열 칸을 빈칸 없이 쓰는가예요. 그래서 두 조건 중 ‘모양’ 쪽이 답의 후보가 돼요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>배열 표현 = 노드 번호(위치)를 인덱스로 사용 → 1..n이 빈칸 없이 차야 함</code></pre><p>먼저 배열 표현이 무엇을 요구하는지 한 줄로 적고, 그 요구를 보장하는 보기를 찾아요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>배열 표현이 잘 동작하려면 노드 $n$개가 1번부터 $n$번 칸을 빈칸 없이 채워야 해요. 그래야 배열 크기가 노드 수와 같고, $2i$, $2i+1$, $\lfloor i/2 \rfloor$로 찾은 칸에 실제 노드가 있어요. 이제 보기마다 진술이 참인지, 그리고 이 질문의 ‘이유’로 알맞은지를 따로 판정해요.</p><div class="table-wrap"><table><thead><tr><th>보기</th><th>진술이 히프에 대해 참인가</th><th>배열 표현의 이유로 알맞은가</th></tr></thead><tbody><tr><td>① 완전 이진 트리이기 때문에</td><td>참이에요. 히프의 모양 조건이에요.</td><td>알맞아요. 위 레벨부터 왼쪽부터 채우니 번호가 정확히 1..n이 되고, 인덱스 식이 늘 맞아요.</td></tr><tr><td>② 어느 정도 정렬되어 있기 때문에</td><td>대체로 참이에요. 루트에서 아래로 가는 경로마다 키가 단조로워 ‘느슨한 정렬’이라 부를 수 있어요.</td><td>알맞지 않아요. 이것은 히프 조건이 낳는 결과이고, 노드가 어느 칸에 들어가는지는 정해 주지 않아요.</td></tr><tr><td>③ 이진 트리이기 때문에</td><td>참이에요. 히프는 이진 트리예요.</td><td>충분하지 않아요. 일반 이진 트리도 번호를 붙여 배열에 담을 수는 있지만, 한쪽으로 치우치면 중간에 빈칸이 많이 생겨요. 오른쪽으로만 4개 이어진 트리는 15칸 중 11칸이 비어요.</td></tr><tr><td>④ 히프 조건을 만족하기 때문에</td><td>참이에요. 부모·자식의 키 대소 관계예요.</td><td>알맞지 않아요. 키 크기 관계는 트리 모양을 정하지 않아요. 모양이 같으면 키를 어떻게 바꿔도 사용하는 칸은 같아요.</td></tr></tbody></table></div><p>②·③·④도 히프에 대한 참인 진술이지만, 질문이 묻는 원인은 “노드가 1..n 칸을 빈칸 없이 채운다”를 보장하는 성질이에요. 이를 보장하는 것은 완전 이진 트리라는 모양 조건이므로 정답은 ①이에요. 강의록 S8 p7도 “완전 이진 트리이므로 각 노드에 번호를 붙일 수 있다”고 이 순서로 설명해요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>교과서의 공식 답은 제공되지 않아 확인하지 못했고, 이 답은 강의록 S8 p7과 독립 검산으로 확인한 자체 풀이예요.</p><div data-subpart="main"><p>완성 답은 ① 완전 이진 트리이기 때문에예요.</p><p>별도 스크립트(<code>evidence/author-p5-p8.py</code>)로 노드 수 $n = 1, \dots, 31$인 완전 이진 트리를 위 레벨부터 왼쪽부터 채웠더니, 사용한 칸이 매번 정확히 1..n이었고 모든 칸의 부모 $\lfloor i/2 \rfloor$도 채워진 칸이었어요. 반대로 오른쪽 경사 이진 트리는 노드 3, 4, 5개에서 배열 크기가 7, 15, 31로 빈칸이 4, 11, 26개 생겼어요. 이 비교는 ③만으로는 부족하다는 반례이고, ①의 성질은 완전 이진 트리의 정의(레벨 순서로 빈틈없이 채움)에서 바로 나와요. 복습팩 참고 답 ①과도 같아요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>④를 고르기 쉬운 이유는 ‘히프 조건’이 히프의 대표 성질처럼 들리기 때문이에요. 하지만 히프 조건은 값의 관계이고, 배열 칸 배치는 모양이 정해요. ②도 맞는 말처럼 들리지만 원인과 결과를 바꿔 읽은 거예요. ③은 필요한 조건이긴 해도, 빈칸 없이 채운다는 핵심이 빠져 있어요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li>배열 표현이 요구하는 것을 한 줄로 다시 적어 보세요.</li><li>네 보기를 ‘참인 진술인가’와 ‘배열 표현의 이유인가’ 두 칸으로 나눠 판정해 보세요.</li><li>오른쪽으로만 이어진 노드 4개 트리가 몇 칸을 쓰는지 직접 세어 보세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>히프 = 완전 이진 트리(모양) + 히프 조건(값). 배열은 위치 번호를 인덱스로 써요: 자식 $2i$, $2i+1$, 부모 $\lfloor i/2 \rfloor$.</p></div><div class="summary-group"><h4>첫 줄</h4><p>배열 표현은 1..n 칸이 빈칸 없이 차야 해요. 그걸 보장하는 보기를 찾아요.</p></div><div class="summary-group"><h4>답과 판정</h4><p>정답 ①이에요. ②·③·④는 참인 진술이지만 이유가 아니거나(②·④는 값의 성질) 충분하지 않아요(③은 경사 트리에서 빈칸이 생겨요).</p></div><div class="summary-group"><h4>검산·주의</h4><p>완전 이진 트리 $n=1..31$은 칸 1..n을 정확히 채우고, 오른쪽 경사 4노드는 15칸 중 11칸이 비어요. 교과서 공식 답은 확인하지 못했어요.</p></div></div>
-</article><article class="topic" id="p7"><h3>P7. 데이터 10개인 히프 트리의 높이</h3><p class="panel-meta">textbook-ch09-q07 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=7">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p7"><div class="layer formal" data-source-problem="p7"><div data-source-field="conditions"><p>10개의 데이터를 저장하고 있는 히프 트리의 높이는 얼마인가요?</p></div></div><details class="original" data-original-problem="p7"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 7번 · 책 356쪽</p><p>10개의 데이터를 저장하고 있는 히프트리의 높이는?</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>노드가 10개인 히프 트리가 몇 층인지, 곧 높이(height)를 묻는 문제예요. 키 값은 주어지지 않았어요. 히프는 모양이 노드 수만으로 정해지므로 값 없이도 답할 수 있어요. 다만 높이를 루트에서 1부터 셀지 0부터 셀지 기준을 먼저 정해야 해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘히프 트리’라는 단어에서 모양 조건인 완전 이진 트리(complete binary tree)를 떠올려요. 위 레벨부터 꽉 채우고 마지막 레벨만 왼쪽부터 일부 채우므로, 노드 수 $n$이 정해지면 모양이 하나로 정해져요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">최대 힙과 최소 힙</a>.</p><p>‘높이’라는 단어에서는 층별 정원을 떠올려요. 이진 트리는 노드마다 자식이 2개 이하라서 깊이 $i$에는 많아야 $2^{i-1}$개가 들어가요. 높이 $h$까지 꽉 채우면 $1+2+\cdots+2^{h-1} = 2^h - 1$개예요. 그래서 높이는 $2^h - 1 \ge n$을 만족하는 가장 작은 $h$, 곧 $h = \lceil \log_2(n+1) \rceil$이에요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-height">힙의 높이는 O(log n)</a>.</p><p>세는 기준은 강의록 S8 p6의 높이 표를 따라요. 이 표와 이 책은 루트를 깊이 1로 세고, 가장 깊은 노드의 깊이를 높이로 봐요. 루트를 깊이 0으로 세는(간선 수로 세는) 책도 있어서, 그 기준이면 같은 트리의 높이가 1 작아져요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>깊이:      1  2  3  4
-최대 개수: 1  2  4  8
-누적:      1  3  7  15</code></pre><p>깊이별 정원과 누적 합을 적고, 누적이 처음으로 10 이상이 되는 깊이를 찾아요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>완전 이진 트리는 위 깊이를 다 채운 뒤에야 다음 깊이로 내려가요. 그래서 노드를 정원대로 위에서부터 나눠 담으면 돼요.</p><div class="table-wrap"><table><thead><tr><th>깊이</th><th>정원 $2^{i-1}$</th><th>실제로 담는 노드</th><th>남은 노드</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>1</td><td>9</td></tr><tr><td>2</td><td>2</td><td>2</td><td>7</td></tr><tr><td>3</td><td>4</td><td>4</td><td>3</td></tr><tr><td>4</td><td>8</td><td>3 (왼쪽부터)</td><td>0</td></tr></tbody></table></div><p>깊이 1~3에 $1+2+4 = 7$개가 들어가고, 남은 $10-7 = 3$개가 깊이 4의 왼쪽 세 자리에 들어가요. 가장 깊은 노드가 깊이 4에 있으므로 높이는 4예요. 이 분배는 강의록 S8 p6 표의 깊이 1 → 1개, 2 → 2개, 3 → 4개, 4 → 3개와 정확히 같아요.</p><p>공식으로도 확인해요. $h = \lceil \log_2(10+1) \rceil = \lceil 3.46\ldots \rceil = 4$예요. 높이 3이면 최대 $2^3 - 1 = 7$개라 10개를 담을 수 없고, 높이 4면 최대 15개라 담을 수 있어요.</p><p>완성 답은 루트를 깊이 1로 세는 이 책·수업 기준으로 <strong>4</strong>예요. 루트를 깊이 0으로 세는 기준이라면 같은 트리를 3이라고 써요. 문제는 기준을 밝히지 않았으므로, 답안에는 “루트를 1로 셀 때 4”처럼 기준을 함께 적으면 안전해요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>교과서의 공식 답은 제공되지 않아 확인하지 못했고, 이 답은 강의록 S8 p6 표와 독립 검산으로 확인한 자체 풀이예요.</p><div data-subpart="main"><p>완성 답은 4예요(루트를 깊이 1로 셀 때, 0부터 세면 3).</p><p>별도 스크립트(<code>evidence/author-p5-p8.py</code>)에서 깊이별 정원을 누적하는 반복으로 높이 4를 얻었고, $\lceil \log_2(n+1) \rceil = 4$, $\lfloor \log_2 n \rfloor + 1 = 4$ 두 식도 같은 값을 냈어요. 깊이 4에 남는 노드는 3개였고, 높이가 4가 되는 노드 수는 8~15개였어요. 10은 이 범위 안에 있어요. 복습팩 참고 답 4와도 같아요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>$\log_2 10 \approx 3.3$을 보고 내림해서 3이라고 쓰면, 루트를 1로 세는 이 책 기준과 어긋나요. 루트를 1로 세면 $\lfloor \log_2 n \rfloor + 1$ 또는 $\lceil \log_2(n+1) \rceil$이에요. 또 표의 마지막 줄 ‘깊이 4 → 3개’의 3을 높이로 옮겨 적지 않아요. 3은 마지막 깊이의 노드 수이고, 높이는 층의 개수 4예요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li>깊이·정원·누적 세 줄을 적고 누적이 10을 넘는 깊이를 찾아 보세요.</li><li>깊이 4에 몇 개가 들어가는지 왼쪽부터 채워 보세요.</li><li>루트를 0으로 세는 기준이면 답이 어떻게 바뀌는지 말해 보세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>히프는 완전 이진 트리라 모양이 $n$으로 정해져요. 깊이 $i$의 정원은 $2^{i-1}$, 높이 $h = \lceil \log_2(n+1) \rceil$(루트를 깊이 1로 셀 때)이에요.</p></div><div class="summary-group"><h4>첫 줄</h4><p>깊이 1·2·3·4의 정원 1·2·4·8, 누적 1·3·7·15를 적어요.</p></div><div class="summary-group"><h4>답과 기준</h4><p>1+2+4 = 7개, 남은 3개가 깊이 4로 가서 높이 4예요. 루트를 0으로 세면 3이에요. 이 책과 수업은 루트를 1로 세요.</p></div><div class="summary-group"><h4>검산·주의</h4><p>높이 3의 최대는 7개라 부족하고, 높이 4는 8~15개를 담아요. $\log_2 10$을 내림해 3으로 쓰지 않아요. 교과서 공식 답은 확인하지 못했어요.</p></div></div>
-</article><article class="topic" id="p8"><h3>P8. 이 트리는 최소 히프인가</h3><p class="panel-meta">textbook-ch09-q12 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=8">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p8"><div class="layer formal" data-source-problem="p8"><div data-source-field="conditions"><p>아래의 이진 트리는 최소 히프 트리인가요? 그 이유도 써 보세요.</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9</title><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-a-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-a-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-b-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-b-right"><line x1="200.0" y1="130" x2="300.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-c-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-c-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-d-left"><line x1="100.0" y1="215" x2="50.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-d-right"><line x1="100.0" y1="215" x2="150.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-e-left"><line x1="300.0" y1="215" x2="250.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-e-right"><line x1="300.0" y1="215" x2="350.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-a"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">1</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-b"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">2</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-c"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">10</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-d"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">4</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-e"><circle cx="300.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="300.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-f"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">11</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-g"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">12</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-h"><circle cx="50.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="50.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-i"><circle cx="150.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="150.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">7</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-j"><circle cx="250.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="250.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">5</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-k"><circle cx="350.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="350.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">9</text></g></svg></div><figcaption>원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure></div></div><details class="original" data-original-problem="p8"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 12번 · PDF 2쪽</p><p>아래의 이진트리는 최소 히프트리인가? 그 이유는?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9</title><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-a-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-a-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-b-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-b-right"><line x1="200.0" y1="130" x2="300.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-c-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-c-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-d-left"><line x1="100.0" y1="215" x2="50.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-d-right"><line x1="100.0" y1="215" x2="150.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-e-left"><line x1="300.0" y1="215" x2="250.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-e-right"><line x1="300.0" y1="215" x2="350.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-a"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">1</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-b"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">2</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-c"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">10</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-d"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">4</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-e"><circle cx="300.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="300.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-f"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">11</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-g"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">12</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-h"><circle cx="50.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="50.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-i"><circle cx="150.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="150.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">7</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-j"><circle cx="250.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="250.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">5</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-k"><circle cx="350.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="350.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">9</text></g></svg></div><figcaption>원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>그림의 이진 트리가 최소 히프(min heap)인지 예/아니요로 판정하고, 그 이유를 쓰는 문제예요. 판정하려면 모양과 값 두 조건을 모두 봐야 하고, “아니요”라면 어느 노드에서 어떤 조건이 깨지는지 짚어 줘야 해요. 그림을 고치지 않고 있는 그대로 읽어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘최소 히프 트리인가’라는 질문에서 히프의 정의를 그대로 판정 기준으로 써요. 히프는 (1) 모양 조건: 완전 이진 트리(complete binary tree)이고, (2) 값 조건: 모든 부모·자식 쌍에서 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$인 트리예요. 둘 중 하나라도 깨지면 최소 히프가 아니에요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">최대 힙과 최소 힙</a>.</p><p>모양은 레벨 순서로 번호를 붙여 확인해요. 노드 $n$개가 번호 1..n을 빈칸 없이 차지하고, 번호 $i$의 자식이 $2i$, $2i+1$이면 완전 이진 트리예요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열로 구현한 힙의 인덱스</a>.</p><p>값 조건은 바로 위아래 쌍만 비교하면 충분해요. 부모 ≤ 자식이 모든 간선에서 성립하면 ≤가 이어져서 조상 ≤ 자손도 저절로 성립하기 때문이에요. 반대로 한 쌍이라도 어기면 바로 “아니요”예요. 같은 값은 ≤에 포함되므로 허용돼요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>번호:  1  2   3  4  5   6   7  8  9  10  11
-값:    1  2  10  4  6  11  12  6  7   5   9</code></pre><p>그림을 위 레벨부터 왼쪽부터 읽어 배열로 옮겨요. 이 배열 하나로 모양과 값 조건을 모두 확인할 수 있어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>먼저 모양을 봐요. 레벨 1에 1개, 레벨 2에 2개, 레벨 3에 4개가 꽉 차 있고, 레벨 4에는 4개가 왼쪽부터 들어 있어요. 레벨 4의 노드는 레벨 3의 왼쪽 두 노드(4와 6) 아래에 있고 중간에 빈자리가 없어요. 그래서 번호 1..11이 빈칸 없이 차고, 완전 이진 트리 조건은 만족해요.</p><p>다음으로 값 조건을 모든 부모·자식 쌍에서 확인해요. 번호 $i$의 자식은 $2i$, $2i+1$이고, 자식이 있는 노드는 1~5번이에요.</p><div class="table-wrap"><table><thead><tr><th>부모 (번호)</th><th>왼쪽 자식 (번호)</th><th>오른쪽 자식 (번호)</th><th>부모 ≤ 자식?</th></tr></thead><tbody><tr><td>1 (1)</td><td>2 (2)</td><td>10 (3)</td><td>1 ≤ 2, 1 ≤ 10 → 맞아요</td></tr><tr><td>2 (2)</td><td>4 (4)</td><td>6 (5)</td><td>2 ≤ 4, 2 ≤ 6 → 맞아요</td></tr><tr><td>10 (3)</td><td>11 (6)</td><td>12 (7)</td><td>10 ≤ 11, 10 ≤ 12 → 맞아요</td></tr><tr><td>4 (4)</td><td>6 (8)</td><td>7 (9)</td><td>4 ≤ 6, 4 ≤ 7 → 맞아요</td></tr><tr><td>6 (5)</td><td>5 (10)</td><td>9 (11)</td><td><strong>6 ≤ 5는 거짓 → 위반</strong>, 6 ≤ 9는 맞아요</td></tr></tbody></table></div><p>모두 10개 간선 중 9개는 조건을 지키지만, 5번 노드 6(레벨 3에서 왼쪽에서 두 번째, 2의 오른쪽 자식)의 왼쪽 자식 5가 부모보다 작아요. 최소 히프는 부모가 자식보다 작거나 같아야 하므로 이 한 쌍 때문에 값 조건이 깨져요.</p><p>값 6이 4번 노드 아래(8번)와 5번에 두 번 나오는 것은 문제가 아니에요. 히프는 같은 키를 허용해요.</p><p>완성 답은 “최소 히프가 아니에요”예요. 이유: 완전 이진 트리 조건은 만족하지만, 노드 6의 왼쪽 자식 5가 6보다 작아 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$를 어겨요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>교과서의 공식 답은 제공되지 않아 확인하지 못했고, 이 답은 독립 검산한 자체 풀이예요.</p><div data-subpart="main"><p>완성 답은 “아니요, 6의 왼쪽 자식 5가 6보다 작아 최소 히프 조건을 어겨요”예요.</p><p>레벨 순서 가정에 기대지 않으려고, 별도 스크립트(<code>evidence/author-p5-p8.py</code>)가 교과서 그림 파일 <code>ch09-q12-tree.svg</code>의 선 끝점 좌표에서 부모·자식 관계를 직접 복원했어요. 노드 11개, 간선 10개가 나왔고 레벨은 [1], [2, 10], [4, 6, 11, 12], [6, 7, 5, 9]였어요. 레벨 순서 번호로 다시 매겼을 때 모든 자식이 $2i$, $2i+1$ 자리에 있어 완전 이진 트리 판정은 참이었고, 10개 쌍 중 위반은 (6 → 왼쪽 5) 하나뿐이었어요. 위 표와 복습팩 참고 답과도 일치해요.</p><p>반대 방향 확인으로, 5와 6의 자리를 바꾸면 그 노드는 5가 되고 부모 2 ≤ 5, 자식 6 ≥ 5, 9 ≥ 5가 모두 성립해요. 위반이 이 한 곳뿐임을 다시 보여 주는 확인일 뿐, 문제는 원래 그림을 판정하는 거예요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>레벨별로 값이 대체로 커지는지만 훑으면 놓쳐요. 레벨 4의 5는 레벨 3의 4보다 커서 괜찮아 보이지만, 5의 부모는 4가 아니라 6이에요. 값 비교는 레벨끼리가 아니라 실제 부모·자식 쌍끼리 해요. 또 모양이 완전 이진 트리라는 것만 보고 “히프다”라고 답하지 않아요. 두 조건을 모두 확인해야 하고, 이유에는 깨진 쌍을 구체적으로 적어요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li>그림을 레벨 순서 배열로 옮기고 번호 1..11이 빈칸 없이 차는지 확인해 보세요.</li><li>자식이 있는 1~5번 노드마다 부모 ≤ 두 자식을 표로 적어 보세요.</li><li>깨진 쌍을 찾아 “어느 노드의 어느 자식이 왜”로 이유를 한 문장에 써 보세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 히프 = 완전 이진 트리 + 모든 간선에서 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$. 같은 값은 허용해요. 번호 $i$의 자식은 $2i$, $2i+1$이에요.</p></div><div class="summary-group"><h4>첫 줄</h4><p>레벨 순서 배열 <code>1 2 10 4 6 11 12 6 7 5 9</code>를 번호 1..11과 함께 적어요.</p></div><div class="summary-group"><h4>답과 이유</h4><p>최소 히프가 아니에요. 모양은 완전 이진 트리지만, 5번 노드 6의 왼쪽 자식 5가 6보다 작아 값 조건을 어겨요.</p></div><div class="summary-group"><h4>검산·주의</h4><p>그림 파일에서 복원한 10개 쌍 중 위반은 (6, 5) 하나뿐이에요. 레벨끼리가 아니라 실제 부모·자식끼리 비교해요. 교과서 공식 답은 확인하지 못했어요.</p></div></div>
+</article><article class="topic" id="p5"><h3>P5. 여섯 개 넣고 한 번 빼는 최소 히프</h3><p class="panel-meta">unk-final-ltk-q5 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=5">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p5"><div class="layer formal" data-source-problem="p5"><div data-source-field="conditions"><p>다음의 나열된 키를 주어진 순서대로 6개 삽입하고 한 번 삭제해서 만들어진 최소 히프(min heap) 트리를 그려 보세요.</p><p>삽입(삽입되는 키 순서): 90, 85, 80, 75, 70, 65</p><p>삭제: ( 한 번 삭제 )</p></div></div><details class="original" data-original-problem="p5"><summary>기출 원문 보기</summary><p>기말 5번 · 10점 · 이태권 교수님</p><p>"다음의 나열된 키(값)를 주어진 순서대로 6 개의 키를 삽입하고 한 번 삭제하여 만들어진 최소 히프(min heap)트리를 그리시오. [10 점]</p><p>삽입(삽입되는 키 순서): 90, 85, 80, 75, 70, 65<br>삭제: ( 한 번 삭제 )"</p></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>빈 <strong>최소 히프(min heap)</strong>에 <code>90, 85, 80, 75, 70, 65</code>를 차례로 삽입한 뒤 <strong>1번 삭제</strong>한 결과 트리를 그려요.</p>
+  <p>삭제할 키가 지정되지 않았으므로 최소 히프의 삭제는 항상 <strong>루트(최솟값)</strong>를 꺼내는 연산이에요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>최소 히프(min heap)</td>
+          <td>완전 이진 트리 + $\text{key}(\text{부모}) \le \text{key}(\text{자식})$</td>
+          <td>최대 히프와 부등호 방향이 반대여서 루트에 항상 최솟값이 와요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">정리노트: 힙의 정의</a>).</td>
+        </tr>
+        <tr>
+          <td>6개 삽입 · 1번 삭제</td>
+          <td>삽입 = <code>[n+1]</code>에서 부모 $\lfloor i/2 \rfloor$ 보다 작으면 upheap / 삭제 = <code>[n]</code> 올려 <strong>더 작은 자식</strong>과 downheap</td>
+          <td>내려갈 때 두 자식 중 작은 쪽을 올려야 형제보다 작거나 같아 조건이 유지돼요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">upheap</a> · <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">downheap</a> · <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>1 | insert 90 → [1]=90 (부모 없음)  |  힙: 90
+2 | insert 85 → [2]=85 &lt; [1]=90 → 교환  |  힙: 85 90</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <h5>1) 6개 삽입 (내림차순 입력이라 매번 위로 이동)</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>연산</th><th>붙인 자리</th><th>부모 비교·교환 경로</th><th>배열 <code>[1..]</code></th></tr></thead>
+        <tbody>
+          <tr><td><code>insert 90</code></td><td><code>[1]</code></td><td>부모 없음</td><td><b>90</b></td></tr>
+          <tr><td><code>insert 85</code></td><td><code>[2]</code></td><td><code>[1]=90</code>과 교환</td><td><b>85</b> 90</td></tr>
+          <tr><td><code>insert 80</code></td><td><code>[3]</code></td><td><code>[1]=85</code>와 교환</td><td><b>80</b> 90 85</td></tr>
+          <tr><td><code>insert 75</code></td><td><code>[4]</code></td><td><code>[2]=90</code> → <code>[1]=80</code>과 교환</td><td><b>75</b> 80 85 90</td></tr>
+          <tr><td><code>insert 70</code></td><td><code>[5]</code></td><td><code>[2]=80</code> → <code>[1]=75</code>와 교환</td><td><b>70</b> 75 85 90 80</td></tr>
+          <tr><td><code>insert 65</code></td><td><code>[6]</code></td><td><code>[3]=85</code> → <code>[1]=70</code>과 교환</td><td><b>65</b> 75 70 90 80 85</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>6번 칸의 부모는 $\lfloor 6/2 \rfloor = 3$ 번(<code>85</code>)이에요. 삽입 후 트리는 <code>65 75 70 90 80 85</code>예요.</p>
+    <h5>2) 1번 삭제 (작은 자식 <code>70</code> 선택)</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>단계</th><th>동작</th><th>비교</th><th>배열 <code>[1..]</code></th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>루트 65 꺼내고 <code>[6]=85</code>를 <code>[1]</code>로 올림</td><td><code>[2]=75</code>, <b><code>[3]=70</code></b> 중 작은 <code>70</code></td><td><b>85</b> 75 70 90 80</td></tr>
+          <tr><td>2</td><td><code>85 &gt; 70</code> 이므로 <code>[3]</code>과 교환</td><td><code>[6], [7]</code> 없음($n=5$) → 멈춤</td><td>70 75 <b>85</b> 90 80</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>완성 답: 배열 <code>70 75 85 90 80</code> (루트 70, 왼쪽 자식 75, 오른쪽 자식 85, 75의 자식 90·80).</p>
+    <figure class="figure"><svg id="p5-explain-fig-explain-p5-final" viewBox="0 0 240 200" role="img" aria-label="한 번 삭제 뒤 최소 히프: 루트 70, 왼쪽 자식 75, 오른쪽 자식 85, 75의 왼쪽 자식 90과 오른쪽 자식 80"><path class="fig-ink" d="M108 44L72 86 M132 44L168 86 M53 117L37 153 M67 117L83 153"/><circle class="fig-ink" cx="120" cy="30" r="18"/><circle class="fig-ink" cx="60" cy="100" r="18"/><circle class="fig-ink" cx="180" cy="100" r="18"/><circle class="fig-ink" cx="30" cy="170" r="18"/><circle class="fig-ink" cx="90" cy="170" r="18"/><text class="fig-text" x="120" y="35" text-anchor="middle">70</text><text class="fig-text" x="60" y="105" text-anchor="middle">75</text><text class="fig-text" x="180" y="105" text-anchor="middle">85</text><text class="fig-text" x="30" y="175" text-anchor="middle">90</text><text class="fig-text" x="90" y="175" text-anchor="middle">80</text></svg><figcaption>한 번 삭제한 뒤의 최소 히프(<code>70 75 85 90 80</code>)</figcaption></figure>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>(시험지 공식 채점 답 전사 미확인): 삽입 후 <code>65 75 70 90 80 85</code> → 삭제 후 <code>70 75 85 90 80</code>.</p>
+    <ul>
+      <li><strong>부모 $\le$ 자식 4쌍 확인</strong>: $70 \le 75$, $70 \le 85$, $75 \le 90$, $75 \le 80$ 모두 참이고, <code>[1..5]</code>가 빈칸 없이 차 있어요.</li>
+      <li><strong>원소 보존 확인</strong>: 처음 6개 중 최솟값 <code>65</code>만 빠져 <code>{70, 75, 80, 85, 90}</code> 5개가 남았어요.</li>
+    </ul>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>최대 히프 습관으로 downheap에서 큰 자식 <code>75</code>를 올리면</strong>: 루트 <code>75 &gt; 70</code>이 되어 최소 히프 조건이 즉시 깨져요. 최소 히프는 반드시 <strong>작은 자식</strong>을 올려요.</p>
+  <p><strong>65를 넣을 때 <code>[2]=75</code>와 비교하거나, 남은 5개 값을 정렬해 <code>70 75 80 85 90</code>으로 채우면</strong>: <code>[6]</code>의 부모는 $\lfloor 6/2 \rfloor = 3$ 번(<code>85</code>)이고, 단순 정렬 배열은 연산 순서를 반영하지 않아 3·4·5번 칸이 틀려요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>“최소 히프”를 보면 → upheap은 <code>자식 &lt; 부모</code>, downheap은 <code>작은 자식</code> 선택으로 부등호부터 반대로 적는다.</li>
+    <li>65가 들어간 <code>[6]</code>의 부모 칸은 왜 <code>[2]=75</code>가 아니라 <code>[3]=85</code>인가요?</li>
+    <li>만약 삭제를 한 번 더 한다면, 어떤 값이 루트로 올라가고 최종 배열은 무엇이 되나요?</li>
+  </ol>
+</div>
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 히프 = 완전 이진 트리 + 부모 $\le$ 자식. 삽입은 upheap, 삭제는 <code>[n]</code>을 루트로 올려 <strong>작은 자식</strong>과 downheap.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>insert 90 → [1]=90</code>, <code>insert 85 → [2]=85 &lt; 90</code> 교환(<code>85 90</code>).</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>삽입 뒤 <code>65 75 70 90 80 85</code>, 1회 삭제 뒤 <code>70 75 85 90 80</code>.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>$70 \le 75, 85$ 및 $75 \le 90, 80$ 성립, 최솟값 65 제거. 공식 채점 답은 전사 미확인이에요.</p></div>
+</div>
+</article><article class="topic" id="p6"><h3>P6. 히프를 배열로 담을 수 있는 이유</h3><p class="panel-meta">textbook-ch09-q02 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=6">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p6"><div class="layer formal" data-source-problem="p6"><div data-source-field="conditions"><p>히프를 배열로 표현할 수 있는 이유는 무엇인가요? 보기에서 골라 보세요.</p><div class="options"><div class="option"><p>(①)</p><p>완전 이진 트리이기 때문에</p></div><div class="option"><p>(②)</p><p>어느 정도 정렬되어 있기 때문에</p></div><div class="option"><p>(③)</p><p>이진 트리이기 때문에</p></div><div class="option"><p>(④)</p><p>히프 조건을 만족하기 때문에</p></div></div></div></div><details class="original" data-original-problem="p6"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 2번 · 책 356쪽</p><p>히프를 배열로 표현할 수 있는 이유는 무엇인가?</p><div class="options"><div class="option"><p>(①)</p><p>완전 이진 트리이기 때문에</p></div><div class="option"><p>(②)</p><p>어느 정도 정렬되어 있기 때문에</p></div><div class="option"><p>(③)</p><p>이진 트리이기 때문에</p></div><div class="option"><p>(④)</p><p>히프 조건을 만족하기 때문에</p></div></div></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>4개 보기 중 하나를 고르는 <strong>단일 선택 · 긍정 질문</strong>으로, 히프를 <strong>배열로 표현할 수 있는 직접 원인</strong>을 골라야 해요.</p>
+  <p>히프에 대해 맞는 말이라도 배열 칸 배치의 이유가 아니면 오답이므로 ‘참·거짓’과 ‘이유 적합성’을 구분해요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>히프를 배열로 표현</td>
+          <td>레벨 순서 번호 <code>1..n</code> ↔ 배열 인덱스( $2i, 2i+1, \lfloor i/2 \rfloor$ )</td>
+          <td>포인터 없이 인덱스 계산만으로 부모·자식을 찾으려면 <code>1..n</code> 칸이 빈틈없이 차야 해요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+        <tr>
+          <td>히프의 두 정의</td>
+          <td>모양 조건(완전 이진 트리) vs 값 조건(부모·자식 대소)</td>
+          <td>배열 칸에 빈칸이 생기는지 여부는 값 크기가 아니라 <strong>트리 모양</strong>이 결정해요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">힙의 정의</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>배열 표현 조건: 노드 n개가 배열 [1..n]을 빈칸 없이 채워야 2i, 2i+1, ⌊i/2⌋ 성립</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <p>각 보기가 히프에 대해 참인지, 그리고 ‘빈칸 없는 배열 표현’의 직접 이유인지 판정해요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>보기</th><th>진술 참·거짓</th><th>배열 표현의 이유로 적합한가 (판정)</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>① 완전 이진 트리이기 때문에</strong></td>
+            <td>참 (모양 조건)</td>
+            <td><strong>정답</strong> — 위 레벨부터 왼쪽부터 채우므로 노드가 정확히 <code>1..n</code> 칸을 빈틈없이 차지해 <code>2i, 2i+1, ⌊i/2⌋</code>가 항상 유효해요.</td>
+          </tr>
+          <tr>
+            <td>② 어느 정도 정렬되어 있기 때문에</td>
+            <td>참 (느슨한 정렬)</td>
+            <td>소거 — 히프의 값 조건이 낳는 결과일 뿐, 노드가 배열의 어느 칸에 놓이는지는 정하지 못해요.</td>
+          </tr>
+          <tr>
+            <td>③ 이진 트리이기 때문에</td>
+            <td>참 (상위 개념)</td>
+            <td>소거 — 일반 이진 트리도 배열에 담을 수 있지만 한쪽으로 치우치면 중간에 빈칸이 대량 발생해요(불충분 조건).</td>
+          </tr>
+          <tr>
+            <td>④ 히프 조건을 만족하기 때문에</td>
+            <td>참 (값 조건)</td>
+            <td>소거 — 부모·자식 키 크기 비교는 트리 모양을 결정하지 못하므로, 모양이 같으면 키를 바꿔도 배열 인덱스는 동일해요.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>따라서 직접 원인을 말하는 <strong>① 완전 이진 트리이기 때문에</strong>가 정답이에요.</p>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>(교과서 공식 답 미확인): <strong>① 완전 이진 트리이기 때문에</strong>.</p>
+    <ul>
+      <li><strong>① 확인($n=1..5$)</strong>: 레벨 순서로 채우면 노드 1개→<code>[1]</code>, 2개→<code>[1..2]</code>, …, 5개→<code>[1..5]</code>로 낭비 칸이 0이고 모든 $i \ge 2$ 의 부모 $\lfloor i/2 \rfloor$ 가 채워진 칸이에요.</li>
+      <li><strong>③ 반례 검산</strong>: 오른쪽으로만 이어진 경사 이진 트리(노드 4개)는 인덱스 <code>1, 3, 7, 15</code>를 써서 15칸 중 <strong>11칸이 빈칸</strong>이 돼요.</li>
+    </ul>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>“히프의 핵심은 히프 조건”이라 생각해 ④를 고르면</strong>: ②·③·④ 모두 히프에 대한 참인 말이지만, 키 크기 조건(④)이나 결과 성질(②)은 배열 인덱스 빈칸 유무를 설명하지 못해 질문(“배열로 표현할 수 있는 이유”)에서 오답이 돼요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>객관식 이유 문항에서 보기가 모두 참으로 보이면 → ‘참·거짓’ 열 옆에 ‘질문 조건(빈칸 없음)을 직접 보장하는가’ 열을 하나 더 만든다.</li>
+    <li>노드 4개가 오른쪽으로만 치우친 일반 이진 트리를 배열에 넣으면 마지막 노드는 몇 번 인덱스에 들어가나요?</li>
+  </ol>
+</div>
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>배열 표현( $2i, 2i+1, \lfloor i/2 \rfloor$ )이 빈칸 없이 성립하려면 <code>1..n</code>이 차례로 차는 완전 이진 트리(모양 조건)가 필요해요.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>배열 표현 조건 = 노드 <code>n</code>개가 <code>[1..n]</code>을 빈칸 없이 채움.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>①</strong>. ②·④는 값 조건/결과라 모양과 무관, ③은 경사 트리에서 빈칸이 생겨 불충분해요.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>오른쪽 경사 4노드 트리는 15칸 중 11칸이 비어요. 교과서 공식 답은 미확인이에요.</p></div>
+</div>
+</article><article class="topic" id="p7"><h3>P7. 데이터 10개인 히프 트리의 높이</h3><p class="panel-meta">textbook-ch09-q07 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=7">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p7"><div class="layer formal" data-source-problem="p7"><div data-source-field="conditions"><p>10개의 데이터를 저장하고 있는 히프 트리의 높이는 얼마인가요?</p></div></div><details class="original" data-original-problem="p7"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 7번 · 책 356쪽</p><p>10개의 데이터를 저장하고 있는 히프트리의 높이는?</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>키 값 없이 <strong>데이터가 <code>10</code>개인 히프 트리의 높이</strong>를 구하는 문제예요.</p>
+  <p>히프는 모양이 노드 수 $n$ 만으로 하나로 정해지며, 답은 <strong>루트 깊이 <code>1</code> 기준</strong>(수업·교재 기준)과 <strong>간선 수 기준(루트 <code>0</code>)</strong>을 구분해 써요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>히프 트리 · 데이터 10개</td>
+          <td>완전 이진 트리: 깊이 $i$ 의 최대 노드 수 $2^{i-1}$</td>
+          <td>위 깊이가 꽉 차야 다음 깊이로 내려가므로, 값과 무관하게 각 깊이의 노드 수가 고정돼요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">힙의 정의</a>).</td>
+        </tr>
+        <tr>
+          <td>높이(height)</td>
+          <td>$2^h - 1 \ge n$ 인 최소 $h$, 즉 $h = \lceil \log_2(n+1) \rceil$ (루트 1 기준)</td>
+          <td>높이 $h$ 까지의 총 정원 $2^h - 1$ 이 $n=10$ 이상이 되는 첫 $h$ 를 찾으면 돼요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-height">힙의 높이</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>깊이(루트=1):  1   2   3   4
+최대 노드 수:  1   2   4   8
+누적 노드 수:  1   3   7  15   ← 10이 처음 포함되는 깊이 = 4</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ul>
+      <li><strong>깊이별 채우기</strong>: 깊이 1에 <code>1</code>개, 깊이 2에 <code>2</code>개, 깊이 3에 <code>4</code>개를 모두 채우면 합이 $1 + 2 + 4 = 7$ 개예요.</li>
+      <li><strong>마지막 깊이 배치</strong>: 남은 $10 - 7 = 3$ 개가 깊이 4의 왼쪽 세 자리를 채우므로 가장 깊은 노드의 깊이는 <strong><code>4</code></strong>예요.</li>
+      <li><strong>공식 대입</strong>: 루트를 깊이 1로 세는 수업·교재 기준에서는 $h = \lceil \log_2(10+1) \rceil = \lceil \log_2 11 \rceil = 4$ (루트를 0으로 세는 간선 수 기준이면 $4 - 1 = 3$ )이에요.</li>
+    </ul>
+    <p>완성 답: <strong><code>4</code></strong> (루트 깊이 1 기준; 간선 수 기준으로는 3).</p>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>(교과서 공식 답 미확인): <strong><code>4</code></strong> (루트 깊이 1 기준).</p>
+    <ul>
+      <li><strong>경계값 양쪽 확인</strong>: 높이 $3$ 의 최대 수용량은 $2^3 - 1 = 7 &lt; 10$ 이라 10개를 못 담고, 높이 $4$ 는 $8$ 개부터 $2^4 - 1 = 15$ 개까지 담으므로 $n=10$ 은 높이 <code>4</code> 구간(<code>8~15</code>)에 들어가요.</li>
+      <li><strong>두 공식 교차 확인</strong>: $\lceil \log_2(10+1) \rceil = 4$ 와 $\lfloor \log_2 10 \rfloor + 1 = 3 + 1 = 4$ 가 일치해요.</li>
+    </ul>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>$\log_2 10 \approx 3.32$ 를 보고 내림해 <code>3</code>이라 쓰면</strong>: 높이 3(루트=1 기준)에는 최대 <code>7</code>개밖에 못 들어가므로 3개 노드가 갈 곳을 잃어요(3은 간선 수 기준의 값이에요).</p>
+  <p><strong>마지막 깊이 노드 수(<code>3</code>개)를 높이로 착각하면</strong>: 층 수(<code>4</code>) 대신 마지막 층의 노드 개수(<code>3</code>)를 답으로 적게 돼요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>“데이터 $n$ 개 히프의 높이”를 보면 → 깊이별 누적 정원 <code>1, 3, 7, 15, 31...</code>부터 적어 $n$ 이 걸리는 구간을 찾는다.</li>
+    <li>노드 수가 <code>7</code>개일 때와 <code>8</code>개일 때 높이는 각각 얼마로 바뀌나요?</li>
+  </ol>
+</div>
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>완전 이진 트리는 깊이별 정원 <code>1, 2, 4, 8...</code>, 누적 $2^h - 1 \ge n$ 으로 높이가 정해져요( $h = \lceil \log_2(n+1) \rceil$ ).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>누적 <code>1, 3, 7, 15</code>에서 10이 처음 들어가는 깊이 4 확인.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong><code>4</code></strong> (루트 깊이 1 기준, 간선 수 기준 3). 깊이 1~3에 7개, 깊이 4에 3개.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>$h=3$ 최대 7개 &lt; 10 $\le$ 15($h=4$ 최대). $\log_2 10$ 내림(3) 주의, 교과서 공식 답 미확인.</p></div>
+</div>
+</article><article class="topic" id="p8"><h3>P8. 이 트리는 최소 히프인가</h3><p class="panel-meta">textbook-ch09-q12 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=8">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p8"><div class="layer formal" data-source-problem="p8"><div data-source-field="conditions"><p>아래의 이진 트리는 최소 히프 트리인가요? 그 이유도 써 보세요.</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9</title><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-a-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-a-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-b-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-b-right"><line x1="200.0" y1="130" x2="300.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-c-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-c-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-d-left"><line x1="100.0" y1="215" x2="50.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-d-right"><line x1="100.0" y1="215" x2="150.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-e-left"><line x1="300.0" y1="215" x2="250.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-edge-e-right"><line x1="300.0" y1="215" x2="350.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-source-p8-prob-1-ch09-q12-tree-a"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">1</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-b"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">2</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-c"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">10</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-d"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">4</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-e"><circle cx="300.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="300.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-f"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">11</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-g"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">12</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-h"><circle cx="50.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="50.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-i"><circle cx="150.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="150.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">7</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-j"><circle cx="250.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="250.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">5</text></g><g id="p8-source-p8-prob-1-ch09-q12-tree-k"><circle cx="350.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="350.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">9</text></g></svg></div><figcaption>원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure></div></div><details class="original" data-original-problem="p8"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 12번 · PDF 2쪽</p><p>아래의 이진트리는 최소 히프트리인가? 그 이유는?</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9</title><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-a-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-a-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-b-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-b-right"><line x1="200.0" y1="130" x2="300.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-c-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-c-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-d-left"><line x1="100.0" y1="215" x2="50.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-d-right"><line x1="100.0" y1="215" x2="150.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-e-left"><line x1="300.0" y1="215" x2="250.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-edge-e-right"><line x1="300.0" y1="215" x2="350.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p8-original-p8-orig-1-ch09-q12-tree-a"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">1</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-b"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">2</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-c"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">10</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-d"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">4</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-e"><circle cx="300.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="300.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-f"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">11</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-g"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">12</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-h"><circle cx="50.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="50.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">6</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-i"><circle cx="150.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="150.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">7</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-j"><circle cx="250.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="250.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">5</text></g><g id="p8-original-p8-orig-1-ch09-q12-tree-k"><circle cx="350.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="350.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">9</text></g></svg></div><figcaption>원문의 트리: 1, 2, 10, 4, 6, 11, 12, 6, 7, 5, 9 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>주어진 11개 노드의 이진 트리가 <strong>최소 히프 트리인지 판정</strong>하고, 그 이유를 설명하는 문제예요.</p>
+  <p>모양(완전 이진 트리)과 값(모든 부모 $\le$ 자식) 두 조건을 모두 확인해, 깨지는 지점이 있으면 정확한 노드 쌍을 짚어야 해요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>이진 트리 그림</td>
+          <td>레벨 순서 번호 <code>1..n</code> 및 자식 인덱스 $2i, 2i+1$</td>
+          <td>그림을 배열 <code>[1..11]</code>로 옮겨 빈칸이 없으면 모양 조건(완전 이진 트리)이 참이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+        <tr>
+          <td>최소 히프트리인가?</td>
+          <td>모든 간선에서 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$ (중복 값 허용)</td>
+          <td>레벨 간 대소가 아니라 실제 간선(부모-자식 쌍)을 전수 점검해야 단 한 곳의 위반도 잡아요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-heap-def">힙의 정의</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>인덱스:  1   2   3   4   5   6   7   8   9  10  11
+값:      1   2  10   4   6  11  12   6   7   5   9</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <p><strong>1) 모양 조건 확인</strong>: 레벨 1~3에 $1+2+4=7$ 개가 꽉 차 있고 레벨 4의 4개(<code>6, 7, 5, 9</code>)가 왼쪽부터 빈칸 없이 <code>[8..11]</code>을 채우므로 <strong>완전 이진 트리 조건은 만족</strong>해요.</p>
+    <p><strong>2) 값 조건(부모 $\le$ 자식) 전수 검사</strong>: 자식이 있는 <code>[1]~[5]</code>번 노드 10개 간선을 확인해요(굵은 행이 위반).</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>부모 <code>[i]</code></th><th>왼쪽 자식 <code>[2i]</code></th><th>오른쪽 자식 <code>[2i+1]</code></th><th>부모 $\le$ 자식 판정</th></tr></thead>
+        <tbody>
+          <tr><td><code>[1]=1</code></td><td><code>[2]=2</code></td><td><code>[3]=10</code></td><td>$1 \le 2$ , $1 \le 10$ (만족)</td></tr>
+          <tr><td><code>[2]=2</code></td><td><code>[4]=4</code></td><td><code>[5]=6</code></td><td>$2 \le 4$ , $2 \le 6$ (만족)</td></tr>
+          <tr><td><code>[3]=10</code></td><td><code>[6]=11</code></td><td><code>[7]=12</code></td><td>$10 \le 11$ , $10 \le 12$ (만족)</td></tr>
+          <tr><td><code>[4]=4</code></td><td><code>[8]=6</code></td><td><code>[9]=7</code></td><td>$4 \le 6$ , $4 \le 7$ (만족)</td></tr>
+          <tr><td><b><code>[5]=6</code></b></td><td><b><code>[10]=5</code></b></td><td><code>[11]=9</code></td><td><b>$6 &gt; 5$ 위반</b> ( $6 \le 9$ 는 만족)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>값 <code>6</code>이 두 번 나오는 것은 허용되지만, <code>[5]</code>번 노드 <code>6</code>의 왼쪽 자식 <code>[10]</code>이 <code>5</code>여서 $\text{key}(\text{부모}) \le \text{key}(\text{자식})$ 을 어겨요.</p>
+    <p>완성 답: <strong>최소 히프 트리가 아니다</strong>. 완전 이진 트리 조건은 만족하지만, 노드 <code>6</code>의 왼쪽 자식 <code>5</code>가 부모보다 작아요.</p>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>(교과서 공식 답 미확인): <strong>아니다</strong> (5번 노드 <code>6</code> &gt; 왼쪽 자식 10번 노드 <code>5</code>).</p>
+    <ul>
+      <li><strong>간선 수 전수 대조</strong>: 노드 11개 트리의 간선은 $11 - 1 = 10$ 개이고, 위 표에서 10개 간선 모두를 확인해 9개는 참, <code>(6 → 5)</code> 1개만 거짓임을 확인했어요.</li>
+      <li><strong>역방향 확인</strong>: 만약 <code>5</code>와 <code>6</code>만 맞바꾸면 부모 <code>2 ≤ 5</code>, 자식 <code>5 ≤ 6, 9</code>가 모두 성립해 위반 지점이 이 한 쌍뿐임을 확인할 수 있어요.</li>
+    </ul>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>레벨 전체 숫자끼리만 눈으로 비교하면</strong>: 레벨 4의 <code>5</code>가 레벨 3의 <code>4</code>보다 커서 이상 없어 보이지만, <code>5</code>의 실제 부모는 <code>4</code>가 아니라 <code>6</code>이에요. 반드시 인덱스 $2i, 2i+1$ 로 연결된 실제 부모·자식 쌍끼리 비교해야 해요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>트리가 히프인지 묻는 문제를 보면 → 레벨 순서 배열 <code>[1..n]</code>부터 적어 빈칸 유무(모양)와 <code>1..⌊n/2⌋</code>의 자식 쌍(값)을 차례로 검사한다.</li>
+    <li>트리에 값 <code>6</code>이 두 번(<code>[5]</code>와 <code>[8]</code>) 들어 있는 것은 최소 히프 위반인가요?</li>
+  </ol>
+</div>
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 히프 = 완전 이진 트리(<code>1..n</code> 완비) + 모든 간선에서 부모 $\le$ 자식(중복 값 허용).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>레벨 순서 배열 <code>[1..11] = 1 2 10 4 6 11 12 6 7 5 9</code>.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>최소 히프 아님</strong>. 완전 이진 트리는 맞지만, <code>[5]=6</code>의 왼쪽 자식 <code>[10]=5</code>가 더 작아요.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>10개 간선 중 위반은 <code>(6, 5)</code> 1쌍뿐. 레벨끼리가 아닌 실제 부모·자식 쌍 비교, 교과서 공식 답 미확인.</p></div>
+</div>
 </article><article class="topic" id="p9"><h3>P9. 연산을 차례로 한 뒤의 최소 히프</h3><p class="panel-meta">textbook-ch09-q13 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=9">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p9"><div class="layer formal" data-source-problem="p9"><div data-source-field="conditions"><p>히프 트리가 비어 있는 상태에서 다음 연산들을 차례대로 수행한 뒤의 최소 히프 트리 모습을 그려 보세요.</p><p><code>insert(20)</code>, <code>insert(12)</code>, <code>insert(3)</code>, <code>insert(2)</code>, <code>delete()</code>, <code>insert(5)</code>, <code>insert(16)</code>, <code>delete()</code>, <code>insert(1)</code>, <code>is_empty()</code></p></div></div><details class="original" data-original-problem="p9"><summary>교과서 원문 보기</summary><p>9장 우선순위 큐 · 13번 · 책 358쪽</p><p>히프트리가 비어있는 상태에서 다음의 연산들을 차례대로 수행한 후의 최소 히프트리의 모습을 그려라.</p><p>insert(20), insert(12), insert(3), insert(2), delete(), insert(5), insert(16),
-delete(), insert(1), is_empty()</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>빈 최소 히프(min heap)에서 시작해 연산 10개를 순서대로 실행한 뒤 마지막 트리 모양을 그리는 문제예요. 중간 결과를 묻지는 않지만, 한 연산이라도 틀리면 그 뒤가 전부 달라지므로 연산마다 상태를 적어 가며 따라가요.</p><p>연산은 세 종류예요. <code>insert(x)</code>는 값을 넣고, <code>delete()</code>는 우선순위가 가장 높은 값, 곧 가장 작은 값을 꺼내 돌려주고, <code>is_empty()</code>는 비어 있는지만 물어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘최소 히프트리’라는 단서에서 최소 힙(min heap)의 두 조건을 떠올려요. 모양은 완전 이진 트리(complete binary tree)이고, 값은 모든 부모가 자식보다 작거나 같아요. 그래서 가장 작은 값은 늘 루트에 있어요. 수업의 예제는 최대 힙이었으니 이 문제에서는 크기 비교의 방향만 거꾸로 바꿔요.</p><p>‘<code>insert</code>’에서는 삽입과 upheap을 떠올려요. 새 값은 먼저 마지막 노드 다음 자리에 앉아요. 그다음 부모보다 작으면 부모와 맞바꾸며 올라가고, 부모보다 크거나 같으면 멈춰요. 형제(sibling)와는 비교하지 않아요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">정리노트: 삽입과 upheap</a>).</p><p>‘<code>delete</code>’에서는 삭제와 downheap을 떠올려요. 루트를 꺼내 돌려주고, 마지막 노드를 루트 자리로 옮긴 뒤 두 자식 중 <strong>더 작은 쪽</strong>과 비교하며 내려가요. 그 자식보다 작거나 같아지면 멈춰요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">정리노트: 삭제와 downheap</a>).</p><p>‘<code>is_empty</code>’는 우선순위 큐 ADT의 검사 연산이에요. 비어 있는지 참·거짓만 돌려주고 트리를 바꾸지 않아요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s0-adt">정리노트: 우선순위 큐 ADT</a>).</p><p>상태는 배열 1번 칸부터 레벨 순서(level order)로 적으면 편해요. 인덱스 $i$의 부모는 $\lfloor i/2 \rfloor$, 왼쪽 자식은 $2i$, 오른쪽 자식은 $2i+1$이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">정리노트: 배열로 구현한 힙의 인덱스</a>). 그러면 ‘마지막 노드 다음 자리’는 배열 끝 칸이고, 부모는 인덱스 계산으로 바로 찾아요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>단계 | 연산        | 움직임       | 힙(레벨 순서)
-1    | insert(20)  | 빈 힙의 루트 | 20</code></pre><p>표의 열은 연산, 비교·교환 과정, 끝난 뒤 배열 상태 세 가지예요. 다음 행부터는 직전 행의 마지막 열에서 출발해요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>각 행의 ‘움직임’은 새 값이 앉은 인덱스(또는 루트로 올라간 값)에서 출발해 부모·자식 인덱스를 계산하며 비교한 기록이에요.</p><div class="table-wrap"><table><thead><tr><th>단계</th><th>연산</th><th>움직임</th><th>힙(레벨 순서)</th></tr></thead><tbody><tr><td>1</td><td><code>insert(20)</code></td><td>빈 힙이라 1번 칸에 앉고 끝나요.</td><td>20</td></tr><tr><td>2</td><td><code>insert(12)</code></td><td>2번 칸에 앉아요. 부모 1번의 20보다 작아서 교환해요.</td><td>12 20</td></tr><tr><td>3</td><td><code>insert(3)</code></td><td>3번 칸에 앉아요. 부모 1번의 12보다 작아서 교환해요.</td><td>3 20 12</td></tr><tr><td>4</td><td><code>insert(2)</code></td><td>4번 칸에 앉아요. 부모 2번의 20보다 작아 교환하고, 다시 부모 1번의 3보다 작아 교환해요.</td><td>2 3 12 20</td></tr><tr><td>5</td><td><code>delete()</code> → 2</td><td>루트 2를 꺼내요. 마지막 노드 20을 루트로 옮겨요: 20 3 12. 자식 3·12 중 작은 3보다 커서 교환해요. 2번 칸은 자식이 없어 멈춰요.</td><td>3 20 12</td></tr><tr><td>6</td><td><code>insert(5)</code></td><td>4번 칸에 앉아요. 부모 2번의 20보다 작아 교환해요. 부모 1번의 3보다는 커서 멈춰요.</td><td>3 5 12 20</td></tr><tr><td>7</td><td><code>insert(16)</code></td><td>5번 칸에 앉아요. 부모 2번의 5보다 커서 그대로예요.</td><td>3 5 12 20 16</td></tr><tr><td>8</td><td><code>delete()</code> → 3</td><td>루트 3을 꺼내요. 마지막 노드 16을 루트로 옮겨요: 16 5 12 20. 자식 5·12 중 작은 5보다 커서 교환해요. 2번 칸의 자식은 4번의 20 하나뿐이고, 16이 더 작아서 멈춰요.</td><td>5 16 12 20</td></tr><tr><td>9</td><td><code>insert(1)</code></td><td>5번 칸에 앉아요. 부모 2번의 16보다 작아 교환하고, 부모 1번의 5보다도 작아 교환해요.</td><td>1 5 12 20 16</td></tr><tr><td>10</td><td><code>is_empty()</code> → 거짓</td><td>노드가 5개라 비어 있지 않아요. 검사만 하고 트리는 바꾸지 않아요.</td><td>1 5 12 20 16</td></tr></tbody></table></div><p>5단계와 8단계에서 두 자식 중 <strong>작은 쪽</strong>을 고른 이유는 그 값이 부모 자리에 올라가야 다른 자식보다도 작거나 같아지기 때문이에요. 큰 쪽을 올리면 그 값이 남은 작은 자식보다 커져서 최소 힙 조건이 깨져요.</p><p>최종 배열 1 5 12 20 16을 인덱스 식으로 트리에 옮겨요. 1번 칸의 1이 루트, 2·3번 칸의 5·12가 루트의 왼쪽·오른쪽 자식, 4·5번 칸의 20·16이 2번 칸 5의 왼쪽·오른쪽 자식이에요.</p><figure class="figure"><svg viewBox="0 0 210 172" role="img" aria-label="최종 최소 히프: 루트 1, 1의 왼쪽 5 오른쪽 12, 5의 왼쪽 20 오른쪽 16"><g fill="none" stroke="currentColor" stroke-width="2"><line x1="108.2" y1="40.2" x2="71.8" y2="77.8"/><line x1="131.8" y1="40.2" x2="168.2" y2="77.8"/><line x1="52.6" y1="105.3" x2="37.4" y2="136.7"/><line x1="67.4" y1="105.3" x2="82.6" y2="136.7"/><circle cx="120" cy="28" r="17"/><circle cx="60" cy="90" r="17"/><circle cx="180" cy="90" r="17"/><circle cx="30" cy="152" r="17"/><circle cx="90" cy="152" r="17"/></g><g fill="currentColor" font-size="16" text-anchor="middle" dominant-baseline="central"><text x="120" y="28">1</text><text x="60" y="90">5</text><text x="180" y="90">12</text><text x="30" y="152">20</text><text x="90" y="152">16</text></g></svg><figcaption>최종 최소 히프예요. 레벨 순서로 읽으면 1 5 12 20 16이에요.</figcaption></figure><p>답: 레벨 순서 1 5 12 20 16인 트리예요. 두 번의 <code>delete()</code>는 2와 3을 돌려주고, 마지막 <code>is_empty()</code>는 거짓을 돌려줘요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>교과서의 공식 답은 제공되지 않아 확인하지 못했고, 이 답은 독립 검산한 자체 풀이예요.</p><p>최종 트리의 부모·자식 쌍을 모두 대입해 봐요. $1 \le 5$, $1 \le 12$, $5 \le 20$, $5 \le 16$이 모두 참이라 최소 힙이에요. 노드 5개가 1~5번 칸을 빈칸 없이 채우므로 완전 이진 트리 모양도 맞아요.</p><p>값의 개수로도 확인해요. 넣은 값 20, 12, 3, 2, 5, 16, 1 일곱 개에서 꺼낸 2와 3을 빼면 1, 5, 12, 16, 20 다섯 개가 남아야 하고, 최종 트리의 값과 같아요. 꺼낸 값도 그 시점의 최솟값이에요. 첫 <code>delete()</code> 때 남은 값은 20, 12, 3, 2라 최솟값 2, 둘째 때는 20, 12, 3, 5, 16이라 최솟값 3이에요.</p><p>독립 Python 검산은 위 규칙대로 1번 칸부터의 배열에서 삽입·삭제를 따로 구현해 연산마다 상태를 출력했어요. 매 단계 최소 힙 성질과 값의 모임을 표준 라이브러리 <code>heapq</code>와 대조했고, 꺼낸 값도 일치했어요.</p><pre><code>delete() -&gt; 2: [3, 20, 12]
-delete() -&gt; 3: [5, 16, 12, 20]
-insert(1): [1, 5, 12, 20, 16]
-is_empty() -&gt; False: [1, 5, 12, 20, 16]</code></pre><p>나머지 행도 표의 마지막 열과 모두 같았어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>수업 예제가 최대 힙이라 습관대로 큰 자식과 바꾸기 쉬워요. 이 문제는 최소 히프라서 삭제 때 두 자식 중 <strong>작은 쪽</strong>과 비교해요.</p><p><code>delete()</code>로 꺼낸 값은 트리에서 빠져요. 그 자리를 비워 두거나 다른 자식을 끌어올리지 않고, 마지막 노드를 루트로 옮겨 모양을 먼저 맞춰요.</p><p><code>is_empty()</code>를 ‘하나를 지운다’로 읽지 않아요. 검사 연산이라 트리는 9단계 모양 그대로예요. 레벨 순서를 정렬 순서로 착각해 1 5 12 16 20으로 그리지도 않아요. 16은 5의 오른쪽 자식이고 20보다 나중에 들어왔어요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li>최소 힙의 삽입·삭제에서 각각 무엇과 비교하는지, 멈추는 조건과 함께 말해 보세요.</li><li>연산 10개를 상태 표로 다시 적고, 최종 배열을 트리로 옮겨 보세요.</li><li>최종 트리의 부모·자식 쌍을 모두 검사하고, 남은 값의 모임이 맞는지 확인하세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 힙은 완전 이진 트리이면서 부모 ≤ 자식이에요. 삽입은 끝 자리에서 부모와 비교하며 올라가고, 삭제는 마지막 노드를 루트로 옮겨 작은 자식과 비교하며 내려가요. 부모 $\lfloor i/2 \rfloor$, 자식 $2i$, $2i+1$이에요.</p></div><div class="summary-group"><h4>첫 줄</h4><p>단계·연산·움직임·힙(레벨 순서) 표를 만들고 <code>insert(20)</code> → 20부터 적어요.</p></div><div class="summary-group"><h4>답</h4><p>레벨 순서 1 5 12 20 16. 두 <code>delete()</code>는 2, 3을 돌려주고 <code>is_empty()</code>는 트리를 바꾸지 않고 거짓이에요.</p></div><div class="summary-group"><h4>검산·주의</h4><p>부모·자식 쌍 4개가 모두 부모 ≤ 자식이고 남은 값 1, 5, 12, 16, 20이 맞아요. 독립 Python 추적과 <code>heapq</code> 대조가 일치했어요. 최대 힙 습관으로 큰 자식과 바꾸지 않아요. 교과서 공식 답은 확인하지 못했어요.</p></div></div>
-</article><article class="topic" id="p10"><h3>P10. 우선순위 큐를 무엇으로 만들까</h3><p class="panel-meta">lecture-s08-p04-pq-implementations · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=10">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p10"><div class="layer formal" data-source-problem="p10"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S8 p4</p><p>우선순위 큐는 들어온 순서와 상관없이 우선순위가 가장 높은 요소를 먼저 꺼내는 큐예요. 요소가 <code>n</code>개일 때 다섯 가지로 만들 수 있어요: 순서 없는 배열, 순서 없는 연결 리스트, 정렬된 배열, 정렬된 연결 리스트, 히프. 삽입은 새 요소를 제자리에 넣기까지, 삭제는 우선순위가 가장 높은 요소를 찾아 꺼내기까지만 세요.</p><p>히프는 완전 이진 트리를 배열 <code>1</code>번 칸부터 레벨 순서로 빈칸 없이 담아요. <code>0</code>번 칸은 비워요. 인덱스 <code>i</code> 노드의 왼쪽 자식은 <code>i*2</code>, 오른쪽 자식은 <code>i*2 + 1</code>, 부모는 <code>i/2</code>(정수 나눗셈)예요.</p></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 다섯 가지 방법의 삽입·삭제 시간복잡도를 표로 채워 보세요.</li><li>(b) 정렬된 배열은 삭제가 $O(1)$인데, 삽입과 삭제가 둘 다 $O(\log n)$인 히프를 고르는 이유는 무엇일까요? <code>n</code>이 아주 커질 때 연산 한 번의 시간을 미리 짐작할 수 있는지의 관점에서 써 보세요.</li><li>(c) 노드가 <code>10</code>개인 히프에서 인덱스 <code>5</code> 노드의 왼쪽 자식, 오른쪽 자식, 부모 인덱스를 구해 보세요. 없으면 "없음"이라고 쓰세요.</li></ol></div></div><details class="original" data-original-problem="p10"><summary>강의 예제 보기</summary><p>S8 p4 · 우선순위 큐 구현 방법 비교표 원문 발췌</p><div class="table-wrap"><table><thead><tr><th>표현 방법</th><th>삽입</th><th>삭제</th></tr></thead><tbody><tr><td>순서없는 배열</td><td>O(1)</td><td>O(n)</td></tr><tr><td>순서없는 연결 리스트</td><td>O(1)</td><td>O(n)</td></tr><tr><td>정렬된 배열</td><td>O(n)</td><td>O(1)</td></tr><tr><td>정렬된 연결 리스트</td><td>O(n)</td><td>O(1)</td></tr><tr><td>히프</td><td>O(logn)</td><td>O(logn)</td></tr></tbody></table></div><p>"순서없는 배열이나 연결리스트 (삽입) 맨 끝에 삽입하면 되므로 O(1) (삭제) 배열 – 제일 크거나 작은 요소를 맨 뒤로 미루고 삭제해야 하므로 O(n)"</p><p>"정렬된 배열이나 연결 리스트 (삽입) 어디에 삽입하면 될지 찾아나가야 하므로 O(n) (삭제) 제일 크거나 작은 것을 삭제하므로 O(1)"</p><p>추가 근거 p2, p7: p2는 스택·큐·우선순위 큐가 각각 삭제하는 요소(가장 최근, 가장 먼저, 가장 우선순위가 높은 데이터) 표, p7은 "왼쪽 자식의 인덱스 = (부모의 인덱스)*2, 오른쪽 자식의 인덱스 = (부모의 인덱스)*2 + 1, 부모의 인덱스 = (자식의 인덱스)/2" 식이에요. (b)의 관점과 (c)의 노드 10개 값은 자체 출제예요.</p></details></div><div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>우선순위 큐(priority queue)를 만드는 다섯 방법의 삽입·삭제 비용을 비교하고, 히프를 고르는 이유를 말한 뒤, 배열 히프의 인덱스를 계산하는 문제예요. (b)는 숫자 답이 아니라 이유를 쓰는 정성 문항이에요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>(a) ‘순서 없는’과 ‘정렬된’이라는 단서는 <strong>정리하는 수고를 언제 치르느냐</strong>를 묻는 신호예요. 순서 없이 두면 넣을 때는 아무 데나 붙이고, 꺼낼 때 전부 훑어 가장 높은 우선순위를 찾아요. 정렬해 두면 넣을 때 자리를 찾고, 꺼낼 때는 한쪽 끝에서 바로 집어요. 수업의 책상 서랍 비유가 이 차이예요. 시간복잡도(time complexity) $O(\cdot)$는 요소 $n$개일 때 최악의 경우 기본 동작 수가 $n$에 따라 어떻게 늘어나는지를 나타내요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s0-impl">정리노트: 배열·연결 리스트·히프 구현 비교</a>).</p><p>‘히프’라는 단서에서는 높이(height)를 떠올려요. 히프는 완전 이진 트리라서 노드 $n$개의 높이가 $h = \lceil \log_2(n+1) \rceil$, 곧 $O(\log n)$이에요. 삽입(upheap)과 삭제(downheap)는 루트와 단말 사이의 한 경로만 따라가므로 높이에 비례해요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-height">정리노트: 힙의 높이는 O(log n)</a>).</p><p>(b) 정성 문항이라 공식 대신 판단 기준이 필요해요. 문제가 준 관점은 ‘<code>n</code>이 아주 커질 때 연산 한 번의 시간을 미리 짐작할 수 있는가’예요. 수업에서는 복잡도에서 가장 중요한 것이 예측 가능성이라고 했어요. 그러니 각 방법에서 <strong>가장 느린 연산</strong>이 $n$에 따라 얼마나 빨리 커지는지를 비교 기준으로 삼아요.</p><p>(c) ‘인덱스 <code>5</code>’와 ‘노드 <code>10</code>개’라는 단서에서 배열 히프의 인덱스 식과 존재 조건을 떠올려요. 왼쪽 자식 $2i$, 오른쪽 자식 $2i+1$, 부모 $\lfloor i/2 \rfloor$이고, 계산한 인덱스가 노드 수 $n$ 이하일 때만 그 노드가 있어요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">정리노트: 배열로 구현한 힙의 인덱스</a>).</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>방법          | 삽입 | 삭제
-순서 없는 배열 | O(1) | O(n)   ← 끝에 붙이기 / 전부 훑어 찾기</code></pre><p>(c)는 <code>left = 5*2 = 10</code>을 먼저 쓰고, 바로 옆에 <code>10 ≤ 10</code>인지 적어요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 방법마다 ‘삽입 때 최악으로 몇 개를 보거나 옮기나’, ‘삭제 때 최악으로 몇 개를 보거나 옮기나’를 차례로 물어요.</p><p>순서 없는 배열·연결 리스트는 새 요소를 끝(연결 리스트는 앞도 가능)에 붙이면 끝나서 삽입 $O(1)$이에요. 삭제할 요소가 어디 있는지 모르니 $n$개를 모두 비교해야 해서 삭제 $O(n)$이에요.</p><p>정렬된 배열·연결 리스트는 넣을 자리를 비교하며 찾아야 해요. 배열은 그 뒤 요소를 한 칸씩 밀어야 해요. 최악에는 $n$개 모두를 비교하거나 옮기므로 삽입 $O(n)$이에요. 가장 높은 우선순위가 한쪽 끝에 있으니 찾아 꺼내기는 삭제 $O(1)$이에요.</p><p>히프는 삽입 때 마지막 자리에서 루트 쪽으로, 삭제 때 루트에서 단말 쪽으로 한 경로만 움직여요. 경로 길이가 높이 $O(\log n)$이라 둘 다 $O(\log n)$이에요.</p><div class="table-wrap"><table><thead><tr><th>방법</th><th>삽입</th><th>삭제</th></tr></thead><tbody><tr><td>순서 없는 배열</td><td>O(1)</td><td>O(n)</td></tr><tr><td>순서 없는 연결 리스트</td><td>O(1)</td><td>O(n)</td></tr><tr><td>정렬된 배열</td><td>O(n)</td><td>O(1)</td></tr><tr><td>정렬된 연결 리스트</td><td>O(n)</td><td>O(1)</td></tr><tr><td>히프</td><td>O(log n)</td><td>O(log n)</td></tr></tbody></table></div><p>정렬된 배열의 삭제 $O(1)$은 문제의 약속처럼 ‘찾아 꺼내기’까지만 센 값이에요. 가장 높은 우선순위를 배열 맨 앞에 두면 꺼낸 뒤 나머지를 앞으로 당기는 뒤처리가 따로 생기고, 맨 끝에 두면 그런 뒤처리가 없어요. 어느 쪽이든 삽입 $O(n)$은 그대로 남아요.</p></div><div data-subpart="b"><p>(b) 판단 기준은 ‘가장 느린 연산 한 번이 $n$이 커질 때 얼마나 커지나’예요. 정렬된 배열은 삭제가 $O(1)$이어도 삽입이 최악에 $n$개를 옮겨요. $n$이 100만에서 1000만으로 열 배가 되면 삽입 한 번의 최악 시간도 열 배가 돼요. 그래서 데이터가 얼마나 쌓일지 모르면 연산 한 번이 얼마나 걸릴지 미리 짐작하기 어려워요.</p><p>히프는 삽입·삭제 모두 최악에도 높이만큼만 움직여요. $\log_2$로 보면 $n$이 100만일 때 높이가 약 20, 1000만일 때 약 24예요. $n$이 열 배가 되어도 몇 단계만 늘어서, 연산 한 번의 시간 상한을 미리 예측할 수 있어요. 수업에서 log n이 나오면 그쪽을 고르라고 한 이유가 이 완만한 증가예요.</p><p>우선순위 큐는 넣기와 꺼내기를 번갈아 계속 쓰는 자료구조라 한쪽 연산만 빨라서는 이득이 작아요. 보충하면, 삽입·삭제를 합쳐 $m$번 하는 동안 정렬된 배열의 최악 합계는 $m \cdot n$에 비례하고 히프는 $m \log n$에 비례해요. 이 문장은 수업 밖에서 덧붙인 계산이에요.</p><p>답: 정렬된 배열은 삽입이 $O(n)$이라 $n$이 커질수록 연산 한 번의 최악 시간이 $n$에 비례해 계속 커져요. 히프는 삽입·삭제 모두 최악에도 $O(\log n)$이고 $\log n$은 완만하게 늘어서, 어떤 연산이든 걸리는 시간을 미리 짐작할 수 있어요. 그래서 히프를 골라요.</p></div><div data-subpart="c"><p>(c) 식을 대입한 뒤 존재 조건을 따로 검사해요.</p><pre><code>왼쪽 자식 = 5*2     = 10   → 10 ≤ 10 이라 있음
-오른쪽 자식 = 5*2 + 1 = 11   → 11 &gt; 10 이라 없음
-부모       = 5/2     = 2    (정수 나눗셈, 2.5 에서 소수점 아래를 버림)</code></pre><p>노드가 10개면 배열의 1~10번 칸만 채워져 있어요. 11번 칸은 힙 밖이므로 그 자리의 오른쪽 자식은 없어요. 부모는 루트가 아닌 노드에 늘 있고, 인덱스 5의 부모는 2번이에요.</p><p>답: 왼쪽 자식 10, 오른쪽 자식 없음, 부모 2예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="a"><p>(a) 독립 Python 검산으로 최악 경우의 기본 동작 수를 직접 셌어요. 순서 없는 배열에서 최댓값을 찾는 비교 수, 정렬된 배열에 새 최솟값을 넣을 때 옮기는 칸 수, 히프 경로의 최대 교환 수(높이 − 1)예요.</p><pre><code>n=10: unsorted-array delete compares=9, sorted-array insert moves=10, heap path swaps&lt;=3
-n=1000: unsorted-array delete compares=999, sorted-array insert moves=1000, heap path swaps&lt;=9
-n=1000000: unsorted-array delete compares=999999, sorted-array insert moves=1000000, heap path swaps&lt;=19</code></pre><p>앞의 두 열은 $n$에 비례하고 마지막 열은 $\log_2 n$ 정도로 늘어서 표의 $O(n)$, $O(\log n)$과 맞아요. 이 숫자는 증가 모양을 확인한 것이고, 표의 근거는 solve의 최악 경우 논증이에요. 강의록 S8 p4의 표와도 다섯 행 모두 일치해요.</p></div><div data-subpart="b"><p>(b) 논증이 기대는 조건을 다시 확인해요. 첫째, 히프의 $O(\log n)$은 완전 이진 트리라 높이가 $\lceil \log_2(n+1) \rceil$로 보장되기 때문이에요. 삽입은 마지막 자리에, 삭제는 마지막 노드를 루트로 옮기므로 모양이 한쪽으로 치우치지 않아요. 둘째, 정렬된 배열의 $O(n)$은 새 값이 맨 앞에 들어가는 입력이 실제로 있어서 최악이 일어날 수 있어요. 두 조건이 모두 성립하므로 ‘히프는 연산 한 번의 최악 시간이 $\log n$으로 묶인다’는 결론이 따라와요. 위의 $n=10^6$ 숫자 예는 설명을 돕는 예일 뿐 논증 자체는 아니에요.</p></div><div data-subpart="c"><p>(c) 정리노트의 노드 10개 예제 히프 <code>9 7 6 5 4 3 2 2 1 3</code>에 대입해 봐요. 5번 칸의 값 4는 트리에서 7의 오른쪽 자식이고, 아래에 3 하나만 달려 있어요. 그 3이 10번 칸, 위의 7이 2번 칸이라 계산과 같아요. 독립 Python 검산도 <code>left 10 right None parent 2</code>를 출력했어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>(a) 정렬된 배열의 삭제 $O(1)$을 보고 ‘정렬이 늘 빠르다’고 결론 내리지 않아요. 비용이 삽입 쪽으로 옮겨 갔을 뿐이에요. 순서 없는 연결 리스트의 삭제도 포인터만 바꾸면 끝난다고 $O(1)$로 쓰기 쉬운데, 꺼낼 요소를 찾는 데 $O(n)$이 들어요.</p><p>(b) ‘히프가 평균적으로 빠르다’나 ‘삭제가 $O(1)$보다 빠르다’로 쓰면 틀려요. 히프의 삭제는 정렬된 배열보다 느려요. 이유는 두 연산의 최악이 모두 완만하게 늘어 예측 가능하다는 데 있어요.</p><p>(c) 공식만 계산하고 11을 오른쪽 자식으로 답하지 않아요. 계산한 인덱스가 노드 수를 넘으면 ‘없음’이에요. 부모를 $5/2 = 2.5$로 쓰지 않고 정수 나눗셈 2로 써요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li>다섯 방법마다 삽입·삭제 때 최악으로 몇 개를 보거나 옮기는지 말하고 표를 채워 보세요.</li><li>‘가장 느린 연산이 $n$에 따라 얼마나 커지나’라는 기준으로 히프를 고르는 이유를 세 문장으로 써 보세요.</li><li>노드 10개 히프에서 인덱스 4와 5의 자식·부모를 존재 조건까지 포함해 구해 보세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>순서 없음은 넣기 $O(1)$·꺼내기 $O(n)$, 정렬은 넣기 $O(n)$·꺼내기 $O(1)$, 히프는 높이 $\lceil \log_2(n+1) \rceil$ 경로만 움직여 둘 다 $O(\log n)$이에요. 자식 $2i$, $2i+1$, 부모 $\lfloor i/2 \rfloor$이고 인덱스 ≤ $n$일 때만 있어요.</p></div><div class="summary-group"><h4>(a) 표</h4><p>순서 없는 배열·연결 리스트 $O(1)$ / $O(n)$, 정렬된 배열·연결 리스트 $O(n)$ / $O(1)$, 히프 $O(\log n)$ / $O(\log n)$이에요.</p></div><div class="summary-group"><h4>(b) 판단 기준</h4><p>가장 느린 연산의 최악 시간이 $n$에 따라 얼마나 커지나를 봐요. 정렬된 배열은 삽입이 $n$에 비례해 커지고, 히프는 둘 다 $\log n$으로 완만해 연산 한 번의 시간을 예측할 수 있어요.</p></div><div class="summary-group"><h4>(c) 답·검산</h4><p>왼쪽 10, 오른쪽 없음(11 &gt; 10), 부모 2예요. 정리노트 예제 히프와 Python 검산이 일치했어요. 동작 수 세기도 표의 증가 모양과 맞았어요.</p></div></div>
+delete(), insert(1), is_empty()</p><div class="options"></div></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>빈 <strong>최소 히프</strong>에서 <code>insert</code>·<code>delete</code>·<code>is_empty</code> 10개 연산을 순서대로 실행한 뒤 <strong>최종 최소 히프 트리 모습</strong>을 그려요.</p>
+  <p><code>delete()</code>는 가장 작은 값(루트)을 꺼내고, <code>is_empty()</code>는 트리를 바꾸지 않고 참/거짓만 확인해요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>최소 히프 + <code>insert(x)</code></td>
+          <td><code>[n+1]</code>에 붙이고 부모 $\lfloor i/2 \rfloor$ 보다 작으면 upheap</td>
+          <td>최대 히프와 반대로 작은 값이 루트 쪽으로 올라가요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-upheap">upheap</a> · <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+        <tr>
+          <td><code>delete()</code> · <code>is_empty()</code></td>
+          <td><code>delete</code> = <code>[n]</code>을 루트로 올려 <strong>더 작은 자식</strong>과 downheap / <code>is_empty</code> = 상태 불변 검사</td>
+          <td>작은 쪽 자식을 올려야 형제보다 작거나 같아 최소 히프가 유지돼요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">downheap</a> · <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s0-adt">우선순위 큐 ADT</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>1 | insert(20) | [1]=20 (빈 힙) | 20
+2 | insert(12) | [2]=12 &lt; [1]=20 → 교환 | 12 20</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>단계</th><th>연산</th><th>비교·교환 움직임</th><th>힙(레벨 순서)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>insert(20)</code></td><td><code>[1]</code>에 배치</td><td>20</td></tr>
+          <tr><td>2</td><td><code>insert(12)</code></td><td><code>[2]=12 &lt; [1]=20</code> 교환</td><td>12 20</td></tr>
+          <tr><td>3</td><td><code>insert(3)</code></td><td><code>[3]=3 &lt; [1]=12</code> 교환</td><td>3 20 12</td></tr>
+          <tr><td>4</td><td><code>insert(2)</code></td><td><code>[4]=2 &lt; [2]=20</code> → <code>[1]=3</code> 차례로 교환</td><td>2 3 12 20</td></tr>
+          <tr><td>5</td><td><b><code>delete()</code> → 2</b></td><td><code>[4]=20</code>→루트: 작은 자식 <b>3</b>(<code>[2]</code>)과 교환, 자식 없음</td><td>3 20 12</td></tr>
+          <tr><td>6</td><td><code>insert(5)</code></td><td><code>[4]=5 &lt; [2]=20</code> 교환 → <code>[1]=3</code>보다 커서 멈춤</td><td>3 5 12 20</td></tr>
+          <tr><td>7</td><td><code>insert(16)</code></td><td><code>[5]=16 &gt; [2]=5</code> 그대로</td><td>3 5 12 20 16</td></tr>
+          <tr><td>8</td><td><b><code>delete()</code> → 3</b></td><td><code>[5]=16</code>→루트: 작은 자식 <b>5</b>(<code>[2]</code>)와 교환 → 외자식 <code>[4]=20</code>보다 작아 멈춤</td><td>5 16 12 20</td></tr>
+          <tr><td>9</td><td><code>insert(1)</code></td><td><code>[5]=1 &lt; [2]=16</code> → <code>[1]=5</code> 차례로 교환</td><td>1 5 12 20 16</td></tr>
+          <tr><td>10</td><td><code>is_empty()</code> → 거짓</td><td>$n=5$ 비어 있지 않음(트리 변화 없음)</td><td><b>1 5 12 20 16</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>최종 최소 히프는 루트 <code>1</code>, 자식 <code>5·12</code>, <code>5</code>의 자식 <code>20·16</code>(레벨 순서 <code>1 5 12 20 16</code>)이에요.</p>
+    <figure class="figure"><svg viewBox="0 0 210 172" role="img" aria-label="최종 최소 히프: 루트 1, 1의 왼쪽 5 오른쪽 12, 5의 왼쪽 20 오른쪽 16"><g fill="none" stroke="currentColor" stroke-width="2"><line x1="108.2" y1="40.2" x2="71.8" y2="77.8"/><line x1="131.8" y1="40.2" x2="168.2" y2="77.8"/><line x1="52.6" y1="105.3" x2="37.4" y2="136.7"/><line x1="67.4" y1="105.3" x2="82.6" y2="136.7"/><circle cx="120" cy="28" r="17"/><circle cx="60" cy="90" r="17"/><circle cx="180" cy="90" r="17"/><circle cx="30" cy="152" r="17"/><circle cx="90" cy="152" r="17"/></g><g fill="currentColor" font-size="16" text-anchor="middle" dominant-baseline="central"><text x="120" y="28">1</text><text x="60" y="90">5</text><text x="180" y="90">12</text><text x="30" y="152">20</text><text x="90" y="152">16</text></g></svg><figcaption>최종 최소 히프(<code>1 5 12 20 16</code>)</figcaption></figure>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>(교과서 공식 답 미확인): 레벨 순서 <strong><code>1 5 12 20 16</code></strong> (<code>delete</code> 반환 2, 3 / <code>is_empty()</code> 거짓).</p>
+    <ul>
+      <li><strong>부모 $\le$ 자식 4쌍 확인</strong>: $1 \le 5, 12$, $5 \le 20, 16$ 모두 성립하고 <code>[1..5]</code>가 빈칸 없이 채워졌어요.</li>
+      <li><strong>원소 개수·최솟값 보존</strong>: <code>insert</code> 7개(<code>20, 12, 3, 2, 5, 16, 1</code>) − <code>delete</code> 2개(당시 최솟값 <code>2, 3</code>) = <code>{1, 5, 12, 16, 20}</code> 5개가 정확히 남았어요.</li>
+    </ul>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>8단계 <code>delete()</code>에서 두 자식(<code>5, 12</code>) 중 큰 쪽 <code>12</code>를 올리면</strong>: 루트 <code>12 &gt; 5</code>가 되어 최소 히프가 즉시 깨져요.</p>
+  <p><strong><code>is_empty()</code>를 삭제로 오해하거나, 마지막 배열을 크기 순 <code>1 5 12 16 20</code>으로 정렬해 적으면</strong>: <code>is_empty()</code>는 읽기 전용이고, <code>16</code>은 <code>[5]</code>에 들어가 <code>20</code>(<code>[4]</code>)의 오른쪽 형제예요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>연산 열 문제를 보면 → 삽입/삭제 횟수를 세어 <code>insert 수 − delete 수 = 최종 노드 수</code>부터 끝칸 검산 기준으로 잡는다.</li>
+    <li>8단계에서 <code>16</code>이 루트 <code>[1]</code>에서 <code>[2]</code>로 내려간 뒤 왜 <code>[4]=20</code>과는 자리바꿈이 일어나지 않나요?</li>
+  </ol>
+</div>
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 히프: 삽입은 부모 $\ge$ 자식이면 멈추는 upheap, 삭제는 <code>[n]</code> 올려 <strong>작은 자식</strong>과 downheap, <code>is_empty</code>는 상태 불변.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>1: insert(20) → 20</code>, <code>2: insert(12) → 12 20</code>.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>최종 <code>1 5 12 20 16</code> (<code>delete</code> 2, 3 / <code>is_empty()</code> 거짓).</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>$1 \le 5, 12$ 및 $5 \le 20, 16$, $7-2=5$ 개 원소 일치. 교과서 공식 답 미확인.</p></div>
+</div>
+</article><article class="topic" id="p10"><h3>P10. 우선순위 큐를 무엇으로 만들까</h3><p class="panel-meta">lecture-s08-p04-pq-implementations · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=10">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p10"><div class="layer formal" data-source-problem="p10"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S8 p4</p><p>우선순위 큐는 들어온 순서와 상관없이 우선순위가 가장 높은 요소를 먼저 꺼내는 큐예요. 요소가 <code>n</code>개일 때 다섯 가지로 만들 수 있어요: 순서 없는 배열, 순서 없는 연결 리스트, 정렬된 배열, 정렬된 연결 리스트, 히프. 삽입은 새 요소를 제자리에 넣기까지, 삭제는 우선순위가 가장 높은 요소를 찾아 꺼내기까지만 세요.</p><p>히프는 완전 이진 트리를 배열 <code>1</code>번 칸부터 레벨 순서로 빈칸 없이 담아요. <code>0</code>번 칸은 비워요. 인덱스 <code>i</code> 노드의 왼쪽 자식은 <code>i*2</code>, 오른쪽 자식은 <code>i*2 + 1</code>, 부모는 <code>i/2</code>(정수 나눗셈)예요.</p></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) 다섯 가지 방법의 삽입·삭제 시간복잡도를 표로 채워 보세요.</li><li>(b) 정렬된 배열은 삭제가 $O(1)$인데, 삽입과 삭제가 둘 다 $O(\log n)$인 히프를 고르는 이유는 무엇일까요? <code>n</code>이 아주 커질 때 연산 한 번의 시간을 미리 짐작할 수 있는지의 관점에서 써 보세요.</li><li>(c) 노드가 <code>10</code>개인 히프에서 인덱스 <code>5</code> 노드의 왼쪽 자식, 오른쪽 자식, 부모 인덱스를 구해 보세요. 없으면 "없음"이라고 쓰세요.</li></ol></div></div><details class="original" data-original-problem="p10"><summary>강의 예제 보기</summary><p>S8 p4 · 우선순위 큐 구현 방법 비교표 원문 발췌</p><div class="table-wrap"><table><thead><tr><th>표현 방법</th><th>삽입</th><th>삭제</th></tr></thead><tbody><tr><td>순서없는 배열</td><td>O(1)</td><td>O(n)</td></tr><tr><td>순서없는 연결 리스트</td><td>O(1)</td><td>O(n)</td></tr><tr><td>정렬된 배열</td><td>O(n)</td><td>O(1)</td></tr><tr><td>정렬된 연결 리스트</td><td>O(n)</td><td>O(1)</td></tr><tr><td>히프</td><td>O(logn)</td><td>O(logn)</td></tr></tbody></table></div><p>"순서없는 배열이나 연결리스트 (삽입) 맨 끝에 삽입하면 되므로 O(1) (삭제) 배열 – 제일 크거나 작은 요소를 맨 뒤로 미루고 삭제해야 하므로 O(n)"</p><p>"정렬된 배열이나 연결 리스트 (삽입) 어디에 삽입하면 될지 찾아나가야 하므로 O(n) (삭제) 제일 크거나 작은 것을 삭제하므로 O(1)"</p><p>추가 근거 p2, p7: p2는 스택·큐·우선순위 큐가 각각 삭제하는 요소(가장 최근, 가장 먼저, 가장 우선순위가 높은 데이터) 표, p7은 "왼쪽 자식의 인덱스 = (부모의 인덱스)*2, 오른쪽 자식의 인덱스 = (부모의 인덱스)*2 + 1, 부모의 인덱스 = (자식의 인덱스)/2" 식이에요. (b)의 관점과 (c)의 노드 10개 값은 자체 출제예요.</p></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p><strong>(a)</strong> 우선순위 큐 구현 5종의 삽입·삭제 시간복잡도를 채우고, <strong>(b)</strong> 삭제가 $O(1)$ 인 정렬된 배열 대신 히프를 고르는 이유(<code>n</code>이 커질 때의 예측 가능성)를 서술하며, <strong>(c)</strong> <code>n=10</code> 히프에서 <code>i=5</code>의 자식·부모 인덱스를 구해요.</p>
+  <p>(a)의 삭제 비용은 문제 조건대로 ‘우선순위가 가장 높은 요소를 찾아 꺼내기’까지만 세고, (b)는 정성 서술 문항이에요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>(a) 순서 없는 / 정렬된 / 히프</td>
+          <td>정리 비용 시점(삽입 시 정렬 vs 삭제 시 탐색) · 히프 높이 $O(\log n)$</td>
+          <td>언제 $n$ 개를 훑거나 밀어야 하는지에 따라 $O(1)$ 과 $O(n)$ 이 갈리고, 히프만 양쪽 모두 높이 경로만 타요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s0-impl">구현 비교</a> · <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-height">힙의 높이</a>).</td>
+        </tr>
+        <tr>
+          <td>(b) 시간 미리 짐작 관점</td>
+          <td>두 연산 중 <strong>더 느린 연산의 최악 증가율</strong> 비교</td>
+          <td>삽입·삭제가 번갈아 일어날 때 최악 상한이 작아야 응답 시간을 예측할 수 있어요.</td>
+        </tr>
+        <tr>
+          <td>(c) <code>n=10</code>, 인덱스 <code>5</code></td>
+          <td>왼쪽 $2i$ , 오른쪽 $2i+1$ , 부모 $\lfloor i/2 \rfloor$ (단, 인덱스 $\le n$ 일 때만 존재)</td>
+          <td>공식으로 나온 숫자가 현재 힙 크기 <code>10</code>을 넘는지 반드시 경계 검사를 해야 ‘없음’을 판별해요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>(a) 순서 없는 배열: 삽입 O(1)(끝에 붙임) | 삭제 O(n)(최대/최소 찾기 위해 전체 탐색)
+(c) i = 5, n = 10 → 왼쪽 = 2*5 = 10 (≤ 10 있음)</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) 다섯 구현 방법의 최악 시간복잡도</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>방법</th><th>삽입</th><th>삭제 (찾아 꺼내기)</th><th>핵심 이유</th></tr></thead>
+        <tbody>
+          <tr><td>순서 없는 배열</td><td> $O(1)$ </td><td> $O(n)$ </td><td>맨 끝에 붙이면 끝 / 최우선 요소를 찾기 위해 최대 $n$ 개 비교</td></tr>
+          <tr><td>순서 없는 연결 리스트</td><td> $O(1)$ </td><td> $O(n)$ </td><td>앞(또는 끝)에 연결 / 최우선 노드를 찾기 위해 $n$ 개 순회</td></tr>
+          <tr><td>정렬된 배열</td><td> $O(n)$ </td><td> $O(1)$ </td><td>새 자리 탐색 + 뒤 원소 최대 $n$ 칸 이동 / 끝 원소 바로 꺼냄</td></tr>
+          <tr><td>정렬된 연결 리스트</td><td> $O(n)$ </td><td> $O(1)$ </td><td>삽입 위치를 순서대로 탐색(최대 $n$ 개) / 맨 앞 노드 바로 꺼냄</td></tr>
+          <tr><td><b>히프(Heap)</b></td><td><b> $O(\log n)$ </b></td><td><b> $O(\log n)$ </b></td><td>삽입(upheap)·삭제(downheap) 모두 완전 이진 트리 높이( $\lceil \log_2(n+1) \rceil$ ) 경로만 이동</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) 히프를 선택하는 이유 (예측 가능성)</h5>
+    <ul>
+      <li><strong>정렬된 배열의 한계</strong>: 삭제가 $O(1)$ 이어도 삽입은 최악 $n$ 칸을 이동하므로 $n$ 이 $10^6 \to 10^7$ 로 10배 커지면 삽입 최악 시간도 10배로 늘어나요.</li>
+      <li><strong>히프의 균형·예측성</strong>: 히프는 삽입·삭제 모두 높이 $O(\log n)$ 으로 묶여 $\log_2(10^6) \approx 20$, $\log_2(10^7) \approx 24$ 처럼 $n$ 이 10배가 되어도 몇 단계만 늘어요. 따라서 어떤 연산이 오더라도 걸리는 시간 상한을 미리 짐작할 수 있어요.</li>
+      <li><em>수업 밖 보충</em>: 삽입·삭제를 섞어 $m$ 번 호출하면 정렬된 배열은 최악 $\Theta(m \cdot n)$ 이지만 히프는 $O(m \log n)$ 이에요.</li>
+    </ul>
+  </div>
+  <div data-subpart="c">
+    <h5>(c) 인덱스 <code>5</code>의 자식·부모 (<code>n = 10</code>)</h5>
+    <pre><code>왼쪽 자식   = 2 * 5     = 10   (10 ≤ 10 → 10)
+오른쪽 자식 = 2 * 5 + 1 = 11   (11 &gt; 10 → 없음)
+부모        = 5 / 2     = 2    (정수 나눗셈 ⌊2.5⌋ = 2)</code></pre>
+    <p>(c) 답: <strong>왼쪽 자식 <code>10</code>, 오른쪽 자식 <code>없음</code>, 부모 <code>2</code></strong>.</p>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 검산</strong>: $n=1000$ 일 때 최악 비교/이동 수는 순서 없는 배열 삭제 $999$ 번, 정렬된 배열 삽입 $1000$ 번, 히프 경로 교환 $\le \lceil \log_2(1001) \rceil - 1 = 9$ 번으로 표의 $O(n)$ 대 $O(\log n)$ 차수가 일치해요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 논증 조건 검산</strong>: ① 히프가 완전 이진 트리를 유지해 높이가 $\lceil \log_2(n+1) \rceil$ 로 보장되고, ② 정렬된 배열에는 새 최솟값(또는 최댓값) 입력으로 실제 $n$ 칸 이동하는 최악 입력이 존재하므로 두 최악 상한의 비교가 성립해요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 구체 트리 대입 검산</strong>: 정리노트 10개 노드 예제 <code>[1..10] = 9 7 6 5 4 3 2 2 1 3</code>에서 <code>[5]=4</code>를 보면 부모는 <code>[2]=7</code>, 왼쪽 자식은 <code>[10]=3</code>, 오른쪽 자식은 없어 계산 결과(<code>10, 없음, 2</code>)와 일치해요.</p>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>(a) 순서 없는 연결 리스트 삭제를 $O(1)$ 로 쓰면</strong>: 포인터 연결 해제는 $O(1)$ 이지만, 우선순위가 가장 높은 노드를 <em>찾아가는 탐색</em>에 $O(n)$ 이 걸려요.</p>
+  <p><strong>(b) “히프가 평균적으로 빠르다” 또는 (c)에서 오른쪽 자식을 <code>11</code>로 쓰면</strong>: 히프는 삭제가 정렬 배열의 $O(1)$ 보다 느려 ‘예측 가능한 최악 상한’이 이유이며, (c)는 $11 &gt; n=10$ 범위 검사 없이 쓰면 힙 밖 칸을 답으로 적는 실수를 해요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>우선순위 큐 구현 표를 보면 → “정렬 유지 수고를 삽입과 삭제 중 어디서 치르는가”부터 짝지어 채운다.</li>
+    <li>(b)에서 정렬된 배열과 히프가 각각 강점을 가지는 극단적 상황(삭제만 엄청 많을 때 vs 삽입·삭제가 섞일 때)을 구분해 설명해 보세요.</li>
+    <li>(c)에서 만약 노드가 1개 추가되어 <code>n=11</code>이 되면 <code>i=5</code>의 오른쪽 자식은 무엇으로 바뀌나요?</li>
+  </ol>
+</div>
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>정렬 위치에 따라 $O(1)/O(n)$ 이 갈리고, 히프만 둘 다 $O(\log n)$ . 인덱스는 $2i, 2i+1, \lfloor i/2 \rfloor$ ( $\le n$ 검사).</p></div>
+  <div class="summary-group"><h4>(a) 표</h4><p>순서 없음 $O(1)/O(n)$ , 정렬됨 $O(n)/O(1)$ , 히프 $O(\log n)/O(\log n)$ .</p></div>
+  <div class="summary-group"><h4>(b) 판단 기준</h4><p>최악 시간 예측 가능성: 정렬 배열은 삽입이 $O(n)$ 으로 선형 폭증하나 히프는 양쪽 모두 $O(\log n)$ 으로 완만해요.</p></div>
+  <div class="summary-group"><h4>(c) 답·검산</h4><p>왼쪽 <code>10</code>, 오른쪽 <code>없음</code>( $11 &gt; 10$ ), 부모 <code>2</code>. 예제 히프(<code>n=10</code>) 대입 일치.</p></div>
+</div>
 </article><article class="topic" id="p11"><h3>P11. 루트를 꺼내는 의사코드 따라가기</h3><p class="panel-meta">lecture-s08-p13-delete-max-heap · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1109_Heap-%EB%AC%B8%EC%A0%9C.pdf#page=11">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p11"><div class="layer formal" data-source-problem="p11"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S8 p13</p><p>최대 힙 <code>A</code>를 배열 <code>1</code>번 칸부터 담아요. <code>0</code>번 칸은 비워요. <code>heap_size</code>는 힙에 든 요소 수예요. <code>PARENT(i)</code>는 <code>i/2</code>(정수 나눗셈), <code>CHILD(i)</code>는 <code>i*2</code>를 돌려줘요. 아래는 루트를 꺼내는 의사코드예요. <code>←</code>는 대입, <code>↔</code>는 두 칸의 값 맞바꾸기, <code>≤</code>는 작거나 같음이에요.</p><pre><code class="language-c">delete_max_heap(A)
 
 item ← A[1];                  // root를 삭제
@@ -936,28 +1492,103 @@ while i ≤ heap_size do
     A[PARENT(largest)] ↔ A[largest];        // 한 단계 내려가기
     i ← CHILD(largest); // left_child of largest
 
-return item;</code></pre><p>배열은 <code>200</code>칸이라 <code>heap_size</code>보다 뒤 칸도 읽을 수 있어요. 맨 끝 요소를 루트로 옮겨도 그 칸의 옛 값은 지워지지 않고 남아요.</p></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) <code>A[1..10] = 9 7 6 5 4 3 2 2 1 3</code>(<code>heap_size = 10</code>)에 한 번 호출할 때, 반복마다 <code>(i, largest, 교환 또는 break)</code>를 쓰고 끝난 뒤의 <code>A[1..heap_size]</code>와 리턴값을 구해 보세요.</li><li>(b) <code>A[1..5] = 50 40 30 20 10</code>(<code>heap_size = 5</code>)에 위 의사코드를 글자 그대로 한 번 실행하면 <code>A[1..heap_size]</code>는 어떻게 되나요? 최대 힙인가요? 아니라면 원인과 고친 조건을 써 보세요.</li></ol></div></div><details class="original" data-original-problem="p11"><summary>강의 예제 보기</summary><p>S8 p13 · downheap 알고리즘 <code>delete_max_heap</code> 의사코드 원문</p><p>문제에 실은 의사코드는 슬라이드 그림의 글자·주석과 줄 배치(같은 줄에 붙은 주석, 빈 줄)를 그대로 따랐어요. 그림의 들여쓰기만 공백 4칸으로 맞췄어요. C가 아니라 슬라이드 의사코드라서 <code>←</code>, <code>↔</code>, <code>≤</code> 기호를 써요.</p><p>추가 근거 p11, p12: p11은 삭제 절차 "(1)루트 노드를 삭제한다 (2)마지막 노드를 루트 노드로 이동한다 (3)루트에서부터 단말 노드까지의 경로에 있는 노드들을 교환하여 히프 성질을 만족시킨다", p12는 9 7 6 5 4 3 2 2 1 3에서 9를 삭제해 7 5 6 3 4 3 2 2 1이 되는 downheap 그림과 "downheap 연산은 O(logn)"이에요. (b)의 입력 50 40 30 20 10은 원문에 없는 자체 입력이에요.</p></details></div><div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>슬라이드의 루트 삭제 의사코드를 두 입력에 글자 그대로 실행해 보는 문제예요. (a)는 반복마다 변수 값을 기록하고, (b)는 오른쪽 자식이 없는 순간에 의사코드가 무엇을 읽는지 찾아 결과가 최대 힙인지 판정하고 고친 조건을 써요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘루트를 꺼내는’과 ‘최대 힙’이라는 단서에서 삭제와 downheap을 떠올려요. 루트를 <code>item</code>에 보관하고, 마지막 요소를 루트로 옮기고, <code>heap_size</code>를 1 줄인 뒤, 두 자식 중 큰 쪽과 비교하며 내려가요. 부모가 그 자식보다 크면 멈춰요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">정리노트: 삭제와 downheap</a>).</p><p>‘반복마다 <code>(i, largest, 교환 또는 break)</code>’라는 단서는 반복문 추적이에요. 이 의사코드에서 <code>i</code>는 현재 내려가는 값의 <strong>왼쪽 자식</strong> 인덱스예요. 처음 <code>i ← 2</code>는 루트의 왼쪽 자식이고, 교환 뒤 <code>i ← CHILD(largest)</code>는 새 위치의 왼쪽 자식이에요. 그래서 <code>i</code>는 늘 짝수이고, 지금 내려가는 값의 위치는 <code>PARENT(i)</code>예요.</p><p>조건식 두 개는 자식이 있는지를 뜻해요. 배열 히프의 인덱스 식(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">정리노트: 배열로 구현한 힙의 인덱스</a>)에서 노드는 1번부터 <code>heap_size</code>번 칸까지예요.</p><ul><li><code>i ≤ heap_size</code>: 왼쪽 자식이 힙 안에 있어요. 반복을 계속할 조건이에요.</li><li><code>i &lt; heap_size</code>, 곧 <code>i+1 ≤ heap_size</code>: 오른쪽 자식도 힙 안에 있어요.</li></ul><p>그러면 <code>if</code>가 거짓이 되는 경우는 두 가지예요. 오른쪽 자식이 있고 그쪽이 크거나 같을 때, 그리고 <strong>오른쪽 자식이 아예 없을 때</strong>예요. 두 번째 경우를 따로 확인하는 것이 (b)의 핵심이에요.</p><p>‘배열은 <code>200</code>칸’이라는 조건은 C의 정의된 동작(defined behavior)을 따지는 단서예요. 배열 범위 안의 칸은 힙 밖이어도 읽을 수 있고, 옛 값이 그대로 남아 있어요. 범위를 넘는 칸을 읽을 때만 미정의 동작(undefined behavior)이에요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>(a) item ← 9,  A[1] ← A[10] = 3,  heap_size = 9
-    A[1..9] = 3 7 6 5 4 3 2 2 1,  i = 2</code></pre><p>반복표의 열은 <code>i</code>, 두 자식 값, <code>largest</code>, 부모 비교, 교환/break, 다음 <code>i</code>로 잡아요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 준비 단계에서 루트 9를 <code>item</code>에 보관하고, 10번 칸의 3을 루트로 옮기고, <code>heap_size</code>를 9로 줄여요. 이제 3이 내려갈 차례예요.</p><div class="table-wrap"><table><thead><tr><th><code>i</code></th><th><code>i &lt; heap_size</code>, <code>A[i] &gt; A[i+1]</code></th><th><code>largest</code></th><th>부모 비교</th><th>결과</th><th><code>A[1..9]</code></th></tr></thead><tbody><tr><td>2</td><td><code>2 &lt; 9</code> 참, <code>7 &gt; 6</code> 참</td><td>2</td><td><code>A[1] = 3 &gt; 7</code> 거짓</td><td>교환, <code>i ← 4</code></td><td>7 3 6 5 4 3 2 2 1</td></tr><tr><td>4</td><td><code>4 &lt; 9</code> 참, <code>5 &gt; 4</code> 참</td><td>4</td><td><code>A[2] = 3 &gt; 5</code> 거짓</td><td>교환, <code>i ← 8</code></td><td>7 5 6 3 4 3 2 2 1</td></tr><tr><td>8</td><td><code>8 &lt; 9</code> 참, <code>2 &gt; 1</code> 참</td><td>8</td><td><code>A[4] = 3 &gt; 2</code> 참</td><td>break</td><td>7 5 6 3 4 3 2 2 1</td></tr></tbody></table></div><p>세 반복 모두 오른쪽 자식이 힙 안에 있어서 <code>if</code>가 두 자식을 제대로 비교했어요. 마지막 반복에서 3이 큰 자식 2보다 크니 더 내려갈 필요가 없어 멈춰요.</p><p>답: <code>(2, 2, 교환)</code> → <code>(4, 4, 교환)</code> → <code>(8, 8, break)</code>, 끝난 뒤 <code>A[1..9] = 7 5 6 3 4 3 2 2 1</code>, 리턴값 9예요. 강의록 S8 p12 그림의 삭제 결과와 같아요.</p></div><div data-subpart="b"><p>(b) 준비: <code>item ← 50</code>, <code>A[1] ← A[5] = 10</code>, <code>heap_size = 4</code>예요. <code>A[1..4] = 10 40 30 20</code>이고, 힙 밖이 된 5번 칸에는 방금 루트로 옮긴 그 값 10이 그대로 남아 있어요.</p><div class="table-wrap"><table><thead><tr><th><code>i</code></th><th><code>i &lt; heap_size</code>, <code>A[i] &gt; A[i+1]</code></th><th><code>largest</code></th><th>부모 비교</th><th>결과</th><th><code>A[1..4]</code></th></tr></thead><tbody><tr><td>2</td><td><code>2 &lt; 4</code> 참, <code>40 &gt; 30</code> 참</td><td>2</td><td><code>A[1] = 10 &gt; 40</code> 거짓</td><td>교환, <code>i ← 4</code></td><td>40 10 30 20</td></tr><tr><td>4</td><td><code>4 &lt; 4</code> 거짓</td><td>5 (<code>else</code>)</td><td><code>A[2] = 10 &gt; A[5] = 10</code> 거짓</td><td>2번·5번 교환, <code>i ← 10</code></td><td>40 10 30 20</td></tr></tbody></table></div><p><code>i = 4</code>에서 10의 왼쪽 자식 <code>A[4] = 20</code>은 있지만 오른쪽 자식 5번은 힙 밖이에요. <code>i &lt; heap_size</code>가 거짓이라 <code>and</code> 전체가 거짓이 되고, <code>else</code>로 가서 <code>largest ← i+1 = 5</code>가 돼요. 슬라이드 주석은 이 줄을 ‘오른쪽 자식이 더 크다’는 뜻으로 썼지만, 오른쪽 자식이 없는 경우도 같은 갈래로 들어와요.</p><p>5번 칸의 옛 값은 바로 루트로 올렸던 10이에요. 지금 내려가는 값도 10이라 비교 <code>10 &gt; 10</code>이 거짓이고, 같은 값끼리 맞바꿔 겉보기엔 변화가 없어요. <code>i ← 10</code>이 <code>heap_size = 4</code>보다 커서 반복이 끝나요. 진짜 왼쪽 자식 20은 한 번도 비교되지 않았어요.</p><p>결과 <code>A[1..4] = 40 10 30 20</code>은 최대 힙이 아니에요. 2번 칸의 10이 왼쪽 자식인 4번 칸의 20보다 작아요. 리턴값은 50으로 맞지만 남은 힙이 깨졌어요.</p><p>원인을 일반화해요. <code>i</code>는 늘 짝수라 <code>PARENT(i+1) = PARENT(i)</code>, 곧 지금 내려가는 값의 위치예요. 그리고 <code>i == heap_size</code>이면 <code>i+1</code>은 삭제 전 마지막 칸이라 그 안에는 루트로 올린 값이 남아 있어요. 그래서 이 경우 의사코드는 ‘내려가는 값과 그 자신의 옛 사본’을 비교하게 되고, 하나뿐인 왼쪽 자식은 건너뛰어요. 그 왼쪽 자식이 내려가는 값보다 크면 늘 최대 힙이 깨져요.</p><p>정의된 동작인지도 확인해요. 위 이유로 <code>i+1</code>은 삭제 전 <code>heap_size</code> 이하이고, 그 칸은 원래 힙이 쓰던 칸이라 200칸 배열 범위 안이에요. 이 입력에서는 <code>A[5]</code>를 읽고 써요. 따라서 미정의 동작이 아니라, 정의된 동작으로 늘 같은 잘못된 결과를 내는 논리 결함이에요.</p><p>고친 조건: 오른쪽 자식이 있고 그쪽이 더 클 때만 오른쪽을 골라요.</p><pre><code>if i &lt; heap_size and A[i+1] &gt; A[i]
+return item;</code></pre><p>배열은 <code>200</code>칸이라 <code>heap_size</code>보다 뒤 칸도 읽을 수 있어요. 맨 끝 요소를 루트로 옮겨도 그 칸의 옛 값은 지워지지 않고 남아요.</p></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol><li>(a) <code>A[1..10] = 9 7 6 5 4 3 2 2 1 3</code>(<code>heap_size = 10</code>)에 한 번 호출할 때, 반복마다 <code>(i, largest, 교환 또는 break)</code>를 쓰고 끝난 뒤의 <code>A[1..heap_size]</code>와 리턴값을 구해 보세요.</li><li>(b) <code>A[1..5] = 50 40 30 20 10</code>(<code>heap_size = 5</code>)에 위 의사코드를 글자 그대로 한 번 실행하면 <code>A[1..heap_size]</code>는 어떻게 되나요? 최대 힙인가요? 아니라면 원인과 고친 조건을 써 보세요.</li></ol></div></div><details class="original" data-original-problem="p11"><summary>강의 예제 보기</summary><p>S8 p13 · downheap 알고리즘 <code>delete_max_heap</code> 의사코드 원문</p><p>문제에 실은 의사코드는 슬라이드 그림의 글자·주석과 줄 배치(같은 줄에 붙은 주석, 빈 줄)를 그대로 따랐어요. 그림의 들여쓰기만 공백 4칸으로 맞췄어요. C가 아니라 슬라이드 의사코드라서 <code>←</code>, <code>↔</code>, <code>≤</code> 기호를 써요.</p><p>추가 근거 p11, p12: p11은 삭제 절차 "(1)루트 노드를 삭제한다 (2)마지막 노드를 루트 노드로 이동한다 (3)루트에서부터 단말 노드까지의 경로에 있는 노드들을 교환하여 히프 성질을 만족시킨다", p12는 9 7 6 5 4 3 2 2 1 3에서 9를 삭제해 7 5 6 3 4 3 2 2 1이 되는 downheap 그림과 "downheap 연산은 O(logn)"이에요. (b)의 입력 50 40 30 20 10은 원문에 없는 자체 입력이에요.</p></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>슬라이드 <code>delete_max_heap(A)</code> 의사코드를 <strong>(a) 10개 입력</strong>과 <strong>(b) 5개 입력</strong>에 글자 그대로 실행해 추적하고, (b)에서 최대 힙이 깨지는 원인과 고친 조건을 구해요.</p>
+  <p>배열은 <code>200</code>칸으로 선언되어 <code>heap_size</code> 뒤 칸에도 옛 값이 남아 있고, 그 칸 읽기는 미정의 동작(UB)이 아닌 <strong>정의된 동작</strong>이에요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>i ← 2</code> · <code>CHILD(largest)</code></td>
+          <td><code>i</code> = 내려가는 노드의 <strong>왼쪽 자식</strong> 인덱스(짝수), 부모 = <code>i/2</code></td>
+          <td>표의 <code>(i, largest)</code>에서 현재 비교 중인 두 자식이 <code>i</code>(왼)와 <code>i+1</code>(오)임을 바로 알 수 있어요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+        <tr>
+          <td><code>while i ≤ heap_size</code> · <code>if i &lt; heap_size and A[i] &gt; A[i+1]</code></td>
+          <td><code>i ≤ heap_size</code>(왼쪽 자식 존재) vs <code>i &lt; heap_size</code>(오른쪽 자식 존재)</td>
+          <td><code>i == heap_size</code>(왼쪽 자식만 있음)이면 <code>i &lt; heap_size</code>가 거짓이 되어 <code>else largest ← i+1</code>로 빠지는 결함을 포착해요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1109_Heap.html#s2-downheap">downheap</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>(a) item ← A[1]=9,  A[1] ← A[10]=3,  heap_size ← 9,  i ← 2
+    A[1..9] = 3 7 6 5 4 3 2 2 1</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) <code>A[1..10] = 9 7 6 5 4 3 2 2 1 3</code> 추적</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th><code>i</code></th><th>조건 <code>i &lt; 9 and A[i] &gt; A[i+1]</code></th><th><code>largest</code></th><th>부모 <code>A[largest/2] &gt; A[largest]</code></th><th>동작</th><th>직후 <code>A[1..9]</code></th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td><code>2 &lt; 9</code> 참, <code>7 &gt; 6</code> 참</td><td><b>2</b></td><td><code>A[1]=3 &gt; 7</code> 거짓</td><td>교환, <code>i ← 4</code></td><td>7 3 6 5 4 3 2 2 1</td></tr>
+          <tr><td>4</td><td><code>4 &lt; 9</code> 참, <code>5 &gt; 4</code> 참</td><td><b>4</b></td><td><code>A[2]=3 &gt; 5</code> 거짓</td><td>교환, <code>i ← 8</code></td><td>7 5 6 3 4 3 2 2 1</td></tr>
+          <tr><td>8</td><td><code>8 &lt; 9</code> 참, <code>2 &gt; 1</code> 참</td><td><b>8</b></td><td><code>A[4]=3 &gt; 2</code> 참</td><td><b>break</b></td><td>7 5 6 3 4 3 2 2 1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>(a) 답: <code>(2, 2, 교환) → (4, 4, 교환) → (8, 8, break)</code> / 최종 <code>A[1..9] = 7 5 6 3 4 3 2 2 1</code> / 리턴 <code>9</code>.</p>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) <code>A[1..5] = 50 40 30 20 10</code> 글자 그대로 실행 및 수정</h5>
+    <p>준비: <code>item ← 50</code>, <code>A[1] ← A[5] = 10</code>, <code>heap_size ← 4</code>. 힙 밖 칸 <code>A[5]</code>에는 옛 값 <code>10</code>이 그대로 남아 있어요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th><code>i</code></th><th>조건 <code>i &lt; 4 and A[i] &gt; A[i+1]</code></th><th><code>largest</code></th><th>부모 비교</th><th>동작</th><th>직후 <code>A[1..4]</code></th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td><code>2 &lt; 4</code> 참, <code>40 &gt; 30</code> 참</td><td><b>2</b></td><td><code>A[1]=10 &gt; 40</code> 거짓</td><td>교환, <code>i ← 4</code></td><td>40 10 30 20</td></tr>
+          <tr><td>4</td><td><b><code>4 &lt; 4</code> 거짓</b></td><td><b>5</b> (<code>else</code>)</td><td><code>A[2]=10 &gt; A[5]=10</code> 거짓</td><td><code>A[2]↔A[5]</code> 교환, <code>i ← 10</code></td><td>40 10 30 20</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li><strong>결과 및 판정</strong>: <code>A[1..4] = 40 10 30 20</code>(리턴 <code>50</code>). <code>A[2]=10 &lt; A[4]=20</code> 이므로 <strong>최대 힙이 아니에요</strong>.</li>
+      <li><strong>원인</strong>: <code>i == heap_size</code>(오른쪽 자식 없음)일 때 <code>i &lt; heap_size</code>가 거짓이 되어 <code>else</code> 분기가 실행되고, <code>largest ← i+1 = 5</code>가 되어 힙 밖 옛 값 <code>A[5]=10</code>을 골라요. 결국 내려가는 값 <code>10</code>을 자기 옛 사본과 비교하고 진짜 왼쪽 자식 <code>A[4]=20</code>을 건너뛰어요(200칸 배열 범위 내 접근이라 UB가 아닌 논리 결함).</li>
+      <li><strong>고친 조건</strong>: 오른쪽 자식이 존재하고 왼쪽보다 클 때만 <code>i+1</code>을 선택하도록 바꿔요.</li>
+    </ul>
+    <pre><code>if i &lt; heap_size and A[i+1] &gt; A[i]
     then largest ← i+1;
-    else largest ← i;</code></pre><p>이제 <code>else</code>는 ‘오른쪽이 없거나 왼쪽이 크거나 같음’이라 왼쪽 자식 <code>i</code>를 골라요. 다시 따라가면 <code>i = 2</code>는 그대로 교환해 <code>40 10 30 20</code>이 되고, <code>i = 4</code>에서 <code>largest = 4</code>, <code>A[2] = 10 &gt; A[4] = 20</code>이 거짓이라 교환해 <code>40 20 30 10</code>이 돼요. <code>i ← 8</code>이 4보다 커서 끝나요.</p><p>답: 글자 그대로면 <code>40 10 30 20</code>이고 최대 힙이 아니에요. 원인은 <code>i == heap_size</code>(오른쪽 자식 없음)일 때 <code>else</code>로 <code>largest ← i+1</code>이 되어 힙 밖 칸 <code>A[5]</code>의 옛 값 10을 읽는 것이에요. 고친 조건이면 <code>40 20 30 10</code>이에요. 수업 칠판 추적에서도 오른쪽 자식이 없으면 왼쪽 자식과만 비교했어요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="a"><p>(a) 결과 <code>7 5 6 3 4 3 2 2 1</code>의 부모·자식 쌍을 대입해요. $7 \ge 5, 6$, $5 \ge 3, 4$, $6 \ge 3, 2$, $3 \ge 2, 1$이 모두 참이라 최대 힙이에요. 리턴값 9는 원래 배열의 최댓값이고, 남은 9개의 값은 원래 10개에서 9 하나를 뺀 것과 같아요.</p><p>독립 C11 번역(<code>cc -std=c11 -Wall -Wextra</code>, 경고 0)은 의사코드를 줄 단위로 옮기고 모든 배열 접근을 범위 검사했어요. 별도로 작성한 Python 추적도 같은 반복 기록을 냈어요.</p><pre><code>(a) literal
-  (i=2, largest=2, swap) A[2] value moved up=7
-  (i=4, largest=4, swap) A[4] value moved up=5
-  (i=8, largest=8, break)
-  item=9 A[1..9]=7 5 6 3 4 3 2 2 1 max-heap=yes</code></pre></div><div data-subpart="b"><p>(b) 같은 C11 번역에서 글자 그대로의 조건과 고친 조건을 각각 실행했어요. 글자 그대로는 <code>i = 4</code>에서 <code>largest = 5</code>가 되고, 그 칸이 힙 밖이라는 표시가 찍혔어요. 범위 검사(<code>assert</code>)는 통과했으니 접근은 200칸 안이었어요.</p><pre><code>(b) literal
-  (i=2, largest=2, swap) A[2] value moved up=40
-  (i=4, largest=5, swap) A[5] value moved up=10 [outside heap]
-  item=50 A[1..4]=40 10 30 20 max-heap=no
-(b) fixed
-  (i=2, largest=2, swap) A[2] value moved up=40
-  (i=4, largest=4, swap) A[4] value moved up=20
-  item=50 A[1..4]=40 20 30 10 max-heap=yes</code></pre><p>고친 결과 <code>40 20 30 10</code>은 $40 \ge 20, 30$, $20 \ge 10$이라 최대 힙이에요. 독립 Python 추적도 두 결과를 똑같이 냈어요.</p><p>고친 조건이 다른 입력에서도 맞는 이유는 숫자 예가 아니라 조건의 뜻에 있어요. 반복 안에서 <code>largest</code>는 늘 힙 안에 있는 자식 중 큰 쪽의 인덱스예요. 그래서 교환한 뒤 위로 올라간 값은 형제보다 크거나 같고, 내려간 값만 다음 반복에서 다시 검사하면 돼요. 보조로 무작위 최대 힙 3000개에 한 번씩 삭제를 실행해 봤어요. 고친 조건은 모두 최댓값을 돌려주고 최대 힙을 유지했고, 글자 그대로의 조건은 246개에서 힙이 깨졌어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>(b)를 손으로 추적할 때 습관대로 ‘오른쪽 자식이 없으니 왼쪽과 비교’해 버리면 <code>40 20 30 10</code>이 나와요. 이건 고친 코드의 결과예요. 문제는 의사코드를 글자 그대로 실행하라고 했으니 <code>else</code> 줄이 실제로 무엇을 대입하는지 따라가야 해요.</p><p>‘힙 밖 칸을 읽었으니 미정의 동작’이라고 답하지 않아요. 이 문제의 배열은 200칸이고, <code>i+1</code>은 삭제 전 마지막 칸이라 범위 안이에요. 결함은 잘못된 값을 비교하는 논리 오류예요.</p><p>(a)의 마지막 반복을 <code>i = 8</code>에서 오른쪽 자식이 없다고 착각하지 않아요. <code>heap_size = 9</code>라 9번 칸이 오른쪽 자식으로 있어요. 또 비교식 <code>A[PARENT(largest)] &gt; A[largest]</code>는 같은 값이면 교환해요. 같은 값끼리 바꿔도 힙은 깨지지 않지만, 표에는 break가 아니라 교환으로 적어요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li><code>i ≤ heap_size</code>와 <code>i &lt; heap_size</code>가 각각 어떤 자식이 있다는 뜻인지 말해 보세요.</li><li>(a)의 세 반복을 표로 다시 적고, 결과와 리턴값을 확인하세요.</li><li>(b)를 글자 그대로 추적해 <code>i = 4</code>에서 <code>largest</code>가 몇이 되는지 보이고, 고친 조건으로 다시 실행해 보세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>downheap은 루트를 보관하고 마지막 요소를 루트로 옮긴 뒤 큰 자식과 비교하며 내려가요. <code>i</code>는 내려가는 값의 왼쪽 자식이고, <code>i ≤ heap_size</code>는 왼쪽, <code>i &lt; heap_size</code>는 오른쪽 자식이 있다는 뜻이에요.</p></div><div class="summary-group"><h4>(a) 답</h4><p><code>(2, 2, 교환)</code> → <code>(4, 4, 교환)</code> → <code>(8, 8, break)</code>, 결과 <code>7 5 6 3 4 3 2 2 1</code>, 리턴 9예요.</p></div><div class="summary-group"><h4>(b) 결함과 고침</h4><p>글자 그대로면 <code>i == heap_size</code>에서 <code>else</code>로 <code>largest ← i+1 = 5</code>, 힙 밖 칸의 옛 값 10을 읽어 <code>40 10 30 20</code>으로 최대 힙이 아니에요. <code>A[i+1] &gt; A[i]</code>일 때만 오른쪽을 고르게 고치면 <code>40 20 30 10</code>이에요.</p></div><div class="summary-group"><h4>검산·주의</h4><p>200칸 배열 안의 읽기라 정의된 동작이에요. 독립 C11 번역과 Python 추적이 모두 일치했어요. 손 추적 때 습관대로 왼쪽과 비교하지 말고 <code>else</code>가 대입하는 값을 따라가요.</p></div></div>
+    else largest ← i;</code></pre>
+    <p>고친 조건으로 다시 실행하면 <code>i=4</code>에서 <code>largest = 4</code>가 선택되어 <code>A[2]=10</code>과 <code>A[4]=20</code>이 교환되고, <strong><code>40 20 30 10</code></strong>(최대 힙)이 돼요.</p>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 검산</strong>: <code>7 5 6 3 4 3 2 2 1</code>에서 $7 \ge 5, 6$, $5 \ge 3, 4$, $6 \ge 3, 2$, $3 \ge 2, 1$ 모두 성립하고, 리턴 <code>9</code>는 초기 배열 최댓값이며 남은 9개는 초기 10개에서 <code>9</code>만 뺀 집합과 같아요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 검산</strong>: 글자 그대로 결과 <code>40 10 30 20</code>은 <code>[2]=10 &lt; [4]=20</code>에서 즉시 실패하고, 고친 결과 <code>40 20 30 10</code>은 $40 \ge 20, 30$, $20 \ge 10$ 이 모두 성립해요. 일반 경계 <code>i == heap_size</code>(외자식 상태)에서도 고친 조건은 <code>i &lt; heap_size</code>가 거짓일 때 항상 <code>else largest ← i</code>로 왼쪽 자식만 비교하므로 <code>largest</code>가 <code>[1..heap_size]</code> 밖으로 나가지 않아요.</p>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>(b)를 손 추적할 때 습관대로 “오른쪽 자식이 없으니 왼쪽과 비교”하면</strong>: 글자 그대로의 답(<code>40 10 30 20</code>) 대신 고친 결과(<code>40 20 30 10</code>)가 나와요. 코드 추론에서는 반드시 <code>if</code>가 거짓일 때 <code>else</code>가 대입하는 실제 인덱스를 적어야 해요.</p>
+  <p><strong>힙 밖 <code>A[5]</code> 읽기를 “배열 범위 초과(UB)”라고 답하면</strong>: 배열 크기가 <code>200</code>이고 <code>i+1</code>은 삭제 직전 <code>heap_size</code> 위치이므로 메모리는 유효하고, 옛 값이 남아 결정적으로 힙이 깨지는 <strong>논리 오류</strong>예요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li><code>if 조건1 and 조건2 then A else B</code> 형태를 보면 → <code>조건1</code>(범위 검사)이 거짓일 때 <code>else</code>가 안전한 기본값을 고르는지부터 확인한다.</li>
+    <li>(a)의 <code>i=8</code>에서 <code>A[4] &gt; A[8]</code> 대신 <code>A[4] == A[8]</code>이었다면 의사코드는 <code>break</code>와 교환 중 어느 쪽을 실행하나요?</li>
+    <li>고친 조건과 같은 뜻이 되도록 조건식을 <code>i == heap_size or ...</code> 형태로 바꿔 써 보세요.</li>
+  </ol>
+</div>
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p><code>i</code>는 왼쪽 자식, <code>i ≤ heap_size</code>는 왼쪽 존재, <code>i &lt; heap_size</code>는 오른쪽 존재. <code>and</code> 거짓 시 <code>else</code>가 <code>i+1</code>을 고르면 외자식 때 힙 밖 옛 값을 읽어요.</p></div>
+  <div class="summary-group"><h4>(a) 답</h4><p><code>(2,2,교환) → (4,4,교환) → (8,8,break)</code>, 결과 <code>7 5 6 3 4 3 2 2 1</code>, 리턴 9.</p></div>
+  <div class="summary-group"><h4>(b) 결함과 수정</h4><p>글자 그대로 <code>40 10 30 20</code>(최대 힙 아님: <code>10 &lt; 20</code>). <code>if i &lt; heap_size and A[i+1] &gt; A[i] then i+1 else i</code>로 고치면 <code>40 20 30 10</code>.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>200칸 배열 내 접근이라 UB 아님(논리 결함). 고친 조건은 <code>largest ≤ heap_size</code>를 항상 보장해요.</p></div>
+</div>
 </article></section>
   </main>
   <footer>원 문제·정리노트·PDF는 보존해요.</footer>

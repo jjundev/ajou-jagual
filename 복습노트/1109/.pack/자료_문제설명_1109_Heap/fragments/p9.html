@@ -1,12 +1,82 @@
-<div class="layer eli5" data-explanation="understand"><h4>무엇을 구하는 문제인가요?</h4><p>빈 최소 히프(min heap)에서 시작해 연산 10개를 순서대로 실행한 뒤 마지막 트리 모양을 그리는 문제예요. 중간 결과를 묻지는 않지만, 한 연산이라도 틀리면 그 뒤가 전부 달라지므로 연산마다 상태를 적어 가며 따라가요.</p><p>연산은 세 종류예요. <code>insert(x)</code>는 값을 넣고, <code>delete()</code>는 우선순위가 가장 높은 값, 곧 가장 작은 값을 꺼내 돌려주고, <code>is_empty()</code>는 비어 있는지만 물어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘최소 히프트리’라는 단서에서 최소 힙(min heap)의 두 조건을 떠올려요. 모양은 완전 이진 트리(complete binary tree)이고, 값은 모든 부모가 자식보다 작거나 같아요. 그래서 가장 작은 값은 늘 루트에 있어요. 수업의 예제는 최대 힙이었으니 이 문제에서는 크기 비교의 방향만 거꾸로 바꿔요.</p><p>‘<code>insert</code>’에서는 삽입과 upheap을 떠올려요. 새 값은 먼저 마지막 노드 다음 자리에 앉아요. 그다음 부모보다 작으면 부모와 맞바꾸며 올라가고, 부모보다 크거나 같으면 멈춰요. 형제(sibling)와는 비교하지 않아요(<a href="정리노트_1109_Heap.html#s2-upheap">정리노트: 삽입과 upheap</a>).</p><p>‘<code>delete</code>’에서는 삭제와 downheap을 떠올려요. 루트를 꺼내 돌려주고, 마지막 노드를 루트 자리로 옮긴 뒤 두 자식 중 <strong>더 작은 쪽</strong>과 비교하며 내려가요. 그 자식보다 작거나 같아지면 멈춰요(<a href="정리노트_1109_Heap.html#s2-downheap">정리노트: 삭제와 downheap</a>).</p><p>‘<code>is_empty</code>’는 우선순위 큐 ADT의 검사 연산이에요. 비어 있는지 참·거짓만 돌려주고 트리를 바꾸지 않아요(<a href="정리노트_1109_Heap.html#s0-adt">정리노트: 우선순위 큐 ADT</a>).</p><p>상태는 배열 1번 칸부터 레벨 순서(level order)로 적으면 편해요. 인덱스 $i$의 부모는 $\lfloor i/2 \rfloor$, 왼쪽 자식은 $2i$, 오른쪽 자식은 $2i+1$이에요(<a href="정리노트_1109_Heap.html#s1-array">정리노트: 배열로 구현한 힙의 인덱스</a>). 그러면 ‘마지막 노드 다음 자리’는 배열 끝 칸이고, 부모는 인덱스 계산으로 바로 찾아요.</p></div>
-<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><pre><code>단계 | 연산        | 움직임       | 힙(레벨 순서)
-1    | insert(20)  | 빈 힙의 루트 | 20</code></pre><p>표의 열은 연산, 비교·교환 과정, 끝난 뒤 배열 상태 세 가지예요. 다음 행부터는 직전 행의 마지막 열에서 출발해요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>각 행의 ‘움직임’은 새 값이 앉은 인덱스(또는 루트로 올라간 값)에서 출발해 부모·자식 인덱스를 계산하며 비교한 기록이에요.</p><div class="table-wrap"><table><thead><tr><th>단계</th><th>연산</th><th>움직임</th><th>힙(레벨 순서)</th></tr></thead><tbody><tr><td>1</td><td><code>insert(20)</code></td><td>빈 힙이라 1번 칸에 앉고 끝나요.</td><td>20</td></tr><tr><td>2</td><td><code>insert(12)</code></td><td>2번 칸에 앉아요. 부모 1번의 20보다 작아서 교환해요.</td><td>12 20</td></tr><tr><td>3</td><td><code>insert(3)</code></td><td>3번 칸에 앉아요. 부모 1번의 12보다 작아서 교환해요.</td><td>3 20 12</td></tr><tr><td>4</td><td><code>insert(2)</code></td><td>4번 칸에 앉아요. 부모 2번의 20보다 작아 교환하고, 다시 부모 1번의 3보다 작아 교환해요.</td><td>2 3 12 20</td></tr><tr><td>5</td><td><code>delete()</code> → 2</td><td>루트 2를 꺼내요. 마지막 노드 20을 루트로 옮겨요: 20 3 12. 자식 3·12 중 작은 3보다 커서 교환해요. 2번 칸은 자식이 없어 멈춰요.</td><td>3 20 12</td></tr><tr><td>6</td><td><code>insert(5)</code></td><td>4번 칸에 앉아요. 부모 2번의 20보다 작아 교환해요. 부모 1번의 3보다는 커서 멈춰요.</td><td>3 5 12 20</td></tr><tr><td>7</td><td><code>insert(16)</code></td><td>5번 칸에 앉아요. 부모 2번의 5보다 커서 그대로예요.</td><td>3 5 12 20 16</td></tr><tr><td>8</td><td><code>delete()</code> → 3</td><td>루트 3을 꺼내요. 마지막 노드 16을 루트로 옮겨요: 16 5 12 20. 자식 5·12 중 작은 5보다 커서 교환해요. 2번 칸의 자식은 4번의 20 하나뿐이고, 16이 더 작아서 멈춰요.</td><td>5 16 12 20</td></tr><tr><td>9</td><td><code>insert(1)</code></td><td>5번 칸에 앉아요. 부모 2번의 16보다 작아 교환하고, 부모 1번의 5보다도 작아 교환해요.</td><td>1 5 12 20 16</td></tr><tr><td>10</td><td><code>is_empty()</code> → 거짓</td><td>노드가 5개라 비어 있지 않아요. 검사만 하고 트리는 바꾸지 않아요.</td><td>1 5 12 20 16</td></tr></tbody></table></div><p>5단계와 8단계에서 두 자식 중 <strong>작은 쪽</strong>을 고른 이유는 그 값이 부모 자리에 올라가야 다른 자식보다도 작거나 같아지기 때문이에요. 큰 쪽을 올리면 그 값이 남은 작은 자식보다 커져서 최소 힙 조건이 깨져요.</p><p>최종 배열 1 5 12 20 16을 인덱스 식으로 트리에 옮겨요. 1번 칸의 1이 루트, 2·3번 칸의 5·12가 루트의 왼쪽·오른쪽 자식, 4·5번 칸의 20·16이 2번 칸 5의 왼쪽·오른쪽 자식이에요.</p><figure class="figure"><svg viewBox="0 0 210 172" role="img" aria-label="최종 최소 히프: 루트 1, 1의 왼쪽 5 오른쪽 12, 5의 왼쪽 20 오른쪽 16"><g fill="none" stroke="currentColor" stroke-width="2"><line x1="108.2" y1="40.2" x2="71.8" y2="77.8"/><line x1="131.8" y1="40.2" x2="168.2" y2="77.8"/><line x1="52.6" y1="105.3" x2="37.4" y2="136.7"/><line x1="67.4" y1="105.3" x2="82.6" y2="136.7"/><circle cx="120" cy="28" r="17"/><circle cx="60" cy="90" r="17"/><circle cx="180" cy="90" r="17"/><circle cx="30" cy="152" r="17"/><circle cx="90" cy="152" r="17"/></g><g fill="currentColor" font-size="16" text-anchor="middle" dominant-baseline="central"><text x="120" y="28">1</text><text x="60" y="90">5</text><text x="180" y="90">12</text><text x="30" y="152">20</text><text x="90" y="152">16</text></g></svg><figcaption>최종 최소 히프예요. 레벨 순서로 읽으면 1 5 12 20 16이에요.</figcaption></figure><p>답: 레벨 순서 1 5 12 20 16인 트리예요. 두 번의 <code>delete()</code>는 2와 3을 돌려주고, 마지막 <code>is_empty()</code>는 거짓을 돌려줘요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>교과서의 공식 답은 제공되지 않아 확인하지 못했고, 이 답은 독립 검산한 자체 풀이예요.</p><p>최종 트리의 부모·자식 쌍을 모두 대입해 봐요. $1 \le 5$, $1 \le 12$, $5 \le 20$, $5 \le 16$이 모두 참이라 최소 힙이에요. 노드 5개가 1~5번 칸을 빈칸 없이 채우므로 완전 이진 트리 모양도 맞아요.</p><p>값의 개수로도 확인해요. 넣은 값 20, 12, 3, 2, 5, 16, 1 일곱 개에서 꺼낸 2와 3을 빼면 1, 5, 12, 16, 20 다섯 개가 남아야 하고, 최종 트리의 값과 같아요. 꺼낸 값도 그 시점의 최솟값이에요. 첫 <code>delete()</code> 때 남은 값은 20, 12, 3, 2라 최솟값 2, 둘째 때는 20, 12, 3, 5, 16이라 최솟값 3이에요.</p><p>독립 Python 검산은 위 규칙대로 1번 칸부터의 배열에서 삽입·삭제를 따로 구현해 연산마다 상태를 출력했어요. 매 단계 최소 힙 성질과 값의 모임을 표준 라이브러리 <code>heapq</code>와 대조했고, 꺼낸 값도 일치했어요.</p><pre><code>delete() -&gt; 2: [3, 20, 12]
-delete() -&gt; 3: [5, 16, 12, 20]
-insert(1): [1, 5, 12, 20, 16]
-is_empty() -&gt; False: [1, 5, 12, 20, 16]</code></pre><p>나머지 행도 표의 마지막 열과 모두 같았어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>헷갈리기 쉬운 지점</h4><p>수업 예제가 최대 힙이라 습관대로 큰 자식과 바꾸기 쉬워요. 이 문제는 최소 히프라서 삭제 때 두 자식 중 <strong>작은 쪽</strong>과 비교해요.</p><p><code>delete()</code>로 꺼낸 값은 트리에서 빠져요. 그 자리를 비워 두거나 다른 자식을 끌어올리지 않고, 마지막 노드를 루트로 옮겨 모양을 먼저 맞춰요.</p><p><code>is_empty()</code>를 ‘하나를 지운다’로 읽지 않아요. 검사 연산이라 트리는 9단계 모양 그대로예요. 레벨 순서를 정렬 순서로 착각해 1 5 12 16 20으로 그리지도 않아요. 16은 5의 오른쪽 자식이고 20보다 나중에 들어왔어요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 풀어요</h4><ol><li>최소 힙의 삽입·삭제에서 각각 무엇과 비교하는지, 멈추는 조건과 함께 말해 보세요.</li><li>연산 10개를 상태 표로 다시 적고, 최종 배열을 트리로 옮겨 보세요.</li><li>최종 트리의 부모·자식 쌍을 모두 검사하고, 남은 값의 모임이 맞는지 확인하세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 힙은 완전 이진 트리이면서 부모 ≤ 자식이에요. 삽입은 끝 자리에서 부모와 비교하며 올라가고, 삭제는 마지막 노드를 루트로 옮겨 작은 자식과 비교하며 내려가요. 부모 $\lfloor i/2 \rfloor$, 자식 $2i$, $2i+1$이에요.</p></div><div class="summary-group"><h4>첫 줄</h4><p>단계·연산·움직임·힙(레벨 순서) 표를 만들고 <code>insert(20)</code> → 20부터 적어요.</p></div><div class="summary-group"><h4>답</h4><p>레벨 순서 1 5 12 20 16. 두 <code>delete()</code>는 2, 3을 돌려주고 <code>is_empty()</code>는 트리를 바꾸지 않고 거짓이에요.</p></div><div class="summary-group"><h4>검산·주의</h4><p>부모·자식 쌍 4개가 모두 부모 ≤ 자식이고 남은 값 1, 5, 12, 16, 20이 맞아요. 독립 Python 추적과 <code>heapq</code> 대조가 일치했어요. 최대 힙 습관으로 큰 자식과 바꾸지 않아요. 교과서 공식 답은 확인하지 못했어요.</p></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>빈 <strong>최소 히프</strong>에서 <code>insert</code>·<code>delete</code>·<code>is_empty</code> 10개 연산을 순서대로 실행한 뒤 <strong>최종 최소 히프 트리 모습</strong>을 그려요.</p>
+  <p><code>delete()</code>는 가장 작은 값(루트)을 꺼내고, <code>is_empty()</code>는 트리를 바꾸지 않고 참/거짓만 확인해요.</p>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>최소 히프 + <code>insert(x)</code></td>
+          <td><code>[n+1]</code>에 붙이고 부모 $\lfloor i/2 \rfloor$ 보다 작으면 upheap</td>
+          <td>최대 히프와 반대로 작은 값이 루트 쪽으로 올라가요(<a href="정리노트_1109_Heap.html#s2-upheap">upheap</a> · <a href="정리노트_1109_Heap.html#s1-array">배열 표현</a>).</td>
+        </tr>
+        <tr>
+          <td><code>delete()</code> · <code>is_empty()</code></td>
+          <td><code>delete</code> = <code>[n]</code>을 루트로 올려 <strong>더 작은 자식</strong>과 downheap / <code>is_empty</code> = 상태 불변 검사</td>
+          <td>작은 쪽 자식을 올려야 형제보다 작거나 같아 최소 히프가 유지돼요(<a href="정리노트_1109_Heap.html#s2-downheap">downheap</a> · <a href="정리노트_1109_Heap.html#s0-adt">우선순위 큐 ADT</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>1 | insert(20) | [1]=20 (빈 힙) | 20
+2 | insert(12) | [2]=12 &lt; [1]=20 → 교환 | 12 20</code></pre>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>단계</th><th>연산</th><th>비교·교환 움직임</th><th>힙(레벨 순서)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>insert(20)</code></td><td><code>[1]</code>에 배치</td><td>20</td></tr>
+          <tr><td>2</td><td><code>insert(12)</code></td><td><code>[2]=12 &lt; [1]=20</code> 교환</td><td>12 20</td></tr>
+          <tr><td>3</td><td><code>insert(3)</code></td><td><code>[3]=3 &lt; [1]=12</code> 교환</td><td>3 20 12</td></tr>
+          <tr><td>4</td><td><code>insert(2)</code></td><td><code>[4]=2 &lt; [2]=20</code> → <code>[1]=3</code> 차례로 교환</td><td>2 3 12 20</td></tr>
+          <tr><td>5</td><td><b><code>delete()</code> → 2</b></td><td><code>[4]=20</code>→루트: 작은 자식 <b>3</b>(<code>[2]</code>)과 교환, 자식 없음</td><td>3 20 12</td></tr>
+          <tr><td>6</td><td><code>insert(5)</code></td><td><code>[4]=5 &lt; [2]=20</code> 교환 → <code>[1]=3</code>보다 커서 멈춤</td><td>3 5 12 20</td></tr>
+          <tr><td>7</td><td><code>insert(16)</code></td><td><code>[5]=16 &gt; [2]=5</code> 그대로</td><td>3 5 12 20 16</td></tr>
+          <tr><td>8</td><td><b><code>delete()</code> → 3</b></td><td><code>[5]=16</code>→루트: 작은 자식 <b>5</b>(<code>[2]</code>)와 교환 → 외자식 <code>[4]=20</code>보다 작아 멈춤</td><td>5 16 12 20</td></tr>
+          <tr><td>9</td><td><code>insert(1)</code></td><td><code>[5]=1 &lt; [2]=16</code> → <code>[1]=5</code> 차례로 교환</td><td>1 5 12 20 16</td></tr>
+          <tr><td>10</td><td><code>is_empty()</code> → 거짓</td><td>$n=5$ 비어 있지 않음(트리 변화 없음)</td><td><b>1 5 12 20 16</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>최종 최소 히프는 루트 <code>1</code>, 자식 <code>5·12</code>, <code>5</code>의 자식 <code>20·16</code>(레벨 순서 <code>1 5 12 20 16</code>)이에요.</p>
+    <figure class="figure"><svg viewBox="0 0 210 172" role="img" aria-label="최종 최소 히프: 루트 1, 1의 왼쪽 5 오른쪽 12, 5의 왼쪽 20 오른쪽 16"><g fill="none" stroke="currentColor" stroke-width="2"><line x1="108.2" y1="40.2" x2="71.8" y2="77.8"/><line x1="131.8" y1="40.2" x2="168.2" y2="77.8"/><line x1="52.6" y1="105.3" x2="37.4" y2="136.7"/><line x1="67.4" y1="105.3" x2="82.6" y2="136.7"/><circle cx="120" cy="28" r="17"/><circle cx="60" cy="90" r="17"/><circle cx="180" cy="90" r="17"/><circle cx="30" cy="152" r="17"/><circle cx="90" cy="152" r="17"/></g><g fill="currentColor" font-size="16" text-anchor="middle" dominant-baseline="central"><text x="120" y="28">1</text><text x="60" y="90">5</text><text x="180" y="90">12</text><text x="30" y="152">20</text><text x="90" y="152">16</text></g></svg><figcaption>최종 최소 히프(<code>1 5 12 20 16</code>)</figcaption></figure>
+  </div>
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>(교과서 공식 답 미확인): 레벨 순서 <strong><code>1 5 12 20 16</code></strong> (<code>delete</code> 반환 2, 3 / <code>is_empty()</code> 거짓).</p>
+    <ul>
+      <li><strong>부모 $\le$ 자식 4쌍 확인</strong>: $1 \le 5, 12$, $5 \le 20, 16$ 모두 성립하고 <code>[1..5]</code>가 빈칸 없이 채워졌어요.</li>
+      <li><strong>원소 개수·최솟값 보존</strong>: <code>insert</code> 7개(<code>20, 12, 3, 2, 5, 16, 1</code>) − <code>delete</code> 2개(당시 최솟값 <code>2, 3</code>) = <code>{1, 5, 12, 16, 20}</code> 5개가 정확히 남았어요.</li>
+    </ul>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>8단계 <code>delete()</code>에서 두 자식(<code>5, 12</code>) 중 큰 쪽 <code>12</code>를 올리면</strong>: 루트 <code>12 &gt; 5</code>가 되어 최소 히프가 즉시 깨져요.</p>
+  <p><strong><code>is_empty()</code>를 삭제로 오해하거나, 마지막 배열을 크기 순 <code>1 5 12 16 20</code>으로 정렬해 적으면</strong>: <code>is_empty()</code>는 읽기 전용이고, <code>16</code>은 <code>[5]</code>에 들어가 <code>20</code>(<code>[4]</code>)의 오른쪽 형제예요.</p>
+</div>
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>연산 열 문제를 보면 → 삽입/삭제 횟수를 세어 <code>insert 수 − delete 수 = 최종 노드 수</code>부터 끝칸 검산 기준으로 잡는다.</li>
+    <li>8단계에서 <code>16</code>이 루트 <code>[1]</code>에서 <code>[2]</code>로 내려간 뒤 왜 <code>[4]=20</code>과는 자리바꿈이 일어나지 않나요?</li>
+  </ol>
+</div>
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>최소 히프: 삽입은 부모 $\ge$ 자식이면 멈추는 upheap, 삭제는 <code>[n]</code> 올려 <strong>작은 자식</strong>과 downheap, <code>is_empty</code>는 상태 불변.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>1: insert(20) → 20</code>, <code>2: insert(12) → 12 20</code>.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>최종 <code>1 5 12 20 16</code> (<code>delete</code> 2, 3 / <code>is_empty()</code> 거짓).</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>$1 \le 5, 12$ 및 $5 \le 20, 16$, $7-2=5$ 개 원소 일치. 교과서 공식 답 미확인.</p></div>
+</div>

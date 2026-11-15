@@ -1,8 +1,106 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 6개 트리에서 재귀 함수 <code>get_node_count</code>를 X, Y, R에서 부른 값, <code>get_height</code>를 R에서 부른 값을 구하고, 높이 함수가 <code>max(...)</code>에 1을 더하는 이유를 한 문장으로 쓰는 문제예요. Y는 왼쪽 자식 L3만 있어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>두 함수 모두 <code>node-&gt;left</code>와 <code>node-&gt;right</code>로 자기 자신을 다시 부르는 재귀(recursion)예요. 재귀는 종료 조건부터 읽어요. <code>node == NULL</code>이면 <code>if</code>를 건너뛰어 초기값 <code>0</code>을 그대로 돌려줘요.</p><p>(a) S7 p16: 노드 개수는 “각각의 서브트리에 대하여 순환 호출한 다음, 반환되는 값에 1을 더하여 반환”해요. 식으로 쓰면 $\text{count}(v) = 1 + \text{count}(L) + \text{count}(R)$, $\text{count}(\text{NULL}) = 0$이에요. 1은 지금 노드 자신이에요.</p><p>(b)(c) S7 p17: 높이는 두 서브트리 높이 중 큰 값을 구해 1을 더해요. $h(v) = 1 + \max(h(L), h(R))$, $h(\text{NULL}) = 0$이에요. 개수는 두 쪽을 <em>더하고</em>, 높이는 두 쪽 중 큰 것 <em>하나만</em> 고른다는 차이가 있어요.</p><p>두 서브트리 값을 먼저 받아 지금 노드에서 합치니 후위 순회(LRV) 순서로 계산이 끝나요. 개념 위치: <a href="정리노트_1102_Tree.html#s2-count">노드 개수 get_node_count</a>, <a href="정리노트_1102_Tree.html#s2-height">높이 get_height</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>“단말 L1, L2, L3: 개수 $1 + 0 + 0 = 1$, 높이 $1 + \max(0, 0) = 1$.”</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 단말에서 시작해 위로 올라가며 반환값을 더해요.</p><div class="table-wrap"><table><thead><tr><th>노드</th><th>식</th><th><code>get_node_count</code></th></tr></thead><tbody><tr><td>L1, L2, L3</td><td>$1 + 0 + 0$</td><td>1</td></tr><tr><td>X</td><td>$1 + 1 + 1$ (L1, L2)</td><td>3</td></tr><tr><td>Y</td><td>$1 + 1 + 0$ (L3, 오른쪽 NULL)</td><td>2</td></tr><tr><td>R</td><td>$1 + 3 + 2$</td><td>6</td></tr></tbody></table></div><p>그래서 <strong>X 3, Y 2, R 6</strong>이에요. R의 값 6은 트리 전체 노드 수와 같아요.</p></div><div data-subpart="b"><p>(b) 같은 방식으로 높이를 올려요.</p><div class="table-wrap"><table><thead><tr><th>노드</th><th>식</th><th><code>get_height</code></th></tr></thead><tbody><tr><td>L1, L2, L3</td><td>$1 + \max(0, 0)$</td><td>1</td></tr><tr><td>X</td><td>$1 + \max(1, 1)$</td><td>2</td></tr><tr><td>Y</td><td>$1 + \max(1, 0)$</td><td>2</td></tr><tr><td>R</td><td>$1 + \max(2, 2)$</td><td>3</td></tr></tbody></table></div><p>그래서 <code>get_height(R)</code>은 <strong>3</strong>이에요. 층이 R / X, Y / L1, L2, L3의 세 층인 것과 같아요.</p></div><div data-subpart="c"><p>(c) <code>max(...)</code>는 두 서브트리 중 더 높은 쪽의 높이만 알려 줘요. 지금 노드도 그 위에 한 층을 차지하므로 1을 더해야 해요. 한 문장으로: <strong>1은 지금 노드(서브트리의 루트) 자신이 차지하는 한 층이에요.</strong></p><p>1을 빼면 <code>NULL</code>의 0에서 시작해 $\max(0, 0) = 0$만 계속 올라가서, 어떤 트리든 높이가 0이 돼요. 1102 수업에서도 +1을 하는 이유를 “루트의 높이도 더해 줘야” 하기 때문이라고 했어요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>강의 예제 기반 자체 출제라 외부 공식 답은 없고, 슬라이드와 실행으로 확인했어요.</p><div data-subpart="a"><p>(a) X 3, Y 2, R 6. S7 p16 그림의 반환값(단말 1, 1, 1, 그 위 3, 2, 루트 6)과 같은 모양이에요. 문제의 코드에 이 트리를 만들어 <code>cc -std=c11 -Wall -Wextra</code>로 컴파일·실행했더니 경고 없이 3, 2, 6이 나왔어요.</p></div><div data-subpart="b"><p>(b) 3. 같은 실행에서 <code>get_height(R)</code> = 3이었어요. 가장 긴 가지 R → X → L1이 노드 3개라는 정의와도 맞아요.</p></div><div data-subpart="c"><p>(c) 별도 실행에서 <code>1 +</code>를 뺀 함수로 바꿨더니 R에서 0이 나와, +1이 없으면 높이를 셀 수 없다는 설명과 같았어요. 모든 함수가 <code>NULL</code>을 먼저 확인하고 지역 변수를 0으로 초기화해서 정의되지 않은 동작은 없었어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>(a) Y를 1로 세기 쉬워요. Y 자신과 L3를 함께 세어 2예요.</li><li>(b) 높이도 개수처럼 두 쪽을 더해 $1 + 2 + 2 = 5$로 계산하기 쉬워요. 높이는 <code>max</code>로 큰 쪽 하나만 써요.</li><li>(c) “NULL이 0이라서”는 이유가 아니에요. 1은 지금 노드가 차지하는 층이에요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>단말부터 개수와 높이 표를 다시 채워 보세요.</li><li>두 식 $1 + \text{count}(L) + \text{count}(R)$와 $1 + \max(h(L), h(R))$의 차이를 말로 설명해 보세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>단말 L1~L3: 개수 $1+0+0=1$, 높이 $1+\max(0,0)=1$.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>$\text{count}(v) = 1 + \text{count}(L) + \text{count}(R)$, $\text{count}(\text{NULL}) = 0$이에요.</li><li>$h(v) = 1 + \max(h(L), h(R))$, $h(\text{NULL}) = 0$이에요.</li><li>개수는 두 쪽을 더하고, 높이는 큰 쪽 하나만 써요.</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>(a) X 3, Y 2, R 6 (b) 3 (c) 1은 지금 노드 자신이 차지하는 한 층. C11 실행 결과가 같고, +1을 빼면 높이가 0이 돼요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>Y는 오른쪽이 NULL이라 개수 $1+1+0$이에요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>6노드 트리(<code>R → X, Y</code>, <code>X → L1, L2</code>, <code>Y → 왼쪽 L3</code>)에서 <strong>(a) <code>get_node_count(X, Y, R)</code></strong>, <strong>(b) <code>get_height(R)</code></strong>, <strong>(c) <code>get_height</code>가 <code>+ 1</code>을 하는 이유</strong>를 구해요(강의 예제 기반 자체 출제).</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead>
+        <tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이유와 조건</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>get_node_count</code></td>
+          <td> $\text{count}(v) = 1 + \text{count}(L) + \text{count}(R)$ </td>
+          <td><code>NULL</code>은 0을 돌려주며, 자신(1)과 <b>양쪽 서브트리 합</b>을 모두 더해요(<a href="정리노트_1102_Tree.html#s2-count">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td><code>get_height</code></td>
+          <td> $h(v) = 1 + \max(h(L), h(R))$ </td>
+          <td><code>NULL</code>은 0이며, 두 서브트리 중 <b>더 높은 쪽 하나만</b> 골라 자신의 1층을 더해요(<a href="정리노트_1102_Tree.html#s2-height">정리노트</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>단말 노드(L1, L2, L3): 좌우 모두 NULL(0)  →  count = 1 + 0 + 0 = 1,  height = 1 + max(0, 0) = 1</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) <code>get_node_count</code> 상향식 계산</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>노드</th><th>재귀 식 (<code>NULL = 0</code>)</th><th>반환값</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>L1, L2, L3</td><td><code>1 + 0 + 0</code></td><td>1</td></tr>
+          <tr><td>X</td><td><code>1 + count(L1) + count(L2) = 1 + 1 + 1</code></td><td><b>3</b></td></tr>
+          <tr><td>Y</td><td><code>1 + count(L3) + 0 = 1 + 1 + 0</code> (오른쪽 <code>NULL</code>)</td><td><b>2</b></td></tr>
+          <tr><td>R</td><td><code>1 + count(X) + count(Y) = 1 + 3 + 2</code></td><td><b>6</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) <code>get_height</code> 상향식 계산</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>노드</th><th>재귀 식 (<code>NULL = 0</code>)</th><th>반환값</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>L1, L2, L3</td><td><code>1 + max(0, 0)</code></td><td>1</td></tr>
+          <tr><td>X</td><td><code>1 + max(1, 1)</code></td><td>2</td></tr>
+          <tr><td>Y</td><td><code>1 + max(1, 0)</code></td><td>2</td></tr>
+          <tr><td>R</td><td><code>1 + max(2, 2)</code></td><td><b>3</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div data-subpart="c">
+    <h5>(c) <code>+ 1</code>을 더하는 이유</h5>
+    <p><code>max(...)</code>는 왼쪽·오른쪽 서브트리 중 더 높은 쪽의 높이만 반환하므로, <strong>현재 노드(서브트리 루트) 자신이 차지하는 한 층</strong>을 포함하려고 <code>1</code>을 더해요.</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 완성 답</strong>: <code>X = 3, Y = 2, R = 6</code>. 전체 노드 수 직접 세기(<code>R, X, Y, L1, L2, L3</code> = 6개) 및 <code>1 + X(3) + Y(2) = 6</code>과 일치해요(S7 p16 그림의 반환 패턴과 동일).</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 완성 답</strong>: <code>3</code>. 루트에서 단말까지 가장 긴 경로 <code>R → X → L1</code>의 노드 개수가 3개이므로 높이 3과 일치해요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 완성 답</strong>: <code>1</code>은 현재 노드 자신이 차지하는 한 층이에요. 경계값 대입 검산: 만약 <code>1 +</code>를 지우면 단말 노드 1개(<code>L1</code>)에서도 <code>max(0, 0) = 0</code>이 되어, 모든 트리의 높이가 <code>0</code>으로 무너져요. 두 함수 모두 <code>node != NULL</code>을 먼저 검사하고 지역 변수를 0으로 초기화하므로 <code>NULL</code> 역참조가 없어요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>높이도 개수처럼 양쪽을 더하면(<code>1 + h(L) + h(R)</code>):</strong> R에서 <code>1 + 2 + 2 = 5</code>가 되어 실제 층 수(3)가 아니라 노드 개수 식과 섞여 버려요.</p>
+  <p><strong>Y의 오른쪽 자식이 비어 있는데 <code>NULL</code>을 1로 보거나 Y를 1로 세면:</strong> <code>Y</code>는 자신(1) + <code>L3</code>(1) + <code>NULL</code>(0) = <code>2</code>예요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li><code>get_node_count</code>와 <code>get_height</code>가 함께 나오면 → 양쪽 재귀 결과를 <code>+</code>로 합치는지 <code>max</code>로 고르는지부터 표시하고 단말(1)에서 위로 채운다.</li>
+    <li>재귀 코드의 <code>+ 1</code> 의미를 물으면 → <code>+ 1</code>을 지웠을 때 단말 노드(<code>NULL</code> 두 개)에서 얼마가 반환되는지 대입해 확인한다.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>개수: $1 + L + R$ (양쪽 합산), 높이: $1 + \max(L, R)$ (큰 쪽만 선택).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>단말 <code>L1~L3</code>부터 <code>count = 1</code>, <code>height = 1</code>로 채워 올라가요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>(a) X 3, Y 2, R 6 (b) 3 (c) <code>1</code>은 현재 노드 자신이 차지하는 한 층.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>노드 6개 보존, 최장 경로 <code>R→X→L1</code> 길이 3, <code>+1</code> 제거 시 모든 높이 0.</p></div>
+</div>

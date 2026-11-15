@@ -1,35 +1,61 @@
 <div class="layer eli5" data-explanation="understand">
-<h4>무엇을 구하라는 문제일까요?</h4>
-<p>글자 여섯 개(s, t, u, v, w, x)의 빈도가 주어진 105글자짜리 글을 허프만 코드로 압축해요. 1)은 허프만 트리를 <strong>주어진 빈 틀 모양에 맞춰</strong> 그리고 가지에 0과 1을 표시하는 것, 2)는 글자별 허프만 코드, 3)은 압축한 뒤 전체 비트 수를 묻는 거예요.</p>
-<p>틀은 모양만 정해 줘요. 루트 아래 왼쪽은 ‘단말 하나 + 더 깊은 서브트리’, 오른쪽은 단말 두 개예요. 어느 가지가 0인지는 문제에 없어요. 1112 수업에서 교수님이 말로 설명한 대로 왼쪽 0, 오른쪽 1로 붙여요(반대로 붙여도 된다고 하셨어요).</p>
+  <h4>핵심 조건과 구할 것</h4>
+  <p>105글자(s, t, u, v, w, x)의 빈도표로 <strong>1) 주어진 빈 틀에 맞춘 허프만 트리</strong>, <strong>2) 글자별 코드</strong>, <strong>3) 총 비트 수</strong>를 구해요.</p>
+  <ul>
+    <li><strong>틀과 비트 규칙</strong>: 문제에는 0·1 배정이 적혀 있지 않아 1112 수업 기준(<code>왼쪽 0, 오른쪽 1</code>)으로 표시해요(반대 배정도 유효). 형제 단말(u·v, x·w) 좌우 교환은 모두 허용돼요.</li>
+  </ul>
 </div>
+
 <div class="layer formal" data-explanation="recall">
-<h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
-<p>‘빈도수 표’와 ‘허프만 코드를 만들려고 한다’는 단서에서 <strong>허프만 코딩 트리 만들기</strong>를 떠올려요. 가장 작은 빈도 두 개를 자식으로 하는 새 노드를 만들고(값은 두 빈도의 합) 다시 넣는 일을 하나 남을 때까지 반복해요. 매번 가장 작은 둘을 꺼내는 일은 최소 힙(min heap)이 맡아요(<a href="정리노트_1112_Heap.html#s2-huffman-build">정리노트: 가장 작은 두 개를 묶어 트리 만들기</a>).</p>
-<p>‘틀에 맞춰’라는 단서는 병합으로 정해지는 것은 <strong>부모·자식 관계(어떤 둘이 묶이는지)</strong>이고 좌우 순서는 정해지지 않는다는 점을 떠올리게 해요. 그래서 병합 결과의 각 노드를 틀에서 같은 개수의 단말을 가진 자리에 맞추면 돼요.</p>
-<p>코드는 루트에서 단말까지의 가지 비트를 이은 것이고, 총 비트는 $\sum(\text{빈도}\times\text{코드 길이})$예요(<a href="정리노트_1112_Heap.html#s2-huffman-code">정리노트: 비트 코드와 100비트</a>).</p>
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이유와 조건</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>빈도표 + 허프만 트리</td>
+          <td>최소 힙 기반 반복 병합</td>
+          <td>누가 누구와 묶이는지(부모·자식 관계)는 매번 <strong>가장 작은 빈도 둘</strong>을 합쳐야 결정돼요(<a href="정리노트_1112_Heap.html#s2-huffman-build">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>주어진 빈 트리 틀</td>
+          <td>서브트리의 단말 개수 매칭</td>
+          <td>병합은 좌우 순서를 정하지 않으므로, 합친 노드를 틀에서 같은 단말 수(2개 vs 4개)를 가진 자리에 끼워 넣어요.</td>
+        </tr>
+        <tr>
+          <td>허프만 코드 / 총 비트</td>
+          <td>총 비트 $= \sum(\text{빈도}\times\text{코드 길이})$ </td>
+          <td>루트에서 단말까지 <code>0/1</code> 경로를 이으면 코드이고, 총 비트는 내부 노드 합과 같아요(<a href="정리노트_1112_Heap.html#s2-huffman-code">정리노트</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
 <div class="layer formal" data-explanation="start">
-<h4>종이에 쓰는 실제 첫 줄</h4>
-<p>빈도를 작은 순서로 늘어놓고 맨 앞 두 개를 묶는 병합 표의 첫 행을 써요.</p>
-<pre><code>정렬: u 4, v 8, s 16, x 19, w 23, t 35
-1단계: u 4 + v 8 = 12 → 남은 값 12 16 19 23 35</code></pre>
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>정렬: u 4, v 8, s 16, x 19, w 23, t 35
+1단계: u 4 + v 8 = 12  →  남은 빈도: 12, 16, 19, 23, 35</code></pre>
 </div>
+
 <div class="layer formal" data-explanation="solve">
-<h4>왜 이렇게 푸는지 함께 따라가요</h4>
-<div data-subpart="main">
-<h5>1) 병합 순서</h5>
-<div class="table-wrap"><table><thead><tr><th>단계</th><th>꺼낸 두 값</th><th>합</th><th>남은 빈도</th></tr></thead><tbody>
-<tr><td>1</td><td>u 4, v 8</td><td>12</td><td>12 16 19 23 35</td></tr>
-<tr><td>2</td><td>12, s 16</td><td>28</td><td>19 23 28 35</td></tr>
-<tr><td>3</td><td>x 19, w 23</td><td>42</td><td>28 35 42</td></tr>
-<tr><td>4</td><td>28, t 35</td><td>63</td><td>42 63</td></tr>
-<tr><td>5</td><td>42, 63</td><td>105</td><td>105</td></tr>
-</tbody></table></div>
-<p>3단계에서 남은 값은 19, 23, 28, 35예요. 가장 작은 둘은 x 19, w 23이라 방금 만든 28보다 이 둘이 먼저 묶여요.</p>
-<h5>1) 틀에 맞추기</h5>
-<p>루트 105의 두 자식은 42(단말 두 개)와 63(단말 네 개)이에요. 틀에서 단말 두 개짜리 서브트리는 오른쪽이니 42가 오른쪽, 63이 왼쪽이에요. 63의 두 자식은 단말 t 35와 28이고, 틀은 왼쪽이 단말이라 t가 왼쪽이에요. 28의 자식은 12(단말 두 개)와 단말 s이고, 틀은 왼쪽이 내부 노드라 12가 왼쪽이에요. 같은 모양인 u·v, x·w는 어느 쪽에 두어도 틀에 맞아요. 여기서는 작은 쪽을 왼쪽에 둬요.</p>
-<pre><code>[105]
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <h5>1) 병합 순서와 틀에 맞추기 (굵은 두 값이 다음 단계 후보)</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>단계</th><th>꺼낸 최소 둘</th><th>합</th><th>병합 후 남은 빈도 (다음 최소 둘 강조)</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>u 4, v 8</td><td>12</td><td><b>12</b>, <b>16</b>, 19, 23, 35</td></tr>
+          <tr><td>2</td><td>12, s 16</td><td>28</td><td><b>19</b>, <b>23</b>, 28, 35 <em>(새 28보다 19·23이 작음)</em></td></tr>
+          <tr><td>3</td><td>x 19, w 23</td><td>42</td><td><b>28</b>, <b>35</b>, 42</td></tr>
+          <tr><td>4</td><td>28, t 35</td><td>63</td><td><b>42</b>, <b>63</b></td></tr>
+          <tr><td>5</td><td>42, 63</td><td>105</td><td>105</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>틀의 루트 아래에는 단말 4개짜리 왼쪽 서브트리(<strong>63</strong>)와 단말 2개짜리 오른쪽 서브트리(<strong>42</strong>)가 있어요. 63의 왼쪽 단말이 <code>t 35</code>, 오른쪽 내부 노드가 <code>28</code>이고, 28의 왼쪽 내부 노드가 <code>12(u, v)</code>, 오른쪽 단말이 <code>s 16</code>이에요. 작은 빈도를 왼쪽에 둔 배치(왼쪽 0, 오른쪽 1)는 다음과 같아요.</p>
+    <pre><code>[105]
 ├─0─ [63]
 │    ├─0─ t 35
 │    └─1─ [28]
@@ -40,42 +66,57 @@
 └─1─ [42]
      ├─0─ x 19
      └─1─ w 23</code></pre>
-<h5>2) 허프만 코드</h5>
-<div class="table-wrap"><table><thead><tr><th>symbol</th><th>빈도수</th><th>허프만 코드</th><th>길이</th><th>비트 수</th></tr></thead><tbody>
-<tr><td>s</td><td>16</td><td>011</td><td>3</td><td>48</td></tr>
-<tr><td>t</td><td>35</td><td>00</td><td>2</td><td>70</td></tr>
-<tr><td>u</td><td>4</td><td>0100</td><td>4</td><td>16</td></tr>
-<tr><td>v</td><td>8</td><td>0101</td><td>4</td><td>32</td></tr>
-<tr><td>w</td><td>23</td><td>11</td><td>2</td><td>46</td></tr>
-<tr><td>x</td><td>19</td><td>10</td><td>2</td><td>38</td></tr>
-</tbody></table></div>
-<h5>3) 총 비트</h5>
-<p>$16\cdot3 + 35\cdot2 + 4\cdot4 + 8\cdot4 + 23\cdot2 + 19\cdot2 = 48+70+16+32+46+38 = 250$ bits예요. 같은 길이 코드라면 6글자에 3비트씩 $105 \times 3 = 315$ bits가 들어요.</p>
-<p>u·v나 x·w의 좌우를 바꾸면 코드 비트가 바뀌지만(예: x 11, w 10) 코드 길이(s 3, t 2, u 4, v 4, w 2, x 2)와 250 bits는 같아요.</p>
+    <h5>2) 허프만 코드와 3) 총 비트</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>symbol</th><th>빈도수</th><th>허프만 코드</th><th>길이</th><th>비트 수</th></tr></thead>
+        <tbody>
+          <tr><td>s</td><td>16</td><td>011</td><td>3</td><td>48</td></tr>
+          <tr><td>t</td><td>35</td><td>00</td><td>2</td><td>70</td></tr>
+          <tr><td>u</td><td>4</td><td>0100</td><td>4</td><td>16</td></tr>
+          <tr><td>v</td><td>8</td><td>0101</td><td>4</td><td>32</td></tr>
+          <tr><td>w</td><td>23</td><td>11</td><td>2</td><td>46</td></tr>
+          <tr><td>x</td><td>19</td><td>10</td><td>2</td><td>38</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>총 비트 $= 48+70+16+32+46+38 = \mathbf{250}$ bits예요(같은 길이 3비트면 $105 \times 3 = 315$ bits). 형제 <code>u·v</code>나 <code>x·w</code>의 좌우를 바꾼 4가지 배치 모두 코드 길이(s 3, t 2, u 4, v 4, w 2, x 2)와 250 bits는 같아요.</p>
+  </div>
 </div>
-</div>
+
 <div class="layer formal" data-explanation="verify">
-<h4>완성 답과 검산</h4>
-<div data-subpart="main">
-<p>완성 답: 1) 위 트리(루트 왼쪽 63 = t 35와 28(12(u, v), s), 오른쪽 42 = x, w, 왼쪽 0·오른쪽 1) 2) s 011, t 00, u 0100, v 0101, w 11, x 10 3) 250 bits.</p>
-<p>검산 1: 빈도 합 $16+35+4+8+23+19 = 105$가 루트 값과 같아요.</p>
-<p>검산 2: 내부 노드 값의 합 $12+28+42+63+105 = 250$이 표의 비트 합과 같아요.</p>
-<p>검산 3: 문제·그림만 보고 따로 짠 시뮬레이션(<code>evidence/independent_verify.py</code>)이 같은 병합 순서와 250 bits를 냈고, 병합 트리를 좌우 교환까지 허용해 틀 모양과 비교한 결과 같은 모양이었어요. 틀에 맞는 배치는 u·v, x·w 교환 4가지뿐이었고 모두 길이와 250이 같아요. 2021 모의 원본 PDF 2쪽의 틀 그림과 문항 글자도 대조했어요.</p>
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: 1) 위 트리(루트-왼 63=[t, 28=[12=[u,v], s]], 루트-오른 42=[x, w], 왼쪽 0·오른쪽 1) / 2) s 011, t 00, u 0100, v 0101, w 11, x 10 (형제 좌우 교환 4가지 모두 유효) / 3) 250 bits.</p>
+    <ul>
+      <li><strong>루트 합 일치</strong>: $16+35+4+8+23+19 = 105$ 로 루트 값과 같아요.</li>
+      <li><strong>내부 노드 합 = 총 비트</strong>: $12+28+42+63+105 = \mathbf{250}$ 으로 코드 표의 비트 합과 일치해요.</li>
+      <li><strong>접두어·모양 일치</strong>: <code>00</code>(t)과 <code>01...</code>(s,u,v), <code>10</code>(x)과 <code>11</code>(w)가 겹치지 않으며, 틀의 깊이 구조(2, 2, 2, 3, 4, 4)와 정확히 맞아요.</li>
+    </ul>
+  </div>
 </div>
-</div>
+
 <div class="layer warn" data-explanation="pitfall">
-<h4>이 문제에서 특히 조심할 점</h4>
-<p>틀이 정해져 있다고 해서 틀에서 거꾸로 코드를 짐작하면 안 돼요. 먼저 병합으로 ‘누가 누구와 묶이는지’를 정하고, 그다음 단말 개수가 맞는 자리에 끼워 넣어요. 예를 들어 t를 42 쪽 단말에 넣으면 x·w가 묶인 병합 결과와 어긋나요.</p>
-<p>3단계에서 방금 만든 28을 습관처럼 다음 값과 합치면 안 돼요. 그때 가장 작은 둘은 x 19, w 23이에요.</p>
-<p>총 비트를 코드 길이의 합(3+2+4+4+2+2 = 17)으로 쓰면 틀려요. 글자마다 빈도를 곱해야 105글자 전체의 비트예요.</p>
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>병합 전에 틀을 보고 단말을 임의로 채우면</strong>: <code>t 35</code>를 <code>42</code> 쪽(단말 2개 서브트리)에 넣어 버리면 <code>x 19 + w 23 = 42</code>라는 최적 병합 구조가 깨져 총 비트가 250보다 커져요.</li>
+    <li><strong>3단계에서 방금 만든 28을 바로 다음 값과 합치면</strong>: 남은 값 19, 23, 28, 35 중 최소 둘은 <code>x 19</code>와 <code>w 23</code>이에요. 28과 19를 합치면 내부 노드 합이 250을 넘겨 틀려요.</li>
+    <li><strong>총 비트를 코드 길이의 합으로 구하면</strong>: $3+2+4+4+2+2 = 17$ 은 6글자의 길이 합일 뿐, 105글자 전체의 압축 비트(250)가 아니에요.</li>
+  </ul>
 </div>
+
 <div class="layer formal" data-explanation="retry">
-<h4>해설을 닫고 다시 해 봐요</h4>
-<ol><li>빈도를 오름차순으로 적고 다섯 번 병합해 12, 28, 42, 63, 105를 만들어요.</li><li>틀에서 단말 개수로 42·63·28·12의 자리를 정하고, 왼쪽 0·오른쪽 1을 붙여 코드를 읽어요.</li><li>내부 노드 합이 $\sum(\text{빈도}\times\text{길이})$와 같은 250인지 확인해요.</li></ol>
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 빈 틀을 보면 → 틀을 먼저 채우지 말고 <strong>빈도 병합(12, 28, 42, 63, 105)</strong>부터 완성해 보세요.</li>
+    <li>3단계에서 28이 19·23보다 크므로 건너뛰어야 하는 이유를 설명할 수 있나요?</li>
+    <li>u·v를 서로 바꾸면 코드 표에서 어떤 값만 바뀌고, 총 비트 250은 왜 변하지 않는지 확인해 보세요.</li>
+  </ol>
 </div>
+
 <div class="sum" hidden>
-<div class="summary-group"><h4>떠올릴 개념·공식</h4><p>허프만: 가장 작은 두 빈도를 자식으로 묶고 합을 다시 넣기를 반복해요. 병합은 묶이는 관계만 정하고 좌우는 자유라, 틀에는 단말 개수가 맞는 자리에 끼워요. 총 비트 $= \sum(\text{빈도}\times\text{코드 길이})$.</p></div>
-<div class="summary-group"><h4>첫 줄</h4><p>u 4, v 8, s 16, x 19, w 23, t 35로 정렬하고 4+8=12부터 합쳐요.</p></div>
-<div class="summary-group"><h4>핵심 판단</h4><p>병합 12, 28, 42(x+w가 28보다 먼저), 63, 105. 틀에서 63이 왼쪽, 42가 오른쪽. 코드 s 011, t 00, u 0100, v 0101, w 11, x 10.</p></div>
-<div class="summary-group"><h4>검산</h4><p>내부 노드 합 12+28+42+63+105 = 250 bits, 독립 시뮬레이션과 틀 모양 비교 일치. 좌우 교환해도 길이와 250은 같아요.</p></div>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>허프만 병합은 부모·자식 관계만 정하므로, 단말 개수로 틀의 자리(63 vs 42)를 맞춰요. 0·1 배정은 수업 기준(왼쪽 0, 오른쪽 1).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>u 4, v 8, s 16, x 19, w 23, t 35 정렬 후 4+8=12.</p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p>병합 12, 28, 42(19+23이 28보다 먼저), 63, 105. s 011, t 00, u 0100, v 0101, w 11, x 10 (형제 교환 4가지 유효).</p></div>
+  <div class="summary-group"><h4>검산</h4><p>빈도 합 105, 내부 노드 합 $12+28+42+63+105 = 250$ bits, 깊이 다중집합 (2,2,2,3,4,4) 일치.</p></div>
 </div>

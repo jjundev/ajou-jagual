@@ -1,8 +1,79 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 6개 트리의 중위 순회 결과를 네 보기 중에서 하나 고르는 문제예요. 그림에서 B는 <em>왼쪽</em> 자식 D만 있고, C는 E와 F 두 자식이 있어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘중위 순회’라는 단서에서 S7 p11의 LVR을 떠올려요. 중위 순회(inorder traversal)는 왼쪽 서브트리 → 루트 → 오른쪽 서브트리 순으로 방문하고, 각 서브트리 안에서도 같은 규칙을 되풀이해요.</p><p>그래서 루트 A는 왼쪽 서브트리(B 아래)를 모두 찍은 <em>뒤</em>, 오른쪽 서브트리(C 아래)를 찍기 <em>전</em>에 나와요. 이 성질 하나로 보기를 빠르게 거를 수 있어요. 개념 위치: <a href="정리노트_1102_Tree.html#s1-inorder">중위 순회와 수식 a*b + c/d</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>“중위(A) = 중위(B 서브트리) + A + 중위(C 서브트리).”</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>B 서브트리: B의 왼쪽 D를 먼저, 그다음 B, 오른쪽은 비어 있어요 → D, B.</p><p>C 서브트리: 왼쪽 E, 그다음 C, 오른쪽 F → E, C, F.</p><p>첫 줄에 넣으면 D, B, A, E, C, F예요. 보기 ④와 같아요.</p><p>보기를 하나씩 판정해요.</p><ul><li>① A B D C E F: A가 맨 앞이에요. 루트를 먼저 찍는 전위 순회(VLR) 결과와 같아요.</li><li>② A B C D E F: 층마다 왼쪽부터 읽은 레벨 순서와 같아요.</li><li>③ D B E C F A: A가 맨 끝이지만 실제 후위 순회는 D B E F C A라서, 세 순회 어느 것과도 맞지 않아요.</li><li>④ D B A E C F: 중위 순회 결과예요.</li></ul></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>④ D B A E C F</strong>.</p><p>A의 위치로 확인해요. 중위에서 A 앞에는 왼쪽 서브트리 노드 수(D, B → 2개)만큼, 뒤에는 오른쪽 서브트리 노드 수(E, C, F → 3개)만큼 있어야 해요. ④는 A가 셋째 자리라 맞아요.</p><p>별도 프로그램으로 그림의 간선을 트리로 만들어 네 순회를 계산했더니 중위가 D B A E C F로 ④와 같았고, ①은 전위, ②는 레벨 순서와 같았어요. 교과서에는 인쇄된 정답이 없어서(필기 표시만 있음) 공식 답과의 대조는 하지 못했어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>③을 고르기 쉬워요. ③은 D B 다음에 E C F를 붙이고 A를 맨 끝으로 보낸 모양이라, 중위도 후위도 아니에요.</li><li>D를 B의 오른쪽 자식으로 보면 B, D 순서가 나와요. 그림에서 D는 B의 왼쪽이라 D가 먼저예요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>“중위(왼쪽) + 루트 + 중위(오른쪽)” 틀에 두 서브트리를 채워 보세요.</li><li>루트 A 앞뒤에 몇 개의 노드가 와야 하는지 세어 보기를 걸러 보세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>중위(A) = 중위(B 서브트리) + A + 중위(C 서브트리).</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>중위 순회 LVR: 왼쪽 → 루트 → 오른쪽</li><li>루트 앞에는 왼쪽 서브트리 전부, 뒤에는 오른쪽 서브트리 전부</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>④ D B A E C F. ①은 전위, ②는 레벨 순서, ③은 어느 순회와도 맞지 않아요. 교과서 인쇄 정답은 없어요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>D는 B의 왼쪽 자식이라 D, B 순이에요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>6노드 트리의 <strong>중위 순회(LVR)</strong> 결과를 ①~④ 중 하나로 고르는 긍정형 단일 선택 객관식이에요(B는 왼쪽 자식 D만 있고, 교과서 인쇄 정답은 없어요).</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead>
+        <tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이유와 조건</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>중위 순회 (LVR)</td>
+          <td>왼쪽 서브트리 → 루트 → 오른쪽 서브트리</td>
+          <td>모든 서브트리에서 같은 순서가 재귀적으로 적용돼요(<a href="정리노트_1102_Tree.html#s1-inorder">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>루트 A의 위치 (단서)</td>
+          <td>A 앞 2개(D, B) / 뒤 3개(E, C, F)</td>
+          <td>왼쪽·오른쪽 서브트리 노드 수만으로 루트 위치가 틀린 보기를 바로 거를 수 있어요.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>중위(A) = 중위(B 서브트리) + A + 중위(C 서브트리)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li><strong>B 서브트리(LVR):</strong> 왼쪽 <code>D</code> → 루트 <code>B</code> → 오른쪽 없음 = <code>D, B</code>.</li>
+      <li><strong>C 서브트리(LVR):</strong> 왼쪽 <code>E</code> → 루트 <code>C</code> → 오른쪽 <code>F</code> = <code>E, C, F</code>.</li>
+      <li><strong>합치기:</strong> <code>D B</code> + <code>A</code> + <code>E C F</code> = <strong>D B A E C F</strong> (정답 <strong>④</strong>).</li>
+    </ol>
+    <p><strong>보기별 소거 판정</strong></p>
+    <ul>
+      <li><strong>① A B D C E F:</strong> 루트 A가 맨 앞이므로 전위 순회(VLR) 결과라 소거해요.</li>
+      <li><strong>② A B C D E F:</strong> 위층부터 왼쪽→오른쪽으로 읽은 레벨 순서라 소거해요.</li>
+      <li><strong>③ D B E C F A:</strong> A가 맨 끝이지만 C 서브트리 후위는 <code>E F C</code>여야 하므로 어느 표준 순회와도 맞지 않아 소거해요.</li>
+      <li><strong>④ D B A E C F:</strong> LVR 순서와 정확히 일치하므로 <strong>정답</strong>이에요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: <strong>④ D B A E C F</strong> (교과서 인쇄 정답 미기재).</p>
+    <p><strong>루트 위치 교차검산</strong>: 루트 A 왼쪽 서브트리는 2노드(B, D), 오른쪽 서브트리는 3노드(C, E, F)이므로 중위 결과에서 A는 반드시 <strong>3번째 자리</strong>여야 해요. ①·②는 1번째, ③은 6번째이고 ④만 3번째여서 선지 소거와 일치해요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>D가 B의 왼쪽 자식임을 놓치고 <code>B, D</code>로 적으면:</strong> 오른쪽 자식처럼 읽은 실수로, 중위(LVR)에서는 왼쪽 D가 B보다 먼저 나와야 해요.</p>
+  <p><strong>③(<code>D B E C F A</code>)을 후위로 착각하고 고민하면:</strong> A가 맨 끝에 있어 후위처럼 보이지만, 오른쪽 덩어리가 LVR(<code>E C F</code>) 그대로라 후위도 아니에요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>중위 순회 객관식을 보면 → 루트 앞뒤에 올 왼쪽·오른쪽 서브트리 노드 수부터 세어 루트 위치가 틀린 선지를 즉시 지운다.</li>
+    <li>외자식 노드(B)를 만나면 → 가지가 왼쪽인지 오른쪽인지 확인해 <code>L-V</code>인지 <code>V-R</code>인지 확정한다.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>중위 LVR: 루트 앞에 왼쪽 서브트리(2개), 뒤에 오른쪽 서브트리(3개).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>중위(A) = 중위(B) + A + 중위(C)</code>.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>④ D B A E C F</strong> (① 전위, ② 레벨, ③ 불일치. 인쇄 정답 없음).</p></div>
+  <div class="summary-group"><h4>검산</h4><p>A가 3번째 자리인 선지는 ④뿐이고, <code>D B | A | E C F</code> 모두 LVR과 일치.</p></div>
+</div>

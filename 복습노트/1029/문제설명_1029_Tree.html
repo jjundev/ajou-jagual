@@ -634,92 +634,595 @@
     </ol></div></div><details class="original" data-original-problem="p1"><summary>기출 원문 보기</summary><p>2017 중간 8번 · 10점 · 출제자 미상</p>
     <blockquote>"8. 다음의 tree를 이용한 문제들에 대해서 답을 작성하시오. [10 points]"</blockquote>
     <p>(그림은 문제의 트리와 같아요: v0 → v1, v2, v3 / v1 → v4 / v2 → v5, v6 / v3 → v7, v8, v9 / v4 → v10, v11 / v5 → v12, v13 / v6 → v14, v15 / v8 → v16, v17 / v16 → v18)</p>
-    <blockquote>"(a) 레벨 3의 노드들을 적으시오 [2 points]:<br>(b) 노드 v8의 형제 노드를 적으시오 [2 points]:<br>(c) 노드 8의 자손 노드를 적으시오 [2 points]:<br>(d) 트리의 높이를 적으시오 [2 points]:<br>(e) 노드 v8의 차수를 적으시오 [2 points]:"</blockquote></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 19개짜리 트리 그림 하나를 두고 용어 다섯 개를 차례로 확인하는 문제예요. 레벨 3에 있는 노드, v8의 형제, v8의 자손, 트리의 높이, v8의 차수를 구해요.</p><p>원문 (c)는 “노드 8”이라고 적었지만 그림에 이름이 8인 노드는 없고 v8만 있어서 v8로 읽어요. 답을 바꾸는 모호함은 아니에요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘레벨’, ‘형제’, ‘자손’, ‘높이’, ‘차수’라는 단어가 그대로 나와요. 모두 S7 p3의 트리 용어라서 정의만 정확히 떠올리면 그림에서 바로 읽을 수 있어요.</p><ul><li><strong>레벨(level)</strong>: 트리의 각 층에 붙인 번호예요. 수업에서는 루트를 레벨 1로 두고 아래로 한 층 내려갈 때마다 1씩 늘려요.</li><li><strong>형제(sibling)</strong>: 부모가 같은 노드끼리예요. 수업 중 “같은 레벨이면 형제”처럼 들리는 말이 있었지만, 이 설명에서는 표준 정의인 <em>같은 부모</em>로 판정해요.</li><li><strong>자손(descendant)</strong>: 어떤 노드 아래로 내려가며 닿는 모든 노드예요. 자식뿐 아니라 자식의 자식까지 포함해요.</li><li><strong>높이(height)</strong>: 트리의 최대 레벨이에요. 단말 노드가 많이 모인 층이 아니라 가장 깊은 노드까지 재요.</li><li><strong>차수(degree)</strong>: 한 노드가 가진 자식 노드의 개수예요.</li></ul><p>개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-terms-measure">가족 관계·레벨·높이·차수</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>다섯 물음이 모두 “어느 층에 있나”와 “누가 누구의 자식인가”에서 나오니, 종이에 레벨별 목록부터 적어요.</p><p>레벨 1: v0 / 레벨 2: v1, v2, v3 / 레벨 3: … 처럼 루트에서 한 층씩 내려가며 채워요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><p>그림의 부모–자식 관계를 층별로 정리하면 다음과 같아요.</p><table><thead><tr><th>레벨</th><th>노드</th></tr></thead><tbody><tr><td>1</td><td>v0</td></tr><tr><td>2</td><td>v1, v2, v3</td></tr><tr><td>3</td><td>v4, v5, v6, v7, v8, v9</td></tr><tr><td>4</td><td>v10, v11, v12, v13, v14, v15, v16, v17</td></tr><tr><td>5</td><td>v18</td></tr></tbody></table>
-<div data-subpart="a"><p>(a) 레벨 3은 루트의 자식(레벨 2)의 자식들이에요. v1 아래 v4, v2 아래 v5·v6, v3 아래 v7·v8·v9를 모으면 <strong>v4, v5, v6, v7, v8, v9</strong>예요.</p></div>
-<div data-subpart="b"><p>(b) 먼저 v8의 부모를 찾아요. v8은 v3에 이어져 있어요. v3의 자식은 v7, v8, v9이고 자기 자신은 빼니 형제는 <strong>v7, v9</strong>예요. v4, v5, v6도 레벨 3이지만 부모가 v1·v2라서 형제가 아니에요.</p></div>
-<div data-subpart="c"><p>(c) v8에서 아래로만 내려가요. v8 → v16, v17이고, v16 → v18이에요. v17은 더 내려갈 곳이 없어요. 자손은 <strong>v16, v17, v18</strong>이에요.</p></div>
-<div data-subpart="d"><p>(d) 높이는 최대 레벨이에요. 표에서 가장 큰 레벨은 v18이 있는 5예요. 그래서 높이는 <strong>5</strong>예요.</p></div>
-<div data-subpart="e"><p>(e) v8에서 바로 아래로 이어진 선은 v16, v17 두 개예요. 손자 v18은 자식이 아니니 세지 않아요. 차수는 <strong>2</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>정답: (a) v4, v5, v6, v7, v8, v9 (b) v7, v9 (c) v16, v17, v18 (d) 5 (e) 2. 2017 중간 문제은행의 원본 답과 같아요.</p><p>그림 좌표에서 선분 양 끝에 가장 가까운 노드를 찾아 부모–자식을 다시 만든 별도 계산에서도 노드 19개, 간선 18개, 아래 값이 모두 같았어요.</p>
-<div data-subpart="a"><p>(a) 레벨 표의 개수 합 $1+3+6+8+1=19$가 전체 노드 수와 맞아서 빠뜨린 노드가 없어요. 레벨 3은 6개예요.</p></div>
-<div data-subpart="b"><p>(b) 거꾸로 v7과 v9의 부모도 v3인지 확인했어요. 둘 다 v3이에요.</p></div>
-<div data-subpart="c"><p>(c) 자손이라면 그 노드에서 v8까지 위로 올라가는 길이 있어야 해요. v16 → v8, v17 → v8, v18 → v16 → v8로 모두 v8에 닿아요.</p></div>
-<div data-subpart="d"><p>(d) 레벨 5에는 v18 하나뿐이고, v18은 자식이 없어 레벨 6은 없어요.</p></div>
-<div data-subpart="e"><p>(e) v16, v17의 부모가 모두 v8이고 다른 자식은 없어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>(b) 같은 레벨 노드를 전부 형제로 적으면 v4, v5, v6이 끼어들어 틀려요. 형제는 부모가 같아야 해요.</li><li>(c) 자식 v16, v17만 적고 손자 v18을 빼면 자손이 아니라 자식을 답한 거예요.</li><li>(d) 단말 노드가 많이 모인 레벨 4를 높이로 적기 쉬워요. 가장 깊은 v18까지 재야 해요.</li><li>(e) 차수에 자손 수 3을 쓰면 안 돼요. 차수는 바로 아래 자식만 세요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>그림만 보고 레벨별 노드 목록을 적고, 개수 합이 19인지 확인하세요.</li><li>v8의 부모를 먼저 찾은 뒤 형제와 차수를 적으세요.</li><li>v8에서 아래로 내려가며 자손을 모으고, 가장 깊은 노드의 레벨로 높이를 적으세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>루트 v0을 레벨 1로 두고 레벨별 노드 목록을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>레벨: 루트=1인 층 번호, 높이: 최대 레벨</li><li>형제: 부모가 같은 노드, 자손: 아래로 닿는 모든 노드</li><li>차수: 그 노드의 자식 수</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>(a) v4~v9 (b) v7, v9 (c) v16, v17, v18 (d) 5 (e) 2. 레벨별 개수 합 19와 좌표로 다시 만든 트리 계산이 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>원문 (c)의 “노드 8”은 그림의 v8로 읽어요.</li><li>같은 레벨이어도 부모가 다르면 형제가 아니에요.</li></ul></div></div>
+    <blockquote>"(a) 레벨 3의 노드들을 적으시오 [2 points]:<br>(b) 노드 v8의 형제 노드를 적으시오 [2 points]:<br>(c) 노드 8의 자손 노드를 적으시오 [2 points]:<br>(d) 트리의 높이를 적으시오 [2 points]:<br>(e) 노드 v8의 차수를 적으시오 [2 points]:"</blockquote></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>19개 노드(<code>v0</code>~<code>v18</code>, 루트 <code>v0</code> = 레벨 1) 트리에서 <strong>(a) 레벨 3 노드</strong>, <strong>(b) <code>v8</code>의 형제</strong>, <strong>(c) <code>v8</code>의 자손</strong>, <strong>(d) 트리 높이</strong>, <strong>(e) <code>v8</code>의 차수</strong>를 구해요.</p>
+  <p>원문 (c)의 “노드 8”은 그림에 있는 <code>v8</code>을 가리키므로(답 변화 없음) <code>v8</code>로 읽어요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·정의</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>레벨 3</td><td>레벨(level): 루트 = 1, 한 층 아래마다 +1</td><td>층 번호를 매기면 (a)와 최대 층인 높이 (d)를 동시에 읽을 수 있어요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-terms-measure">정리노트</a>).</td></tr>
+        <tr><td>형제 노드</td><td>형제(sibling): <strong>같은 부모</strong>를 둔 다른 노드</td><td>같은 레벨이라도 부모가 다르면 형제가 아니므로 <code>v8</code>의 부모부터 찾아야 해요.</td></tr>
+        <tr><td>자손 노드</td><td>자손(descendant): 아래로 이어진 모든 노드</td><td>직계 자식뿐 아니라 손자 이하까지 끝까지 내려가며 모아야 해요.</td></tr>
+        <tr><td>트리의 높이</td><td>높이(height): 트리의 최대 레벨</td><td>단말 노드가 많은 층이 아니라 가장 깊은 노드까지 재야 해요.</td></tr>
+        <tr><td>노드의 차수</td><td>차수(degree): 그 노드의 직계 자식 수</td><td>손자 이하를 제외하고 바로 아래로 나간 간선 수만 세요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>레벨 1 (루트): v0
+레벨 2 (v0의 자식): v1, v2, v3</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <p>루트 <code>v0</code>에서 한 층씩 내려가며 부모–자식 연결을 표로 정리하면 다섯 물음의 근거가 한눈에 모여요.</p>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>레벨</th><th>부모 → 자식 연결</th><th>해당 레벨의 노드</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>루트</td><td><code>v0</code> (1개)</td></tr>
+        <tr><td>2</td><td><code>v0 → v1, v2, v3</code></td><td><code>v1, v2, v3</code> (3개)</td></tr>
+        <tr><td><b>3</b></td><td><code>v1 → v4</code> / <code>v2 → v5, v6</code> / <b><code>v3 → v7, v8, v9</code></b></td><td><b><code>v4, v5, v6, v7, v8, v9</code></b> (6개)</td></tr>
+        <tr><td>4</td><td><code>v4 → v10, v11</code> / <code>v5 → v12, v13</code> / <code>v6 → v14, v15</code> / <b><code>v8 → v16, v17</code></b></td><td><code>v10, v11, v12, v13, v14, v15, v16, v17</code> (8개)</td></tr>
+        <tr><td><b>5</b></td><td><b><code>v16 → v18</code></b></td><td><b><code>v18</code></b> (1개)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div data-subpart="a"><p><strong>(a) 레벨 3의 노드</strong>: 표의 레벨 3 행에 모인 <code>v1</code>의 자식(<code>v4</code>), <code>v2</code>의 자식(<code>v5, v6</code>), <code>v3</code>의 자식(<code>v7, v8, v9</code>)을 합치면 <strong><code>v4, v5, v6, v7, v8, v9</code></strong>예요.</p></div>
+  <div data-subpart="b"><p><strong>(b) <code>v8</code>의 형제 노드</strong>: <code>v8</code>의 부모는 <code>v3</code>이고, <code>v3</code>의 자식은 <code>v7, v8, v9</code>예요. 자기 자신을 빼면 <strong><code>v7, v9</code></strong>예요. 같은 레벨 3의 <code>v4, v5, v6</code>은 부모가 <code>v1, v2</code>로 달라 제외해요.</p></div>
+  <div data-subpart="c"><p><strong>(c) <code>v8</code>의 자손 노드</strong>: <code>v8</code> 아래로 내려가면 직계 자식 <code>v16, v17</code>이 있고, <code>v16</code> 아래에 <code>v18</code>이 있어요(<code>v17, v18</code> 아래는 없음). 모두 모으면 <strong><code>v16, v17, v18</code></strong>이에요.</p></div>
+  <div data-subpart="d"><p><strong>(d) 트리의 높이</strong>: 표의 마지막 층은 <code>v18</code>이 있는 레벨 5예요. 따라서 높이는 <strong><code>5</code></strong>예요.</p></div>
+  <div data-subpart="e"><p><strong>(e) <code>v8</code>의 차수</strong>: <code>v8</code>에서 바로 아래로 뻗은 간선은 <code>v16, v17</code>로 2개예요(손자 <code>v18</code>은 <code>v16</code>의 자식). 따라서 차수는 <strong><code>2</code></strong>예요.</p></div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a"><p><strong>(a) 완성 답: <code>v4, v5, v6, v7, v8, v9</code></strong> — 레벨별 노드 수 합 $1+3+6+8+1 = 19$가 전체 노드(<code>v0</code>~<code>v18</code>) 19개, 간선 수 $18 = 19 - 1$과 모두 일치해 빠뜨린 노드가 없어요.</p></div>
+  <div data-subpart="b"><p><strong>(b) 완성 답: <code>v7, v9</code></strong> — 역으로 <code>v7</code>과 <code>v9</code>에서 위로 한 칸 올라가면 둘 다 부모가 <code>v3</code>이고, <code>v3</code>의 나머지 자식은 <code>v8</code>뿐이에요.</p></div>
+  <div data-subpart="c"><p><strong>(c) 완성 답: <code>v16, v17, v18</code></strong> — 위로 거슬러 <code>v16 → v8</code>, <code>v17 → v8</code>, <code>v18 → v16 → v8</code>로 세 노드 모두 <code>v8</code>에 닿고, <code>v17·v18</code>은 단말이라 추가 자손이 없어요.</p></div>
+  <div data-subpart="d"><p><strong>(d) 완성 답: <code>5</code></strong> — 레벨 5 노드는 <code>v18</code> 하나뿐이며 자식이 없으므로 레벨 6은 존재하지 않아요.</p></div>
+  <div data-subpart="e"><p><strong>(e) 완성 답: <code>2</code></strong> — <code>v8</code> 아래로 그려진 간선이 <code>v8–v16</code>, <code>v8–v17</code> 정확히 2개임을 그림에서 바로 세어 확인할 수 있어요.</p></div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <ul>
+    <li><strong>(b) “같은 레벨 = 형제”로 오해하면:</strong> 레벨 3의 <code>v4, v5, v6</code>까지 함께 적어 5개(<code>v4, v5, v6, v7, v9</code>)로 틀려요. 형제는 반드시 같은 부모(<code>v3</code>) 아래에서만 찾아요.</li>
+    <li><strong>(c) 자손과 (e) 차수를 뒤섞으면:</strong> 직계 자식만 세어 (c)에서 손자 <code>v18</code>을 빠뜨리거나(<code>v16, v17</code>), 반대로 (e)에 <code>v18</code>까지 넣어 차수를 <code>3</code>으로 잘못 쓰게 돼요.</li>
+    <li><strong>(d) 단말 노드가 몰린 층을 높이로 읽으면:</strong> <code>v10~v15, v17</code>이 끝나는 레벨 4를 보고 높이를 <code>4</code>라고 쓰면 가장 깊은 <code>v18</code>(레벨 5)을 놓쳐요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “<code>v8</code>의 형제”를 보면, 같은 가로줄을 읽기 전에 먼저 <strong>부모 노드 이름부터</strong> 손가락으로 짚을 수 있나요?</li>
+    <li><code>v8</code>의 <strong>차수</strong>(1단계 아래 간선 수)와 <strong>자손</strong>(아래 끝까지 닿는 노드)을 서로 다른 값으로 구분해 말할 수 있나요?</li>
+    <li>트리의 높이를 정할 때 왜 레벨 4가 아니라 <code>v18</code>이 있는 레벨 5까지 내려가야 하나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>레벨(루트=1), 형제(같은 부모), 자손(아래 모든 노드), 높이(최대 레벨), 차수(직계 자식 수).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>레벨 1: <code>v0</code>, 레벨 2: <code>v1, v2, v3</code>부터 층별로 부모–자식을 정리해요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>(a) <code>v4~v9</code> (b) <code>v7, v9</code> (c) <code>v16, v17, v18</code> (d) <code>5</code> (e) <code>2</code>.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>층별 합 $1+3+6+8+1 = 19$개 일치. 원문 “노드 8”은 <code>v8</code>로 읽으며, 형제는 같은 부모만 인정해요.</p></div>
+</div>
 </article><article class="topic" id="p2"><h3>P2. 디렉토리 폴더 구조에 알맞은 자료구조</h3><p class="panel-meta">2017-mid-c050-q3 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1029_Tree-%EB%AC%B8%EC%A0%9C.pdf#page=2">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p2"><div class="layer formal" data-source-problem="p2"><div data-source-field="conditions"><p>컴퓨터 디스크의 디렉토리 폴더 구조를 구성하기에 알맞은 자료구조는 (    )예요. 빈칸을 채워 보세요.</p></div></div><details class="original" data-original-problem="p2"><summary>기출 원문 보기</summary><p>2017 중간 3번 · 출제자 미상</p>
-    <blockquote>"3. 컴퓨터 디스크의 디렉토리 폴더구조를 구성하기 위해 적합한 자료구조는 (    ) 이다."</blockquote></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>컴퓨터 탐색기에서 보는 폴더 구조를 그대로 담기에 알맞은 자료구조의 이름을 빈칸에 쓰는 문제예요. 계산은 없고, 폴더 구조가 어떤 모양인지 알아보는 게 핵심이에요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘디렉토리 폴더 구조’라는 단서에서 <em>폴더 안에 폴더가 들어 있는</em> 계층(hierarchy) 관계를 떠올려요.</p><p>S7 p2는 트리(tree)를 “계층적인 구조를 나타내는 자료구조”로 소개하고, 응용 분야로 조직도와 함께 <strong>파일 시스템</strong>을 직접 들어요. 트리는 부모–자식(parent–child) 관계의 노드로 이루어지고, 루트(root)를 뺀 모든 노드는 부모가 정확히 하나예요.</p><p>판단 기준은 두 가지예요. 위아래 단계가 있는가, 그리고 한 항목이 바로 위 항목 하나에만 속하는가예요. 둘 다 맞으면 트리로 그릴 수 있어요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-why">트리는 왜 필요할까</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>예시 하나를 적어 관계를 확인해요. “C: 안에 문서 폴더, 문서 폴더 안에 과제 폴더, 과제 폴더 안에 파일” 처럼 포함 관계를 위에서 아래로 써 내려가요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>적어 둔 예시에서 C 드라이브가 맨 위에 있고, 그 아래로 폴더가 갈라지고, 각 폴더 아래로 다시 폴더나 파일이 갈라져요. 위아래 단계가 있는 계층 구조예요.</p><p>한 폴더는 바로 위 폴더 하나에만 들어 있어요. 그러니 “부모가 하나인 부모–자식 관계”가 되고, C 드라이브가 루트, 더 이상 아래가 없는 파일이 단말 노드(terminal node)가 돼요.</p><p>스택(stack)이나 큐(queue)는 원소가 한 줄로 늘어선 선형 구조라 “폴더 안에 여러 갈래가 있다”는 갈라짐을 표현하지 못해요. 그래서 답은 <strong>트리</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>트리</strong>. 2017 중간 3번 문제은행 원본 답과 같고, 2018 중간 3번에도 같은 문장과 같은 답이 실려 있어요.</p><p>정의로 다시 확인해요. 탐색기 왼쪽 창은 루트 하나에서 갈라져 내려가는 모양이고, 어떤 폴더도 두 부모 폴더에 동시에 들어 있지 않아요. 트리의 조건과 맞아요. 수업에서도 탐색기 화면을 “트리를 옆으로 눕힌 모양”이라고 설명했어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>“폴더를 차례로 열고 닫는다”는 동작에 끌려 스택을 적기 쉬워요. 문제는 구조를 <em>담는</em> 자료구조를 묻고, 그 구조에는 갈라짐이 있어서 한 줄짜리 선형 구조로는 담을 수 없어요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>내 컴퓨터의 폴더 세 단계를 위에서 아래로 그려 보세요.</li><li>그 그림에서 루트와 단말 노드가 무엇인지 적으세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>폴더 안에 폴더가 들어가는 예시를 위에서 아래로 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>트리: 계층 구조를 나타내는 자료구조, 부모–자식 관계</li><li>루트 외 모든 노드는 부모가 하나</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>트리. C 드라이브가 루트, 파일이 단말 노드예요. 문제은행 답과 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>스택·큐는 선형 구조라 갈라지는 포함 관계를 담지 못해요.</li></ul></div></div>
+    <blockquote>"3. 컴퓨터 디스크의 디렉토리 폴더구조를 구성하기 위해 적합한 자료구조는 (    ) 이다."</blockquote></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>컴퓨터 디스크의 <strong>디렉토리(폴더) 구조</strong>를 표현하는 데 가장 알맞은 자료구조 이름을 빈칸에 쓰는 문제예요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·정의</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>디렉토리 폴더 구조</td><td>트리(tree): 부모–자식 계층 구조</td><td>한 폴더 안에 여러 하위 폴더·파일이 갈라져 들어가고 각 항목은 바로 위 상위 폴더 하나에만 속하므로 계층형 트리와 정확히 맞아요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-why">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>C:\ (루트) ─┬─ 문서 ─┬─ 과제.hwp (단말)
+             │        └─ 필기.txt (단말)
+             └─ 사진</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ul>
+      <li><strong>계층·분기 구조</strong>: 최상위 <code>C:\</code>(루트) 아래에 여러 폴더가 갈래로 나뉘고, 더 이상 하위 항목이 없는 파일이 단말 노드(terminal node)에 대응해요.</li>
+      <li><strong>단일 부모</strong>: 각 폴더·파일(루트 제외)은 바로 위 상위 폴더 하나에 속하므로 부모–자식 관계가 성립해요.</li>
+      <li><strong>선형 구조 배제</strong>: 스택(stack)·큐(queue)·배열은 원소가 한 줄로 이어져 폴더 안의 다갈래 포함 관계를 직접 나타낼 수 없어요.</li>
+    </ul>
+    <p>따라서 빈칸에 들어갈 자료구조는 <strong>트리</strong>예요.</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: 트리</strong> (2017·2018 기출 답안과 일치).</p>
+    <p><strong>조건 대조 검산</strong>: ① 최상위 드라이브 1개(루트), ② 루트 외 모든 폴더의 상위 폴더 1개(부모 유일), ③ 아래로 갈라지는 포함 관계(계층) — 트리의 정의 세 조건을 모두 충족해요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>“폴더를 들어갔다 나온다”는 탐색 동작에 끌려 스택을 적으면:</strong> 스택은 방문 경로를 임시로 기억할 때 쓰는 선형 도구일 뿐, 여러 갈래로 나뉜 폴더 <em>구조 자체</em>(<code>문서</code> 옆에 <code>사진</code>이 나란히 존재하는 분기)를 표현하지 못해요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “폴더 구조·조직도·가계도”처럼 <strong>위아래 포함 관계</strong>가 보이면 → 가장 먼저 한 항목의 부모가 몇 개인지와 아래로 갈라지는지 확인하나요?</li>
+    <li>스택·큐(한 줄)와 트리(여러 갈래) 중 이 구조가 어느 쪽에 속하는지 1문장으로 구분할 수 있나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>트리(tree): 루트 아래 부모–자식으로 갈라지는 계층형 자료구조.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>C:\ → 문서 → 과제.hwp</code>처럼 드라이브–폴더–파일 포함도를 그려 봐요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>트리</strong>. 드라이브=루트, 파일=단말이며 스택·큐는 분기 구조를 못 담아요.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>단일 루트·유일 부모·다갈래 계층 3조건이 트리 정의와 일치해요.</p></div>
+</div>
 </article><article class="topic" id="p3"><h3>P3. 마지막 레벨을 왼쪽부터 채운 이진트리</h3><p class="panel-meta">2017-mid-c050-q4 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1029_Tree-%EB%AC%B8%EC%A0%9C.pdf#page=3">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p3"><div class="layer formal" data-source-problem="p3"><div data-source-field="conditions"><p>트리의 레벨은 K이고, 레벨 1부터 k-1까지는 노드가 모두 채워져 있고, 마지막 레벨 K에서는 왼쪽부터 오른쪽으로 노드가 순서대로 채워져 있는 이진트리는 (    )예요. 빈칸을 채워 보세요.</p></div></div><details class="original" data-original-problem="p3"><summary>기출 원문 보기</summary><p>2017 중간 4번 · 2점 · 출제자 미상</p>
-    <blockquote>"4. 트리의 레벨은 K이고 레벨1부터 k-1까지는 노드가 모두 채워져 있고 마지막 레벨 K에서는 왼쪽부터 오른쪽으로 노드가 순서대로 채워져 있는 이진트리는(          ) 이다. [2 points]"</blockquote></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>가장 깊은 레벨이 K인 이진 트리에서 위쪽 레벨 1 ~ K-1은 빈칸 없이 꽉 차 있고, 마지막 레벨 K만 왼쪽부터 차례로 채워진 모양이에요. 이런 이진 트리의 이름을 묻는 빈칸 문제예요.</p><p>원문의 “트리의 레벨은 K”는 가장 깊은 레벨, 곧 높이가 K라는 뜻으로 읽어요. 대문자 K와 소문자 k는 같은 값을 가리켜요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘레벨 1부터 K-1까지 모두 채워짐’과 ‘마지막 레벨은 왼쪽부터 순서대로’라는 두 조건이 S7 p7의 정의 문장과 거의 같아요. 그래서 이진 트리의 분류를 떠올려요.</p><ul><li><strong>포화 이진 트리(full binary tree)</strong>: 모든 레벨에 노드가 꽉 찬 이진 트리예요.</li><li><strong>완전 이진 트리(complete binary tree)</strong>: 높이가 $h$일 때 레벨 1 ~ $h-1$은 꽉 차 있고, 마지막 레벨 $h$는 왼쪽부터 오른쪽으로 순서대로 채워진 이진 트리예요.</li><li><strong>기타 이진 트리</strong>: 자식이 2개 이하라 이진 트리는 맞지만 위 두 모양이 아닌 것이에요.</li></ul><p>두 분류를 가르는 질문은 “마지막 레벨이 반드시 꽉 차야 하나?”예요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s2-kinds">포화·완전·기타 이진 트리</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>문제의 조건을 두 줄로 나눠 적어요. “① 레벨 1 ~ K-1: 꽉 참 ② 레벨 K: 왼쪽부터 순서대로, 다 찰 필요는 없음.”</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>조건 ①만 보면 포화와 완전 모두 만족해요. 갈림은 조건 ②에서 나와요.</p><p>포화 이진 트리라면 마지막 레벨 K도 꽉 차 있어야 해요. 문제는 마지막 레벨이 왼쪽부터 채워지는 중인 모양까지 허용하니, 포화보다 넓은 분류가 필요해요.</p><p>①과 ②를 그대로 담은 정의는 완전 이진 트리예요. 수업에서도 완전 이진 트리를 “포화로 가는 과정에 있는 트리”라고 했어요. 답은 <strong>완전 이진 트리</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>완전 이진 트리</strong>. 2017 중간 4번 문제은행 원본 답(“완전이진트리”)과 같아요.</p><p>작은 예로 정의를 대조해요. K=3에서 레벨 1·2가 꽉 차고 레벨 3에 맨 왼쪽 두 자리만 차 있으면 조건 ①②를 만족하고, 레벨 3이 다 찬 게 아니라 포화는 아니에요. 그래서 “포화”라고 답하면 이런 모양을 놓쳐요. 레벨 3을 다 채운 경우도 ①②를 만족하니, 포화 이진 트리도 완전 이진 트리에 들어가요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>‘꽉 채워져 있다’는 말에 끌려 포화 이진 트리라고 쓰기 쉬워요. 포화는 마지막 레벨까지 꽉 차야 하고, 문제는 마지막 레벨이 왼쪽부터 순서대로만 차 있으면 돼요. 또 왼쪽부터가 아니라 중간에 빈칸을 두고 채우면 완전 이진 트리도 아니에요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>포화와 완전 이진 트리의 정의를 각각 한 문장으로 적으세요.</li><li>두 정의에서 다른 부분 하나에 밑줄을 그으세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>조건을 ‘레벨 1 ~ K-1 꽉 참’과 ‘레벨 K는 왼쪽부터’로 나눠 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>포화: 모든 레벨이 꽉 참</li><li>완전: 레벨 1 ~ $h-1$ 꽉 참, 레벨 $h$는 왼쪽부터 순서대로</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>완전 이진 트리. 마지막 레벨이 덜 찬 K=3 예가 포화가 아님을 보여 줘요. 문제은행 답과 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>“트리의 레벨은 K”는 높이 K로 읽어요.</li><li>포화 이진 트리도 완전 이진 트리의 한 경우예요.</li></ul></div></div>
+    <blockquote>"4. 트리의 레벨은 K이고 레벨1부터 k-1까지는 노드가 모두 채워져 있고 마지막 레벨 K에서는 왼쪽부터 오른쪽으로 노드가 순서대로 채워져 있는 이진트리는(          ) 이다. [2 points]"</blockquote></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>높이가 $K$인 이진 트리에서 <strong>(1) 레벨 $1 \sim K-1$은 꽉 차 있고</strong>, <strong>(2) 마지막 레벨 $K$는 왼쪽부터 오른쪽으로 순서대로 채워진</strong> 이진 트리의 이름을 쓰는 문제예요.</p>
+  <p>원문의 “트리의 레벨은 K”는 최대 레벨(높이 $K$)을 뜻하며, 대문자 <code>K</code>와 소문자 <code>k</code>는 같은 값으로 읽어요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·분류</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>레벨 1 ~ $K-1$ 꽉 참 + 레벨 $K$ 왼쪽부터</td><td>이진 트리 3분류: 포화 / 완전 / 기타</td><td>마지막 레벨이 <em>반드시 다 차야</em> 하는지(포화) 아니면 <em>왼쪽부터 차례로</em> 차기만 하면 되는지(완전)를 가르는 조건이에요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s2-kinds">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>조건 ① 레벨 1 ~ K-1: 빈칸 없이 모두 참
+조건 ② 레벨 K: 왼쪽부터 순서대로 참 (다 찰 필요 없음)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ul>
+      <li><strong>포화 이진 트리(full binary tree) 소거</strong>: 조건 ②에서 마지막 레벨 $K$가 덜 차도(왼쪽부터만 차 있으면) 허용하므로, 모든 레벨이 꽉 차야 하는 포화 이진 트리는 좁은 조건이라 맞지 않아요.</li>
+      <li><strong>기타 이진 트리 소거</strong>: 조건 ①과 ②가 중간 빈칸을 허용하지 않으므로 무작위 이진 트리보다 구체적이에요.</li>
+      <li><strong>완전 이진 트리(complete binary tree) 일치</strong>: 위층은 꽉 차고 마지막 층만 왼쪽부터 빈틈없이 채워지는 정의와 정확히 같아요.</li>
+    </ul>
+    <p>따라서 빈칸의 답은 <strong>완전 이진 트리</strong>(<code>완전이진트리</code>)예요.</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: 완전이진트리</strong> (2017 기출 모범답안과 일치).</p>
+    <p><strong>경계 반례 검산 ($K = 3$)</strong>: 레벨 1(1개)·레벨 2(2개)가 꽉 차고 레벨 3에 맨 왼쪽 2개만 채운 노드 5개짜리 트리는 문제의 조건 ①·②를 모두 만족하지만, 마지막 층이 4개가 아니라 2개이므로 포화 이진 트리가 아니에요. 따라서 “포화”가 아닌 “완전”만 정확히 일치해요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>“모두 채워져 있고”라는 앞 구절만 보고 포화 이진 트리를 쓰면:</strong> $K=3$에서 노드 5개짜리 트리처럼 마지막 레벨이 왼쪽 절반만 찬 사례를 설명에서 빠뜨려 오답이 돼요. 반대로 마지막 레벨 중간이 비어 있으면 완전 이진 트리도 아니에요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “레벨 $1 \sim K-1$”과 “마지막 레벨 $K$”를 따로 떼어 설명하면 → 포화(전부 꽉 참)와 완전(마지막만 왼쪽부터) 중 어느 정의인지 바로 고를 수 있나요?</li>
+    <li>높이 3에 노드 5개가 왼쪽부터 채워진 트리를 머릿속에 그렸을 때, 포화와 완전 중 어느 쪽에만 속하나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>포화: 모든 레벨 꽉 참 / 완전: 레벨 $1 \sim h-1$ 꽉 참 + 마지막 레벨 왼쪽부터.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>① 레벨 $1 \sim K-1$ 꽉 참, ② 레벨 $K$ 왼쪽부터 순서대로.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>완전 이진 트리</strong> ($K=3$, 노드 5개인 트리는 조건을 만족하지만 포화는 아님).</p></div>
+  <div class="summary-group"><h4>조건·구분</h4><p>“트리의 레벨은 K”는 높이 $K$, 대소문자 <code>K/k</code>는 같은 값으로 읽어요.</p></div>
+</div>
 </article><article class="topic" id="p4"><h3>P4. 트리의 최대 레벨을 부르는 이름</h3><p class="panel-meta">2018-mid-c102-q4 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1029_Tree-%EB%AC%B8%EC%A0%9C.pdf#page=4">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p4"><div class="layer formal" data-source-problem="p4"><div data-source-field="conditions"><p>트리의 최대 레벨을 그 트리의 (    )라고 해요. 빈칸을 채워 보세요.</p></div></div><details class="original" data-original-problem="p4"><summary>기출 원문 보기</summary><p>2018 중간 4번 · 2점 · 출제자 미상</p>
-    <blockquote>"4. 트리의 최대 레벨을 그 트리의 (  )라고 한다. [2 points]"</blockquote></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>트리에서 가장 큰 레벨 번호를 부르는 용어를 빈칸에 쓰는 문제예요. 정의를 이름과 짝지으면 돼요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘최대 레벨’이라는 단서에서 S7 p3의 두 용어를 같이 떠올려요.</p><ul><li><strong>레벨(level)</strong>: 트리의 각 층에 붙인 번호예요. 루트가 레벨 1이에요.</li><li><strong>높이(height)</strong>: 트리의 최대 레벨이에요. 슬라이드 예시 트리는 레벨 3까지 있어서 높이 3이에요.</li></ul><p>레벨은 노드마다 붙는 번호이고, 높이는 트리 전체에 하나뿐인 값이에요. 수업에서도 높이를 트리에서 가장 중요한 용어라고 강조했어요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-terms-measure">가족 관계·레벨·높이·차수</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>작은 트리 하나를 그리고 층마다 레벨 1, 2, 3을 적은 뒤, “가장 큰 레벨 = ?”라고 써 봐요.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>루트 아래에 자식 둘, 그중 한 자식 아래에 다시 자식 하나가 있는 트리를 그리면 레벨은 1, 2, 3까지 있어요.</p><p>이 트리의 가장 큰 레벨 3은 루트에서 가장 깊은 노드까지 몇 층인지를 말해 줘요. 이 값을 트리 전체의 <strong>높이</strong>라고 불러요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>높이</strong>. 2018 중간 4번 문제은행 원본 답과 같아요.</p><p>S7 p3 슬라이드 문장 “높이(height): 트리의 최대 레벨(3)”과 그대로 맞아요. P1 그림에서도 최대 레벨 5가 그 트리의 높이 5였어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>“레벨”이나 “차수”를 쓰기 쉬워요. 레벨은 층 하나의 번호이고, 차수는 자식 수예요.</li><li>높이를 잴 때 단말 노드가 많이 모인 층까지가 아니라 가장 깊은 노드까지 재요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>레벨, 높이, 차수의 정의를 한 줄씩 적으세요.</li><li>아무 트리나 그려 높이를 표시하세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>작은 트리에 레벨 번호를 적고 가장 큰 값을 찾아요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>레벨: 루트=1인 층 번호</li><li>높이: 트리의 최대 레벨</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>높이. S7 p3 정의와 문제은행 답이 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>레벨은 층마다, 높이는 트리 전체에 하나, 차수는 자식 수예요.</li></ul></div></div>
+    <blockquote>"4. 트리의 최대 레벨을 그 트리의 (  )라고 한다. [2 points]"</blockquote></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>트리에서 <strong>가장 큰 레벨 번호(최대 레벨)</strong>를 가리키는 표준 용어를 빈칸에 쓰는 문제예요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·정의</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>트리의 최대 레벨</td><td>레벨(level) vs 높이(height)</td><td>각 층의 번호(루트=1)가 레벨이고, 그중 가장 큰 값 하나가 트리 전체의 크기를 재는 높이예요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-terms-measure">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>레벨 1 (루트 A) → 레벨 2 (B, C) → 레벨 3 (D)
+최대 레벨 = 3  →  이 값을 부르는 이름 = ?</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ul>
+      <li><strong>레벨(level)</strong>은 개별 노드가 루트에서 몇 층째에 있는지를 나타내고(루트 = 1),</li>
+      <li><strong>높이(height)</strong>는 트리 전체에서 나타나는 레벨 중 가장 큰 값(최대 레벨)을 뜻해요.</li>
+    </ul>
+    <p>따라서 “트리의 최대 레벨”을 부르는 용어는 <strong>높이</strong>예요.</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: 높이</strong> (2018 기출 모범답안과 일치).</p>
+    <p><strong>경계값 대조 검산</strong>: 루트 1개만 있는 트리는 레벨 1만 있으므로 최대 레벨 = 1 = 높이 1이고, P1의 19노드 트리는 가장 깊은 <code>v18</code>이 레벨 5에 있어 최대 레벨 = 5 = 높이 5예요. 두 경우 모두 “최대 레벨 = 높이” 정의와 맞아요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>‘최대 차수’나 ‘레벨’과 섞어 적으면:</strong> <code>차수</code>는 한 노드가 가진 자식 수(가로로 얼마나 벌어졌나)이고 <code>레벨</code>은 한 층의 번호라서, “루트에서 가장 깊이 내려간 층 번호”를 묻는 <code>높이</code>와 축이 완전히 달라요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>노드 1개짜리 트리(루트만 있음)의 최대 레벨이 몇인지 말하고, 그 값이 곧 무엇인지 바로 답할 수 있나요?</li>
+    <li>단말 노드가 레벨 2에 3개, 레벨 4에 1개 있는 트리의 높이를 2와 4 중 어느 쪽으로 읽어야 하나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>레벨: 각 층 번호(루트=1) / 높이: 트리 전체의 최대 레벨.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>루트(레벨 1)부터 가장 깊은 노드(레벨 3)까지 최대 레벨을 표시해요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>높이</strong>. 노드 1개 트리의 높이 1, P1 트리의 높이 5와 정의가 같아요.</p></div>
+  <div class="summary-group"><h4>주의</h4><p>차수(자식 수)·레벨(층 번호)과 혼동하지 않고 가장 긴 가지 끝까지 재요.</p></div>
+</div>
 </article><article class="topic" id="p5"><h3>P5. 노드가 2^K-1개인 이진트리 OX</h3><p class="panel-meta">2019-mid-q5 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1029_Tree-%EB%AC%B8%EC%A0%9C.pdf#page=5">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p5"><div class="layer formal" data-source-problem="p5"><div data-source-field="conditions"><p>다음 문장이 맞으면 O, 틀리면 X로 답해 보세요.</p>
     <p>높이가 K이며 $(2^K - 1)$개의 노드 수를 가지는 이진트리는 완전이진트리가 아니다.</p></div></div><details class="original" data-original-problem="p5"><summary>기출 원문 보기</summary><p>2019 중간 5번 · 2점 · 출제자 미상</p>
     <blockquote>"높이나 K이며 (2^K  - 1)개의 노드 수를 가지는 이진트리는 완전이진트리가 아니다. (   ) (2점)"</blockquote>
-    <p>원문의 "높이나 K이며"는 "높이가 K이며"의 오타로 보여요.</p></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>높이가 K이고 노드가 $2^K - 1$개인 이진 트리를 두고 “완전 이진 트리가 아니다”라는 문장이 맞는지(O) 틀리는지(X) 판정하는 문제예요.</p><p>원문은 “높이나 K이며”라고 적었는데 “높이가 K이며”의 오타로 읽어요. 이렇게 읽어도 다르게 읽을 여지가 없어서 답에는 영향이 없어요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘높이 K’와 ‘$2^K - 1$개’가 같이 나오면 S7 p5의 노드 수 범위를 떠올려요. 높이가 $h$인 이진 트리는 최소 $h$개, 최대 $2^h - 1$개의 노드를 가져요.</p><p>최대 개수의 이유는 레벨마다 들어갈 수 있는 노드 수가 정해져 있기 때문이에요. 이진 트리는 노드마다 자식이 2개 이하라서 레벨 $i$에는 최대 $2^{i-1}$개가 들어가요.</p><p>‘완전이진트리가 아니다’라는 판정 단어에서는 S7 p7의 분류를 떠올려요. 포화 이진 트리(full binary tree)는 모든 레벨이 꽉 찬 것, 완전 이진 트리(complete binary tree)는 레벨 1 ~ $h-1$이 꽉 차고 마지막 레벨이 왼쪽부터 순서대로 찬 것이에요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s1-props">간선 수와 노드 수의 범위</a>, <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s2-kinds">포화·완전·기타 이진 트리</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>높이 K인 이진 트리의 레벨별 최대 개수를 더해 적어요.</p><p>$$1 + 2 + 4 + \cdots + 2^{K-1} = 2^K - 1$$</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>첫 줄의 합은 레벨 1부터 K까지 <em>모든</em> 레벨을 최대로 채웠을 때의 개수예요.</p><p>문제의 트리는 높이 K 안에 정확히 $2^K - 1$개가 있으니, 어느 레벨에도 빈자리가 있을 수 없어요. 한 자리라도 비면 개수가 $2^K - 1$보다 작아지기 때문이에요. 그래서 이 트리는 모든 레벨이 꽉 찬 포화 이진 트리예요.</p><p>이제 완전 이진 트리 조건을 하나씩 대조해요. 레벨 1 ~ K-1은 꽉 차 있어요. 마지막 레벨 K도 왼쪽 끝부터 오른쪽 끝까지 빈칸 없이 차 있으니 “왼쪽부터 순서대로 채워짐”을 만족해요. 그래서 이 트리는 완전 이진 트리예요.</p><p>“완전이진트리가 아니다”는 거짓 문장이니 답은 <strong>X</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>X</strong>. 2019 중간 5번 문제은행 원본 답과 같아요.</p><p>K=3이면 $2^3 - 1 = 7$개이고 레벨별로 1, 2, 4개가 들어가 꽉 찬 모양 하나뿐이에요. 별도 계산으로 K=1~4에서 높이 K, 노드 $2^K - 1$개인 이진 트리 모양을 모두 늘어놓아 봤는데, 각 K마다 모양은 하나뿐이고 모두 포화이자 완전 이진 트리였어요. 일반적인 K에 대한 근거는 위의 “한 자리라도 비면 개수가 모자란다”는 논증이에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>“포화 이진 트리이니 완전 이진 트리는 아니다”라고 두 분류를 서로 배타적으로 생각하기 쉬워요. 완전 이진 트리 정의는 마지막 레벨이 꽉 차는 경우를 막지 않아서, 포화 이진 트리는 완전 이진 트리의 특별한 경우예요. 부정문이라 O/X 방향도 한 번 더 확인해요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>높이 K 이진 트리의 최대 노드 수를 레벨별 합으로 적으세요.</li><li>노드 수가 그 최대와 같으면 어떤 모양인지 쓰세요.</li><li>그 모양이 완전 이진 트리 정의의 두 조건을 만족하는지 확인하세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>$1 + 2 + \cdots + 2^{K-1} = 2^K - 1$을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>높이 $h$ 이진 트리 노드 수: 최소 $h$, 최대 $2^h - 1$</li><li>포화: 모든 레벨 꽉 참 / 완전: 레벨 1 ~ $h-1$ 꽉 참, 마지막 레벨 왼쪽부터</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>X. 노드가 최대 개수라 포화이고, 포화는 완전의 조건도 만족해요. K=1~4 모양 열거와 문제은행 답이 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>원문 “높이나 K”는 “높이가 K”의 오타로 읽어요.</li><li>포화 이진 트리는 완전 이진 트리이기도 해요.</li></ul></div></div>
+    <p>원문의 "높이나 K이며"는 "높이가 K이며"의 오타로 보여요.</p></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>높이가 $K$이고 노드가 $2^K - 1$개인 이진 트리를 두고, <strong>“완전이진트리가 아니다”</strong>라는 진술의 참(O)·거짓(X)을 판정해요.</p>
+  <p>원문의 “높이나 K이며”는 “높이가 K이며”의 오타이며 다른 해석 여지가 없어 답에 영향을 주지 않아요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>높이 $K$, 노드 $2^K - 1$개</td><td> 이진 트리 최대 노드 수: $\sum_{i=1}^{K} 2^{i-1} = 2^K - 1$ </td><td>주어진 노드 수가 높이 $K$의 <em>이론상 최댓값</em>과 같은지 확인하면 트리 모양이 하나로 고정돼요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s1-props">정리노트</a>).</td></tr>
+        <tr><td>완전이진트리가 아니다</td><td>포화 $\subset$ 완전 이진 트리 포함 관계</td><td>포화 이진 트리는 모든 레벨이 꽉 차 있으므로 완전 이진 트리의 조건도 자동으로 만족해요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s2-kinds">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>높이 K 이진 트리의 레벨별 최대 노드 합:
+1 + 2 + 4 + ... + 2^(K-1) = 2^K - 1  (주어진 노드 수와 정확히 같음!)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li><strong>모양 확정</strong>: 이진 트리의 레벨 $i$에는 최대 $2^{i-1}$개의 노드가 들어가므로, 높이 $K$에서 가질 수 있는 최대 노드 수는 $1 + 2 + \cdots + 2^{K-1} = 2^K - 1$개예요.</li>
+      <li><strong>포화 이진 트리 판정</strong>: 노드가 정확히 $2^K - 1$개라면 어느 레벨에도 빈자리가 하나라도 있을 수 없어요(한 자리라도 비면 전체 노드 수가 $2^K - 1$보다 작아짐). 즉 모든 레벨이 꽉 찬 <strong>포화 이진 트리</strong>예요.</li>
+      <li><strong>완전 이진 트리 대조</strong>: 포화 이진 트리는 ① 레벨 $1 \sim K-1$이 꽉 차 있고, ② 마지막 레벨 $K$도 왼쪽부터 빈칸 없이(끝까지) 차 있으므로 <strong>완전 이진 트리</strong> 조건을 모두 만족해요.</li>
+      <li><strong>부정문 판정</strong>: 따라서 “완전이진트리가 <em>아니다</em>”라는 명제는 거짓이므로 답은 <strong>X</strong>예요.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: X</strong> (2019 기출 답안과 일치).</p>
+    <ul>
+      <li><strong>경계값 대입 ($K=1, 2, 3$)</strong>: $K=1$이면 $2^1-1=1$개(루트 1개, 완전 O), $K=2$이면 $2^2-1=3$개(레벨별 1, 2개, 완전 O), $K=3$이면 $2^3-1=7$개(레벨별 1, 2, 4개, 완전 O)로 작은 $K$에서도 반례가 없어요.</li>
+      <li><strong>일반 $K$ 논증 확인</strong>: 어떤 레벨에 빈칸이 $d \ge 1$개 있으면 전체 노드는 $(2^K - 1) - d &lt; 2^K - 1$이므로 노드 $2^K - 1$개인 높이 $K$ 이진 트리는 포화 모양 단 하나뿐이고 항상 완전 이진 트리예요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>포화와 완전을 서로 배타적(남남)이라고 생각하면:</strong> “이 트리는 포화 이진 트리니까 완전 이진 트리가 아니지!”라고 판단해 <strong>O</strong>를 쓰게 돼요. 완전 이진 트리는 마지막 레벨이 덜 찬 것만 뜻하는 게 아니라 꽉 찬 포화 이진 트리도 포함하는 개념이고, 문장 끝이 “아니다”라는 부정문인지도 함께 봐야 해요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “높이 $K$에 노드 $2^K - 1$개”를 보면 → 레벨별 최대 합 공식과 비교해 빈자리가 몇 개 남는지 바로 계산할 수 있나요?</li>
+    <li>모든 포화 이진 트리는 완전 이진 트리인가요, 아니면 그 반대인가요?</li>
+    <li>문장 끝이 “완전이진트리<strong>이다</strong>”로 바뀌면 O/X 답은 어떻게 바뀌나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>높이 $K$ 최대 노드 수 $2^K - 1$ / 포화 이진 트리는 완전 이진 트리에 포함돼요.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>$1 + 2 + \cdots + 2^{K-1} = 2^K - 1$이 주어진 노드 수와 같아 빈칸이 0개예요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>X</strong>. 모든 레벨이 꽉 찬 포화 이진 트리이므로 완전 이진 트리이기도 해요.</p></div>
+  <div class="summary-group"><h4>검산·주의</h4><p>$K=1,2,3$ 대입(1, 3, 7개) 모두 완전 만족. 원문 “높이나 K”는 “높이가 K”의 오타예요.</p></div>
+</div>
 </article><article class="topic" id="p6"><h3>P6. 트리의 단말 노드 수</h3><p class="panel-meta">textbook-ch08-q04 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1029_Tree-%EB%AC%B8%EC%A0%9C.pdf#page=6">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p6"><div class="layer formal" data-source-problem="p6"><div data-source-field="conditions"><p>다음 트리에서 단말 노드는 몇 개인가요?</p>
     <figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: A, B, C, D, E, F, G, H" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: A, B, C, D, E, F, G, H</title><g id="p6-source-p6-prob-1-ch08-q04-tree-edge-A-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p6-source-p6-prob-1-ch08-q04-tree-edge-A-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p6-source-p6-prob-1-ch08-q04-tree-edge-B-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p6-source-p6-prob-1-ch08-q04-tree-edge-C-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p6-source-p6-prob-1-ch08-q04-tree-edge-C-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p6-source-p6-prob-1-ch08-q04-tree-edge-E-left"><line x1="500.0" y1="215" x2="450.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p6-source-p6-prob-1-ch08-q04-tree-edge-E-right"><line x1="500.0" y1="215" x2="550.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p6-source-p6-prob-1-ch08-q04-tree-A"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p6-source-p6-prob-1-ch08-q04-tree-B"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p6-source-p6-prob-1-ch08-q04-tree-C"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p6-source-p6-prob-1-ch08-q04-tree-D"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p6-source-p6-prob-1-ch08-q04-tree-E"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p6-source-p6-prob-1-ch08-q04-tree-F"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g><g id="p6-source-p6-prob-1-ch08-q04-tree-G"><circle cx="450.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="450.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">G</text></g><g id="p6-source-p6-prob-1-ch08-q04-tree-H"><circle cx="550.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="550.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">H</text></g></svg></div><figcaption>원문의 트리: A, B, C, D, E, F, G, H · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>2</p></div><div class="option"><p>(②)</p><p>3</p></div><div class="option"><p>(③)</p><p>4</p></div><div class="option"><p>(④)</p><p>8</p></div></div></div></div><details class="original" data-original-problem="p6"><summary>교과서 원문 보기</summary><p>교과서 8장 트리 04번 · PDF 2쪽</p>
-    <p>다음 트리에서 단말 노드 수는? [정보처리기사 기출문제]</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: A, B, C, D, E, F, G, H" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: A, B, C, D, E, F, G, H</title><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-A-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-A-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-B-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-C-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-C-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-E-left"><line x1="500.0" y1="215" x2="450.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-E-right"><line x1="500.0" y1="215" x2="550.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-A"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-B"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-C"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-D"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-E"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-F"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-G"><circle cx="450.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="450.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">G</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-H"><circle cx="550.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="550.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">H</text></g></svg></div><figcaption>원문의 트리: A, B, C, D, E, F, G, H · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>2</p></div><div class="option"><p>(②)</p><p>3</p></div><div class="option"><p>(③)</p><p>4</p></div><div class="option"><p>(④)</p><p>8</p></div></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 A~H 8개짜리 트리 그림에서 단말 노드가 몇 개인지 세어, 보기 ①~④ 중 하나를 고르는 객관식이에요. 긍정형 질문이고 답은 하나만 골라요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘단말 노드 수’라는 단서에서 S7 p3의 정의를 떠올려요. <strong>단말 노드(terminal node)</strong>는 자식이 없는 노드이고, 수업에서는 리프 노드(leaf node)와 같은 말이라고 했어요. 반대로 자식이 하나 이상 있으면 <strong>비단말 노드</strong>예요.</p><p>판정 기준은 “맨 아래층에 있나”가 아니라 “아래로 이어진 선이 있나”예요. 그래서 노드마다 자식을 적어 보는 방법을 골라요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-terms-structure">노드·루트·서브트리·단말 노드</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>노드마다 자식을 적어요. A → B, C / B → D / C → E, F / E → G, H.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>첫 줄에 왼쪽 자리(부모)로 등장한 노드는 A, B, C, E예요. 이 넷은 자식이 있으니 비단말 노드예요.</p><p>나머지 D, F, G, H는 아래로 이어진 선이 없어요. 그래서 단말 노드는 <strong>D, F, G, H 4개</strong>예요. D와 F는 레벨 3에 있지만 자식이 없으니 단말 노드에 들어가요.</p><p>보기마다 판정해요.</p><ul><li>① 2: 맨 아래층 G, H만 센 값이에요. D, F를 빠뜨려서 틀려요.</li><li>② 3: 실제 단말 노드 4개 중 하나를 빠뜨린 값이에요. 예를 들어 레벨 3의 D나 F 하나를 놓치면 3이 돼요.</li><li>③ 4: D, F, G, H를 센 값과 같아요. <strong>정답</strong>이에요.</li><li>④ 8: 전체 노드 수예요. 단말 노드 수가 아니에요.</li></ul></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>③ 4</strong> (D, F, G, H).</p><p>단말 4개와 비단말 4개(A, B, C, E)를 더하면 8로 전체 노드 수와 맞아서 빠뜨리거나 두 번 센 노드가 없어요. 그림 좌표에서 부모–자식을 다시 만든 별도 계산도 단말 노드 D, F, G, H를 돌려줬어요. 교과서 자료에는 인쇄된 공식 답이 없어서, 이 답은 정의에 따른 독립 계산으로 확인한 값이에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><p>그림 맨 아래층만 보고 2를 고르기 쉬워요. 단말 노드는 위치가 아니라 자식 유무로 정해져요. 중간 높이에 있어도 자식이 없으면 단말 노드예요.</p></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>노드마다 자식을 한 줄로 적으세요.</li><li>한 번도 부모로 나오지 않은 노드를 세세요.</li><li>단말 + 비단말 = 전체 노드 수인지 확인하세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>A → B, C / B → D / C → E, F / E → G, H를 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>단말 노드(리프): 자식이 없는 노드</li><li>비단말 노드: 자식이 하나 이상</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>③ 4 (D, F, G, H). 단말 4 + 비단말 4 = 전체 8이에요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>① 2는 맨 아래층만, ④ 8은 전체 노드를 센 값이에요.</li><li>교과서 공식 답은 없고 독립 계산으로 확인했어요.</li></ul></div></div>
+    <p>다음 트리에서 단말 노드 수는? [정보처리기사 기출문제]</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="원문의 트리: A, B, C, D, E, F, G, H" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 트리: A, B, C, D, E, F, G, H</title><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-A-left"><line x1="400.0" y1="45" x2="200.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-A-right"><line x1="400.0" y1="45" x2="600.0" y2="130" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-B-left"><line x1="200.0" y1="130" x2="100.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-C-left"><line x1="600.0" y1="130" x2="500.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-C-right"><line x1="600.0" y1="130" x2="700.0" y2="215" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-E-left"><line x1="500.0" y1="215" x2="450.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-edge-E-right"><line x1="500.0" y1="215" x2="550.0" y2="300" stroke="#26394a" stroke-width="2"/></g><g id="p6-original-p6-orig-1-ch08-q04-tree-A"><circle cx="400.0" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400.0" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-B"><circle cx="200.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="200.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-C"><circle cx="600.0" cy="130" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600.0" y="130" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-D"><circle cx="100.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-E"><circle cx="500.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="500.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-F"><circle cx="700.0" cy="215" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700.0" y="215" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-G"><circle cx="450.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="450.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">G</text></g><g id="p6-original-p6-orig-1-ch08-q04-tree-H"><circle cx="550.0" cy="300" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="550.0" y="300" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">H</text></g></svg></div><figcaption>원문의 트리: A, B, C, D, E, F, G, H · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>2</p></div><div class="option"><p>(②)</p><p>3</p></div><div class="option"><p>(③)</p><p>4</p></div><div class="option"><p>(④)</p><p>8</p></div></div></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>노드 8개(<code>A~H</code>)가 주어진 트리 그림에서 <strong>단말 노드의 개수</strong>를 세어 보기 ①~④ 중 하나를 고르는 긍정형 단일 선택 객관식이에요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·정의</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>단말 노드 수</td><td>단말 노드(terminal / leaf node): 자식이 없는 노드(차수 0)</td><td>그림에서 “맨 아래층”이 아니라 <strong>아래로 뻗은 간선이 없는 노드</strong>를 전부 골라야 레벨 3의 <code>D, F</code>를 빠뜨리지 않아요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-terms-structure">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>A → B, C | B → D | C → E, F | E → G, H</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <p>그림의 8개 노드마다 레벨과 자식 노드를 정리하면 아래 표와 같아요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>노드</th><th>레벨</th><th>자식 노드</th><th>차수</th><th>분류</th></tr></thead>
+        <tbody>
+          <tr><td><code>A</code></td><td>1</td><td><code>B, C</code></td><td>2</td><td>비단말</td></tr>
+          <tr><td><code>B</code></td><td>2</td><td><code>D</code></td><td>1</td><td>비단말</td></tr>
+          <tr><td><code>C</code></td><td>2</td><td><code>E, F</code></td><td>2</td><td>비단말</td></tr>
+          <tr><td><b><code>D</code></b></td><td>3</td><td>없음</td><td>0</td><td><b>단말 노드</b></td></tr>
+          <tr><td><code>E</code></td><td>3</td><td><code>G, H</code></td><td>2</td><td>비단말</td></tr>
+          <tr><td><b><code>F</code></b></td><td>3</td><td>없음</td><td>0</td><td><b>단말 노드</b></td></tr>
+          <tr><td><b><code>G</code></b></td><td>4</td><td>없음</td><td>0</td><td><b>단말 노드</b></td></tr>
+          <tr><td><b><code>H</code></b></td><td>4</td><td>없음</td><td>0</td><td><b>단말 노드</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>자식이 없는 노드는 <code>D, F, G, H</code>로 <strong>4개</strong>예요. 보기마다 판정하면 다음과 같아요.</p>
+    <ul>
+      <li><strong>① 2</strong> (소거): 맨 아래층(레벨 4)의 <code>G, H</code>만 센 값이라 레벨 3에서 끝난 <code>D, F</code>가 빠졌어요.</li>
+      <li><strong>② 3</strong> (소거): 단말 4개 중 하나(<code>D</code> 또는 <code>F</code>)를 놓친 값이에요.</li>
+      <li><strong>③ 4</strong> (<strong>정답</strong>): 자식이 0개인 <code>D, F, G, H</code> 네 노드를 빠짐없이 센 개수예요.</li>
+      <li><strong>④ 8</strong> (소거): 트리의 전체 노드 수(<code>A~H</code>)예요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: ③ 4 (D, F, G, H)</strong> (교과서 자료에는 인쇄된 공식 답이 없어 정의에 따른 독립 계산으로 확인했어요).</p>
+    <ul>
+      <li><strong>합계 보존 검산</strong>: 단말 4개(<code>D, F, G, H</code>) + 비단말 4개(<code>A, B, C, E</code>) = 전체 8개와 일치해요.</li>
+      <li><strong>간선 수 검산</strong>: 비단말 노드의 자식 수 합 $2 + 1 + 2 + 2 = 7$이 트리 전체 간선 수 $8 - 1 = 7$과 맞아요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong>단말 노드를 “맨 아래층(레벨 4) 노드”로 오해하면:</strong> <code>G, H</code>만 세어 보기 <strong>① 2</strong>를 고르게 돼요. <code>D</code>와 <code>F</code>는 레벨 3에 있지만 더 이상 내려가는 간선이 없으므로 단말 노드예요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>트리 그림에서 단말 노드를 셀 때 “맨 아래 줄” 대신 <strong>모든 노드의 아래 간선 유무</strong>부터 확인하나요?</li>
+    <li>단말 노드 수 + 비단말 노드 수 = 전체 노드 수(8)가 맞는지 마지막 1초 검산을 붙일 수 있나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>단말 노드(리프): 층 위치와 무관하게 자식이 없는(차수 0) 노드.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>A→B,C / B→D / C→E,F / E→G,H</code>에서 부모로 안 나온 노드를 찾아요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>③ 4</strong> (<code>D, F, G, H</code>). ① 2는 레벨 4만, ④ 8은 전체 노드를 센 오답이에요.</p></div>
+  <div class="summary-group"><h4>검산·고지</h4><p>단말 4 + 비단말 4 = 8 일치. 교과서 공식 답이 없어 독립 계산으로 확인했어요.</p></div>
+</div>
 </article><article class="topic" id="p7"><h3>P7. 그림 트리의 차수</h3><p class="panel-meta">textbook-ch08-q05 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1029_Tree-%EB%AC%B8%EC%A0%9C.pdf#page=7">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p7"><div class="layer formal" data-source-problem="p7"><div data-source-field="conditions"><p>다음 그림에서 트리의 차수는 얼마인가요?</p>
     <figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-label="원문의 그래프" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 그래프</title><g id="p7-source-p7-prob-1-ch08-q05-general-tree-e0"><line x1="400" y1="45" x2="220" y2="135" stroke="#26394a" stroke-width="2"/></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-e1"><line x1="400" y1="45" x2="600" y2="135" stroke="#26394a" stroke-width="2"/></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-e2"><line x1="220" y1="135" x2="100" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-e3"><line x1="220" y1="135" x2="220" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-e4"><line x1="220" y1="135" x2="340" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-e5"><line x1="600" y1="135" x2="700" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-e6"><line x1="100" y1="225" x2="50" y2="315" stroke="#26394a" stroke-width="2"/></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-A"><circle cx="400" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-B"><circle cx="220" cy="135" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="220" y="135" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-C"><circle cx="600" cy="135" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600" y="135" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-D"><circle cx="100" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-E"><circle cx="220" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="220" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-F"><circle cx="340" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="340" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-G"><circle cx="700" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">G</text></g><g id="p7-source-p7-prob-1-ch08-q05-general-tree-H"><circle cx="50" cy="315" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="50" y="315" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">H</text></g></svg></div><figcaption>원문의 그래프 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>3</p></div><div class="option"><p>(②)</p><p>4</p></div><div class="option"><p>(③)</p><p>6</p></div><div class="option"><p>(④)</p><p>8</p></div></div></div></div><details class="original" data-original-problem="p7"><summary>교과서 원문 보기</summary><p>교과서 8장 트리 05번 · PDF 2쪽</p>
-    <p>다음 그림에서 트리의 차수는? [정보처리기사 기출문제]</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-label="원문의 그래프" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 그래프</title><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e0"><line x1="400" y1="45" x2="220" y2="135" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e1"><line x1="400" y1="45" x2="600" y2="135" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e2"><line x1="220" y1="135" x2="100" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e3"><line x1="220" y1="135" x2="220" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e4"><line x1="220" y1="135" x2="340" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e5"><line x1="600" y1="135" x2="700" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e6"><line x1="100" y1="225" x2="50" y2="315" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-A"><circle cx="400" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-B"><circle cx="220" cy="135" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="220" y="135" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-C"><circle cx="600" cy="135" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600" y="135" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-D"><circle cx="100" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-E"><circle cx="220" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="220" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-F"><circle cx="340" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="340" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-G"><circle cx="700" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">G</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-H"><circle cx="50" cy="315" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="50" y="315" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">H</text></g></svg></div><figcaption>원문의 그래프 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>3</p></div><div class="option"><p>(②)</p><p>4</p></div><div class="option"><p>(③)</p><p>6</p></div><div class="option"><p>(④)</p><p>8</p></div></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 A~H 8개짜리 트리 그림에서 <em>트리 전체</em>의 차수를 구해 보기 ①~④ 중 하나를 고르는 객관식이에요. 긍정형 질문이고 답은 하나예요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘트리의 차수’라는 단서에서 두 단계를 떠올려요.</p><ul><li><strong>노드의 차수(degree)</strong>: 한 노드가 가진 자식 노드의 개수예요(S7 p3).</li><li><strong>트리의 차수</strong>: 노드마다 차수가 다를 때 그중 가장 큰 값이에요. 이 부분은 슬라이드 문장에는 없고 1029 수업에서 말로 설명한 내용이에요.</li></ul><p>그래서 노드마다 자식 수를 세고 최댓값을 고르는 방법을 써요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-terms-measure">가족 관계·레벨·높이·차수</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>노드마다 자식 수를 표처럼 적어요. A: 2 (B, C) / B: 3 (D, E, F) / C: 1 (G) / D: 1 (H) / E, F, G, H: 0.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>첫 줄의 값은 2, 3, 1, 1, 0, 0, 0, 0이에요. 트리의 차수는 이 중 최댓값이니 B의 차수 <strong>3</strong>이에요.</p><p>보기마다 판정해요.</p><ul><li>① 3: 노드 차수의 최댓값과 같아요. <strong>정답</strong>이에요.</li><li>② 4: 단말 노드 수(E, F, G, H)와 같은 값이에요. 차수가 아니에요.</li><li>③ 6: 이 그림에서 차수로 나올 근거가 없는 값이에요. 어느 노드도 자식이 6개가 아니에요.</li><li>④ 8: 전체 노드 수예요.</li></ul></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>① 3</strong>.</p><p>자식 수를 모두 더하면 $2+3+1+1 = 7$이고, 노드 8개인 트리의 간선 수 $8-1 = 7$과 같아요. 자식 수를 빠뜨리지 않고 셌다는 뜻이에요. 그림 좌표로 다시 만든 별도 계산도 노드별 차수 A 2, B 3, C 1, D 1, 나머지 0과 최댓값 3을 돌려줬어요. 교과서 자료에는 인쇄된 공식 답이 없어서, 이 답은 정의에 따른 독립 계산으로 확인한 값이에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>루트 A의 자식 수 2를 트리의 차수로 적기 쉬워요. 트리의 차수는 루트가 아니라 모든 노드 중 최댓값이에요.</li><li>노드 수 8이나 단말 노드 수 4와 섞지 않아요. 차수는 자식 수에서만 나와요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>노드마다 자식 수를 적으세요.</li><li>최댓값을 고르고, 자식 수 합이 노드 수 - 1인지 확인하세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>노드마다 자식 수를 적어요: A 2, B 3, C 1, D 1, 나머지 0.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>노드의 차수: 자식 수</li><li>트리의 차수: 노드 차수의 최댓값(수업 설명)</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>① 3. 자식 수 합 7 = 간선 수 8 - 1이에요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>루트의 차수 2가 아니라 전체 최댓값이에요.</li><li>교과서 공식 답은 없고 독립 계산으로 확인했어요.</li></ul></div></div>
+    <p>다음 그림에서 트리의 차수는? [정보처리기사 기출문제]</p><figure style="margin:16px 0"><div class="figure-scroll" style="max-width:100%;overflow-x:auto;background:white"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" role="img" aria-label="원문의 그래프" style="background:white;width:800px;max-width:none;height:auto"><title>원문의 그래프</title><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e0"><line x1="400" y1="45" x2="220" y2="135" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e1"><line x1="400" y1="45" x2="600" y2="135" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e2"><line x1="220" y1="135" x2="100" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e3"><line x1="220" y1="135" x2="220" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e4"><line x1="220" y1="135" x2="340" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e5"><line x1="600" y1="135" x2="700" y2="225" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-e6"><line x1="100" y1="225" x2="50" y2="315" stroke="#26394a" stroke-width="2"/></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-A"><circle cx="400" cy="45" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="400" y="45" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">A</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-B"><circle cx="220" cy="135" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="220" y="135" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">B</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-C"><circle cx="600" cy="135" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="600" y="135" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">C</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-D"><circle cx="100" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="100" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">D</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-E"><circle cx="220" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="220" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">E</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-F"><circle cx="340" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="340" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">F</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-G"><circle cx="700" cy="225" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="700" y="225" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">G</text></g><g id="p7-original-p7-orig-1-ch08-q05-general-tree-H"><circle cx="50" cy="315" r="22" fill="#fff" stroke="#26394a" stroke-width="2"/><text x="50" y="315" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="22" fill="#17212b">H</text></g></svg></div><figcaption>원문의 그래프 · 넓은 그림은 옆으로 스크롤해 보세요.</figcaption></figure><div class="options"><div class="option"><p>(①)</p><p>3</p></div><div class="option"><p>(②)</p><p>4</p></div><div class="option"><p>(③)</p><p>6</p></div><div class="option"><p>(④)</p><p>8</p></div></div></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>노드 8개(<code>A~H</code>) 일반 트리 그림에서 <strong>트리 전체의 차수</strong>를 구해 보기 ①~④ 중 하나를 고르는 긍정형 단일 선택 객관식이에요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·정의</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>트리의 차수</td><td>노드 차수(자식 수)의 <strong>최댓값</strong>(수업 보충 설명)</td><td>트리의 차수는 루트 한 노드의 자식 수가 아니라, 모든 노드의 자식 수를 센 뒤 그중 가장 큰 값으로 정해요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s0-terms-measure">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>A: 2 (B, C) | B: 3 (D, E, F) | C: 1 (G) | D: 1 (H) | E,F,G,H: 0</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>노드</th><th>자식 목록</th><th>노드의 차수</th></tr></thead>
+        <tbody>
+          <tr><td><code>A</code></td><td><code>B, C</code></td><td>2</td></tr>
+          <tr><td><b><code>B</code></b></td><td><b><code>D, E, F</code></b></td><td><b>3 (최댓값)</b></td></tr>
+          <tr><td><code>C</code></td><td><code>G</code></td><td>1</td></tr>
+          <tr><td><code>D</code></td><td><code>H</code></td><td>1</td></tr>
+          <tr><td><code>E, F, G, H</code></td><td>없음</td><td>0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>모든 노드의 차수는 <code>2, 3, 1, 1, 0, 0, 0, 0</code>이고, 최댓값은 <code>B</code>의 <strong>3</strong>이에요. 보기마다 판정하면 다음과 같아요.</p>
+    <ul>
+      <li><strong>① 3</strong> (<strong>정답</strong>): 모든 노드 차수 중 최댓값(<code>B</code>의 자식 수)과 일치해요.</li>
+      <li><strong>② 4</strong> (소거): 단말 노드 수(<code>E, F, G, H</code> 4개)를 차수로 착각한 값이에요.</li>
+      <li><strong>③ 6</strong> (소거): 이 그림에서 자식이 6개인 노드는 없어요.</li>
+      <li><strong>④ 8</strong> (소거): 전체 노드 수(<code>A~H</code>)예요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: ① 3</strong> (교과서 자료에는 인쇄된 공식 답이 없어 정의에 따른 독립 계산으로 확인했어요).</p>
+    <p><strong>차수 합 = 간선 수 검산</strong>: 모든 노드의 차수를 더하면 $2 + 3 + 1 + 1 + 0 + 0 + 0 + 0 = 7$이고, 노드 8개인 트리의 간선 수 $8 - 1 = 7$과 정확히 같아 자식 수를 빠뜨리거나 중복해서 세지 않았음을 바로 알 수 있어요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <ul>
+    <li><strong>루트만 보고 차수를 적으면:</strong> 루트 <code>A</code>의 자식 수인 <code>2</code>를 트리의 차수로 착각해요(보기엔 없지만 주관식이면 <code>2</code>로 틀림).</li>
+    <li><strong>단말 노드 수·전체 노드 수와 섞으면:</strong> 단말 수 <strong>4(②)</strong>나 전체 노드 수 <strong>8(④)</strong>을 고르게 돼요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “트리의 차수”를 보면 → 루트만 보지 않고 <strong>모든 노드의 자식 수를 적은 뒤 최댓값</strong>을 고르나요?</li>
+    <li>적어 둔 노드별 차수의 합이 <code>노드 수 - 1</code>(= 간선 수)과 같은지 바로 대조해 볼 수 있나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>트리의 차수 = 모든 노드 차수(자식 수) 중 최댓값(수업 보충 설명).</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>A:2, B:3, C:1, D:1, E~H:0</code>으로 모든 노드의 자식 수를 나열해요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>① 3</strong> (<code>B</code>의 차수). ② 4는 단말 수, ④ 8은 전체 노드 수예요.</p></div>
+  <div class="summary-group"><h4>검산·고지</h4><p>차수 합 $2+3+1+1 = 7 = 8 - 1$ 간선 수 일치. 교과서 공식 답은 없어요.</p></div>
+</div>
 </article><article class="topic" id="p8"><h3>P8. 높이 5 이진 트리의 최대 노드 수</h3><p class="panel-meta">textbook-ch08-q07 · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1029_Tree-%EB%AC%B8%EC%A0%9C.pdf#page=8">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p8"><div class="layer formal" data-source-problem="p8"><div data-source-field="conditions"><p>이진 트리의 높이가 5일 때, 이 트리는 최대 몇 개의 노드를 가질 수 있나요?</p>
     <div class="options"><div class="option"><p>(1)</p><p>26개</p></div><div class="option"><p>(2)</p><p>8개</p></div><div class="option"><p>(3)</p><p>32개</p></div><div class="option"><p>(4)</p><p>31개</p></div></div></div></div><details class="original" data-original-problem="p8"><summary>교과서 원문 보기</summary><p>교과서 8장 트리 07번 · PDF 2쪽</p>
-    <p>이진 트리에서 높이가 5일 때, 이 트리는 최대 몇 개의 노드를 가질 수 있는가?</p><div class="options"><div class="option"><p>(1)</p><p>26개</p></div><div class="option"><p>(2)</p><p>8개</p></div><div class="option"><p>(3)</p><p>32개</p></div><div class="option"><p>(4)</p><p>31개</p></div></div></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>높이가 5인 이진 트리가 가질 수 있는 노드 수의 <em>최댓값</em>을 보기 (1)~(4) 중에서 고르는 객관식이에요. 긍정형 질문이고 답은 하나예요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘이진 트리’, ‘높이’, ‘최대 몇 개’라는 세 단서가 S7 p5의 성질을 가리켜요. 높이가 $h$인 이진 트리는 최소 $h$개, 최대 $2^h - 1$개의 노드를 가져요.</p><p>왜 최대가 $2^h - 1$인지도 떠올려요. 이진 트리(binary tree)는 노드마다 자식이 2개 이하라서, 한 레벨 내려갈 때마다 들어갈 수 있는 노드 수가 최대 두 배가 돼요. 레벨 $i$의 최대는 $2^{i-1}$이고, 레벨 1부터 $h$까지 다 채운 포화 이진 트리가 최대예요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s1-props">간선 수와 노드 수의 범위</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>레벨 1부터 5까지 최대 개수를 나란히 적어요. 1, 2, 4, 8, 16.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="main"><p>첫 줄의 값을 모두 더해요.</p><p>$$1 + 2 + 4 + 8 + 16 = 31$$</p><p>공식으로도 $2^5 - 1 = 32 - 1 = 31$이에요. 높이가 5라서 레벨 6은 쓸 수 없으니 이보다 많이 넣을 수 없어요.</p><p>보기마다 판정해요.</p><ul><li>(1) 26개: 높이 5인 이진 트리가 실제로 가질 수 있는 개수이지만 최대는 아니에요.</li><li>(2) 8개: 높이 5로 만들 수 있는 개수지만 최대가 아니에요. 레벨 4 한 층의 최대 $2^3 = 8$과 같은 값이에요.</li><li>(3) 32개: $2^5$를 그대로 쓴 값이에요. 31보다 하나 많아서 높이 5로는 담을 수 없어요.</li><li>(4) 31개: 모든 레벨을 꽉 채운 개수예요. <strong>정답</strong>이에요.</li></ul></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>정답: <strong>(4) 31개</strong>.</p><p>별도 계산으로 노드 수마다 가능한 이진 트리 모양을 왼쪽·오른쪽 서브트리로 나눠 모두 따져 봤어요. 높이 5가 될 수 있는 노드 수는 5개부터 31개까지였고, 보기 중 26·8·31은 가능하고 32는 불가능했어요. 최댓값은 31이에요. 교과서 자료에는 인쇄된 공식 답이 없어서, 이 답은 정의에 따른 독립 계산으로 확인한 값이에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>$2^h$와 $2^h - 1$을 섞어 32를 고르기 쉬워요. 레벨별 합 1 + 2 + 4 + 8 + 16을 직접 더해 보면 31이에요.</li><li>마지막 레벨 한 층의 최대 $2^{h-1} = 16$과 트리 전체의 최대 $2^h - 1 = 31$도 구별해요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>높이 5의 레벨별 최대 개수를 적고 더하세요.</li><li>그 합이 $2^5 - 1$과 같은지 확인하세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>레벨별 최대 1, 2, 4, 8, 16을 적어요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>레벨 $i$의 최대 노드 수: $2^{i-1}$</li><li>높이 $h$ 이진 트리의 노드 수: 최소 $h$, 최대 $2^h - 1$</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>(4) 31개. 레벨별 합과 $2^5 - 1$이 같고, 모양 열거에서도 최대 31이에요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>32는 $2^h$로 하나 많고, 26·8은 가능하지만 최대가 아니에요.</li><li>교과서 공식 답은 없고 독립 계산으로 확인했어요.</li></ul></div></div>
+    <p>이진 트리에서 높이가 5일 때, 이 트리는 최대 몇 개의 노드를 가질 수 있는가?</p><div class="options"><div class="option"><p>(1)</p><p>26개</p></div><div class="option"><p>(2)</p><p>8개</p></div><div class="option"><p>(3)</p><p>32개</p></div><div class="option"><p>(4)</p><p>31개</p></div></div></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p><strong>높이가 5인 이진 트리</strong>가 가질 수 있는 노드 수의 <strong>최댓값</strong>을 보기 (1)~(4) 중 하나 고르는 긍정형 단일 선택 객관식이에요.</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>이진 트리, 높이 5, 최대 노드</td><td>레벨 $i$ 최대 $2^{i-1}$개, 높이 $h$ 전체 최대 $2^h - 1$개</td><td>이진 트리는 자식 $\le 2$이므로 한 층 내려갈 때마다 최대 칸 수가 2배씩 늘어나 포화 이진 트리일 때 최대가 돼요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s1-props">정리노트</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>레벨 1~5 최대 노드: 1, 2, 4, 8, 16  (h = 5)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <p>높이 5의 모든 층을 최대로 채우면 레벨별 노드 수와 누적 합은 다음과 같아요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th> 레벨 $i$ </th><th>최대 노드 수 ( $2^{i-1}$ )</th><th>누적 합 ( $2^i - 1$ )</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>1</td><td>1</td></tr>
+          <tr><td>2</td><td>2</td><td>3</td></tr>
+          <tr><td>3</td><td>4</td><td>7</td></tr>
+          <tr><td>4</td><td>8</td><td>15</td></tr>
+          <tr><td><b>5</b></td><td><b>16</b></td><td><b>31</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>따라서 $1 + 2 + 4 + 8 + 16 = 2^5 - 1 = \mathbf{31}$개예요. 보기마다 판정하면 다음과 같아요.</p>
+    <ul>
+      <li><strong>(1) 26개</strong> (소거): 높이 5인 이진 트리가 가질 수 있는 개수($5 \sim 31$)이지만 최댓값은 아니에요.</li>
+      <li><strong>(2) 8개</strong> (소거): 역시 높이 5로 만들 수는 있으나 최대가 아니에요($8$은 레벨 4 한 층의 최대 용량 $2^3$과 같은 수).</li>
+      <li><strong>(3) 32개</strong> (소거): $2^5$를 그대로 계산한 값으로, 최댓값 31보다 1개 많아 높이 5 안에는 들어갈 수 없어요.</li>
+      <li><strong>(4) 31개</strong> (<strong>정답</strong>): 레벨 1~5를 모두 꽉 채운 포화 이진 트리의 노드 수 $2^5 - 1$과 같아요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답: (4) 31개</strong> (교과서 자료에는 인쇄된 공식 답이 없어 정의에 따른 독립 계산으로 확인했어요).</p>
+    <ul>
+      <li><strong>홀짝 검산</strong>: 루트(1개)를 제외한 나머지 층은 모두 짝수($2, 4, 8, 16$)이므로 최대 노드 수는 항상 <strong>홀수</strong>여야 해요. 짝수인 (1) 26, (2) 8, (3) 32는 최대가 될 수 없고 홀수인 (4) 31만 가능해요.</li>
+      <li><strong>작은 $h$ 공식 일치 확인</strong>: $h=1 \implies 2^1-1=1$, $h=2 \implies 1+2=3=2^2-1$, $h=5 \implies 31=2^5-1$.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <ul>
+    <li><strong>$2^h$와 $2^h - 1$을 헷갈리면:</strong> $-1$을 빼먹어 <strong>(3) 32개</strong>를 골라요. 루트 층(1개)이 홀수라 전체 최대는 절대 짝수가 될 수 없어요.</li>
+    <li><strong>마지막 층의 용량만 계산하면:</strong> 레벨 5의 한 층 최대인 $2^{5-1} = 16$만 구해 놓고 위층(1~4층) 합을 빼먹기 쉬워요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “높이 $h$ 이진 트리의 최대 노드”를 보면 → $1 + 2 + 4 + \cdots$ 를 직접 적어 $2^h$가 아닌 <strong>홀수($2^h - 1$)</strong>가 나오는지 확인하나요?</li>
+    <li>높이가 4로 바뀐다면 네 보기 중 함정인 $2^4$ 값은 얼마이고 정답은 얼마가 되나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>레벨 $i$ 최대 $2^{i-1}$개, 높이 $h$ 전체 최대 $2^h - 1$개.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>레벨 1~5 최대 <code>1, 2, 4, 8, 16</code>을 적고 더해요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p><strong>(4) 31개</strong>. 32는 $2^5$로 1 초과, 26·8은 최대 아님.</p></div>
+  <div class="summary-group"><h4>검산·고지</h4><p>루트(1)+짝수 층 합 = 항상 홀수(31). 교과서 공식 답은 없어요.</p></div>
+</div>
 </article><article class="topic" id="p9"><h3>P9. 이진 트리의 간선 수·높이·노드 수 범위</h3><p class="panel-meta">lecture-s07-p5-binary-tree-bounds · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1029_Tree-%EB%AC%B8%EC%A0%9C.pdf#page=9">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p9"><div class="layer formal" data-source-problem="p9"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S7 p5</p><p>이진 트리는 모든 노드의 자식이 2개 이하인 트리예요. 루트의 레벨은 1이고, 높이는 트리의 최대 레벨이에요.</p></div><h4>구할 것</h4><div data-source-field="ask" data-labeled=""><ol>
       <li>(a) 노드가 <code>12</code>개인 이진 트리의 간선(edge)은 몇 개인가요?</li>
       <li>(b) 노드가 <code>12</code>개인 이진 트리의 높이는 최대 얼마, 최소 얼마인가요?</li>
@@ -731,19 +1234,94 @@
       <li>p5: "높이가 h인 이진트리의 경우, 최소 h개의 노드를 가지며 최대 2^h-1개의 노드" (경사 트리(skewed tree) 그림과 함께)</li>
       <li>p6: n개의 노드를 가지는 이진트리의 높이는 최대 n, 최소 h = upper_bound{log2(n+1)}</li>
       <li>1029 수업에서는 노드 7개 → 간선 6개, 높이 3 → 최대 노드 7개로 따라가 봤어요.</li>
-    </ul></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>그림 없이 숫자만으로 이진 트리의 성질을 쓰는 문제예요. (a) 노드 12개일 때 간선 수, (b) 노드 12개일 때 가능한 높이의 최대와 최소, (c) 높이 4일 때 가능한 노드 수의 최소와 최대를 구해요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘간선’, ‘높이는 최대·최소’, ‘노드 수는 최소·최대’라는 단서가 S7 p5–p6의 이진 트리 성질 세 줄과 하나씩 짝지어져요.</p><ul><li>(a) <strong>간선(edge) 수</strong>: 노드가 $n$개면 간선은 $n-1$개예요. 루트를 뺀 모든 노드는 자기 부모와 이어지는 선이 정확히 하나라서요.</li><li>(b) <strong>노드 $n$개의 높이</strong>: 최대 $n$, 최소 $\lceil \log_2(n+1) \rceil$이에요. 최대는 레벨마다 하나씩 두는 경사 트리(skewed tree), 최소는 위 레벨부터 꽉 채운 모양에서 나와요. $\lceil x \rceil$는 $x$ 이상인 가장 작은 정수(올림)이고, 슬라이드의 upper_bound가 이 뜻이에요.</li><li>(c) <strong>높이 $h$의 노드 수</strong>: 최소 $h$, 최대 $2^h - 1$이에요. 레벨 $i$에는 최대 $2^{i-1}$개가 들어가요.</li></ul><p>범위를 묻는 문제라서 “가장 길쭉한 모양”과 “가장 꽉 찬 모양” 두 극단을 그려 보는 방법을 골라요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s1-props">간선 수와 노드 수의 범위</a>, <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s1-height">노드 수로 높이 구하기</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>“$n = 12$, 간선 $= n - 1$”을 적고, 그 아래에 두 극단 모양의 이름을 써 둬요. “가장 높게: 경사 트리 / 가장 낮게: 위에서부터 꽉 채움.”</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 노드 12개 중 루트 하나만 부모가 없어요. 나머지 11개는 각자 부모와 이어지는 간선이 하나씩이에요.</p><p>$$12 - 1 = 11$$</p><p>간선은 <strong>11개</strong>예요.</p></div>
-<div data-subpart="b"><p>(b) 최대: 노드를 레벨마다 하나씩만 두면 레벨 1부터 12까지 한 줄로 이어진 경사 트리가 돼요. 자식이 하나뿐이어도 2개 이하라 이진 트리예요. 높이는 최대 <strong>12</strong>예요.</p><p>최소: 높이를 낮추려면 위 레벨부터 꽉 채워요. 높이 $h$로 담을 수 있는 최대 개수 $2^h - 1$과 12를 비교해요.</p><p>$$2^3 - 1 = 7 &lt; 12 \le 15 = 2^4 - 1$$</p><p>높이 3으로는 7개밖에 못 담고, 높이 4면 15개까지 담아요. 그래서 최소 높이는 <strong>4</strong>예요. 슬라이드 식으로는 $\log_2 13 \approx 3.70$이라 $\lceil \log_2(12+1) \rceil = 4$예요.</p></div>
-<div data-subpart="c"><p>(c) 최소: 높이가 4이려면 레벨 1~4에 노드가 적어도 하나씩 있어야 해요. 레벨마다 하나씩 둔 경사 트리면 <strong>4개</strong>예요.</p><p>최대: 레벨 1~4를 모두 꽉 채워요.</p><p>$$1 + 2 + 4 + 8 = 15 = 2^4 - 1$$</p><p>최대 <strong>15개</strong>예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>정답: (a) 11 (b) 최대 12, 최소 4 (c) 최소 4, 최대 15. 이 문항은 강의 예제를 바탕으로 한 자체 출제라 외부 공식 답은 없고, 아래 별도 계산으로 확인했어요.</p><p>별도 계산은 노드 수마다 왼쪽·오른쪽 서브트리에 노드를 나눠 주는 모든 경우를 따져 가능한 높이를 모았어요.</p>
-<div data-subpart="a"><p>(a) P1 그림에서도 노드 19개에 간선 18개였고, 같은 규칙이 성립했어요. 12개면 11개예요.</p></div>
-<div data-subpart="b"><p>(b) 노드 12개 이진 트리의 가능한 높이는 4, 5, …, 12였어요. 최소 4, 최대 12가 같아요.</p></div>
-<div data-subpart="c"><p>(c) 높이 4가 가능한 노드 수는 4, 5, …, 15였어요. 최소 4, 최대 15가 같아요. (b)와도 맞물려요. 12는 4와 15 사이라서 높이 4로 만들 수 있어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>(a) 간선 수를 노드 수와 같은 12로 쓰기 쉬워요. 루트 위로는 선이 없어요.</li><li>(b) $\log_2 12 \approx 3.58$을 올려 4를 얻으면 이번엔 우연히 맞지만, 식은 $\log_2(n+1)$이에요. 노드 8개라면 $\lceil \log_2 8 \rceil = 3$이 나오지만 높이 3에는 7개까지만 들어가서, 실제 최소 높이는 $\lceil \log_2 9 \rceil = 4$예요. 또 올림을 빼고 3.70을 버려 3으로 쓰면 틀려요.</li><li>(c) 최소를 1로 쓰면 안 돼요. 높이가 4라는 조건 때문에 레벨마다 최소 하나씩, 4개가 필요해요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>간선 수, 노드 $n$개의 높이 범위, 높이 $h$의 노드 수 범위를 공식으로 적으세요.</li><li>경사 트리와 꽉 찬 트리를 그려 어느 극단이 어떤 값을 주는지 표시하세요.</li><li>$n = 12$, $h = 4$를 대입하세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>$n = 12$, 간선 $= n - 1$을 적고, 경사 트리와 꽉 찬 트리 두 극단을 떠올려요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>간선 수: $n - 1$</li><li>노드 $n$개의 높이: 최대 $n$, 최소 $\lceil \log_2(n+1) \rceil$</li><li>높이 $h$의 노드 수: 최소 $h$, 최대 $2^h - 1$</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>(a) 11 (b) 최대 12, 최소 4 (c) 최소 4, 최대 15. 모든 모양을 따진 계산과 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>$2^3 - 1 = 7 &lt; 12 \le 15$라서 최소 높이 4예요.</li><li>경사 트리도 자식이 2개 이하라 이진 트리예요.</li></ul></div></div>
+    </ul></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>이진 트리에서 <strong>(a) 노드 12개의 간선 수</strong>, <strong>(b) 노드 12개의 최대·최소 높이</strong>, <strong>(c) 높이 4의 최소·최대 노드 수</strong>를 구해요(강의 예제 기반 자체 출제).</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이유와 조건</th></tr></thead>
+      <tbody>
+        <tr><td>(a) 노드 $n$개의 간선 수</td><td> 간선 수 $= n - 1$ </td><td>루트를 뺀 나머지 $n-1$개 노드가 각자 부모와 1개의 간선으로 이어져요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s1-props">정리노트</a>).</td></tr>
+        <tr><td>(b) 노드 $n$개의 높이 범위</td><td> 최대 $n$ / 최소 $\lceil \log_2(n+1) \rceil$ </td><td>가장 길쭉한 경사 트리(skewed)가 최대, 위에서부터 꽉 채운 모양이 최소 높이를 줘요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s1-height">정리노트</a>).</td></tr>
+        <tr><td>(c) 높이 $h$의 노드 수 범위</td><td> 최소 $h$ / 최대 $2^h - 1$ </td><td>높이 $h$를 만들려면 층마다 최소 1개(총 $h$개)가 필요하고, 꽉 채우면 $2^h - 1$개까지 들어가요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>n = 12 → 간선 = n - 1
+가장 높게(최소 폭): 1층 1개씩 경사 트리 | 가장 낮게(최대 폭): 위층부터 꽉 채움</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 노드 12개의 간선 수</strong>: 루트 1개만 부모가 없고 나머지 11개 노드는 각자 부모로 이어진 간선을 하나씩 가지므로 $12 - 1 = \mathbf{11}$개예요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 노드 12개의 최대·최소 높이</strong></p>
+    <ul>
+      <li><strong>최대 높이</strong>: 한 층에 노드를 1개씩만 배치한 경사 트리(자식 수 $\le 1 \le 2$이므로 이진 트리임)로 만들면 레벨 1~12까지 뻗어 <strong>12</strong>예요.</li>
+      <li><strong>최소 높이</strong>: 위층부터 최대 수용량($2^h - 1$)으로 채워 비교하면 높이 3은 $2^3 - 1 = 7 &lt; 12$로 부족하고, 높이 4는 $2^4 - 1 = 15 \ge 12$로 12개를 모두 담아요. 공식으로도 $\lceil \log_2(12+1) \rceil = \lceil \log_2 13 \rceil = \mathbf{4}$($3 &lt; \log_2 13 &lt; 4$)예요.</li>
+    </ul>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 높이 4의 최소·최대 노드 수</strong></p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>극단 모양</th><th>레벨 1~4 배치</th><th>노드 수 합계</th></tr></thead>
+        <tbody>
+          <tr><td><b>최소 (경사 트리)</b></td><td>1, 1, 1, 1</td><td><b>4개</b></td></tr>
+          <tr><td><b>최대 (포화 이진 트리)</b></td><td>1, 2, 4, 8</td><td><b>15개</b> ( $2^4 - 1$ )</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 완성 답: 11</strong> — P1 그림의 19노드 트리가 18간선($19-1$)인 것과 같은 규칙이며, 작은 예($n=1 \implies 0$, $n=2 \implies 1$)와도 일치해요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 완성 답: 최대 12, 최소 4</strong> — 가능한 높이 범위는 $4 \sim 12$이고, 부등식 $2^{4-1}-1 = 7 &lt; 12 \le 15 = 2^4-1$에서 최소 높이 4가 유일하게 확정돼요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 완성 답: 최소 4, 최대 15</strong> — 가능한 노드 수 범위는 $4 \sim 15$이며, (b)의 $n=12$가 정확히 $4 \le 12 \le 15$ 안에 들어와 (b)와 (c)가 서로 맞물려요. 강의 예제 기반 자체 출제라 외부 공식 답은 없어요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <ul>
+    <li><strong>(a) 간선 수를 노드 수 그대로 적으면:</strong> 루트 위에도 간선이 있는 셈이 되어 <code>12</code>로 틀려요.</li>
+    <li><strong>(b) $\lceil \log_2 n \rceil$으로 잘못 외우면:</strong> $n=12$에선 우연히 4로 같아 보이지만, <strong>$n=8$ 반례</strong>에서 $\lceil \log_2 8 \rceil = 3$이 나와 버려요. 높이 3엔 최대 7개밖에 못 들어가므로 실제 최소 높이는 $\lceil \log_2(8+1) \rceil = 4$예요.</li>
+    <li><strong>(c) 최소를 1로 적으면:</strong> 노드가 1개면 높이가 1이라 “높이 4” 조건을 어겨요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>문제에서 “최대 높이·최소 노드”를 보면 → 먼저 <strong>한 층에 1개씩 놓는 경사 트리</strong>를 떠올릴 수 있나요?</li>
+    <li>최소 높이 공식이 $\lceil \log_2 n \rceil$이 아니라 $\lceil \log_2(n+1) \rceil$임을 $n = 8$ 대입으로 바로 증명할 수 있나요?</li>
+    <li>(b)에서 구한 최소 높이 $4$와 (c)의 높이 $4$ 최대 노드 $15$가 서로 모순 없이 맞물리는지 확인했나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>간선 $n-1$ / 높이 $n$개: $\lceil\log_2(n+1)\rceil \sim n$ / 노드 $h$층: $h \sim 2^h-1$.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>$n=12 \implies$ 간선 $11$, 두 극단(경사 트리 vs 꽉 채운 트리)으로 범위를 잡아요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>(a) 11 (b) 최대 12, 최소 4 ($7 &lt; 12 \le 15$) (c) 최소 4, 최대 15.</p></div>
+  <div class="summary-group"><h4>검산·고지</h4><p>$n=12 \in [4,15]$ 상호 일치. $n=8$ 반례로 $\log_2(n+1)$ 확인. 자체 출제 문항이에요.</p></div>
+</div>
 </article><article class="topic" id="p10"><h3>P10. 완전 이진 트리 판정과 다음 노드 자리</h3><p class="panel-meta">lecture-s07-p7-complete-binary-tree · <a href="%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1029_Tree-%EB%AC%B8%EC%A0%9C.pdf#page=10">원 문제 보기</a></p><div class="problem-pane" data-problem-for="p10"><div class="layer formal" data-source-problem="p10"><div data-source-field="conditions"><p><span class="badge">강의 예제 기반 자체 출제</span> S7 p7</p><p>이진 트리는 모든 노드의 자식이 2개 이하인 트리예요. 높이가 h일 때 레벨 1 ~ h-1이 꽉 차 있고 마지막 레벨 h가 왼쪽부터 오른쪽으로 순서대로 채워져 있으면 완전 이진 트리, 모든 레벨이 꽉 차 있으면 포화 이진 트리라고 해요. 아래 트리를 보고 답해 보세요.</p><figure class="figure"><svg id="p10-source-fig-p10-tree" viewBox="0 0 480 246" role="img" aria-label="루트 A의 왼쪽 자식 B, 오른쪽 자식 C. B의 왼쪽 D, 오른쪽 E. C의 왼쪽 F, 오른쪽 G. D의 왼쪽 H, 오른쪽 I. E의 왼쪽 자식 J. 노드 10개, 높이 4.">
 <line class="fig-ink" x1="224.9" y1="37.8" x2="135.1" y2="84.2"/>
 <line class="fig-ink" x1="255.1" y1="37.8" x2="344.9" y2="84.2"/>
@@ -786,19 +1364,92 @@
       <li>p4: 이진 트리는 모든 노드가 2개 이하의 서브트리를 가지고, 서브트리는 공집합일 수 있음</li>
       <li>p8 앞부분: 노드 번호는 위에서 아래로, 같은 레벨에서는 왼쪽부터 매김</li>
       <li>1029 수업에서는 G까지 찬 상태에서 H부터 왼쪽부터 채워 가며, 그다음 K가 E의 오른쪽 자식으로 들어간다고 따라가 봤고, 왼쪽부터 채우지 않은 트리를 기타 이진 트리라고 불렀어요.</li>
-    </ul></details></div><div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>노드 A~J 10개, 높이 4인 이진 트리 그림을 보고 세 가지를 판단해요. (a) 포화 이진 트리인지 완전 이진 트리인지, (b) 완전 이진 트리 모양을 지키며 K를 하나 더 넣을 자리, (c) J를 E의 오른쪽 자식으로 옮긴 뒤에도 이진 트리·완전 이진 트리인지예요. 그림에서 J는 E의 <em>왼쪽</em> 자식이에요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘포화’, ‘완전’, ‘왼쪽·오른쪽 자식 자리’라는 단서에서 S7 p7의 분류와 p4의 이진 트리 정의를 떠올려요.</p><ul><li><strong>이진 트리(binary tree)</strong>: 모든 노드의 자식이 2개 이하이고, 서브트리는 비어 있을 수 있어요. 왼쪽 자식과 오른쪽 자식은 서로 다른 자리로 구별해요.</li><li><strong>포화 이진 트리(full binary tree)</strong>: 모든 레벨이 꽉 찬 것이에요. 높이 $h$면 노드가 $2^h - 1$개예요.</li><li><strong>완전 이진 트리(complete binary tree)</strong>: 레벨 1 ~ $h-1$은 꽉 차 있고, 마지막 레벨 $h$는 왼쪽부터 오른쪽으로 빈칸 없이 순서대로 찬 것이에요.</li><li><strong>기타 이진 트리</strong>: 이진 트리는 맞지만 위 두 모양이 아닌 것이에요(1029 수업 설명).</li></ul><p>완전 여부는 “마지막 레벨의 자리를 왼쪽부터 늘어놓았을 때 중간에 빈칸이 있나”로 판단해요. 그래서 마지막 레벨의 자리를 한 줄로 적는 방법을 골라요. 개념 위치: <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s2-kinds">포화·완전·기타 이진 트리</a>, <a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s2-numbering">노드 번호 매기기</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>레벨별 노드를 적어요. 레벨 1: A / 레벨 2: B, C / 레벨 3: D, E, F, G / 레벨 4: H, I, J.</p><p>그 아래에 레벨 4의 여덟 자리를 왼쪽부터 써요. D왼 · D오 · E왼 · E오 · F왼 · F오 · G왼 · G오.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 레벨 1~3의 노드 수는 1, 2, 4개로 각 레벨의 최대 $2^{i-1}$과 같아서 꽉 차 있어요.</p><p>레벨 4의 여덟 자리에 H, I, J를 놓으면 다음과 같아요.</p><table><thead><tr><th>D왼</th><th>D오</th><th>E왼</th><th>E오</th><th>F왼</th><th>F오</th><th>G왼</th><th>G오</th></tr></thead><tbody><tr><td>H</td><td>I</td><td>J</td><td>빈칸</td><td>빈칸</td><td>빈칸</td><td>빈칸</td><td>빈칸</td></tr></tbody></table><p>앞 세 칸이 빈틈없이 차 있고 그 뒤는 모두 비어 있어요. 왼쪽부터 순서대로 채워졌으니 <strong>완전 이진 트리</strong>예요.</p><p>포화 이진 트리라면 레벨 4까지 꽉 차서 $2^4 - 1 = 15$개여야 해요. 노드가 10개라 <strong>포화 이진 트리는 아니에요</strong>.</p></div>
-<div data-subpart="b"><p>(b) 완전 이진 트리를 유지하려면 새 노드는 마지막 레벨의 빈칸 중 가장 왼쪽에 들어가야 해요. 위 표에서 첫 빈칸은 E오예요.</p><p>그래서 K는 <strong>E의 오른쪽 자식</strong> 자리에 넣어요. 위에서 아래로, 같은 레벨에서는 왼쪽부터 번호를 붙이면 A가 1번, J가 10번이고 K는 그다음 11번째 노드가 돼요.</p></div>
-<div data-subpart="c"><p>(c) J를 E의 오른쪽으로 옮기면 E는 오른쪽 자식 J 하나만 가져요. 모든 노드의 자식이 여전히 2개 이하이니 <strong>이진 트리는 맞아요</strong>.</p><p>레벨 4의 자리는 이렇게 바뀌어요: H · I · 빈칸(E왼) · J(E오) · 빈칸 …. J 앞에 빈칸이 끼어서 “왼쪽부터 순서대로 채워짐”이 깨져요. 그래서 <strong>완전 이진 트리가 아니고</strong>, 수업에서 부른 이름으로는 기타 이진 트리예요.</p></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>정답: (a) 완전 이진 트리(포화 이진 트리는 아님) (b) E의 오른쪽 자식 (c) 이진 트리는 맞지만 완전 이진 트리는 아님, 기타 이진 트리. 강의 예제 기반 자체 출제라 외부 공식 답은 없고, 아래 별도 계산으로 확인했어요.</p><p>별도 계산은 그림 좌표로 부모와 왼쪽·오른쪽 자식을 다시 만든 뒤, 레벨마다 차 있는 자리를 모아 정의대로 판정했어요.</p>
-<div data-subpart="a"><p>(a) 계산 결과 노드 10개, 높이 4, 포화 아님, 완전 맞음이었어요. 레벨별 개수 $1+2+4+3 = 10$도 그림과 맞아요.</p></div>
-<div data-subpart="b"><p>(b) 레벨 4의 첫 빈칸은 왼쪽에서 네 번째 자리였고 그 부모는 E, 방향은 오른쪽이었어요. K를 넣은 뒤 다시 판정해도 완전 이진 트리였어요. 1029 수업에서 같은 모양을 따라가며 K를 E의 오른쪽 자식에 넣은 것과도 같아요.</p></div>
-<div data-subpart="c"><p>(c) J를 오른쪽으로 바꾼 트리는 모든 노드의 자식이 2개 이하였고, 레벨 4에서 차 있는 자리가 첫째·둘째·넷째라 완전 판정이 거짓이었어요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>(a) 마지막 레벨이 덜 찼다고 “완전도 아니다”라고 하기 쉬워요. 완전 이진 트리는 마지막 레벨이 왼쪽부터 차 있기만 하면 돼요.</li><li>(b) F의 왼쪽처럼 “아무 빈자리”에 넣으면 E오가 빈 채로 남아 완전 모양이 깨져요.</li><li>(c) 노드 수와 높이가 그대로라 같은 모양이라고 생각하기 쉬워요. 이진 트리에서는 왼쪽과 오른쪽 자리가 달라서, 빈칸의 위치가 판정을 바꿔요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>레벨별 노드 수를 적고 레벨 1~3이 꽉 찼는지 확인하세요.</li><li>마지막 레벨의 여덟 자리를 왼쪽부터 쓰고 H, I, J를 놓으세요.</li><li>첫 빈칸으로 K의 자리를 정하고, J를 옮긴 경우 빈칸이 어디에 생기는지 표시하세요.</li></ol></div>
-<div class="sum" hidden=""><div class="summary-group"><h4>첫 줄</h4><p>레벨별 노드를 적고, 레벨 4의 여덟 자리 D왼 · D오 · E왼 · E오 · …를 왼쪽부터 써요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>이진 트리: 모든 노드의 자식 2개 이하, 왼쪽·오른쪽 자리 구별</li><li>포화: 모든 레벨 꽉 참, 노드 $2^h - 1$개</li><li>완전: 레벨 1 ~ $h-1$ 꽉 참, 마지막 레벨 왼쪽부터 빈칸 없이</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>(a) 완전 이진 트리, 포화 아님(10 ≠ 15) (b) E의 오른쪽 자식 (c) 이진 트리지만 완전 아님 → 기타 이진 트리. 좌표로 다시 만든 트리의 정의 판정과 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>새 노드는 마지막 레벨의 가장 왼쪽 빈칸에 들어가요.</li><li>마지막 레벨 중간에 빈칸이 생기면 완전 이진 트리가 아니에요.</li></ul></div></div>
+    </ul></details></div><div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>노드 10개(<code>A~J</code>, <code>J</code>는 <code>E</code>의 <strong>왼쪽</strong> 자식), 높이 4인 이진 트리에서 <strong>(a) 포화/완전 여부</strong>, <strong>(b) 완전 유지하며 <code>K</code>를 넣을 자리</strong>, <strong>(c) <code>J</code>를 <code>E</code>의 오른쪽으로 옮긴 뒤 이진·완전 여부</strong>를 판정해요(강의 예제 기반 자체 출제).</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·정의</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>포화 vs 완전 이진 트리</td><td>포화(모든 층 꽉 참) / 완전(1~ $h-1$ 층 꽉 참 + 마지막 층 왼쪽부터)</td><td>위층(1~3)과 마지막 층(4)의 칸 채움 상태를 분리해 봐야 두 분류를 헷갈리지 않아요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s2-kinds">정리노트</a>).</td></tr>
+        <tr><td><code>K</code> 넣을 자리</td><td>레벨 순서(위→아래, 왼쪽→오른쪽) 다음 빈칸</td><td>완전 이진 트리는 마지막 레벨의 가장 왼쪽 빈칸부터 채워야 연속성이 유지돼요(<a href="%EC%A0%95%EB%A6%AC%EB%85%B8%ED%8A%B8_1029_Tree.html#s2-numbering">정리노트</a>).</td></tr>
+        <tr><td><code>J</code>를 <code>E</code>의 오른쪽으로 이동</td><td>이진 트리(자식 $\le 2$, 왼/오 구별) / 기타 이진 트리</td><td>이진 트리는 왼쪽·오른쪽 자리가 별개이므로 중간에 빈칸이 끼면 완전이 깨져 기타 이진 트리가 돼요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>레벨 1: A (1/1) | 레벨 2: B, C (2/2) | 레벨 3: D, E, F, G (4/4)
+레벨 4 (8칸): [D왼: H] [D오: I] [E왼: J] [E오: _] [F왼: _] [F오: _] [G왼: _] [G오: _]</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <p>레벨 1~3은 모두 $1+2+4 = 7$개로 꽉 차 있으므로, (a)~(c)의 판정은 모두 <strong>레벨 4의 여덟 칸</strong>만 비교하면 결정돼요.</p>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>경우</th><th>D왼</th><th>D오</th><th>E왼</th><th>E오</th><th>F왼~G오</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr><td><b>(a) 원래 그림</b></td><td>H</td><td>I</td><td>J</td><td>빈칸</td><td>빈칸</td><td>앞 3칸 연속 → <b>완전 O</b>, 10≠15 → <b>포화 X</b></td></tr>
+        <tr><td><b>(b) K 추가</b></td><td>H</td><td>I</td><td>J</td><td><b>K</b></td><td>빈칸</td><td>첫 빈칸 <b>E의 오른쪽</b>에 넣으면 4칸 연속 유지</td></tr>
+        <tr><td><b>(c) J→E오 이동</b></td><td>H</td><td>I</td><td><b>빈칸</b></td><td>J</td><td>빈칸</td><td><code>E왼</code> 중간 공백 → <b>이진 O, 완전 X (기타)</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div data-subpart="a">
+    <p><strong>(a) 포화/완전 판정</strong>: 레벨 1~3이 꽉 차 있고 레벨 4가 왼쪽부터 <code>H, I, J</code> 세 칸을 빈틈없이 채웠으므로 <strong>완전 이진 트리</strong>예요. 반면 포화 이진 트리(높이 4)는 $2^4 - 1 = 15$개여야 하므로 노드 10개인 이 트리는 <strong>포화 이진 트리가 아니에요</strong>.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) <code>K</code>를 넣을 자리</strong>: 레벨 4에서 가장 왼쪽 빈칸은 네 번째 자리인 <strong><code>E</code>의 오른쪽 자식</strong>이에요. 위에서 아래로, 같은 레벨 왼쪽부터 번호를 매기면 <code>A</code>=1 … <code>J</code>=10 다음 11번째 노드가 돼요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) <code>J</code>를 <code>E</code>의 오른쪽으로 옮긴 뒤</strong>: <code>E</code>는 오른쪽 자식 <code>J</code> 하나만 가지므로 모든 노드의 자식 수 $\le 2$ 조건을 만족해 <strong>이진 트리는 맞아요</strong>. 하지만 레벨 4가 <code>H, I, 빈칸, J</code>가 되어 왼쪽부터 차례로 채운 조건이 깨지므로 <strong>완전 이진 트리는 아니에요</strong>(수업 분류상 <strong>기타 이진 트리</strong>).</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 10초 자가 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 완성 답: 완전 이진 트리(포화 아님)</strong> — 레벨별 노드 수 합 $1 + 2 + 4 + 3 = 10$이 그림 노드 수(10)와 같고, 포화 기준 $2^4 - 1 = 15$보다 5개 적으므로 포화가 아니에요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 완성 답: <code>E</code>의 오른쪽 자식</strong> — <code>D왼(1)·D오(2)·E왼(3)</code> 다음 네 번째 자리는 부모 <code>E</code>의 오른쪽이며, <code>K</code>를 넣으면 레벨 4의 점유 칸이 앞 4칸 연속으로 이어져 완전 조건이 그대로 유지돼요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 완성 답: 이진 트리는 맞지만 완전 이진 트리는 아님(기타 이진 트리)</strong> — 각 노드 차수는 최대 2로 이진 트리 조건은 유지되지만, 레벨 4에서 채워진 칸 번호가 1·2·4번째로 3번째 칸(<code>E왼</code>)에 공백이 생겨 완전 판정이 거짓이 돼요. 강의 예제 기반 자체 출제라 외부 공식 답은 없어요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <ul>
+    <li><strong>(a) 마지막 층이 비었다고 완전도 아니라고 쓰면:</strong> 포화(전부 꽉 참)와 완전(마지막 층 왼쪽부터)의 차이를 지워 버려 오답이 돼요.</li>
+    <li><strong>(b) <code>F</code>의 왼쪽 같은 아무 빈칸에 넣으면:</strong> <code>E</code>의 오른쪽이 빈 채로 남아 완전 이진 트리가 깨져요.</li>
+    <li><strong>(c) 노드 수·높이가 같다고 완전이라 답하면:</strong> 일반 트리와 달리 이진 트리는 왼쪽·오른쪽 자식이 구별되므로 <code>E왼</code>의 빈칸 하나만으로 완전 이진 트리가 아니게 돼요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>완전 이진 트리 판정 문제를 보면 → 먼저 <strong>마지막 레벨의 $2^{h-1}$개 칸을 왼쪽부터 한 줄로 써서</strong> 빈칸 위치를 눈으로 확인하나요?</li>
+    <li>만약 처음 트리에서 <code>I</code>(<code>D</code>의 오른쪽)를 지우고 <code>J</code>만 남긴다면 이 트리는 완전 이진 트리인가요?</li>
+    <li><code>K</code>를 넣은 뒤 그다음 12번째 노드 <code>L</code>은 어느 노드의 어느 쪽 자식 자리에 들어가나요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden="">
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>포화: 전 층 꽉 참($2^h-1$) / 완전: $1\sim h-1$ 꽉 참 + 마지막 층 왼쪽부터 / 이진: 왼·오 구별.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>레벨 4의 8칸 <code>[D왼 H, D오 I, E왼 J, E오 _, ...]</code>를 왼쪽부터 나열해요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>(a) 완전 O, 포화 X (10≠15) (b) <code>E</code>의 오른쪽 자식 (c) 이진 O, 완전 X(기타).</p></div>
+  <div class="summary-group"><h4>검산·고지</h4><p>(b) 추가 후 앞 4칸 연속, (c) 이동 후 3번째 칸(<code>E왼</code>) 공백. 자체 출제 문항이에요.</p></div>
+</div>
 </article></section>
   </main>
   <footer>원 문제·정리노트·PDF는 보존해요.</footer>

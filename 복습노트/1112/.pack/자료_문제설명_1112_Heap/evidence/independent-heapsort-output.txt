@@ -1,6 +1,5 @@
-# 컴파일: cc -std=c11 -Wall -Wextra -fsanitize=address,undefined -g independent_heapsort.c (Apple clang version 21.0.0 (clang-2100.4.1.1))
-# 컴파일 경고/오류: 0 바이트
-# 실행: UBSAN_OPTIONS=print_stacktrace=1:halt_on_error=1 (macOS 는 LeakSanitizer 미지원이라 detect_leaks 끔)
+# 컴파일: gcc -std=c11 -Wall -Wextra -Werror independent_heapsort.c
+# 컴파일 경고/오류: 0
 heap_sort(a,5) 최종 a[] = [1, 7, 8, 20, 23]
 insert  1 → heap[1..1] = [1]
 insert 23 → heap[1..2] = [23, 1]

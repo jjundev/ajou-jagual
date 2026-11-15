@@ -1,8 +1,103 @@
-<div class="layer eli5" data-explanation="understand"><h4>문제를 읽어 볼게요</h4><p>수식 a * b + c / d의 트리를 큐로 레벨 순회해 (a) 방문 순서, (b) <code>*</code>를 꺼내고 자식을 넣은 직후의 큐, (c) 같은 트리의 전위·중위·후위 결과를 적는 문제예요.</p></div>
-<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>(a)(b) ‘레벨 순회’와 ‘큐’라는 단서에서 S7 p13을 떠올려요. 레벨 순회(level-order traversal)는 표준 순회 방법은 아니고, 위에서 아래로, 같은 층에서는 왼쪽에서 오른쪽으로 방문해요. 이 순서를 지키려고 큐(queue)의 선입선출(FIFO)을 써요. 먼저 넣은 위층 노드가 먼저 나오고, 그 자식은 큐 뒤에 줄을 서서 같은 층의 나머지 노드 다음에 나와요.</p><p>(c) ‘전위·중위·후위’라는 단서에서 S7 p9의 VLR, LVR, LRV를 떠올려요. 이 트리는 수식 트리(expression tree)라서 S7 p14처럼 세 순회 결과가 각각 전위 표기, 중위 표기, 후위 표기가 돼요.</p><p>개념 위치: <a href="정리노트_1102_Tree.html#s1-levelorder">레벨 순회와 큐</a>, <a href="정리노트_1102_Tree.html#s2-expr-tree">수식 트리</a>.</p></div>
-<div class="layer formal" data-explanation="start"><h4>첫 줄을 이렇게 써요</h4><p>상태 표의 첫 행을 적어요. “시작 | 넣은 자식 없음 | 큐: +”.</p></div>
-<div class="layer formal" data-explanation="solve"><h4>왜 이렇게 푸는지 함께 따라가요</h4><div data-subpart="a"><p>(a) 큐 앞에서 하나 꺼내 방문하고, 그 노드의 왼쪽·오른쪽 자식을 차례로 큐 뒤에 넣는 일을 큐가 빌 때까지 되풀이해요.</p><div class="table-wrap"><table><thead><tr><th>꺼내 방문</th><th>뒤에 넣은 자식</th><th>큐(앞 → 뒤)</th></tr></thead><tbody><tr><td>시작</td><td>-</td><td>+</td></tr><tr><td>+</td><td>*, /</td><td>* /</td></tr><tr><td>*</td><td>a, b</td><td>/ a b</td></tr><tr><td>/</td><td>c, d</td><td>a b c d</td></tr><tr><td>a</td><td>없음</td><td>b c d</td></tr><tr><td>b</td><td>없음</td><td>c d</td></tr><tr><td>c</td><td>없음</td><td>d</td></tr><tr><td>d</td><td>없음</td><td>(빈 큐)</td></tr></tbody></table></div><p>꺼낸 순서를 그대로 읽으면 <strong>+ * / a b c d</strong>예요.</p></div><div data-subpart="b"><p>(b) 표의 셋째 행이에요. <code>*</code>를 꺼낼 때 큐에는 <code>/</code>가 남아 있었고, 그 뒤에 <code>*</code>의 자식 <code>a</code>, <code>b</code>가 붙어요. 그래서 큐는 앞에서부터 <strong>[/ a b]</strong>예요. <code>/</code>가 a, b보다 앞에 있으니 같은 층의 <code>/</code>가 아래층보다 먼저 방문돼요.</p></div><div data-subpart="c"><p>(c) 서브트리를 덩어리로 묶어 적어요.</p><ul><li>전위 VLR: + 다음 왼쪽 서브트리(* a b), 오른쪽 서브트리(/ c d) → <strong>+ * a b / c d</strong></li><li>중위 LVR: (a * b), +, (c / d) → <strong>a * b + c / d</strong>. 원래 수식과 같은 모양이에요.</li><li>후위 LRV: (a b *), (c d /), + → <strong>a b * c d / +</strong></li></ul></div></div>
-<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><p>강의 예제 기반 자체 출제라 외부 공식 답은 없고, 슬라이드와 별도 계산으로 확인했어요.</p><div data-subpart="a"><p>(a) + * / a b c d. S7 p13 그림의 방문 번호 1~7(+ 1, * 2, / 3, a 4, b 5, c 6, d 7)과 같아요. 큐로 직접 돌리는 별도 프로그램의 결과도 같았어요.</p></div><div data-subpart="b"><p>(b) [/ a b]. S7 p13 오른쪽 그림에서 <code>*</code>를 꺼낸 줄의 큐 내용(/ a b)과 같아요.</p></div><div data-subpart="c"><p>(c) 전위 + * a b / c d, 중위 a * b + c / d, 후위 a b * c d / +. 별도 프로그램의 재귀 순회 결과와 같아요. 후위 결과를 계산 순서로 읽으면 (a*b), (c/d), 둘을 + → (a*b)+(c/d)로 원래 수식이에요.</p></div></div>
-<div class="layer warn" data-explanation="pitfall"><h4>여기서 헷갈리기 쉬워요</h4><ul><li>(a) 큐 대신 스택처럼 마지막에 넣은 것을 먼저 꺼내면 층 순서가 깨져요. 큐는 먼저 넣은 것이 먼저 나와요.</li><li>(b) <code>*</code>를 꺼내면서 <code>/</code>도 같이 사라진다고 생각하기 쉬워요. 한 번에 하나만 꺼내므로 <code>/</code>는 큐 앞에 남아 있어요.</li><li>(c) 중위 결과에서 괄호가 없어도 트리 구조는 (a*b)+(c/d)예요. 이 경우 연산자 우선순위와 같아서 원래 수식과 같아 보여요.</li></ul></div>
-<div class="layer formal" data-explanation="retry"><h4>설명을 닫고 다시 해 봐요</h4><ol><li>큐 상태 표를 처음부터 다시 그려 보세요.</li><li>같은 트리의 VLR, LVR, LRV를 서브트리 덩어리로 묶어 적어 보세요.</li></ol></div>
-<div class="sum" hidden><div class="summary-group"><h4>첫 줄</h4><p>큐에 루트 + 하나를 넣고 상태 표를 시작해요.</p></div><div class="summary-group"><h4>떠올릴 개념·공식</h4><ul><li>레벨 순회: 표준 순회는 아님, 큐(FIFO)로 위층·왼쪽부터 방문</li><li>꺼내 방문 → 왼쪽·오른쪽 자식을 큐 뒤에 넣기, 큐가 빌 때까지</li><li>수식 트리의 전위·중위·후위 = 전위·중위·후위 표기</li></ul></div><div class="summary-group"><h4>답과 검산</h4><p>(a) + * / a b c d (b) [/ a b] (c) 전위 + * a b / c d, 중위 a * b + c / d, 후위 a b * c d / +. S7 p13 그림·별도 계산과 같아요.</p></div><div class="summary-group"><h4>조건·구분과 확인</h4><ul><li>한 번에 하나만 꺼내므로 (b)에서 /가 큐 앞에 남아요.</li></ul></div></div>
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>수식 <code>a * b + c / d</code>의 이진 트리에서 <strong>(a) 레벨 순회 방문 순서</strong>, <strong>(b) <code>*</code> 방문·자식 enqueue 직후 큐 상태</strong>, <strong>(c) 전위·중위·후위 순회 결과</strong>를 구해요(강의 예제 기반 자체 출제).</p>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead>
+        <tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이유와 조건</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>(a)(b) 레벨 순회 + 큐</td>
+          <td>FIFO 큐: 1개 dequeue·방문 → L·R 자식 enqueue</td>
+          <td>먼저 들어간 위층 노드가 먼저 나와 층별·좌→우 순서를 보장해요(표준 순회 아님, <a href="정리노트_1102_Tree.html#s1-levelorder">정리노트</a>).</td>
+        </tr>
+        <tr>
+          <td>(c) 수식 트리 + 세 순회</td>
+          <td>VLR(전위) / LVR(중위) / LRV(후위)</td>
+          <td>비단말은 연산자, 단말은 피연산자이므로 세 순회가 전위·중위·후위 표기가 돼요(<a href="정리노트_1102_Tree.html#s2-expr-tree">정리노트</a>).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>초기 큐: [+]   (루트 + 삽입, 아직 꺼내기 전)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <h5>(a) 큐 상태 추적</h5>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead>
+          <tr><th>꺼내 방문</th><th>뒤에 넣은 자식 (L→R)</th><th>직후 큐 (앞 → 뒤)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>시작</td><td>-</td><td><code>+</code></td></tr>
+          <tr><td><code>+</code></td><td><code>*</code>, <code>/</code></td><td><code>* /</code></td></tr>
+          <tr><td><code>*</code></td><td><code>a</code>, <code>b</code></td><td><code>/ a b</code></td></tr>
+          <tr><td><code>/</code></td><td><code>c</code>, <code>d</code></td><td><code>a b c d</code></td></tr>
+          <tr><td><code>a</code></td><td>없음</td><td><code>b c d</code></td></tr>
+          <tr><td><code>b</code></td><td>없음</td><td><code>c d</code></td></tr>
+          <tr><td><code>c</code></td><td>없음</td><td><code>d</code></td></tr>
+          <tr><td><code>d</code></td><td>없음</td><td>(빈 큐)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>꺼낸 노드를 순서대로 적으면 방문 순서는 <strong>+ * / a b c d</strong>예요.</p>
+  </div>
+  <div data-subpart="b">
+    <h5>(b) <code>*</code> 처리 직후 큐 상태</h5>
+    <p>표의 셋째 행처럼 <code>*</code>를 꺼낼 때 큐 맨 앞에는 같은 층의 <code>/</code>가 남아 있고, <code>*</code>의 왼쪽·오른쪽 자식 <code>a</code>, <code>b</code>가 뒤에 추가돼요. 따라서 큐(앞 → 뒤)는 <strong><code>[/ a b]</code></strong>예요.</p>
+  </div>
+  <div data-subpart="c">
+    <h5>(c) 전위·중위·후위 순회</h5>
+    <ul>
+      <li><strong>전위(VLR):</strong> <code>+</code> → 왼쪽(<code>* a b</code>) → 오른쪽(<code>/ c d</code>) = <strong><code>+ * a b / c d</code></strong></li>
+      <li><strong>중위(LVR):</strong> 왼쪽(<code>a * b</code>) → <code>+</code> → 오른쪽(<code>c / d</code>) = <strong><code>a * b + c / d</code></strong></li>
+      <li><strong>후위(LRV):</strong> 왼쪽(<code>a b *</code>) → 오른쪽(<code>c d /</code>) → <code>+</code> = <strong><code>a b * c d / +</code></strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 완성 답</strong>: <code>+ * / a b c d</code>. 층별 노드 수 1(<code>+</code>) + 2(<code>*, /</code>) + 4(<code>a, b, c, d</code>) = 7이 방문 길이 및 S7 p13 번호(1~7)와 일치해요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 완성 답</strong>: <code>[/ a b]</code>. 큐 길이 보존 검산: 직전 큐 <code>[* /]</code>(길이 2)에서 <code>*</code> 1개를 빼고 자식 2개(<code>a, b</code>)를 넣었으므로 길이는 $2 - 1 + 2 = 3$ 이 되어야 맞고 S7 p13 그림과도 같아요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 완성 답</strong>: 전위 <code>+ * a b / c d</code>, 중위 <code>a * b + c / d</code>, 후위 <code>a b * c d / +</code>. 후위를 괄호식으로 읽으면 <code>(a*b) + (c/d)</code>로 원래 수식의 연산 우선순위와 일치해요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>실수하면 답이 이렇게 망가져요</h4>
+  <p><strong><code>*</code>를 꺼낼 때 같은 층의 <code>/</code>도 함께 빠진다고 착각하면:</strong> 한 번에 1개만 dequeue하므로 <code>/</code>는 큐 맨 앞에 남고, 그래서 <code>a, b</code>보다 먼저 <code>/</code>가 방문돼요.</p>
+  <p><strong>큐(FIFO) 대신 방금 넣은 <code>a, b</code>를 먼저 꺼내면(LIFO):</strong> 방문 순서가 <code>+ * a b / c d</code>가 되어 층 순서가 깨지고 전위 순회처럼 흘러가요.</p>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 가리고 스스로 확인해요</h4>
+  <ol>
+    <li>레벨 순회 큐 문제를 보면 → <code>꺼낸 1개</code>, <code>추가할 자식(L→R)</code>, <code>남은 큐</code> 3칸 표를 먼저 그린다.</li>
+    <li>중간 시점의 큐를 구한 뒤 → 직전 큐 길이에서 <code>-1 + 자식 수</code>를 계산해 현재 큐 원소 개수가 맞는지 검증한다.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념·공식</h4><p>레벨 순회=큐(FIFO, 표준 순회 아님). 수식 트리의 VLR/LVR/LRV=전위/중위/후위 표기.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>초기 큐 <code>[+]</code>에서 시작해 1개씩 꺼내 방문하고 L·R 자식을 뒤에 넣어요.</p></div>
+  <div class="summary-group"><h4>핵심 답</h4><p>(a) <code>+ * / a b c d</code> (b) <code>[/ a b]</code> (c) 전위 <code>+ * a b / c d</code>, 중위 <code>a * b + c / d</code>, 후위 <code>a b * c d / +</code>.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>(a) 층별 1+2+4=7, (b) 큐 길이 2−1+2=3, (c) 후위 복원 <code>(a*b)+(c/d)</code>.</p></div>
+</div>
