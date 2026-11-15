@@ -52,11 +52,11 @@ def compact(text):
     return re.sub(r'\s+','',parse(text).text())
 
 
-def read_cards(path: Path, profile: CardProfile = REVIEW) -> ReviewPack:
+def read_cards(path: Path, profile: CardProfile = REVIEW, *, text: str | None = None) -> ReviewPack:
     path=Path(path)
     m=re.fullmatch(profile.filename_re,unicodedata.normalize('NFC',path.name))
     if not m:raise ReviewPdfError(f'invalid {profile.name} filename: {path.name}')
-    root=parse(path.read_text(encoding='utf-8'));cards=[];seen=set()
+    root=parse(path.read_text(encoding='utf-8') if text is None else text);cards=[];seen=set()
     for node in root.find_all(lambda n:n.tag=='article' and 'card' in n.classes):
         id_=node.attrs.get('id','')
         if not re.fullmatch(r'p[1-9]\d*',id_) or id_ in seen:raise ReviewPdfError(f'{m[1]} {id_}: invalid/duplicate id')

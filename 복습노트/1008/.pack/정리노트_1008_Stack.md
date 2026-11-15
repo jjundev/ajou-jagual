@@ -771,3 +771,5 @@ First-Fit은 앞에서부터 처음 만나는 충분히 큰 연속 빈 블록을
 ---
 
 출처: 이정원 교수님 강의록(Software_4 List p44–48 · Software_5 Stack p1–12) · 수업 녹음 전사(1008, Part 01–07) · 실습·과제 2 제공 자료. 전사에 시간 표시가 없어 Part 번호로 출처를 표기했어요.
+
+[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1008_Stack-%EB%8B%B5%EC%95%88.pdf)

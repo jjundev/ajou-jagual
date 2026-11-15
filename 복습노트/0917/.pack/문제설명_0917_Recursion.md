@@ -23,7 +23,7 @@
 
 ### P1. 최대 공약수 gcd를 순환 함수로
 
-2018-mid-c024-q15 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p1)
+2018-mid-c024-q15 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=1)
 
 임의의 두 양의 정수의 최대 공약수를 구해주는 gcd를 순환 함수로 구현해 보세요. 두 양의 정수는 main 함수에서 입력받아요.
 
@@ -113,7 +113,7 @@ j=0 종료, 아니면 gcd(j,i%j)
 
 ### P2. 십진수를 이진수로 찍는 순환 함수
 
-2017-mid-c050-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p2)
+2017-mid-c050-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=2)
 
 풀이 조건: 입력은 0 이상의 int예요. 0도 한 자리 0으로 출력하세요. 음수 표기 방식은 이번 문제 범위에서 제외해요.
 
@@ -213,7 +213,7 @@ n&gt;=2이면 dec_to_bin(n/2) 호출 후 printf("%d",n%2). 10→1010, 0→0.
 
 ### P3. 3씩 줄어드는 호출
 
-textbook-ch02-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p3)
+textbook-ch02-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=3)
 
 다음 함수를 recursive(10)로 호출하였을 때, 화면에 출력되는 내용과 함수의 반환값을 구하라.
 
@@ -293,7 +293,7 @@ n=1은 n&lt;1을 만족하지 않으므로 한 번 더 호출해요.
 
 ### P4. 재귀 합을 반복문으로
 
-textbook-ch02-q16 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p4)
+textbook-ch02-q16 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=4)
 
 다음의 순환적인 프로그램을 반복 구조를 사용한 비순환적 프로그램으로 바꾸시오.
 
@@ -376,7 +376,7 @@ int total = 0;
 
 ### P5. 거듭제곱: 홀수 분기와 호출 크기
 
-lecture-s02-p10-power · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p5)
+lecture-s02-p10-power · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=5)
 
 **강의 예제 기반 자체 출제** S2 p10
 
@@ -465,7 +465,7 @@ S2 p10 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 
 
 ### P6. 피보나치의 중복 호출과 반복 상태
 
-lecture-s02-p12-fibonacci · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p6)
+lecture-s02-p12-fibonacci · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=6)
 
 **강의 예제 기반 자체 출제** S2 p12
 
@@ -554,7 +554,7 @@ S2 p12 · 추가 근거 p13,14 · Software_2_Recursion.pdf. 강의 코드의 해
 
 ### P7. 함수 foo는 무엇을 할까요
 
-2019-mid-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion.html#p7)
+2019-mid-q8 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion-%EB%AC%B8%EC%A0%9C.pdf#page=7)
 
 입력 조건: x와 y는 양의 정수예요. y=0은 이 함수의 유효 입력이 아니에요.
 

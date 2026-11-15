@@ -2,16 +2,18 @@ import unittest,json,hashlib,os
 from pathlib import Path
 from _util import REPO
 from pdf_cards import digest,read_pack
+from review_pdf import discover_reviews
+from review_source import problem_pdf_pages, source_file
 from pack_layout import current_path,current_digest
 class DeliveryTests(unittest.TestCase):
  def test_existing_pack_pdf_coverage(self):
   import fitz
-  sources=sorted((REPO/'복습노트').glob('*/복습문제_*.html'))
-  self.assertEqual(len(sources),10)
+  sources=discover_reviews(REPO, 'all')
+  self.assertGreaterEqual(len(sources),15)
   for source in sources:
    rpath=source.parent/'.pack/자료_PDF/pdf-validation.json';self.assertTrue(rpath.exists(),str(rpath))
-   r=json.loads(rpath.read_text());self.assertEqual(r['status'],'published');self.assertEqual(current_digest(source,r['source_sha256']),digest(source))
-   self.assertEqual(r['logical_ids'],[c.id for c in read_pack(source).cards]);self.assertEqual(r['checks']['status'],'pass');self.assertEqual(r['browser']['status'],'pass')
+   r=json.loads(rpath.read_text());self.assertEqual(r['status'],'published');self.assertFalse(source.exists());self.assertEqual(source_file(source).suffix, '.json')
+   self.assertEqual(r['logical_ids'],[c.id for c in read_pack(source).cards]);self.assertEqual(set(problem_pdf_pages(source)),set(r['logical_ids']));self.assertEqual(r['checks']['status'],'pass');self.assertEqual(r['browser']['status'],'pass')
    for name in r['pdfs']:
     self.assertEqual(digest(source.parent/name),r['artifact_hashes'][name])
     with fitz.open(source.parent/name) as doc:

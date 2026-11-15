@@ -26,7 +26,7 @@ PROFESSOR_RANK = {"이정원": 0, "미상": 1}  # 그 밖의 교수는 2
 TYPE_RANK = {"trace": 0, "code-read": 0, "blank": 1, "short": 1, "code-write": 1, "essay": 2, "ox": 3}
 MAX_OX = 2
 SOURCE_ATTR_RE = re.compile(r'data-source="([^"]+)"')
-REVIEW_NAME_RE = re.compile(r"복습문제_\d{4}(?:-\d{4})?_[A-Za-z0-9_]+\.html")
+from review_source import NAME as REVIEW_NAME_RE, read_review
 
 
 class BankError(Exception):
@@ -171,13 +171,19 @@ def used_sources(notes_dir: Path | str, skip_range: str | None = None) -> set[st
     skip_range를 주면 그 range의 복습문제(다시 만드는 팩 자신)는 세지 않는다."""
     used: set[str] = set()
     skip = f"복습문제_{skip_range}_" if skip_range else None
-    for dirpath, _, files in os.walk(notes_dir):
+    for dirpath, directories, files in os.walk(notes_dir):
+        directories[:] = [name for name in directories if not name.startswith(".review-build-")]
         for name in files:
             nfc = unicodedata.normalize("NFC", name)
             if skip and nfc.startswith(skip):
                 continue
-            if REVIEW_NAME_RE.fullmatch(nfc):
-                used.update(SOURCE_ATTR_RE.findall(Path(dirpath, name).read_text(encoding="utf-8")))
+            path = Path(dirpath, name)
+            if name.endswith('.json') and unicodedata.normalize('NFC', path.parent.name) == '자료_복습팩' and path.parent.parent.name == '.pack':
+                path = path.parents[2] / path.with_suffix('.html').name
+            if REVIEW_NAME_RE.fullmatch(unicodedata.normalize('NFC', path.name)):
+                if skip and unicodedata.normalize('NFC', path.name).startswith(skip):
+                    continue
+                used.update(SOURCE_ATTR_RE.findall(read_review(path)))
     return used
 
 

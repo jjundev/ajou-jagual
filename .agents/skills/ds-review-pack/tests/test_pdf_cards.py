@@ -1,6 +1,8 @@
 import unittest, tempfile, json
 from pathlib import Path
 from _util import REPO
+from review_source import review_paths, read_review
+from review_pdf import discover_reviews
 from html2md import Builder, Node
 try:
  from pdf_cards import read_pack, to_payload
@@ -10,12 +12,12 @@ except ImportError:
 class CardsTests(unittest.TestCase):
  def setUp(self): self.assertIsNotNone(read_pack, 'PDF adapter missing')
  def test_solution_extra_code_preserved(self):
-  source=next((REPO/'복습노트/1005').glob('복습문제_*.html')); pack=read_pack(source)
-  b=Builder();b.feed(source.read_text());article=next(n for n in b.root.find_all(lambda n:n.attrs.get('data-source')=='textbook-ch06-q10'))
+  source=review_paths(REPO/'복습노트/1005')[0]; pack=read_pack(source)
+  b=Builder();b.feed(read_review(source));article=next(n for n in b.root.find_all(lambda n:n.attrs.get('data-source')=='textbook-ch06-q10'))
   sol=next(article.find_all(lambda n:'solution' in n.classes));pre=next(sol.find_all(lambda n:n.tag=='pre'))
   self.assertIn(pre.text(),[x.text for x in next(c for c in pack.cards if c.source=='textbook-ch06-q10').solution if x.kind=='code'])
  def test_problem_payload_has_no_solution(self):
-  pack=read_pack(next((REPO/'복습노트/1005').glob('복습문제_*.html')))
+  pack=read_pack(review_paths(REPO/'복습노트/1005')[0])
   pages=tuple(PageSlice(c.id,c.id,1,c.problem,c.solution,True,True) for c in pack.cards)
   with tempfile.TemporaryDirectory() as tmp:
    data=to_payload(pack,'problems',pages,Path(tmp))
@@ -27,17 +29,17 @@ class CardsTests(unittest.TestCase):
    with self.assertRaises(PdfError): read_pack(p)
    p.write_text('');self.assertEqual(read_pack(p).cards,())
  def test_all_counts(self):
-  sources=sorted((REPO/'복습노트').glob('*/복습문제_*.html'))
+  sources=discover_reviews(REPO, 'all')
   self.assertEqual([len(read_pack(p).cards) for p in sources],[len(json.loads((p.parent/'.pack/자료_복습팩/manifest.json').read_text(encoding='utf-8'))['problems']) for p in sources])
 
  def test_solution_steps_retain_inline_markup(self):
-  source=next((REPO/'복습노트/0914').glob('복습문제_*.html'));pack=read_pack(source)
-  b=Builder();b.feed(source.read_text());article=next(b.root.find_all(lambda n:n.attrs.get('id')=='p1'));sol=next(article.find_all(lambda n:'solution' in n.classes));steps=next(sol.find_all(lambda n:n.tag=='ol' and 'steps' in n.classes))
+  source=review_paths(REPO/'복습노트/0914')[0];pack=read_pack(source)
+  b=Builder();b.feed(read_review(source));article=next(b.root.find_all(lambda n:n.attrs.get('id')=='p1'));sol=next(article.find_all(lambda n:'solution' in n.classes));steps=next(sol.find_all(lambda n:n.tag=='ol' and 'steps' in n.classes))
   count=len([n for n in steps.children if isinstance(n,Node) and n.tag=='li'])
   self.assertEqual(len(pack.cards[0].solution),count)
 
  def test_past_source_is_not_labeled_chapter_problem(self):
-  pack=read_pack(next((REPO/'복습노트/0914').glob('복습문제_*.html')))
+  pack=read_pack(review_paths(REPO/'복습노트/0914')[0])
   self.assertEqual(pack.cards[0].source,'2018-mid-c024-q8');self.assertEqual(pack.cards[0].kind,'기출')
 
  def test_images_frozen_in_solution_answer_hint(self):

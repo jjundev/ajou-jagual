@@ -1480,3 +1480,5 @@ c = n1 뒤에 n1.link와 c.link가 같은 노드를 가리키는 모습을 [구�
 ---
 
 출처: 이정원 교수님 강의록(Software_2–3) · 수업 녹음 전사(0921).
+
+[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%8B%B5%EC%95%88.pdf)

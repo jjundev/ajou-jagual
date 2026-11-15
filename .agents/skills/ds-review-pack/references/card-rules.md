@@ -43,7 +43,7 @@
 
 ## 강의 예제·전역 검토 연동
 
-신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 최종 전체 날짜 audit를 통과한 정확한 최종 HTML 경로만 설명·PDF 입력으로 사용한다. update-existing의 기존 카드 보존 계약은 유지한다.
+신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 전체 날짜 audit를 통과한 작업용 HTML로 PDF를 만들고, 발행한 JSON 원고에서 문제설명을 만든다. update-existing의 기존 카드 보존 계약은 유지한다.
 
 lecture-code 카드의 문제·힌트·풀이·정답은 standalone이다. 강의 페이지·슬라이드·정리노트·다른 문제(Pn, 앞 문제)를 가리키지 않고, 필요한 함수 계약·코드·규칙·값을 본문에 직접 쓴다. 출처는 배지 인용과 `강의 예제 보기`에만 둔다. `check_html`의 `lecture-standalone`이 이를 검사한다.
 - 첫 문단은 `<p><span class="badge">강의 예제 기반 자체 출제</span> S<장> p<쪽></p>`로 쓰고 `추가 근거`는 `details.original` 안에만 적는다.

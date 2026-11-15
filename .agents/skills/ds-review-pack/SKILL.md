@@ -16,8 +16,8 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 - 그 밖(`[MMDD | MMDD-MMDD] [lite]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
 
 **산출물** (복습팩, `복습노트/<range>/`, 수업 날짜마다 폴더 하나):
-- 루트: `정리노트_<range>_<slug>.html`, `복습문제_<range>_<slug>.html`, `문제설명_<range>_<slug>.html`, `복습문제_<range>_<slug>-문제.pdf`·`-답안.pdf`, `확인문제_<range>_<slug>.html`(신규 모드만). 루트에는 HTML·PDF와 `.pack/`만 둔다.
-- `.pack/`(숨김 폴더): 같은 이름의 `.md` 세 개, `figures_<range>/`, 설명 소유 그림·자료 폴더(`figures_문제설명_*`, `자료_문제설명_*`), `자료_복습팩/`, `자료_PDF/pdf-validation.json`, `자료_확인문제_<range>_<slug>/`. 검색 도구가 숨김 폴더를 건너뛸 수 있으니 `복습노트/<range>/.pack/<이름>` 경로를 직접 연다.
+- 루트: `정리노트_<range>_<slug>.html`, `문제설명_<range>_<slug>.html`, `복습문제_<range>_<slug>-문제.pdf`·`-답안.pdf`, `확인문제_<range>_<slug>.html`(신규 모드만). 루트에는 HTML·PDF와 `.pack/`만 둔다.
+- `.pack/`(숨김 폴더): 같은 이름의 `.md` 세 개, `figures_<range>/`, 설명 소유 그림·자료 폴더(`figures_문제설명_*`, `자료_문제설명_*`), `자료_복습팩/`의 `복습문제_<range>_<slug>.json`(문항 원고), `자료_PDF/pdf-validation.json`, `자료_확인문제_<range>_<slug>/`. 검색 도구가 숨김 폴더를 건너뛸 수 있으니 `복습노트/<range>/.pack/<이름>` 경로를 직접 연다.
 
 **인자**: `[bank | MMDD | MMDD-MMDD | update-existing MMDD/all | revise-existing MMDD/all] [lite]`
 - `lite`: 작성자·요약·전사 에이전트를 가벼운 모델로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다. 문제설명 저작·독립 검산·실자료 검토·브라우저 검증과 확인문제(작성자·블라인드 풀이자 opus, 검사 전부)는 생략하지 않는다.
@@ -28,7 +28,7 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 | Claude | opus | sonnet |
 | GPT 등 Claude 아님 | sol | luna |
 
-**해설 연결**: bank 이외의 모드는 생성 시작 전에 형제 `ds-problem-explain/SKILL.md`와 실행기 존재를 확인한다. 정확한 최종 복습문제 HTML 경로로 [공통 문제설명 절차](references/problem-explain.md)를 실행한다.
+**해설 연결**: bank 이외의 모드는 생성 시작 전에 형제 `ds-problem-explain/SKILL.md`와 실행기 존재를 확인한다. 발행한 복습문제 JSON 원고의 정확한 경로로 [공통 문제설명 절차](references/problem-explain.md)를 실행한다.
 
 **확인문제 연결**: 신규 모드(`MMDD`·`MMDD-MMDD`, `lite` 포함)만 확인문제를 만든다. `bank`·`update-existing`·`revise-existing`은 확인문제를 만들지 않고 기존 확인문제도 건드리지 않는다. 신규 모드는 생성 시작 전에 형제 `ds-concept-check/SKILL.md`와 그 `scripts` 폴더의 `check.py`·`build.py`·`blind.py`·`browser_check.py`가 있는지 확인하고, 하나라도 없으면 경로를 보고하고 시작하지 않는다.
 
@@ -134,18 +134,16 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 - 위젯은 팩 전체에 0~2개다. 병렬 작성자끼리는 서로를 모르므로 **메인 에이전트가 띄우기 전에** 위젯을 둘 토픽(0~2개)을 정하고, 그 토픽의 섹션 작성자 브리프에만 `<위젯>` 자리에 "토픽 `<토픽 id>`에 위젯 1개: <무엇을 누르거나 움직이면 무엇이 보이는지>"를 적는다. 나머지 작성자의 `<위젯>` 자리에는 "위젯 없음"이라고 적는다. 정한 토픽과 이유는 보고서 "스킬이 정한 사항"에 적는다.
 
 ### 4. 조립
-- **처음 조립할 때만**: `복습노트/<range>/`(또는 예전 형식인 `복습노트/` 바로 아래)에 이번 `range`의 산출물(루트의 `정리노트_<range>_*`·`복습문제_<range>_*`, `.pack/`의 같은 이름 `.md`와 `figures_<range>/`, 조립이 덮어쓰는 `.pack/자료_복습팩/manifest.json`·`stt-summary.md`)이 하나라도 있으면 먼저 백업한다. 다시 조립할 때(5~8단계에서 돌아온 경우)는 백업하지 않는다. 이미 스킬이 만든 초안이 백업에 섞이기 때문이다.
-  - 백업은 매번 새 폴더 `RUN/previous-<시각>-<임의>/`에 만든다. 종료 코드가 1이면 조립하지 말고 원인을 고친다. 백업 경로는 보고서에 적는다.
+새 작업 폴더에서 검증·PDF를 준비한다. `STAGE`는 복습노트 아래의 숨김 작업 폴더다. 다시 조립할 때는 처음 준비한 `STAGE`를 쓴다. 신규 팩의 그림과 파생 자료도 `STAGE/.pack/` 아래에 둔다.
+
 ```bash
-python3 "$SKILL/scripts/backup.py" --range <range> --repo "$REPO" --run "$RUN"
-```
-```bash
-python3 "$SKILL/scripts/assemble.py" --run "$RUN" --out "$REPO/복습노트/<range>"
+STAGE=$(python3 "$SKILL/scripts/release_review.py" prepare --repo "$REPO" --run "$RUN" --range <range>)
+python3 "$SKILL/scripts/assemble.py" --run "$RUN" --out "$STAGE"
 ```
 
 ### 5. 기계 검사
 ```bash
-python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$REPO/복습노트/<range>/<정리노트>.html" --review "$REPO/복습노트/<range>/<복습문제>.html"
+python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$STAGE/<정리노트>.html" --review "$STAGE/<복습문제>.html"
 ```
 - `FAIL`이면 Problem의 `where`(토픽 id, 카드 id, 섹션 id)로 담당 작성자를 찾는다.
 - 그 작성자에게 문제 목록을 보내 조각을 고치게 한다(SendMessage, 안 되면 같은 브리프로 새 에이전트).
@@ -166,14 +164,19 @@ python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$
 
 ### 8. MD 변환과 문제설명·PDF
 ```bash
-python3 "$SKILL/scripts/html2md.py" "$REPO/복습노트/<range>/<정리노트>.html" "$REPO/복습노트/<range>/<복습문제>.html" --check
+python3 "$SKILL/scripts/html2md.py" "$STAGE/<정리노트>.html" "$STAGE/<복습문제>.html" --check
 ```
-- `OK`가 나와야 한다. `.md`와 `figures_<range>/`는 `복습노트/<range>/.pack/`에 생긴다.
+- `OK`가 나와야 한다. `.md`와 `figures_<range>/`는 `STAGE/.pack/`에 생긴다.
 - 누락이 나오면 대부분 HTML 조각의 마크업 문제다(수식이 `svg`나 `.controls` 안에 있는 경우 등). 조각을 고치고 4단계부터 다시 한다.
 
-- MD 변환·기계·내용·브라우저 검증이 끝난 최종 복습문제 HTML의 절대 경로로 `references/problem-explain.md`를 실행한다. 미해결 검사가 있으면 설명 발행을 보류한다. 날짜·최신 팩으로 대상을 추측하지 않는다.
+- 검증한 작업용 복습문제 HTML을 `REVIEW`로 지정하고 [PDF 생성 절차](references/pdf-build.md)를 실행한다. PDF 쌍을 실제 검토하고 같은 작업 폴더에 PDF를 발행한다.
+- 아래 명령으로 정리노트, 문항 원고·MD·그림과 PDF 쌍을 함께 발행한다. 발행기는 문제 링크를 PDF로 연결하고 작업 폴더를 정리한다. 중단한 작업 폴더는 같은 인자로 `release_review.py discard`를 실행해 지운다. 문항 0개인 팩은 문제 링크를 생략한다.
 
-- 신규·`lite`·`update-existing` 모두 같은 최종 HTML 절대 경로로 [PDF 생성 절차](references/pdf-build.md)를 실행한다. PDF와 문제설명은 각각 검증·발행하며 한쪽 실패가 다른 쪽의 발행이나 이전 자료를 삭제하지 않는다. `lite`도 PDF 기계·전체 페이지 검토를 생략하지 않는다.
+```bash
+python3 "$SKILL/scripts/release_review.py" publish --repo "$REPO" --run "$RUN"
+```
+
+- 발행한 `복습노트/<range>/.pack/자료_복습팩/복습문제_<range>_<slug>.json`의 정확한 절대 경로를 사용해 [문제설명](references/problem-explain.md)을 발행한다. 미해결 검사가 있으면 설명 발행을 보류한다.
 
 - 신규 모드면 이어서 확인문제를 만든다. 진행 표시는 `8/9 확인문제 중: <확인문제 단계>`. 형제 `ds-concept-check/SKILL.md`를 읽고 그 1~8단계를 이 팩의 `range`로 실제로 따른다. 근거인 `.pack/자료_복습팩/manifest.json`·`stt-summary.md`는 4단계 조립이 이미 써 두었다. 확인문제의 `RUN`(`<scratchpad>/ds-concept-check/<range>/`)은 이 스킬의 `RUN`과 따로 둔다. 그 스킬 8단계 배치 검사는 이 팩(`복습노트/<range>/`) 줄만 판정한다. 다른 팩의 배치 문제는 아래 배치 검사에서 다룬다. 근거 파일이 없어 그 스킬 1단계가 멈춘 경우나, 규칙 검사·블라인드 풀이(r3까지)·브라우저 검사·배치 검사 중 하나라도 끝내 통과하지 못하면 새 확인문제 HTML과 `자료_확인문제_*` 폴더를 확인문제 `RUN/withheld-<시각>/`으로 옮기고, 그 스킬 1단계 백업(있으면)을 제자리로 되돌린 뒤 "복습팩 생성됨 / 확인문제 보류"로 보고한다. 복습팩·문제설명·PDF는 되돌리지 않는다.
 
@@ -186,7 +189,7 @@ python3 "$SKILL/scripts/pack_layout.py" check --repo "$REPO"
 다음 형식으로 끝낸다.
 ```
 ## 복습팩 <range> 완료 (설명 보류 시: 복습팩 생성됨 / 문제설명 보류, 확인문제 보류 시: 복습팩 생성됨 / 확인문제 보류)
-- 파일: 복습노트/<range>/… (루트 html 3·pdf 2, .pack/ 에 md 3, figures_<range>/ N개; 설명 소유 그림·자료 포함)
+- 파일: 복습노트/<range>/… (정리노트·문제설명 HTML과 PDF 2, .pack/ 에 md 3, figures_<range>/ N개; 설명 소유 그림·자료 포함)
 - 범위: 배운 쪽 S2 p1–20 … / 예고만: …
 - 문제: P1 2016-final-ljw-q3 (2016 기말 3번, 이정원, trace) … / 변형 K개 (정답은 RUN/answers.py로 검증)
 - 은행과 다른 답: … (없으면 "없음")
@@ -214,7 +217,7 @@ python3 "$SKILL/scripts/pack_layout.py" check --repo "$REPO"
 | 해설 스킬·실행기 누락 | bank 외 생성 시작 전에 경로와 오류를 보고하고 중단 |
 | 해설 저작·검산·검토·발행 실패 | 검증된 원 복습팩과 이전 해설 보존, “복습팩 생성됨 / 문제설명 보류”와 팩별 이유 보고; 다른 팩은 계속 |
 
-| PDF 생성·검토·발행 실패 | 원 HTML·MD·그림·문제설명과 이전 PDF를 보존하고 팩별 withheld/stale 이유를 보고; 다른 팩은 계속 |
+| PDF 생성·검토·발행 실패 | 기존 팩과 PDF를 보존하고 팩별 withheld/stale 이유를 보고; 다른 팩은 계속 |
 | 확인문제 스킬 누락 | 신규 모드 생성 시작 전에 경로를 보고하고 중단 |
 | 확인문제 근거 없음 | 확인문제만 “복습팩 생성됨 / 확인문제 보류”(이유: 근거 파일 없음)로 보고하고 배치 검사·9단계 보고는 계속 |
 | 확인문제 검사 실패 | 새 확인문제를 확인문제 RUN의 withheld-<시각>/으로 옮기고 이전 확인문제를 되돌린 뒤 “복습팩 생성됨 / 확인문제 보류”와 이유 보고; 복습팩·문제설명·PDF는 유지 |

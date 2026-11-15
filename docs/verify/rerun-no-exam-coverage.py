@@ -9,6 +9,7 @@ def verify(repo):
     from review_inventory import collect_reviews
     from review_audit import audit_reviews
     from update_review import extract_cards
+    from review_input import read_review
     from lecture_sources import validate_lecture_source
     evidence=repo/'docs/verify/no-exam-coverage-20261017'
     baseline=json.loads((evidence/'baseline.json').read_text(encoding='utf-8'))
@@ -18,7 +19,7 @@ def verify(repo):
     assert len(rows)==10 and len(cards)==88
     assert sum(c['source_kind']=='lecture-code' for c in cards)==47
     assert sum(c['source_kind']=='textbook' for c in cards)==24
-    raw={(r['range'],q['id']):q['raw'] for r in rows for q in extract_cards(Path(r['review_path']).read_text(encoding='utf-8'))}
+    raw={(r['range'],q['id']):q['raw'] for r in rows for q in extract_cards(read_review(r['review_path']))}
     preserved=json.loads((evidence/'all-preserved.json').read_text(encoding='utf-8'))
     assert len(preserved)==71
     for q in preserved:

@@ -1430,3 +1430,5 @@ void main()
 ---
 
 출처: 이정원 교수님 강의록(Software_3) · 수업 녹음 전사(0928).
+
+[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%8B%B5%EC%95%88.pdf)

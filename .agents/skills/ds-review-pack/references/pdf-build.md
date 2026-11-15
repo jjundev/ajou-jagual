@@ -1,6 +1,6 @@
 # 복습문제·답안 PDF
 
-신규·lite·update-existing의 최종 검증된 복습문제 HTML **절대 경로**를 입력한다. 전자회로2 16:9 템플릿의 고정 복사본·글꼴·배율·Hint 띠/부록·하단 자막 여백을 사용한다. 문제지에는 풀이/정답이 없고 답안지에는 기존 `.solution` 전체와 정답이 있다. 별도 문제설명은 독립 산출물이다.
+생성·갱신에서는 검증된 작업용 복습문제 HTML의 절대 경로를 입력한다. 발행된 팩에서 PDF만 다시 만들 때는 `.pack/자료_복습팩/복습문제_<range>_<slug>.json`의 절대 경로를 입력한다. 전자회로2 16:9 템플릿의 고정 복사본·글꼴·배율·Hint 띠/부록·하단 자막 여백을 사용한다. 문제지에는 풀이/정답이 없고 답안지에는 기존 `.solution` 전체와 정답이 있다. 별도 문제설명은 독립 산출물이다.
 
 Python 3.10+, Playwright/설치된 Google Chrome, PyMuPDF가 필요하다. 자동 설치하지 않는다. RUN은 저장소 밖의 비어 있는 고유 절대 경로로 정한다.
 
@@ -17,7 +17,7 @@ python3 "$SKILL/scripts/review_pdf.py" check --run "$PDF_RUN"
 python3 "$SKILL/scripts/review_pdf.py" publish --run "$PDF_RUN" --repo "$REPO"
 ```
 
-발행 직전에 입력과 승인한 자산·PDF 해시를 재확인하고 팩 잠금 아래 루트의 문제/답안 PDF와 `.pack/자료_PDF/pdf-validation.json`만 백업·교체한다. 일반 저장 오류는 rollback한다. 여러 파일 교체의 OS 원자성·강제 종료 복구를 보장하지 않는다. 백업은 PDF_RUN/backups 아래 유지한다. 기존 prefix 기반 backup.py는 PDF도 포함한다.
+발행 직전에 입력과 승인한 자산·PDF 해시를 재확인하고 팩 잠금 아래 루트의 문제/답안 PDF와 `.pack/자료_PDF/pdf-validation.json`을 백업·교체한다. 발행된 팩의 문제지 쪽 배치가 바뀌면 정리노트와 문제설명의 문항 링크도 같은 잠금 아래 갱신한다. 일반 저장 오류는 rollback한다. 여러 파일 교체의 OS 원자성·강제 종료 복구를 보장하지 않는다. 백업은 PDF_RUN/backups 아래 유지한다. 기존 prefix 기반 backup.py는 PDF도 포함한다.
 
 기존 팩의 PDF만 추가할 때는 `update-existing`를 호출하지 않는다.
 
@@ -54,4 +54,4 @@ backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 run
 
 ## 강의 예제·전역 검토 연동
 
-신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 최종 전체 날짜 audit를 통과한 정확한 최종 HTML 경로만 설명·PDF 입력으로 사용한다. update-existing의 기존 카드 보존 계약은 유지한다.
+신규·update-existing·revise-existing은 [공통 개편·검증 계약](review-overhaul.md)을 함께 적용한다. lecture-code는 실제 강의 페이지·해시·학습 근거와 자체 질문을 구분한다. 전체 날짜 audit를 통과한 작업용 HTML로 PDF를 만들고 발행된 JSON 원고에서 문제설명을 만든다. update-existing의 기존 카드 보존 계약은 유지한다.

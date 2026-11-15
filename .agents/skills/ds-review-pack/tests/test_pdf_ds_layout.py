@@ -1,12 +1,13 @@
 import tempfile
 from pathlib import Path
 from _util import REPO
+from review_source import review_paths
 from pdf_cards import read_pack,to_payload
 from pdf_types import PageSlice
 from pdf_render import load_template
 
 def payload(date,pid,mode,tmp):
- pack=read_pack(next((REPO/'복습노트'/date).glob('복습문제_*.html')))
+ pack=read_pack(review_paths(REPO/'복습노트'/date)[0])
  c=next(c for c in pack.cards if c.id==pid)
  return to_payload(pack,mode,(PageSlice(c.id,c.id,1,c.problem,c.solution,True,True),),Path(tmp))['problems'][0]
 
@@ -15,13 +16,13 @@ def test_code_has_own_section_preserving_lines():
   p=payload('1005','p4','problems',tmp)
   assert '<pre>' in p['html']['code']
   assert '<pre>' not in p['html']['ask']
-  pack=read_pack(next((REPO/'복습노트/1005').glob('복습문제_*.html')))
+  pack=read_pack(review_paths(REPO/'복습노트/1005')[0])
   assert p['html']['code'] == ''.join(b.html for b in pack.cards[3].problem if b.kind=='code')
 
 def test_fill_tables_use_center_only_on_questions():
  with tempfile.TemporaryDirectory() as tmp:
   from dataclasses import replace
-  pack=read_pack(next((REPO/'복습노트/1012').glob('복습문제_*.html')))
+  pack=read_pack(review_paths(REPO/'복습노트/1012')[0])
   original=next(c for c in pack.cards if c.source=='2018-mid-c024-q9')
   for source in ('2018-mid-c024-q9','2017-mid-c050-q6'):
    c=replace(original,id='p99',source=source)

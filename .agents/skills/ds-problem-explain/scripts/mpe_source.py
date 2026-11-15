@@ -9,6 +9,9 @@ from mpe_choices import with_choices
 from mpe_types import ExplainError, Problem, SourcePack
 from mpe_shared import HOMEWORK, REVIEW, Node, ReviewPdfError, read_cards, normalize_cards, outer, parse
 
+from review_input import pack_folders, read_review, review_path, review_paths, source_digest, source_file
+
+
 def nfc(value):
     return unicodedata.normalize('NFC', str(value))
 
@@ -62,29 +65,27 @@ def date_key(value):
 
 def resolve_sources(repo: Path, target: str | None) -> tuple[Path, ...]:
     repo = repo.resolve()
-    if target and target.lower().endswith('.html'):
+    if target and target.lower().endswith(('.html', '.json')):
         path = Path(target)
         path = path if path.is_absolute() else repo / path
         path = inside(path, repo)
-        if not path.is_file():
+        path = review_path(path)
+        if not inside(source_file(path), repo).is_file():
             try:
                 path = inside(existing_path(path), repo)
             except ExplainError as exc:
                 raise ExplainError(f'대상 없음: {path}') from exc
         return (path,)
     candidates = []
-    for path in repo.rglob('*.html'):
-        rel = nfc(path.relative_to(repo))
-        if rel.split('\\')[0].split('/')[0] not in ('복습노트',):
-            continue
-        for profile in (REVIEW,):
-            match = re.fullmatch(profile.filename_re, nfc(path.name))
+    for root in pack_folders(repo):
+        for path in review_paths(root):
+            match = re.fullmatch(REVIEW.filename_re, nfc(path.name))
             if match:
-                candidates.append((profile.name, match[1], path))
+                candidates.append(('review', match[1], path))
     if target == 'all':
         found = [path for kind, _, path in candidates if kind == 'review']
     elif target and re.fullmatch(r'(?:과제|hw)\s*[1-9]\d*', target, re.I):
-        raise ExplainError('과제 입력 미지원: 기존 복습문제 HTML을 선택하세요.')
+        raise ExplainError('과제 입력 미지원: 복습문제 팩을 선택하세요.')
     else:
         reviews = [(value, path) for kind, value, path in candidates if kind == 'review']
         if target is None:
@@ -115,7 +116,7 @@ def resolve_sources(repo: Path, target: str | None) -> tuple[Path, ...]:
         match = re.fullmatch((HOMEWORK if nfc(path.name).startswith('과제') else REVIEW).filename_re, nfc(path.name))
         by_range.setdefault(match[1], []).append(path)
     if any(len(group) > 1 for group in by_range.values()):
-        raise ExplainError('여러 후보: HTML 경로를 명시하세요.\n' + '\n'.join(map(str, found)))
+        raise ExplainError('여러 후보: 복습문제 원고 경로를 명시하세요.\n' + '\n'.join(map(str, found)))
     if target == 'all':
         found.sort(key=lambda p: (re.fullmatch(REVIEW.filename_re,nfc(p.name))[1].split('-')[-1],nfc(p.name)),reverse=True)
         return tuple(inside(path,repo) for path in found)
@@ -179,24 +180,28 @@ def split_lecture_statement(statement_html: str, source: str) -> tuple[str, str]
     return statement_html, ''
 
 def load_source(path: Path, repo: Path) -> SourcePack:
-    path = inside(existing_path(Path(path)), Path(repo))
-    if not re.fullmatch(REVIEW.filename_re,nfc(path.name)):
-        raise ExplainError('복습문제 HTML만 지원해요: '+str(path))
+    path = inside(review_path(Path(path)), Path(repo))
+    actual = inside(source_file(path), Path(repo))
+    if not actual.is_file():
+        raise ExplainError('복습문제 원고 없음: '+str(path))
     try:
-        pack = read_cards(path, REVIEW)
+        text = read_review(path)
+        pack = read_cards(path, REVIEW, text=text)
         problems = tuple(
             Problem(c.id, int(c.id[1:]), c.title, c.source, c.original_html,
                     *split_lecture_statement(c.statement_html, c.source), (), c.steps, c.answer_html,
                     subparts(c.statement_html, c.original_html))
             for c in pack.cards
         )
-        return SourcePack('review',pack.range,pack.slug,path,sha256(path),with_choices(path,problems))
+        return SourcePack('review',pack.range,pack.slug,path,source_digest(path),with_choices(text,problems))
     except (ReviewPdfError,OSError) as exc:
         if 'no review cards' in str(exc):
             candidates=[]
-            for p in repo.rglob('*.html'):
-                if re.fullmatch(REVIEW.filename_re,nfc(p.name)) and p!=path:
-                    try: read_cards(p, REVIEW); candidates.append(str(p.relative_to(repo)))
-                    except (ReviewPdfError,OSError): pass
+            for root in pack_folders(repo):
+                for p in review_paths(root):
+                    if p == path:
+                        continue
+                    try: read_cards(p, REVIEW, text=read_review(p)); candidates.append(str(source_file(p).relative_to(repo)))
+                    except (ReviewPdfError, OSError): pass
             raise ExplainError('문항 없음: '+str(path)+'\n비어 있지 않은 후보(자동 이동 없음):\n'+'\n'.join(sorted(candidates))) from exc
         raise ExplainError(str(exc)) from exc

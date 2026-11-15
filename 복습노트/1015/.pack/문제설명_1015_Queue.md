@@ -26,7 +26,7 @@
 
 ### P1. 원형 큐의 get_count
 
-textbook-ch05-q08 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p1)
+textbook-ch05-q08 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=1)
 
 구현 조건: 강의처럼 front는 첫 원소 직전, rear는 마지막 원소의 인덱스이며 M칸 중 한 칸을 비워요. 0≤front,rear&lt;M이에요.
 
@@ -108,7 +108,7 @@ int get_count(const QueueType *q) {
 
 ### P2. 두 스택으로 큐 만들기
 
-textbook-ch05-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p2)
+textbook-ch05-q09 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=2)
 
 2개의 스택을 사용하여 큐를 구현할 수 있을까? 2개의 스택을 사용하여 큐를 구현해보자. 입력이 들어오면 스택 #1에 넣는다. 출력 요청이 들어오면 스택 #2에서 요소를 꺼낸다. 스택 #2가 비어 있을 때는 스택 #1의 모든 요소를 꺼내서 스택 #2에 넣는다. 프로그램으로 작성해보자.
 
@@ -201,7 +201,7 @@ int dequeue(TwoStackQueue *q, int *value) {
 
 ### P3. 덱으로 회문 검사하기
 
-textbook-ch05-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p3)
+textbook-ch05-q11 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=3)
 
 회문(palindrome)이란 앞뒤 어느 쪽에서 읽어도 같은 말·구·문 등을 의미한다. 예를 들면 “eye”, “madam, “radar” 등이다. 여기서 물론 구두점이나 스페이스, 대소문자 등은 무시하여야 한다. 덱을 이용하여 주어진 문자열이 회문인지 아닌지를 결정하는 프로그램을 작성하라. 다음 그림을 참조한다.
 
@@ -312,7 +312,7 @@ int is_palindrome(const char *s) {
 
 ### P4. 연결 큐 의사코드를 대입문으로 옮기기
 
-lecture-s06-p11-linked-queue · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p4)
+lecture-s06-p11-linked-queue · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=5)
 
 **강의 예제 기반 자체 출제** S6 p11
 
@@ -391,7 +391,7 @@ dequeue: front 노드의 값을 보관하고 front를 다음으로 이동`
 
 ### P5. 시뮬레이션의 if/else가 만드는 한 틱
 
-lecture-s06-p22-simulation · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p5)
+lecture-s06-p22-simulation · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=6)
 
 **강의 예제 기반 자체 출제** S6 p22
 
@@ -470,7 +470,7 @@ else service_time=remove_customer();`
 
 ### P6. 원형 큐의 인덱스를 먼저 옮기기
 
-lecture-s06-p9-circular-queue · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p6)
+lecture-s06-p9-circular-queue · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=7)
 
 **강의 예제 기반 자체 출제** S6 p9
 
@@ -555,7 +555,7 @@ return q->queue[q->front];`
 
 ### P7. 덱의 첫 삽입과 양 끝 포인터
 
-lecture-s06-p16-deque-add · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p7)
+lecture-s06-p16-deque-add · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=8)
 
 **강의 예제 기반 자체 출제** S6 p16
 
@@ -646,7 +646,7 @@ S6 p16 · Software_6_Queue.pdf. 강의 코드의 해당 연산을 발췌해 들�
 
 ### P8. 덱에서 마지막 원소를 삭제할 때
 
-lecture-s06-p17-deque-delete · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p8)
+lecture-s06-p17-deque-delete · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=9)
 
 **강의 예제 기반 자체 출제** S6 p17
 
@@ -751,7 +751,7 @@ S6 p17 · Software_6_Queue.pdf. 강의 코드의 해당 연산을 발췌해 들�
 
 ### P9. 원형 큐의 front와 rear
 
-2019-mid-q7 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p9)
+2019-mid-q7 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=10)
 
 강의 규약: front는 첫 원소 직전, rear는 마지막 원소 인덱스이며 한 칸을 비워요. 삭제한 칸의 잔여 값은 현재 큐 원소로 세지 않아요.
 
@@ -844,7 +844,7 @@ front=rear=0에서 첫 삽입의 rear를 1로 옮겨요.
 
 ### P10. 원형 큐 상태 두 번 그리기
 
-2017-mid-c050-q7 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue.html#p10)
+2017-mid-c050-q7 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1015_Queue-%EB%AC%B8%EC%A0%9C.pdf#page=11)
 
 강의 규약: front는 첫 원소 직전, rear는 마지막 원소 인덱스이며 한 칸을 비워요. 삭제한 칸의 잔여 값은 현재 큐 원소로 세지 않아요.
 

@@ -3,6 +3,7 @@ import json
 import os
 from pathlib import Path
 from _util import REPO
+from review_source import read_review
 from review_inventory import collect_reviews
 from review_audit import audit_reviews
 
@@ -27,7 +28,7 @@ def test_all_distinct_exams_and_lecture_textbook_cards_retained():
 def test_restored_original_loop_has_consistent_count_examples():
     row=next(r for r in current_rows() if r['range']=='0914')
     from update_review import extract_cards
-    card=next(c for c in extract_cards(Path(row['review_path']).read_text(encoding='utf-8')) if c['source']=='unk-final-ltk-q1')
+    card=next(c for c in extract_cards(read_review(Path(row['review_path']))) if c['source']=='unk-final-ltk-q1')
     raw=card['raw']
     assert '29 + 58 = 87' in raw
     assert 'i = 2 → 58번' in raw

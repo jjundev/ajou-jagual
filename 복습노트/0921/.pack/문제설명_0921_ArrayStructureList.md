@@ -27,7 +27,7 @@
 
 ### P1. 2차원 배열의 바이트 수
 
-textbook-ch03-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p1)
+textbook-ch03-q01 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=1)
 
 int a[10][20]에서 배열이 차지하는 메모리 공간의 크기는 얼마인가? int형은 4바이트라고 하자.
 
@@ -125,7 +125,7 @@ int a[10][20]에서 배열이 차지하는 메모리 공간의 크기는 얼마�
 
 ### P2. 배열에 2의 거듭제곱 저장
 
-textbook-ch03-q04 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p2)
+textbook-ch03-q04 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=2)
 
 크기가 10인 배열 two[]를 선언하고 여기에 2의 제곱 값들을 저장해보자. 즉 배열의 첫 번째 요소에는 2⁰을 저장하고 두 번째 요소에는 2¹값을 저장한다. 마지막 요소에는 2⁹값을 저장한다. for 루프를 이용하여 two[] 배열의 전체 요소의 값을 출력하는 프로그램을 작성하라.
 
@@ -199,7 +199,7 @@ two[0]=1, 이전 원소×2
 
 ### P3. 사람 정보를 구조체로
 
-textbook-ch03-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p3)
+textbook-ch03-q05 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=3)
 
 person이라는 구조체를 만들어보자. 이 구조체에는 문자 배열로 된 이름, 사람의 나이를 나타내는 정수 값, 각 개인의 월급을 나타내는 float 값 등이 변수로 들어가야 한다.
 
@@ -269,7 +269,7 @@ char name[], int age, float salary
 
 ### P4. typedef로 complex 만들기
 
-textbook-ch03-q06 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p4)
+textbook-ch03-q06 · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=4)
 
 C언어의 typedef을 이용하여 complex라고 하는 새로운 자료형을 정의하라. complex 자료형은 구조체로서 float형인 real 변수와 역시 float형인 imaginary 변수를 갖는다. complex 자료형으로 변수 c1과 c2를 선언하여보라.
 
@@ -339,7 +339,7 @@ typedef 별명 뒤 변수 c1,c2 선언
 
 ### P5. 행렬 예제를 C 배열과 세 쌍으로 표현하기
 
-lecture-s03-p14-sparse-triples · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p5)
+lecture-s03-p14-sparse-triples · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=5)
 
 **강의 예제 기반 자체 출제** S3 p14
 
@@ -420,7 +420,7 @@ int A[3][3]={{2,3,0},{8,9,1},{7,0,5}};`
 
 ### P6. 하노이 코드의 매개변수 역할
 
-lecture-s02-p19-hanoi · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p6)
+lecture-s02-p19-hanoi · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=6)
 
 **강의 예제 기반 자체 출제** S2 p19
 
@@ -515,7 +515,7 @@ S2 p19 · Software_2_Recursion.pdf. 강의 코드의 해당 연산을 발췌해 
 
 ### P7. 계수 배열의 순서와 공간 낭비
 
-lecture-s03-p7-polynomial · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p7)
+lecture-s03-p7-polynomial · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=7)
 
 **강의 예제 기반 자체 출제** S3 p7
 
@@ -602,7 +602,7 @@ polynomial a = {5,{10,0,0,0,6,3}};`
 
 ### P8. 자체 참조 구조체의 링크 타입
 
-lecture-s03-p18-self-reference · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p8)
+lecture-s03-p18-self-reference · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=8)
 
 **강의 예제 기반 자체 출제** S3 p18
 
@@ -686,7 +686,7 @@ S3 p18 · Software_3_ArrayStructureList.pdf. 강의 코드의 해당 연산을 �
 
 ### P9. 배열 ADT와 행 우선 주소 계산
 
-lecture-s03-p3-array-adt-address · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p9)
+lecture-s03-p3-array-adt-address · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=9)
 
 **강의 예제 기반 자체 출제** S3 p3
 
@@ -759,7 +759,7 @@ S3 p3 · 추가 근거 p4,5 · Software_3_ArrayStructureList.pdf. 강의의 개�
 
 ### P10. 두 표현의 다항식 덧셈과 남은 항 처리
 
-lecture-s03-p11-polynomial-add-merge · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p10)
+lecture-s03-p11-polynomial-add-merge · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=10)
 
 **강의 예제 기반 자체 출제** S3 p11
 
@@ -850,7 +850,7 @@ S3 p11 · 추가 근거 p7,8,9,10 · Software_3_ArrayStructureList.pdf. 강의�
 
 ### P11. 구조체 대입과 비교 연산
 
-lecture-s03-p17-struct-assignment-comparison · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList.html#p11)
+lecture-s03-p17-struct-assignment-comparison · [원 문제 보기](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0921_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf#page=11)
 
 **강의 예제 기반 자체 출제** S3 p17
 

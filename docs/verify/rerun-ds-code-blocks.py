@@ -19,6 +19,7 @@ from types import SimpleNamespace
 # Records name pre-.pack locations; the pack-layout migration resolves them to today's files.
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]/'.agents/skills/ds-review-pack/scripts'))
 from pack_layout import current_path, current_digest
+from review_input import source_file, source_digest, read_archive
 
 
 def sha(path):
@@ -47,7 +48,11 @@ def load_inputs(root):
         manifest_path = within(root, record['manifest'])
         manifest = json.loads(manifest_path.read_text())
         source = within(root, record['source'])
-        if sha(source) != current_digest(source, record['source_sha256']) or sha(source) != current_digest(source, manifest['source_sha256']):
+        stored = source_file(source)
+        observed = source_digest(stored)
+        prior = read_archive(stored).get('html_sha256') if stored.suffix == '.json' else observed
+        if (current_digest(source, record['source_sha256']) not in (observed, prior)
+                or current_digest(source, manifest['source_sha256']) not in (observed, prior)):
             raise ValueError('source hash differs')
         for name, digest in manifest['files'].items():
             if sha(within(source.parent, name)) != current_digest((source.parent / name).resolve(), digest):
