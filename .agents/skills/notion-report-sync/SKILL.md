@@ -60,7 +60,7 @@ The tool checks every target belongs to that page and matches the old text befor
 
 Write source code in a Notion table cell as plain `text` rich text without the `code` annotation, and put each line's leading spaces as the same number of U+00A0 (no-break space). Leave spaces inside a line as ASCII spaces. Reason, from a 2026-09-27 export test: Notion's PDF export drops leading ASCII spaces, and an inline-code cell prints in red (#EB5757) even with an explicit `color`. Text extracted from that PDF contained no U+00A0, so copied code carries no stray characters.
 
-After writing, read the cell back: it must have no `code` annotation, and replacing U+00A0 with a space must reproduce the source exactly. When a target text item already has line-leading U+00A0, `edit` also matches an `old_text` written with ASCII indentation and converts `new_text`'s line-leading spaces to U+00A0. Indentation typed with the space bar in the Notion editor is ASCII and disappears again in the PDF, so check the exported PDF after manual code edits.
+After writing, read the cell back: it must have no `code` annotation, and replacing U+00A0 with a space must reproduce the source exactly (for course reports whose format strips comments from table code cells, the source with comments removed; an appendix code block still matches the source verbatim). When a target text item already has line-leading U+00A0, `edit` also matches an `old_text` written with ASCII indentation and converts `new_text`'s line-leading spaces to U+00A0. Indentation typed with the space bar in the Notion editor is ASCII and disappears again in the PDF, so check the exported PDF after manual code edits.
 
 ## Add image upload slots
 
