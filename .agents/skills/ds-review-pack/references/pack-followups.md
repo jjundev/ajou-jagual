@@ -4,7 +4,7 @@
 
 | 모드 | 문제설명 | 확인문제 |
 |---|---|---|
-| 신규 (`MMDD`·`MMDD-MMDD`, `lite` 포함) | 문항이 있으면 담당자 시작 | 별도 담당자 시작. 둘 다 가능하면 병렬 |
+| 신규 (`MMDD`·`MMDD-MMDD`) | 문항이 있으면 담당자 시작 | 별도 담당자 시작. 둘 다 가능하면 병렬 |
 | `update-existing`·`revise-existing` | 문항이 있으면 담당자 시작 | 건너뜀. 기존 확인문제 보존 |
 | `bank` | 건너뜀 | 건너뜀 |
 
@@ -22,7 +22,7 @@
 
    `CONCEPT_CLI`는 위 `concept_release.py`, `EXPLAIN_GATE`는 이 스킬의 `scripts/followup_explain.py` 절대 경로다.
 
-3. 두 분기가 있으면 새 컨텍스트의 담당자 둘을 모두 띄운 뒤 기다린다. 문제설명 담당자에게는 `REPO`, `ABS_REVIEW`, `EXPLAIN_RUN`, [문제설명 절차](problem-explain.md) 경로를 보낸다. 확인문제 담당자에게는 `REPO`, `RANGE`, `CONCEPT_RUN`, 준비한 `SRC`, 형제 `ds-concept-check/SKILL.md` 경로를 보낸다. 각 지시에는 **작업본까지만** 작성한다고 명시한다. `lite`여도 두 후속 작업의 검사와 확인문제 모델 선정은 각 스킬을 그대로 따른다.
+3. 두 분기가 있으면 새 컨텍스트의 담당자 둘을 모두 띄운 뒤 기다린다. 문제설명 담당자에게는 `REPO`, `ABS_REVIEW`, `EXPLAIN_RUN`, [문제설명 절차](problem-explain.md) 경로를 보낸다. 확인문제 담당자에게는 `REPO`, `RANGE`, `CONCEPT_RUN`, 준비한 `SRC`, 형제 `ds-concept-check/SKILL.md` 경로를 보낸다. 각 지시에는 **작업본까지만** 작성한다고 명시한다. 두 후속 작업의 검사와 확인문제 모델 선정은 각 스킬을 그대로 따른다.
 4. 담당자와 그 하위 작성자·풀이자는 배정된 RUN 범위에만 쓴다. 임시 파일도 해당 RUN 아래에 두고 Python 실행에는 `-B` 또는 `PYTHONDONTWRITEBYTECODE=1`을 쓴다. 공개 팩과 출처는 읽기 전용이다. 담당자가 반환하는 것은 `ready|withheld|skipped`, 이유 또는 미해결 항목, RUN·검토 기록 경로와 9단계 보고용 수치다. 수동 화면을 직접 열어 검사한 기록이 필요하며 메인은 문서 본문이나 캡처를 받아 다시 읽지 않는다. 새 컨텍스트나 실제 화면 도구가 확보되지 않으면 해당 작업을 보류한다.
 
 ## 블라인드 중계

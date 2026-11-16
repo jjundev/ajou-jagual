@@ -1,8 +1,8 @@
 # 전체 문항 개편과 공통 품질 게이트
 
-`revise-existing [MMDD|all] [lite]`는 기존 문항을 유지·이동·통합·교체하는 모드다. `update-existing`는 기존 카드를 보존하며 교과서 원문을 추가하는 별도 모드다. 사용자가 전체 재검토를 요청했을 때만 개편 모드를 쓴다. `bank`는 이 절차를 실행하지 않는다.
+`revise-existing [MMDD|all]`는 기존 문항을 유지·이동·통합·교체하는 모드다. `update-existing`는 기존 카드를 보존하며 교과서 원문을 추가하는 별도 모드다. 사용자가 전체 재검토를 요청했을 때만 개편 모드를 쓴다. `bank`는 이 절차를 실행하지 않는다.
 
-신규·update-existing·revise-existing 모두 최종 manifest→출처→팩 HTML→전체 audit→MD→실화면→PDF·팩 발행→문제설명 순서의 검증을 따른다. lite도 출처·중복·설명·PDF 검증은 생략하지 않는다.
+신규·update-existing·revise-existing 모두 최종 manifest→출처→팩 HTML→전체 audit→MD→실화면→PDF·팩 발행→문제설명 순서의 검증을 따른다.
 
 ## 변경 전 전역 목록
 

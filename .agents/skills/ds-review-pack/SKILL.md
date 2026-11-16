@@ -1,6 +1,6 @@
 ---
 name: ds-review-pack
-description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(정리노트·복습문제·문제설명)이나 기출 문제은행을 만들 때 사용한다. /ds-review-pack [bank | MMDD | MMDD-MMDD | update-existing MMDD/all | revise-existing MMDD/all] [lite]
+description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(정리노트·복습문제·문제설명)이나 기출 문제은행을 만들 때 사용한다. /ds-review-pack [bank | MMDD | MMDD-MMDD | update-existing MMDD/all | revise-existing MMDD/all]
 ---
 
 # 자구알 복습팩
@@ -10,23 +10,22 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 **공통 품질 기준**: 신규·두 갱신은 단계별 강의 출처·coverage·전역 중복 검사를 적용한다. 실제 학습 범위와 서로 다른 기출의 보존 기준은 공통 선별 절에 있다.
 
 **모드**
-- `revise-existing [MMDD|all] [lite]`: 기존 전체 문항을 검토·교체하고 문제설명·PDF까지 갱신한다.
+- `revise-existing [MMDD|all]`: 기존 전체 문항을 검토·교체하고 문제설명·PDF까지 갱신한다.
 - `bank`: 기출 원본을 전사해 문제은행을 만들거나 다시 만든다. 절차는 "문제은행 모드" B1~B4.
 - `update-existing [MMDD|all]`: 기존 카드와 노트를 보존하고 교과서 원문 4~8개를 추가한다. 전체 문항의 문제설명도 다시 만든다.
-- 그 밖(`[MMDD | MMDD-MMDD] [lite]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
+- 그 밖(`[MMDD | MMDD-MMDD]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
 
 **산출물** (복습팩, `복습노트/<range>/`, 수업 날짜마다 폴더 하나):
 - 루트: `정리노트_<range>_<slug>.html`, `문제설명_<range>_<slug>.html`, `복습문제_<range>_<slug>-문제.pdf`·`-답안.pdf`, `확인문제_<range>_<slug>.html`(신규 모드만). 루트에는 HTML·PDF와 `.pack/`만 둔다.
 - `.pack/`(숨김 폴더): 같은 이름의 `.md` 세 개, `figures_<range>/`, 설명 소유 그림·자료 폴더(`figures_문제설명_*`, `자료_문제설명_*`), `자료_복습팩/`의 `복습문제_<range>_<slug>.json`(문항 원고), `자료_PDF/pdf-validation.json`, `자료_확인문제_<range>_<slug>/`. 검색 도구가 숨김 폴더를 건너뛸 수 있으니 `복습노트/<range>/.pack/<이름>` 경로를 직접 연다.
 
-**인자**: `[bank | MMDD | MMDD-MMDD | update-existing MMDD/all | revise-existing MMDD/all] [lite]`
-- `lite`: 작성자·요약·전사 에이전트를 가벼운 모델로, 6단계 리뷰를 생략한다. 기계 검사와 브라우저 검사는 그대로 한다. 문제설명 저작·독립 검산·실자료 검토·브라우저 검증과 확인문제(해당 스킬의 모델 선정과 모든 검사)는 생략하지 않는다.
+**인자**: `[bank | MMDD | MMDD-MMDD | update-existing MMDD/all | revise-existing MMDD/all]`
 
 **에이전트 모델** (작성자·요약·전사 공통, 모델은 여기서만 정한다):
-| 실행 환경 | 기본 | `lite` |
-|---|---|---|
-| Claude | opus | sonnet |
-| GPT 등 Claude 아님 | sol | luna |
+| 실행 환경 | 모델 |
+|---|---|
+| Claude | opus |
+| GPT 등 Claude 아님 | sol |
 
 **메인 참조 읽기** — `rg -n '^#{1,6} '`로 링크 이름과 같은 제목을 찾고, 다음 동급·상위 본문 제목 직전까지 읽는다. 코드 펜스 안 제목은 건너뛴다. 이미 읽은 절은 재사용하고 담당자용 문서는 경로로 넘긴다.
 
@@ -165,7 +164,7 @@ python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$
 - 그 작성자에게 문제 목록을 보내 조각을 고치게 한다(SendMessage, 안 되면 같은 브리프로 새 에이전트).
 - 고친 뒤 4단계부터 다시 한다. 최대 2회까지이며, 그래도 남으면 "미해결"로 보고한다.
 
-### 6. 리뷰 (`lite`면 생략)
+### 6. 리뷰
 - 리뷰어 1명을 띄운다. `references/review-prompt.md` 경로와 브리프의 RUN·HTML 경로를 넘긴다.
 - Critical과 Important는 모두, Minor는 쉬운 것만 고친다.
 - 담당 작성자별로 **한 번에 모아서** 수정을 요청한다. 수정은 한 번만 한다.

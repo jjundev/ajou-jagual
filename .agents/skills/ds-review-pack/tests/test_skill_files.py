@@ -66,7 +66,7 @@ class TestSkillFiles(unittest.TestCase):
     def test_followup_modes_and_publish_owner(self):
         refs = SKILL / "references"
         contract = (refs / "pack-followups.md").read_text()
-        for phrase in ("신규", "lite", "병렬", "update-existing", "revise-existing", "bank", "0문항",
+        for phrase in ("신규", "병렬", "update-existing", "revise-existing", "bank", "0문항",
                        "메인만 발행", "ready", "withheld", "skipped", "각각", "복습노트"):
             self.assertIn(phrase, contract)
         for name in ("textbook-update.md", "review-overhaul.md"):
