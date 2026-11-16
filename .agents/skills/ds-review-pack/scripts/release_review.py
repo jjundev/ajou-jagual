@@ -6,17 +6,16 @@ import json
 from pathlib import Path
 import shutil
 import tempfile
+import sys
+
+from browser_review import MODES, require_pass, required_cases, write_request
 
 from pack_layout import RANGE_RE, nfc, normalized_child, pdf_report_path
-from pdf_cards import read_pack
+from pdf_cards import digest, read_pack
 from pdf_publish import lock_handle
 from review_links import add_pdf_links, rewrite
 from review_source import archive_review, archived_markup, review_paths, source_file, read_archive
 from update_review import extract_cards, publish_update
-
-
-def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def materialize(source: Path, stage: Path) -> Path:
@@ -52,7 +51,8 @@ def materialize(source: Path, stage: Path) -> Path:
     return target
 
 
-def prepare(repo: Path, range_: str, run: Path) -> Path:
+def prepare(repo: Path, range_: str, run: Path, *, mode: str = "new") -> Path:
+    required_cases(mode)
     if not RANGE_RE.fullmatch(range_):
         raise ValueError("잘못된 복습팩 범위")
     notes = normalized_child(repo.resolve(), "복습노트")
@@ -77,7 +77,7 @@ def prepare(repo: Path, range_: str, run: Path) -> Path:
                 raise ValueError("날짜 폴더에 여러 복습문제 팩이 있어요")
             if sources and not (stage / sources[0].name).exists():
                 materialize(sources[0], stage)
-        record.write_text(json.dumps({"live": str(live), "stage": str(stage), "baseline": baseline},
+        record.write_text(json.dumps({"live": str(live), "stage": str(stage), "baseline": baseline, "mode": mode},
                                      ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     except BaseException:
         shutil.rmtree(stage)
@@ -95,8 +95,21 @@ def release_paths(repo: Path, run: Path) -> tuple[dict, Path, Path]:
     return record, stage, live
 
 
-def publish(repo: Path, run: Path) -> Path:
+def publication_lock(live: Path) -> Path:
+    # The pack release and PDF-only update use the same destination lock.
+    lock_dir = Path(tempfile.gettempdir()) / "ds-pdf-locks"
+    lock_dir.mkdir(exist_ok=True)
+    return lock_dir / (hashlib.sha256(str(live).encode()).hexdigest() + ".lock")
+
+
+def start_browser_review(repo: Path, run: Path) -> Path:
     record, stage, live = release_paths(repo, run)
+    with publication_lock(live).open("a+") as handle:
+        lock_handle(handle)
+        return write_request(repo, stage, run, record.get("mode", "new"))
+
+
+def release_files(stage: Path, record: dict) -> tuple[Path, dict[Path, bytes]]:
     if any(p.is_symlink() for p in stage.rglob("*")):
         raise ValueError("작업 폴더에서 심볼릭 링크를 사용할 수 없어요")
     reviews = review_paths(stage)
@@ -150,12 +163,15 @@ def publish(repo: Path, run: Path) -> Path:
         elif nfc(source.name) in text:
             raise ValueError("문항 0개에 복습문제 링크가 있어요")
         files[p] = text.encode("utf-8")
-    # The pack release and PDF-only update use the same destination lock.
-    lock_dir = Path(tempfile.gettempdir()) / "ds-pdf-locks"
-    lock_dir.mkdir(exist_ok=True)
-    lock = lock_dir / (hashlib.sha256(str(live).encode()).hexdigest() + ".lock")
-    with lock.open("a+") as handle:
+    return source, files
+
+
+def publish(repo: Path, run: Path) -> Path:
+    record, stage, live = release_paths(repo, run)
+    with publication_lock(live).open("a+") as handle:
         lock_handle(handle)
+        require_pass(repo, stage, run, record.get("mode", "new"))
+        source, files = release_files(stage, record)
         targets = {live / p.relative_to(stage): data for p, data in files.items()}
         old_html = normalized_child(live, nfc(source.name))
         if old_html.is_file():
@@ -165,27 +181,36 @@ def publish(repo: Path, run: Path) -> Path:
             if (digest(path) if path.is_file() else None) != before:
                 raise ValueError(f"작업 중 기존 산출물이 변경됐어요: {path}")
         publish_update(targets, backup=run / ".release-backup")
-    shutil.rmtree(stage)
+        shutil.rmtree(stage)
     return live
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    for name in ("prepare", "publish", "discard"):
+    for name in ("prepare", "browser-request", "publish", "discard"):
         command = commands.add_parser(name)
         command.add_argument("--repo", type=Path, required=True)
         command.add_argument("--run", type=Path, required=True)
         if name == "prepare":
             command.add_argument("--range", required=True)
+            command.add_argument("--mode", choices=MODES, default="new")
     args = parser.parse_args()
-    if args.command == "prepare":
-        print(prepare(args.repo, args.range, args.run))
-    elif args.command == "publish":
-        print(publish(args.repo, args.run))
-    else:
-        _, stage, _ = release_paths(args.repo, args.run)
-        shutil.rmtree(stage)
+    try:
+        if args.command == "prepare":
+            print(prepare(args.repo, args.range, args.run, mode=args.mode))
+        elif args.command == "browser-request":
+            print(start_browser_review(args.repo, args.run))
+        elif args.command == "publish":
+            print(publish(args.repo, args.run))
+        else:
+            _, stage, live = release_paths(args.repo, args.run)
+            with publication_lock(live).open("a+") as handle:
+                lock_handle(handle)
+                shutil.rmtree(stage)
+    except (OSError, ValueError) as exc:
+        print(str(exc), file=sys.stderr)
+        return 1
     return 0
 
 

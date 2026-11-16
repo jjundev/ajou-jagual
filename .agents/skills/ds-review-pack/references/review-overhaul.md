@@ -2,7 +2,7 @@
 
 `revise-existing [MMDD|all] [lite]`는 기존 문항을 유지·이동·통합·교체하는 모드다. `update-existing`는 기존 카드를 보존하며 교과서 원문을 추가하는 별도 모드다. 사용자가 전체 재검토를 요청했을 때만 개편 모드를 쓴다. `bank`는 이 절차를 실행하지 않는다.
 
-신규·update-existing·revise-existing 모두 최종 manifest→출처→팩 HTML→전체 audit→실화면→MD→문제설명/PDF 순서의 검증을 따른다. lite도 출처·중복·설명·PDF 검증은 생략하지 않는다.
+신규·update-existing·revise-existing 모두 최종 manifest→출처→팩 HTML→전체 audit→MD→실화면→PDF·팩 발행→문제설명 순서의 검증을 따른다. lite도 출처·중복·설명·PDF 검증은 생략하지 않는다.
 
 ## 선별: 핵심 범위 충족 우선
 
@@ -28,7 +28,7 @@ lecture-code 카드의 문제·힌트·풀이·정답은 standalone이다. 강�
 
 ## Stage와 전역 검사
 
-먼저 고유 RUN에 변경 전 팩 전체와 보호 대상 해시를 백업한다. 정리노트 HTML/MD·기존 그림, STT, 강의록, 기출·교과서 원본은 보존한다. 변경 전에 `collect_reviews(REPO)` 결과 전체를 RUN/baseline.json으로 고정한다. 기존 기출의 고유 source 목록을 별도 대조하며 이번처럼 과거 누락을 복구할 때는 required-exams.json에 복구할 전체 기출 ID 배열을 둔다. 팩마다 `release_review.py prepare --repo REPO --range MMDD --run PACK_RUN`으로 작업 폴더를 만든다. 이 명령이 발행된 원고로 작업용 HTML을 조립한다. stage는 팩별 HTML과 `.pack/자료_복습팩/manifest.json`을 갖는다. `update_review.build_revision`으로 허용 영역만 교체하고 `release_review.py publish --repo REPO --run PACK_RUN`으로 백업·변경 감지·복구를 수행한다. 기존 교과서 추가는 계속 `build_update`를 쓴다.
+먼저 고유 RUN에 변경 전 팩 전체와 보호 대상 해시를 백업한다. 정리노트 HTML/MD·기존 그림, STT, 강의록, 기출·교과서 원본은 보존한다. 변경 전에 `collect_reviews(REPO)` 결과 전체를 RUN/baseline.json으로 고정한다. 기존 기출의 고유 source 목록을 별도 대조하며 이번처럼 과거 누락을 복구할 때는 required-exams.json에 복구할 전체 기출 ID 배열을 둔다. 팩마다 `release_review.py prepare --repo REPO --range MMDD --run PACK_RUN --mode revise-existing`으로 작업 폴더를 만든다. 이 명령이 발행된 원고로 작업용 HTML을 조립한다. stage는 팩별 HTML과 `.pack/자료_복습팩/manifest.json`을 갖는다. `update_review.build_revision`으로 허용 영역만 교체하고 `release_review.py publish --repo REPO --run PACK_RUN`으로 백업·변경 감지·복구를 수행한다. 기존 교과서 추가는 계속 `build_update`를 쓴다.
 
 문제 번호 변경은 내용 버전별 `od-review-solved:<range>:<revision>` 상태 키로 구분한다. 옛 p1의 완료 상태를 새 p1에 이식하지 않는다. 테마·패널·노트 읽음 키는 보존한다. PDF 작성용 표는 pN이 아니라 source ID로 지정한다.
 
@@ -44,6 +44,6 @@ selection은 `mode=revision`, `policy_version=review-questions-2026-10-17`, 최�
 
 정답은 문제만 보고 별도 추적·계산·정의된 C11 실행으로 검산한다. 실행 harness에 추가한 선언·헤더·main과 원문 차이를 기록하고 실제 스크립트·출력을 evidence로 보관한다. 검토하지 않은 문항은 pending이다.
 
-모든 문항을 1280×900/375×812, light/dark에서 열고 원문·힌트·풀이·목차·pager·코드 내부 스크롤·링크·콘솔을 확인한다. MD는 최종 복습문제 HTML만 변환해 정리노트 MD를 보존한다. 검증한 작업용 HTML로 [PDF](pdf-build.md)를 만들어 작업 폴더에 발행한다. 이어서 `release_review.py publish`로 팩을 교체하고, 발행된 JSON 원고의 정확한 경로로 [문제설명](problem-explain.md)을 갱신한다.
+MD는 최종 복습문제 HTML만 변환해 정리노트 MD를 보존한다. 최종 manifest와 자원이 준비되면 [브라우저 검증](browser-check.md)의 요청을 발급한다. 검사자는 모든 문항을 1280×900/375×812, light/dark에서 열고 원문·힌트·풀이·목차·pager·코드 내부 스크롤·링크·콘솔을 확인한다. 실패 시 `where`별로 고치고 기계 검사·변환 후 요청을 갱신한다. 2회 수정 뒤 미해결이면 해당 팩 발행을 보류하고 기존 팩을 보존한다. 검증한 작업용 HTML로 [PDF](pdf-build.md)를 만들어 작업 폴더에 발행한다. 이어서 `release_review.py publish`로 팩을 교체하고, 발행된 JSON 원고의 정확한 경로로 [문제설명](problem-explain.md)을 갱신한다.
 
 팩마다 검증한 결과만 교체한다. 실패한 파생 산출물은 stale/withheld와 이유를 기록하고 이전 파일을 보존한다. 다른 독립 팩은 계속한다. 마지막 전체 audit와 `pack_layout.py check --repo REPO`를 실행하고 미완료 검사를 pass로 기록하지 않는다.

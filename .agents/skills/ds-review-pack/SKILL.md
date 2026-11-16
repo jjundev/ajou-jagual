@@ -155,21 +155,20 @@ python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$
 - 담당 작성자별로 **한 번에 모아서** 수정을 요청한다. 수정은 한 번만 한다.
 - 수정 후 4~5단계를 다시 한다. 반영하지 않은 항목은 보고서에 적는다.
 
-### 7. 브라우저 검증
-- `references/browser-check.md`대로 한다.
-  - http.server를 빈 포트에 띄운다.
-  - 확인: KaTeX 오류 0, 남은 `$` 없음, 375px에서 가로 스크롤 없음(코드 블록은 자체 스크롤), 다크모드, 위젯, 링크, 콘솔 오류
-- 결함은 5단계와 같은 방식으로 작성자에게 되돌린다. 이것도 최대 2회 규칙에 포함된다.
-- 끝나면 서버를 종료한다.
+### 7. MD 변환과 브라우저 검증
 
-### 8. MD 변환과 문제설명·PDF
 ```bash
 python3 "$SKILL/scripts/html2md.py" "$STAGE/<정리노트>.html" "$STAGE/<복습문제>.html" --check
+python3 "$SKILL/scripts/release_review.py" browser-request --repo "$REPO" --run "$RUN"
 ```
-- `OK`가 나와야 한다. `.md`와 `figures_<range>/`는 `STAGE/.pack/`에 생긴다.
-- 누락이 나오면 대부분 HTML 조각의 마크업 문제다(수식이 `svg`나 `.controls` 안에 있는 경우 등). 조각을 고치고 4단계부터 다시 한다.
 
-- 검증한 작업용 복습문제 HTML을 `REVIEW`로 지정하고 [PDF 생성 절차](references/pdf-build.md)를 실행한다. PDF 쌍을 실제 검토하고 같은 작업 폴더에 PDF를 발행한다.
+- 먼저 MD 변환에서 `OK`를 확인한다. `.md`와 `figures_<range>/`는 `STAGE/.pack/`에 생긴다. 누락이 있으면 HTML 조각을 고치고 4단계부터 다시 한다.
+- 새 검사 서브에이전트에게 `REPO`, 요청 JSON의 절대 경로, [브라우저 검증](references/browser-check.md) 경로만 넘긴다. 메인은 검사자의 판정과 결함 목록을 받는다. 도구를 쓸 수 없는 검사자의 대체 절차도 해당 지침을 따른다.
+- 결함은 5단계와 같은 방식으로 `where`별로 모아 담당 작성자에게 돌려보낸다. 기존 최대 2회 수정 한도를 적용한다. 수정 뒤에는 다시 조립·검사·변환하고 요청을 새로 만든다. 끝내 통과하지 못하면 새 발행을 보류하고 이전 팩이 있으면 보존한다.
+
+### 8. 문제설명·PDF 발행
+
+- 검증한 작업용 복습문제 HTML을 `REVIEW`로 지정하고 [PDF 생성 절차](references/pdf-build.md)를 실행한다. 새 검사 서브에이전트가 `PDF_RUN`의 모든 쪽을 실제로 열어 검토한다. 메인은 판정을 받아 PDF를 같은 작업 폴더에 발행한다. 0문항이면 PDF를 건너뛴다.
 - 아래 명령으로 정리노트, 문항 원고·MD·그림과 PDF 쌍을 함께 발행한다. 발행기는 문제 링크를 PDF로 연결하고 작업 폴더를 정리한다. 중단한 작업 폴더는 같은 인자로 `release_review.py discard`를 실행해 지운다. 문항 0개인 팩은 문제 링크를 생략한다.
 
 ```bash

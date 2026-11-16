@@ -9,9 +9,19 @@ python3 "$SKILL/scripts/review_pdf.py" build --review "$REVIEW" --run "$PDF_RUN"
 python3 "$SKILL/scripts/review_pdf.py" check --run "$PDF_RUN"
 ```
 
-`report.json`의 status=staged, checks.status=pass여야 한다. `stage/pages/{problems,answers}/*.png`의 **모든 페이지**를 실제로 열어 문제/답/힌트/코드/그림/표·계속 페이지·순서·하단 여백을 확인한다. 원본 source 및 stage PDF의 내용과 대응도 확인한다. 기계 검사만으로 browser=pass를 기록하지 않는다. 실패하면 생성기·adapter·분할을 고치고 새 RUN에서 다시 build한다. 템플릿/CSS를 바꾸거나 코드를 생략해서 통과시키지 않는다.
+## 쪽별 실화면 검토
 
-실제 검토를 끝낸 현재 RUN/review.json에 status=pass, reviewer, 구체적 evidence, `report_sha256`(report.json의 현재 SHA-256), `artifact_hashes`(검토한 report.json의 artifact_hashes 그대로)를 기록한다. 재생성/자산 변경 시 승인은 무효다.
+메인은 `report.json`의 `status`가 `skipped`이면 PDF 발행을 건너뛴다. `staged`이고 `checks.status`가 `pass`이며 `check`까지 통과하면 새 검사 서브에이전트에게 `PDF_RUN`의 절대 경로와 이 절의 경로를 넘긴다. 검사자는 `PDF_RUN`에만 기록한다. 원고, 작업 폴더, `PDF_RUN/stage/`는 읽기 전용 입력으로 다룬다.
+
+검사자는 `stage/pages/{problems,answers}/*.png`의 **모든 페이지**를 실제로 열어 원고 및 stage PDF와 대조한다. 문제·답·힌트·코드·그림·표, 계속 페이지, 순서, 하단 여백을 확인한다. 확인한 쪽의 경로 집합이 두 폴더의 PNG 전체와 일치하고 결함이 없을 때 `pass`를 기록한다. 기계 검사만 끝낸 상태는 미검토다.
+
+`PDF_RUN/review.json`에 `status`, 검사자 이름 `reviewer`, `report_sha256`(검토를 시작할 때 읽은 report.json의 SHA-256), 그 보고서의 `artifact_hashes`를 기록한다. `evidence`에는 `{"page": "stage/pages/problems/001.png", "observation": "..."}`처럼 쪽마다 실제 관찰 한 줄을 남긴다. 결함은 해당 쪽과 이유를 적고 `status`를 `fail`로 기록한다. 메인에는 상태, 문제지·답안지 쪽 수, 문제 쪽과 사유, 기록 경로만 돌려준다. 검사자가 이미지를 열 수 없으면 메인이 동일한 검사와 기록을 맡는다. 메인도 열 수 없으면 보류한다.
+
+실패하면 생성기·adapter·분할을 고치고 새 RUN에서 다시 빌드하고 검토한다. 템플릿과 코드 내용은 유지한다. 재생성이나 자산 변경 뒤에는 이전 승인이 무효다.
+
+## 발행과 backfill
+
+실화면 검토를 통과한 RUN을 메인이 발행한다.
 
 ```sh
 python3 "$SKILL/scripts/review_pdf.py" publish --run "$PDF_RUN" --repo "$REPO"
@@ -25,7 +35,7 @@ python3 "$SKILL/scripts/review_pdf.py" publish --run "$PDF_RUN" --repo "$REPO"
 python3 "$SKILL/scripts/review_pdf.py" backfill --repo "$REPO" --target all --run "$PDF_RUN"
 ```
 
-backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 run에서 위 전체 화면 검토→publish를 수행한다. 날짜 한 팩은 --target MMDD, 저장된 통합 팩은 --target MMDD-MMDD를 쓴다. 같은 폴더 리뷰 둘은 공유 보고서 충돌이므로 자동 선택하지 않는다.
+backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 `staged` RUN에 같은 쪽별 실화면 검토와 메인 발행 절차를 적용한다. 날짜 한 팩은 --target MMDD, 저장된 통합 팩은 --target MMDD-MMDD를 쓴다. 같은 폴더 리뷰 둘은 공유 보고서 충돌이므로 자동 선택하지 않는다.
 
 0문항은 skipped, 손상/잘림/누락/수식·자원 오류는 withheld다. 이전 PDF가 있는 재생성 실패는 stale이다. withheld/stale이면 CLI 종료 코드 1이며 다른 팩은 계속한다. PDF와 문제설명은 각각 발행/보류·이유를 보고하고, 한쪽 실패로 검증된 원 복습팩·문제설명·이전 PDF를 삭제하지 않는다. lite도 PDF 검증·실화면 검토를 생략하지 않는다.
 

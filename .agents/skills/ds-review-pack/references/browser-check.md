@@ -1,17 +1,17 @@
-# 브라우저 검증 (메인 에이전트)
+# 브라우저 검증
+
+## 검사 요청과 결과
+
+메인은 작업용 HTML과 최종 MD·그림·manifest를 준비한 뒤 `release_review.py browser-request --repo REPO --run PACK_RUN`을 실행한다. 새 검사 서브에이전트에게 저장소 경로, 출력된 요청 JSON 경로, 이 문서 경로를 넘긴다. 이 문서의 실화면 검사를 적용한다. 검사자는 요청의 `mode`, `stage`, `cases`를 읽고 요청 파일의 SHA-256을 계산한다. 작업 폴더와 저장소는 읽기 전용이다. 기록·캡처는 요청 JSON과 같은 RUN의 `browser/<attempt>/`에만 쓴다.
+
+- `new`는 정리노트와 복습문제를 각각 1280×900·375×812, light/dark로 검사한다. `update-existing`과 `revise-existing`은 작업용 복습문제의 네 조합에서 각 모드 지침에 정한 카드를 검사하고 정리노트 링크 목적지를 확인한다. 레거시 변형에는 아래 패널 계약과 모드별 검증 범위를 적용한다.
+- `browser-review.json`에는 `version: 1`, `request_sha256`, 검사자 이름 `reviewer`, `status`, `cases`, `issues`를 기록한다. `cases`는 요청 ID(예: `review/375x812/dark`)를 키로 쓰고 값은 `status`와 `evidence`다. `evidence` 문자열에는 해당 화면에서 실제로 확인한 요소와 관찰 결과, 이 지침에서 요구한 캡처의 검사 폴더 상대 경로를 적는다. 결함이 있으면 `issues`에 `where`(토픽·카드·섹션 id), `case`, `detail`을 적는다.
+- 실제 화면을 열어 필수 조합 전체를 검사하고 결함이 없을 때 전체·조합별 상태를 `pass`, `issues`는 `[]`로 기록한다. 실패는 `fail`로 기록한다. 메인에는 상태, 완료/필수 조합 수, 결함 목록, 기록 경로만 돌려준다.
+- 브라우저 도구가 없으면 설치된 Chrome과 Playwright를 확인한다. 검사자가 화면을 열 수 없으면 `unavailable`과 이유를 반환한다. 메인이 같은 검사를 직접 할 수 있으면 새 요청을 만들어 같은 형식으로 기록한다. 직접 검사할 도구도 없으면 보류한다.
 
 ## 서버
-`file://`를 지원하는 브라우저에서는 HTML을 직접 열고 외부 요청을 차단해 Pretendard와 KaTeX가 로드되는지 확인한다. HTTP 미리보기 도구를 쓰면 공용 자원이 포함된 저장소를 서버 루트로 사용한다. 셸 상태는 Bash 호출 사이에 이어지지 않으므로 포트 번호를 먼저 출력해 두고, 이후 명령과 URL에는 그 숫자를 직접 쓴다.
-1. 빈 포트 찾기(출력된 숫자가 `<port>`):
-   ```bash
-   python3 -c "import socket; s=socket.socket(); s.bind(('',0)); print(s.getsockname()[1])"
-   ```
-2. 서버 띄우기: Bash 도구의 `run_in_background: true`로 실행한다(명령 끝에 `&`를 붙이지 않는다).
-   ```bash
-   python3 -m http.server <port> --directory "<RUN>/repo"
-   ```
-3. URL: `http://localhost:<port>/복습노트/<STAGE의 폴더명>/<파일명>` (한글 그대로).
-4. 끝나면 서버를 종료한다: 그 백그라운드 작업을 멈추거나(TaskStop 등), `pkill -f "http.server <port>"`.
+
+`file://`를 지원하는 브라우저에서는 HTML을 직접 열고 외부 요청을 차단해 Pretendard와 KaTeX가 로드되는지 확인한다. HTTP 미리보기에서는 저장소를 루트로 삼는다. 빈 포트에서 `python3 -m http.server <port> --bind 127.0.0.1 --directory "REPO"`를 백그라운드 작업으로 실행한다. 브라우저에서 `http://127.0.0.1:<port>/복습노트/<STAGE 폴더명>/<파일명>`을 연다. 검사를 마치면 자신이 시작한 백그라운드 작업만 종료한다.
 
 ## 측정 전 준비
 브라우저 창이 숨겨져 있으면 `document.documentElement.clientWidth`가 0이 되어 `hScroll`이 거짓 양성으로 나온다. 측정 전에 `resize_window`로 크기를 명시하고(`width: 1280`, `height: 900`) `document.documentElement.clientWidth > 0`을 확인한다. `.katex-mathml` 안 요소는 화면에 보이지 않으므로 넘침 원인으로 치지 않는다. 스크롤 직후 스크린샷은 늦게 반영될 수 있으니 1초쯤 기다린 뒤 찍는다.
@@ -76,7 +76,7 @@ await new Promise((r) => setTimeout(r, 300));
 통과: `cards`와 `aidGroups`가 모두 manifest 문제 수, `katexErrors: 0`, `hScroll: []`. 첫 카드로 넘겨 오른쪽 "풀이 도움" 패널에 그 카드의 원문·힌트·풀이가 보이는지, 상단 "정리노트" 링크가 노트로 이동하는지 확인한다.
 
 ## 마무리
-모든 검사가 끝나면 `resize_window`(`preset: "desktop"`, `colorScheme: "light"`)로 되돌리고 서버를 종료한다(위 "서버" 4).
+모든 검사가 끝나면 `resize_window`(`preset: "desktop"`, `colorScheme: "light"`)로 되돌리고 자신이 시작한 서버를 종료한다.
 
 ## 패널 제목과 요약 계약
 중앙 제목과 고정 패널 제목을 유지하고 오른쪽의 중복 주제·문항 제목은 출력하지 않는다. `sum-for`는 `.sums` 컨테이너의 유일한 ID로 보존하며 `aid-for`와 제거한 제목의 JavaScript 참조는 두지 않는다.
