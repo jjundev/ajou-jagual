@@ -54,27 +54,36 @@ class TestSkillFiles(unittest.TestCase):
     def _step8(self):
         return self.text.split("\n### 8. ", 1)[1].split("\n### 9. ", 1)[0]
 
-    def test_concept_check_after_pdf_before_layout(self):
+    def test_followups_start_after_base_publish(self):
         s8 = self._step8()
-        self.assertLess(s8.index("references/pdf-build.md"), s8.index("ds-concept-check/SKILL.md"))
-        self.assertLess(s8.index("ds-concept-check/SKILL.md"), s8.index("pack_layout.py"))
+        publish = s8.index('release_review.py" publish')
+        followups = s8.index("references/pack-followups.md")
+        self.assertLess(s8.index("references/pdf-build.md"), publish)
+        self.assertLess(publish, followups)
+        self.assertLess(followups, s8.index("pack_layout.py"))
+        self.assertNotIn("ds-concept-check/SKILL.md", s8)
 
-    def test_concept_check_scope_and_failure(self):
-        self.assertTrue((SKILL.parent / "ds-concept-check" / "SKILL.md").exists())
-        self.assertIn("**확인문제 연결**", self.text)
-        self.assertIn("`update-existing`·`revise-existing`은 확인문제를 만들지 않고", self.text)
-        self.assertIn("복습팩 생성됨 / 확인문제 보류", self.text)
-        self.assertIn("| 확인문제 스킬 누락 |", self.text)
+    def test_followup_modes_and_publish_owner(self):
+        refs = SKILL / "references"
+        contract = (refs / "pack-followups.md").read_text()
+        for phrase in ("신규", "lite", "병렬", "update-existing", "revise-existing", "bank", "0문항",
+                       "메인만 발행", "ready", "withheld", "skipped", "각각", "복습노트"):
+            self.assertIn(phrase, contract)
+        for name in ("textbook-update.md", "review-overhaul.md"):
+            self.assertIn("(pack-followups.md)", (refs / name).read_text())
+        self.assertIn("| 확인문제 근거 없음 |", self.text)
         self.assertIn("| 확인문제 검사 실패 |", self.text)
         self.assertIn("- 확인문제:", self.text.split("\n### 9. ", 1)[1])
-        self.assertIn("stt-summary.md", self.text.split("\n### 9. ", 1)[1])
 
-    def test_concept_check_withhold_triggers(self):
-        # 근거 없음도 보류로 처리하고, 배치 검사는 이 팩 줄만 판정한다(다른 팩 문제로 보류하지 않는다).
-        s8 = self._step8()
-        self.assertIn("근거 파일이 없어 그 스킬 1단계가 멈춘 경우", s8)
-        self.assertIn("이 팩(`복습노트/<range>/`) 줄만", s8)
-        self.assertIn("| 확인문제 근거 없음 |", self.text)
+    def test_blind_relay_contract(self):
+        contract = (SKILL / "references/pack-followups.md").read_text().split("## 블라인드 중계", 1)[1]
+        for phrase in ("새 컨텍스트", "브리프", "현재 사본", "정리노트 MD", "답안 경로",
+                       "이전 답안", "items.json", "r3", "정답"):
+            self.assertIn(phrase, contract)
+        concept = (SKILL.parent / "ds-concept-check/SKILL.md").read_text()
+        self.assertIn("review-request", concept)
+        self.assertIn("visual-review.json", concept)
+        self.assertIn("두 번째로 높은 모델", concept)
 
     def test_no_ml_leftovers(self):
         for path in [SKILL_MD, *sorted((SKILL / "references").glob("*.md"))]:

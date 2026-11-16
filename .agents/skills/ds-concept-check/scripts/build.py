@@ -1,6 +1,7 @@
 """확인문제 소스 폴더(.pack/자료_확인문제_<범위>_<슬러그>) → 팩 루트의 확인문제 HTML."""
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
@@ -67,7 +68,7 @@ def note_name(range_: str, slug: str) -> str:
     return f"정리노트_{range_}_{slug}.html"
 
 
-def check_note_anchors(pack_root: Path, name: str, topic_ids: list[str]) -> None:
+def check_note_anchors(pack_root: Path, name: str, topic_ids: list[str]) -> Path:
     """풀이의 정리노트 링크가 깨지지 않게, 노트 HTML 과 토픽 앵커가 실제로 있는지 본다."""
     note = _paths.find_nfc(pack_root, name)
     if note is None:
@@ -76,19 +77,20 @@ def check_note_anchors(pack_root: Path, name: str, topic_ids: list[str]) -> None
     missing = [t for t in dict.fromkeys(topic_ids) if f'id="{t}"' not in text]
     if missing:
         raise BuildError(f"정리노트 {name} 에 앵커가 없어요: " + ", ".join(f"#{t}" for t in missing))
+    return note
 
 
-def render_page(src: Path) -> str:
+def render_page(src: Path, *, assets_dir: Path | None = None) -> str:
     s = load_source(src)
     range_, slug = s["range"], s["slug"]
     by_id = {o["id"]: o for o in s["objectives"]}
-    note = note_name(range_, slug)
-    check_note_anchors(s["pack_root"], note, [by_id[it["objective"]]["topic_id"] for it in s["items"]])
+    note = check_note_anchors(s["pack_root"], note_name(range_, slug),
+                              [by_id[it["objective"]]["topic_id"] for it in s["items"]]).name
     cards = "".join(render.card_html(it, by_id[it["objective"]], n, note) for n, it in enumerate(s["items"], 1))
     title = f"{range_} 확인문제 — 이번 수업 개념 확인"
     template = (_paths.DS_REVIEW_PACK / "assets" / "review-template.html").read_text(encoding="utf-8")
     page = assemble.fill(template, dict(
-        ASSET_ROOT=assemble.asset_root(s["pack_root"]),
+        ASSET_ROOT=assemble.asset_root(s["pack_root"], assets_dir=assets_dir),
         PAGE_TITLE=assemble.esc(f"{s['manifest']['course']} 확인문제 {range_}"),
         DESCRIPTION=assemble.esc(title), TITLE=assemble.esc(title),
         TOC='<a href="#check">확인</a>',
@@ -100,10 +102,10 @@ def render_page(src: Path) -> str:
     return interaction.install(swap_brand(page), output_name(range_, slug).removesuffix(".html"))
 
 
-def build(src: Path) -> Path:
+def build(src: Path, *, assets_dir: Path | None = None) -> Path:
     s = load_source(src)
     try:
-        page = render_page(src)
+        page = render_page(src, assets_dir=assets_dir)
     except (ValueError, assemble.AssembleError) as e:
         raise BuildError(str(e)) from e
     out = Path(s["pack_root"]) / output_name(s["range"], s["slug"])
@@ -112,11 +114,12 @@ def build(src: Path) -> Path:
 
 
 def main(argv: list[str]) -> int:
-    if len(argv) != 2:
-        print("사용법: python3 build.py <.pack/자료_확인문제_범위_슬러그>", file=sys.stderr)
-        return 2
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("src", type=Path)
+    parser.add_argument("--assets-dir", type=Path)
+    args = parser.parse_args(argv[1:])
     try:
-        print(build(Path(argv[1])))
+        print(build(args.src, assets_dir=args.assets_dir))
     except BuildError as e:
         print(str(e), file=sys.stderr)
         return 1

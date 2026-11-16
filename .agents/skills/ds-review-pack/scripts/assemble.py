@@ -48,14 +48,15 @@ def fill(template: str, values: dict[str, str]) -> str:
     return SLOT_RE.sub(lambda mo: values[mo.group(1)], template)
 
 
-def asset_root(out_dir: Path) -> str:
+def asset_root(out_dir: Path, *, assets_dir: Path | None = None) -> str:
     """Relative URL to the pinned assets, from the HTML's actual output directory."""
+    assets = SHARED_ASSETS if assets_dir is None else assets_dir
     for name in ("pretendard/pretendard.css", "katex/katex.min.css", "katex/katex.min.js",
                  "katex/contrib/auto-render.min.js"):
-        if not (SHARED_ASSETS / name).is_file():
-            raise AssembleError(f"공용 자원 없음: {SHARED_ASSETS / name}")
+        if not (assets / name).is_file():
+            raise AssembleError(f"공용 자원 없음: {assets / name}")
     try:
-        relative = Path(os.path.relpath(SHARED_ASSETS.resolve(), out_dir.resolve()))
+        relative = Path(os.path.relpath(assets.resolve(), out_dir.resolve()))
     except ValueError as e:
         raise AssembleError("공용 자원과 HTML 출력은 같은 드라이브에 있어야 해요") from e
     return quote(relative.as_posix(), safe="/")

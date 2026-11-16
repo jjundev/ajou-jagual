@@ -9,7 +9,7 @@
 5. `release_review.py prepare --repo REPO --range MMDD --run PACK_RUN --mode update-existing`으로 작업 폴더를 준비한다. `update_review.extract_cards`와 `build_update(existing_html, cards, title=..., intro=..., footer=...)`로 작업용 HTML을 갱신한다. 기존 마지막 pN 다음부터 부여한다. partD 재실행은 source→pN을 그대로 유지하여 교체한다. 노트/셸 JS/진행 저장 키·기존 링크를 보존한다. `check_preserved(before, after)`는 비어야 한다.
 6. manifest.py, bank.py check-manifest --textbook-dir --textbook-python, check_html.py를 실행한다. `html2md.py REVIEW.html --check` 단일 리뷰 변환으로 노트 MD와 기존 SVG를 보존한다. 기존 그림과 다른 내용이 같은 파일명으로 생기면 실패한다. 전체 HTML 재조립과 두 HTML 동시 변환은 쓰지 않는다.
 7. 작업 폴더의 `.pack/자료_복습팩/`에 `manifest.json`, `selection.json`, `answers.py`, `validation.json`을 준비하고 [브라우저 검증](browser-check.md)의 요청을 발급한다. 검사자는 1280×900·375×812, light/dark에서 모든 신규 카드·선택지·소문항·원문/힌트/풀이·TOC·pager·기존 링크를 검사한다. 실패 시 `where`별로 고치고 기계 검사·변환 후 요청을 갱신한다. 2회 수정 뒤 미해결이면 해당 팩 발행을 보류하고 기존 팩을 보존한다.
-8. 검증한 작업용 복습문제 HTML로 [PDF](pdf-build.md)를 만들어 같은 작업 폴더에 발행한다. `release_review.py publish --repo REPO --run PACK_RUN`으로 팩을 발행하고 최종 경로를 확인한다. 발행된 JSON 원고의 정확한 경로로 [문제설명](problem-explain.md)을 발행한다.
+8. 검증한 작업용 복습문제 HTML로 [PDF](pdf-build.md)를 만들어 같은 작업 폴더에 발행한다. `release_review.py publish --repo REPO --run PACK_RUN`으로 팩을 발행하고 최종 경로를 확인한다. 발행한 JSON 원고의 정확한 경로를 사용해 [후속 작업](pack-followups.md)의 `update-existing` 분기를 실행한다.
 9. 날짜별 기존/추가/총합, 부족 이유, 제외 후보, 검산·브라우저 결과, 보존·백업 경로와 문제설명 발행/보류·HTML/MD·검토·RUN·백업 경로를 보고한다. 설명 실패 시 검증된 리뷰를 유지하고 “복습팩 생성됨 / 문제설명 보류”와 이유를 적는다. PDF 두 경로·페이지·PDF_RUN·검증·백업 및 withheld/stale/skipped 이유도 보고한다. PDF 실패는 다른 산출물을 삭제하지 않는다. 커밋·푸시는 제안만 한다.
 
 ## 강의 예제·전역 검토 연동

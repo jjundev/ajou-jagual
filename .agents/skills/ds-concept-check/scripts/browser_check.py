@@ -18,7 +18,10 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 import sys
+from urllib.parse import urlsplit
+from urllib.request import url2pathname
 
 import _paths
 import build
@@ -28,7 +31,6 @@ VIEWPORTS = [(1280, 900), (375, 812)]
 THEMES = ["light", "dark"]
 ACTION_TIMEOUT = 3000
 NAV_TIMEOUT = 20000
-SETTLE_MS = 600  # 화면 전환 애니메이션이 끝난 뒤 찍는다
 SHORT_CORRECT = "자동 일치"  # review-interaction.js 가 short 정답일 때 .review-status 에 쓰는 글
 
 
@@ -54,6 +56,12 @@ def short_variant(answer: dict) -> str:
     cands = [v.lower() for v in pool if v.lower() != canonical]
     spaced = [v for v in cands if " " in v]
     return (spaced or cands or [canonical.lower()])[0]
+
+
+def capture_card(page, shot: Path) -> None:
+    # A grading or copy toast can cover the card for up to three seconds.
+    page.locator(".review-feedback").wait_for(state="hidden", timeout=5000)
+    page.screenshot(path=str(shot), animations="disabled")
 
 
 class Run:
@@ -118,7 +126,7 @@ def check_hint(run: Run, item: dict, shot: Path | None):
         run.expect(not solution.is_visible(), f"{cid}: 채점 전 풀이가 보임")
         run.page_checks(f"{cid} 힌트")
         if shot is not None:
-            page.screenshot(path=str(shot), animations="disabled")
+            capture_card(page, shot)
         summary.click()
         run.expect(hint.get_attribute("open") is None and not body.is_visible(), f"{cid}: 힌트가 접히지 않음")
     finally:
@@ -162,7 +170,7 @@ def check_short(run: Run, item: dict):
     return True
 
 
-def check_note_link(run: Run, item: dict):
+def check_note_link(run: Run, item: dict, note: Path, targets: dict[str, str]):
     """채점 뒤 오른쪽 패널 풀이 끝에 그 목표의 정리노트 토픽 링크(같은 창)가 있어야 한다."""
     cid = item["id"]
     link = run.page.locator(f".aid[data-card-id='{cid}'] details.solution:not([hidden]) .note-link a")
@@ -171,6 +179,13 @@ def check_note_link(run: Run, item: dict):
         href = link.get_attribute("href") or ""
         run.expect(href.endswith("#" + item["topic_id"]), f"{cid}: 정리노트 링크 '{href}' 가 #{item['topic_id']} 로 가지 않음")
         run.expect(link.get_attribute("target") is None, f"{cid}: 정리노트 링크가 같은 창에서 열리지 않음(target 있음)")
+        target = link.evaluate("(a) => a.href")
+        parsed = urlsplit(target)
+        linked_file = Path(url2pathname(parsed.path))
+        if run.expect(parsed.scheme == "file" and not parsed.netloc
+                      and linked_file.is_file() and linked_file.samefile(note),
+                      f"{cid}: 정리노트 링크의 실제 대상 파일이 달라요"):
+            targets[item["topic_id"]] = target
     return True
 
 
@@ -236,7 +251,7 @@ def check_review_dialog(run: Run, item: dict, total: int, shot: Path | None):
     page.locator(f"#{cid} .review-reset").click()
 
 
-def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: str) -> dict:
+def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: str, note: Path) -> dict:
     page = run.page
     page.goto(url, wait_until="load")
     run.expect(page.evaluate("""async () => (await document.fonts.load('400 16px Pretendard', '한글'))
@@ -247,6 +262,7 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
     run.step("복기 창", lambda: check_review_dialog(run, items[-1], len(items), review_shot))
     checked = 0
     hints_checked = 0
+    note_targets = {}
     for n, item in enumerate(items):
         hint_shot = shots / f"{tag}-{item['id']}-hint.png" if n == 0 and shots is not None else None
         if run.step(f"{item['id']}: 힌트", lambda: check_hint(run, item, hint_shot)):
@@ -254,10 +270,10 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
         fn = check_short if item["format"] == "short" else check_mcq
         if run.step(f"{item['id']}: 조작", lambda fn=fn, item=item: fn(run, item)):
             checked += 1
-        run.step(f"{item['id']}: 정리노트 링크", lambda item=item: check_note_link(run, item))
+        run.step(f"{item['id']}: 정리노트 링크", lambda item=item: check_note_link(run, item, note, note_targets))
         if n == 0 and shots is not None:
             shot = shots / f"{tag}-{item['id']}.png"
-            run.step("스크린샷 첫 문항", lambda: (page.wait_for_timeout(SETTLE_MS), page.screenshot(path=str(shot))))
+            run.step("스크린샷 첫 문항", lambda: capture_card(page, shot))
         run.page_checks(item["id"])
     opener = page.get_by_role("button", name="복기 열기", exact=True)
     if run.expect(opener.is_visible(), "복기 열기 버튼 없음"):
@@ -271,7 +287,7 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
         run.step("전체 제출 뒤 복기 창", check_full_review)
     if shots is not None:
         shot = shots / f"{tag}-last.png"
-        run.step("스크린샷 마지막 화면", lambda: (page.wait_for_timeout(SETTLE_MS), page.screenshot(path=str(shot))))
+        run.step("스크린샷 마지막 화면", lambda: capture_card(page, shot))
     if page.locator("#solved-btn").is_visible():  # 푼 문제 표시를 눌러 둬도 새로고침하면 사라져야 한다
         run.step("푼 문제로 표시", lambda: page.locator("#solved-btn").click())
     first_hint = next((item["id"] for item in items if item.get("hint")), None)
@@ -291,21 +307,60 @@ def check_run(run: Run, url: str, items: list[dict], shots: Path | None, tag: st
     saved = run.step("새로고침 뒤 진행 기록 읽기", lambda: page.evaluate(
         "Object.keys(localStorage).filter(k => k.startsWith('od-review-solved:'))")) or []
     run.expect(saved == [], f"진행 기록이 localStorage 에 남음: {saved}")
+    if note_targets:
+        probe = page.context.new_page()
+        try:
+            probe.goto(next(iter(note_targets.values())), wait_until="domcontentloaded", timeout=NAV_TIMEOUT)
+            for topic in note_targets:
+                run.expect(probe.evaluate("(id) => document.getElementById(id) !== null", topic),
+                           f"실제 정리노트에 링크 대상 앵커가 없어요: #{topic}")
+        finally:
+            probe.close()
     return {"items_checked": checked, "items": len(items), "hints_checked": hints_checked}
 
 
+def check_request_inputs(root: Path, request: Path, record: dict) -> None:
+    prepare_bytes = (request.parent / "prepare.json").read_bytes()
+    if root != (request.parent / "stage").resolve() or not root.is_relative_to(request.parent.resolve()):
+        raise ValueError("검토 요청의 stage가 필요해요")
+    if hashlib.sha256(prepare_bytes).hexdigest() != record.get("prepare_sha256"):
+        raise ValueError("검토 요청이 고정한 준비 기록이 변경됐어요")
+    prepared = json.loads(prepare_bytes)
+    for rel, expected in (prepared["inputs"] | record["artifacts"]).items():
+        path = root / rel
+        if (not path.resolve().is_relative_to(root) or not path.is_file() or sha256(path) != expected):
+            raise ValueError(f"검토 요청 이후 작업본 또는 근거가 바뀌었어요: {rel}")
+
+
 def check(html: Path, out: Path, shots: Path | None, *, src: Path, serve_root: Path | None = None,
-          viewports=VIEWPORTS, themes=THEMES) -> dict:
+          viewports=VIEWPORTS, themes=THEMES, request: Path | None = None) -> dict:
     from playwright.sync_api import sync_playwright
     html = Path(html).resolve()
     root = Path(serve_root if serve_root is not None else _paths.REPO).resolve()
     if not html.is_relative_to(root):
         raise ValueError(f"HTML 이 서버 루트 밖에 있습니다: {html} (루트 {root})")
-    source = build.load_source(src)
-    topics = {o["id"]: o["topic_id"] for o in source["objectives"]}
-    items = [dict(it, topic_id=topics[it["objective"]]) for it in source["items"]]
     report = {"html": html.relative_to(root).as_posix(), "sha256": sha256(html), "viewports": [f"{w}x{h}" for w, h in viewports],
               "themes": list(themes), "runs": [], "failures": []}
+    if request is not None:
+        raw = request.read_bytes()
+        record = json.loads(raw)
+        attempt = record.get("attempt")
+        cases = [f"{w}x{h}/{theme}" for w, h in viewports for theme in themes]
+        if (not isinstance(attempt, str) or not re.fullmatch(r"[0-9a-f]{32}", attempt)
+                or record.get("version") != 1 or record.get("cases") != cases
+                or record.get("artifacts", {}).get(report["html"]) != report["sha256"]):
+            raise ValueError("현재 HTML과 화면 조합에 맞는 검토 요청이 필요해요")
+        attempt_dir = request.resolve().parent / "browser" / attempt
+        if out.resolve() != attempt_dir / "browser.json" or shots is None or shots.resolve() != attempt_dir / "shots":
+            raise ValueError(f"보고서와 화면 캡처를 검토 요청 폴더에 저장하세요: {attempt_dir}")
+        check_request_inputs(root, request, record)
+        report.update(attempt=attempt, request_sha256=hashlib.sha256(raw).hexdigest())
+    source = build.load_source(src)
+    note = _paths.find_nfc(source["pack_root"], build.note_name(source["range"], source["slug"]))
+    if note is None or not note.is_file():
+        raise ValueError("실제 정리노트 HTML이 없어요")
+    topics = {o["id"]: o["topic_id"] for o in source["objectives"]}
+    items = [dict(it, topic_id=topics[it["objective"]]) for it in source["items"]]
     if shots is not None:
         shots = Path(shots)
         shots.mkdir(parents=True, exist_ok=True)
@@ -322,7 +377,7 @@ def check(html: Path, out: Path, shots: Path | None, *, src: Path, serve_root: P
                         page.set_default_navigation_timeout(NAV_TIMEOUT)
                         run = Run(page, f"{width}x{height} {theme}")
                         detail = run.step("검사", lambda: check_run(run, html.as_uri(), items, shots,
-                                                                  f"{width}x{height}-{theme}")) or {}
+                                                                  f"{width}x{height}-{theme}", note)) or {}
                         run.failures += [f"{run.label}: {e}" for e in run.errors]
                         run.expect(not run.blocked, "외부 자원 요청: " + ", ".join(sorted(run.blocked)))
                         report["runs"].append({"label": run.label, "detail": detail, "failures": run.failures,
@@ -330,6 +385,10 @@ def check(html: Path, out: Path, shots: Path | None, *, src: Path, serve_root: P
                         report["failures"] += run.failures
         finally:
             browser.close()
+    if request is not None:
+        check_request_inputs(root, request, record)
+        report["screenshots"] = {f"shots/{p.name}": sha256(p)
+                                 for p in sorted(shots.glob("*.png")) if p.is_file()}
     report["status"] = "fail" if report["failures"] else "pass"
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -345,10 +404,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--src", type=Path, required=True, help="자료_확인문제_<범위>_<슬러그> 폴더")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--shots", type=Path)
+    parser.add_argument("--serve-root", type=Path, help="보고서의 HTML 상대 경로 기준")
+    parser.add_argument("--request", type=Path, help="현재 작업본의 화면 검토 요청")
     args = parser.parse_args(argv)
     try:
-        report = check(args.html, args.out, args.shots, src=args.src)
-    except (ValueError, build.BuildError) as e:
+        report = check(args.html, args.out, args.shots, src=args.src, serve_root=args.serve_root, request=args.request)
+    except (ValueError, OSError, KeyError, TypeError, AttributeError, build.BuildError) as e:
         print(f"browser: {e}", file=sys.stderr)
         return 1
     print(f"browser: {report['status']} · 실행 {len(report['runs'])}회 · 실패 {len(report['failures'])}건 → {args.out}")

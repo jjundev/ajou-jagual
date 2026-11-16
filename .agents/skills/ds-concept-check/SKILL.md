@@ -7,7 +7,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 
 수업 하나가 끝난 뒤 그 수업에서 **처음 배운 개념**을 5~10분 안에 확인하는 오프라인 HTML을 만든다. 글꼴과 수식은 복습노트의 공용 자원에서 읽는다. 다른 기기에 HTML 한 장을 옮길 때는 `export-standalone-note`를 사용한다. 4지 객관식과 값 입력형을 섞고, 누르면 바로 채점하고 보기마다 설명을 보인다. 근거는 이미 있는 복습팩(STT 요약·manifest·정리노트 MD)이고, 복습팩은 다시 만들지 않는다. 중간에 묻지 않고 끝에 한 번 보고한다. 커밋은 제안만 한다.
 
-- `ds-review-pack` 신규 모드가 8단계에서 이 절차(1~8단계)를 팩마다 부른다. 단독 실행(`/ds-concept-check <range>`)도 그대로 쓴다.
+- `ds-review-pack` 신규 모드는 기본 팩 발행 뒤 별도 확인문제 담당자를 작업본 모드로 부른다. 단독 실행(`/ds-concept-check <range>`)은 기존 공개 경로를 쓰는 단독 모드다.
 - 복습팩·기출 문제은행은 `ds-review-pack`, 기존 문제 해설은 `ds-problem-explain`, 코드·메모리 시뮬레이션은 `ds-interactive`다. 이 스킬은 그 파일들을 고치지 않는다.
 - 하지 않는 것: 시험형(일괄 제출), 정리노트에서 들어오는 링크, 코드 작성형, 여러 팩 일괄 생성.
 
@@ -25,10 +25,13 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 - `RUN` = `<scratchpad>/ds-concept-check/<range>/` (저장소 밖. 블라인드 사본·답안표·작성자 초안·스크린샷·백업을 둔다)
 - `python3` = homebrew `python3`(Playwright가 있다). 저장소 `.venv`에는 Playwright가 없다.
 
+**작업본 모드** — 복습팩 메인이 `REPO`·`range`·외부 `RUN`·준비한 `SRC`를 넘긴다. `STAGE=RUN/stage`, `PACK=SRC의 두 단계 위`, `ASSETS=STAGE/복습노트/_assets/problem-explain/v1`이다. `SRC`·`PACK`·자원 경로에는 디스크의 실제 철자를 사용한다. 이 절차의 확인문제 HTML은 작업용 PACK에 생성한다. 목표·검사·풀이자의 정리노트와 STT 근거는 작업본 사본을 사용한다. 작성자에게 기존 복습문제 MD(있을 때)와 기출 문제은행의 실제 읽기 전용 경로도 전달한다. 담당자는 RUN 안에서만 쓰고 `python3 -B`로 실행한다. 복습팩 메인만 공개 경로에 발행한다.
+
 **에이전트**: 문항 작성자와 블라인드 풀이자는 각각 `general-purpose` 서브에이전트 1명을 새 컨텍스트에서 시작해 이 세션의 목표와 정답이 전달되지 않게 한다.
 
 - 문항 작성자와 블라인드 풀이자(재풀이 포함)를 호출할 때, 현재 환경에서 서브에이전트에 지정할 수 있는 모든 모델을 실행 환경이 제공하는 등급순으로 보고 **두 번째로 높은 모델**을 사용한다.
 - 지정 가능한 모델이 하나면 그 모델을 사용한다. 모델 순위를 확인할 수 없으면 실행 환경의 기본 모델을 사용하고, 그 이유를 최종 보고에 적는다.
+- 작업본 모드에서 직접 호출할 수 없으면 복습팩 메인에게 호출을 맡긴다. 풀이자는 채운 브리프·현재 블라인드 사본·작업용 정리노트 MD만 읽는 독립 컨텍스트로 매 회차 시작한다. 부모에게도 답안 파일의 경로만 반환한다. 이 격리를 확보할 수 없으면 `withheld`로 끝낸다.
 
 **진행 표시**: 단계마다 한 줄. 예: `3/9 문항 작성 중 (작성자 1명)`, `6/9 블라인드 r1 풀이 중`.
 
@@ -37,7 +40,7 @@ description: 자구알 수업 하나에서 새로 배운 개념을 확인하는 
 ### 1. 준비
 - `복습노트/<range>/.pack/자료_복습팩/manifest.json`·`stt-summary.md`와 `.pack/정리노트_*.md`가 있는지 본다. 하나라도 없으면 “팩이 없어 근거가 없습니다”라고 보고하고 멈춘다(빌드·검사도 같은 말로 exit 1). 공개 정리노트 HTML(`복습노트/<range>/정리노트_<range>_<slug>.html`)도 있어야 한다. 없거나 목표의 `topic_id` 앵커가 없으면 빌드가 “정리노트 …” 오류로 멈춘다. 한글 폴더 이름은 macOS에서 NFD일 수 있으니 `ls`로 실제 이름을 확인한다.
 - `range`·`slug`는 manifest에서 읽는다. `SRC`를 정한다.
-- `mkdir -p RUN`. `SRC`나 공개 HTML이 이미 있으면 둘 다 `RUN/previous-<YYYYMMDD-HHMMSS>/`에 복사해 두고 새로 쓴다. 백업 경로는 보고에 적는다.
+- 단독 모드는 `mkdir -p RUN`을 실행한다. `SRC`나 공개 HTML이 이미 있으면 둘 다 `RUN/previous-<YYYYMMDD-HHMMSS>/`에 복사해 두고 새로 쓴다. 백업 경로는 보고에 적는다. 작업본 모드에서는 메인이 준비한 작업용 SRC와 PACK의 근거를 확인하고 사용한다. 발행 백업은 메인의 발행 명령에서 만든다.
 
 ### 2. 확인 목표 (메인 에이전트)
 - `stt-summary.md`(총평·절), manifest 토픽 순서, 정리노트 MD를 읽고 `SRC/objectives.json`을 쓴다. 모양·종류·제외 대상은 [item-rules.md](references/item-rules.md) 1~3절.
@@ -60,6 +63,7 @@ python3 .agents/skills/ds-concept-check/scripts/check.py SRC
 python3 .agents/skills/ds-concept-check/scripts/build.py SRC
 ```
 - 출력 경로(`복습노트/<range>/확인문제_<range>_<slug>.html`)가 한 줄 찍힌다. 문항을 고칠 때마다 4→5를 다시 한다.
+- 작업본 모드는 첫 빌드와 모든 재빌드에서 `python3 -B "$S/scripts/build.py" "$SRC" --assets-dir "$ASSETS"`를 쓴다.
 
 ### 6. 블라인드 풀이 (풀이자 1명)
 ```
@@ -67,7 +71,7 @@ python3 .agents/skills/ds-concept-check/scripts/blind.py make SRC RUN/blind-r1.m
 ```
 - 사본에는 학습자 화면의 문제와 보기를 싣고, 힌트는 넣지 않는다. 트리는 그림처럼 `[그림: 트리 — 루트 A; A의 왼쪽 자식 B; …]`(칸 번호·빈 자리 목록 없음)로 적는다. 화면에 없는 목표 근거(쪽 번호·개념 이름)는 넣지 않는다.
 - 장부 해시는 `hint`를 제외한 문항과 목표의 `concept`·`source.slide`를 함께 묶는다. 목표 이름이나 쪽을 바꾸면 그 목표의 문항이 `수정됨`이 된다.
-- 풀이자에게 [blind-brief.md](references/blind-brief.md) 경로와 그 `---` 사이 브리프를 `<RUN>`·`<회차>`·`<range>`·`<slug>`를 채워 넘긴다. 풀이자가 읽는 것은 그 브리프, `RUN/blind-r<회차>.md`, `복습노트/<range>/.pack/정리노트_<range>_<slug>.md` 셋뿐이다. `SRC`, `items.json`, `objectives.json`, 이전 답안표 경로는 알려 주지 않는다.
+- 풀이자에게 [blind-brief.md](references/blind-brief.md) 경로와 그 `---` 사이 브리프를 채워 넘긴다. 풀이자가 읽는 것은 그 브리프, `RUN/blind-r<회차>.md`, 정리노트 MD 셋뿐이다. 작업본 모드는 PACK의 `.pack` 안에 있는 정리노트 MD 절대 경로를 명시한다. `SRC`, `items.json`, `objectives.json`, 이전 답안표 경로는 알려 주지 않는다.
 - 풀이자는 `RUN/blind-answers-r<회차>.md`를 쓴다. 기록하고 상태를 본다:
 ```
 python3 .agents/skills/ds-concept-check/scripts/blind.py record SRC RUN/blind-answers-r1.md SRC/blind-ledger.json --round 1
@@ -90,11 +94,23 @@ python3 .agents/skills/ds-concept-check/scripts/browser_check.py 복습노트/<r
 - 각 화면 크기와 테마의 스크린샷(`RUN/shots/<폭>x<높이>-<테마>-<첫 문항>.png`, `…-<첫 문항>-hint.png`, `…-last.png`)을 열어 겹침·잘림·트리 그림을 확인한다.
 - HTML을 다시 빌드했으면 이 단계도 다시 한다(`browser.json`에 HTML 해시가 남는다).
 
+작업본 모드는 위 브라우저 명령 대신 아래 순서를 사용한다.
+
+```bash
+python3 -B "$S/scripts/concept_release.py" review-request --repo "$REPO" --range "$RANGE" --run "$RUN"
+python3 -B "$S/scripts/browser_check.py" "$HTML" --src "$SRC" --serve-root "$STAGE" --request "$RUN/review-request.json" --out "$ATTEMPT_DIR/browser.json" --shots "$ATTEMPT_DIR/shots"
+```
+
+- `HTML`은 현재 작업용 HTML이다. `review-request.json`의 `attempt`로 `ATTEMPT_DIR=RUN/browser/<attempt>`를 정한다. 브라우저의 임시 경로도 RUN 아래로 설정한다.
+- 네 조합에서 위의 첫 문항·힌트·마지막 화면 캡처를 모두 열고 확인한다. `ATTEMPT_DIR/visual-review.json`에 `version: 1`, `request_sha256`(요청 파일의 SHA-256), `browser_report_sha256`, `reviewer`, 전체 `status`를 쓴다. `cases`는 요청의 ID(예 `1280x900/light`)마다 `status`, 화면에서 본 `observation`, 실제 연 세 PNG의 `screenshots`(ATTEMPT_DIR 기준 상대 경로)를 담는다. 결과는 `pass|fail|unavailable`이다. 화면 검토가 없으면 기계 검사만으로 통과를 기록할 수 없다.
+- 산출물이 바뀌면 이전 요청은 무효다. 규칙 검사·블라인드 상태·조립을 다시 확인하고 새 요청과 브라우저 검토를 만든다. 블라인드 재풀이는 기존 r3 한도 안에서만 한다.
+
 ### 8. 팩 배치 검사
 ```
 python3 .agents/skills/ds-review-pack/scripts/pack_layout.py check --repo .
 ```
 - `OK`여야 한다.
+- 작업본 모드에서는 위 명령에 `--repo "$STAGE"`를 사용해 대상 팩만 검사한다. 규칙 검사, 블라인드 r1~r3, 브라우저 조작과 실제 화면, 배치가 모두 통과하면 `ready`와 RUN·검토 경로를 반환한다. 하나라도 미해결이면 `withheld`와 이유를 반환하고 작업본을 RUN에 보존한다.
 
 ### 9. 보고
 - 경로: 공개 HTML, `SRC`, 백업(있으면).
@@ -102,7 +118,7 @@ python3 .agents/skills/ds-review-pack/scripts/pack_layout.py check --repo .
 - 블라인드 결과: 회차별 일치 수, 고친 문항과 이유, 남은 이의(미해결).
 - 브라우저 결과: pass/fail, 스크린샷에서 본 것.
 - 미해결.
-- 커밋 제안: `git add 복습노트/<range> && git commit -m "docs(notes): add concept check <range>"`
+- 단독 모드의 커밋 제안: `git add 복습노트/<range> && git commit -m "docs(notes): add concept check <range>"`
 
 ## 테스트
 

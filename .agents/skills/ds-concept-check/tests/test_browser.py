@@ -1,4 +1,5 @@
 import json
+import unicodedata
 
 import pytest
 
@@ -31,3 +32,16 @@ def test_browser_rejects_html_outside_serve_root(tmp_path):
     (tmp_path / "b").mkdir()
     with pytest.raises(ValueError):
         browser_check.check(html, tmp_path / "b.json", None, src=src, serve_root=tmp_path / "b")
+
+
+def test_browser_accepts_legacy_alias_for_same_note_file(tmp_path):
+    root = copy_fixture(tmp_path)
+    src = root / ".pack/자료_확인문제_9999_Mini"
+    html = build.build(src)
+    note = root / "정리노트_9999_Mini.html"
+    note.rename(note.with_name(unicodedata.normalize("NFD", note.name)))
+    if not note.is_file():
+        pytest.skip("파일 시스템이 NFC/NFD 이름을 별칭으로 취급하지 않음")
+    result = browser_check.check(html, tmp_path / "alias.json", None, src=src, serve_root=tmp_path,
+                                 viewports=[(1280, 900)], themes=["light"])
+    assert result["failures"] == []
