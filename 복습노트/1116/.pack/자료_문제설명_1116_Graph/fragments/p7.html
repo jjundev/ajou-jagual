@@ -1,0 +1,91 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>그림의 무방향 그래프(정점 v0~v4, 간선 e0~e5)를 인접 행렬과 인접 리스트 두 가지로 나타내요.</p>
+  <ul>
+    <li>간선에 화살표가 없어 무방향이에요. 곡선 e5도 v0과 v4를 잇는 보통 간선이에요.</li>
+    <li>먼저 간선 6개의 양 끝을 정확히 읽는 것이 전부의 출발점이에요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘인접 행렬’, 무방향</td><td>간선 (vi, vj) → <code>M[i][j] = M[j][i] = 1</code> </td><td>간선 하나마다 대칭인 두 칸을 채우면 5×5 행렬이 완성돼요(<a href="정리노트_1116_Graph.html#s3-adj-matrix">정리노트</a>).</td></tr>
+        <tr><td>‘인접 리스트’</td><td>i행의 1인 열 → vi의 리스트 노드</td><td>행렬을 먼저 만들면 리스트는 행을 그대로 읽으면 돼요(<a href="정리노트_1116_Graph.html#s3-adj-list">정리노트</a>).</td></tr>
+        <tr><td>간선 6개</td><td>1의 개수 = 노드 수 = $2e = 12$ </td><td>두 표현을 서로 검산하는 기준이에요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>e0=(v0,v1)  e1=(v1,v2)  e2=(v1,v3)  e3=(v3,v4)  e4=(v2,v4)  e5=(v0,v4)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li><strong>간선 읽기</strong>: 각 선의 양 끝 원을 확인해요. e1은 v1에서 오른쪽 v2까지 길게 가는 선이고, e5는 위쪽 v0에서 오른쪽을 돌아 v4로 내려오는 곡선이에요.</li>
+      <li><strong>인접 행렬</strong>: 간선마다 두 칸에 1을 쓰고, 자기 자신으로 가는 간선이 없으니 대각선은 0이에요.
+        <div class="table-wrap">
+          <table class="cmp">
+            <thead><tr><th>행＼열</th><th>v0</th><th>v1</th><th>v2</th><th>v3</th><th>v4</th><th>1의 출처</th></tr></thead>
+            <tbody>
+              <tr><th>v0</th><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>e0, e5</td></tr>
+              <tr><th>v1</th><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>e0, e1, e2</td></tr>
+              <tr><th>v2</th><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>e1, e4</td></tr>
+              <tr><th>v3</th><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>e2, e3</td></tr>
+              <tr><th>v4</th><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>e5, e4, e3</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </li>
+      <li><strong>인접 리스트</strong>: 각 행의 1인 열을 번호 순서로 이어요(리스트 안 순서는 바뀌어도 같은 답이에요).
+        <pre><code>v0 → v1 → v4 → NULL
+v1 → v0 → v2 → v3 → NULL
+v2 → v1 → v4 → NULL
+v3 → v1 → v4 → NULL
+v4 → v0 → v2 → v3 → NULL</code></pre>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: 행렬 행 순서대로 <code>0 1 0 0 1</code> / <code>1 0 1 1 0</code> / <code>0 1 0 0 1</code> / <code>0 1 0 0 1</code> / <code>1 0 1 1 0</code>, 리스트는 위 다섯 줄.</p>
+    <ul>
+      <li><strong>대칭 검사</strong>: <code>M[0][4] = M[4][0] = 1</code>, <code>M[1][3] = M[3][1] = 1</code>, <code>M[2][4] = M[4][2] = 1</code> 등 모든 칸이 대각선에 대해 같아요.</li>
+      <li><strong>개수 일치</strong>: 행렬의 1은 $2+3+2+2+3 = 12$개, 리스트 노드도 12개, 간선 6개의 두 배예요.</li>
+      <li><strong>역변환</strong>: 행렬 위쪽 삼각형의 1을 읽으면 (0,1), (0,4), (1,2), (1,3), (2,4), (3,4)로 그림의 e0~e5 여섯 개와 정확히 같아요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>간선 라벨 위치로 끝점을 짐작하면</strong>: 길게 가로지르는 e1을 v0–v2로 읽으면 <code>M[0][2] = 1</code>, <code>M[1][2] = 0</code>이 돼 v0의 차수가 3, v1의 차수가 2로 바뀌어요. 선이 실제로 닿는 원을 확인해야 해요.</li>
+    <li><strong>한 칸만 채우면</strong>: 간선마다 <code>M[i][j]</code>만 쓰고 <code>M[j][i]</code>를 빠뜨리면 1이 6개만 남아 방향 그래프 행렬이 돼요. 무방향은 대칭이어야 해요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>그림 그래프를 보면 → 행렬부터 그리지 말고 “간선 = (양 끝)” 목록을 한 줄로 먼저 적어 보세요.</li>
+    <li>행렬을 다 채운 뒤 → 1의 개수가 간선 수의 두 배인지, 대각선 대칭인지 두 가지를 점검해 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>첫 줄</h4><p>e0=(v0,v1), e1=(v1,v2), e2=(v1,v3), e3=(v3,v4), e4=(v2,v4), e5=(v0,v4).</p></div>
+  <div class="summary-group"><h4>답</h4><p>행렬 <code>01001 / 10110 / 01001 / 01001 / 10110</code>. 리스트 v0: v1,v4 / v1: v0,v2,v3 / v2: v1,v4 / v3: v1,v4 / v4: v0,v2,v3.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>대각선 대칭, 1의 개수 12 = 노드 12 = 2 × 간선 6.</p></div>
+</div>

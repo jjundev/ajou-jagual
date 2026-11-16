@@ -1,0 +1,586 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "1116",
+  "slug": "Graph",
+  "note_title": "허프만 마무리와 그래프의 기초 — 5살도 이해하는 정리노트",
+  "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1116 수업 (Software_8 Heap · Software_10 Graph)",
+  "review_title": "복습문제 11선 — 1116 수업 범위",
+  "review_intro": "다른 기출 3개, 교과서 7개와 강의 예제 기반 자체 문제 1개예요. 이정원 교수님 그래프 기출은 아직 배우지 않은 탐색·최단 경로를 써야 해서 이번에는 넣지 않았어요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
+  "footer_note": "출처: 이정원 교수님 강의록(Software_8, Software_10) · 수업 녹음 전사(1116).",
+  "footer_review": "출처: 자료구조및알고리즘(이해) 기출 — 2019 기말(출제자 미상), 2017 기말(출제자 미상) · 교과서 10장 2·3·4·6·8·9·11번 · Software_10 강의 예제(S10 p3). 풀이는 자체 작성하며 답은 Python 인접 행렬·리스트 계산과 전수 탐색, C11 컴파일·실행, 강의 근거 대조로 검증했습니다.",
+  "rules": [
+    "trace-v1",
+    "layout-v2"
+  ],
+  "sessions": [
+    {
+      "date": "1116",
+      "stt": "STT/1116 자구알.md",
+      "summary": "summaries/stt-1116.md",
+      "slides": "S8 p17–19, S10 p1–13"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "title": "1. 힙 응용 마무리: 허프만 코드",
+      "short": "1 허프만 마무리",
+      "topics": [
+        {
+          "id": "s0-pq-heap",
+          "title": "우선순위 큐는 사실상 힙",
+          "required_terms": [
+            "우선순위 큐",
+            "완전 이진 트리",
+            "높이에 비례",
+            "O(\\log n)"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-code-promise",
+          "title": "코드는 약속, 압축은 줄여 쓰기",
+          "required_terms": [
+            "약속",
+            "프로토콜",
+            "60비트",
+            "14비트",
+            "패킷"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s0-huffman-etnis",
+          "title": "etnis로 다시 보는 허프만 코드",
+          "required_terms": [
+            "빈도",
+            "135비트",
+            "4+6=10",
+            "12+15=27",
+            "18+27=45",
+            "100비트",
+            "26%"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 그래프란",
+      "short": "2 그래프란",
+      "topics": [
+        {
+          "id": "s1-graph-why",
+          "title": "관계를 표현하는 자료구조",
+          "required_terms": [
+            "그래프(graph)",
+            "관계",
+            "사이클",
+            "트리도 그래프의 일종",
+            "그래프 이론"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-euler",
+          "title": "오일러와 쾨니히스베르크 다리",
+          "required_terms": [
+            "오일러",
+            "정점(node)",
+            "간선(edge)",
+            "짝수",
+            "체조"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s1-kinds",
+          "title": "(V, E)와 무방향·방향 그래프",
+          "required_terms": [
+            "무방향 그래프(undirected graph)",
+            "방향 그래프(directed graph)",
+            "V(G1)",
+            "E(G3)",
+            "소괄호",
+            "꺾쇠괄호"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "3. 그래프 용어와 ADT",
+      "short": "3 용어·ADT",
+      "topics": [
+        {
+          "id": "s2-terms",
+          "title": "인접 정점·차수·경로·사이클",
+          "required_terms": [
+            "인접 정점(adjacent vertex)",
+            "차수(degree)",
+            "경로(path)",
+            "단순 경로",
+            "사이클(cycle)",
+            "경로의 길이",
+            "무한 루프"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-complete",
+          "title": "완전 그래프와 연결 그래프",
+          "required_terms": [
+            "완전 그래프",
+            "연결 그래프",
+            "n(n-1)/2",
+            "낙도"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s2-adt",
+          "title": "그래프 ADT",
+          "required_terms": [
+            "insert_vertex(g,v)",
+            "insert_edge(g,u,v)",
+            "adjacent(v)",
+            "destroy_graph(g)"
+          ],
+          "layers": [
+            "eli5",
+            "formal"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "title": "4. 그래프 표현",
+      "short": "4 행렬·리스트",
+      "topics": [
+        {
+          "id": "s3-adj-matrix",
+          "title": "인접 행렬",
+          "required_terms": [
+            "인접 행렬(adjacent matrix)",
+            "M[i][j] = 1",
+            "대칭",
+            "대각선",
+            "2차원 배열"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s3-adj-list",
+          "title": "인접 리스트",
+          "required_terms": [
+            "인접 리스트(adjacency list)",
+            "헤드 노드",
+            "NULL",
+            "연결 리스트"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "title": "5. 그래프 탐색",
+      "short": "5 탐색",
+      "topics": [
+        {
+          "id": "s4-search",
+          "title": "탐색과 DFS·BFS",
+          "required_terms": [
+            "탐색(search)",
+            "DFS",
+            "BFS",
+            "스택",
+            "드릴다운",
+            "미로"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        },
+        {
+          "id": "s4-dfs-pseudo",
+          "title": "DFS 의사코드 읽기",
+          "required_terms": [
+            "depth_first_search(v)",
+            "방문 표시",
+            "1, 0, 0, 0, 0",
+            "재귀",
+            "태깅"
+          ],
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false
+        }
+      ]
+    },
+    {
+      "id": "s5",
+      "title": "6. 요약 · 예고",
+      "short": "6 요약·예고",
+      "topics": [
+        {
+          "id": "s5-cheatsheet",
+          "title": "한 장 요약",
+          "required_terms": [
+            "인접 행렬",
+            "인접 리스트",
+            "경로",
+            "허프만"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s5-next",
+          "title": "다음 시간 예고",
+          "required_terms": [
+            "DFS",
+            "dfs_mat",
+            "정렬",
+            "Sorting"
+          ],
+          "layers": [],
+          "supp": false
+        },
+        {
+          "id": "s5-links",
+          "title": "함께 보면 좋은 자료",
+          "required_terms": [
+            "복습문제",
+            "강의록"
+          ],
+          "layers": [],
+          "supp": false
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s5-next",
+  "forbidden_outside_preview": [
+    "신장 트리",
+    "Kruskal",
+    "Prim",
+    "Dijkstra",
+    "Floyd",
+    "위상 정렬",
+    "퀵 정렬",
+    "합병 정렬"
+  ],
+  "parts": [
+    {
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B 다른 기출"
+    },
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    },
+    {
+      "id": "partL",
+      "title": "E. 강의 예제 기반 자체 문제",
+      "short": "E 강의 예제"
+    }
+  ],
+  "links": [
+    {
+      "topic": "s5-links",
+      "href": "%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1116_Graph-%EB%AC%B8%EC%A0%9C.pdf"
+    },
+    {
+      "topic": "s5-links",
+      "href": "../../자료구조_강의록_2026/Software_10_Graph.pdf"
+    },
+    {
+      "topic": "s5-links",
+      "href": "../../자료구조_강의록_2026/Software_8_Heap.pdf"
+    },
+    {
+      "topic": "s5-links",
+      "href": "../1112/정리노트_1112_Heap.html#s2-huffman-build"
+    },
+    {
+      "topic": "s0-pq-heap",
+      "href": "../1109/정리노트_1109_Heap.html#s0-impl"
+    },
+    {
+      "topic": "s4-search",
+      "href": "../1102/정리노트_1102_Tree.html#s1-traversal"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "part": "partB",
+      "source": "2019-final-q2",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-terms",
+      "level": 1,
+      "date": "1116",
+      "terms": [
+        "사이클"
+      ],
+      "answer": "사이클"
+    },
+    {
+      "id": "p2",
+      "part": "partB",
+      "source": "2019-final-q5",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s2-complete",
+      "level": 1,
+      "date": "1116",
+      "terms": [
+        "45",
+        "n(n-1)/2"
+      ],
+      "answer": "45 (10 × 9 / 2, 공식 n(n-1)/2)"
+    },
+    {
+      "id": "p3",
+      "part": "partB",
+      "source": "2017-final2-q8",
+      "source_kind": "past-exam",
+      "variant": false,
+      "anchor": "s3-adj-matrix",
+      "level": 3,
+      "date": "1116",
+      "terms": [
+        "Cycle?: Yes",
+        "path[0] != path[len - 1]"
+      ],
+      "answer": "Cycle?: Yes (0-2, 2-4, 4-0 간선이 모두 있고 시작=끝, 간선·정점 반복 없음)"
+    },
+    {
+      "id": "p4",
+      "part": "partD",
+      "source": "textbook-ch10-q02",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s3-adj-list",
+      "level": 2,
+      "date": "1116",
+      "terms": [
+        "1 → 0 → 2 → 3"
+      ],
+      "answer": "0 → 1 → NULL; 1 → 0 → 2 → 3 → NULL; 2 → 1 → NULL; 3 → 1 → NULL",
+      "objectives": [
+        "인접 행렬을 읽어 인접 리스트로 바꾸기"
+      ],
+      "task_family": "textbook-ch10-q02"
+    },
+    {
+      "id": "p5",
+      "part": "partD",
+      "source": "textbook-ch10-q03",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s3-adj-matrix",
+      "level": 1,
+      "date": "1116",
+      "terms": [
+        "O(n)"
+      ],
+      "answer": "② O(n)",
+      "objectives": [
+        "인접 행렬에서 한 정점의 차수를 구하는 비용"
+      ],
+      "task_family": "textbook-ch10-q03"
+    },
+    {
+      "id": "p6",
+      "part": "partD",
+      "source": "textbook-ch10-q04",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s3-adj-list",
+      "level": 1,
+      "date": "1116",
+      "terms": [
+        "2e"
+      ],
+      "answer": "② 2e개",
+      "objectives": [
+        "무방향 그래프 인접 리스트의 노드 수"
+      ],
+      "task_family": "textbook-ch10-q04"
+    },
+    {
+      "id": "p7",
+      "part": "partD",
+      "source": "textbook-ch10-q06",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s3-adj-matrix",
+      "level": 2,
+      "date": "1116",
+      "terms": [
+        "0 1 0 0 1",
+        "v1 → v0 → v2 → v3"
+      ],
+      "answer": "matrix 0 1 0 0 1 / 1 0 1 1 0 / 0 1 0 0 1 / 0 1 0 0 1 / 1 0 1 1 0 | list v0 → v1 → v4 → NULL; v1 → v0 → v2 → v3 → NULL; v2 → v1 → v4 → NULL; v3 → v1 → v4 → NULL; v4 → v0 → v2 → v3 → NULL",
+      "objectives": [
+        "그림의 무방향 그래프를 인접 행렬과 인접 리스트로 표현"
+      ],
+      "task_family": "textbook-ch10-q06"
+    },
+    {
+      "id": "p8",
+      "part": "partD",
+      "source": "textbook-ch10-q08",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s1-kinds",
+      "level": 2,
+      "date": "1116",
+      "terms": [
+        "3 → 1, 2, 4, 5"
+      ],
+      "answer": "out 1 → 2, 3, 4; 2 → 1, 3, 5; 3 → 1, 2, 4, 5; 4 → 2; 5 → 1, 3 | 양방향 쌍 [(1, 2), (1, 3), (2, 3), (3, 5)] | 한 방향만 [(1, 4), (2, 5), (3, 4), (4, 2), (5, 1)]",
+      "objectives": [
+        "간선 집합 표기로 방향 그래프 그리기"
+      ],
+      "task_family": "textbook-ch10-q08"
+    },
+    {
+      "id": "p9",
+      "part": "partD",
+      "source": "textbook-ch10-q09",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s3-adj-matrix",
+      "level": 3,
+      "date": "1116",
+      "terms": [
+        "O(n^2)",
+        "a[v][j]",
+        "a[i][v]"
+      ],
+      "answer": "1) 진출차수: j=0..n-1 의 a[v][j] 합, O(n) 2) 진입차수: i=0..n-1 의 a[i][v] 합, O(n) 3) 간선 수: 행렬 전체 합, O(n^2) (무방향 그래프라면 합/2)",
+      "objectives": [
+        "인접 행렬의 행·열 합으로 진출·진입 차수와 간선 수 구하기",
+        "각 함수의 시간 복잡도"
+      ],
+      "task_family": "textbook-ch10-q09"
+    },
+    {
+      "id": "p10",
+      "part": "partD",
+      "source": "textbook-ch10-q11",
+      "source_kind": "textbook",
+      "variant": false,
+      "anchor": "s2-complete",
+      "level": 2,
+      "date": "1116",
+      "terms": [
+        "3개",
+        "6개",
+        "10개"
+      ],
+      "answer": "3정점 3개, 4정점 6개, 5정점 10개",
+      "objectives": [
+        "무방향 완전 그래프 그리기와 간선 수 n(n-1)/2 확인"
+      ],
+      "task_family": "textbook-ch10-q11"
+    },
+    {
+      "id": "p11",
+      "part": "partL",
+      "source": "lecture-s10-p3-konigsberg",
+      "source_kind": "lecture-code",
+      "variant": false,
+      "anchor": "s1-euler",
+      "level": 2,
+      "date": "1116",
+      "terms": [
+        "A=5",
+        "홀수"
+      ],
+      "answer": "정점 4개(A·B·C·D), 간선 7개, 차수 A=5 B=3 C=3 D=3, 홀수 차수 정점 4개 -> 불가능",
+      "objectives": [
+        "다리 지도를 정점·간선 그래프로 옮기기",
+        "정점별 차수 세기",
+        "차수가 모두 짝수여야 모든 다리를 한 번씩 건너 제자리로 돌아올 수 있음을 판정"
+      ],
+      "task_family": "lecture-s10-p3-euler",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+        "pdf_page": 3,
+        "example": "konigsberg-bridges",
+        "taught_on": "1116",
+        "extra_pages": [
+          7
+        ]
+      }
+    }
+  ]
+}

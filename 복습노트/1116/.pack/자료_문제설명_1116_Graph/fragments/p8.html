@@ -1,0 +1,86 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>정점 1~5와 방향 간선 13개로 정의된 <strong>방향 그래프</strong>를 그려요.</p>
+  <ul>
+    <li><code>&lt;a, b&gt;</code>는 a에서 b로 가는 화살표 하나예요. <code>&lt;a, b&gt;</code>와 <code>&lt;b, a&gt;</code>는 서로 다른 간선이에요.</li>
+    <li>정점의 위치는 자유이고, 화살표의 출발·도착만 맞으면 같은 그래프예요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 개념</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>꺾쇠괄호 <code>&lt;1,2&gt;</code> </td><td>방향 간선, $\langle A,B\rangle \ne \langle B,A\rangle$ </td><td>원소 하나가 화살표 하나예요. 양방향 쌍은 화살표 두 개로 그려야 해요(<a href="정리노트_1116_Graph.html#s1-kinds">정리노트</a>).</td></tr>
+        <tr><td> $V$, $E$ 집합</td><td> $G = (V, E)$ </td><td>V의 원소가 원(정점), E의 원소가 화살표(간선)로 바로 대응해요.</td></tr>
+        <tr><td>간선 13개</td><td>진출 차수 합 = 간선 수</td><td>정점별로 나가는 화살표를 묶어 세면 그린 화살표 수를 검산할 수 있어요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>1 → 2, 3, 4      (&lt;1,2&gt;, &lt;1,3&gt;, &lt;1,4&gt;)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li><strong>출발 정점별로 묶기</strong>
+        <div class="table-wrap">
+          <table class="cmp">
+            <thead><tr><th>정점</th><th>나가는 화살표(도착)</th><th>진출 차수</th><th>들어오는 화살표(출발)</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>2, 3, 4</td><td>3</td><td>2, 3, 5</td></tr>
+              <tr><td>2</td><td>1, 3, 5</td><td>3</td><td>1, 3, 4</td></tr>
+              <tr><td>3</td><td>1, 2, 4, 5</td><td>4</td><td>1, 2, 5</td></tr>
+              <tr><td>4</td><td>2</td><td>1</td><td>1, 3</td></tr>
+              <tr><td>5</td><td>1, 3</td><td>2</td><td>2, 3</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </li>
+      <li><strong>쌍별로 정리</strong>: 두 방향이 모두 있는 쌍은 <b>1–2, 1–3, 2–3, 3–5</b>로 화살표를 두 개씩 그려요. 한 방향만 있는 것은 <code>&lt;1,4&gt;</code>, <code>&lt;2,5&gt;</code>, <code>&lt;3,4&gt;</code>, <code>&lt;4,2&gt;</code>, <code>&lt;5,1&gt;</code> 다섯 개예요. 4와 5 사이에는 간선이 없어요.</li>
+      <li><strong>그리기</strong>: 정점 다섯 개를 오각형으로 놓고 위 목록대로 화살표를 그어요. 양방향 쌍은 나란한 두 화살표로 그려요.</li>
+    </ol>
+    <figure class="figure"><svg id="fig-p8-digraph-ex" viewBox="0 0 360 310" role="img" aria-label="정점 1부터 5까지의 방향 그래프. 1에서 2, 3, 4로, 2에서 1, 3, 5로, 3에서 1, 2, 4, 5로, 4에서 2로, 5에서 1, 3으로 화살표가 있음. 1과 2, 1과 3, 2와 3, 3과 5 사이에는 서로 반대 방향 화살표 두 개가 나란히 있음"><line class="fig-ink" x1="191.6" y1="59.6" x2="275.8" y2="120.8"/><path class="fig-ink" d="M 266.0 119.0 L 275.8 120.8 L 271.1 112.0"/><line class="fig-ink" x1="180.8" y1="63.7" x2="239.9" y2="245.6"/><path class="fig-ink" d="M 233.0 238.3 L 239.9 245.6 L 241.3 235.6"/><line class="fig-ink" x1="174.4" y1="62.1" x2="115.3" y2="244.0"/><path class="fig-ink" d="M 114.0 234.1 L 115.3 244.0 L 122.3 236.8"/><line class="fig-ink" x1="282.5" y1="113.3" x2="198.3" y2="52.1"/><path class="fig-ink" d="M 208.2 53.9 L 198.3 52.1 L 203.0 60.9"/><line class="fig-ink" x1="283.8" y1="143.5" x2="251.7" y2="242.5"/><path class="fig-ink" d="M 250.3 232.6 L 251.7 242.5 L 258.6 235.2"/><line class="fig-ink" x1="276.1" y1="127.9" x2="84.9" y2="127.9"/><path class="fig-ink" d="M 93.9 123.6 L 84.9 127.9 L 93.9 132.3"/><line class="fig-ink" x1="249.7" y1="243.4" x2="190.6" y2="61.5"/><path class="fig-ink" d="M 197.5 68.7 L 190.6 61.5 L 189.3 71.4"/><line class="fig-ink" x1="260.9" y1="246.5" x2="293.0" y2="147.5"/><path class="fig-ink" d="M 294.4 157.4 L 293.0 147.5 L 286.1 154.8"/><line class="fig-ink" x1="232.5" y1="262.1" x2="128.5" y2="262.1"/><path class="fig-ink" d="M 137.5 257.7 L 128.5 262.1 L 137.5 266.4"/><line class="fig-ink" x1="238.9" y1="247.5" x2="84.2" y2="135.0"/><path class="fig-ink" d="M 94.0 136.8 L 84.2 135.0 L 88.9 143.9"/><line class="fig-ink" x1="124.0" y1="251.5" x2="278.8" y2="139.1"/><path class="fig-ink" d="M 274.0 147.9 L 278.8 139.1 L 268.9 140.9"/><line class="fig-ink" x1="80.4" y1="117.3" x2="164.6" y2="56.2"/><path class="fig-ink" d="M 159.9 65.0 L 164.6 56.2 L 154.8 57.9"/><line class="fig-ink" x1="77.5" y1="142.5" x2="232.2" y2="255.0"/><path class="fig-ink" d="M 222.4 253.2 L 232.2 255.0 L 227.5 246.1"/><circle class="fig-ink" cx="180.0" cy="45.0" r="18"/><text class="fig-text" x="180.0" y="50.0" text-anchor="middle" font-size="14">1</text><circle class="fig-ink" cx="294.1" cy="127.9" r="18"/><text class="fig-text" x="294.1" y="132.9" text-anchor="middle" font-size="14">2</text><circle class="fig-ink" cx="250.5" cy="262.1" r="18"/><text class="fig-text" x="250.5" y="267.1" text-anchor="middle" font-size="14">3</text><circle class="fig-ink" cx="109.5" cy="262.1" r="18"/><text class="fig-text" x="109.5" y="267.1" text-anchor="middle" font-size="14">4</text><circle class="fig-ink" cx="65.9" cy="127.9" r="18"/><text class="fig-text" x="65.9" y="132.9" text-anchor="middle" font-size="14">5</text></svg><figcaption>방향 그래프. 나란한 두 화살표는 서로 반대 방향 간선 두 개예요.</figcaption></figure>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: 위 그림(1 → 2, 3, 4 / 2 → 1, 3, 5 / 3 → 1, 2, 4, 5 / 4 → 2 / 5 → 1, 3).</p>
+    <ul>
+      <li><strong>화살표 수</strong>: 진출 차수 합 $3+3+4+1+2 = 13$, 진입 차수 합 $3+3+3+2+2 = 13$으로 둘 다 E의 원소 수와 같아요.</li>
+      <li><strong>쌍 기준 재계산</strong>: 양방향 쌍 4개 × 2 + 한 방향 5개 = $8 + 5 = 13$이에요.</li>
+      <li><strong>빠진 쌍 확인</strong>: 가능한 무순서 쌍 10개 중 간선이 걸린 쌍은 9개이고, 남은 하나가 4–5라서 그림에 4와 5 사이 선이 없어야 해요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>양방향 쌍을 화살표 없는 선 하나로 그리면</strong>: 1–2를 선 하나로 그리면 화살표가 13개가 아니라 9개처럼 보이고, 무방향 간선과 구별되지 않아요. <code>&lt;1,2&gt;</code>와 <code>&lt;2,1&gt;</code>은 별개의 간선이에요.</li>
+    <li><strong>화살촉 방향을 거꾸로 붙이면</strong>: <code>&lt;4,2&gt;</code>를 2 → 4로 그리면 4의 진출 차수가 0, 2의 진출 차수가 4가 되어 위 표와 맞지 않아요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>꺾쇠괄호 간선 목록을 보면 → 그리기 전에 “출발 → 도착들” 표를 먼저 만들어 보세요.</li>
+    <li>다 그린 뒤 → 화살표 수가 목록의 원소 수(13)와 같은지, 진출 차수 합으로 세어 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념</h4><p> <code>&lt;a,b&gt;</code> = a에서 b로 가는 화살표 하나, <code>&lt;a,b&gt;</code>와 <code>&lt;b,a&gt;</code>는 다른 간선.</p></div>
+  <div class="summary-group"><h4>첫 줄과 답</h4><p>1 → 2,3,4 / 2 → 1,3,5 / 3 → 1,2,4,5 / 4 → 2 / 5 → 1,3. 양방향 쌍 1–2, 1–3, 2–3, 3–5, 4–5는 간선 없음.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>진출·진입 차수 합 모두 13 = $4 \times 2 + 5$.</p></div>
+</div>

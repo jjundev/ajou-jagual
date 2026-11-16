@@ -1,0 +1,106 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>방향 그래프가 n×n 인접 행렬 <code>a</code>로 주어질 때 (1) 진출 차수, (2) 진입 차수, (3) 전체 간선 수를 세는 함수를 쓰고 각각의 시간 복잡도를 답해요.</p>
+  <ul>
+    <li><code>a[i][j] = 1</code>은 간선 <code>&lt;i, j&gt;</code>(i에서 j로)가 있다는 뜻이에요. 행 = 출발, 열 = 도착이에요.</li>
+    <li>원문의 “크기가 n×n인 방향 그래프”는 정점이 n개라는 뜻으로 읽어요(행렬이 n×n).</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>(1) ‘진출차수’ = 나가는 간선</td><td>v행의 합 $\sum_{j} a[v][j]$ </td><td> <code>&lt;v, j&gt;</code>는 모두 v행에 있어요(<a href="정리노트_1116_Graph.html#s3-adj-matrix">정리노트</a>).</td></tr>
+        <tr><td>(2) ‘진입차수’ = 들어오는 간선</td><td>v열의 합 $\sum_{i} a[i][v]$ </td><td> <code>&lt;i, v&gt;</code>는 모두 v열에 있어요. 방향 그래프는 행렬이 대칭이 아니라 행과 열의 합이 달라요.</td></tr>
+        <tr><td>(3) ‘간선들의 개수’</td><td>행렬 전체 합</td><td>방향 간선 하나가 1 한 칸이라 1의 총개수가 곧 간선 수예요.</td></tr>
+        <tr><td>‘시간 복잡도’</td><td>반복문이 보는 칸 수</td><td>한 행·한 열은 n칸, 전체는 $n^2$칸이에요. 1이 몇 개인지와 상관없이 칸을 모두 봐요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>out(v) = a[v][0] + a[v][1] + ... + a[v][n-1]    /* v행 */
+in(v)  = a[0][v] + a[1][v] + ... + a[n-1][v]    /* v열 */</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <p>세 함수는 행렬을 <code>int a[][MAX_VERTICES]</code>로 받고 실제 정점 수 <code>n</code>을 따로 받아요.</p>
+  <div data-subpart="1">
+    <p><strong>(1) 진출 차수</strong>: <code>j</code>를 0부터 <code>n-1</code>까지 돌며 <code>a[v][j]</code>를 더해요.</p>
+    <pre><code>#define MAX_VERTICES 50
+
+int out_degree(int a[][MAX_VERTICES], int n, int v)
+{
+    int j, count = 0;
+    for (j = 0; j &lt; n; j++)
+        count += a[v][j];
+    return count;
+}</code></pre>
+    <p>반복이 n번이고 한 번에 상수 시간이라 <strong>$O(n)$</strong>이에요.</p>
+  </div>
+  <div data-subpart="2">
+    <p><strong>(2) 진입 차수</strong>: 이번에는 열을 고정하고 <code>i</code>를 돌려 <code>a[i][v]</code>를 더해요.</p>
+    <pre><code>int in_degree(int a[][MAX_VERTICES], int n, int v)
+{
+    int i, count = 0;
+    for (i = 0; i &lt; n; i++)
+        count += a[i][v];
+    return count;
+}</code></pre>
+    <p>역시 칸 n개라 <strong>$O(n)$</strong>이에요.</p>
+  </div>
+  <div data-subpart="3">
+    <p><strong>(3) 간선 수</strong>: 이중 반복문으로 n×n칸을 모두 더해요.</p>
+    <pre><code>int edge_count(int a[][MAX_VERTICES], int n)
+{
+    int i, j, count = 0;
+    for (i = 0; i &lt; n; i++)
+        for (j = 0; j &lt; n; j++)
+            count += a[i][j];
+    return count;
+}</code></pre>
+    <p>바깥 n번 × 안쪽 n번이라 <strong>$O(n^2)$</strong>이에요. 방향 그래프라 합을 2로 나누지 않아요. (무방향 그래프였다면 간선 하나가 대칭인 두 칸에 들어가 합/2가 간선 수예요.)</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="1">
+    <p><strong>(1) 완성 답</strong>: v행의 합, $O(n)$. 수업 G3(<code>&lt;0,1&gt;</code>, <code>&lt;1,0&gt;</code>, <code>&lt;1,2&gt;</code>, 행렬 <code>{0,1,0}, {1,0,1}, {0,0,0}</code>)에서 정점 1의 진출 차수는 1행 <code>1 0 1</code>의 합 2이고, 실제로 1에서 나가는 화살표도 1→0, 1→2 두 개예요. 정점 2는 0(나가는 간선 없음, 경계값)이에요.</p>
+  </div>
+  <div data-subpart="2">
+    <p><strong>(2) 완성 답</strong>: v열의 합, $O(n)$. G3에서 정점 1의 진입 차수는 1열 <code>1, 0, 0</code>의 합 1(0→1 하나)이에요. 진출 2와 달라서 행과 열을 바꿔 쓰면 틀린다는 것이 드러나요.</p>
+  </div>
+  <div data-subpart="3">
+    <p><strong>(3) 완성 답</strong>: 행렬 전체 합, $O(n^2)$. G3은 $1 + 2 + 0 = 3$으로 간선 3개와 같아요. 또 교과서 8번 그래프(간선 13개)에서는 진출 차수 합 $3+3+4+1+2$와 진입 차수 합 $3+3+3+2+2$가 모두 13이고, 전체 합도 13이에요. 위 세 함수를 <code>cc -std=c11 -Wall</code>로 컴파일해 두 그래프에 돌린 결과도 같았어요. 간선이 0개인 행렬과 모든 칸이 1인 행렬에서도 본 칸 수는 n, n, $n^2$으로 같았어요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>무방향 습관대로 행 합을 진입 차수로도 쓰면</strong>: G3의 정점 2는 행 합 0이지만 1→2가 들어와 진입 차수는 1이에요. 방향 그래프 행렬은 대칭이 아니에요.</li>
+    <li><strong>간선 수에서도 2로 나누면</strong>: G3에서 $3 / 2 = 1$(정수 나눗셈)이 되어 간선 3개와 어긋나요. 방향 간선은 한 칸에만 들어가요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>“진출/진입”을 보면 → <code>a[출발][도착]</code>을 먼저 적고, 고정할 인덱스가 행인지 열인지 정해 보세요.</li>
+    <li>“간선 수” 함수를 쓰면 → 방향인지 확인해 2로 나눌지 결정하고, 이중 반복이라 $O(n^2)$인지 점검해 보세요.</li>
+    <li>같은 세 질문을 인접 리스트로 바꾸면 (1)의 비용은 어떻게 달라질까요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념</h4><p> <code>a[i][j]=1</code> ⇔ <code>&lt;i,j&gt;</code>. 행 = 출발, 열 = 도착, 방향 그래프 행렬은 비대칭.</p></div>
+  <div class="summary-group"><h4>답</h4><p>(1) v행 합 $O(n)$ (2) v열 합 $O(n)$ (3) 전체 합 $O(n^2)$, 방향이라 2로 나누지 않음.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>G3 정점 1: 진출 2, 진입 1, 간선 3. 교과서 8번: 진출·진입 합 모두 13.</p></div>
+</div>

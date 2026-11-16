@@ -1,0 +1,23 @@
+--- run:
+G3 v=0 out=1 in=1
+G3 v=1 out=2 in=1
+G3 v=2 out=0 in=1
+G3 edges=3
+Q8 v=1 out=3 in=3
+Q8 v=2 out=3 in=3
+Q8 v=3 out=4 in=3
+Q8 v=4 out=1 in=2
+Q8 v=5 out=2 in=2
+Q8 edges=13 sum_out=13 sum_in=13
+n=1 empty: out_steps=1 in_steps=1 edge_steps=1
+n=1 full: edges=0 out_steps=1 in_steps=1 edge_steps=1
+n=2 empty: out_steps=2 in_steps=2 edge_steps=4
+n=2 full: edges=2 out_steps=2 in_steps=2 edge_steps=4
+n=4 empty: out_steps=4 in_steps=4 edge_steps=16
+n=4 full: edges=12 out_steps=4 in_steps=4 edge_steps=16
+n=8 empty: out_steps=8 in_steps=8 edge_steps=64
+n=8 full: edges=56 out_steps=8 in_steps=8 edge_steps=64
+n=16 empty: out_steps=16 in_steps=16 edge_steps=256
+n=16 full: edges=240 out_steps=16 in_steps=16 edge_steps=256
+n=32 empty: out_steps=32 in_steps=32 edge_steps=1024
+n=32 full: edges=992 out_steps=32 in_steps=32 edge_steps=1024

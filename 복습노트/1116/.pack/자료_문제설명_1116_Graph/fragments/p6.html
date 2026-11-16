@@ -1,0 +1,78 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>정점 n개, 간선 e개인 그래프를 인접 리스트로 나타낼 때 리스트에 들어가는 노드의 총 개수를 보기 ①~④ 중 <strong>하나</strong> 골라요(긍정형 단일 선택).</p>
+  <ul>
+    <li><strong>필요한 가정</strong>: 문제에 방향이 적혀 있지 않아 <strong>무방향 그래프</strong>로 두고 풀어요. 방향 그래프라면 답은 e개(①)가 돼요.</li>
+    <li>세는 것은 이웃 정점을 나타내는 노드이고, 정점마다 있는 헤드(시작 포인터) n개는 넣지 않아요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 개념</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘인접 리스트’</td><td>정점마다 헤드 + 이웃 노드 연결 리스트</td><td>노드 하나 = (어느 정점의 리스트에 있는) 이웃 하나예요(<a href="정리노트_1116_Graph.html#s3-adj-list">정리노트</a>).</td></tr>
+        <tr><td>방향 표시 없음</td><td>무방향 간선 $(u, v) = (v, u)$ </td><td>간선 하나가 u의 리스트에 v, v의 리스트에 u로 두 번 나타나요(<a href="정리노트_1116_Graph.html#s1-kinds">정리노트</a>).</td></tr>
+        <tr><td>‘총 노드의 개수’</td><td>차수의 합 = $2e$ </td><td>정점 v의 리스트 길이 = v의 차수이므로, 리스트 길이를 모두 더하면 차수의 합이에요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>간선 (u, v) 하나 → u의 리스트에 v 노드 1개 + v의 리스트에 u 노드 1개 = 2개</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li>무방향 간선 하나가 노드 2개를 만들고, 간선끼리 노드를 나눠 쓰지 않아요. 간선이 e개면 노드는 $2e$개예요.</li>
+      <li>정점 수 n은 헤드의 개수일 뿐이라 노드 수를 정하지 않아요. 간선이 없는 정점은 헤드만 있고 노드는 0개예요.</li>
+    </ol>
+    <p><strong>보기별 판정</strong> (무방향 가정)</p>
+    <ul>
+      <li>① e개: 간선 하나를 한쪽 리스트에만 넣는 <em>방향</em> 그래프의 노드 수예요. 무방향에서는 반만 센 값이라 탈락. (방향 그래프로 읽으면 이 보기가 답이에요.)</li>
+      <li><strong>② 2e개</strong>: 간선마다 양 끝 리스트에 하나씩. <strong>정답.</strong></li>
+      <li>③ n개: 헤드 수예요. 노드 수와는 무관해요. 간선이 없는 그래프에서도 n은 그대로인데 노드는 0개라 탈락.</li>
+      <li>④ 2n개: 정점 수에 묶인 값이라 간선이 늘어나도 변하지 않아요. 정점 4개짜리 G1(간선 5)의 노드 10개는 2n = 8과 달라 탈락.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: ② 2e개 (무방향 가정, 방향이면 e개)</p>
+    <ul>
+      <li><strong>수업 G1</strong>: 간선 (0, 1), (0, 2), (0, 3), (1, 2), (2, 3) 5개. 리스트는 <code>0→1→2→3</code>, <code>1→0→2</code>, <code>2→0→1→3</code>, <code>3→0→2</code>로 노드가 $3+2+3+2 = 10 = 2 \times 5$예요. 같은 그래프에서 n = 4, 2n = 8이라 ③·④와도 구별돼요.</li>
+      <li><strong>경계값</strong>: 간선 0개(e = 0)면 노드 0개 = $2 \times 0$. 간선 1개짜리 정점 2개 그래프는 <code>0→1</code>, <code>1→0</code>으로 노드 2개 = $2 \times 1$.</li>
+      <li><strong>방향 그래프 대조</strong>: 수업 G3(<code>&lt;0,1&gt;</code>, <code>&lt;1,0&gt;</code>, <code>&lt;1,2&gt;</code>)는 <code>0→1</code>, <code>1→0→2</code>, <code>2</code>(빈 리스트)로 노드 3개 = e예요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>“간선 하나 = 노드 하나”로 생각하면</strong>: ①을 골라요. G1에서 간선은 5개지만 리스트 노드는 10개라 맞지 않아요.</li>
+    <li><strong>헤드까지 노드로 세면</strong>: G1에서 $10 + 4 = 14$처럼 $2e + n$이 되어 어느 보기와도 맞지 않아요. 헤드는 리스트의 시작을 가리키는 칸이에요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>“인접 리스트 노드 수”를 보면 → 먼저 방향/무방향을 적고, 간선 하나가 몇 개 리스트에 들어가는지(2 또는 1)를 써 보세요.</li>
+    <li>정점 5개, 간선 6개인 무방향 그래프(교과서 6번 그림)의 리스트 노드 수를 계산부터 하고 그림으로 확인해 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>가정과 개념</h4><p>방향 표시 없음 → 무방향 가정. 간선 하나가 양 끝 리스트에 노드 1개씩, 헤드 n개는 세지 않음.</p></div>
+  <div class="summary-group"><h4>판정</h4><p>② 2e. ①은 방향 그래프일 때의 값, ③ n은 헤드 수, ④ 2n은 간선과 무관.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>G1: 간선 5, 노드 $3+2+3+2 = 10$. e = 0이면 노드 0.</p></div>
+</div>

@@ -1,0 +1,293 @@
+{
+  "review_policy_version": "problem-explain-2026-10-15",
+  "input_hash": "715013fb116f8f9af09ae07dcd421f1c588150531376aacdf6f9f65076af8ee1",
+  "references": [
+    {
+      "path": "/home/user/ajou-jagual/.agents/skills/ds-problem-explain/references/authoring.md",
+      "sha256": "b50bc4fb13315037c58a2c108b762595b8d521dcc6cf2fcee2fa8438028d40b9"
+    },
+    {
+      "path": "/home/user/ajou-jagual/.agents/skills/ds-problem-explain/references/verification.md",
+      "sha256": "8762005ad80cd1355859178d526ddb64ec424bc6cc40fe662f95d747f3f97780"
+    },
+    {
+      "path": "/home/user/ajou-jagual/.agents/skills/ds-problem-explain/SKILL.md",
+      "sha256": "199b4675700ef86cae5604fefbd3203af72b5c5c18f23ef0bfcf68f45f5fb13c"
+    },
+    {
+      "path": "/home/user/ajou-jagual/from_the_past/기출/문제은행.json",
+      "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+    },
+    {
+      "path": "/home/user/ajou-jagual/from_the_past/기출/_전사/2019-final.md",
+      "sha256": "687292f91bbdb3edcefbc9c532107058bd38715e62da36dc4da04e006910648a"
+    },
+    {
+      "path": "/home/user/ajou-jagual/from_the_past/기출/_전사/2017-final2.md",
+      "sha256": "00e89079588143831428ebc4e93fea567828c1b17ccd786dc6ef9ef7581d77d1"
+    },
+    {
+      "path": "/home/user/ajou-jagual/교과서/10_그래프 I_연습문제.json",
+      "sha256": "7829bc23a66c258a4e9b350940bdc70c4167f8f950537d6fc8c2228629e47fd9"
+    },
+    {
+      "path": "/home/user/ajou-jagual/자료구조_강의록_2026/Software_10_Graph.pdf",
+      "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10"
+    },
+    {
+      "path": "/home/user/ajou-jagual/복습노트/1116/정리노트_1116_Graph.html",
+      "sha256": "75c76ca80dce1489cd3d8ee2dd9643ab6e4c249d06b317599591f0b4a2303f4f"
+    },
+    {
+      "path": "/home/user/ajou-jagual/복습노트/1116/.pack/자료_복습팩/복습문제_1116_Graph.json",
+      "sha256": "4f1f4f72eb58cf4fa04a024b526a7998694d128223461e48a317394eda638f3f"
+    },
+    {
+      "path": "/home/user/ajou-jagual/복습노트/1116/복습문제_1116_Graph-문제.pdf",
+      "sha256": "4c5acef972cb00d251714701f88a6ce628856f8178bc420143cf7d7394993d1a"
+    },
+    {
+      "path": "/home/user/ajou-jagual/교과서/assets/ch10-q06-graph.svg",
+      "sha256": "c44a98181af07f9c0a9dcf2f1d0b771f8b9555500b15152c08772cfcf6aecd5f"
+    }
+  ],
+  "source_visual": {
+    "status": "pass",
+    "reviewer": "main agent (ds-review-pack 1116 controller)",
+    "evidence": "source.json 11문항의 조건·코드·그림을 문제은행 2019-final q2·q5, 2017-final2 q8 전사, 교과서 10장 2·3·4·6·8·9·11번 JSON(ch10-q06 그래프 SVG 간선 v0-v1,v1-v2,v1-v3,v3-v4,v2-v4,v0-v4 대조), 강의록 Software_10 p3(쾨니히스베르크 다리 a~g 배치)·p7·p9·p10 렌더 이미지와 대조. 숫자·코드·소문항(p9 1/2/3, p11 a/b/c) 일치."
+  },
+  "browser": {
+    "status": "pass",
+    "reviewer": "main agent (ds-review-pack 1116 controller)",
+    "evidence": "preview URL(127.0.0.1:41057)을 Playwright로 1280×900, 1024×900, 375×812 light/dark에서 11문항 화면 전부 순회: 문서 가로 넘침 0, KaTeX 99개 오류 0, 콘솔·페이지 오류 0, 4xx/실패 요청 0, 외부 요청 0, 목차 11·요약 11. 스크린샷(1280 dark p3, 375 light p11 등) 확인: 목차·문제 패널(문제/원문 탭) 기본 열림, 375에서 '문제 보기' 토글, 코드는 패널 안 스크롤. 개념 링크 6개 앵커가 정리노트에 존재, 원 문제 링크는 문제 PDF page=1..11 (한 문항 한 쪽)과 일치."
+  },
+  "content": {
+    "status": "pass",
+    "reviewer": "main agent (ds-review-pack 1116 controller)",
+    "evidence": "p1~p11 조각 전부 읽고 authoring.md 기준 대조, 범위 밖 알고리즘 이름·evidence 파일명 노출 없음 grep 확인",
+    "items": {
+      "p1:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. "
+      },
+      "p2:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. 표준 정의 + 연결 그래프 주의, 쌍 직접 세기·경계값 n=1,2,3 검산"
+      },
+      "p3:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. 모범답안이 정점 반복 미검사임을 understand·solve에 명시, 입력 가정 표기"
+      },
+      "p4:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. "
+      },
+      "p5:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. 오답 ①③④ 소거 이유 모두"
+      },
+      "p6:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. 무방향 가정과 방향이면 e를 understand·verify에 유지, 오답 ①③④ 소거"
+      },
+      "p7:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. "
+      },
+      "p8:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. "
+      },
+      "p9:1": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. "
+      },
+      "p9:2": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. "
+      },
+      "p9:3": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. "
+      },
+      "p10:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. "
+      },
+      "p11:a": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. 차수 다중 간선 정의 명시"
+      },
+      "p11:b": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. "
+      },
+      "p11:c": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "일곱 구역 존재·순서, understand 압축, recall 단서–도구–이유 표, start 메타 선언 없음, solve 단계/표, verify 실질 검산, pitfall 오해→반례, retry 행동형, sum 1~2줄 일치. 오일러 회로 엄밀 구분"
+      }
+    }
+  },
+  "independent": {
+    "status": "pass",
+    "reviewer": "main agent (ds-review-pack 1116 controller)",
+    "evidence": "evidence/ 스크립트 재실행 + 별도 answers.py(복습팩 단계, 해설 조각과 독립) 대조: 15개 소문항 모두 일치, disputed 없음",
+    "items": {
+      "p1:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "사이클 — 정의 대입과 비사이클 예로 확인"
+      },
+      "p2:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "45 — 쌍 전수 = 차수합/2 = n(n-1)/2"
+      },
+      "p3:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "Cycle?: Yes — C11 실행, 길이 1~8 걷기 9800개 전수가 정의와 일치"
+      },
+      "p4:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "0→1; 1→0→2→3; 2→1; 3→1 (각 NULL)"
+      },
+      "p5:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "② O(n) — n=4/8/16에서 보는 칸 수 n"
+      },
+      "p6:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "② 2e (무방향 가정) — 무작위 그래프 200개 노드 수 = 2e"
+      },
+      "p7:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "행렬 01001/10110/01001/01001/10110과 대응 리스트"
+      },
+      "p8:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "진출 목록 1→2,3,4 2→1,3,5 3→1,2,4,5 4→2 5→1,3, 간선 13"
+      },
+      "p9:1": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "v행 합, O(n) — C11 실행 G3 진출 2"
+      },
+      "p9:2": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "v열 합, O(n) — C11 실행 G3 진입 1"
+      },
+      "p9:3": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "행렬 전체 합, O(n^2) — G3 3, 8번 그래프 13"
+      },
+      "p10:main": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "3, 6, 10 = n(n-1)/2"
+      },
+      "p11:a": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "정점 4, 간선 7"
+      },
+      "p11:b": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "A=5 B=3 C=3 D=3, 합 14"
+      },
+      "p11:c": {
+        "status": "pass",
+        "reviewer": "main agent (ds-review-pack 1116 controller)",
+        "evidence": "evidence/graph_checks.py·check_cycle.c·check_cycle_enum.py·degree.c 재실행(컨트롤러가 다시 컴파일·실행) 결과와, 해설 작성 전 컨트롤러가 독립 작성한 ds-review-pack RUN answers.py 출력 대조 일치",
+        "method": "exact",
+        "conclusion": "불가능 — 5040×4 전수에서 모든 다리를 한 번씩 건너는 길 0개"
+      }
+    }
+  },
+  "artifact_hashes": {
+    ".pack/figures_문제설명_1116_Graph/explain-fig-1.svg": "8e02bec4e836ff5a9c017b641db572a61e030e2b5c02cdaa111f997a75fed794",
+    ".pack/figures_문제설명_1116_Graph/explain-fig-2.svg": "955c20e771a603c26b8cb197b61104a74f6406ce63c9abefa6ec802873577576",
+    ".pack/figures_문제설명_1116_Graph/p10-explain-fig-p10-kn-ex.svg": "874dd488d8562ac0c204203f28298474d4caeea7c3a1c1cc41f80184ef0e78b2",
+    ".pack/figures_문제설명_1116_Graph/p11-source-fig-p11-bridges.svg": "3e2814893d5cc650a773a55d907f4caca2e2a891e789a6c31743826761753c36",
+    ".pack/figures_문제설명_1116_Graph/p8-explain-fig-p8-digraph-ex.svg": "0ca7209b002f4744295051609fb3b2c97baca958944bd073f22024353024463d",
+    ".pack/문제설명_1116_Graph.md": "d87a49ffd4a60c02f8380710cf9f5bb55e954692679b7c10b78383c74d1a0cb5",
+    ".pack/자료_문제설명_1116_Graph/evidence/check_cycle.c": "4b4544b0511c2cc6c7748ebd0a3b63e0ed88e9970dbf965806d0ca1029eed812",
+    ".pack/자료_문제설명_1116_Graph/evidence/check_cycle_compile.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    ".pack/자료_문제설명_1116_Graph/evidence/check_cycle_enum.py": "494c235fe5649de9cf358b8b12d66ad08ce56d40aacc72c27e23870f5272d2d5",
+    ".pack/자료_문제설명_1116_Graph/evidence/check_cycle_exam_main.c": "7720993fd1759faf7d2929703cabfaab4d23d00ef3f62dc5763c60ebbd1646d1",
+    ".pack/자료_문제설명_1116_Graph/evidence/check_cycle_exam_main_output.txt": "a510686d273a930d0736fe64aeccc97b00f2ca9e9286c88ecb054270e9072297",
+    ".pack/자료_문제설명_1116_Graph/evidence/check_cycle_output.txt": "a288e9f2c4bd93c7108938df9ecff4889c50bca6eac074f2d719d7a6696ce126",
+    ".pack/자료_문제설명_1116_Graph/evidence/compare_with_reference.txt": "1e5e7b719dbef0c01932880b2e83d4eb316fa131cae7d73bc62e49f16f830080",
+    ".pack/자료_문제설명_1116_Graph/evidence/degree.c": "d00eee78cde27d0387d5776c9cef3dfa1d27b4437c148c29ef854a4313b11bf1",
+    ".pack/자료_문제설명_1116_Graph/evidence/degree_output.txt": "864a3e0b1d5fe84bb9c18cc5742d684bcaad7d111a597ec004a10e4e920d140f",
+    ".pack/자료_문제설명_1116_Graph/evidence/graph_checks.py": "ee04976a997eeb28cb08374616017e981b02b63976e2cbc16b7ff347036c299a",
+    ".pack/자료_문제설명_1116_Graph/evidence/graph_checks_output.txt": "a5cd5736bc73959949642b84012e98d7fc5548f277a6af88d9bf26b714ae90f5",
+    ".pack/자료_문제설명_1116_Graph/evidence/p8_figure_check.py": "059cdb09f9491e542c91579924bf62fb5db03967b196ab964587c9fa4274156e",
+    ".pack/자료_문제설명_1116_Graph/evidence/p8_figure_check_output.txt": "ff1f9c1256f61b8a80d9b920302d66ea486da1ce8a61535ef0d2d9886f074f2a",
+    ".pack/자료_문제설명_1116_Graph/fragments/p1.html": "25c16e5c6ccfdc6497a46cfcbd1761eec41a6df66f4396d2c3033a0075aa5811",
+    ".pack/자료_문제설명_1116_Graph/fragments/p10.html": "ce308a083e080f5edab5d1bae4e91fb02495c171f36f1ef66bfaec43ebfa01f3",
+    ".pack/자료_문제설명_1116_Graph/fragments/p11.html": "8d6e706d7514d7ed49a7d10de3b6f32814631f8d49ba2803b9e9bb5720442bf6",
+    ".pack/자료_문제설명_1116_Graph/fragments/p2.html": "af2a72f8fbe5bfeae31001650f49a09417906504479920ba1b80b9d91867977c",
+    ".pack/자료_문제설명_1116_Graph/fragments/p3.html": "bb82673d47abda9429cf0b76edaf1b8fe4ed5fc7a65a677f033208704db187ea",
+    ".pack/자료_문제설명_1116_Graph/fragments/p4.html": "e0b55f4b5d467d51f888e374beaafed66ac30fdd67ac1fbeff36242f749dba82",
+    ".pack/자료_문제설명_1116_Graph/fragments/p5.html": "f9018666ec670d9198e35c3219dd433f9687e7951360984f714e6da87b4e492a",
+    ".pack/자료_문제설명_1116_Graph/fragments/p6.html": "c3b585a265326f5740872544934e02ff889ed1a709e5d0c26fe75135e15a4ff0",
+    ".pack/자료_문제설명_1116_Graph/fragments/p7.html": "d9fa38da3196da0e91a789120207d3afd44f77c1929692a327136e277792c90b",
+    ".pack/자료_문제설명_1116_Graph/fragments/p8.html": "10a9975dcb010a549dacc0ed6c74f0776e46b3e6ce22091d8cb94d0bb3642621",
+    ".pack/자료_문제설명_1116_Graph/fragments/p9.html": "f45477ef8bb5ff751eccc70e83ede1f34ca322f8c7e7f5ff86084e831ede9280",
+    ".pack/자료_문제설명_1116_Graph/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
+    "문제설명_1116_Graph.html": "5a1045adb81af6f0a3b8ba0dbd182c9c526c47538993f87798d1c216b5cf40b2",
+    ".pack/자료_문제설명_1116_Graph/manifest.json": "63dcc0cff0a372be5971b58959d6453547a5163377caa0d80adaa030420aa8df"
+  }
+}

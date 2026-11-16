@@ -1,0 +1,111 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>무방향 그래프의 6×6 인접 행렬과 숫자 문자열 경로(예: <code>"0240"</code>)를 받아, 경로가 사이클이면 <code>'y'</code>, 아니면 <code>'n'</code>을 돌려주는 <code>check_cycle</code> 본문을 작성해요.</p>
+  <ul>
+    <li><strong>사이클 정의(문제 제시)</strong>: 단순 경로의 시작 정점과 종료 정점이 같은 경로예요. 그래서 “간선이 있다”, “시작=끝”, “정점이 반복되지 않는다”를 모두 검사해야 해요.</li>
+    <li><strong>입력 가정</strong>: 경로 문자열은 <code>'0'</code>~<code>'5'</code> 숫자로만 되어 있다고 둬요(다른 문자는 행렬 범위를 벗어나요).</li>
+    <li><strong>원 모범답안과의 차이</strong>: 원 모범답안은 시작=끝, 간선 존재, 같은 간선 재사용만 검사하고 <em>정점 반복은 검사하지 않아요</em>. 아래 풀이는 정의의 “단순 경로”까지 지키도록 정점 반복도 막아요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td> <code>adj_matrix[6][6]</code> </td><td>인접 행렬: 간선 (i, j)가 있으면 <code>M[i][j] = 1</code> </td><td>경로의 이웃한 두 정점 <code>s</code>, <code>e</code>가 실제로 이어졌는지 <code>adj_matrix[s][e]</code> 한 칸으로 확인해요(<a href="정리노트_1116_Graph.html#s3-adj-matrix">정리노트</a>).</td></tr>
+        <tr><td>‘(무방향 그래프)’</td><td> $(s, e) = (e, s)$, 행렬 대칭</td><td>간선을 지났다고 표시할 때 <code>[s][e]</code>와 <code>[e][s]</code>를 함께 표시해야 반대 방향으로 되돌아가는 것도 막혀요.</td></tr>
+        <tr><td>‘단순경로의 시작정점과 종료정점이 동일’</td><td>사이클 = 시작=끝 + 정점 반복 없음</td><td>시작=끝은 <code>path[0]</code>과 <code>path[len-1]</code> 비교, 정점 반복은 방문 표시 배열로 검사해요(<a href="정리노트_1116_Graph.html#s2-terms">정리노트</a>).</td></tr>
+        <tr><td> <code>char *path</code>, <code>"0240"</code> </td><td> <code>strlen</code>, 문자→번호 <code>path[i] - '0'</code> </td><td>문자 <code>'2'</code>를 행렬 인덱스 2로 바꿔야 행렬을 읽을 수 있어요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>len = (int)strlen(path);
+if (len &lt; 4 || path[0] != path[len - 1]) return 'n';</code></pre>
+  <p>“0240”이면 <code>len = 4</code>, <code>path[0] = path[3] = '0'</code>이라 이 줄을 통과해요. 무방향 단순 그래프에서 제자리로 오는 사이클은 간선이 3개 이상이라 문자도 4개 이상이어야 해요.</p>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li><strong>조건 나누기</strong>: ① 시작=끝 ② 이웃한 두 정점 사이에 간선이 있음 ③ 같은 간선을 두 번 지나지 않음 ④ 마지막 정점을 빼면 같은 정점이 두 번 나오지 않음.</li>
+      <li><strong>①과 길이</strong>는 첫 줄에서 걸러요. <code>len &lt; 4</code>는 빈 문자열이나 <code>"0"</code> 같은 한 글자 경로도 막아요.</li>
+      <li><strong>②~④</strong>는 이웃한 두 글자 <code>s</code>, <code>e</code>를 차례로 보며 검사해요. 정점은 각 간선의 출발 쪽 <code>s</code>만 표시하므로, 마지막 글자(시작과 같은 정점)는 반복으로 세지 않아요.</li>
+    </ol>
+    <pre><code>char check_cycle(int adj_matrix[6][6], char *path) {
+    int len, i, s, e;
+    int used_edge[6][6] = { 0 };  /* 지나간 간선 표시 */
+    int seen[6] = { 0 };          /* 이미 지난 정점 표시 */
+
+    len = (int)strlen(path);
+    if (len &lt; 4 || path[0] != path[len - 1])
+        return 'n';   /* 간선이 3개보다 적거나 시작과 끝이 다름 */
+
+    for (i = 0; i &lt; len - 1; i++) {
+        s = path[i] - '0';
+        e = path[i + 1] - '0';
+        if (adj_matrix[s][e] != 1) return 'n';  /* 간선이 없음 */
+        if (used_edge[s][e] == 1)  return 'n';  /* 간선을 또 지남 */
+        used_edge[s][e] = used_edge[e][s] = 1;
+        if (seen[s] == 1)          return 'n';  /* 정점을 또 지남 */
+        seen[s] = 1;
+    }
+    return 'y';
+}</code></pre>
+    <p><strong>주어진 <code>"0240"</code> 추적</strong> (행렬의 간선: 0–2, 0–4, 1–2, 2–3, 2–4, 3–4, 3–5)</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>i</th><th>s → e</th><th> <code>adj_matrix[s][e]</code> </th><th>간선 재사용?</th><th> <code>seen[s]</code> 전</th><th>결과</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>0 → 2</td><td>1</td><td>아니오</td><td>0</td><td>통과, 간선 0–2·정점 0 표시</td></tr>
+          <tr><td>1</td><td>2 → 4</td><td>1</td><td>아니오</td><td>0</td><td>통과, 간선 2–4·정점 2 표시</td></tr>
+          <tr><td>2</td><td>4 → 0</td><td>1</td><td>아니오</td><td>0</td><td>통과, 간선 4–0·정점 4 표시</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>반복문을 끝까지 돌아 <code>'y'</code>를 돌려주므로 main은 <strong><code>Cycle?: Yes</code></strong>를 출력해요.</p>
+    <p><strong>원 모범답안과의 차이</strong>: 원 모범답안은 간선 재사용만 막아요. 두 고리가 한 정점에서만 만나는 8자 모양 경로(예: 두 삼각형 0–1–2, 0–3–4가 정점 0을 공유하는 그래프의 <code>"0120340"</code>)는 간선이 겹치지 않아 모범답안에서 <code>'y'</code>가 되지만, 정점 0이 중간에 다시 나와 정의상 사이클이 아니에요. 또 한 글자 경로 <code>"0"</code>은 모범답안에서 반복문을 돌지 않고 <code>'y'</code>가 돼요. 이 문제의 main 입력 <code>"0240"</code>에서는 두 코드의 결과가 같아요.</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: 위 <code>check_cycle</code>(시작=끝·간선 존재·간선 재사용·정점 반복 검사), 주어진 main 출력 <code>Cycle?: Yes</code>.</p>
+    <ul>
+      <li><strong>실제 컴파일·실행</strong>: 문제의 main 그대로 <code>cc -std=c11 -Wall</code>로 컴파일하면 경고는 main의 쓰지 않는 변수 <code>i</code>, <code>n</code> 두 개뿐이고, 실행 결과는 <code>Cycle?: Yes</code>예요.</li>
+      <li><strong>다른 입력으로 각 조건 확인</strong>: <code>"02340"</code>(0–2–3–4–0, 사각형) → <code>y</code>, <code>"0230"</code>(간선 3–0 없음) → <code>n</code>, <code>"0242"</code>(끝≠시작) → <code>n</code>, <code>"020"</code>(간선 0–2 되돌아감, 길이 3) → <code>n</code>, <code>"024"</code>(끝≠시작) → <code>n</code>.</li>
+      <li><strong>전수 대조</strong>: 이 그래프에서 길이 1~8인 모든 걷기 9800개를 정의(시작=끝, 간선 존재, 정점 반복 없음, 간선 3개 이상)로 판정한 결과와 함수 결과가 모두 같았어요. 사이클로 판정된 것은 삼각형 0–2–4, 2–3–4와 사각형 0–2–3–4의 여러 출발점·방향 20개뿐이에요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>간선 표시를 한쪽(<code>[s][e]</code>)만 하면</strong>: <code>"020"</code>에서 0→2를 표시한 뒤 2→0은 <code>[2][0]</code>을 보므로 “처음 지나는 간선”으로 통과해요. 무방향에서는 같은 간선을 되돌아간 것이라 사이클이 아니에요(길이 검사가 없으면 <code>'y'</code>가 나와요).</li>
+    <li><strong>정점 반복 검사를 마지막 글자까지 하면</strong>: <code>seen[e]</code>를 검사하면 <code>"0240"</code>의 마지막 0이 “이미 지난 정점”으로 잡혀 정상 사이클이 <code>'n'</code>이 돼요. 출발 쪽 <code>s</code>만 표시·검사해야 해요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>“사이클인지 판정”을 보면 → 정의를 ①시작=끝 ②간선 존재 ③간선 재사용 금지 ④정점 반복 금지로 쪼개 각각 한 줄씩 적어 보세요.</li>
+    <li>무방향 그래프라는 단서를 보면 → 지난 간선 표시를 두 칸 모두에 하는지 확인해 보세요.</li>
+    <li>경로 <code>"23432"</code>를 위 함수로 추적하면 어느 줄에서 <code>'n'</code>이 나올까요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념</h4><p>사이클 = 단순 경로 + 시작=끝. 인접 행렬 <code>adj_matrix[s][e]</code>로 간선 확인, 무방향이라 간선 표시는 양쪽 칸.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p> <code>len &lt; 4 || path[0] != path[len-1]</code>이면 <code>'n'</code>.</p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p>이웃 쌍마다 간선 존재·간선 재사용·출발 정점 반복 검사. <code>"0240"</code>은 세 간선 모두 통과 → <code>Cycle?: Yes</code>. 원 모범답안은 정점 반복을 검사하지 않음(이 입력에선 같은 결과).</p></div>
+  <div class="summary-group"><h4>검산</h4><p>main 실행 <code>Cycle?: Yes</code>, <code>"02340"</code>은 y, <code>"0230"</code>·<code>"020"</code>·<code>"024"</code>는 n.</p></div>
+</div>

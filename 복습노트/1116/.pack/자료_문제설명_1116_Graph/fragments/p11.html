@@ -1,0 +1,95 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>땅 A·B·C·D를 정점, 다리 a~g를 간선으로 볼 때 (a) 정점·간선 수, (b) 각 정점의 차수, (c) 모든 다리를 한 번씩 건너 출발한 땅으로 돌아올 수 있는지를 차수로 판단해요.</p>
+  <ul>
+    <li><strong>차수의 정의(문제 제시)</strong>: 그 정점에 붙은 간선(다리)의 개수예요. 같은 두 땅 사이 다리가 두 개(A–B의 a, b / A–C의 c, d)면 <strong>두 번 세요</strong>. 강의록 S10 p7의 “연결된 다른 정점의 개수”와 달리, 이 그래프는 다중 간선이 있어서 문제가 이렇게 정했어요.</li>
+    <li>(c)처럼 출발점으로 돌아오는 길은 엄밀히는 <strong>오일러 회로</strong>라고 불러요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>(a) 땅 = 정점, 다리 = 간선</td><td>그래프 $G = (V, E)$ </td><td>위치와 연결만 남겨 핵심을 표현해요(<a href="정리노트_1116_Graph.html#s1-euler">정리노트</a>).</td></tr>
+        <tr><td>(b) ‘붙은 간선의 개수’</td><td>차수, 차수 합 $= 2 \times$ 간선 수</td><td>다리 하나가 양 끝 땅에 한 번씩 붙어 있어 검산 기준이 돼요(<a href="정리노트_1116_Graph.html#s2-terms">정리노트</a>).</td></tr>
+        <tr><td>(c) ‘한 번씩만 건너 처음 땅으로’</td><td>오일러 회로 조건: 이어진 그래프에서 모든 정점 차수가 짝수</td><td>지나가는 땅마다 들어오는 다리와 나가는 다리가 짝을 이뤄야 해서, 홀수 차수 정점이 하나라도 있으면 불가능해요(강의록 S10 p3).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>V = {A, B, C, D}
+E = {a(A-B), b(A-B), c(A-C), d(A-C), e(A-D), f(B-D), g(C-D)}</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="a">
+    <p><strong>(a)</strong> 땅 A, B, C, D가 정점이라 <strong>정점 4개</strong>, 다리 a~g가 간선이라 <strong>간선 7개</strong>예요. 같은 두 땅 사이 다리 두 개도 각각 별개의 간선이에요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b)</strong> 정점마다 붙은 다리를 나열해 세요.</p>
+    <div class="table-wrap">
+      <table class="cmp">
+        <thead><tr><th>정점</th><th>붙은 다리</th><th>차수</th><th>짝/홀</th></tr></thead>
+        <tbody>
+          <tr><td>A</td><td>a, b, c, d, e</td><td><b>5</b></td><td>홀</td></tr>
+          <tr><td>B</td><td>a, b, f</td><td><b>3</b></td><td>홀</td></tr>
+          <tr><td>C</td><td>c, d, g</td><td><b>3</b></td><td>홀</td></tr>
+          <tr><td>D</td><td>e, f, g</td><td><b>3</b></td><td>홀</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A는 이웃한 땅이 B, C, D 세 곳이지만 다리는 다섯 개라 문제의 정의로 차수는 5예요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c)</strong></p>
+    <ol>
+      <li>모든 다리를 한 번씩 건너 제자리로 오는 길이 있다고 가정해요.</li>
+      <li>길 중간에 어떤 땅을 지날 때마다 들어오는 다리 하나와 나가는 다리 하나를 짝으로 써요. 출발한 땅은 처음 나가는 다리와 마지막에 들어오는 다리가 짝이 돼요.</li>
+      <li>모든 다리가 정확히 한 번씩 쓰이므로, 각 땅에 붙은 다리는 전부 짝으로 묶여요. 그러면 모든 땅의 차수가 짝수여야 해요.</li>
+      <li>그런데 (b)의 차수 5, 3, 3, 3은 모두 홀수예요. 가정과 모순이므로 <strong>어느 땅에서 출발해도 불가능</strong>해요.</li>
+    </ol>
+    <p>보충: 돌아오지 않아도 되는 길(오일러 경로)은 홀수 차수 정점이 0개나 2개일 때만 가능해요. 이 그래프는 홀수 차수 정점이 4개라 그것도 불가능해요.</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="a">
+    <p><strong>(a) 완성 답</strong>: 정점 4개, 간선 7개. 그림의 원 4개, 선 7개(곡선 a, b, c, d 포함)와 같아요.</p>
+  </div>
+  <div data-subpart="b">
+    <p><strong>(b) 완성 답</strong>: A=5, B=3, C=3, D=3. 차수 합 $5+3+3+3 = 14 = 2 \times 7$로, 다리 하나가 양 끝에서 한 번씩 세어진다는 관계와 맞아요. 만약 다중 간선을 한 번만 세면(이웃 땅 수) A=3, B=2, C=2, D=3이 되어 합 10이 간선 수 7의 두 배와 맞지 않아요. 문제 정의(두 번 세기)를 따라야 하는 이유예요.</p>
+  </div>
+  <div data-subpart="c">
+    <p><strong>(c) 완성 답</strong>: 불가능(홀수 차수 정점 4개). 다리 7개를 건너는 모든 순서 $7! = 5040$가지 × 출발 땅 4곳을 하나하나 따라가 보면, 다리 7개를 모두 한 번씩 건너는 길 자체가 하나도 없어요. 제자리로 돌아오는 길도 당연히 0개라 차수 논증과 맞아요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>강의록의 “연결된 다른 정점의 개수”를 그대로 쓰면</strong>: A=3, B=2, C=2, D=3이 되어 홀수 정점이 A, D 두 개뿐인 것처럼 보이고 “돌아오지 않는 길은 가능”이라는 잘못된 결론이 나와요. 다리를 한 번씩 건너는 문제는 간선(다리) 수로 세야 해요.</li>
+    <li><strong>“몇 번 해 봐도 안 되니 불가능”으로 끝내면</strong>: 시도한 몇 경로가 실패한 것은 근거가 아니에요. 홀수 차수 정점이 있으면 들어오고 나가는 다리를 짝지을 수 없다는 논증이 이유예요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>“모든 다리를 한 번씩 건너 돌아오기”를 보면 → 정점마다 붙은 간선 수(다중 간선은 따로)를 표로 쓰고 홀수가 있는지부터 보세요.</li>
+    <li>A–D 사이에 다리를 하나 더 놓으면 각 차수와 (c)의 답은 어떻게 바뀔까요? 돌아오지 않아도 되는 길은 가능해질까요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>개념</h4><p>땅 = 정점, 다리 = 간선. 차수 = 붙은 다리 수(다중 간선은 따로 셈). 출발점 복귀(오일러 회로)는 모든 차수가 짝수여야 가능.</p></div>
+  <div class="summary-group"><h4>답</h4><p>(a) 정점 4, 간선 7 (b) A=5, B=3, C=3, D=3 (c) 홀수 차수 정점 4개 → 불가능.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>차수 합 14 = 2 × 7. 5040 × 4 전수 추적에서 모든 다리를 한 번씩 건너는 길 0개.</p></div>
+</div>

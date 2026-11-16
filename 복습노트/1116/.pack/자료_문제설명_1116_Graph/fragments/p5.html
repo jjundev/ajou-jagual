@@ -1,0 +1,78 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>인접 행렬로 저장된 그래프에서 <strong>정점 하나의 차수</strong>를 구하는 데 걸리는 시간 복잡도를 보기 ①~④ 중 <strong>하나</strong> 골라요(긍정형 단일 선택).</p>
+  <ul>
+    <li>n = 정점 수, e = 간선 수예요.</li>
+    <li>인접 행렬은 n×n 칸이고, 간선이 없는 칸에도 0이 저장돼 있어요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 개념</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘인접 행렬’</td><td>n×n 2차원 배열, v의 이웃 = v행의 1</td><td>차수를 알려면 v행의 칸을 봐야 해요(<a href="정리노트_1116_Graph.html#s3-adj-matrix">정리노트</a>).</td></tr>
+        <tr><td>‘차수’</td><td>정점에 연결된 간선 수</td><td>v행에 있는 1의 개수가 곧 차수예요(<a href="정리노트_1116_Graph.html#s2-terms">정리노트</a>).</td></tr>
+        <tr><td>‘시간 복잡도’, n과 e</td><td>반복문이 보는 칸 수</td><td>어느 1이 있는지 미리 알 수 없어 행 전체 n칸을 봐야 하고, 그 수가 e와 무관한지 따져요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>for (j = 0; j &lt; n; j++) degree += M[v][j];   /* 칸 n개를 한 번씩 */</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li>v행의 칸 <code>M[v][0]</code>~<code>M[v][n-1]</code>을 하나씩 보며 1을 세요. 반복이 정확히 n번 돌아요. 그래서 $O(n)$이에요.</li>
+      <li>간선이 0개여도, 모든 쌍에 있어도 v행은 n칸 그대로라 반복 횟수가 바뀌지 않아요.</li>
+    </ol>
+    <p><strong>보기별 판정</strong></p>
+    <ul>
+      <li>① $O(\log_2 n)$: 1이 어느 칸에 있는지 순서·규칙이 없어 칸을 절반씩 건너뛸 수 없어요. 탈락.</li>
+      <li><strong>② $O(n)$</strong>: 한 행 n칸을 한 번씩 보는 반복과 맞아요. <strong>정답.</strong></li>
+      <li>③ $O(n+e)$: 인접 <em>리스트</em>에서 그래프 전체를 훑는 비용의 모양이에요. 행렬에서 한 정점의 차수는 e에 따라 늘지 않아요. 탈락.</li>
+      <li>④ $O(e)$: 간선 수에 비례한다는 뜻인데, 간선이 0개여도 행렬은 n칸을 다 봐야 해요. 또 한 정점의 차수만 보는데 전체 간선 e가 기준일 이유가 없어요. 탈락.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: ② $O(n)$</p>
+    <ul>
+      <li><strong>e를 바꿔 보는 검산</strong>: 정점 8개 그래프에서 간선이 0개, 8개, 28개(완전 그래프)일 때 정점 0의 차수는 0, 2, 7로 달라지지만, 본 칸 수는 세 경우 모두 8이에요. n=16이면 세 경우 모두 16칸이에요. e가 아니라 n에 비례해요.</li>
+      <li><strong>수업 예</strong>: G1의 0행 <code>0 1 1 1</code>에서 칸 4개를 보고 1을 세 개 세어 차수 3이 나와요.</li>
+      <li><strong>방향 그래프여도</strong>: 진출 차수는 v행, 진입 차수는 v열, 둘 다 n칸이라 $O(n)$이 유지돼요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>“차수 = 간선 수니까 e에 비례”라고 연결하면</strong>: ④를 고르게 돼요. 그러나 간선 0개인 그래프(e = 0)에서도 정점 1000개면 0행 1000칸을 다 확인해야 차수 0을 알 수 있어요.</li>
+    <li><strong>인접 리스트의 비용을 섞으면</strong>: 리스트에서는 v의 리스트 노드 수(차수)만큼만 보면 되지만, 문제는 행렬이라 0인 칸까지 모두 봐야 해요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>“인접 행렬에서 ~의 시간 복잡도”를 보면 → 반복문이 행 하나(n칸)인지, 행렬 전체(n²칸)인지부터 적어 보세요.</li>
+    <li>같은 질문이 인접 리스트였다면 한 정점의 차수를 셀 때 몇 개의 노드를 보게 될까요?</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념</h4><p>인접 행렬 v행의 1의 개수 = 차수. 0인 칸도 저장돼 있어 한 행 n칸을 모두 봄.</p></div>
+  <div class="summary-group"><h4>판정</h4><p>② $O(n)$. ① 건너뛸 수 없음, ③ 리스트 전체 순회 꼴, ④ e = 0이어도 n칸 확인.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>n=8에서 e=0, 8, 28 모두 본 칸 8개.</p></div>
+</div>

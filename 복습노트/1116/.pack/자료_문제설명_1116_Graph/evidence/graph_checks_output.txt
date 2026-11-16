@@ -1,0 +1,58 @@
+== p1: 사이클 정의 확인 (S10 p7 G1) ==
+[0, 1, 2, 3] open -
+[0, 1, 2, 0] closed simple-cycle
+[0, 1, 2, 0, 3, 2, 0] closed -
+== p2/p10: 완전 그래프 간선 수 (모든 쌍 직접 연결) ==
+n=1: pairs=0 degree_sum/2=0 formula=0
+n=2: pairs=1 degree_sum/2=1 formula=1
+n=3: pairs=3 degree_sum/2=3 formula=3
+n=4: pairs=6 degree_sum/2=6 formula=6
+n=5: pairs=10 degree_sum/2=10 formula=10
+n=10: pairs=45 degree_sum/2=45 formula=45
+== p4: 인접 행렬 -> 인접 리스트 ==
+0 -> 1 -> NULL
+1 -> 0 -> 2 -> 3 -> NULL
+2 -> 1 -> NULL
+3 -> 1 -> NULL
+nodes 6 edges 3
+== p5: 인접 행렬에서 한 정점 차수: 확인하는 칸 수 ==
+n=4 e=0: cells_examined=4 deg(0)=0
+n=4 e=4: cells_examined=4 deg(0)=1
+n=4 e=6: cells_examined=4 deg(0)=3
+n=8 e=0: cells_examined=8 deg(0)=0
+n=8 e=8: cells_examined=8 deg(0)=2
+n=8 e=28: cells_examined=8 deg(0)=7
+n=16 e=0: cells_examined=16 deg(0)=0
+n=16 e=16: cells_examined=16 deg(0)=4
+n=16 e=120: cells_examined=16 deg(0)=15
+== p6: 인접 리스트 총 노드 수 ==
+G1 nodes 10 edges 5
+random 200 graphs: undirected nodes == 2e, directed nodes == e : OK
+== p7: 그림 그래프 (e0..e5) ==
+0 1 0 0 1
+1 0 1 1 0
+0 1 0 0 1
+0 1 0 0 1
+1 0 1 1 0
+v0 -> v1 -> v4 -> NULL
+v1 -> v0 -> v2 -> v3 -> NULL
+v2 -> v1 -> v4 -> NULL
+v3 -> v1 -> v4 -> NULL
+v4 -> v0 -> v2 -> v3 -> NULL
+ones 12 nodes 12 edges 6
+== p8: 방향 그래프 ==
+1 -> [2, 3, 4]  in: [2, 3, 5]
+2 -> [1, 3, 5]  in: [1, 3, 4]
+3 -> [1, 2, 4, 5]  in: [1, 2, 5]
+4 -> [2]  in: [1, 3]
+5 -> [1, 3]  in: [2, 3]
+both directions: [(1, 2), (1, 3), (2, 3), (3, 5)]
+one direction: [(1, 4), (2, 5), (3, 4), (4, 2), (5, 1)]
+4-5 edge? False
+unordered pairs with an edge: 9 of 10
+in-degree sum 13
+== p11: 쾨니히스베르크 다리 ==
+vertices 4 edges 7
+degree (incident bridges) {'A': 5, 'B': 3, 'C': 3, 'D': 3} sum 14
+distinct neighbour lands {'A': 3, 'B': 2, 'C': 2, 'D': 3}
+orders x starts tried 20160 closed walks using every bridge once: 0 open: 0

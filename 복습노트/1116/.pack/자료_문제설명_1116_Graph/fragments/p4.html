@@ -1,0 +1,87 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>4×4 인접 행렬 <code>{0,1,0,0}, {1,0,1,1}, {0,1,0,0}, {0,1,0,0}</code>을 정점 0~3의 인접 리스트로 바꿔 그려요.</p>
+  <ul>
+    <li><strong>i행 j열 = 1</strong>: 정점 i와 j 사이에 간선이 있어요.</li>
+    <li><strong>인접 리스트</strong>: 정점마다 헤드 하나, 그 뒤에 이웃 정점 노드를 연결 리스트로 이어요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘인접 행렬’ 네 행</td><td>i행에서 1인 열 = i의 이웃</td><td>행 하나가 곧 리스트 하나가 돼요(<a href="정리노트_1116_Graph.html#s3-adj-matrix">정리노트</a>).</td></tr>
+        <tr><td>‘인접 리스트를 그려라’</td><td>헤드 → 이웃 노드 → … → NULL</td><td>각 행에서 찾은 열 번호를 노드로 차례로 이어요(<a href="정리노트_1116_Graph.html#s3-adj-list">정리노트</a>).</td></tr>
+        <tr><td>행렬이 대각선 대칭</td><td>무방향 그래프, 노드 수 = 2 × 간선 수</td><td>간선 하나가 양 끝 정점의 리스트에 한 번씩 나타나 검산 기준이 돼요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>0행 0 1 0 0 → 1인 열: 1      → 0 → 1 → NULL</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li><strong>행마다 1인 열 찾기</strong>
+        <div class="table-wrap">
+          <table class="cmp">
+            <thead><tr><th>행</th><th>값</th><th>1인 열(이웃)</th><th>리스트</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td> <code>0 1 0 0</code> </td><td>1</td><td> <code>0 → 1 → NULL</code> </td></tr>
+              <tr><td>1</td><td> <code>1 0 1 1</code> </td><td>0, 2, 3</td><td> <code>1 → 0 → 2 → 3 → NULL</code> </td></tr>
+              <tr><td>2</td><td> <code>0 1 0 0</code> </td><td>1</td><td> <code>2 → 1 → NULL</code> </td></tr>
+              <tr><td>3</td><td> <code>0 1 0 0</code> </td><td>1</td><td> <code>3 → 1 → NULL</code> </td></tr>
+            </tbody>
+          </table>
+        </div>
+      </li>
+      <li><strong>그래프 모양</strong>: <code>M[i][j] = M[j][i]</code>가 모든 칸에서 성립해 무방향 그래프이고, 간선은 (0, 1), (1, 2), (1, 3) 세 개예요. 정점 1이 가운데에 있고 0, 2, 3이 1에만 매달린 모양이에요.</li>
+      <li><strong>노드 순서</strong>: 한 리스트 안의 노드 순서는 정해져 있지 않아요. 여기서는 열 번호가 작은 것부터 이었어요. <code>1 → 3 → 0 → 2 → NULL</code>처럼 순서만 다르면 같은 그래프예요.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong></p>
+    <pre><code>0 → 1 → NULL
+1 → 0 → 2 → 3 → NULL
+2 → 1 → NULL
+3 → 1 → NULL</code></pre>
+    <ul>
+      <li><strong>개수 검산</strong>: 행렬의 1은 $1+3+1+1 = 6$개, 리스트 노드도 6개, 간선 3개의 두 배와 같아요.</li>
+      <li><strong>역변환</strong>: 리스트에서 “<code>1</code> 리스트에 0이 있으면 <code>M[1][0] = 1</code>”로 되돌려 쓰면 원래 네 행과 같은 행렬이 나와요. 또 0의 리스트에 1이 있으면 1의 리스트에도 0이 있는지(대칭) 확인하면 네 쌍 모두 맞아요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>열이 아니라 값의 위치를 1부터 세면</strong>: 0행 <code>0 1 0 0</code>의 1을 “첫 번째 정점”으로 읽어 <code>0 → 1</code> 대신 <code>0 → 2</code>를 쓰게 돼요. 정점 번호가 0부터라 두 번째 칸이 정점 1이에요.</li>
+    <li><strong>간선 3개니까 노드도 3개라고 생각하면</strong>: 한쪽 리스트에만 적어 <code>1 → 0 → 2 → 3</code>만 남기고 0, 2, 3의 리스트를 비워 둬요. 무방향 간선은 양 끝 리스트 모두에 들어가 노드가 6개여야 해요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>인접 행렬을 보면 → 행마다 “1인 열 번호”를 먼저 옆에 적고, 그 목록을 그대로 리스트로 이어 보세요.</li>
+    <li>다 그린 뒤 → 노드 수가 행렬의 1의 개수와 같은지 세어 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>떠올릴 개념</h4><p>행렬 i행의 1인 열 = 정점 i의 이웃 = i의 리스트 노드.</p></div>
+  <div class="summary-group"><h4>첫 줄</h4><p>0행 <code>0 1 0 0</code> → <code>0 → 1 → NULL</code>.</p></div>
+  <div class="summary-group"><h4>답과 검산</h4><p> <code>0→1</code>, <code>1→0→2→3</code>, <code>2→1</code>, <code>3→1</code> (각 NULL로 끝, 순서 자유). 노드 6 = 1의 개수 6 = 2 × 간선 3.</p></div>
+</div>
