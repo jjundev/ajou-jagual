@@ -70,13 +70,13 @@ def text_geometry(pdf, sort_lines=False):
         lines = []
         pdf_lines = [line for block in page.get_text('rawdict')['blocks'] for line in block.get('lines', [])]
         if sort_lines:
-            pdf_lines.sort(key=lambda line: (round(line['bbox'][1], 1), line['bbox'][0]))
+            pdf_lines.sort(key=lambda line: (round(line['bbox'][1] / 6) * 6, line['bbox'][0]))
         for line in pdf_lines:
             text = ''
             for span in line['spans']:
                 for char in span['chars']:
                     text += char['c']
-                    geometry.extend([(index, round(char['bbox'][1], 1), char['bbox'][0])] * len(norm(char['c'])))
+                    geometry.extend([(index, round(char['bbox'][1] / 6) * 6, char['bbox'][0])] * len(norm(char['c'])))
             lines.append(text)
         texts.append('\n'.join(lines))
     return texts, geometry
@@ -94,11 +94,15 @@ def check_indentation(codes, pdf_text):
             if not text:
                 continue
             start = compact.find(text, cursor)
+            while start >= 0:
+                char_index = positions[start]
+                line_start = raw.rfind('\n', 0, char_index) + 1
+                observed = raw[line_start:char_index]
+                if not observed.strip():
+                    break
+                start = compact.find(text, start + 1)
             if start < 0:
                 raise ValueError('Code line lost before indentation check')
-            char_index = positions[start]
-            line_start = raw.rfind('\n', 0, char_index) + 1
-            observed = raw[line_start:char_index]
             expected_indent = line[:len(line) - len(line.lstrip())].expandtabs(8)
             if observed != expected_indent:
                 raise ValueError('Code indentation differs: ' + repr(line[:100]))
@@ -171,7 +175,7 @@ def print_html(source, output, evidence, *, config=None, config_path=None, state
       body {{margin:0!important;padding:0!important;max-width:none!important;
              font-size:{settings['body_pt']}pt;line-height:1.4;}}
       article.page {{width:100%;max-width:none;}}
-      table {{width:100%;table-layout:fixed;font-size:{settings['table_pt']}pt;}}
+      table, table.simple-table {{width:100%;table-layout:fixed;font-size:{settings['table_pt']}pt;}}
       td,th {{min-width:0!important;overflow-wrap:anywhere;vertical-align:top;}}
       tr {{break-inside:avoid;}} thead {{display:table-header-group;break-after:avoid;}}
       tbody tr:first-child {{break-before:avoid;}}
@@ -277,7 +281,9 @@ def print_html(source, output, evidence, *, config=None, config_path=None, state
               const tooTall=[];
               for(const t of document.querySelectorAll('table')){
                 if(!t.rows.length)continue;
-                const widths=[...t.rows[0].cells].map(c=>parseFloat(c.style.width)||c.getBoundingClientRect().width);
+                const explicit=[...t.rows[0].cells].map(c=>parseFloat(c.style.width)||0);
+                const hasMixed=explicit.some(w=>w>0)&&explicit.some(w=>!w);
+                const widths=[...t.rows[0].cells].map((c,i)=>explicit[i]||(hasMixed?Math.max(350,c.getBoundingClientRect().width):c.getBoundingClientRect().width));
                 const total=widths.reduce((a,b)=>a+b,0);
                 if(total>0)for(const row of t.rows)for(let i=0;i<row.cells.length;i++)
                   if(widths[i])row.cells[i].style.width=100*widths[i]/total+'%';

@@ -1,0 +1,96 @@
+{
+  "app": "Antigravity IDE",
+  "bundle_id": "com.google.antigravity-ide",
+  "window": "통합 터미널 패널(새 zsh, 좌우 분할 중 왼쪽 창)",
+  "workdir": "/tmp/hw4.U5Lk",
+  "source": "과제/과제4/HW4.c",
+  "source_sha256": "3479c37a2219a817ff2971d7ccee515d5fa1bb8bea55c4bfad837aa1ab74d164",
+  "build_command": [
+    "clang",
+    "-std=c11",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror",
+    "HW4.c",
+    "-o",
+    "/tmp/hw4.U5Lk/HW4"
+  ],
+  "build_exit_status": 0,
+  "binary_sha256": "daa86f43fe43ceffe25a3a3c2ebcd66a3e8858a816abf68b6885102899e193a1",
+  "prompt_setup": "PS1='$ ' && RPROMPT='' 후 clear — 사용자명·호스트·경로가 프롬프트에 안 나오게 함",
+  "captured_at": "2026-11-16",
+  "method": "app_zoom 으로 터미널 왼쪽 창을 화면 픽셀 밀도로 캡처(JPEG). 같은 시점의 창 전체 캡처도 *-window.jpg 로 보존",
+  "notes": [
+    "사용자 요청(2026-11-16)으로 echo \"EXIT_STATUS: $?\" 없이 다시 캡처했다. 이전 판(echo 포함)은 작업 폴더 밖 scratchpad 로 옮겼다.",
+    "종료 상태는 화면에 찍지 않았다. 같은 실행 파일에 같은 입력을 따로 넣은 실행의 종료 코드를 exit_status_separate_run 에 적었다(화면 실행 자체의 종료 코드가 아님).",
+    "원고의 실제 출력 글상자는 build_report.py 가 입력 줄 단위 실행으로 화면과 같은 순서(입력 줄 뒤에 그 줄의 출력)로 만든다.",
+    "2026-11-16: 작성자 결정으로 추가 사례 03~05를 보고서에서 빼고, 그 캡처(최종 PNG·원본)를 휴지통으로 옮기고 이 기록에서도 지웠다."
+  ],
+  "cases": [
+    {
+      "case_number": "01",
+      "id": "01-공식예시-10쪽",
+      "title": "공식 예시 1 (10쪽): 시간 진행과 만료",
+      "command": "./HW4 (입력은 한 줄씩 타이핑, 종료 상태 echo 없음)",
+      "stdin": "7\n50 25 75 10 30 60 90\nADVANCE 25\nPRINT\nEXIT\n",
+      "exit_status_separate_run": 0,
+      "stdout_matches_expected": true,
+      "original_window_capture": "터미널_스크린샷/원본/01-window.jpg",
+      "original_capture": "터미널_스크린샷/원본/01.jpg",
+      "original_capture_format": "JPEG",
+      "original_capture_sha256": "e1dae4b430d861522aa0a77f0395cf242bb6bea557209e2ee2dac92f9a3cda24",
+      "png_conversion_pixel_identical": true,
+      "final_png": "터미널_스크린샷/01-공식예시-10쪽.png",
+      "crop": {
+        "source": "터미널_스크린샷/원본/01-pixels.png",
+        "source_sha256": "e2c87b0f8243cf04b57a9db47630a0a08b21d678679dc369335366f276d0e680",
+        "box": [
+          14,
+          45,
+          362,
+          433
+        ],
+        "size": [
+          348,
+          388
+        ],
+        "output_sha256": "ea74b46623969007dc39f9744029473eefe4eb3e77571795b854117d4175bbc9",
+        "pixel_identical_at_destination": true
+      },
+      "visual_check": "첫 입력 줄부터 EXIT 까지 모든 입력·출력·트리가 보임. $ ./HW4 실행 줄과 끝의 $ 프롬프트는 빠짐. 화면 줄과 원고 실제 출력 글상자가 줄마다 같음."
+    },
+    {
+      "case_number": "02",
+      "id": "02-공식예시-11쪽",
+      "title": "공식 예시 2 (11쪽): 조회·범위 출력·루트 취소",
+      "command": "./HW4 (입력은 한 줄씩 타이핑, 종료 상태 echo 없음)",
+      "stdin": "3\n20 10 30\nNEXT\nRANGE 10 20\nPRINT\nCANCEL 20 1\nPRINT\nNEXT\nEXIT\n",
+      "exit_status_separate_run": 0,
+      "stdout_matches_expected": true,
+      "original_window_capture": "터미널_스크린샷/원본/02-window.jpg",
+      "original_capture": "터미널_스크린샷/원본/02.jpg",
+      "original_capture_format": "JPEG",
+      "original_capture_sha256": "1bd9d881e11dc308ff0f2580bc8550862dd32ef25cf743bc11e1696a6317676b",
+      "png_conversion_pixel_identical": true,
+      "final_png": "터미널_스크린샷/02-공식예시-11쪽.png",
+      "crop": {
+        "source": "터미널_스크린샷/원본/02-pixels.png",
+        "source_sha256": "b71b8f90a575cea41ef942a60e3d8f1d7593a477e8488a055e96d4a7428c54ab",
+        "box": [
+          14,
+          45,
+          254,
+          685
+        ],
+        "size": [
+          240,
+          640
+        ],
+        "output_sha256": "f0fbeb074ef6a766588bbd3b9ebef7ca12359c35570ba4cf2d66977afc2b2bce",
+        "pixel_identical_at_destination": true
+      },
+      "visual_check": "첫 입력 줄부터 EXIT 까지 모든 입력·출력·트리가 보임. $ ./HW4 실행 줄과 끝의 $ 프롬프트는 빠짐. 화면 줄과 원고 실제 출력 글상자가 줄마다 같음."
+    }
+  ]
+}

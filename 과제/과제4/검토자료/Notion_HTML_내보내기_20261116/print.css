@@ -1,0 +1,22 @@
+
+    @page {size: A4 landscape; margin: 12mm;}
+    @media print {
+      body {margin:0!important;padding:0!important;max-width:none!important;
+             font-size:10pt;line-height:1.4;}
+      article.page {width:100%;max-width:none;}
+      table, table.simple-table {width:100%;table-layout:fixed;font-size:8.5pt;}
+      td,th {min-width:0!important;overflow-wrap:anywhere;vertical-align:top;}
+      tr {break-inside:avoid;} thead {display:table-header-group;break-after:avoid;}
+      tbody tr:first-child {break-before:avoid;}
+      figure:has(table) {break-inside:auto;}
+      h1,h2,h3,h4,h5,h6 {break-after:avoid;}
+      p:has(+table),p:has(+figure:has(table)),p:has(+pre),p:has(+figure.image) {break-after:avoid;}
+      .table_of_contents {font-size:.9em;}
+      .table_of_contents-item {font-size:inherit;padding-block:.12em;break-inside:avoid;}
+      pre,.code {font-size:8.5pt;white-space:pre-wrap;overflow-wrap:anywhere;}
+      pre.print-keep,.print-image-group,.print-code-group,.print-table-group,figure.image {break-inside:avoid;}
+      pre.print-flow {break-inside:auto;}
+      figure.image img {max-width:100%;max-height:534.2740157480315px;width:auto;height:auto;object-fit:contain;}
+      p {orphans:2;widows:2;} p.print-empty {display:none;}
+      .print-break {break-before:page;}
+    }
