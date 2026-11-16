@@ -1,5 +1,6 @@
 """bank.py: 문제은행 스키마 검사, 후보 선별, manifest 출처 대조."""
 
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -229,6 +230,110 @@ class TestCli(unittest.TestCase):
         r = self.run_cli("check-manifest", self.bank, m)
         self.assertEqual(r.returncode, 1)
         self.assertIn("은행에 없는 문항", r.stdout)
+
+    def test_select_report_matches_legacy_rows(self):
+        out = self.tmp / "candidates.json"
+        fields = ("id", "professor", "type", "chapters", "answer_origin")
+        for chapter, count in (("2", len(EXPECTED)), ("12", 0)):
+            with self.subTest(chapter=chapter):
+                args = ("select", self.bank, "--range-ch", chapter, "--taught", "1-2")
+                legacy = self.run_cli(*args)
+                self.assertEqual(legacy.returncode, 0, legacy.stderr)
+                rows = [dict(zip(fields, row.split("\t"), strict=True))
+                        for row in legacy.stdout.splitlines()[1:]]
+                for row in rows:
+                    row["chapters"] = [int(ch) for ch in row["chapters"].split(",")]
+                self.assertEqual(len(rows), count)
+                r = self.run_cli(*args, "--out", out)
+                self.assertEqual((r.returncode, r.stdout, r.stderr),
+                                 (0, f"OK: 후보 {count}개; report={out}\n", ""))
+                self.assertEqual(json.loads(out.read_text(encoding="utf-8")),
+                                 {"status": "pass", "errors": [], "candidates": rows})
+
+        r = self.run_cli("select", self.bank, "--range-ch", "0", "--taught", "1-12", "--out", out)
+        self.assertEqual((r.returncode, r.stdout, r.stderr),
+                         (1, "", f"FAIL: 오류 1개; report={out}\n"))
+        report = json.loads(out.read_text(encoding="utf-8"))
+        self.assertEqual((report["status"], report["candidates"]), ("fail", []))
+        self.assertIn("챕터는 1~12", report["errors"][0])
+
+    def test_validation_report_replaces_prior_success(self):
+        out = self.tmp / "bank-validation.json"
+        r = self.run_cli("validate", self.bank, "--out", out)
+        self.assertEqual((r.returncode, r.stdout, r.stderr),
+                         (0, f"OK: 원본 6개, 문항 11개; report={out}\n", ""))
+        self.assertEqual(json.loads(out.read_text(encoding="utf-8")),
+                         {"status": "pass", "errors": [], "source_count": 6, "problem_count": 11})
+        self.bank.write_text('{"version": 2, "sources": null, "problems": []}', encoding="utf-8")
+        legacy = self.run_cli("validate", self.bank)
+        self.assertEqual(legacy.returncode, 1)
+        r = self.run_cli("validate", self.bank, "--out", out)
+        self.assertEqual((r.returncode, r.stdout, r.stderr),
+                         (1, "", f"FAIL: 오류 2개; report={out}\n"))
+        self.assertEqual(json.loads(out.read_text(encoding="utf-8")),
+                         {"status": "fail", "errors": legacy.stderr.splitlines()})
+
+    def test_manifest_report(self):
+        out = self.tmp / "bank-manifest-check.json"
+        m = self.tmp / "manifest.json"
+        for content, error_stream in (
+            ('{"problems": []}', None),
+            ('{"problems": [{"id": "p1", "source": "nope-q1", "variant": false}]}', "stdout"),
+            ('{', "stderr"),
+        ):
+            with self.subTest(content=content):
+                m.write_text(content, encoding="utf-8")
+                legacy = self.run_cli("check-manifest", self.bank, m)
+                r = self.run_cli("check-manifest", self.bank, m, "--out", out)
+                if error_stream:
+                    self.assertEqual((r.returncode, r.stdout, r.stderr),
+                                     (1, "", f"FAIL: 오류 1개; report={out}\n"))
+                    expected = {"status": "fail", "errors": getattr(legacy, error_stream).splitlines()}
+                else:
+                    self.assertEqual((r.returncode, r.stdout, r.stderr),
+                                     (0, f"OK: manifest 출처 검사 통과; report={out}\n", ""))
+                    expected = {"status": "pass", "errors": []}
+                self.assertEqual(legacy.returncode, r.returncode)
+                self.assertEqual(json.loads(out.read_text(encoding="utf-8")), expected)
+
+    def test_bank_report_write_failure(self):
+        before = hashlib.sha256(self.bank.read_bytes()).digest()
+        for out in (self.tmp, self.tmp / "missing" / "report.json"):
+            with self.subTest(out=out):
+                r = self.run_cli("validate", self.bank, "--out", out)
+                self.assertEqual((r.returncode, r.stdout, r.stderr),
+                                 (1, "", f"FAIL: 보고서 저장 실패; report={out}\n"))
+                self.assertEqual(hashlib.sha256(self.bank.read_bytes()).digest(), before)
+
+    def test_structural_input_failures_replace_prior_reports(self):
+        out = self.tmp / "report.json"
+        args = ("select", self.bank, "--range-ch", "2", "--taught", "1-2",
+                "--used-dir", self.tmp, "--out", out)
+        self.assertEqual(self.run_cli(*args).returncode, 0)
+        archive = self.tmp / "0914/.pack/자료_복습팩/복습문제_0914_Test.json"
+        archive.parent.mkdir(parents=True)
+        archive.write_text('{"version": 1}', encoding="utf-8")
+        r = self.run_cli(*args)
+        self.assertEqual((r.returncode, r.stdout, r.stderr),
+                         (1, "", f"FAIL: 오류 1개; report={out}\n"))
+        report = json.loads(out.read_text(encoding="utf-8"))
+        self.assertEqual((report["status"], report["candidates"]), ("fail", []))
+        self.assertIn(archive.name, report["errors"][0])
+
+        manifest = self.tmp / "manifest.json"
+        args = ("check-manifest", self.bank, manifest, "--out", out)
+        for problem in ({"source": [], "source_kind": "past-exam"},
+                        {"source": "missing-q1", "source_kind": []}):
+            with self.subTest(problem=problem):
+                manifest.write_text('{"problems": []}', encoding="utf-8")
+                self.assertEqual(self.run_cli(*args).returncode, 0)
+                manifest.write_text(json.dumps({"problems": [problem]}), encoding="utf-8")
+                r = self.run_cli(*args)
+                self.assertEqual((r.returncode, r.stdout, r.stderr),
+                                 (1, "", f"FAIL: 오류 1개; report={out}\n"))
+                report = json.loads(out.read_text(encoding="utf-8"))
+                self.assertEqual(report["status"], "fail")
+                self.assertIn(manifest.name, report["errors"][0])
 
 
 if __name__ == "__main__":

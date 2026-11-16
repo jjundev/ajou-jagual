@@ -1,5 +1,7 @@
 # 복습문제·답안 PDF
 
+## 생성과 기계 검사
+
 생성·갱신에서는 검증된 작업용 복습문제 HTML의 절대 경로를 입력한다. 발행된 팩에서 PDF만 다시 만들 때는 `.pack/자료_복습팩/복습문제_<range>_<slug>.json`의 절대 경로를 입력한다. 전자회로2 16:9 템플릿의 고정 복사본·글꼴·배율·Hint 띠/부록·하단 자막 여백을 사용한다. 문제지에는 풀이/정답이 없고 답안지에는 기존 `.solution` 전체와 정답이 있다. 별도 문제설명은 독립 산출물이다.
 
 Python 3.10+, Playwright/설치된 Google Chrome, PyMuPDF가 필요하다. 자동 설치하지 않는다. RUN은 저장소 밖의 비어 있는 고유 절대 경로로 정한다.
@@ -19,7 +21,7 @@ python3 "$SKILL/scripts/review_pdf.py" check --run "$PDF_RUN"
 
 실패하면 생성기·adapter·분할을 고치고 새 RUN에서 다시 빌드하고 검토한다. 템플릿과 코드 내용은 유지한다. 재생성이나 자산 변경 뒤에는 이전 승인이 무효다.
 
-## 발행과 backfill
+## 발행
 
 실화면 검토를 통과한 RUN을 메인이 발행한다.
 
@@ -29,6 +31,10 @@ python3 "$SKILL/scripts/review_pdf.py" publish --run "$PDF_RUN" --repo "$REPO"
 
 발행 직전에 입력과 승인한 자산·PDF 해시를 재확인하고 팩 잠금 아래 루트의 문제/답안 PDF와 `.pack/자료_PDF/pdf-validation.json`을 백업·교체한다. 발행된 팩의 문제지 쪽 배치가 바뀌면 정리노트와 문제설명의 문항 링크도 같은 잠금 아래 갱신한다. 일반 저장 오류는 rollback한다. 여러 파일 교체의 OS 원자성·강제 종료 복구를 보장하지 않는다. 백업은 PDF_RUN/backups 아래 유지한다. 기존 prefix 기반 backup.py는 PDF도 포함한다.
 
+0문항은 skipped, 손상/잘림/누락/수식·자원 오류는 withheld다. 이전 PDF가 있는 재생성 실패는 stale이다. withheld/stale이면 CLI 종료 코드 1이며 다른 팩은 계속한다. PDF와 문제설명은 각각 발행/보류·이유를 보고하고, 한쪽 실패로 검증된 원 복습팩·문제설명·이전 PDF를 삭제하지 않는다. lite도 PDF 검증·실화면 검토를 생략하지 않는다.
+
+## backfill
+
 기존 팩의 PDF만 추가할 때는 `update-existing`를 호출하지 않는다.
 
 ```sh
@@ -36,8 +42,6 @@ python3 "$SKILL/scripts/review_pdf.py" backfill --repo "$REPO" --target all --ru
 ```
 
 backfill은 팩별 stage/check 및 summary.json만 만든다. summary의 각 `staged` RUN에 같은 쪽별 실화면 검토와 메인 발행 절차를 적용한다. 날짜 한 팩은 --target MMDD, 저장된 통합 팩은 --target MMDD-MMDD를 쓴다. 같은 폴더 리뷰 둘은 공유 보고서 충돌이므로 자동 선택하지 않는다.
-
-0문항은 skipped, 손상/잘림/누락/수식·자원 오류는 withheld다. 이전 PDF가 있는 재생성 실패는 stale이다. withheld/stale이면 CLI 종료 코드 1이며 다른 팩은 계속한다. PDF와 문제설명은 각각 발행/보류·이유를 보고하고, 한쪽 실패로 검증된 원 복습팩·문제설명·이전 PDF를 삭제하지 않는다. lite도 PDF 검증·실화면 검토를 생략하지 않는다.
 
 ## 자구알 배치 확장
 

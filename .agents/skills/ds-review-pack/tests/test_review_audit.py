@@ -1,4 +1,6 @@
 import json
+import subprocess
+import sys
 from _util import SCRIPTS
 from test_review_inventory import make_pack
 from review_audit import audit_reviews
@@ -64,6 +66,30 @@ def test_cross_source_numeric_and_identifier_candidate(tmp_path):
     assert audit_reviews(tmp_path,decisions=[decision])['status']=='pass'
     p.write_text(p.read_text().replace('y=2','z=3'))
     assert audit_reviews(tmp_path,decisions=[decision])['status']=='fail'
+
+def test_audit_cli_report_and_status(tmp_path):
+    make_pack(tmp_path, '0914', 'one')
+    other = make_pack(tmp_path, '0917', 'two')
+    other.write_text(other.read_text().replace('x=1', 'y=2'))
+    undecided = audit_reviews(tmp_path)
+    assert not undecided['blocking'] and len(undecided['candidates']) == 1
+    decision = {**undecided['candidates'][0], 'decision': 'distinct',
+                'reason': 'Different requested skills', 'evidence': ['manual comparison']}
+    decisions = tmp_path / 'decisions.json'
+    out = tmp_path / 'audit.json'
+    for records, status, count, code in (([], 'fail', 1, 1), ([decision], 'pass', 0, 0)):
+        decisions.write_text(json.dumps(records), encoding='utf-8')
+        cli = subprocess.run(
+            [sys.executable, str(SCRIPTS / 'review_audit.py'), '--repo', str(tmp_path),
+             '--decisions', str(decisions), '--out', str(out)], capture_output=True, text=True,
+        )
+        report = json.loads(out.read_text(encoding='utf-8'))
+        assert report == audit_reviews(tmp_path, decisions=records)
+        assert report['status'] == status and not report['blocking']
+        assert len(report['candidates']) == count
+        assert (cli.returncode, cli.stdout, cli.stderr) == (
+            code, f'{status} 0 blocking {count} candidates report={out}\n', '',
+        )
 
 def test_overlay_keeps_unmodified_packs_in_scope(tmp_path):
     make_pack(tmp_path,'0914','one');make_pack(tmp_path,'0917','two')

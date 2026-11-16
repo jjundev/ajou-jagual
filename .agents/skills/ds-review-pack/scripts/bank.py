@@ -5,6 +5,7 @@ CLI:
   bank.py validate BANK                                              # 스키마 검사 → OK
   bank.py select BANK --range-ch 2,3 --taught 1-3 [--used-dir DIR [--this-range RANGE]]   # 후보를 우선순위 순으로 출력
   bank.py check-manifest BANK MANIFEST                               # manifest 문항 출처가 쓸 수 있는 은행 문항인지
+  각 명령에 --out PATH를 주면 상세 JSON을 쓰고 한 줄로 요약한다.
 """
 from __future__ import annotations
 
@@ -14,6 +15,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import tempfile
 import unicodedata
 
 ID_RE = re.compile(r"[a-z0-9]+(?:-[a-z0-9]+)*")
@@ -31,6 +33,12 @@ from review_source import NAME as REVIEW_NAME_RE, read_review
 
 class BankError(Exception):
     pass
+
+
+class BankValidationError(BankError):
+    def __init__(self, errors: list[str]):
+        super().__init__("\n".join(errors))
+        self.errors = errors
 
 
 def _is(value, typ) -> bool:
@@ -147,7 +155,7 @@ def load(path: Path | str) -> dict:
         raise BankError(f"{path}: 파일을 읽을 수 없음: {e}") from e
     errors = validate(bank)
     if errors:
-        raise BankError("\n".join(errors))
+        raise BankValidationError(errors)
     return bank
 
 
@@ -260,10 +268,37 @@ def check_manifest(bank: dict, manifest: dict, *, textbook=None, repo: Path | No
     return errors
 
 
+def _write_report(path: Path, summary: str, errors: list[str], **details) -> int:
+    report = {"status": "fail" if errors else "pass", "errors": errors, **details}
+    temp = None
+    try:
+        try:
+            with tempfile.NamedTemporaryFile(
+                mode="w", encoding="utf-8", dir=path.parent, delete=False
+            ) as handle:
+                temp = Path(handle.name)
+                json.dump(report, handle, ensure_ascii=False, indent=2)
+                handle.write("\n")
+            temp.replace(path)
+            temp = None
+        finally:
+            if temp is not None:
+                temp.unlink(missing_ok=True)
+    except (OSError, UnicodeError):
+        print(f"FAIL: 보고서 저장 실패; report={path}", file=sys.stderr)
+        return 1
+    if errors:
+        print(f"FAIL: 오류 {len(errors)}개; report={path}", file=sys.stderr)
+        return 1
+    print(f"OK: {summary}; report={path}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="자구알 기출 문제은행 검사·선별")
     sub = ap.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("validate").add_argument("bank")
+    vp = sub.add_parser("validate")
+    vp.add_argument("bank")
     sp = sub.add_parser("select")
     sp.add_argument("bank")
     sp.add_argument("--range-ch", required=True, help="이번 범위 챕터, 예: 2,3")
@@ -277,11 +312,18 @@ def main(argv: list[str] | None = None) -> int:
     for parser in (sp, cp):
         parser.add_argument("--textbook-dir")
         parser.add_argument("--textbook-python", default=sys.executable)
+    for parser in (vp, sp, cp):
+        parser.add_argument("--out", type=Path, help="상세 JSON을 저장할 경로")
     a = ap.parse_args(argv)
+    details = {"candidates": []} if a.cmd == "select" else {}
     try:
         bank = load(a.bank)
         if a.cmd == "validate":
-            print(f"OK: 원본 {len(bank['sources'])}개, 문항 {len(bank['problems'])}개")
+            source_count, problem_count = len(bank["sources"]), len(bank["problems"])
+            summary = f"원본 {source_count}개, 문항 {problem_count}개"
+            if a.out is not None:
+                return _write_report(a.out, summary, [], source_count=source_count, problem_count=problem_count)
+            print(f"OK: {summary}")
             return 0
         catalog = None
         if a.textbook_dir:
@@ -291,17 +333,37 @@ def main(argv: list[str] | None = None) -> int:
             used = used_sources(a.used_dir, a.this_range) if a.used_dir else set()
             rows = select(bank, parse_chapters(a.range_ch), parse_chapters(a.taught), used, textbook=catalog)
             sources = {s["id"]: s for s in bank["sources"]}
+            candidates = [
+                {"id": q["id"],
+                 "professor": "교과서" if q.get("source_kind") == "textbook" else sources[q["source"]]["professor"],
+                 "type": q["type"], "chapters": q["chapters"],
+                 "answer_origin": q.get("answer_origin", "미작성")}
+                for q in rows
+            ]
+            if a.out is not None:
+                return _write_report(a.out, f"후보 {len(rows)}개", [], candidates=candidates)
             print("id\t출제자\t유형\t챕터\t정답출처")
-            for q in rows:
-                print("\t".join([q["id"], ("교과서" if q.get("source_kind") == "textbook" else sources[q["source"]]["professor"]), q["type"],
-                                 ",".join(map(str, q["chapters"])), q.get("answer_origin", "미작성")]))
+            for row in candidates:
+                print("\t".join([row["id"], row["professor"], row["type"],
+                                 ",".join(map(str, row["chapters"])), row["answer_origin"]]))
             print(f"후보 {len(rows)}개", file=sys.stderr)
             return 0
         manifest = json.loads(Path(a.manifest).read_text(encoding="utf-8"))
         errors = check_manifest(bank, manifest, textbook=catalog, repo=Path(a.repo) if a.repo else None)
     except (BankError, OSError, json.JSONDecodeError) as e:
+        if a.out is not None:
+            errors = e.errors if isinstance(e, BankValidationError) else [str(e)]
+            return _write_report(a.out, "", errors, **details)
         print(e, file=sys.stderr)
         return 1
+    except (AttributeError, TypeError, ValueError) as e:
+        # Malformed manifest fields or archived reviews can fail below the bank schema check.
+        if a.out is None:
+            raise
+        source = a.manifest if a.cmd == "check-manifest" else a.bank
+        return _write_report(a.out, "", [f"{source}: {e}"], **details)
+    if a.out is not None:
+        return _write_report(a.out, "manifest 출처 검사 통과", errors)
     if errors:
         print("\n".join(errors))
         return 1

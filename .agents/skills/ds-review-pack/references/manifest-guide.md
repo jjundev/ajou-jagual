@@ -2,8 +2,6 @@
 
 manifest는 이번 팩의 계약이다. 작성자, 검사기, 조립기가 모두 이 파일을 기준으로 삼는다.
 필드 모양 예시: `tests/fixtures/mini-run/manifest.json`(테스트용 축약본이라 요약·예고 섹션의 토픽 일부가 없다. 섹션 구성은 아래 규칙을 따른다).
-작성 후 반드시 두 검사가 모두 `OK`여야 한다:
-`python3 <SKILL>/scripts/manifest.py <RUN>/manifest.json`, `python3 <SKILL>/scripts/bank.py check-manifest <BANK> <RUN>/manifest.json --textbook-dir <TEXTBOOK> --textbook-python <TEXTBOOK_PYTHON>`
 
 ## 최상위
 | 키 | 값 |
@@ -52,6 +50,15 @@ manifest는 이번 팩의 계약이다. 작성자, 검사기, 조립기가 모�
 
 ## 영속 제작자료
 `.pack/자료_복습팩/selection.json`(팩 폴더 기준): range, mode(new|retrofit), taught_evidence, concept_overrides, selected, excluded. selected는 id/source/source_kind/original_id/prerequisites, evidence(path/locator/sha256), answer, verification(method/reference/result)를 갖는다. methods는 python/c-run/lecture-reference; result는 pass|blocked. validation.json은 checks, counts(existing/added/total), preserved(원문 카드·노트·문제설명 해시), unresolved를 저장한다. 실패·미실행을 pass로 기록하지 않는다. answers.py는 저장소를 변경하지 않는 재현 검산이다.
+
+## 검증
+
+작성 후 두 명령이 모두 `OK`여야 한다. 출처 검사 실패의 상세는 현재 실행의 `bank-manifest-check.json`에 기록된다.
+
+```bash
+python3 "$SKILL/scripts/manifest.py" "$RUN/manifest.json"
+python3 "$SKILL/scripts/bank.py" check-manifest "$BANK" "$RUN/manifest.json" --repo "$REPO" --textbook-dir "$TEXTBOOK" --textbook-python "$TEXTBOOK_PYTHON" --out "$RUN/bank-manifest-check.json"
+```
 
 ## 강의 예제·전역 검토 연동
 

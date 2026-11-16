@@ -6,17 +6,21 @@
 - 수업에서 배운 내용만으로 풀 수 있어야 한다. `bank.py select`의 챕터 조건이 먼저 거르고, 메인 에이전트가 문항 글을 읽어 수업에서 안 다룬 개념(같은 챕터라도 슬라이드 대조표에서 "안 다룸"인 연산 등)이 한 단계라도 필요하면 뺀다. 뺀 문항과 이유는 보고서 "스킬이 정한 사항"에 적는다.
 - 신규 팩은 총 보통 8~12문항(핵심 범위 충족 우선)이며 적합한 교과서 원문 최소 2개를 포함한다. 기존 리뷰 갱신은 기존 문항을 전부 유지하고 교과서 원문 4~8개를 추가하며 총 12개 상한은 적용하지 않는다. 기본 4개, 핵심 개념 누락을 채울 때 최대 8개.
 
+## 후보 추출
+
+신규 팩 1단계의 예비 추출에는 `CANDIDATE_REPORT=candidates-preview.json`, 2단계 확정 추출에는 `CANDIDATE_REPORT=candidates.json`을 명령과 같은 셸 호출에서 설정한다.
+
+```bash
+python3 "$SKILL/scripts/bank.py" select "$BANK" --range-ch <range_ch> --taught <taught> --used-dir "$REPO/복습노트" --this-range <range> --textbook-dir "$TEXTBOOK" --textbook-python "$TEXTBOOK_PYTHON" --out "$RUN/$CANDIDATE_REPORT"
+```
+
+이미 쓴 문항은 빠진다. `--this-range`는 같은 range를 다시 만들 때 그 팩이 쓴 문항을 후보로 남긴다. `OK`를 확인한 뒤 보고서의 `candidates`에서 현재 단계의 선별에 필요한 행만 가져온다. 행에는 id·출제자·유형·챕터·정답 출처가 있다. 이미 우선순위 순이다(출제자 이정원 > 미상 > 그 밖, 유형 trace·code-read > blank·short·code-write > essay > ox, 최근 연도, OX 최대 2개). 문항 원문은 선별에 필요한 ID의 은행 항목에서 찾는다.
+
 ## 순서
-1. 후보를 뽑는다(이미 쓴 문항은 빠진다):
-   ```bash
-   python3 "$SKILL/scripts/bank.py" select "$BANK" --range-ch <range_ch> --taught <taught> --used-dir "$REPO/복습노트" --this-range <range> --textbook-dir "$TEXTBOOK" --textbook-python "$TEXTBOOK_PYTHON"
-   ```
-   `--this-range`는 같은 range를 다시 만들 때 그 팩이 쓴 문항이 이미 쓴 것으로 빠지지 않게 한다.
-   출력은 이미 우선순위 순이다(출제자 이정원 > 미상 > 그 밖, 유형 trace·code-read > blank·short·code-write > essay > ox, 최근 연도, OX 최대 2개).
-2. 기출 우선순위를 유지하되 교과서 최소 2개와 범위 개념 균형을 먼저 확보한 뒤 12개까지 고른다. 개념 균형과 권장 개수는 기존의 서로 다른 기출을 제외하는 이유가 될 수 없다. 기출 유지에 필요하면 권장 개수를 초과한다. 교과서·자체 출제 후보는 개념 균형을 고려한다.
+1. 기출 우선순위를 유지하되 교과서 최소 2개와 범위 개념 균형을 먼저 확보한 뒤 12개까지 고른다. 개념 균형과 권장 개수는 기존의 서로 다른 기출을 제외하는 이유가 될 수 없다. 기출 유지에 필요하면 권장 개수를 초과한다. 교과서·자체 출제 후보는 개념 균형을 고려한다.
    고른 문항의 은행 `text`에 manifest `forbidden_outside_preview` 단어가 있으면 빼고, 뺀 문항과 이유를 보고서 "스킬이 정한 사항"에 적는다.
-3. 후보가 부족하면 실제 강의 예제 기반 자체 출제를 검토한다. `review-overhaul.md`의 lecture-code 출처 계약과 전역 검사로 검증한다. 핵심 범위 충족 우선이며 숫자만 바꿔 수를 채우지 않는다.
-4. 같은 source와 원문 동일성이 확인된 duplicate_of는 전체 날짜에서 한 번만 수록한다. 서로 다른 기출을 유사한 풀이 때문에 duplicate_of로 묶거나 제외하지 않는다. 모든 소문항의 학습 근거와 coverage를 기록한다.
+2. 후보가 부족하면 실제 강의 예제 기반 자체 출제를 검토한다. `review-overhaul.md`의 lecture-code 출처 계약과 전역 검사로 검증한다. 핵심 범위 충족 우선이며 숫자만 바꿔 수를 채우지 않는다.
+3. 같은 source와 원문 동일성이 확인된 duplicate_of는 전체 날짜에서 한 번만 수록한다. 서로 다른 기출을 유사한 풀이 때문에 duplicate_of로 묶거나 제외하지 않는다. 모든 소문항의 학습 근거와 coverage를 기록한다.
 
 ## parts
 | id | title | short | 들어가는 문항 |

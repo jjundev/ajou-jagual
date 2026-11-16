@@ -7,12 +7,12 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 
 수업 녹음 전사(STT)와 강의록(`자료구조_강의록_2026/`), 기출 문제은행과 검증된 교과서 연습문제로 한 기간의 복습팩을 만든다. 문제은행은 `bank` 모드로 먼저 한 번 만들어 둔다. 중간에 사용자에게 묻지 않고(`bank` 모드의 hwp 외부 변환 허락만 B2 전에 한 번 묻는다) 끝에 한 번 보고한다. 커밋은 제안만 한다.
 
-**공통 품질 기준**: 신규·두 갱신 모드는 [전체 문항 검토 지침](references/review-overhaul.md)의 강의 출처·coverage·전역 중복 검사를 적용한다. 핵심 범위 충족 우선이며 숫자 변형으로 문항 수를 채우지 않는다. 기존의 서로 다른 기출은 풀이 목표·개념·코드 구조가 비슷해도 전부 유지한다. 같은 기출의 반복 수록만 제거한다.
+**공통 품질 기준**: 신규·두 갱신은 단계별 강의 출처·coverage·전역 중복 검사를 적용한다. 실제 학습 범위와 서로 다른 기출의 보존 기준은 공통 선별 절에 있다.
 
 **모드**
-- `revise-existing [MMDD|all] [lite]`: 기존 전체 문항을 검토·교체하고 문제설명·PDF까지 갱신한다. `references/review-overhaul.md`를 따른다.
+- `revise-existing [MMDD|all] [lite]`: 기존 전체 문항을 검토·교체하고 문제설명·PDF까지 갱신한다.
 - `bank`: 기출 원본을 전사해 문제은행을 만들거나 다시 만든다. 절차는 "문제은행 모드" B1~B4.
-- `update-existing [MMDD|all]`: 기존 리뷰를 갱신하고 전체 문항의 문제설명도 다시 만든다. `references/textbook-update.md`를 따른다. 기존 카드와 노트는 보존하고 교과서 원문 4~8개를 추가한다.
+- `update-existing [MMDD|all]`: 기존 카드와 노트를 보존하고 교과서 원문 4~8개를 추가한다. 전체 문항의 문제설명도 다시 만든다.
 - 그 밖(`[MMDD | MMDD-MMDD] [lite]`): 복습팩을 만든다. 절차는 "복습팩 절차" 0~9.
 
 **산출물** (복습팩, `복습노트/<range>/`, 수업 날짜마다 폴더 하나):
@@ -28,7 +28,11 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 | Claude | opus | sonnet |
 | GPT 등 Claude 아님 | sol | luna |
 
-**후속 작업 연결** — bank 이외 모드는 시작 전에 [후속 작업](references/pack-followups.md)의 준비 절만 읽어 이번 모드에 필요한 형제 스킬과 실행기를 확인한다. 실제 해설의 저작과 네 검토는 담당자에게 [공통 문제설명 절차](references/problem-explain.md)로 넘긴다.
+**메인 참조 읽기** — `rg -n '^#{1,6} '`로 링크 이름과 같은 제목을 찾고, 다음 동급·상위 본문 제목 직전까지 읽는다. 코드 펜스 안 제목은 건너뛴다. 이미 읽은 절은 재사용하고 담당자용 문서는 경로로 넘긴다.
+
+**후속 작업 준비** — 메인 읽기 (bank 이외 모드) [준비](references/pack-followups.md). 생성 전에 이번 모드의 형제 스킬과 실행기를 확인한다.
+
+실제 해설의 저작과 네 검토는 담당자에게 [공통 문제설명 절차](references/problem-explain.md) 경로로 넘긴다.
 
 **진행 표시**: 단계마다 한 줄만 쓴다. 예: `3/9 작성 중: 섹션 4개 + 카드 9개 (병렬)`, `B3 전사 중: 원본 11개 (병렬)`
 
@@ -38,28 +42,42 @@ description: 자구알(자료구조및알고리즘이해) 수업의 복습팩(�
 - `TEXTBOOK` = NFC/NFD 실제 경로로 찾은 `REPO/교과서/`; `TEXTBOOK_PYTHON` = PyMuPDF·jsonschema가 설치된 Python 실행 파일(기본 sys.executable).
 - `BANK` = `REPO/from_the_past/기출/문제은행.json`
 - `RUN` = 복습팩은 `<scratchpad>/ds-review-pack/<range>/`, 문제은행은 `<scratchpad>/ds-bank/<YYYYMMDD-HHMMSS>/`
-- 셸 상태는 Bash 호출 사이에 이어지지 않는다. 아래 명령의 `$SKILL`, `$RUN`, `$REPO`, `$BANK`는 실행할 때마다 실제 절대 경로로 바꿔 쓰거나, 같은 명령 앞에 `SKILL=… RUN=… REPO=… BANK=…`를 붙여 설정한다. `cd`는 쓰지 않고 파일도 절대 경로로 넘긴다.
+- 셸 호출마다 변수를 절대 경로로 먼저 설정하거나 명령에 실제 경로를 넣는다. `cd` 없이 실행한다.
+- 은행 명령은 종료 코드 0과 `OK`를 확인한다. `FAIL: 오류 …`면 이번 JSON의 `errors`에서 조치할 항목을 읽는다. 보고서 저장 실패나 실행 오류면 해결 후 재실행한다. 이전 보고서는 판정 근거에서 제외한다.
+
+## 기존 복습팩 갱신
+
+- `update-existing`의 메인 읽기 — [준비·선별](references/textbook-update.md), [작성·검증](references/textbook-update.md), [발행·보고](references/textbook-update.md)를 해당 단계에서 차례로 연다.
+- `revise-existing`의 메인 읽기 — [개편 준비](references/review-overhaul.md)로 시작한다. 선별·작성 시 [선별: 핵심 범위 충족 우선](references/review-overhaul.md)과 [강의 예제 근거](references/review-overhaul.md)를 적용한다. 이어서 [개편 기계 검사](references/review-overhaul.md), [Stage와 전역 검사](references/review-overhaul.md), [발행·파생 산출물](references/review-overhaul.md)을 순서대로 적용한다.
 
 ## 문제은행 모드 (`bank`)
 
 ### B1. 준비
+- 메인 읽기 — [원본 표](references/bank-build.md).
+
 1. `REPO/from_the_past/기출/`이 있는지 확인한다. 없으면 "자구알 저장소에서만 동작합니다"라고 알리고 멈춘다.
 2. 실행 폴더를 만든다: `mkdir -p "$RUN"/{parts,work} && ln -sfn "$REPO" "$RUN/repo"`
 3. `BANK`가 이미 있으면 `RUN/previous-bank.json`으로 복사한다(`reviewed` 값을 이어받는 데 쓴다). 이전 은행에서 `reviewed: true`인 `scan`·`photo` 원본은 B2·B3을 건너뛰고, 그 원본의 `sources`·`problems` 항목과 `REPO/from_the_past/기출/_전사/<id>.md`를 그대로 가져온다(사용자 검수와 수정을 지킨다). 다시 전사하려면 사용자가 먼저 그 원본의 `reviewed`를 `false`로 바꾼다.
-4. 원본 목록과 id는 `references/bank-build.md`의 원본 표를 따른다. 표에 없는 파일이 `from_the_past/기출/` 아래에 있으면(숨김 파일(`.DS_Store` 등)과 은행 산출물 `문제은행.json`, `_전사/`, `_정답검증/`은 빼고) 보고서 "새 원본"에 적고 이번에는 넣지 않는다.
+4. 원본 목록과 id는 원본 표를 따른다. 표에 없는 파일이 `from_the_past/기출/` 아래에 있으면(숨김 파일(`.DS_Store` 등)과 은행 산출물 `문제은행.json`, `_전사/`, `_정답검증/`은 빼고) 보고서 "새 원본"에 적고 이번에는 넣지 않는다.
 
 ### B2. 정규화
-`references/bank-build.md`의 "정규화"대로 원본(B1에서 그대로 가져온 원본은 빼고)을 `RUN/work/`에 읽을 수 있는 형태로 만든다(cp949 → UTF-8, hwp → PDF, PDF → 텍스트·쪽 이미지).
+- 메인 읽기 — [정규화 (메인 에이전트, 결과는 `RUN/work/`)](references/bank-build.md).
+
+새로 전사할 원본만 `RUN/work/`에서 정규화한다.
 
 ### B3. 전사 (병렬)
-B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 **한 메시지에서 병렬로** 띄운다(모델은 "에이전트 모델" 표). 브리프는 `references/bank-build.md`의 "전사 브리프"이며 `<source-id>`, `<원본 경로들>`, `<RUN>`, `<SKILL>`을 채워 넘긴다. 각자 `RUN/parts/<source-id>.json`과 `RUN/parts/<source-id>.md`를 쓴다.
+- 메인 읽기 — [전사 브리프 (원본마다 1명, 병렬, 모델은 SKILL.md "에이전트 모델")](references/bank-build.md).
+
+B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 **한 메시지에서 병렬로** 띄운다(모델은 "에이전트 모델" 표). 브리프의 `<source-id>`, `<원본 경로들>`, `<RUN>`, `<SKILL>`을 채워 넘긴다. 각자 `RUN/parts/<source-id>.json`과 `RUN/parts/<source-id>.md`를 쓴다.
 
 ### B4. 합치기·검증·저장
-1. 조각을 합쳐 `RUN/bank.json`(`{"version": 1, "sources": [...], "problems": [...]}`)을 만든다. `sources`는 원본 표 값에 조각의 `has_key`와 `reviewed` 규칙(`references/bank-build.md`)을 더한다. B1에서 가져온 원본의 `sources`·`problems` 항목은 바꾸지 않고 그대로 넣는다(2~4단계도 새로 전사한 원본에만 한다).
-2. 챕터 태그를 `references/bank-build.md`의 챕터 표로 다시 본다.
-3. 중복 문항(`duplicate_of`)을 `references/bank-build.md`의 "중복 문항"대로 채운다.
-4. 정답을 `references/bank-build.md`의 "정답 검증"대로 확인해 `answer`, `answer_origin`을 정한다.
-5. `python3 "$SKILL/scripts/bank.py" validate "$RUN/bank.json"` 결과가 `OK`여야 한다. 아니면 고치고 다시 검사한다.
+- 메인 읽기 — [챕터 표 (강의록 `자료구조_강의록_2026/Software_<N>_*.pdf`)](references/bank-build.md), [중복 문항](references/bank-build.md), [정답 검증 (메인 에이전트)](references/bank-build.md).
+
+1. 조각을 합쳐 `RUN/bank.json`(`{"version": 1, "sources": [...], "problems": [...]}`)을 만든다. `sources`는 B1에서 읽은 원본 표 값에 조각의 `has_key`와 `reviewed` 규칙을 더한다. B1에서 가져온 원본의 `sources`·`problems` 항목은 바꾸지 않고 그대로 넣는다(2~4단계도 새로 전사한 원본에만 한다).
+2. 챕터 태그를 챕터 표로 다시 본다.
+3. "중복 문항" 절에 따라 `duplicate_of`를 채운다.
+4. "정답 검증" 절에 따라 확인해 `answer`, `answer_origin`을 정한다.
+5. `python3 "$SKILL/scripts/bank.py" validate "$RUN/bank.json" --out "$RUN/bank-validation.json"` 결과가 `OK`여야 한다. 실패하면 RUN 보고서의 오류를 고치고 다시 검사한다.
 6. 저장소에 쓴다(메인 에이전트만): `RUN/bank.json` → `BANK`, `RUN/parts/<id>.md` → `REPO/from_the_past/기출/_전사/<id>.md`(B1에서 가져온 원본의 `_전사/<id>.md`는 덮어쓰지 않는다), `RUN/work/verify_<id>.py` → `REPO/from_the_past/기출/_정답검증/<id>.py`(새로 전사한 원본만. B1에서 가져온 원본은 `verify_<id>.py`가 없고 저장소의 파일을 그대로 둔다).
 7. 보고한다:
 ```
@@ -78,8 +96,7 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 
 ### 0. 준비
 1. `REPO`에 `STT/`, `자료구조_강의록_2026/`이 모두 있는지 확인한다. 없으면 "자구알 저장소에서만 동작합니다"라고 알리고 멈춘다.
-2. `BANK`가 없으면 "먼저 `/ds-review-pack bank`로 문제은행을 만들어 주세요"라고 알리고 멈춘다. 있으면 `python3 "$SKILL/scripts/bank.py" validate "$BANK"`가 `OK`여야 한다. 아니면 오류를 보여 주고 멈춘다.
-교과서도 `scripts/textbook.py`의 `load_textbook(Path(TEXTBOOK), python=TEXTBOOK_PYTHON)`로 검증한다. 다른 bank.py를 현재 프로세스에 import하지 않는다. 폴더·의존성 누락, 원본/자산/payload 검증 실패는 오류로 중단하며 기출 전용으로 대체하지 않는다. 정답 null은 아직 정답을 작성하지 않았다는 뜻이며 review.status=verified와 혼동하지 않는다.
+2. `BANK`가 없으면 "먼저 `/ds-review-pack bank`로 문제은행을 만들어 주세요"라고 알리고 멈춘다.
 3. STT 목록은 NFC로 읽는다. macOS에는 NFD 파일명이 섞여 있다.
    ```bash
    python3 -c "import os,unicodedata as u,re;n=[u.normalize('NFC',f) for f in os.listdir('$REPO/STT')];print(sorted(m.group(1) for f in n if f.endswith(' 자구알.md') and (m:=re.match(r'(\d{4})',f))))"
@@ -94,44 +111,45 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
    mkdir -p "$RUN"/{summaries,sections,cards,work} && ln -sfn "$REPO" "$RUN/repo"
    ```
    에이전트는 `RUN` 밖에 쓰지 않는다. 임시·보조 파일(그림 생성 스크립트, 초안, 복사본)은 `RUN/work/`에만 둔다. 저장소(`STT/`, `자료구조_강의록_2026/`, `from_the_past/`)에는 아무도 쓰지 않고, `복습노트/`에는 메인 에이전트만 쓴다.
+6. `python3 "$SKILL/scripts/bank.py" validate "$BANK" --out "$RUN/bank-validation.json"`가 `OK`여야 한다. 실패하면 현재 실행의 오류를 보고하고 멈춘다. 교과서도 `scripts/textbook.py`의 `load_textbook(Path(TEXTBOOK), python=TEXTBOOK_PYTHON)`로 검증한다. 다른 bank.py를 현재 프로세스에 import하지 않는다. 폴더·의존성 누락, 원본/자산/payload 검증 실패는 오류로 중단하며 기출 전용으로 대체하지 않는다. 정답 null은 아직 정답을 작성하지 않았다는 뜻이며 review.status=verified와 혼동하지 않는다.
+7. 메인 읽기 — [변경 전 전역 목록](references/review-overhaul.md). 조립에 앞서 기준 목록을 RUN에 저장한다.
 
 ### 1. 범위 파악
+- 메인 읽기 — [후보 추출](references/problem-selection.md). 날짜별 요약 브리프는 [STT 요약 에이전트 지시문](references/stt-summary-prompt.md)의 날짜와 경로 자리만 확인해 담당자에게 넘긴다.
+
 1. **먼저** 관련 강의록 텍스트를 쪽 번호와 함께 `RUN/slides.txt`에 추출한다. 요약 에이전트는 이 파일이 있다고 보고 시작하므로 추출이 끝난 뒤에 띄운다.
    - 관련 챕터: 이전 팩 정리노트(`복습노트/*/정리노트_*.html`)의 `<span class="tag slide">S<N> p<k>` 중 가장 큰 챕터(그 챕터 마지막 쪽까지 다뤘으면 그다음 챕터)부터 두 챕터. 이전 팩이 없으면 1~3장. 확실하지 않으면 넉넉히 넣는다.
    ```bash
    python3 "$SKILL/scripts/extract_slides.py" --repo "$REPO" --run "$RUN" --ch <관련 챕터 번호, 공백 구분>
    ```
    - 추출에 실패하면 STT만으로 진행하고 보고서에 적는다(브리프의 `slides.txt` 줄은 "없음"으로 바꿔 넘긴다).
-2. 그다음 STT 날짜마다 요약 에이전트 1명을 **병렬로** 띄운다. 브리프는 `references/stt-summary-prompt.md`에 있다.
+2. 그다음 STT 날짜마다 요약 에이전트 1명을 **병렬로** 띄운다.
    - `<Software_N_*.pdf>`: 그 날짜가 다룬 쪽이 들어 있는 강의록(확실하지 않으면 관련 챕터의 강의록을 모두 적는다).
    - `<MMDD 자구알.md>`: NFC 목록에서 찾은 실제 파일명. `<YYYY-MM-DD>`: 연도는 이번 학기 연도(오늘 날짜 기준), 월·일은 `<MMDD>`.
-3. 에이전트가 도는 동안 메인 에이전트는 관련 챕터로 후보 문항을 미리 본다(`references/problem-selection.md`의 `select` 명령, `--range-ch`와 `--taught`는 관련 챕터로 임시로).
+3. 에이전트가 도는 동안 `select`로 후보를 미리 뽑는다. `--range-ch`와 `--taught`는 관련 챕터로 임시 지정하고 `CANDIDATE_REPORT=candidates-preview.json`을 사용한다.
 
 ### 2. manifest
+- 메인 읽기 — 문제 선별의 [원칙](references/problem-selection.md), [순서](references/problem-selection.md), [parts](references/problem-selection.md), [level](references/problem-selection.md), [문항 원문 모으기](references/problem-selection.md), [정답](references/problem-selection.md), [교과서 후보 검토](references/problem-selection.md).
+- 메인 읽기 — 공통 [선별: 핵심 범위 충족 우선](references/review-overhaul.md)과 강의 예제를 쓸 때 [강의 예제 근거](references/review-overhaul.md), [강의 예제·전역 검토 연동](references/manifest-guide.md).
+- 메인 읽기 — manifest의 [최상위](references/manifest-guide.md), [sections / topics](references/manifest-guide.md), [parts / problems](references/manifest-guide.md), [links](references/manifest-guide.md), [검증](references/manifest-guide.md).
 - 요약들의 슬라이드 대조표로 `range_ch`(이번 범위에서 "다룸/일부"인 쪽이 있는 챕터)와 `taught`(1장부터 이번 범위의 마지막 챕터까지)를 정한다.
-- 문제 선별은 `references/problem-selection.md`를 따른다.
-  - 정답은 `RUN/answers.py`로 다시 계산한다.
-  - 카드 작성자용 문항 원문은 `RUN/problems.md`에 모은다(형식은 `references/problem-selection.md`).
-- 신규 팩은 핵심 범위 충족 우선으로 보통 8~12문항을 목표로 하며 적합한 교과서도 포함한다. 기존 추가 모드는 별도 4~8개 정책이다. 교과서 후보 장 대응은 검색용이며 보기·소문항 전체가 배운 범위여야 한다.
-- `scripts/textbook_blocks.py`로 교과서 원문 content/options를 순서대로 렌더링한다. 원문은 숫자·코드·그림·오타를 보존하고 observations/printed_answer를 답으로 쓰지 않는다. 직접 풀이를 Python/C 실행 또는 강의 근거로 검산한다.
-- manifest는 `references/manifest-guide.md`대로 `RUN/manifest.json`에 쓴다.
-- 신규 팩 manifest 에 `"rules": ["trace-v1", "layout-v2"]` 를 넣는다. `update-existing`·`revise-existing` 은 기존 manifest 의 `rules` 를 그대로 둔다(옛 노트 본문은 layout-v2 로 쓰지 않았다).
-- 검증: 둘 다 `OK`여야 한다.
-  ```bash
-  python3 "$SKILL/scripts/manifest.py" "$RUN/manifest.json"
-  python3 "$SKILL/scripts/bank.py" check-manifest "$BANK" "$RUN/manifest.json" --repo "$REPO" --textbook-dir "$TEXTBOOK" --textbook-python "$TEXTBOOK_PYTHON"
-  ```
+- 1단계 명령을 확정 범위와 `CANDIDATE_REPORT=candidates.json`으로 다시 실행한다. 원문과 검산은 지정한 절에 따라 `RUN/problems.md`, `RUN/answers.py`에 쓴다.
+- `scripts/textbook_blocks.py`로 교과서 원문의 숫자·코드·그림·오타와 보기 순서를 보존한다. observations/printed_answer를 답으로 쓰지 않는다.
+- `RUN/manifest.json`에 신규 `"rules": ["trace-v1", "layout-v2"]`를 넣는다. 두 갱신 모드는 기존 rules를 보존한다.
+- "검증" 절의 두 명령이 모두 `OK`여야 한다. 출처 검사 보고서는 `RUN/bank-manifest-check.json`이다.
 
 ### 3. 작성
+- 메인 읽기 — 브리프의 [작성자 브리프 (메인 에이전트가 섹션마다 1명, 병렬, 모델은 SKILL.md "에이전트 모델")](references/content-rules.md), [작성자 브리프 (메인 에이전트가 1명, 모델은 SKILL.md "에이전트 모델")](references/card-rules.md)와 위젯 배정의 [언제](references/widget-rules.md). 섹션·카드의 세부 작성 규칙과 위젯·trace 문서는 담당자에게 경로로 넘긴다.
 - 정리노트 HTML의 본문·인용·요약·푸터에 녹음 시각, Part 번호, 시각 미제공 등 위치 표시와 그 안내 문장을 싣지 않는다. 토픽 머리의 수업 날짜 태그(`tag date`)·강의록 페이지·푸터 일반 출처는 유지하되 인용 끝 `(MMDD)`는 붙이지 않고, 위치 근거는 내부 STT 요약에만 둔다. 신규·기존 갱신 모드 모두 `recording-locator`·`quote-date` 검사 통과가 필수다.
-- 섹션마다 작성자 1명을 띄운다. 브리프는 `references/content-rules.md`, 위젯 규칙은 `references/widget-rules.md`에 있다.
+- 섹션마다 작성자 1명과 전체 카드를 맡을 작성자 1명을 띄운다.
 - 추적 토픽 작성자에게 `<RUN>/traces/` 와 [trace 생성기](references/trace-figures.md)를 알려 준다.
-- 문제 작성자 1명이 모든 카드를 쓴다. 브리프는 `references/card-rules.md`에 있다.
 - 모두 **한 메시지에서 병렬로** 띄운다. 모델은 "에이전트 모델" 표를 따른다.
 - 브리프의 `<…>` 자리는 실제 경로, id, 금지어 목록(`<forbidden 목록>`), 예고 토픽 id(`<preview_topic>`), 그리고 섹션 작성자에게는 manifest `links` 중 그 섹션 토픽에 속한 것만(`<이 섹션의 links 목록>`) 채워 넣는다.
-- 위젯은 팩 전체에 0~2개다. 병렬 작성자끼리는 서로를 모르므로 **메인 에이전트가 띄우기 전에** 위젯을 둘 토픽(0~2개)을 정하고, 그 토픽의 섹션 작성자 브리프에만 `<위젯>` 자리에 "토픽 `<토픽 id>`에 위젯 1개: <무엇을 누르거나 움직이면 무엇이 보이는지>"를 적는다. 나머지 작성자의 `<위젯>` 자리에는 "위젯 없음"이라고 적는다. 정한 토픽과 이유는 보고서 "스킬이 정한 사항"에 적는다.
+- 메인은 작성자를 띄우기 전에 위젯 토픽(0~2개)을 정한다. 해당 작성자의 `<위젯>`에 토픽 id와 조작 시 보이는 내용을 적고, 나머지에는 "위젯 없음"을 적는다. 배정과 이유는 "스킬이 정한 사항"에 남긴다.
 
 ### 4. 조립
+메인 읽기 — [영속 제작자료](references/manifest-guide.md). 조립·검증 시 제작자료와 증거를 이 계약에 맞춰 기록한다.
+
 새 작업 폴더에서 검증·PDF를 준비한다. `STAGE`는 복습노트 아래의 숨김 작업 폴더다. 다시 조립할 때는 처음 준비한 `STAGE`를 쓴다. 신규 팩의 그림과 파생 자료도 `STAGE/.pack/` 아래에 둔다.
 
 ```bash
@@ -148,12 +166,15 @@ python3 "$SKILL/scripts/check_html.py" --manifest "$RUN/manifest.json" --note "$
 - 고친 뒤 4단계부터 다시 한다. 최대 2회까지이며, 그래도 남으면 "미해결"로 보고한다.
 
 ### 6. 리뷰 (`lite`면 생략)
-- 리뷰어 1명을 띄운다. 브리프는 `references/review-prompt.md`에 있다.
+- 리뷰어 1명을 띄운다. `references/review-prompt.md` 경로와 브리프의 RUN·HTML 경로를 넘긴다.
 - Critical과 Important는 모두, Minor는 쉬운 것만 고친다.
 - 담당 작성자별로 **한 번에 모아서** 수정을 요청한다. 수정은 한 번만 한다.
 - 수정 후 4~5단계를 다시 한다. 반영하지 않은 항목은 보고서에 적는다.
 
 ### 7. MD 변환과 브라우저 검증
+
+- 메인 읽기 — [Stage와 전역 검사](references/review-overhaul.md). 발행 이력이 없는 범위에만 먼저 [새 날짜의 감사 입력](references/review-overhaul.md)을 적용한다. 최종 작업용 HTML을 포함한 전역 audit가 통과한 뒤 변환·실화면 검사로 넘어간다.
+- 메인 읽기 — [검사 요청과 결과](references/browser-check.md). 검사자가 직접 열 수 없어 메인이 맡을 때만 [서버](references/browser-check.md)부터 [패널 제목과 요약 계약](references/browser-check.md)까지의 검사 절을 순서대로 적용한다.
 
 ```bash
 python3 "$SKILL/scripts/html2md.py" "$STAGE/<정리노트>.html" "$STAGE/<복습문제>.html" --check
@@ -161,19 +182,20 @@ python3 "$SKILL/scripts/release_review.py" browser-request --repo "$REPO" --run 
 ```
 
 - 먼저 MD 변환에서 `OK`를 확인한다. `.md`와 `figures_<range>/`는 `STAGE/.pack/`에 생긴다. 누락이 있으면 HTML 조각을 고치고 4단계부터 다시 한다.
-- 새 검사 서브에이전트에게 `REPO`, 요청 JSON의 절대 경로, [브라우저 검증](references/browser-check.md) 경로만 넘긴다. 메인은 검사자의 판정과 결함 목록을 받는다. 도구를 쓸 수 없는 검사자의 대체 절차도 해당 지침을 따른다.
-- 결함은 5단계와 같은 방식으로 `where`별로 모아 담당 작성자에게 돌려보낸다. 기존 최대 2회 수정 한도를 적용한다. 수정 뒤에는 다시 조립·검사·변환하고 요청을 새로 만든다. 끝내 통과하지 못하면 새 발행을 보류하고 이전 팩이 있으면 보존한다.
+- 새 검사 서브에이전트에게 `REPO`, 요청 JSON과 브라우저 지침의 절대 경로를 넘긴다. 메인은 판정과 결함 목록을 받는다.
+- 결함은 5단계와 같은 방식으로 `where`별로 모아 담당 작성자에게 돌려보낸다. 기존 최대 2회 수정 한도를 적용한다. 수정 뒤에는 다시 조립·검사·감사·변환하고 요청을 새로 만든다. 끝내 통과하지 못하면 새 발행을 보류하고 이전 팩이 있으면 보존한다.
 
 ### 8. PDF·기본 팩 발행과 후속 작업
 
-- 검증한 작업용 복습문제 HTML을 `REVIEW`로 지정하고 [PDF 생성 절차](references/pdf-build.md)를 실행한다. 새 검사 서브에이전트가 `PDF_RUN`의 모든 쪽을 실제로 열어 검토한다. 메인은 판정을 받아 PDF를 같은 작업 폴더에 발행한다. 0문항이면 PDF를 건너뛴다.
+- 메인 읽기 (문항이 있을 때) — [생성과 기계 검사](references/pdf-build.md), [쪽별 실화면 검토](references/pdf-build.md), [발행](references/pdf-build.md). PDF만 소급 생성할 때는 [backfill](references/pdf-build.md), 생성기를 고칠 때는 관련 배치·강의 코드·글꼴 절을 추가로 본다.
+- 검증한 작업용 복습문제 HTML을 `REVIEW`로 지정한다. 새 검사 서브에이전트가 `PDF_RUN`의 모든 쪽을 실제로 열어 검토한다. 메인은 판정을 받아 PDF를 같은 작업 폴더에 발행한다. 0문항이면 PDF를 건너뛴다.
 - 아래 명령으로 정리노트, 문항 원고·MD·그림과 PDF 쌍을 함께 발행한다. 발행기는 문제 링크를 PDF로 연결하고 작업 폴더를 정리한다. 중단한 작업 폴더는 같은 인자로 `release_review.py discard`를 실행해 지운다. 문항 0개인 팩은 문제 링크를 생략한다.
 
 ```bash
 python3 "$SKILL/scripts/release_review.py" publish --repo "$REPO" --run "$RUN"
 ```
 
-- 위 발행이 끝나면 [후속 작업](references/pack-followups.md)에 따라 담당자를 시작하고 작업본을 각각 발행한다. 신규는 문제설명과 확인문제를 병렬로 맡긴다. 메인은 담당자의 판정과 기록 경로를 받는다.
+- 위 발행 뒤 메인 읽기 — [병렬 시작](references/pack-followups.md), 판정을 받은 뒤 [발행](references/pack-followups.md), 중계 요청을 받을 때만 [블라인드 중계](references/pack-followups.md). 신규는 문제설명과 확인문제를 병렬로 맡긴다. 메인은 담당자의 판정과 기록 경로를 받아 작업본을 각각 발행한다.
 
 - 마지막으로 폴더 배치를 검사한다. `OK`가 아니면 루트에 남은 항목을 `.pack/`으로 옮기고 다시 검사한다. 옛 배치(루트에 md·그림·자료 폴더)인 팩은 `migrate`로 옮긴다(인자 없이는 계획만 출력, `--apply`로 실행).
 ```bash

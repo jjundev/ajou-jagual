@@ -234,3 +234,96 @@ def test_revision_workflow_requires_full_audit_and_lecture_evidence():
     assert 'lecture_ref' in guide
     assert '핵심 범위 충족 우선' in guide
     assert 'revise-existing' in (SKILL/'SKILL.md').read_text(encoding='utf-8')
+
+
+def markdown_headings(text):
+    """Return indexed ATX headings outside code fences."""
+    fence = None
+    for index, line in enumerate(text.splitlines()):
+        match = re.match(r"^\s{0,3}(`{3,}|~{3,})(.*)$", line)
+        if match:
+            marker, suffix = match.groups()
+            if fence is None:
+                fence = marker
+            elif marker.startswith(fence) and not suffix.strip():
+                fence = None
+            continue
+        if fence is None and (heading := re.fullmatch(r"(#{1,6}) (.+)", line)):
+            yield index, len(heading[1]), heading[2]
+
+
+def test_main_reference_sections_resolve():
+    docs = (SKILL_MD, *(SKILL / "references" / name for name in ("textbook-update.md", "review-overhaul.md")))
+    links = set()
+    for doc in docs:
+        for line in doc.read_text(encoding="utf-8").splitlines():
+            if "메인 읽기" not in line:
+                continue
+            for title, relative in re.findall(r"\[([^\]]+)\]\(((?:references/)?[\w-]+\.md)\)", line):
+                target = doc.parent / relative
+                headings = list(markdown_headings(target.read_text(encoding="utf-8")))
+                assert sum(name == title for _, _, name in headings) == 1, (target.name, title)
+                links.add((target.name, title))
+    assert {
+        ("bank-build.md", "원본 표"),
+        ("problem-selection.md", "후보 추출"),
+        ("problem-selection.md", "문항 원문 모으기"),
+        ("manifest-guide.md", "검증"),
+        ("widget-rules.md", "언제"),
+        ("browser-check.md", "검사 요청과 결과"),
+        ("browser-check.md", "서버"),
+        ("pdf-build.md", "생성과 기계 검사"),
+        ("pdf-build.md", "쪽별 실화면 검토"),
+        ("pdf-build.md", "발행"),
+        ("pack-followups.md", "준비"),
+        ("pack-followups.md", "병렬 시작"),
+        ("pack-followups.md", "블라인드 중계"),
+        ("pack-followups.md", "발행"),
+        ("textbook-update.md", "준비·선별"),
+        ("textbook-update.md", "작성·검증"),
+        ("textbook-update.md", "발행·보고"),
+        ("review-overhaul.md", "Stage와 전역 검사"),
+        ("review-overhaul.md", "개편 기계 검사"),
+        ("review-overhaul.md", "새 날짜의 감사 입력"),
+    } <= links
+    selection = (SKILL / "references/problem-selection.md").read_text(encoding="utf-8")
+    headings = list(markdown_headings(selection))
+    index = next(i for i, (_, _, title) in enumerate(headings) if title == "문항 원문 모으기")
+    start, level, _ = headings[index]
+    end, _, next_title = next(item for item in headings[index + 1:] if item[1] <= level)
+    assert next_title == "정답"
+    assert "## <은행 문항 id>" in "\n".join(selection.splitlines()[start:end])
+    overhaul = (SKILL / "references/review-overhaul.md").read_text(encoding="utf-8")
+    normal_audit = overhaul.split("## Stage와 전역 검사\n", 1)[1].split("\n## ", 1)[0]
+    assert "check_html.py" not in normal_audit and "audit-repo" not in normal_audit
+
+
+def test_run_report_commands_by_mode():
+    skill = SKILL_MD.read_text(encoding="utf-8")
+    bank = skill.split("### B4. ", 1)[1].split("## 복습팩 절차", 1)[0]
+    prepare = skill.split("### 0. ", 1)[1].split("### 1. ", 1)[0]
+    preview = skill.split("### 1. ", 1)[1].split("### 2. ", 1)[0]
+    manifest = skill.split("### 2. ", 1)[1].split("### 3. ", 1)[0]
+    assert 'validate "$RUN/bank.json" --out "$RUN/bank-validation.json"' in bank
+    assert 'validate "$BANK" --out "$RUN/bank-validation.json"' in prepare
+    assert prepare.index('mkdir -p "$RUN"') < prepare.index('validate "$BANK"')
+    assert "candidates-preview.json" in preview and "candidates.json" in manifest
+    refs = SKILL / "references"
+    selection = (refs / "problem-selection.md").read_text(encoding="utf-8")
+    assert 'select "$BANK"' in selection and '--out "$RUN/$CANDIDATE_REPORT"' in selection
+    for filename in ("manifest-guide.md", "textbook-update.md", "review-overhaul.md"):
+        guide = (refs / filename).read_text(encoding="utf-8")
+        assert "check-manifest" in guide and "bank-manifest-check.json" in guide
+    assert 'validate "$BANK" --out "$PACK_RUN/bank-validation.json"' in (
+        refs / "textbook-update.md").read_text(encoding="utf-8")
+    common = (refs / "review-overhaul.md").read_text(encoding="utf-8")
+    assert '--out "$RUN/audit.json"' in common
+    assert all(word in common for word in ("`blocking`", "`candidates`", "`status=pass`"))
+    assert "보고서 저장 실패" in skill and "이전 보고서" in skill
+
+
+def test_existing_modes_use_manifest_bound_html_checks():
+    for filename in ("textbook-update.md", "review-overhaul.md"):
+        guide = (SKILL / "references" / filename).read_text(encoding="utf-8")
+        assert 'check_html.py" --manifest "$MANIFEST" --note "$NOTE" --review "$REVIEW"' in guide, filename
+        assert 'manifest.py" "$MANIFEST"' in guide, filename

@@ -97,7 +97,7 @@ def main():
     a=ap.parse_args()
     report=audit_reviews(Path(a.repo),overlays=json.loads(Path(a.overlay).read_text(encoding='utf-8')) if a.overlay else None,decisions=json.loads(Path(a.decisions).read_text(encoding='utf-8')) if a.decisions else None,baseline=json.loads(Path(a.baseline).read_text(encoding='utf-8')) if a.baseline else None,required_exams=json.loads(Path(a.required_exams).read_text(encoding='utf-8')) if a.required_exams else None)
     Path(a.out).write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    print(report['status'],len(report['blocking']),'blocking',len(report['candidates']),'candidates')
+    print(report['status'],len(report['blocking']),'blocking',len(report['candidates']),'candidates',f'report={a.out}')
     return int(report['status']!='pass')
 
 if __name__=='__main__':raise SystemExit(main())
