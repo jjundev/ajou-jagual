@@ -2262,6 +2262,18 @@
           "new": "        source.parent.mkdir(parents=True)\n        source.write_text(read_review(ROOT / '복습노트/0917/복습문제_0917_Recursion.html'), encoding='utf-8')\n    run = tmp_path / 'run'\n"
         }
       ]
+    },
+    {
+      "destination": "assets/note-template.html",
+      "base_sha256": "abddec8bc4fd8d177ecd8dc6200f0b05de4e8f26fbbc599c9fac82a269ba9079",
+      "current_sha256": "1ba5e33ff86b700e9d28202a4c1c2381b5eb150c7beb0fb6f26361e99637f99f",
+      "replacements": [
+        {
+          "old": "    body { height: 100vh; height: 100dvh; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }\n",
+          "new": "    html { height: 100%; } body { height: 100%; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; overflow: hidden; }\n"
+        }
+      ],
+      "reason": "Use the viewport box for the paged layout height, matching biology PR #1."
     }
   ],
   "common_sync": {
