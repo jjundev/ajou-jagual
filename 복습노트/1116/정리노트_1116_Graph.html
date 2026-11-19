@@ -489,16 +489,17 @@
     <p><b>완성된 트리는 힙 모양도 만족해요.</b> 45의 자식은 18과 27, 18의 자식은 10과 8, 27의 자식은 12와 15, 10의 자식은 4와 6이에요. 위 레벨이 꽉 차고 마지막 레벨이 왼쪽부터 채워진 완전 이진 트리이고, 합쳐서 올라갔으니 부모가 늘 자식보다 커요.</p>
     <figure class="figure"><svg id="fig-huffman-bits-1116" viewBox="0 0 480 290" role="img" aria-label="허프만 트리. 강조색 테두리 원은 합친 노드 45, 18, 27, 10이고, 기본색 테두리 원은 단말 노드 4, 6, 8, 12, 15예요. 가지마다 왼쪽에는 1, 오른쪽에는 0이 적혀 있고, 단말 아래에 글자와 코드 s 111, i 110, n 10, t 01, e 00이 있어요."><path class="fig-ink" d="M245 43.9L175 90.1M275.4 43.3L354.6 90.7M146.9 112.3L103.1 153.7M173.1 112.3L216.9 153.7M359.1 114.3L330.9 151.7M380.9 114.3L409.1 151.7M80.7 181.4L59.3 216.6M99.3 181.4L120.7 216.6"/><text class="fig-text" x="198" y="65" font-size="14" text-anchor="middle">1</text><text class="fig-text" x="327" y="65" font-size="14" text-anchor="middle">0</text><text class="fig-text" x="113" y="131" font-size="14" text-anchor="middle">1</text><text class="fig-text" x="207" y="131" font-size="14" text-anchor="middle">0</text><text class="fig-text" x="333" y="131" font-size="14" text-anchor="middle">1</text><text class="fig-text" x="407" y="131" font-size="14" text-anchor="middle">0</text><text class="fig-text" x="58" y="197" font-size="14" text-anchor="middle">1</text><text class="fig-text" x="122" y="197" font-size="14" text-anchor="middle">0</text><circle class="fig-accent" cx="260" cy="34" r="18"/><text class="fig-text" x="260" y="39" font-size="14" text-anchor="middle">45</text><circle class="fig-accent" cx="160" cy="100" r="18"/><text class="fig-text" x="160" y="105" font-size="14" text-anchor="middle">18</text><circle class="fig-accent" cx="370" cy="100" r="18"/><text class="fig-text" x="370" y="105" font-size="14" text-anchor="middle">27</text><circle class="fig-accent" cx="90" cy="166" r="18"/><text class="fig-text" x="90" y="171" font-size="14" text-anchor="middle">10</text><circle class="fig-ink" cx="230" cy="166" r="18"/><text class="fig-text" x="230" y="171" font-size="14" text-anchor="middle">8</text><text class="fig-muted" x="230" y="201" font-size="13" text-anchor="middle">n 10</text><circle class="fig-ink" cx="320" cy="166" r="18"/><text class="fig-text" x="320" y="171" font-size="14" text-anchor="middle">12</text><text class="fig-muted" x="320" y="201" font-size="13" text-anchor="middle">t 01</text><circle class="fig-ink" cx="420" cy="166" r="18"/><text class="fig-text" x="420" y="171" font-size="14" text-anchor="middle">15</text><text class="fig-muted" x="420" y="201" font-size="13" text-anchor="middle">e 00</text><circle class="fig-ink" cx="50" cy="232" r="18"/><text class="fig-text" x="50" y="237" font-size="14" text-anchor="middle">4</text><text class="fig-muted" x="50" y="267" font-size="13" text-anchor="middle">s 111</text><circle class="fig-ink" cx="130" cy="232" r="18"/><text class="fig-text" x="130" y="237" font-size="14" text-anchor="middle">6</text><text class="fig-muted" x="130" y="267" font-size="13" text-anchor="middle">i 110</text></svg><figcaption>루트에서 단말까지 가지의 비트를 차례로 이으면 그 글자의 코드가 돼요.</figcaption></figure>
     <p><b>가지에 비트를 붙이고 루트에서 단말까지 이으면 비트 코드(bit code)가 돼요.</b> 왼쪽과 오른쪽 중 어디에 0을 줄지는 코딩하기 나름이에요. 슬라이드(S8 p19)는 왼쪽 가지에 1, 오른쪽 가지에 0을 줬어요.</p>
+    <p><b>글자별 비트 수를 구하려면 글자 하나의 코드 길이에 원문에서 그 글자가 나온 횟수(빈도)를 곱해요.</b> 예를 들어 <code>e</code>가 나올 때마다 <code>00</code>을 붙여요. <code>00</code>은 2비트이고 <code>e</code>가 15번 나오므로, <code>e</code>를 모두 바꿔 쓰는 데 2 × 15 = 30비트가 들어요.</p>
     <div class="table-wrap"><table>
-      <tr><th>글자</th><th>비트 코드</th><th>빈도</th><th>비트 수</th></tr>
-      <tr><td>e</td><td>00</td><td>15</td><td>30</td></tr>
-      <tr><td>t</td><td>01</td><td>12</td><td>24</td></tr>
-      <tr><td>n</td><td>10</td><td>8</td><td>16</td></tr>
-      <tr><td>i</td><td>110</td><td>6</td><td>18</td></tr>
-      <tr><td>s</td><td>111</td><td>4</td><td>12</td></tr>
+      <tr><th>글자</th><th>비트 코드</th><th>빈도</th><th>글자별 비트 수</th></tr>
+      <tr><td>e</td><td>00</td><td>15</td><td>2 × 15 = 30</td></tr>
+      <tr><td>t</td><td>01</td><td>12</td><td>2 × 12 = 24</td></tr>
+      <tr><td>n</td><td>10</td><td>8</td><td>2 × 8 = 16</td></tr>
+      <tr><td>i</td><td>110</td><td>6</td><td>3 × 6 = 18</td></tr>
+      <tr><td>s</td><td>111</td><td>4</td><td>3 × 4 = 12</td></tr>
     </table></div>
-    $$15\cdot2+12\cdot2+8\cdot2+6\cdot3+4\cdot3 = 100$$
-    <p><b>합계는 100비트이고, 135비트에서 35비트, 곧 26%를 줄였어요.</b> 정확한 비율은 $\frac{135-100}{135} \approx 0.259$이고 슬라이드는 이를 반올림해 26%라고 적었어요.</p>
+    $$30 + 24 + 16 + 18 + 12 = 100$$
+    <p><b>마지막 열의 값을 모두 더하면 원문을 허프만 코드로 바꿔 쓴 길이인 100비트가 돼요.</b> 고정 길이로 썼을 때의 135비트보다 35비트 줄었어요. 정확한 감소 비율은 $\frac{135-100}{135} \approx 0.259$이고 슬라이드는 이를 반올림해 26%라고 적었어요.</p>
     <p><b>가장 작은 빈도 4와 6을 맨 왼쪽에 둔 것은 그 자리가 가장 깊어지기 때문이에요.</b> 완전 이진 트리는 마지막 레벨을 왼쪽부터 채우므로 맨 왼쪽 단말이 가장 깊어요. 루트에서 경로가 가장 길어 3비트를 받지만, 빈도가 작아서 i와 s를 합쳐도 18+12=30비트만 차지해요.</p>
     <p><b>가장 빈도가 큰 e(15)는 2비트로 표현할 수 있게 됐어요.</b> 3비트 고정 길이보다 글자마다 1비트씩 짧아 e에서만 15비트를 아껴요. t에서 12비트, n에서 8비트를 더 아껴 모두 35비트가 줄어요.</p>
     <details class="more"><summary>더 보기 · 깊이를 정하는 것과 힙이 쓰이는 곳</summary>
