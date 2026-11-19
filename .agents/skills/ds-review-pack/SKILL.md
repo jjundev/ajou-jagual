@@ -111,7 +111,8 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
    ```
    에이전트는 `RUN` 밖에 쓰지 않는다. 임시·보조 파일(그림 생성 스크립트, 초안, 복사본)은 `RUN/work/`에만 둔다. 저장소(`STT/`, `자료구조_강의록_2026/`, `from_the_past/`)에는 아무도 쓰지 않고, `복습노트/`에는 메인 에이전트만 쓴다.
 6. `python3 "$SKILL/scripts/bank.py" validate "$BANK" --out "$RUN/bank-validation.json"`가 `OK`여야 한다. 실패하면 현재 실행의 오류를 보고하고 멈춘다. 교과서도 `scripts/textbook.py`의 `load_textbook(Path(TEXTBOOK), python=TEXTBOOK_PYTHON)`로 검증한다. 다른 bank.py를 현재 프로세스에 import하지 않는다. 폴더·의존성 누락, 원본/자산/payload 검증 실패는 오류로 중단하며 기출 전용으로 대체하지 않는다. 정답 null은 아직 정답을 작성하지 않았다는 뜻이며 review.status=verified와 혼동하지 않는다.
-7. 메인 읽기 — [변경 전 전역 목록](references/review-overhaul.md). 조립에 앞서 기준 목록을 RUN에 저장한다.
+7. 사용할 Python 절대 경로로 `"$LAYOUT_PYTHON" "$SKILL/scripts/preview_layout.py" preflight`를 실행한다. 출력에서 Python 경로와 설치된 Chrome 버전을 확인하고 이 Python 경로를 작성자와 브라우저 검사자 브리프에 넘긴다. 실패하면 사용 가능한 다른 Python을 확인한다. 성공한 경로가 없으면 브리프에 `unavailable`과 이유를 적고 7단계의 실화면 도구로 검사한다.
+8. 메인 읽기 — [변경 전 전역 목록](references/review-overhaul.md). 조립에 앞서 기준 목록을 RUN에 저장한다.
 
 ### 1. 범위 파악
 - 메인 읽기 — [후보 추출](references/problem-selection.md). 날짜별 요약 브리프는 [STT 요약 에이전트 지시문](references/stt-summary-prompt.md)의 날짜와 경로 자리만 확인해 담당자에게 넘긴다.
@@ -141,6 +142,7 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 - 메인 읽기 — 브리프의 [작성자 브리프 (메인 에이전트가 섹션마다 1명, 병렬, 모델은 SKILL.md "에이전트 모델")](references/content-rules.md), [작성자 브리프 (메인 에이전트가 1명, 모델은 SKILL.md "에이전트 모델")](references/card-rules.md)와 위젯 배정의 [언제](references/widget-rules.md). 섹션·카드의 세부 작성 규칙과 위젯·trace 문서는 담당자에게 경로로 넘긴다.
 - 정리노트 HTML의 본문·인용·요약·푸터에 녹음 시각, Part 번호, 시각 미제공 등 위치 표시와 그 안내 문장을 싣지 않는다. 토픽 머리의 수업 날짜 태그(`tag date`)·강의록 페이지·푸터 일반 출처는 유지하되 인용 끝 `(MMDD)`는 붙이지 않고, 위치 근거는 내부 STT 요약에만 둔다. 신규·기존 갱신 모드 모두 `recording-locator`·`quote-date` 검사 통과가 필수다.
 - 섹션마다 작성자 1명과 전체 카드를 맡을 작성자 1명을 띄운다.
+- 신규 작성자는 [섹션 브리프](references/content-rules.md) 또는 [카드 브리프](references/card-rules.md)의 `preview_layout.py author` 명령으로 실제 템플릿을 확인한다. `fail`이면 보고서에 표시된 영역·수치를 기준으로 해당 조각을 고치고 다시 실행한다. `unavailable`이면 영향을 받는 섹션·카드와 사유를 7단계 검사자에게 넘긴다. 메인은 판정, `layout.json` 경로, 남은 결함만 받는다.
 - 추적 토픽 작성자에게 `<RUN>/traces/` 와 [trace 생성기](references/trace-figures.md)를 알려 준다.
 - 모두 **한 메시지에서 병렬로** 띄운다. 모델은 "에이전트 모델" 표를 따른다.
 - 브리프의 `<…>` 자리는 실제 경로, id, 금지어 목록(`<forbidden 목록>`), 예고 토픽 id(`<preview_topic>`), 그리고 섹션 작성자에게는 manifest `links` 중 그 섹션 토픽에 속한 것만(`<이 섹션의 links 목록>`) 채워 넣는다.
@@ -149,7 +151,7 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 ### 4. 조립
 메인 읽기 — [영속 제작자료](references/manifest-guide.md). 조립·검증 시 제작자료와 증거를 이 계약에 맞춰 기록한다.
 
-새 작업 폴더에서 검증·PDF를 준비한다. `STAGE`는 복습노트 아래의 숨김 작업 폴더다. 다시 조립할 때는 처음 준비한 `STAGE`를 쓴다. 신규 팩의 그림과 파생 자료도 `STAGE/.pack/` 아래에 둔다.
+새 작업 폴더에서 검증·PDF를 준비한다. `STAGE`는 복습노트 아래의 숨김 작업 폴더다. 다시 조립할 때는 처음 준비한 `STAGE`를 쓴다. 신규 팩의 그림과 파생 자료도 `STAGE/.pack/` 아래에 둔다. 작성자가 `RUN/.pack/`에 준비한 그림을 참조했다면 검증 전에 `STAGE/.pack/`의 같은 상대 경로에 복사한다.
 
 ```bash
 STAGE=$(python3 "$SKILL/scripts/release_review.py" prepare --repo "$REPO" --run "$RUN" --range <range>)
@@ -181,13 +183,14 @@ python3 "$SKILL/scripts/release_review.py" browser-request --repo "$REPO" --run 
 ```
 
 - 먼저 MD 변환에서 `OK`를 확인한다. `.md`와 `figures_<range>/`는 `STAGE/.pack/`에 생긴다. 누락이 있으면 HTML 조각을 고치고 4단계부터 다시 한다.
-- 새 검사 서브에이전트에게 `REPO`, 요청 JSON과 브라우저 지침의 절대 경로를 넘긴다. 메인은 판정과 결함 목록을 받는다.
+- 새 검사 서브에이전트에게 `REPO`, `RUN`, 요청 JSON, `LAYOUT_PYTHON`과 브라우저 지침의 절대 경로, 작성 단계에서 확인하지 못한 영역을 넘긴다. 검사자는 신규 v2 요청의 전 영역을 측정하고 아래 지침에 따라 실제 화면을 열어 승인 기록을 쓴다.
+- 메인은 측정 기록과 실화면 승인을 확인한 뒤 PDF로 넘어간다. 판정과 결함 목록은 해당 요청 경로와 함께 받는다.
 - 결함은 5단계와 같은 방식으로 `where`별로 모아 담당 작성자에게 돌려보낸다. 기존 최대 2회 수정 한도를 적용한다. 수정 뒤에는 다시 조립·검사·감사·변환하고 요청을 새로 만든다. 끝내 통과하지 못하면 새 발행을 보류하고 이전 팩이 있으면 보존한다.
 
 ### 8. PDF·기본 팩 발행과 후속 작업
 
 - 메인 읽기 (문항이 있을 때) — [생성과 기계 검사](references/pdf-build.md), [쪽별 실화면 검토](references/pdf-build.md), [발행](references/pdf-build.md). PDF만 소급 생성할 때는 [backfill](references/pdf-build.md), 생성기를 고칠 때는 관련 배치·강의 코드·글꼴 절을 추가로 본다.
-- 검증한 작업용 복습문제 HTML을 `REVIEW`로 지정한다. 새 검사 서브에이전트가 `PDF_RUN`의 모든 쪽을 실제로 열어 검토한다. 메인은 판정을 받아 PDF를 같은 작업 폴더에 발행한다. 0문항이면 PDF를 건너뛴다.
+- 7단계 브라우저 승인을 받은 작업용 복습문제 HTML을 `REVIEW`로 지정해 전체 PDF를 만든다. 새 검사 서브에이전트가 `PDF_RUN`의 모든 쪽을 실제로 열어 검토한다. 메인은 판정을 받아 PDF를 같은 작업 폴더에 발행한다. 0문항이면 PDF를 건너뛴다.
 - 아래 명령으로 정리노트, 문항 원고·MD·그림과 PDF 쌍을 함께 발행한다. 발행기는 문제 링크를 PDF로 연결하고 작업 폴더를 정리한다. 중단한 작업 폴더는 같은 인자로 `release_review.py discard`를 실행해 지운다. 문항 0개인 팩은 문제 링크를 생략한다.
 
 ```bash

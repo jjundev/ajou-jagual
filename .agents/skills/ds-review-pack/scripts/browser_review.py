@@ -2,16 +2,20 @@
 import hashlib
 from html.parser import HTMLParser
 import json
+import math
 import os
 from pathlib import Path
 import re
 from urllib.parse import unquote, urlsplit
 from uuid import uuid4
 
+from browser_layout import expected_scopes, has_layout_defect, needs_visual_check
+from manifest import load
 from pack_layout import nfc, normalized_child
 from pdf_cards import digest
 from review_source import review_paths
 
+MEASUREMENTS = "layout-measurements.json"
 MODES = ("new", "update-existing", "revise-existing")
 ASSET_SUFFIXES = {
     ".avif", ".bmp", ".css", ".gif", ".ico", ".jpeg", ".jpg", ".js", ".mjs", ".otf", ".png",
@@ -110,13 +114,18 @@ def local_asset(repo: Path, page: Path, url: str) -> Path | None:
     return actual
 
 
-def render_inputs(repo: Path, stage: Path) -> dict[str, str]:
+def browser_paths(stage: Path) -> tuple[Path, Path, Path]:
     reviews = review_paths(stage)
     if len(reviews) != 1 or not reviews[0].is_file():
         raise ValueError("브라우저 검토에 작업용 복습문제 HTML 하나가 필요해요")
     review = reviews[0]
     note = normalized_child(stage, nfc(review.name).replace("복습문제_", "정리노트_", 1))
     manifest = normalized_child(stage / ".pack", "자료_복습팩") / "manifest.json"
+    return note, review, manifest
+
+
+def render_inputs(repo: Path, stage: Path) -> dict[str, str]:
+    note, review, manifest = browser_paths(stage)
     paths = {note, review, manifest}
     paths.update(p for p in stage.rglob("*") if p.is_file() and p.suffix.lower() in ASSET_SUFFIXES)
     paths.update(p for p in (stage.parent / "_assets").rglob("*") if p.is_file())
@@ -136,11 +145,21 @@ def render_inputs(repo: Path, stage: Path) -> dict[str, str]:
     return {path.relative_to(repo).as_posix(): digest(path) for path in sorted(paths)}
 
 
-def snapshot(repo: Path, stage: Path, mode: str, attempt: str) -> dict:
-    return {
-        "version": 1, "attempt": attempt, "mode": mode, "stage": str(stage),
-        "cases": list(required_cases(mode)), "inputs": render_inputs(repo.resolve(), stage),
+def snapshot(repo: Path, stage: Path, mode: str, attempt: str, *, version: int | None = None) -> dict:
+    if version is None:
+        version = 2 if mode == "new" else 1
+    if type(version) is not int or version not in (1, 2) or (version == 2 and mode != "new"):
+        raise ValueError("브라우저 검토 요청 버전이 모드와 맞지 않아요")
+    cases = required_cases(mode)
+    request = {
+        "version": version, "attempt": attempt, "mode": mode, "stage": str(stage),
+        "cases": list(cases), "inputs": render_inputs(repo.resolve(), stage),
     }
+    if version == 2:
+        manifest = load(browser_paths(stage)[2])
+        scopes = {kind: [list(pair) for pair in expected_scopes(manifest, kind)] for kind in ("note", "review")}
+        request["expected_scopes"] = {case: scopes[case.split("/")[0]] for case in cases}
+    return request
 
 
 def write_request(repo: Path, stage: Path, run: Path, mode: str) -> Path:
@@ -173,13 +192,110 @@ def has_text(value) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
-def require_pass(repo: Path, stage: Path, run: Path, mode: str) -> None:
-    request, raw = read_record(run / "browser-request.json")
+def attempt_directory(run: Path, request: dict) -> Path:
     attempt = request.get("attempt")
     if not isinstance(attempt, str) or not re.fullmatch(r"[0-9a-f]{32}", attempt):
         raise ValueError("브라우저 검토 요청 번호가 잘못됐어요")
-    approval, _ = read_record(run / "browser" / attempt / "browser-review.json")
-    if approval.get("version") != 1 or approval.get("request_sha256") != hashlib.sha256(raw).hexdigest():
+    browser = run / "browser"
+    directory = browser / attempt
+    if browser.is_symlink() or directory.is_symlink() or not directory.is_dir():
+        raise ValueError("브라우저 검토 시도 폴더를 확인할 수 없어요")
+    return directory
+
+
+def request_matches(repo: Path, stage: Path, mode: str, request: dict) -> None:
+    try:
+        current = snapshot(repo, stage, mode, request["attempt"], version=request.get("version"))
+    except (OSError, ValueError) as exc:
+        raise ValueError(f"브라우저 검토 입력 오류: {exc}") from exc
+    if current != request:
+        raise ValueError("브라우저 검토 요청 후 입력이 변경됐어요")
+
+
+def finite(value) -> bool:
+    try:
+        return type(value) in (int, float) and math.isfinite(value)
+    except OverflowError:
+        return False
+
+
+def scope_key(row) -> tuple[str, str] | None:
+    if isinstance(row, dict) and has_text(row.get("id")) and has_text(row.get("area")):
+        return row["id"], row["area"]
+    return None
+
+
+def valid_layout_row(row) -> bool:
+    if scope_key(row) is None or row.get("state") not in ("measured", "no-figure", "visual-only"):
+        return False
+    overflow = row.get("overflow_px")
+    count = row.get("svg_text_count")
+    if not finite(overflow) or overflow < 0 or type(count) is not int or count < 0:
+        return False
+    if "min_svg_text_height_px" not in row or (row["state"] == "no-figure" and count != 0):
+        return False
+    height = row["min_svg_text_height_px"]
+    if count == 0 and height is not None or count > 0 and (not finite(height) or height <= 0):
+        return False
+    widgets = row.get("widget_min_svg_text_height_px")
+    return isinstance(widgets, dict) and all(
+        has_text(key) and (value is None or (height is not None and finite(value) and value >= height))
+        for key, value in widgets.items()
+    )
+
+
+def require_measurements(directory: Path, request: dict, request_sha: str, approval: dict) -> None:
+    path = directory / MEASUREMENTS
+    if path.is_symlink():
+        raise ValueError("브라우저 검토 측정 파일에 심볼릭 링크를 사용할 수 없어요")
+    data, raw = read_record(path)
+    if (hashlib.sha256(raw).hexdigest() != approval.get("measurements_sha256")
+            or data.get("request_sha256") != request_sha
+            or type(data.get("version")) is not int or data["version"] != 1):
+        raise ValueError("브라우저 검토 측정 기록이 현재 승인 또는 요청과 달라요")
+    cases = data.get("cases")
+    if not isinstance(cases, dict) or set(cases) != set(request["cases"]):
+        raise ValueError("브라우저 검토 측정의 필수 화면 조합이 맞지 않아요")
+    for case, result in cases.items():
+        if not isinstance(result, dict) or result.get("errors") != [] or not isinstance(result.get("rows"), list):
+            raise ValueError(f"브라우저 검토 측정 오류: {case}")
+        required = {tuple(pair) for pair in request["expected_scopes"][case]}
+        measured = set()
+        review_needed = set()
+        for row in result["rows"]:
+            key = scope_key(row)
+            if key not in required or key in measured or not valid_layout_row(row):
+                raise ValueError(f"브라우저 검토 측정 영역 또는 수치 오류: {case} {key}")
+            if has_layout_defect(row):
+                raise ValueError(f"브라우저 검토 레이아웃 결함: {case} {key}")
+            measured.add(key)
+            if needs_visual_check(row):
+                review_needed.add(key)
+        if measured != required:
+            raise ValueError(f"브라우저 검토 측정 영역 누락: {case} {sorted(required - measured)}")
+
+        notes = approval["cases"][case].get("visual_notes")
+        if not isinstance(notes, list):
+            raise ValueError(f"브라우저 검토 실화면 관찰 목록 오류: {case}")
+        observed = set()
+        for note in notes:
+            key = scope_key(note)
+            if key not in required or key in observed or not has_text(note.get("observation")):
+                raise ValueError(f"브라우저 검토 실화면 관찰 영역 또는 내용 오류: {case} {key}")
+            observed.add(key)
+        if not review_needed <= observed:
+            raise ValueError(f"브라우저 검토 실화면 관찰 누락: {case} {sorted(review_needed - observed)}")
+
+
+def require_pass(repo: Path, stage: Path, run: Path, mode: str) -> None:
+    request, raw = read_record(run / "browser-request.json")
+    directory = attempt_directory(run, request)
+    version = request.get("version")
+    request_sha = hashlib.sha256(raw).hexdigest()
+    approval, _ = read_record(directory / "browser-review.json")
+    if (type(version) is not int or version not in (1, 2)
+            or type(approval.get("version")) is not int or approval["version"] != version
+            or approval.get("request_sha256") != request_sha):
         raise ValueError("브라우저 검토 기록이 현재 요청과 달라요")
     if approval.get("status") != "pass" or not has_text(approval.get("reviewer")) or approval.get("issues") != []:
         raise ValueError("브라우저 검토가 통과하지 않았어요")
@@ -191,9 +307,6 @@ def require_pass(repo: Path, stage: Path, run: Path, mode: str) -> None:
         row = cases[case]
         if not isinstance(row, dict) or row.get("status") != "pass" or not has_text(row.get("evidence")):
             raise ValueError(f"브라우저 검토의 확인 근거가 없거나 통과하지 않았어요: {case}")
-    try:
-        current = snapshot(repo, stage, mode, attempt)
-    except OSError as exc:
-        raise ValueError("브라우저 검토 후 입력을 읽을 수 없어요") from exc
-    if current != request:
-        raise ValueError("브라우저 검토 요청 후 입력이 변경됐어요")
+    request_matches(repo, stage, mode, request)
+    if version == 2:
+        require_measurements(directory, request, request_sha, approval)

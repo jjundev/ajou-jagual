@@ -327,3 +327,11 @@ def test_existing_modes_use_manifest_bound_html_checks():
         guide = (SKILL / "references" / filename).read_text(encoding="utf-8")
         assert 'check_html.py" --manifest "$MANIFEST" --note "$NOTE" --review "$REVIEW"' in guide, filename
         assert 'manifest.py" "$MANIFEST"' in guide, filename
+
+
+def test_new_workflow_documents_layout_checks():
+    steps = re.split(r"^### \d+\. ", SKILL_MD.read_text(encoding="utf-8").split("## 복습팩 절차", 1)[1], flags=re.M)
+    assert "preview_layout.py" in steps[1] and "preflight" in steps[1]
+    assert "preview_layout.py" in steps[4] and "unavailable" in steps[4]
+    assert "실화면 승인" in steps[8] and "모든 쪽" in steps[9]
+    assert steps[8].index("browser-request") < steps[8].index("실화면 승인")
