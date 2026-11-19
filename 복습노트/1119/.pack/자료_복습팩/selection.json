@@ -1,0 +1,418 @@
+{
+ "range": "1119",
+ "mode": "new",
+ "policy_version": "review-questions-2026-10-17",
+ "taught_evidence": {
+  "range_ch": [
+   10
+  ],
+  "taught": "1-8,10",
+  "slides": "S10 p13–21 (p16·p21 일부)",
+  "summary": "summaries/stt-1119.md",
+  "not_taught": "S9 전체(온라인 예정), S10 p22–37, S11"
+ },
+ "concept_overrides": {},
+ "selected": [
+  {
+   "id": "p1",
+   "source": "2016-final-ljw-q6",
+   "source_kind": "past-exam",
+   "original_id": "2016-final-ljw-q6",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "DFS(0)·BFS(0) 방문 순서와 신장 트리 간선(작은 번호 먼저)"
+   ],
+   "answer": "DFS(0) 방문 순서 0, 1, 3, 7, 4, 5, 2, 6 / 트리 간선 0-1, 1-3, 3-7, 7-4, 7-5, 5-2, 2-6 | BFS(0) 방문 순서 0, 1, 2, 3, 4, 5, 6, 7 / 트리 간선 0-1, 0-2, 1-3, 1-4, 2-5, 2-6, 3-7",
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2016-final-ljw-q6",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "verification": {
+    "method": "python",
+    "reference": "answers.py dfs/bfs, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p2",
+   "source": "2015-ljw-q6",
+   "source_kind": "past-exam",
+   "original_id": "2015-ljw-q6",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "DFS(0)·BFS(0) 방문 순서와 신장 트리 간선(작은 번호 먼저)"
+   ],
+   "answer": "DFS(0) 방문 순서 0, 2, 6, 4, 3, 5, 7, 1 / 트리 간선 0-2, 2-6, 6-4, 4-3, 3-5, 4-7, 7-1 | BFS(0) 방문 순서 0, 2, 5, 7, 6, 3, 4, 1 / 트리 간선 0-2, 0-5, 0-7, 2-6, 5-3, 5-4, 7-1",
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2015-ljw-q6",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "verification": {
+    "method": "python",
+    "reference": "answers.py dfs/bfs, work/answers-output.txt",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p3",
+   "source": "2017-final-kdh-q3",
+   "source_kind": "past-exam",
+   "original_id": "2017-final-kdh-q3",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "인접 리스트 순서대로 BFS 방문 순서"
+   ],
+   "answer": "노드 방문순서 : 0, 1, 5, 2, 3, 4",
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2017-final-kdh-q3",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "verification": {
+    "method": "python",
+    "reference": "answers.py bfs_list",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p4",
+   "source": "2017-final-kdh-q7",
+   "source_kind": "past-exam",
+   "original_id": "2017-final-kdh-q7",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "BFS/DFS로 연결 그래프 판정 함수 작성"
+   ],
+   "answer": "큐 BFS(또는 DFS)로 0에서 도달한 정점 수가 MAX_SIZE이면 'y', 아니면 'n' | 실행: Graph is connected?(y/n): y  / Graph is connected?(y/n): n",
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2017-final-kdh-q7",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "verification": {
+    "method": "c-run",
+    "reference": "work/p4_connected.c (연결/비연결 행렬 y/n)",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p5",
+   "source": "2019-final-q1",
+   "source_kind": "past-exam",
+   "original_id": "2019-final-q1",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "간선에 비용이 붙은 그래프 이름"
+   ],
+   "answer": "가중치 그래프",
+   "evidence": {
+    "path": "from_the_past/기출/문제은행.json",
+    "locator": "2019-final-q1",
+    "sha256": "0cada1b81b987d116d2a2694f9dc8f91ff2401a91663bfb8c21ef6eaa306b6b0"
+   },
+   "verification": {
+    "method": "lecture-reference",
+    "reference": "S10 p20 가중치 레이블, STT 6절",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p6",
+   "source": "textbook-ch10-q05",
+   "source_kind": "textbook",
+   "original_id": "ch10-q05",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "BFS가 큐를 쓰고 DFS는 재귀(스택)를 쓴다는 구분"
+   ],
+   "answer": "② 너비 우선 탐색",
+   "evidence": {
+    "path": "교과서/10_그래프 I_연습문제.json",
+    "locator": "ch10-q05",
+    "sha256": "7829bc23a66c258a4e9b350940bdc70c4167f8f950537d6fc8c2228629e47fd9"
+   },
+   "verification": {
+    "method": "lecture-reference",
+    "reference": "S10 p15 BFS는 큐, STT 3절",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p7",
+   "source": "textbook-ch10-q13",
+   "source_kind": "textbook",
+   "original_id": "ch10-q13",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "인접 행렬(작은 번호 먼저)로 DFS 방문 순서 구하기",
+    "같은 그래프에서 BFS 방문 순서 구하기",
+    "시작 정점에 따라 순서가 달라짐 확인"
+   ],
+   "answer": "1) DFS(3): 3, 1, 0, 2, 4, 5, 6, 7, 8, 9 2) DFS(6): 6, 5, 3, 1, 0, 2, 4, 7, 8, 9 3) BFS(3): 3, 1, 4, 5, 0, 2, 6, 7, 8, 9 4) BFS(6): 6, 5, 7, 3, 8, 9, 1, 4, 0, 2",
+   "evidence": {
+    "path": "교과서/10_그래프 I_연습문제.json",
+    "locator": "ch10-q13",
+    "sha256": "7829bc23a66c258a4e9b350940bdc70c4167f8f950537d6fc8c2228629e47fd9"
+   },
+   "verification": {
+    "method": "python",
+    "reference": "answers.py dfs/bfs on ch10-q13 그림",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p8",
+   "source": "textbook-ch10-q14",
+   "source_kind": "textbook",
+   "original_id": "ch10-q14",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "간선을 하나 지우고 DFS로 연결 여부 검사하기",
+    "브리지 판정 함수 작성"
+   ],
+   "answer": "브리지 (0, 1), (3, 5), (7, 8), (7, 9) | C 실행: (0, 1) (3, 5) (7, 8) (7, 9)",
+   "evidence": {
+    "path": "교과서/10_그래프 I_연습문제.json",
+    "locator": "ch10-q14",
+    "sha256": "7829bc23a66c258a4e9b350940bdc70c4167f8f950537d6fc8c2228629e47fd9"
+   },
+   "verification": {
+    "method": "c-run",
+    "reference": "answers.py 간선 제거 전수 검사 + work/p8_bridge.c",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p9",
+   "source": "textbook-ch11-q01",
+   "source_kind": "textbook",
+   "original_id": "ch11-q01",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "신장 트리는 모든 정점을 포함하고 사이클이 없는 트리임을 적용",
+    "정점 4개면 간선 3개"
+   ],
+   "answer": "4개 (네 간선 중 하나씩 빼낸 경로 모양)",
+   "evidence": {
+    "path": "교과서/11_그래프 II_연습문제.json",
+    "locator": "ch11-q01",
+    "sha256": "6bff6e06366719d23bca816c9054330d987b312469cba12355f752e8e8f657cc"
+   },
+   "verification": {
+    "method": "python",
+    "reference": "answers.py combinations",
+    "result": "pass"
+   }
+  },
+  {
+   "id": "p10",
+   "source": "lecture-s10-p17-connected-component",
+   "source_kind": "lecture-code",
+   "original_id": "lecture-s10-p17-connected-component",
+   "prerequisites": [
+    "S10 p13–21 (1119)"
+   ],
+   "objectives": [
+    "find_connected_component가 미방문 정점마다 count를 올리고 dfs_mat을 부르는 흐름 추적",
+    "visited[v]=count로 정점마다 성분 번호 붙이기",
+    "count로 연결 성분 개수 구하기"
+   ],
+   "answer": "(a) 출력 0 2 5 1 3 6 4 7 (b) visited = [1, 2, 1, 2, 2, 1, 2, 3] (c) count = 3",
+   "evidence": {
+    "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+    "locator": "PDF p17 (+p14)",
+    "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10"
+   },
+   "verification": {
+    "method": "c-run",
+    "reference": "work/p10_component.c, answers.py dfs_count",
+    "result": "pass"
+   }
+  }
+ ],
+ "excluded": [
+  {
+   "source": "2016-final-ljw-q8, 2015-ljw-q7, 2019-final-q7, 2017-final2-q5, unk-final-ltk-q6, 2019-final-q11, unk-final-ltk-q9, textbook-ch11-q05, textbook-ch11-q06",
+   "reason": "최단 경로 알고리즘(S10 p29–34) 미학습"
+  },
+  {
+   "source": "2017-final-kdh-q4, textbook-ch11-q02, textbook-ch11-q03",
+   "reason": "Prim·Kruskal 알고리즘 과정(S10 p22–28) 미학습 — 다음 시간 예고"
+  },
+  {
+   "source": "textbook-ch11-q10",
+   "reason": "위상 정렬 미학습"
+  },
+  {
+   "source": "textbook-ch10-q15",
+   "reason": "source-error: 인쇄 인접 리스트 A의 항목이 B, C, C로 중복되고 보기 목록이 PDF에 없어 '옳은 것은?'의 뜻이 불확실"
+  },
+  {
+   "source": "textbook-ch10-q10",
+   "reason": "앞 문제(ch10-q09, 1116 팩 수록)를 참조하는 문항 — 이번 범위(탐색) 목표와 무관"
+  },
+  {
+   "source": "textbook-ch10-q12",
+   "reason": "파일 입출력 함수 작성 — 이번 수업 목표와 무관"
+  },
+  {
+   "source": "textbook-ch10-q01, textbook-ch10-q07",
+   "reason": "차수·표현은 1116 범위이며 그 팩이 같은 목표를 평가함"
+  },
+  {
+   "source": "2017-final-kdh-q7 이외 김도희·이태권 그래프 문항 중 unk-final-ltk-q6/q9",
+   "reason": "그래프가 첨부 파일로만 있어 풀 수 없음(최단 경로이기도 함)"
+  }
+ ],
+ "coverage": [
+  {
+   "id": "dfs-trace",
+   "objective": "DFS 재귀 호출 추적(작은 번호 먼저, 방문 순서 0,1,2,3,4)",
+   "evidence": "S10 p13; STT 1절",
+   "questions": [
+    "p1",
+    "p2",
+    "p7"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "dfs-not-done",
+   "objective": "모두 방문해도 남은 간선 검사가 끝나야 DFS 종료",
+   "evidence": "S10 p13; STT 1절",
+   "questions": [
+    "p1",
+    "p2"
+   ],
+   "status": "covered",
+   "note": "트리 간선 구할 때 복귀 후 남은 간선 검사가 필요"
+  },
+  {
+   "id": "dfs-code",
+   "objective": "dfs_mat/dfs_list 코드(visited, adj_mat 조건)",
+   "evidence": "S10 p14; STT 2절",
+   "questions": [
+    "p8",
+    "p10"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "bfs-trace",
+   "objective": "BFS 큐 추적(0,1,2,4,3), 인접 정점 한꺼번에 방문 표시",
+   "evidence": "S10 p15; STT 3절",
+   "questions": [
+    "p1",
+    "p2",
+    "p3",
+    "p7"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "bfs-queue",
+   "objective": "BFS는 큐를 명시적으로 사용",
+   "evidence": "S10 p15–16; STT 3절",
+   "questions": [
+    "p6",
+    "p4"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "compare",
+   "objective": "DFS·BFS 결과는 사이클 없는 트리, 순서는 다를 수 있음",
+   "evidence": "STT 3절",
+   "questions": [
+    "p1",
+    "p2",
+    "p7"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "components",
+   "objective": "연결 성분: 미방문마다 count++ 후 dfs_mat, visited[i]=count",
+   "evidence": "S10 p17; STT 4절",
+   "questions": [
+    "p10",
+    "p4",
+    "p8"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "spanning",
+   "objective": "신장 트리 정의(모든 정점, 사이클 없음)와 DFS/BFS로 구하기",
+   "evidence": "S10 p18–19; STT 5절",
+   "questions": [
+    "p1",
+    "p2",
+    "p9"
+   ],
+   "status": "covered"
+  },
+  {
+   "id": "mst",
+   "objective": "MST 정의·응용, 간선 가중치",
+   "evidence": "S10 p20; STT 6절",
+   "questions": [
+    "p5"
+   ],
+   "status": "covered",
+   "note": "MST 알고리즘 과정은 미학습이라 개념만"
+  },
+  {
+   "id": "greedy",
+   "objective": "탐욕적 방법 정의, 지역 최적≠전역 최적",
+   "evidence": "S10 p21 일부; STT 7절",
+   "questions": [],
+   "status": "concept-only",
+   "note": "적합한 기출·교과서 원문 없음. 정리노트·확인문제에서 다룸"
+  }
+ ],
+ "required_exam_sources": [
+  "2016-final-ljw-q6",
+  "2015-ljw-q6",
+  "2017-final-kdh-q3",
+  "2017-final-kdh-q7",
+  "2019-final-q1"
+ ],
+ "duplicate_decisions": [],
+ "retained_similar_exams": [
+  {
+   "left": "2016-final-ljw-q6",
+   "right": "2015-ljw-q6",
+   "reason": "같은 DFS(0)·BFS(0) 신장 트리 유형이지만 서로 다른 기출(다른 그래프) — 보존"
+  }
+ ],
+ "widget_decision": {
+  "topic": "s1-compare",
+  "reason": "같은 그래프에서 DFS(스택)·BFS(큐)를 한 단계씩 진행하며 방문 순서와 트리 간선 차이를 비교"
+ },
+ "scope_exclusions": [
+  "S10 p22–37 — 예고만/안 다룸",
+  "S11 해싱 — 안 다룸",
+  "S9 정렬 — 온라인 예정"
+ ]
+}

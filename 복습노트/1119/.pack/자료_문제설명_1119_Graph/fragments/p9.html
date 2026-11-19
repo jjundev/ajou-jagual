@@ -1,0 +1,82 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>정사각형 모양 그래프(정점 4개, 간선 4개)에서 만들 수 있는 신장 트리를 빠짐없이 나열해요.</p>
+  <ul>
+    <li><strong>원문 그림에는 정점 이름이 없어요</strong>: 설명을 위해 왼쪽 위부터 시계 방향으로 A, B, C, D라고 붙여요. 간선은 A-B, B-C, C-D, D-A예요.</li>
+    <li><strong>대각선 간선은 없어요</strong>.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 개념·공식</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘신장 트리’</td><td>모든 정점 포함 + 사이클 없음 + 연결, 간선 $n-1$개</td><td>정점 4개라 트리 간선은 정확히 3개예요(<a href="정리노트_1119_Graph.html#s3-spanning">정리노트 신장 트리</a>).</td></tr>
+        <tr><td>‘모두 나열’</td><td>간선 4개 중 3개 고르기 $\binom{4}{3}=4$</td><td>후보가 4개뿐이라 하나씩 사이클·연결을 확인하면 빠짐없이 셀 수 있어요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>A ─ B
+│   │      간선: A-B, B-C, C-D, D-A   (정점 4 → 트리 간선 3개)
+D ─ C</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li>3개를 고르는 것은 1개를 빼는 것과 같아요. 빼는 간선을 기준으로 후보 4개를 적어요.</li>
+      <li>이 그래프의 사이클은 네 간선을 모두 쓰는 A-B-C-D-A 하나뿐이에요. 어느 간선을 빼도 그 사이클이 깨지고 네 정점이 한 줄로 이어져요.
+        <div class="table-wrap"><table class="cmp">
+          <thead><tr><th>뺀 간선</th><th>남은 간선(신장 트리)</th><th>모양</th></tr></thead>
+          <tbody>
+            <tr><td>A-B</td><td><b>B-C, C-D, D-A</b></td><td>B-C-D-A 경로</td></tr>
+            <tr><td>B-C</td><td><b>A-B, C-D, D-A</b></td><td>B-A-D-C 경로</td></tr>
+            <tr><td>C-D</td><td><b>A-B, B-C, D-A</b></td><td>C-B-A-D 경로</td></tr>
+            <tr><td>D-A</td><td><b>A-B, B-C, C-D</b></td><td>A-B-C-D 경로</td></tr>
+          </tbody>
+        </table></div>
+      </li>
+      <li>네 후보 모두 사이클이 없고 네 정점을 다 이으니 신장 트리는 <strong>4개</strong>예요.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: {B-C, C-D, D-A}, {A-B, C-D, D-A}, {A-B, B-C, D-A}, {A-B, B-C, C-D}의 4개.</p>
+    <ul>
+      <li><strong>개수 경계</strong>: 간선 2개로는 정점 4개를 이을 수 없고(최대 3개 정점), 간선 4개를 다 쓰면 사이클이 생겨요. 그래서 3개짜리만 후보이고 $\binom{4}{3}=4$개가 전부예요.</li>
+      <li><strong>중복 없음</strong>: 네 답은 빠진 간선이 서로 달라 같은 집합이 없어요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>DFS·BFS로 한두 개만 그리고 끝내면</strong>: A에서 시작한 DFS는 {A-B, B-C, C-D} 하나만 줘요. 문제는 ‘가능한 모든’ 신장 트리를 묻기 때문에 시작점·순서와 관계없이 조합을 다 세야 해요.</li>
+    <li><strong>모양이 같다고 하나로 세면</strong>: 네 답은 모두 ‘일자 경로’ 모양이지만 쓰는 간선 집합이 달라 서로 다른 신장 트리예요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>‘신장 트리를 모두’ 보면 → 정점 수로 트리 간선 수 $n-1$을 먼저 적고, 간선 조합 중 사이클 있는 것을 지운다.</li>
+    <li>대각선 A-C가 하나 더 있으면 후보 $\binom{5}{3}=10$개 중 몇 개가 신장 트리일지 세어 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>첫 줄</h4><p>정점 A~D, 간선 A-B, B-C, C-D, D-A, 트리 간선 3개.</p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p>사이클이 하나뿐이라 간선 하나를 빼면 항상 신장 트리예요.</p></div>
+  <div class="summary-group"><h4>답과 검산</h4><p>4개(A-B, B-C, C-D, D-A 중 하나씩 뺀 경로). $\binom{4}{3}=4$와 일치.</p></div>
+</div>

@@ -1,0 +1,107 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>정점 0에서 출발한 DFS와 BFS가 각각 <strong>어떤 간선을 타고 처음 방문했는지</strong>를 모아 두 신장 트리를 그려요.</p>
+  <ul>
+    <li><strong>간선 10개, 정점 8개</strong>: 트리에는 간선이 $8-1=7$개만 남고 3개는 빠져요.</li>
+    <li><strong>작은 번호 먼저</strong>: 이웃을 볼 때 항상 오름차순으로 봐요. 이 규칙 때문에 답이 하나로 정해져요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘DFS(0) spanning tree’</td><td>깊이 우선 탐색(depth-first search, DFS)의 재귀 호출과 호출 스택</td><td>미방문 이웃을 찾으면 그 간선 <code>(v, w)</code>로 바로 내려가요. 이 간선이 트리 간선이에요(<a href="정리노트_1119_Graph.html#s0-dfs-trace">정리노트 DFS 추적</a>).</td></tr>
+        <tr><td>‘BFS(0) spanning tree’</td><td>너비 우선 탐색(breadth-first search, BFS)의 큐(queue)</td><td>꺼낸 정점의 미방문 이웃을 한꺼번에 방문 표시하고 넣어요. 표시할 때 쓴 간선이 트리 간선이에요(<a href="정리노트_1119_Graph.html#s1-bfs-trace">정리노트 BFS 추적</a>).</td></tr>
+        <tr><td>‘spanning tree’</td><td>신장 트리 = 모든 정점 + 사이클 없음, 간선 $n-1$개</td><td>탐색이 끝났을 때 트리 간선이 7개인지로 검산해요(<a href="정리노트_1119_Graph.html#s3-spanning">정리노트 신장 트리</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>0: 1, 2    1: 0, 3, 4    2: 0, 5, 6    3: 1, 7
+4: 1, 7    5: 2, 7       6: 2, 7       7: 3, 4, 5, 6</code></pre>
+  <p>그림의 간선을 정점별 이웃 목록(오름차순)으로 옮겨 적고, 이 목록만 보며 추적해요.</p>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li><strong>DFS(0)</strong>: 현재 정점의 이웃을 작은 번호부터 보다가 미방문이면 즉시 그쪽으로 재귀 호출해요.
+        <div class="table-wrap"><table class="cmp">
+          <thead><tr><th>방문</th><th>트리 간선</th><th>건너뛴 이웃</th><th>호출 스택</th></tr></thead>
+          <tbody>
+            <tr><td> $0$ </td><td>시작</td><td>-</td><td>[0]</td></tr>
+            <tr><td> $1$ </td><td><b>0-1</b></td><td>-</td><td>[0, 1]</td></tr>
+            <tr><td> $3$ </td><td><b>1-3</b></td><td>0(방문함)</td><td>[0, 1, 3]</td></tr>
+            <tr><td> $7$ </td><td><b>3-7</b></td><td>1(방문함)</td><td>[0, 1, 3, 7]</td></tr>
+            <tr><td> $4$ </td><td><b>7-4</b></td><td>3(방문함)</td><td>[0, 1, 3, 7, 4]</td></tr>
+            <tr><td> $5$ </td><td><b>7-5</b></td><td>4의 이웃 1, 7 모두 방문 → 4 반환</td><td>[0, 1, 3, 7, 5]</td></tr>
+            <tr><td> $2$ </td><td><b>5-2</b></td><td>-</td><td>[0, 1, 3, 7, 5, 2]</td></tr>
+            <tr><td> $6$ </td><td><b>2-6</b></td><td>0, 5(방문함)</td><td>[0, 1, 3, 7, 5, 2, 6]</td></tr>
+          </tbody>
+        </table></div>
+        <p>6에서 7은 이미 방문했고, 돌아오면서 남은 이웃(7의 6, 1의 4, 0의 2)도 모두 방문했으니 새 간선은 없어요.</p>
+      </li>
+      <li><strong>DFS(0) 결과</strong>: 방문 순서 0, 1, 3, 7, 4, 5, 2, 6 · 트리 간선 0-1, 1-3, 3-7, 7-4, 7-5, 5-2, 2-6.
+        {{SVG:p1-dfs}}
+      </li>
+      <li><strong>BFS(0)</strong>: 큐 앞에서 하나 꺼내고, 그 정점의 미방문 이웃을 작은 번호부터 <em>모두</em> 방문 표시한 뒤 큐 뒤에 넣어요.
+        <div class="table-wrap"><table class="cmp">
+          <thead><tr><th>꺼낸 정점</th><th>새로 방문(트리 간선)</th><th>큐(앞→뒤)</th></tr></thead>
+          <tbody>
+            <tr><td>시작</td><td>0</td><td>[0]</td></tr>
+            <tr><td> $0$ </td><td><b>1 (0-1), 2 (0-2)</b></td><td>[1, 2]</td></tr>
+            <tr><td> $1$ </td><td><b>3 (1-3), 4 (1-4)</b></td><td>[2, 3, 4]</td></tr>
+            <tr><td> $2$ </td><td><b>5 (2-5), 6 (2-6)</b></td><td>[3, 4, 5, 6]</td></tr>
+            <tr><td> $3$ </td><td><b>7 (3-7)</b></td><td>[4, 5, 6, 7]</td></tr>
+            <tr><td>4, 5, 6, 7</td><td>없음(이웃 모두 방문함)</td><td>[] 종료</td></tr>
+          </tbody>
+        </table></div>
+      </li>
+      <li><strong>BFS(0) 결과</strong>: 방문 순서 0, 1, 2, 3, 4, 5, 6, 7 · 트리 간선 0-1, 0-2, 1-3, 1-4, 2-5, 2-6, 3-7. 7은 3을 꺼낼 때 먼저 표시되니 4-7, 5-7, 6-7은 빠져요.
+        {{SVG:p1-bfs}}
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: DFS(0) 트리 간선 0-1, 1-3, 3-7, 7-4, 7-5, 5-2, 2-6 / BFS(0) 트리 간선 0-1, 0-2, 1-3, 1-4, 2-5, 2-6, 3-7.</p>
+    <ul>
+      <li><strong>개수</strong>: 두 트리 모두 간선 7개 $=8-1$이고, 정점 0~7이 모두 한 번씩 등장해요.</li>
+      <li><strong>빠진 간선 확인</strong>: DFS에서 빠진 0-2, 1-4, 6-7은 각각 방문할 때 상대가 이미 방문된 간선이에요. 예를 들어 0-2를 넣으면 0-1-3-7-5-2-0 사이클이 생겨요.</li>
+      <li><strong>BFS 깊이</strong>: BFS 트리에서 7의 깊이는 3(0→1→3→7)이고, 그래프에서 0과 7 사이 최소 간선 수도 3이에요. BFS는 가까운 정점부터 방문하니 두 값이 같아야 해요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>DFS도 형제를 먼저 다 표시한다고 생각하면</strong>: 0에서 1, 2를 함께 표시해 0-2를 트리 간선으로 넣게 돼요. 실제 DFS는 1로 내려간 뒤 7, 5를 거쳐 <b>5-2</b>로 2에 도착해요.</li>
+    <li><strong>DFS가 7에서 4로 간 뒤 4의 자식으로 5를 붙이면</strong>: 4의 이웃은 1, 7뿐이라 4는 막다른 정점이에요. 5는 7로 되돌아온 뒤 7의 다음 이웃으로 방문되니 간선은 7-5예요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>그래프 그림을 보면 → 정점별 오름차순 이웃 목록부터 적는다.</li>
+    <li>DFS는 호출 스택 열, BFS는 큐 열을 만든 표로 추적하고, 끝나면 트리 간선이 $n-1$개인지 센다.</li>
+    <li>시작을 7로 바꾸면 BFS(7)의 첫 줄 큐는 무엇이 될지 적어 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>첫 줄</h4><p>오름차순 이웃 목록 0: 1, 2 / 1: 0, 3, 4 / … / 7: 3, 4, 5, 6.</p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p>DFS는 미방문 이웃으로 즉시 내려가고(스택), BFS는 꺼낸 정점의 이웃을 한꺼번에 표시해요(큐). 방문할 때 쓴 간선이 트리 간선이에요.</p></div>
+  <div class="summary-group"><h4>답과 검산</h4><p>DFS 0-1, 1-3, 3-7, 7-4, 7-5, 5-2, 2-6 / BFS 0-1, 0-2, 1-3, 1-4, 2-5, 2-6, 3-7. 둘 다 간선 7개.</p></div>
+</div>

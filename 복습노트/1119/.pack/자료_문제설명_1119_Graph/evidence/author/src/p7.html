@@ -1,0 +1,144 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>같은 그래프에서 시작 정점(3, 6)과 방법(DFS, BFS)을 바꿔 네 가지 방문 순서를 적어요.</p>
+  <ul>
+    <li><strong>인접 행렬 가정</strong>: <code>for (w = 0; w &lt; g-&gt;n; w++)</code>로 열을 0부터 보니 이웃은 항상 작은 번호부터예요.</li>
+    <li><strong>그래프 모양</strong>: 왼쪽 사이클 1-2-4-3, 다리 3-5, 오른쪽 삼각형 5-6-7, 7에 매달린 8, 9, 그리고 1에 매달린 0이에요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>(1)(2) ‘깊이 우선탐색’</td><td><code>dfs_mat</code>: 방문 표시 → 출력 → 미방문 이웃으로 재귀</td><td>호출 스택이 비워질 때까지 되돌아오며 남은 이웃을 계속 봐요(<a href="정리노트_1119_Graph.html#s0-dfs-code">정리노트 DFS 코드</a>).</td></tr>
+        <tr><td>(3)(4) ‘너비 우선탐색’</td><td><code>bfs_mat</code>: 넣을 때 표시, 큐 순서로 꺼냄</td><td>시작점에서 간선 수가 적은 정점부터 나와요(<a href="정리노트_1119_Graph.html#s1-bfs-code">정리노트 BFS 코드</a>).</td></tr>
+        <tr><td>‘인접행렬로 표현’</td><td>이웃 오름차순</td><td>같은 시점에 후보가 여럿이면 번호가 작은 쪽이 먼저예요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>0: 1          1: 0, 2, 3    2: 1, 4       3: 1, 4, 5    4: 2, 3
+5: 3, 6, 7    6: 5, 7       7: 5, 6, 8, 9 8: 7          9: 7</code></pre>
+  <p>간선 11개(0-1, 1-2, 1-3, 2-4, 3-4, 3-5, 5-6, 5-7, 6-7, 7-8, 7-9)를 이웃 목록으로 옮겼어요. 네 소문항 모두 이 목록 하나로 풀어요.</p>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="1">
+    <p>(1) DFS(3): 3의 첫 이웃 1로 내려가 왼쪽 덩어리를 다 돈 뒤 3으로 돌아와 5로 가요.</p>
+    <div class="table-wrap"><table class="cmp">
+      <thead><tr><th>방문</th><th>어디서</th><th>호출 스택</th></tr></thead>
+      <tbody>
+        <tr><td> $3$ </td><td>시작</td><td>[3]</td></tr>
+        <tr><td> $1$ </td><td>3</td><td>[3, 1]</td></tr>
+        <tr><td> $0$ </td><td>1</td><td>[3, 1, 0]</td></tr>
+        <tr><td> $2$ </td><td>1 (0에서 돌아옴)</td><td>[3, 1, 2]</td></tr>
+        <tr><td> $4$ </td><td>2</td><td>[3, 1, 2, 4]</td></tr>
+        <tr><td> $5$ </td><td>3 (4, 2, 1에서 돌아옴, 3의 4는 방문함)</td><td>[3, 5]</td></tr>
+        <tr><td> $6$ </td><td>5</td><td>[3, 5, 6]</td></tr>
+        <tr><td> $7$ </td><td>6</td><td>[3, 5, 6, 7]</td></tr>
+        <tr><td> $8$ </td><td>7</td><td>[3, 5, 6, 7, 8]</td></tr>
+        <tr><td> $9$ </td><td>7 (8에서 돌아옴)</td><td>[3, 5, 6, 7, 9]</td></tr>
+      </tbody>
+    </table></div>
+    <p>답: <strong>3, 1, 0, 2, 4, 5, 6, 7, 8, 9</strong></p>
+  </div>
+  <div data-subpart="2">
+    <p>(2) DFS(6): 6의 이웃 5, 7 중 5부터. 5에서는 3이 7보다 작으니 왼쪽 덩어리를 먼저 다 돌아요.</p>
+    <div class="table-wrap"><table class="cmp">
+      <thead><tr><th>방문</th><th>어디서</th><th>호출 스택</th></tr></thead>
+      <tbody>
+        <tr><td> $6$ </td><td>시작</td><td>[6]</td></tr>
+        <tr><td> $5$ </td><td>6</td><td>[6, 5]</td></tr>
+        <tr><td> $3$ </td><td>5</td><td>[6, 5, 3]</td></tr>
+        <tr><td> $1$ </td><td>3</td><td>[6, 5, 3, 1]</td></tr>
+        <tr><td> $0$ </td><td>1</td><td>[6, 5, 3, 1, 0]</td></tr>
+        <tr><td> $2$ </td><td>1 (0에서 돌아옴)</td><td>[6, 5, 3, 1, 2]</td></tr>
+        <tr><td> $4$ </td><td>2</td><td>[6, 5, 3, 1, 2, 4]</td></tr>
+        <tr><td> $7$ </td><td>5 (4, 2, 1, 3에서 돌아옴, 5의 6은 방문함)</td><td>[6, 5, 7]</td></tr>
+        <tr><td> $8$ </td><td>7</td><td>[6, 5, 7, 8]</td></tr>
+        <tr><td> $9$ </td><td>7 (8에서 돌아옴)</td><td>[6, 5, 7, 9]</td></tr>
+      </tbody>
+    </table></div>
+    <p>답: <strong>6, 5, 3, 1, 0, 2, 4, 7, 8, 9</strong></p>
+  </div>
+  <div data-subpart="3">
+    <p>(3) BFS(3)</p>
+    <div class="table-wrap"><table class="cmp">
+      <thead><tr><th>꺼낸 정점</th><th>새로 방문</th><th>큐(앞→뒤)</th></tr></thead>
+      <tbody>
+        <tr><td>시작</td><td>3</td><td>[3]</td></tr>
+        <tr><td> $3$ </td><td><b>1, 4, 5</b></td><td>[1, 4, 5]</td></tr>
+        <tr><td> $1$ </td><td><b>0, 2</b></td><td>[4, 5, 0, 2]</td></tr>
+        <tr><td> $4$ </td><td>없음</td><td>[5, 0, 2]</td></tr>
+        <tr><td> $5$ </td><td><b>6, 7</b></td><td>[0, 2, 6, 7]</td></tr>
+        <tr><td>0, 2, 6</td><td>없음</td><td>[7]</td></tr>
+        <tr><td> $7$ </td><td><b>8, 9</b></td><td>[8, 9]</td></tr>
+        <tr><td>8, 9</td><td>없음</td><td>[] 종료</td></tr>
+      </tbody>
+    </table></div>
+    <p>답: <strong>3, 1, 4, 5, 0, 2, 6, 7, 8, 9</strong></p>
+  </div>
+  <div data-subpart="4">
+    <p>(4) BFS(6)</p>
+    <div class="table-wrap"><table class="cmp">
+      <thead><tr><th>꺼낸 정점</th><th>새로 방문</th><th>큐(앞→뒤)</th></tr></thead>
+      <tbody>
+        <tr><td>시작</td><td>6</td><td>[6]</td></tr>
+        <tr><td> $6$ </td><td><b>5, 7</b></td><td>[5, 7]</td></tr>
+        <tr><td> $5$ </td><td><b>3</b></td><td>[7, 3]</td></tr>
+        <tr><td> $7$ </td><td><b>8, 9</b></td><td>[3, 8, 9]</td></tr>
+        <tr><td> $3$ </td><td><b>1, 4</b></td><td>[8, 9, 1, 4]</td></tr>
+        <tr><td>8, 9</td><td>없음</td><td>[1, 4]</td></tr>
+        <tr><td> $1$ </td><td><b>0, 2</b></td><td>[4, 0, 2]</td></tr>
+        <tr><td>4, 0, 2</td><td>없음</td><td>[] 종료</td></tr>
+      </tbody>
+    </table></div>
+    <p>답: <strong>6, 5, 7, 3, 8, 9, 1, 4, 0, 2</strong></p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="1">
+    <p>(1) 3, 1, 0, 2, 4, 5, 6, 7, 8, 9 — 정점 10개가 한 번씩 나오고, 이웃한 두 방문 사이마다 ‘어디서’ 열의 정점과 간선이 있어요(예: 4 다음 5는 3-5).</p>
+  </div>
+  <div data-subpart="2">
+    <p>(2) 6, 5, 3, 1, 0, 2, 4, 7, 8, 9 — 7이 4 뒤에 나오는 이유: 5의 이웃 3이 7보다 먼저라 3에서 시작한 호출이 끝나야 7을 봐요.</p>
+  </div>
+  <div data-subpart="3">
+    <p>(3) 3, 1, 4, 5, 0, 2, 6, 7, 8, 9 — 3에서의 거리로 묶으면 1층 {1, 4, 5}, 2층 {0, 2, 6, 7}, 3층 {8, 9}이고 답이 층 순서를 지켜요.</p>
+  </div>
+  <div data-subpart="4">
+    <p>(4) 6, 5, 7, 3, 8, 9, 1, 4, 0, 2 — 6에서의 거리: 1층 {5, 7}, 2층 {3, 8, 9}, 3층 {1, 4}, 4층 {0, 2}. 2층 안에서 3이 8, 9보다 앞선 것은 5가 7보다 먼저 꺼내졌기 때문이에요.</p>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>DFS(6)에서 가까운 7을 먼저 끝내려 하면</strong>: 6, 5, 7, 8, 9, …가 나와요. 5에서 3이 7보다 작으니 5의 호출은 3쪽을 먼저 끝까지 내려가야 해요.</li>
+    <li><strong>BFS(6)에서 6과 바로 붙은 7 쪽을 먼저 펼치면</strong>: 6, 5, 7, 8, 9, 3, …처럼 8, 9가 3보다 앞서요. 큐는 [5, 7]이라 5를 먼저 꺼내 3을 넣고, 그다음 7을 꺼내 8, 9를 넣으니 2층 순서는 3, 8, 9예요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>시작 정점만 바뀐 문제를 보면 → 이웃 목록은 한 번만 적고, 소문항마다 스택/큐 표를 새로 만든다.</li>
+    <li>BFS 답을 쓰면 → 시작점에서의 거리별로 묶어 층 순서가 지켜지는지 확인한다.</li>
+    <li>정점 0에서 DFS를 하면 5는 몇 번째로 방문될지 예상해 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>첫 줄</h4><p>이웃 목록 1: 0, 2, 3 / 3: 1, 4, 5 / 5: 3, 6, 7 / 7: 5, 6, 8, 9 ….</p></div>
+  <div class="summary-group"><h4>답</h4><p>DFS(3) 3, 1, 0, 2, 4, 5, 6, 7, 8, 9 / DFS(6) 6, 5, 3, 1, 0, 2, 4, 7, 8, 9 / BFS(3) 3, 1, 4, 5, 0, 2, 6, 7, 8, 9 / BFS(6) 6, 5, 7, 3, 8, 9, 1, 4, 0, 2.</p></div>
+  <div class="summary-group"><h4>검산</h4><p>DFS는 작은 이웃 쪽 덩어리를 끝까지 돈 뒤 복귀, BFS는 거리 층 순서 유지. 네 경우 모두 10개 정점을 한 번씩 방문해요.</p></div>
+</div>

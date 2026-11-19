@@ -1,0 +1,68 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>간선마다 비용·가중치 값이 붙은 그래프의 이름을 빈칸에 써요.</p>
+  <ul>
+    <li><strong>단서</strong>: ‘간선에’ 값이 붙어요. 정점에 붙은 값이 아니에요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 개념</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘간선에 비용이나 가중치’</td><td>가중치(weight)와 가중치 그래프(weighted graph)</td><td>간선이 ‘이어짐’ 여부 대신 길이·비용 같은 값을 가지면 이 이름을 써요. 교과서는 네트워크(network)라고도 불러요.</td></tr>
+        <tr><td>‘비용’</td><td>최소 비용 신장 트리(MST)의 비용</td><td>수업에서 MST는 간선 가중치의 합이 가장 작은 신장 트리라고 했어요(<a href="정리노트_1119_Graph.html#s3-mst">정리노트 MST</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>보통 그래프 인접 행렬:  adj[0][1] = 1   (이어져 있음)
+값이 붙은 간선:        adj[0][1] = 7   (도로 길이 7)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ul>
+      <li>보통 그래프의 간선은 두 정점이 이어져 있는지(인접 행렬의 0/1)만 알려 줘요.</li>
+      <li>도로 길이·전선 길이·통신 비용처럼 간선마다 값을 붙이면 그 값이 가중치이고, 이런 그래프가 <strong>가중치 그래프</strong>예요. 인접 행렬에는 1 대신 가중치를 적어요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: 가중치 그래프(weighted graph, 네트워크)</p>
+    <ul>
+      <li><strong>정의에 대입</strong>: 수업의 MST 용도(도로 건설, 전기회로, 통신, 배관)에서 도로 길이 같은 값은 모두 간선에 붙어 있고, MST의 ‘비용’은 그 값의 합이에요. 빈칸 정의와 일치해요.</li>
+      <li><strong>인접 행렬로 확인</strong>: 간선 0-1의 길이가 7이면 <code>adj[0][1] = adj[1][0] = 7</code>이 돼요. 0/1만 있는 행렬로는 이 정보를 담을 수 없어요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>‘방향 그래프’와 섞으면</strong>: 방향 그래프는 간선에 화살표 방향이 있을 뿐 값이 없어요. 값이 붙은 무방향 간선(도로 길이)도 가중치 그래프예요. 두 성질은 따로예요.</li>
+    <li><strong>‘신장 트리’라고 쓰면</strong>: 신장 트리는 그래프의 부분 그래프 이름이에요. 문제는 그래프 자체의 종류를 묻고 있어요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>‘간선에 값’이 보이면 → 가중치 그래프, 인접 행렬에 1 대신 값을 적는 모습을 떠올린다.</li>
+    <li>‘간선에 방향’이 보이면 어떤 이름이 맞는지 스스로 구분해 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>핵심 개념</h4><p>간선에 비용·가중치가 붙은 그래프 = 가중치 그래프(네트워크).</p></div>
+  <div class="summary-group"><h4>검산</h4><p>인접 행렬에 1 대신 가중치를 적고, MST의 비용은 이 값의 합이에요.</p></div>
+</div>

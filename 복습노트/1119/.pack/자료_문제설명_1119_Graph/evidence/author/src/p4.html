@@ -1,0 +1,107 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>6×6 인접 행렬을 받아 그래프가 연결되어 있으면 <code>'y'</code>, 아니면 <code>'n'</code>을 돌려주는 함수 본문을 채워요.</p>
+  <ul>
+    <li><strong>연결 그래프(connected graph)</strong>: 모든 정점 쌍 사이에 경로가 있어요. 한 정점에서 출발해 모두 닿으면 충분해요.</li>
+    <li><strong>채점 예시</strong>: {0, 1, 2, 5}와 {3, 4}로 나뉜 그래프는 <code>'n'</code>이어야 해요.</li>
+    <li><strong>원본 모범답안 주의</strong>: 공지된 모범답안은 레벨 카운터를 노드마다 0으로 되돌려, 막다른 정점이 레벨 끝에 오면 탐색을 일찍 멈춰요. 아래 해설은 큐 BFS로 고친 답을 써요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘연결 그래프이면 y’</td><td>연결 성분(connected component): 탐색 한 번이 성분 하나를 전부 방문</td><td>0에서 한 번 탐색해 방문한 수가 6이면 성분이 하나뿐이에요(<a href="정리노트_1119_Graph.html#s2-components">정리노트 연결 성분</a>).</td></tr>
+        <tr><td>‘인접 행렬’ <code>adj_matrix[v][j]</code></td><td>행 <code>v</code>를 <code>j = 0..5</code>로 훑어 이웃 찾기</td><td><code>adj_matrix[v][j] &amp;&amp; !visited[j]</code>가 강의의 <code>bfs_mat</code> 조건과 같아요.</td></tr>
+        <tr><td>탐색 도구 선택</td><td>큐 BFS(또는 재귀 DFS)</td><td>각 정점이 큐에 한 번만 들어가니 크기 <code>MAX_SIZE</code> 배열 큐로 충분해요(<a href="정리노트_1119_Graph.html#s1-bfs-code">정리노트 BFS 코드</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>int queue[MAX_SIZE], visited[MAX_SIZE] = { 0 };
+int front = 0, rear = 0, v, j, count = 0;
+queue[rear++] = 0;
+visited[0] = 1;</code></pre>
+  <p>정점 0을 큐에 넣고 방문 표시하는 것이 첫 동작이에요.</p>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ol>
+      <li><strong>꺼낼 때마다 센다</strong>: 큐에서 하나 꺼낼 때 <code>count++</code>. 각 정점은 한 번만 들어가니 <code>count</code>는 0에서 도달한 정점 수가 돼요.</li>
+      <li><strong>넣을 때 표시한다</strong>: 행 <code>adj_matrix[v]</code>에서 미방문 이웃 <code>j</code>를 찾으면 <code>visited[j] = 1</code> 후 큐에 넣어요.</li>
+      <li><strong>판정</strong>: 큐가 빌 때 <code>count == MAX_SIZE</code>이면 <code>'y'</code>, 아니면 <code>'n'</code>.</li>
+    </ol>
+    <pre><code>char connected_graph( int adj_matrix[MAX_SIZE][MAX_SIZE] ) {
+    int queue[MAX_SIZE], visited[MAX_SIZE] = { 0 };
+    int front = 0, rear = 0, v, j, count = 0;
+    queue[rear++] = 0;
+    visited[0] = 1;
+    while (front &lt; rear) {
+        v = queue[front++];
+        count++;
+        for (j = 0; j &lt; MAX_SIZE; j++)
+            if (adj_matrix[v][j] &amp;&amp; !visited[j]) {
+                visited[j] = 1;
+                queue[rear++] = j;
+            }
+    }
+    return (count == MAX_SIZE) ? 'y' : 'n';
+}</code></pre>
+    <p>간선 0-1, 0-2, 1-3, 3-4, 4-5 그래프를 따라가면 이래요.</p>
+    <div class="table-wrap"><table class="cmp">
+      <thead><tr><th>꺼낸 v</th><th>count</th><th>새로 넣은 정점</th><th>큐(앞→뒤)</th></tr></thead>
+      <tbody>
+        <tr><td> $0$ </td><td> $1$ </td><td>1, 2</td><td>[1, 2]</td></tr>
+        <tr><td> $1$ </td><td> $2$ </td><td>3</td><td>[2, 3]</td></tr>
+        <tr><td> $2$ </td><td> $3$ </td><td>없음(막다른 정점)</td><td>[3]</td></tr>
+        <tr><td> $3$ </td><td> $4$ </td><td>4</td><td>[4]</td></tr>
+        <tr><td> $4$ </td><td> $5$ </td><td>5</td><td>[5]</td></tr>
+        <tr><td> $5$ </td><td> $6$ </td><td>없음</td><td>[] → <b>'y'</b></td></tr>
+      </tbody>
+    </table></div>
+    <p>DFS로 써도 돼요. <code>visited</code>를 채우는 재귀 함수를 0에서 한 번 부르고 표시된 정점 수를 세어 같은 방식으로 판정해요.</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: 위 큐 BFS 함수. 0에서 도달한 정점 수가 6이면 <code>'y'</code>, 아니면 <code>'n'</code>.</p>
+    <ul>
+      <li><strong>실행 결과</strong>: <code>cc -std=c11 -Wall</code>로 실행하면 0-1, 0-2, 1-3, 3-4, 4-5 그래프는 <code>Graph is connected?(y/n): y</code>, 0-1, 1-2 / 3-4, 4-5로 나뉜 그래프는 <code>n</code>, 채점 예시({0, 1, 2, 5} / {3, 4})도 <code>n</code>이에요.</li>
+      <li><strong>경계값</strong>: 간선이 하나도 없으면 0만 꺼내져 <code>count = 1 ≠ 6</code> → <code>'n'</code>. 경로 0-1-2-3-4-5처럼 최소 간선 5개로 이어진 경우는 <code>count = 6</code> → <code>'y'</code>.</li>
+      <li><strong>원본 모범답안과 비교</strong>: 같은 0-1, 0-2, 1-3, 3-4, 4-5 입력에서 원본 코드는 레벨 1의 마지막 정점 2가 새 이웃이 없어 <code>level_nodes_count = 0</code>이 되고 반복이 끝나 <code>'n'</code>을 내요. 정답은 <code>'y'</code>예요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>레벨 카운터를 정점마다 0으로 되돌리면</strong>: 다음 레벨 정점 수가 ‘그 레벨 마지막 정점이 넣은 수’로 덮여요. 위 그래프에서 3이 다음 레벨에 있는데도 마지막 정점 2가 0개를 넣어 탐색이 멈추고 <code>'n'</code>이 나와요.</li>
+    <li><strong>행마다 1이 하나 이상 있으면 연결이라고 판단하면</strong>: 0-1-2 삼각형과 3-4-5 삼각형은 모든 정점의 차수가 2인데도 두 덩어리라 <code>'n'</code>이어야 해요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>‘연결인지 판정’을 보면 → 한 정점에서 탐색 한 번 + 방문 수 세기를 먼저 적는다.</li>
+    <li>큐 BFS를 쓰면 → ‘넣을 때 표시’와 ‘꺼낼 때 count++’ 두 줄 위치를 확인한다.</li>
+    <li>정점 0이 고립된 그래프(나머지 1~5는 연결)에서 함수가 무엇을 반환할지 표로 따라가 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>첫 줄</h4><p><code>queue[rear++] = 0; visited[0] = 1;</code></p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p>0에서 BFS 한 번, 꺼낼 때 count++, 넣을 때 방문 표시. <code>count == MAX_SIZE</code>이면 'y'.</p></div>
+  <div class="summary-group"><h4>검산과 주의</h4><p>0-1, 0-2, 1-3, 3-4, 4-5 → y, 두 덩어리 → n. 원본 모범답안은 레벨 카운터 초기화 때문에 이 연결 그래프에 n을 내요.</p></div>
+</div>

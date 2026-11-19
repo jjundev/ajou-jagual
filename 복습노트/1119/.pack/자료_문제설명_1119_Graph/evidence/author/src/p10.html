@@ -1,0 +1,79 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p><code>find_connected_component(g)</code>를 한 번 호출했을 때의 (a) 출력 순서, (b) 최종 <code>visited[0..7]</code>, (c) 최종 <code>count</code>와 그 의미를 구해요.</p>
+  <ul>
+    <li><strong>바뀐 한 줄</strong>: <code>dfs_mat</code>이 방문 표시로 1(TRUE) 대신 <code>count</code>를 적어요(<code>visited[v] = count;</code>).</li>
+    <li><strong>그래프</strong>: 간선 (0,2), (0,5), (1,3), (2,5), (3,6), (4,6), 정점 7은 간선 없음. 전역 <code>visited</code>와 <code>count</code>는 처음에 0이에요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td><code>for(i=0; i&lt;g-&gt;n; i++) if(!visited[i])</code></td><td>연결 성분(connected component) 세기</td><td>DFS 한 번이 성분 하나를 통째로 방문하니, 새 DFS를 시작하는 횟수가 성분 수예요(<a href="정리노트_1119_Graph.html#s2-components">정리노트 연결 성분</a>).</td></tr>
+        <tr><td><code>visited[v] = count;</code></td><td>성분 번호표</td><td>같은 DFS 안에서는 <code>count</code>가 변하지 않으니 한 성분의 정점이 모두 같은 번호를 받아요.</td></tr>
+        <tr><td><code>!visited[w]</code></td><td>0이면 미방문</td><td><code>count</code>는 <code>dfs_mat</code>을 부르기 전에 1 이상이 되므로, 0이 아닌 값은 모두 ‘방문함’이에요.</td></tr>
+        <tr><td><code>w = 0..n-1</code> 순회</td><td>인접 행렬 DFS의 이웃 오름차순</td><td>출력 순서(a)를 정해요(<a href="정리노트_1119_Graph.html#s0-dfs-code">정리노트 DFS 코드</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>0: 2, 5    1: 3    2: 0, 5    3: 1, 6    4: 6    5: 0, 2    6: 3, 4    7: (없음)
+i=0: visited[0]==0 → count=1, dfs_mat(g,0)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div class="table-wrap"><table class="cmp">
+    <thead><tr><th>단계</th><th>일어나는 일</th><th>출력 누적</th><th>visited[0..7]</th></tr></thead>
+    <tbody>
+      <tr><td>i=0</td><td>count=1, <code>dfs_mat(g,0)</code></td><td>0</td><td>1 0 0 0 0 0 0 0</td></tr>
+      <tr><td>0의 이웃</td><td>w=2 미방문 → <code>dfs_mat(g,2)</code></td><td>0 2</td><td>1 0 1 0 0 0 0 0</td></tr>
+      <tr><td>2의 이웃</td><td>0 방문함, w=5 → <code>dfs_mat(g,5)</code></td><td>0 2 5</td><td>1 0 1 0 0 1 0 0</td></tr>
+      <tr><td>복귀</td><td>5의 0, 2 방문함 → 반환, 0의 w=5도 방문함</td><td>0 2 5</td><td>1 0 1 0 0 1 0 0</td></tr>
+      <tr><td>i=1</td><td>미방문 → count=2, <code>dfs_mat(g,1)</code></td><td>0 2 5 1</td><td>1 2 1 0 0 1 0 0</td></tr>
+      <tr><td>1→3→6</td><td>3의 이웃 1 방문함, 6 → <code>dfs_mat(g,6)</code></td><td>0 2 5 1 3 6</td><td>1 2 1 2 0 1 2 0</td></tr>
+      <tr><td>6→4</td><td>6의 3 방문함, w=4 → <code>dfs_mat(g,4)</code></td><td>0 2 5 1 3 6 4</td><td>1 2 1 2 2 1 2 0</td></tr>
+      <tr><td>i=2..6</td><td>모두 0이 아니라 건너뜀</td><td>0 2 5 1 3 6 4</td><td>1 2 1 2 2 1 2 0</td></tr>
+      <tr><td>i=7</td><td>미방문 → count=3, <code>dfs_mat(g,7)</code>, 이웃 없음</td><td>0 2 5 1 3 6 4 7</td><td>1 2 1 2 2 1 2 3</td></tr>
+    </tbody>
+  </table></div>
+  <div data-subpart="a"><p>(a) 출력은 <strong>0 2 5 1 3 6 4 7</strong>이에요. 성분마다 DFS 방문 순서대로 찍혀요.</p></div>
+  <div data-subpart="b"><p>(b) <strong>visited = [1, 2, 1, 2, 2, 1, 2, 3]</strong>이에요. 정점 0, 2, 5는 성분 1, 정점 1, 3, 4, 6은 성분 2, 정점 7은 성분 3이에요.</p></div>
+  <div data-subpart="c"><p>(c) <strong>count = 3</strong>이에요. 연결 성분이 3개라는 뜻이고, 간선이 없는 정점 7도 혼자서 하나의 연결 성분이에요.</p></div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="a"><p>(a) 0 2 5 1 3 6 4 7 — 정점 8개가 한 번씩 나와요. 출력을 count가 바뀌는 곳에서 끊으면 0 2 5 | 1 3 6 4 | 7이고, 각 묶음의 정점이 (b)에서 같은 번호(1, 2, 3)를 받아요. 같은 두 함수에 선언·main을 붙여 <code>cc -std=c11 -Wall</code>로 실행해도 출력이 같아요.</p></div>
+  <div data-subpart="b"><p>(b) [1, 2, 1, 2, 2, 1, 2, 3] — 간선 6개의 양 끝이 모두 같은 번호예요: (0,2)=1·1, (0,5)=1·1, (2,5)=1·1, (1,3)=2·2, (3,6)=2·2, (4,6)=2·2. 번호가 다른 정점 사이에 간선이 없으니 성분 구분이 맞아요.</p></div>
+  <div data-subpart="c"><p>(c) count = 3 — <code>visited</code>의 최댓값 3과 같고, 성분 크기 $3+4+1=8$이 정점 수와 맞아요. 수업 예제(간선 (0,1), (0,2), (3,4))의 count = 2와 같은 방식이에요.</p></div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong><code>count</code>를 DFS 안에서 올린다고 착각하면</strong>: 방문할 때마다 번호가 커져 visited가 [1, 4, 2, 5, 7, 3, 6, 8]처럼 방문 순서 번호가 돼요. <code>count++</code>는 바깥 for 문에만 있어서 새 DFS를 시작할 때만 커져요.</li>
+    <li><strong>간선 없는 정점 7을 성분에서 빼면</strong>: count를 2로 답하게 돼요. 정점 하나도 최대로 연결된 부분 그래프라서 성분 하나예요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li><code>visited[i] = count</code> 코드를 보면 → count가 증가하는 위치(바깥 for 문)부터 표시한다.</li>
+    <li>간선 (5, 7)을 추가하면 (a)~(c)가 어떻게 바뀔지 표로 다시 따라가 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>첫 줄</h4><p>이웃 목록 0: 2, 5 / 1: 3 / … / 7: 없음, i=0에서 count=1, dfs_mat(g,0).</p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p>count는 새 DFS를 시작할 때만 1 커지고, DFS 한 번이 한 성분 전체에 같은 번호를 적어요.</p></div>
+  <div class="summary-group"><h4>답과 검산</h4><p>(a) 0 2 5 1 3 6 4 7 (b) [1, 2, 1, 2, 2, 1, 2, 3] (c) count = 3, 성분 3개. 모든 간선 양 끝 번호가 같아요.</p></div>
+</div>

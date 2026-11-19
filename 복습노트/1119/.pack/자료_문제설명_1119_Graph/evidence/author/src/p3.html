@@ -1,0 +1,77 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>주어진 인접 리스트를 그대로 써서 정점 0부터 BFS를 할 때 정점이 방문되는 순서를 적어요.</p>
+  <ul>
+    <li><strong>인접 리스트 순서 = 이웃을 보는 순서</strong>: 1의 리스트는 0 → 5 → 2라서 5를 2보다 먼저 봐요.</li>
+    <li><strong>무방향 그래프</strong>: 간선마다 양쪽 리스트에 한 번씩 들어 있어요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 도구</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘breadth-first-search’</td><td>BFS: 큐에서 꺼내고, 미방문 이웃을 방문 표시 후 enqueue</td><td>시작점에서 가까운 층부터 방문 순서가 정해져요(<a href="정리노트_1119_Graph.html#s1-bfs-code">정리노트 BFS 코드</a>).</td></tr>
+        <tr><td>‘인접 리스트(adjacency list)’</td><td><code>for (w = g-&gt;adj_list[v]; w; w = w-&gt;link)</code></td><td>이웃을 번호순이 아니라 <em>리스트에 연결된 순서</em>로 꺼내요.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>visited: 0      큐: [0]      방문 순서: 0</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <div class="table-wrap"><table class="cmp">
+      <thead><tr><th>단계</th><th>꺼낸 정점과 리스트</th><th>새로 방문</th><th>큐(앞→뒤)</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>0: 1 → 5</td><td><b>1, 5</b></td><td>[1, 5]</td></tr>
+        <tr><td>2</td><td>1: 0 → 5 → 2</td><td><b>2</b> (0은 방문, 5는 이미 표시)</td><td>[5, 2]</td></tr>
+        <tr><td>3</td><td>5: 0 → 1 → 3 → 4</td><td><b>3, 4</b></td><td>[2, 3, 4]</td></tr>
+        <tr><td>4</td><td>2: 1 → 3</td><td>없음</td><td>[3, 4]</td></tr>
+        <tr><td>5</td><td>3: 2 → 4 → 5</td><td>없음</td><td>[4]</td></tr>
+        <tr><td>6</td><td>4: 3 → 5</td><td>없음</td><td>[] 종료</td></tr>
+      </tbody>
+    </table></div>
+    <p>방문 순서는 <strong>0, 1, 5, 2, 3, 4</strong>예요.</p>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: 노드 방문순서 : 0, 1, 5, 2, 3, 4</p>
+    <ul>
+      <li><strong>층 확인</strong>: 0에서 간선 1개 거리인 정점은 1, 5이고, 2개 거리는 2(0-1-2), 3(0-5-3), 4(0-5-4)예요. 답에서 1, 5가 2, 3, 4보다 앞에 있으니 BFS 층 순서와 맞아요.</li>
+      <li><strong>개수</strong>: 정점 6개가 한 번씩, 큐에 들어간 횟수도 6번이에요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>DFS처럼 이웃으로 바로 내려가면</strong>: 리스트 순서대로 깊이 들어가 0, 1, 5, 3, 2, 4가 나와요. BFS는 거리 1층(1, 5)을 다 꺼낸 뒤 1의 리스트에서 2를 먼저 표시하니 2가 3보다 앞선 0, 1, 5, 2, 3, 4예요.</li>
+    <li><strong>꺼낼 때 방문 표시를 하면</strong>: 1을 꺼낼 때 5가 아직 ‘미방문’으로 보여 큐에 5가 두 번 들어가요. 넣을 때 표시해야 중복이 없어요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>인접 리스트가 주어지면 → 번호를 정렬하지 말고 리스트 순서 그대로 이웃을 본다.</li>
+    <li>같은 리스트로 정점 3에서 BFS를 하면 첫 층은 어떤 순서일지 적어 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>첫 줄</h4><p>visited 0, 큐 [0].</p></div>
+  <div class="summary-group"><h4>핵심 판단</h4><p>리스트 순서대로 이웃을 보고, 넣을 때 방문 표시해요. 5는 0에서 이미 표시돼 1의 리스트에서 건너뛰어요.</p></div>
+  <div class="summary-group"><h4>답과 검산</h4><p>0, 1, 5, 2, 3, 4. 거리 1층(1, 5) 뒤에 거리 2층(2, 3, 4).</p></div>
+</div>

@@ -1,0 +1,71 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>핵심 조건과 구할 것</h4>
+  <p>네 알고리즘 중 큐(queue)를 사용하는 것 <strong>하나</strong>를 고르는 긍정형 단일 선택 문제예요.</p>
+  <ul>
+    <li><strong>판단 기준</strong>: 들어온 순서대로 꺼내는 선입선출(FIFO) 큐가 알고리즘의 중심 자료구조인지 봐요.</li>
+    <li>③·④는 다음 장(그래프 II)에서 배울 내용이라, 이번 범위에서는 ‘큐를 쓴다고 배운 탐색’으로 판단해요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <div class="table-wrap">
+    <table class="cmp">
+      <thead><tr><th>문제 단서</th><th>꺼낼 개념</th><th>이 문제에 쓰는 이유</th></tr></thead>
+      <tbody>
+        <tr><td>‘깊이 우선 탐색’</td><td>재귀 호출 = 스택(stack, LIFO)</td><td>가장 최근에 들어간 정점에서 계속 내려가요(<a href="정리노트_1119_Graph.html#s0-dfs-code">정리노트 DFS 코드</a>).</td></tr>
+        <tr><td>‘너비 우선 탐색’</td><td><code>enqueue</code>/<code>dequeue</code> = 큐(FIFO)</td><td>먼저 발견한 가까운 정점부터 처리해야 해서 큐가 필요해요(<a href="정리노트_1119_Graph.html#s1-compare">정리노트 DFS·BFS 비교</a>).</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="start">
+  <h4>종이에 쓰는 실제 첫 줄</h4>
+  <pre><code>bfs_mat:  enqueue(&amp;q, v);  ...  v = dequeue(&amp;q);   → 큐
+dfs_mat:  dfs_mat(g, w);                            → 재귀(스택)</code></pre>
+</div>
+
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <ul>
+      <li><strong>① 깊이 우선 탐색 — 아님</strong>: 재귀 호출로 구현하고, 재귀는 내부적으로 스택을 써요. 수업에서도 “DFS는 재귀가 스택을 알아서 써 준다”고 했어요.</li>
+      <li><strong>② 너비 우선 탐색 — 정답</strong>: 방문한 정점을 <code>enqueue</code>하고, <code>dequeue</code>한 정점의 이웃을 다시 넣어 먼저 들어온 정점부터 처리해요. 수업에서 BFS의 큐는 직접 설계해야 한다고 강조했어요.</li>
+      <li><strong>③ 최단 거리 알고리즘 — 아님</strong>: 아직 배우지 않은 다음 장 내용이에요. (보충, 교과서 11장) 기본 구현은 매 단계 거리 값이 가장 작은 정점을 골라 확정하는 방식이라, 들어온 순서대로 꺼내는 FIFO 큐가 중심이 아니에요.</li>
+      <li><strong>④ 최소 비용 신장 트리 — 아님</strong>: 자세한 과정은 다음 시간에 배워요. 수업에서는 MST를 찾는 알고리즘이 매 순간 가장 좋아 보이는 것(여기서는 비용이 싼 것)을 고르는 탐욕적 방법(greedy method)이라고만 했어요. 고르는 기준이 ‘비용’이지 ‘들어온 순서’가 아니라서 FIFO 큐가 중심이 아니에요(<a href="정리노트_1119_Graph.html#s3-greedy">정리노트 그리디</a>).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p><strong>완성 답</strong>: ② 너비 우선 탐색</p>
+    <ul>
+      <li><strong>작은 예로 교차검산</strong>: 0의 이웃이 1, 2이고 1의 이웃이 3인 그래프에서 FIFO 큐로 꺼내면 0, 1, 2, 3(층 순서 = BFS)이고, 같은 정점을 스택(LIFO)으로 꺼내면 0, 2, …처럼 마지막에 넣은 것부터 깊이 들어가요. 큐는 BFS 순서만 만들어요.</li>
+      <li><strong>소거 확인</strong>: ①은 스택, ③·④는 최솟값 선택이 중심이라 남는 보기는 ② 하나예요.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer warn" data-explanation="pitfall">
+  <h4>오해하기 쉬운 이유와 반례</h4>
+  <ul>
+    <li><strong>‘탐색이니 둘 다 큐’라고 생각하면</strong>: DFS를 큐로 바꾸면 위 예에서 방문 순서가 0, 1, 2, 3으로 BFS와 같아져 DFS가 아니게 돼요.</li>
+    <li><strong>이름에 ‘큐’가 들어간 우선순위 큐(9장)를 떠올리면</strong>: 우선순위 큐는 값이 작은(또는 큰) 것부터 꺼내는 다른 자료구조예요. 이 문제의 큐는 들어온 순서대로 꺼내는 FIFO 큐로 읽어요.</li>
+  </ul>
+</div>
+
+<div class="layer formal" data-explanation="retry">
+  <h4>해설을 닫고 스스로 확인해요</h4>
+  <ol>
+    <li>‘어떤 자료구조를 쓰나’ 문제를 보면 → 각 알고리즘이 다음에 처리할 대상을 ‘먼저 들어온 것 / 나중에 들어온 것 / 가장 작은 것’ 중 무엇으로 고르는지 적는다.</li>
+    <li>DFS를 재귀 없이 쓰면 어떤 자료구조가 필요할지 말해 보세요.</li>
+  </ol>
+</div>
+
+<div class="sum" hidden>
+  <div class="summary-group"><h4>핵심 개념</h4><p>BFS = 큐(FIFO), DFS = 재귀(스택, LIFO).</p></div>
+  <div class="summary-group"><h4>판단과 소거</h4><p>답 ②. ①은 스택, ③·④(다음 장)는 최솟값을 고르는 방식이 중심이라 FIFO 큐가 아니에요.</p></div>
+</div>
