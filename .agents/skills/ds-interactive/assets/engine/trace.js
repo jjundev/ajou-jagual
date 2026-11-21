@@ -1,6 +1,6 @@
 (function(root){
  'use strict';
- const api=typeof module!=='undefined'&&module.exports?{...require('./contract.js'),...require('./memory.js'),...require('./line-steps.js')}:root.DSInteractive;
+ const api=typeof module!=='undefined'&&module.exports?{...require('./contract.js'),...require('./memory.js'),...require('./line-steps.js'),...require('./tree.js')}:root.DSInteractive;
  function freeze(x){if(x&&typeof x==='object'){Object.freeze(x);for(const v of Object.values(x))freeze(v);}return x;}
  function compileScenario(s,input,limits={}){
   const issues=api.validateInput(s.inputs,input);if(issues.length)throw Object.assign(new Error(issues.map(x=>x.message).join(' ')),{code:'INPUT_INVALID',issues});
@@ -20,7 +20,11 @@
   }
   const trace={version:1,id:s.id,title:s.title,kind:s.kind,sources,inputs:structuredClone(input),presets:structuredClone(s.presets),snapshots,metadata:{supplement:s.supplement||'',addressModel:'기호 주소 · 실제 ABI 배치 아님'}};
   const structural=validateTrace(trace);if(structural.length)throw Object.assign(new Error(JSON.stringify(structural)),{code:'TRACE_INVALID',issues:structural});
-  if(s.kind==='c-tree')trace.lineSteps=api.projectLineSteps(snapshots);
+  if(s.kind==='c-tree'){
+   trace.metadata.tree=structuredClone(s.tree);
+   trace.lineSteps=api.projectLineSteps(snapshots);
+   for(const step of trace.lineSteps)api.getTreeView(trace.metadata.tree,step);
+  }
   return freeze(trace);
  }
  function validateTrace(t){
