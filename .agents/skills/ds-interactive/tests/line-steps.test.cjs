@@ -20,7 +20,7 @@ function fixture(resumeLine = 4, from = 'parent.p') {
  function* generateEvents(){
   const emit = (id, line, event) => ({lineStepId:id, at:at(line), ...event});
   yield emit('parent-test',2,{kind:'read', cellId:'parent.p'});
-  yield emit('call',3,{kind:'read', cellId:'parent.p'});
+  yield emit('call',3,{kind:'read', cellId:'parent.p', label:'호출 성공', explanation:'새 p에 주소를 복사했습니다.'});
   yield emit('call',3,{kind:'call', frame:{
    id:'child', functionId:'inorder', resumeAt:at(resumeLine),
    argumentSourceCellId:'parent.p', parameterCellId:'child.p'
@@ -64,6 +64,8 @@ test('diagnostic ends an incomplete line without presenting a partial call', () 
   const interrupted = trace.lineSteps.at(-1);
   assert.equal(interrupted.diagnostic.code,'LIMIT_REACHED');
   assert.equal(interrupted.next,null);
+  assert.equal(interrupted.title,'실행 중단');
+  assert.equal(interrupted.explanation,'이 줄을 완료하기 전에 실행이 중단되었습니다.');
   assert.equal(interrupted.state.activeFrame,'parent');
   assert.equal(interrupted.state.frames.child,undefined);
   assert.deepEqual(interrupted.writes,[]);
@@ -73,4 +75,16 @@ test('diagnostic ends an incomplete line without presenting a partial call', () 
 test('invalid resume lines and wrong bind sources cannot produce a projected trace', () => {
  assert.throws(()=>compileScenario(fixture(5),{}),{code:'LINE_STEP_INVALID'});
  assert.throws(()=>compileScenario(fixture(4,'parent.other'),{}),{code:'LINE_STEP_INVALID'});
+});
+
+test('a truncated generator cannot mark an active traversal complete', () => {
+ const scenario=fixture();
+ const generate=scenario.generateEvents;
+ scenario.generateEvents=function*(){
+  for(const event of generate()){
+   if(event.kind==='return')return;
+   yield event;
+  }
+ };
+ assert.throws(()=>compileScenario(scenario,{}),{code:'LINE_STEP_INVALID'});
 });

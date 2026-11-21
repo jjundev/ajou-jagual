@@ -36,23 +36,26 @@ def check_tree_case(page, width, height):
         return page.locator(f'[data-node-id="node-{node_id}"]')
 
     output = page.locator('.stdout-value')
+    lesson = page.evaluate("DSInteractive.scenario.id") == 'inorder-1105'
+    cases = action('preset').locator('option').evaluate_all('(options)=>options.map(option=>option.value)')
+    expected_outputs = {'default': '1 3 8 10 ', 'lecture': '3 7 12 18 26 27 31 ', 'empty': ''}
     total = 0
-    for case, final_output, keys in [
-        ('default', '1 3 8 10 ', [1, 3, 8, 10]),
-        ('lecture', '3 7 12 18 26 27 31 ', [3, 7, 12, 18, 26, 27, 31]),
-        ('empty', '', []),
-    ]:
+    for case in cases:
         preset(case)
         states = page.evaluate(
             """() => {
               const D=DSInteractive;
-              const t=D.compileScenario(D.scenario,{treeCase:document.querySelector('[data-input=treeCase]').value});
+              const input=Object.fromEntries([...document.querySelectorAll('[data-input]')]
+                .map(e=>[e.dataset.input,e.type==='number'?Number(e.value):e.value]));
+              const t=D.compileScenario(D.scenario,input);
               return t.lineSteps.map(step=>({id:step.id,next:step.next,stdout:step.state.stdout.join(''),
-                frame:step.state.activeFrame,view:D.getTreeView(t.metadata.tree,step)}));
+                frame:step.state.activeFrame??'',view:D.getTreeView(t.metadata.tree,step)}));
             }"""
         )
         # Reuse stable browser-visible DOM coordinates across every checkpoint.
-        points = {key: node(key).evaluate('e=>[e.style.left,e.style.top]') for key in keys}
+        points = page.locator('.memory [data-node-id]').evaluate_all(
+            '(nodes)=>Object.fromEntries(nodes.map(n=>[n.dataset.nodeId,[n.style.left,n.style.top]]))'
+        )
         for index, state in enumerate(states):
             scrub(index)
             expected = state['next']
@@ -73,15 +76,18 @@ def check_tree_case(page, width, height):
                 'count':f'{index} / {len(states)-1}', 'stdout':state['stdout'],
                 'next':[expected['at']['sourceId'],expected['at']['line']] if expected else None,
                 'frame':state['frame'], 'overflow':False,
-                'nodes':[[n['id'],points[n['key']],str(n['outputOrder']) if n['outputOrder'] else None]
+                'nodes':[[n['id'],points[n['id']],str(n['outputOrder']) if n['outputOrder'] else None]
                          for n in state['view']['nodes']],
             }, (case, index, actual)
-        assert output.text_content() == final_output
+        if lesson:
+            assert output.text_content() == expected_outputs[case]
         assert action('next').is_disabled()
         assert next_line() is None
         total += len(states)
 
     preset('default')
+    if not lesson:
+        return len(cases), total
     action('next-output').click()
     expect(node(1)).to_have_attribute('data-output-order','1')
     first_print = int(app.get_attribute('data-index'))
@@ -168,4 +174,4 @@ def check_tree_case(page, width, height):
         const r=b.getBoundingClientRect();
         return r.width>=44 && r.height>=44 && r.left>=0 && r.right<=innerWidth && r.top>=0 && r.bottom<=innerHeight;
       })""")
-    return 3, total
+    return len(cases), total

@@ -28,7 +28,7 @@ save.cjs RUN DEST NAME: 이름과 현재 검토 해시 확인 → 번호와 디�
 
 ## 공통 셸 UI 회귀
 
-`python "S/tests/browser_ui.py" "RUN / 날짜폴더 / HTML파일" "SCRATCH"`로 공통 UI를 검사한다. 토큰 배경색·패널 접기·너비 키보드 조절·서랍 포커스·Escape/닫기·전체 단계 선택·속도 선택·보기 옵션·2D 확대를 확인한다. 단계 실행의 의미와 독립인 보기 상태를 따로 검사한다. 기존 입력·셀 포커스 회귀는 `browser_regressions.py HTML`로 확인한다. 화면의 실제 경계가 뷰포트를 넘지 않아야 한다. overflow:hidden으로 잘림을 숨긴 결과를 합격시키지 않는다.
+`python "S/tests/browser_ui.py" "RUN / 날짜폴더 / HTML파일" "SCRATCH"`로 공통 UI를 검사한다. 토큰 배경색·패널 접기·너비 키보드 조절·서랍 포커스·Escape/닫기·전체 단계 선택·속도 선택·보기 옵션·2D 확대를 확인한다. 단계 실행의 의미와 독립인 보기 상태를 따로 검사한다. 주소와 화살표 옵션은 포인터 자료에서 확인한다. 포인터 자료의 정수 입력·Cell 포커스 회귀는 `browser_regressions.py HTML`로 확인한다. 화면의 실제 경계가 뷰포트를 넘지 않아야 한다. overflow:hidden으로 잘림을 숨긴 결과를 합격시키지 않는다.
 
 ## 명시적으로 요청받은 기존 자료 수정
 

@@ -24,12 +24,15 @@
    }
   }else if(group.some(step=>step.eventKind==='return')){
    const frame=before.state.frames[callerId];
+   const caller=last.state.frames[frame.caller];
    if(last.eventKind!=='return'||last.state.activeFrame!==frame.caller||
+    (frame.resumeAt===null&&caller?.parameterCellId)||
     (frame.resumeAt===null ? next!==null : !next||next.frameId!==frame.caller||!sameLocation(next.at,frame.resumeAt))){
     invalid('반환 뒤 호출자와 재개할 줄이 일치하지 않습니다.');
    }
-  }else if(last.state.activeFrame!==callerId||next&&next.frameId!==callerId){
-   invalid('새 호출이나 반환 없이 활성 호출이 바뀌었습니다.');
+  }else{
+   if(last.state.activeFrame!==callerId||next&&next.frameId!==callerId)invalid('새 호출이나 반환 없이 활성 호출이 바뀌었습니다.');
+   if(!next&&before.state.frames[callerId]?.parameterCellId)invalid('활성 순회 호출이 반환되기 전에 기록이 끝났습니다.');
   }
  }
 
@@ -68,7 +71,9 @@
    }
    steps.push({id:'line-'+(index+1),state:last.diagnostic?previous.state:last.state,
     executed:cursor(first),next,reads:[...reads],writes:[...writes.values()],prints,
-    diagnostic:last.diagnostic,title:first.title,explanation:first.explanation});
+    diagnostic:last.diagnostic,
+    title:last.diagnostic?'실행 중단':first.title,
+    explanation:last.diagnostic?'이 줄을 완료하기 전에 실행이 중단되었습니다.':first.explanation});
   }
   return steps;
  }

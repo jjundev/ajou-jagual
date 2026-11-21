@@ -15,6 +15,7 @@ def main(root,out):
    for width,height in [(1440,900),(1024,768),(375,812)]:
     for theme in ['light','dark']:
      page.set_viewport_size({'width':width,'height':height});page.goto(file.as_uri());page.wait_for_selector('[data-snapshot]');page.evaluate('document.fonts.ready')
+     tree=page.evaluate("DSInteractive.scenario.kind==='c-tree'")
      assert page.locator('.topbar').count()==1,'missing biology topbar'
      if theme=='dark':page.locator('[data-action=theme]').click()
      assert page.evaluate('getComputedStyle(document.querySelector("#app")).backgroundColor')==('rgb(255, 255, 255)' if theme=='light' else 'rgb(23, 23, 28)')
@@ -73,13 +74,20 @@ def main(root,out):
       page.locator('[data-speed="'+speed+'"]').click();assert page.locator('[data-speed="'+speed+'"]').get_attribute('aria-pressed')=='true'
      # Zoom is independent from execution; arrows use local rather than scaled CSS coordinates.
      page.locator('[data-action=first]').click();page.locator('[data-action=next]').click();step=page.locator('#app').get_attribute('data-index')
-     page.locator('[data-action=zoom-in]').click();assert float(page.locator('.memory').get_attribute('data-scale'))>1
-     assert page.locator('#app').get_attribute('data-index')==step
-     page.locator('[data-action=zoom-reset]').click();assert page.locator('.memory').get_attribute('data-scale')=='1'
-     if width<1024:toggle.click()
-     page.locator('[data-action=option-addresses]').click();assert not page.locator('.cell-address').first.is_visible()
-     page.locator('[data-action=option-addresses]').click();page.locator('[data-action=option-arrows]').click();assert not page.locator('.memory-svg').is_visible();page.locator('[data-action=option-arrows]').click()
-     if width<1024:page.keyboard.press('Escape')
+     if tree and width<=460:
+      assert page.locator('[data-action=zoom-in]').is_hidden()
+     else:
+      page.locator('[data-action=zoom-in]').click();assert float(page.locator('.memory').get_attribute('data-scale'))>1
+      assert page.locator('#app').get_attribute('data-index')==step
+      page.locator('[data-action=zoom-reset]').click();assert page.locator('.memory').get_attribute('data-scale')=='1'
+     if tree:
+      for option in ['addresses','arrows']:
+       assert page.locator('[data-action=option-'+option+']').is_hidden()
+     else:
+      if width<1024:toggle.click()
+      page.locator('[data-action=option-addresses]').click();assert not page.locator('.cell-address').first.is_visible()
+      page.locator('[data-action=option-addresses]').click();page.locator('[data-action=option-arrows]').click();assert not page.locator('.memory-svg').is_visible();page.locator('[data-action=option-arrows]').click()
+      if width<1024:page.keyboard.press('Escape')
      assert page.locator('.memory-pane').is_visible()
      topic=page.evaluate('DSInteractive.scenario.id');page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}.png'))
      rows.append({'topic':topic,'file':file.name,'sha256':hashlib.sha256(file.read_bytes()).hexdigest(),'viewport':[width,height],'theme':theme,'typography':typography,'status':'pass'})
