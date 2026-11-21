@@ -14,3 +14,16 @@ test('build rejects source mismatch, imports and invalid source line',()=>{
  a.throws(()=>buildPage({scenario:{definition:definition(text),sourceText:text+'\nrequire("fs")'}}),/import|require/);
  const bad=definition(text);bad.generateEvents=()=>[{kind:'observe',at:{sourceId:'c',line:99},explanation:'bad'}];a.throws(()=>buildPage({scenario:{definition:bad,sourceText:text}}),/LOCATION_INVALID/);
 });
+test('inorder build embeds the tree renderer and compiles offline',()=>{
+ const {buildPage}=require('../scripts/build.cjs');
+ const path=require.resolve('../examples/1105/inorder.cjs');
+ const sourceText=require('node:fs').readFileSync(path,'utf8');
+ const {html}=buildPage({scenario:{definition:require(path),sourceText}});
+ a.doesNotMatch(html,/<script[^>]+src=|@import|fetch\(/i);
+ const ctx={structuredClone};
+ const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
+ for(const script of scripts.slice(0,-1))vm.runInNewContext(script,ctx);
+ const api=ctx.DSInteractive, trace=api.compileScenario(api.scenario,{treeCase:'lecture'});
+ a.equal(trace.lineSteps.at(-1).state.stdout.join(''),'3 7 12 18 26 27 31 ');
+ a.equal(typeof api.renderers.get('c-tree')?.render,'function');
+});

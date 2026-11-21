@@ -47,7 +47,9 @@
   on(window,'resize',()=>{const next=innerWidth<1024;if(next!==narrow){const focused=document.activeElement?.closest('.panel');narrow=next;drawer=null;sync();if(focused)toggles[focused===panels.left?'left':'right'].focus({preventScroll:true});}
    else{if(!narrow)for(const side of ['left','right'])if(widths[side])setWidth(side,widths[side]);sync();}});
   const observer=new ResizeObserver(redraw);observer.observe(q('.stage-viewport'));observer.observe(q('.memory'));sync();
-  return {update(next,step,invalid=false){if(trace!==next){trace=next;const list=q('.step-list');list.replaceChildren(...next.snapshots.map((s,i)=>{const b=D.el('button','btn');b.dataset.action='step';b.dataset.stepIndex=i;const text=D.el('span','step-txt');text.append(D.el('b','',s.title),D.el('span','',`${s.at.line}행 · ${s.phase==='before'?'실행 전':s.phase==='diagnostic'?'진단':'실행 후'}`));b.append(D.el('span','step-num num',i),text);return b;}));}
+  return {update(next,entries,step,invalid=false){if(trace!==next){trace=next;const list=q('.step-list');list.replaceChildren(...entries.map((s,i)=>{const b=D.el('button','btn');b.dataset.action='step';b.dataset.stepIndex=i;const text=D.el('span','step-txt');const row=s.executed?.at||s.at;
+    const where=row?`${row.line}행 · ${s.diagnostic?'진단':s.phase==='before'?'실행 전':'실행 후'}`:'실행 전';
+    text.append(D.el('b','',s.title),D.el('span','',where));b.append(D.el('span','step-num num',i),text);return b;}));}
    for(const b of app.querySelectorAll('[data-action=step]')){b.setAttribute('aria-pressed',String(Number(b.dataset.stepIndex)===step));b.disabled=invalid;}
   },destroy(){observer.disconnect();listeners.forEach(f=>f());q('.stage').inert=false;}};
  }

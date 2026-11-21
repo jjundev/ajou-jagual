@@ -2,6 +2,7 @@
 from pathlib import Path
 import json,sys,hashlib
 from playwright.sync_api import sync_playwright
+from browser_tree import check_tree_case
 
 def discover_pages(root):
  root=Path(root).resolve()
@@ -30,6 +31,18 @@ def main(root,scratch):
      assert page.locator('html').get_attribute('data-theme')==theme
      assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(file,width,'overflow')
      assert page.evaluate("async () => (await document.fonts.load('400 16px Pretendard', '한글')).some(f => f.status === 'loaded')")
+     if page.evaluate('DSInteractive.scenario.kind')=='c-tree':
+      count,checked=check_tree_case(page,width,height)
+      topic=page.evaluate('DSInteractive.scenario.id')
+      page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}.png'),full_page=True)
+      if width<1024:
+       page.locator('[data-action=toggle-right]').click()
+       page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}-memory.png'),full_page=True)
+       page.keyboard.press('Escape')
+      print(f'{topic} {width} {theme}: {checked} line steps',flush=True)
+      results.append({'topic':topic,'file':file.name,'sha256':hashlib.sha256(file.read_bytes()).hexdigest(),
+                      'viewport':[width,height],'theme':theme,'presets':count,'snapshots_checked':checked,'status':'pass'})
+      continue
      left(True)
      presets=page.locator('[data-action=preset] option').evaluate_all('(es)=>es.map(e=>e.value)');steps_checked=0
      for preset in presets:
