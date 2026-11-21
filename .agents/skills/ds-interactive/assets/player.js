@@ -90,7 +90,7 @@
    const position=s.next?.at, frame=treeView.stack[0];
    const positionText=position&&trace.sources.find(source=>source.id===position.sourceId).text.split('\n')[position.line-1].trim();
    q('.tree-next').textContent=position?'다음 줄 · '+position.line+'행':s.diagnostic?'실행 중단':'순회 완료';
-   q('.tree-location').textContent=(frame?details.labelFor(frame)+'  ·  ':'')+(positionText||'');
+   q('.tree-location').textContent=[frame&&details.labelFor(frame),positionText].filter(Boolean).join(' · ');
    q('.tree-executed').textContent=s.diagnostic?s.diagnostic.message:s.executed?
     '방금 '+s.executed.at.line+'행 · '+s.title:s.explanation;
    q('.stdout-value').textContent=s.state.stdout.join('');

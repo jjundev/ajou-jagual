@@ -1,0 +1,53 @@
+{
+  "references": {
+    "자료구조_강의록_2026/Software_7_Tree.pdf": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+    "복습노트/1105/.pack/정리노트_1105_Tree.md": "f94563a85342b1a898fa8dd436ccd7e31efcea676195a0fd44cb8f50b2a38b48",
+    "복습노트/1105/.pack/자료_복습팩/traces/trace_inorder_1105.py": "c8dc0dc259f98fc22a6d662bac137b9e6fb1de2e12ba456068a8fde45a6c43fd"
+  },
+  "primaryEvidence": {
+    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+    "pdfPage": 19,
+    "slide": 19,
+    "observation": "18을 루트로 한 7개 노드의 연결과 LVR 출력"
+  },
+  "note": {
+    "path": "복습노트/1105/.pack/정리노트_1105_Tree.md",
+    "sectionId": "s0-inorder"
+  },
+  "sources": [
+    {
+      "id": "walk",
+      "label": "inorder 함수",
+      "language": "c",
+      "text": "void inorder(Node *p) {\n    if (p == NULL) return;\n    inorder(p->left);\n    printf(\"%d \", p->key);\n    inorder(p->right);\n}",
+      "provenance": {
+        "path": "복습노트/1105/.pack/정리노트_1105_Tree.md",
+        "section": "§4 순회 · 중위 순회",
+        "supplement": true
+      }
+    },
+    {
+      "id": "driver",
+      "label": "호출자",
+      "language": "c",
+      "text": "inorder(root);",
+      "provenance": {
+        "path": "복습노트/1105/.pack/정리노트_1105_Tree.md",
+        "section": "§4 순회 · 중위 순회",
+        "supplement": true
+      }
+    }
+  ],
+  "engineHashes": {
+    "contract.js": "25f2bba7823922c0813225655f3e96547553a635bce88beb36330c176b0740ec",
+    "memory.js": "52d4b3c85524d817481a6ab407a0aa86a9da11d3fb27197668b35b758925ae6b",
+    "line-steps.js": "c681b20987a6ca723348f7e8321b07ebdd171da30f7206d6b7ddd9b64285e397",
+    "tree.js": "16822d4580cc8f17ccde6693086976ac088ebdc7486220f1b9c83167feb38956",
+    "trace.js": "125546d62f398032dc94b31ed43ae5b9129079318745d62dda3c6bb26886e937"
+  },
+  "oracle": {
+    "source": "tests/fixtures/inorder_oracle.c",
+    "sha256": "60d04a9218be87be78560d37abe4df8e9409bdbf91c33722dae07124e71791af"
+  },
+  "verification": "PDF 19쪽을 렌더링해 연결과 출력 순서를 확인하고 .pack 정리노트와 대조함. 실행용 C 함수와 호출자는 학습용 보충."
+}

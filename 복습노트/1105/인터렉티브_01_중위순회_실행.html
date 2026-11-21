@@ -1,0 +1,1121 @@
+<!doctype html>
+<html lang="ko" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DS Interactive</title><link rel="stylesheet" data-ds-interactive-font href="../_assets/problem-explain/v1/pretendard/pretendard.css"><style>/* Shell tokens and component geometry adapted from bio-interactive template. */
+:root{color-scheme:light;--bg:#ffffff;--surface:#f7f8fa;--ink:#111111;--ink-2:#6b7280;--line:#d9dee7;--accent:#1677ff;--accent-ink:#1b64da;--btn-bg:#1b64da;--on-btn:#ffffff;--warn:#b54708;--scroll:#c9d0db;--scroll-hover:#9aa3b2;--read:#27598c;--ended:#6b7280}
+html[data-theme=dark]{color-scheme:dark;--bg:#17171c;--surface:#212128;--ink:#f2f4f6;--ink-2:#a3abb8;--line:#34353d;--accent:#3182f6;--accent-ink:#6ea4ff;--btn-bg:#1b64da;--on-btn:#ffffff;--warn:#f5a15c;--scroll:#3f414b;--scroll-hover:#5b5e6a;--read:#abd1ff;--ended:#a3abb8}
+html,body{height:100%;overflow:hidden}button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}[hidden]{display:none!important}
+
+html{height:100%}body{height:100%;margin:0}
+.app{--radius:8px;--tap:48px;--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--dur:220ms;--dur-exit:150ms;--ease-out:cubic-bezier(.2,.8,.2,1);--scrim:rgba(0,0,0,.4);
+  height:100%;display:grid;grid-template-rows:auto minmax(0,1fr);overflow:hidden;box-sizing:border-box;
+  background:var(--bg);color:var(--ink);font-family:'Pretendard',system-ui,sans-serif;font-size:16px;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere}
+.app *,.app *::before,.app *::after{box-sizing:border-box}
+.app button{font-family:inherit;color:inherit}
+.app :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.num{font-variant-numeric:tabular-nums}
+
+.topbar{display:flex;align-items:center;gap:var(--s2);min-height:56px;padding:var(--s2) var(--s3);background:var(--bg);border-bottom:1px solid var(--line)}
+.brand{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:17px;font-weight:700;white-space:nowrap}
+.text-btn{flex:none;min-height:44px;min-width:44px;padding:0 var(--s3);border:0;border-radius:var(--radius);background:transparent;color:var(--ink);font:600 14px/1 'Pretendard',system-ui,sans-serif;cursor:pointer}
+.panel-toggle{display:inline-flex;align-items:center;gap:var(--s1);padding:0 var(--s2)}
+.panel-toggle svg,.theme-toggle svg{flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.panel-toggle .strip{fill:transparent;stroke:none;transition:fill 150ms ease-out}
+.panel-toggle[aria-expanded="true"]{color:var(--accent-ink)}
+.panel-toggle[aria-expanded="true"] .strip{fill:currentColor}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;padding:0}
+.seg{flex:none;display:flex;gap:2px;padding:2px;border:1px solid var(--line);border-radius:var(--radius)}
+.seg button{min-height:40px;padding:0 var(--s3);border:0;border-radius:6px;background:transparent;color:var(--ink-2);font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--btn-bg);color:var(--on-btn)}
+
+.layout{display:grid;grid-template-columns:auto minmax(320px,1fr) auto;min-height:0}
+.panel{position:relative;display:flex;flex-direction:column;min-height:0;overflow:hidden;background:var(--bg);color:var(--ink)}
+.panel-left{grid-column:1;width:clamp(260px,20vw,320px);border-right:1px solid var(--line)}
+.panel-right{grid-column:3;width:clamp(320px,24vw,400px);border-left:1px solid var(--line)}
+.panel-inner{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:var(--s4) var(--s4) var(--s6)}
+.panel-inner::-webkit-scrollbar{width:8px}
+.panel-inner::-webkit-scrollbar-track{background:transparent}
+.panel-inner::-webkit-scrollbar-thumb{background:var(--scroll);border-radius:8px;border:2px solid var(--bg)}
+.panel-inner::-webkit-scrollbar-thumb:hover{background:var(--scroll-hover)}
+@supports (scrollbar-color:auto){.panel-inner{scrollbar-width:thin;scrollbar-color:var(--scroll) transparent}}
+.panel-head{display:flex;align-items:center;gap:var(--s2);min-height:44px;margin-bottom:var(--s2)}
+.panel-head h2{flex:1 1 0;min-width:0;margin:0;font-size:22px;line-height:1.4}
+.stage{grid-column:2;position:relative;min-width:0;min-height:0;overflow:hidden;background:var(--bg)}
+.scrim{display:none}
+.panel-resize{display:none}
+
+.sec{margin-top:var(--s5);padding-top:var(--s5);border-top:1px solid var(--line)}
+.panel-head + .sec,.panel-head + div > .sec:first-child{margin-top:0;padding-top:0;border-top:0}
+.sec-title{display:block;margin:0 0 var(--s3);font-size:19px;font-weight:700;line-height:1.4;letter-spacing:-0.01em}
+.sub{margin:var(--s3) 0 0;font-size:14px;line-height:1.6;color:var(--ink-2)}
+
+.opt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
+.btn{display:flex;align-items:center;gap:var(--s2);width:100%;min-height:var(--tap);padding:0 var(--s3);border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink);font-size:14px;font-weight:600;line-height:1.3;text-align:left;cursor:pointer}
+.btn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent-ink)}
+.btn .box{flex:none;width:12px;height:12px;border-radius:3px;border:1.5px solid currentColor}
+.btn[aria-pressed="true"] .box{background:currentColor}
+.steps{display:flex;flex-direction:column;gap:var(--s2)}
+.steps .btn{padding:var(--s2) var(--s3);gap:var(--s3)}
+.step-num{flex:none;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;border:2px solid;font-size:12px;font-weight:700;color:var(--ink)}
+.step-txt{display:flex;flex-direction:column;gap:1px;min-width:0}
+.step-txt b{font-size:15px;font-weight:700}
+.step-txt span{font-size:13px;font-weight:500;color:var(--ink-2)}
+.detail{margin-top:var(--s3);padding:var(--s4);border-radius:var(--radius);background:var(--surface);font-size:15px;line-height:1.7}
+
+
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2)}
+.tiles.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.tile{padding:var(--s3);border-radius:var(--radius);background:var(--surface)}
+.tile b{display:block;font-size:20px;font-weight:700;line-height:1.3;font-variant-numeric:tabular-nums}
+.tile span{display:block;font-size:13px;line-height:1.4;color:var(--ink-2)}
+.events{display:flex;flex-direction:column;gap:var(--s2)}
+.event{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.6}
+.dot{flex:none;width:10px;height:10px;margin-top:7px;border-radius:50%}
+.legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2) var(--s3);font-size:13px;color:var(--ink-2)}
+.legend div{display:flex;align-items:center;gap:var(--s2)}
+.sw{flex:none;width:16px;height:6px;border-radius:3px}
+.sw.ball{width:12px;height:12px;border-radius:50%}
+.sec.warn{border-top:0;padding:var(--s4);border-radius:var(--radius);background:var(--surface);font-size:15px;line-height:1.7}
+.warn .sec-title{color:var(--warn);font-size:17px}
+.mistake{margin-top:var(--s3)}
+.mistake b{display:block;font-weight:700}
+.mistake span{color:var(--ink-2)}
+
+.canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.canvas.is-fixed{cursor:default}
+.view-btns{position:absolute;top:var(--s3);right:var(--s3);display:flex;gap:6px}
+.icon-btn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;padding:0;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink);cursor:pointer}
+.icon-btn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent-ink)}
+.icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.float{background:var(--bg);border:1px solid var(--line);border-radius:var(--radius)}
+.hover-card{position:absolute;left:var(--s3);bottom:var(--s3);display:flex;flex-direction:column;gap:2px;padding:var(--s3) var(--s4);pointer-events:none}
+.hover-card .k{font-size:13px;color:var(--ink-2)}
+.hover-card .v{font-size:18px;font-weight:700}
+.playbar{position:absolute;left:var(--s3);right:var(--s3);bottom:var(--s3);display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);padding:var(--s2) var(--s3)}
+.play{flex:none;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:var(--radius);background:var(--btn-bg);color:var(--on-btn) !important;cursor:pointer}
+.play svg{width:18px;height:18px;fill:currentColor}
+.scrub{flex:1 1 200px;min-width:160px;display:flex;flex-direction:column;gap:2px}
+.scrub span{font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.scrub input{width:100%;height:24px;margin:0;accent-color:var(--accent)}
+.speeds{display:flex;gap:2px;padding:2px;border:1px solid var(--line);border-radius:var(--radius)}
+.speeds button{min-width:48px;height:40px;padding:0 var(--s2);border:0;border-radius:6px;background:transparent;color:var(--ink-2);font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;cursor:pointer}
+.speeds button[aria-pressed="true"]{background:var(--btn-bg);color:var(--on-btn)}
+
+@media (hover:hover){.btn:hover,.icon-btn:hover{background:var(--surface)}.text-btn:hover{background:var(--surface)}}
+@media (min-width:1024px){
+  .panel-head{display:none}
+  .layout{--pl:var(--pl-user,clamp(260px,20vw,320px));--pr:var(--pr-user,clamp(320px,24vw,400px))}
+  .panel{width:0;border-width:0;visibility:hidden;transition:width var(--dur-exit) ease-in,visibility 0s linear var(--dur-exit)}
+  .panel-left.is-open{width:var(--pl)}
+  .panel-right.is-open{width:var(--pr)}
+  .panel.is-open{visibility:visible;border-width:1px;transition:width var(--dur) var(--ease-out)}
+  .panel-left .panel-inner{width:var(--pl)}
+  .panel-right .panel-inner{width:var(--pr);align-self:flex-end}
+  .layout.is-resizing .panel{transition:none}
+  .layout.is-resizing{cursor:col-resize;user-select:none}
+  .panel-resize{display:block;position:absolute;top:0;bottom:0;z-index:2;width:12px;padding:0;border:0;background:transparent;cursor:col-resize;touch-action:none}
+  .panel-left .panel-resize{right:0}
+  .panel-right .panel-resize{left:0}
+  .panel-resize::after{content:"";position:absolute;top:0;bottom:0;width:2px;background:var(--accent);opacity:0;transition:opacity 150ms ease-out}
+  .panel-left .panel-resize::after{right:0}
+  .panel-right .panel-resize::after{left:0}
+  .panel-resize:focus-visible{outline:none}
+  .panel-resize:focus-visible::after,.is-resizing .panel-resize:active::after{opacity:1}
+  @media (hover:hover){.panel-resize:hover::after{opacity:1}}
+}
+@media (max-width: 1023.98px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .stage{grid-column:1}
+  .panel{position:fixed;top:0;bottom:0;z-index:40;visibility:hidden;transition:transform var(--dur-exit) ease-in,visibility 0s linear var(--dur-exit)}
+  .panel-left{left:0;width:min(304px,88vw);transform:translateX(-100%)}
+  .panel-right{right:0;width:min(360px,88vw);transform:translateX(100%)}
+  .panel.is-open{visibility:visible;transform:none;transition:transform var(--dur) var(--ease-out)}
+  .panel-inner{padding-top:calc(var(--s3) + env(safe-area-inset-top));padding-bottom:calc(var(--s6) + env(safe-area-inset-bottom))}
+  .scrim{display:block;position:fixed;inset:0;z-index:35;background:var(--scrim);opacity:0;visibility:hidden;transition:opacity var(--dur-exit) ease-in,visibility 0s linear var(--dur-exit)}
+  .scrim.is-on{opacity:1;visibility:visible;transition:opacity var(--dur) var(--ease-out)}
+}
+@media (max-width:640px){.brand{display:none}.topbar{justify-content:space-between}}
+@media (max-width:480px){.panel-toggle span{display:none}.seg button{padding:0 var(--s2)}}
+@media (prefers-reduced-motion:reduce){.panel,.panel.is-open,.scrim,.scrim.is-on,.panel-toggle .strip,.panel-resize::after{transition:none}}
+
+/* DS content inside the shared shell. */
+.app{font-family:'Pretendard',system-ui,sans-serif}.app button{font-family:inherit}.brand{margin:0}.topbar .seg button{min-height:40px}.panel-inner{scrollbar-gutter:stable}.panel-inner p{margin-bottom:0}.source-pane{min-width:0}.source-label{display:block;font-size:12px;color:var(--ink-2);margin-top:4px}.code{font:13px/1.85 Consolas,monospace;overflow:auto;max-height:260px;tab-size:4;scrollbar-color:var(--scroll) transparent;overscroll-behavior:contain}.code-line{display:flex;white-space:pre;min-width:max-content;padding:1px 6px 1px 0;border-radius:3px}.code-line.current{background:var(--surface);color:var(--accent-ink);font-weight:700;box-shadow:inset 2px 0 var(--accent)}.line-number{color:var(--ink-2);width:26px;flex:none;user-select:none;text-align:right;margin-right:10px}.source-note,.takeaway{font-size:13px;color:var(--ink-2);line-height:1.7}.source-note{margin:12px 0 0;overflow-wrap:anywhere}.configuration{display:flex;flex-direction:column;gap:12px}.configuration label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600;color:var(--ink-2)}.configuration select,.configuration input{min-height:44px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:8px;max-width:100%;min-width:0}.inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.inputs label{min-width:0}.inputs input,.inputs select{width:100%}.input-error{font-size:14px;color:var(--warn)}.input-error:empty,.diagnostic:empty{display:none}.step-list{margin-top:12px}.steps .btn[aria-pressed=true]{background:var(--surface)}.steps .btn{flex-shrink:0}.steps .step-num{width:26px;height:26px}.stage{display:flex;flex-direction:column}.stage-viewport{flex:1;min-height:0;overflow:auto;padding:64px 24px 24px;scrollbar-color:var(--scroll) transparent}.memory-pane{min-width:0;margin:auto;max-width:900px}.pane-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:20px}.pane-heading h2{font-size:19px;margin:0}.pane-heading span{font-size:12px;color:var(--ink-2)}.memory{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;padding:0 20px 20px 0;min-height:280px;zoom:var(--zoom,1)}.frame{min-width:0;align-self:start}.frame h3{margin:0 0 12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:15px}.frame small{display:block;font-size:12px;color:var(--ink-2);font-weight:400}.cell{display:block;text-align:left;width:100%;margin:0 0 10px;padding:10px 12px;min-height:76px;position:relative;z-index:1;border:1px solid var(--line);border-radius:8px;background:var(--bg)}.cell-name{font:600 15px/1.3 Consolas,monospace}.cell-address{font:11px/1.5 Consolas,monospace;color:var(--ink-2);display:block}.cell-value{display:block;font:600 14px/1.5 Consolas,monospace;color:var(--accent-ink)}.cell.written{border:2px solid var(--accent);padding:9px 11px;background:var(--surface)}.cell.read{border-style:dashed;border-color:var(--read)}.cell.selected{outline:2px solid var(--accent);outline-offset:2px}.cell.ended{opacity:.65;border-style:dashed}.cell.ended .cell-value{color:var(--ended)}.memory-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible}.app[data-addresses=false] .cell-address{display:none}.app[data-arrows=false] .memory-svg{display:none}.selection{font-size:14px;color:var(--ink-2);line-height:1.8}.selection strong{color:var(--ink)}.phase{font-size:12px;color:var(--ink-2);margin:0 0 8px}.step-title{font-size:17px;margin:0 0 12px}.explanation{margin:0;line-height:1.85}.diagnostic{color:var(--warn);font-size:14px}.changes{font-size:14px}.change{padding:8px 0;border-bottom:1px solid var(--line)}.trace-message,.empty{font-size:13px;color:var(--ink-2)}.playbar{position:relative;left:auto;right:auto;bottom:auto;flex:none;margin:12px}.transport-buttons{display:flex;gap:2px}.transport-buttons .icon-btn{border:0;background:transparent}.transport-buttons .play{background:var(--btn-bg)}.transport-buttons svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.speeds button{min-width:44px}.provenance{font-size:13px;color:var(--ink-2);margin-top:24px;border-top:1px solid var(--line);padding-top:12px}.provenance summary{cursor:pointer;min-height:44px;padding:8px 0}.icon-btn,.text-btn{flex-shrink:0}::selection{background:var(--btn-bg);color:var(--on-btn)}input{caret-color:var(--accent)}.view-btns{z-index:3}.view-btns button{background:var(--bg)}
+@media(max-width:1200px){.playbar{gap:8px}.scrub{flex-basis:140px;min-width:100px}.speeds{margin-left:auto}.transport-buttons .icon-btn,.transport-buttons .play{width:44px}.stage-viewport{padding:64px 16px 16px}}
+@media(max-width:1023.98px){.panel-resize{display:none}.panel-left{width:min(304px,88vw)}.panel-right{width:min(360px,88vw)}.code{max-height:300px}.memory{gap:28px;padding-right:12px}.stage-viewport{padding:64px 14px 14px}.pane-heading span{font-size:11px}.cell{padding:10px 8px}.cell.written{padding:9px 7px}.cell-value{font-size:12px}.cell-address{font-size:10px}.playbar{margin:8px;padding:8px;gap:8px}.playbar .scrub{order:3;flex-basis:100%}.speeds button{min-width:44px}.speeds{margin-left:auto}.panel.is-open{box-shadow:8px 0 32px rgba(0,0,0,.15)}.panel-right.is-open{box-shadow:-8px 0 32px rgba(0,0,0,.15)}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+.app{grid-template-columns:minmax(0,1fr)}.topbar,.layout{min-width:0}.modes{flex:0 1 auto;min-width:0}.modes button{flex:0 1 auto;min-width:0}@media(max-width:480px){.topbar .modes button{max-width:70px;padding:0 6px;font-size:14px;line-height:1.6;white-space:normal}.topbar{gap:4px}}
+
+/* Match biology panel prose and warning typography. */
+.explanation{font-size:15px;line-height:1.6}.selection,.changes{font-size:15px;line-height:1.6}.takeaway{font-size:15px;line-height:1.7}.source-note{font-size:14px;line-height:1.6}
+
+.transport-buttons .play svg{fill:currentColor;stroke:none}
+
+/* Line-by-line tree lesson. */
+.app[data-kind=c-tree] .stage {
+  --tree-fill: #edf5ff;
+  --tree-green: #17704a;
+  --tree-green-bg: #e8f7ee;
+  --tree-warm: #a24616;
+  --tree-warm-bg: #fff1e6;
+}
+html[data-theme=dark] .app[data-kind=c-tree] .stage {
+  --tree-fill: #202e43;
+  --tree-green: #83dbab;
+  --tree-green-bg: #223b30;
+  --tree-warm: #ffc597;
+  --tree-warm-bg: #3d2b25;
+}
+.app[data-kind=c-tree] .panel-left .configuration { margin-top: 0; padding-top: 0; border: 0; }
+.app[data-kind=c-tree] .code { font-size: 12px; max-height: none; }
+.app[data-kind=c-tree] .line-number { width: 17px; margin-right: 8px; }
+.code-section { padding: 7px 4px 2px; color: var(--ink-2); font: 600 12px/1.4 Pretendard, sans-serif; }
+.code-line.executed:not(.current) { box-shadow: inset 2px 0 var(--scroll-hover); }
+.tree-summary {
+  margin: 14px 16px 0;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+  flex: none;
+}
+.tree-summary p { margin: 0; }
+.tree-summary .tree-next { color: var(--accent-ink); font-size: 12px; font-weight: 700; }
+.tree-summary .tree-location { font: 600 13px/1.65 Consolas, Pretendard, monospace; }
+.tree-summary .tree-executed { font-size: 13px; color: var(--ink-2); }
+.app[data-kind=c-tree] .stage-viewport { padding: 12px 16px; }
+.app[data-kind=c-tree] .view-btns { position: static; justify-content: end; margin: 8px 0 0; }
+.app[data-kind=c-tree] .pane-heading { gap: 6px; margin: 0 0 8px; }
+.app[data-kind=c-tree] .memory { display: block; min-height: 0; padding: 0; }
+.tree-scene { position: relative; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+.tree-empty { min-height: 120px; display: grid; place-items: center; margin: 0; color: var(--ink-2); }
+.tree-links { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.tree-links line { stroke: var(--scroll-hover); stroke-width: 1.5; }
+.tree-links .tree-path { stroke: var(--accent-ink); stroke-width: 4; }
+.tree-links .tree-null-path { stroke: var(--tree-warm); stroke-width: 3; stroke-dasharray: 4 4; }
+.app .tree-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 44px;
+  height: 44px;
+  padding: 0 6px;
+  border: 2px solid var(--scroll-hover);
+  border-radius: 50%;
+  color: var(--ink);
+  background: var(--bg);
+  font-size: 16px;
+  font-weight: 700;
+}
+.app .tree-node.on-path { border-color: var(--accent-ink); background: var(--tree-fill); }
+.app .tree-node.active { border: 3px solid var(--accent-ink); background: var(--btn-bg); color: var(--on-btn); }
+.app .tree-node.selected { outline: 2px dashed var(--accent-ink); outline-offset: 3px; }
+.app .tree-node:focus-visible { outline: 3px solid var(--accent-ink); outline-offset: 3px; }
+.tree-order {
+  position: absolute;
+  top: -9px;
+  right: -6px;
+  min-width: 20px;
+  padding: 0 3px;
+  border: 1px solid var(--tree-green);
+  border-radius: 50%;
+  color: var(--tree-green);
+  background: var(--tree-green-bg);
+  font: 700 11px/18px Pretendard, sans-serif;
+}
+.tree-null-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 2px 5px;
+  border: 1px dashed var(--tree-warm);
+  border-radius: 5px;
+  color: var(--tree-warm);
+  background: var(--tree-warm-bg);
+  font: 700 12px/1.5 Consolas, monospace;
+}
+.tree-output {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 12px;
+  padding: 6px 9px;
+  margin: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.stdout-label { font-size: 13px; font-weight: 700; }
+.stdout-line { min-width: 0; font-size: 13px; }
+.stdout-value { color: var(--tree-green); white-space: pre-wrap; font: 700 15px/1.45 Consolas, monospace; }
+.stdout-value:not(:empty) + .stdout-empty { display: none; }
+.stdout-empty { color: var(--ink-2); }
+.tree-jumps { display: flex; gap: 4px; }
+.tree-jumps .btn { min-height: 44px; padding: 0 8px; white-space: nowrap; font-size: 12px; }
+.app[data-kind=c-tree] .speeds button { height: 44px; }
+.app[data-kind=c-tree] .scrub input { height: 44px; }
+.app[data-kind=c-tree] .playbar { margin-top: 8px; }
+.tree-stack-list { margin: 0; padding: 0; list-style: none; }
+.tree-frame, .tree-object {
+  margin-bottom: 8px;
+  padding: 7px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.tree-frame[data-frame-state=active] { border-left: 3px solid var(--accent); background: var(--surface); }
+.tree-frame-ended { border-style: dashed; color: var(--ink-2); }
+.tree-frame h3, .tree-object h3 { margin: 0; font-size: 14px; line-height: 1.45; }
+.tree-frame-status { color: var(--ink-2); font-size: 12px; }
+[data-frame-state=active] .tree-frame-status { color: var(--accent-ink); font-weight: 700; }
+.tree-cell {
+  display: grid;
+  grid-template-columns: 36px minmax(0,1fr);
+  gap: 0 5px;
+  width: 100%;
+  margin: 4px 0 0;
+  padding: 4px 6px;
+  text-align: left;
+  min-height: 44px;
+  align-content: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: 12px/1.45 Consolas, Pretendard, monospace;
+}
+.tree-cell.read { border-style: dashed; border-color: var(--read); }
+.tree-cell.written { border-color: var(--accent); box-shadow: inset 2px 0 var(--accent); }
+.tree-cell.related, .tree-object.related { background: var(--surface); }
+.tree-cell[aria-pressed=true] { border-color: var(--accent-ink); outline: 1px solid var(--accent-ink); }
+.tree-field { font-weight: 700; }
+.tree-cell-value { color: var(--accent-ink); }
+.tree-cell-address { grid-column: 2; font-size: 11px; color: var(--ink-2); }
+.tree-memory > summary { min-height: 44px; cursor: pointer; }
+.tree-memory > summary span { font-size: 12px; font-weight: 400; color: var(--ink-2); }
+.tree-memory-rows { max-height: 340px; overflow-y: auto; overscroll-behavior: contain; padding: 2px; }
+@media (max-width:1023.98px) {
+  .app[data-kind=c-tree] .panel-toggle span { display: inline; }
+  .app[data-kind=c-tree] .tree-summary { margin: 10px 12px 0; }
+  .app[data-kind=c-tree] .stage-viewport { padding: 10px 12px; }
+  .tree-memory-rows { max-height: none; }
+}
+@media (max-width:460px) {
+  .app[data-kind=c-tree] .view-btns { display: none; }
+  .app[data-kind=c-tree] .playbar .scrub { order: 2; flex: 1 1 130px; }
+  .app[data-kind=c-tree] .playbar .speeds { order: 3; }
+  .tree-output { margin: 0 8px; gap: 6px; }
+  .tree-jumps .btn { padding: 0 5px; }
+}
+</style></head>
+<body><main id="app" class="app" data-addresses="true" data-arrows="true">
+<header class="topbar"><button class="text-btn panel-toggle" data-action="toggle-left" aria-label="조작 패널" aria-expanded="true" aria-controls="panel-left"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>조작</span></button><h1 class="brand"></h1><div class="seg modes" role="group" aria-label="보기 선택" hidden></div><button class="text-btn theme-toggle" data-action="theme" aria-label="어두운 테마로 전환" title="어두운 테마로 전환"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button><button class="text-btn panel-toggle" data-action="toggle-right" aria-label="설명 패널" aria-expanded="true" aria-controls="panel-right"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="15" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span>설명</span></button></header>
+<div class="layout"><aside class="panel panel-left is-open" id="panel-left" aria-label="조작"><div class="panel-resize" data-resize="left" role="separator" aria-orientation="vertical" tabindex="0" aria-label="왼쪽 패널 너비 조절. 좌우 화살표, Home 기본 너비" aria-valuemin="220" aria-valuemax="480" aria-valuenow="220"></div>
+<div class="panel-inner"><div class="panel-head"><h2>조작</h2><button class="text-btn" data-action="close-panels">닫기</button></div>
+<section class="sec"><h2 class="sec-title">보기 옵션</h2><div class="opt"><button class="btn" data-action="option-addresses" aria-pressed="true"><span class="box" aria-hidden="true"></span>주소 표시</button><button class="btn" data-action="option-arrows" aria-pressed="true"><span class="box" aria-hidden="true"></span>화살표</button></div></section>
+<section class="sec configuration" aria-label="실행 조건"><h2 class="sec-title">실행 조건</h2><label>사례<select data-action="preset" aria-label="사례"></select></label><div class="inputs"></div><p class="input-error" role="alert"></p></section>
+<section class="sec source-pane"><h2 class="sec-title">실행 코드 <span class="source-label"></span></h2><div class="code" tabindex="0" aria-label="실행 코드"></div><p class="source-note"></p></section>
+<section class="sec"><h2 class="sec-title">단계</h2><div class="steps step-list" aria-label="실행 단계 목록"></div></section>
+</div></aside>
+<section class="stage" aria-label="메모리 보기"><div class="tree-summary tree-only" hidden aria-live="polite"><p class="tree-next"></p><p class="tree-location"></p><p class="tree-executed"></p></div><div class="stage-viewport tree-viewport"><div class="memory-pane"><div class="pane-heading"><h2>호출과 메모리</h2><span class="scene-note">주소는 기호로 표시</span></div><div class="memory" data-scale="1" aria-label="호출 프레임과 저장 공간"></div></div></div><div class="view-btns"><button class="icon-btn" data-action="zoom-in" aria-label="확대"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button><button class="icon-btn" data-action="zoom-out" aria-label="축소"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg></button><button class="icon-btn" data-action="zoom-reset" aria-label="화면 맞춤"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v5h5"/></svg></button></div><div class="tree-output tree-only" hidden><div class="stdout-label">출력</div><div class="stdout-line"><output class="stdout-value" aria-label="표준 출력"></output><span class="stdout-empty">아직 출력 없음</span></div><div class="tree-jumps" role="group" aria-label="출력 시점 이동"><button class="btn" data-action="previous-output">이전 출력</button><button class="btn" data-action="next-output">다음 출력</button></div></div><footer class="playbar float" aria-label="재생 조작"><div class="transport-buttons"><button class="icon-btn" data-action="first" aria-label="처음 단계"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14M18 5l-9 7 9 7z"/></svg></button><button class="icon-btn" data-action="prev" aria-label="이전 단계"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5-8 7 8 7"/></svg></button><button class="play" data-action="play" aria-label="재생"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg></button><button class="icon-btn" data-action="next" aria-label="다음 단계"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 8 7-8 7"/></svg></button><button class="icon-btn" data-action="last" aria-label="마지막 단계"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5v14M6 5l9 7-9 7z"/></svg></button></div><label class="scrub"><span>단계 <output data-step>0 / 0</output></span><input type="range" data-action="scrub" min="0" max="0" value="0" aria-label="실행 단계"></label><div class="speeds" role="group" aria-label="재생 속도"><button data-speed="0.5" aria-pressed="false">0.5×</button><button data-speed="1" aria-pressed="true">1×</button><button data-speed="2" aria-pressed="false">2×</button></div></footer></section>
+<aside class="panel panel-right is-open" id="panel-right" aria-label="설명"><div class="panel-resize" data-resize="right" role="separator" aria-orientation="vertical" tabindex="0" aria-label="오른쪽 패널 너비 조절. 좌우 화살표, Home 기본 너비" aria-valuemin="280" aria-valuemax="720" aria-valuenow="280"></div>
+<div class="panel-inner explanation-pane"><div class="panel-head"><h2>설명</h2><button class="text-btn" data-action="close-panels">닫기</button></div>
+<section class="sec tree-only" hidden><h2 class="sec-title">호출 스택</h2><div class="tree-stack" aria-label="현재 호출부터 표시"></div></section>
+<section class="sec tree-only" hidden><details class="tree-memory" open><summary class="sec-title">노드 메모리 <span>기호 주소</span></summary><div class="tree-memory-rows"></div></details></section>
+<section class="sec"><h2 class="sec-title">지금 일어나는 일</h2><p class="phase"></p><h3 class="step-title"></h3><p class="explanation" aria-live="polite"></p><div class="diagnostic" role="alert"></div></section>
+<section class="sec"><h2 class="sec-title">변경 전 → 후</h2><div class="changes"></div></section>
+<section class="sec"><h2 class="sec-title">선택한 변수</h2><div class="selection" aria-live="polite">변수를 선택하면 값과 주소를 구분해 볼 수 있습니다.</div></section>
+<section class="sec warn"><h2 class="sec-title">꼭 기억해요</h2><p class="takeaway"></p></section>
+<details class="provenance"><summary>출처와 학습 범위</summary><div class="provenance-text"></div><p>검토된 예제의 단계별 모형이에요. 기호 주소를 사용해요. ← / → 단계 이동 · Space 재생 · Home / End 처음과 마지막.</p><p>임의 C 코드를 컴파일하지 않아요.</p></details>
+</div></aside><div class="scrim" data-action="close-panels" aria-hidden="true"></div></div></main>
+<script>(function (root) {
+ 'use strict';
+ /** @typedef {{kind:'int',value:number}|{kind:'pointer',target:string|null}|{kind:'uninitialized'|'indeterminate'}} Value */
+ /** @typedef {{id:string,name:string,type:string,owner:string,address:string,value:Value,lifetime:'live'|'ended'}} Cell */
+ /** @typedef {{frames:Object,objects:Object,cells:Object,activeFrame:string|null,stdout:string[]}} MemoryState */
+ /** @typedef {{sourceId:string,line:number}} Location */
+ /** @typedef {{kind:string,at:Location,explanation:string}} Event */
+ /** @typedef {{id:string,at:Location,phase:string,state:MemoryState,reads:string[],writes:Object[],diagnostic:Object|null}} Snapshot */
+ /** @typedef {{version:1,id:string,kind:string,sources:Object[],inputs:Object[],presets:Object[],snapshots:Snapshot[],metadata:Object}} Trace */
+ /** @typedef {{version:1,id:string,title:string,kind:string,sources:Object[],inputs:Object[],presets:Object[],initialState:Function,generateEvents:Function,expected:Object[]}} Scenario */
+ const issue=(code,path,message)=>({code,path,message});
+ function validateInput(defs,input) {
+  return defs.flatMap(d=>{
+   const v=input[d.key];const valid=d.type==='integer' ? Number.isSafeInteger(v)&&v>=(d.min??-Infinity)&&v<=(d.max??Infinity) : d.type==='enum'&&d.options?.some(o=>o.value===v);
+   return valid?[]:[issue('INPUT_INVALID',d.key,`${d.label||d.key}: ${d.type==='integer'?`${d.min} ~ ${d.max} 사이 정수`:'목록의 값'}를 입력하세요.`)];
+  });
+ }
+ const api={validateInput,issue};
+ if(typeof module!=='undefined'&&module.exports)module.exports=api;
+ Object.assign(root.DSInteractive??={},api);
+})(globalThis);
+</script>
+<script>(function(root){
+ 'use strict';
+ const clone=x=>structuredClone(x);
+ const initialMemory=()=>({frames:{},objects:{},cells:{},activeFrame:null,stdout:[]});
+ function applyEvent(original,e,limits={}){
+  const state=clone(original),reads=[],writes=[];
+  const fault=(code,message)=>{throw {dsFault:true,code,message};};
+  function get(id){const c=state.cells[id];if(!c)fault('OUT_OF_BOUNDS',`저장 공간 ${id}가 없습니다. 배열 경계와 대상을 확인하세요.`);if(c.lifetime!=='live')fault('LIFETIME_ENDED',`${id}의 수명이 끝났습니다.`);return c;}
+  function read(id){const c=get(id);if(c.value.kind==='uninitialized')fault('UNINITIALIZED_READ',`${c.name}: 초기화되지 않은 값입니다.`);if(c.value.kind==='indeterminate')fault('INDETERMINATE_READ',`${c.name}: 대상 수명 종료 후 사용할 수 없는 값입니다.`);reads.push(id);return c.value;}
+  function value(v){if(v?.kind==='int'&&Number.isSafeInteger(v.value))return;if(v?.kind==='pointer'){if(v.target!==null)get(v.target);return;}if(['uninitialized','indeterminate'].includes(v?.kind))return;fault('VALUE_INVALID','지원하지 않는 값입니다.');}
+  function write(id,v){const c=get(id);value(v);writes.push({cellId:id,before:clone(c.value),after:clone(v)});c.value=clone(v);}
+  function add(c,v=c.value){if(state.cells[c.id])fault('DUPLICATE_ID',c.id);if(!state.frames[c.owner]&&!state.objects[c.owner])fault('OWNER_MISSING',c.owner);value(v);state.cells[c.id]={...clone(c),value:clone(v),lifetime:'live'};const owner=state.frames[c.owner]||state.objects[c.owner];if(!owner.cellIds.includes(c.id))owner.cellIds.push(c.id);if(state.objects[c.owner]&&state.activeFrame&&state.objects[c.owner].storage==='automatic'){const f=state.frames[state.activeFrame];if(!f.cellIds.includes(c.id))f.cellIds.push(c.id);}writes.push({cellId:c.id,before:null,after:clone(v)});}
+  function access(id,chain=[]){for(let i=0;i<chain.length;i++){const v=read(chain[i]);if(v.kind!=='pointer')fault('NOT_POINTER',chain[i]);if(v.target===null)fault('NULL_DEREFERENCE',`${chain[i]}는 NULL입니다. 역참조할 대상이 없습니다.`);if(v.target!==(chain[i+1]||id))fault('TARGET_MISMATCH','화살표의 실제 대상과 접근한 저장 공간이 다릅니다.');get(v.target);}get(id);}
+  function readOperand(event){
+   if(event.memberOf!==undefined){
+    if(event.through!==undefined)fault('ACCESS_INVALID','멤버 접근과 역참조 경로를 함께 지정할 수 없습니다.');
+    const pointer=read(event.memberOf);
+    if(pointer.kind!=='pointer')fault('NOT_POINTER',event.memberOf);
+    if(pointer.target===null)fault('NULL_DEREFERENCE','NULL 포인터에서 멤버를 읽을 수 없습니다.');
+    const base=get(pointer.target), object=state.objects[base.owner], member=get(event.cellId);
+    if(object?.lifetime!=='live'||object.cellIds[0]!==base.id||member.owner!==object.id||!object.cellIds.includes(member.id)){
+     fault('TARGET_MISMATCH','포인터가 가리키는 객체에 속한 멤버만 읽을 수 있습니다.');
+    }
+   }else access(event.cellId,event.through);
+   return read(event.cellId);
+  }
+  function end(ids){const ended=new Set(ids);for(const id of ids)if(state.cells[id])state.cells[id].lifetime='ended';for(const c of Object.values(state.cells))if(c.lifetime==='live'&&c.value.kind==='pointer'&&ended.has(c.value.target)){write(c.id,{kind:'indeterminate'});}for(const o of Object.values(state.objects))if(o.cellIds.length&&o.cellIds.every(id=>ended.has(id)))o.lifetime='ended';}
+  let printed;
+  try{
+   switch(e.kind){
+    case 'observe':break;
+    case 'call':{
+     if(state.frames[e.frame.id])fault('DUPLICATE_ID',e.frame.id);
+     if(Object.values(state.frames).filter(f=>f.lifetime==='live').length>=(limits.depth??64))fault('LIMIT_REACHED','호출 깊이 한도에 도달했습니다.');
+     state.frames[e.frame.id]={...clone(e.frame),cellIds:[],lifetime:'live',caller:state.activeFrame};break;}
+    case 'enter':if(!state.frames[e.frameId]||state.frames[e.frameId].lifetime!=='live')fault('FRAME_MISSING',e.frameId);state.activeFrame=e.frameId;break;
+    case 'bind':if(e.fromCellId){const v=read(e.fromCellId);if(JSON.stringify(v)!==JSON.stringify(e.value))fault('BIND_MISMATCH','복사 값과 호출자 값이 다릅니다.');}add(e.cell,e.value);break;
+    case 'declare':add(e.cell);break;
+    case 'read':readOperand(e);break;
+    case 'print-int':{
+     const operand=readOperand(e);
+     if(operand.kind!=='int'||!Number.isSafeInteger(operand.value))fault('VALUE_INVALID','정수 값만 %d로 출력할 수 있습니다.');
+     const text=String(operand.value)+' ';
+     state.stdout.push(text);
+     printed={cellId:e.cellId,text};
+     break;}
+    case 'write':access(e.cellId,e.through);write(e.cellId,e.value);break;
+    case 'allocate':{
+     if(state.objects[e.object.id])fault('DUPLICATE_ID',e.object.id);
+     if(Object.values(state.objects).filter(o=>o.lifetime==='live').length>=(limits.objects??256))fault('LIMIT_REACHED','객체 수 한도에 도달했습니다.');
+     if(JSON.stringify(e.object.cellIds)!==JSON.stringify(e.cells.map(c=>c.id)))fault('OBJECT_INVALID','객체 Cell 순서가 다릅니다.');
+     state.objects[e.object.id]={...clone(e.object),lifetime:'live'};for(const c of e.cells)add(c);if(e.resultCellId)write(e.resultCellId,{kind:'pointer',target:e.object.cellIds[0]});break;}
+    case 'free':{
+     const v=read(e.pointerCellId);if(v.kind!=='pointer')fault('INVALID_FREE','포인터 값이 필요합니다.');if(v.target===null)break;
+     const c=get(v.target),o=state.objects[c.owner];if(!o||o.storage!=='allocated'||o.cellIds[0]!==c.id)fault('INVALID_FREE','할당된 객체 시작 주소만 해제할 수 있습니다.');end(o.cellIds);o.lifetime='ended';break;}
+    case 'return':{
+     if(state.activeFrame!==e.frameId)fault('INVALID_RETURN','활성 함수만 반환할 수 있습니다.');const f=state.frames[e.frameId];if(e.result)write(e.result.cellId,e.result.value);end(f.cellIds);f.lifetime='ended';state.activeFrame=f.caller;break;}
+    case 'diagnostic':fault(e.code,e.message);break;
+    default:fault('EVENT_UNSUPPORTED',e.kind);
+   }
+   return {state,reads:[...new Set(reads)],writes,diagnostic:null,...(printed&&{printed})};
+  }catch(err){if(!err.dsFault)throw err;return {state:clone(original),reads:[],writes:[],diagnostic:{code:err.code,message:err.message}};}
+ }
+ const api={initialMemory,applyEvent};if(typeof module!=='undefined'&&module.exports)module.exports=api;Object.assign(root.DSInteractive??={},api);
+})(globalThis);
+</script>
+<script>(function (root) {
+ 'use strict';
+ const invalid = message => { throw Object.assign(new Error(message), {code:'LINE_STEP_INVALID'}); };
+ const sameLocation = (a,b) => a?.sourceId===b?.sourceId && a?.line===b?.line;
+ const cursor = snapshot => snapshot && {at:snapshot.at, frameId:snapshot.frameIdBefore};
+
+ function validateLine(before, group, next) {
+  const first=group[0], last=group.at(-1);
+  const callerId=first.frameIdBefore;
+  if(!callerId||before.state.activeFrame!==callerId)invalid('실행할 줄의 활성 호출이 일치하지 않습니다.');
+  if(last.diagnostic)return;
+  const call=group.find(step=>step.eventKind==='call');
+  if(call){
+   const newId=last.state.activeFrame, frame=last.state.frames[newId];
+   const bind=group.find(step=>step.eventKind==='bind'&&step.writes.some(write=>write.cellId===frame?.parameterCellId));
+   const source=before.state.cells[frame?.argumentSourceCellId];
+   const parameter=last.state.cells[frame?.parameterCellId];
+   if(group.filter(step=>step.eventKind==='call').length!==1||before.state.frames[newId]||
+    frame?.caller!==callerId||!call.state.frames[newId]||last.eventKind!=='enter'||
+    !source||parameter?.owner!==newId||bind?.fromCellId!==frame.argumentSourceCellId||
+    (frame.resumeAt!==null&&(!frame.resumeAt?.sourceId||!Number.isInteger(frame.resumeAt?.line)||frame.resumeAt.line<1))||
+    !next||next.frameId!==newId){
+    invalid('호출 줄의 인자 복사, 새 호출 또는 복귀 위치가 올바르지 않습니다.');
+   }
+  }else if(group.some(step=>step.eventKind==='return')){
+   const frame=before.state.frames[callerId];
+   if(last.eventKind!=='return'||last.state.activeFrame!==frame.caller||
+    (frame.resumeAt===null ? next!==null : !next||next.frameId!==frame.caller||!sameLocation(next.at,frame.resumeAt))){
+    invalid('반환 뒤 호출자와 재개할 줄이 일치하지 않습니다.');
+   }
+  }else if(last.state.activeFrame!==callerId||next&&next.frameId!==callerId){
+   invalid('새 호출이나 반환 없이 활성 호출이 바뀌었습니다.');
+  }
+ }
+
+ function projectLineSteps(snapshots) {
+  const [initial,...events]=snapshots, groups=[], seen=new Set();
+  for(const snapshot of events){
+   const {lineStepId}=snapshot;
+   if(typeof lineStepId!=='string'||!lineStepId)invalid('트리 이벤트에 소스 줄 ID가 필요합니다.');
+   const group=groups.at(-1);
+   if(group?.[0].lineStepId===lineStepId){
+    if(!sameLocation(group[0].at,snapshot.at))invalid('한 줄 묶음의 소스 위치가 다릅니다.');
+    group.push(snapshot);
+   }else{
+    if(seen.has(lineStepId))invalid('소스 줄 ID가 연속되지 않은 단계에 재사용되었습니다.');
+    seen.add(lineStepId);
+    groups.push([snapshot]);
+   }
+  }
+  const steps=[{id:'initial',state:initial.state,executed:null,next:cursor(events[0])??null,
+   reads:[],writes:[],prints:[],diagnostic:null,title:initial.title,explanation:initial.explanation}];
+  for(const [index,group] of groups.entries()){
+   const first=group[0], last=group.at(-1), previous=steps.at(-1);
+   const next=last.diagnostic?null:cursor(groups[index+1]?.[0])??null;
+   validateLine(previous,group,next);
+   const writes=new Map(), reads=new Set(), prints=[...previous.prints];
+   // Keep partial events in the detailed trace; show the last complete line on failure.
+   if(!last.diagnostic){
+    for(const event of group){
+     for(const id of event.reads)reads.add(id);
+     for(const write of event.writes){
+      const earlier=writes.get(write.cellId);
+      writes.set(write.cellId,earlier?{...write,before:earlier.before}:write);
+     }
+     if(event.printed)prints.push(event.printed);
+    }
+   }
+   steps.push({id:'line-'+(index+1),state:last.diagnostic?previous.state:last.state,
+    executed:cursor(first),next,reads:[...reads],writes:[...writes.values()],prints,
+    diagnostic:last.diagnostic,title:first.title,explanation:first.explanation});
+  }
+  return steps;
+ }
+ const api={projectLineSteps};
+ if(typeof module!=='undefined'&&module.exports)module.exports=api;
+ Object.assign(root.DSInteractive??={},api);
+})(globalThis);
+</script>
+<script>(function (root) {
+ 'use strict';
+ const invalid = message => { throw Object.assign(new Error(message), {code:'TREE_INVALID'}); };
+
+ function getTreeView(tree, step) {
+  const {state,prints}=step;
+  const fields=tree?.fields;
+  const names=[fields?.key,fields?.left,fields?.right];
+  if(!tree?.rootCellId||names.some(name=>typeof name!=='string'||!name)||new Set(names).size!==3){
+   invalid('루트와 key·left·right 필드를 지정하세요.');
+  }
+  function pointerTarget(cellId) {
+   const cell=state.cells[cellId];
+   if(cell?.lifetime!=='live'||cell.value.kind!=='pointer')invalid(cellId+'에 유효한 포인터 값이 필요합니다.');
+   if(cell.value.target===null)return null;
+   const target=state.cells[cell.value.target], object=state.objects[target?.owner];
+   if(target?.lifetime!=='live'||object?.lifetime!=='live'||object.cellIds[0]!==target.id){
+    invalid(cellId+'는 노드 객체의 시작 주소를 가리켜야 합니다.');
+   }
+   return object.id;
+  }
+  function field(object,name) {
+   const matches=object.cellIds.map(id=>state.cells[id]).filter(cell=>cell?.name===name);
+   const cell=matches[0];
+   if(matches.length!==1||cell.owner!==object.id||cell.lifetime!=='live'){
+    invalid(object.id+'에 유효한 '+name+' 필드가 필요합니다.');
+   }
+   return cell;
+  }
+
+  const rootId=pointerTarget(tree.rootCellId), nodes=new Map();
+  const outputOrders=new Map();
+  for(const [i,print] of prints.entries()){
+   if(!outputOrders.has(print.cellId))outputOrders.set(print.cellId,i+1);
+  }
+  function visit(id){
+   if(id===null)return;
+   if(nodes.has(id))invalid(id+'에 순환 링크 또는 둘 이상의 부모가 있습니다.');
+   const object=state.objects[id];
+   const key=field(object,fields.key), left=field(object,fields.left), right=field(object,fields.right);
+   if(key.value.kind!=='int'||!Number.isSafeInteger(key.value.value))invalid(key.id+'에 정수 키가 필요합니다.');
+   const node={id,key:key.value.value,keyCellId:key.id,leftCellId:left.id,rightCellId:right.id,
+    leftId:pointerTarget(left.id),rightId:pointerTarget(right.id),outputOrder:outputOrders.get(key.id)??null};
+   nodes.set(id,node);
+   visit(node.leftId);
+   visit(node.rightId);
+  }
+  visit(rootId);
+  const nodeList=[...nodes.values()];
+  const keyCells=new Set(nodeList.map(node=>node.keyCellId));
+  if(prints.some(print=>!keyCells.has(print.cellId)))invalid('출력은 트리에 있는 노드의 key Cell을 읽어야 합니다.');
+
+  const stack=[], frames=new Set();
+  let nullEdge=null;
+  for(let id=state.activeFrame;id!==null;id=state.frames[id].caller){
+   const frame=state.frames[id];
+   if(frame?.lifetime!=='live'||frames.has(id))invalid('활성 호출 경로가 올바르지 않습니다.');
+   frames.add(id);
+   const parameterCellId=frame.parameterCellId??null;
+   const nodeId=parameterCellId===null?null:pointerTarget(parameterCellId);
+   if(parameterCellId!==null&&state.cells[parameterCellId].owner!==id)invalid('인자 Cell의 소유자가 다른 호출입니다.');
+   if(nodeId!==null&&!nodes.has(nodeId))invalid('순회 인자가 루트 트리 밖을 가리킵니다.');
+   if(!stack.length&&parameterCellId!==null&&nodeId===null){
+    const argument=frame.argumentSourceCellId;
+    const owner=nodes.get(state.cells[argument]?.owner);
+    if(owner?.leftCellId===argument&&owner.leftId===null)nullEdge={nodeId:owner.id,side:'left'};
+    if(owner?.rightCellId===argument&&owner.rightId===null)nullEdge={nodeId:owner.id,side:'right'};
+   }
+   stack.push({frameId:id,nodeId,parameterCellId,resumeAt:frame.resumeAt??null});
+  }
+  return {rootId,nodes:nodeList,stack,activeNodeId:stack[0]?.nodeId??null,nullEdge};
+ }
+ const api={getTreeView};
+ if(typeof module!=='undefined'&&module.exports)module.exports=api;
+ Object.assign(root.DSInteractive??={},api);
+})(globalThis);
+</script>
+<script>(function(root){
+ 'use strict';
+ const api=typeof module!=='undefined'&&module.exports?{...require('./contract.js'),...require('./memory.js'),...require('./line-steps.js'),...require('./tree.js')}:root.DSInteractive;
+ function freeze(x){if(x&&typeof x==='object'){Object.freeze(x);for(const v of Object.values(x))freeze(v);}return x;}
+ function compileScenario(s,input,limits={}){
+  const issues=api.validateInput(s.inputs,input);if(issues.length)throw Object.assign(new Error(issues.map(x=>x.message).join(' ')),{code:'INPUT_INVALID',issues});
+  const iterator=s.generateEvents(input)[Symbol.iterator]();let next=iterator.next();
+  const sources=structuredClone(s.sources).map(source=>({...source,text:source.text.replace(/\{\{(\w+)\}\}/g,(_,key)=>{if(!Number.isSafeInteger(input[key]))throw Error('Source template requires integer input: '+key);return String(input[key]);})}));
+  let state=structuredClone(s.initialState(input));const first={sourceId:next.value?.at.sourceId||sources[0].id,line:next.value?.at.line||1};
+  const snapshots=[{id:'initial',at:first,phase:'before',title:'호출 전 · 초기 상태',explanation:s.intro||'입력을 확인하고 한 단계씩 실행해 보세요.',state:structuredClone(state),reads:[],writes:[],diagnostic:null}];
+  while(!next.done){const e=next.value;
+   const exhausted=snapshots.length>=(limits.steps??2000)-1;
+   const event=exhausted?{...e,kind:'diagnostic',code:'LIMIT_REACHED',message:'단계 수 한도에 도달했습니다.'}:e;
+   const frameIdBefore=state.activeFrame;
+   const r=api.applyEvent(state,event,limits);state=r.state;
+   const lineRecord=s.kind==='c-tree'?{lineStepId:e.lineStepId,eventKind:event.kind,frameIdBefore,
+    ...(event.kind==='bind'&&{fromCellId:event.fromCellId})}:{};
+   snapshots.push({id:`step-${snapshots.length}`,at:event.at,phase:r.diagnostic?'diagnostic':'after',title:e.label||e.kind,explanation:e.explanation,...r,...lineRecord});
+   if(r.diagnostic){iterator.return?.();break;}next=iterator.next();
+  }
+  const trace={version:1,id:s.id,title:s.title,kind:s.kind,sources,inputs:structuredClone(input),presets:structuredClone(s.presets),snapshots,metadata:{supplement:s.supplement||'',addressModel:'기호 주소 · 실제 ABI 배치 아님'}};
+  const structural=validateTrace(trace);if(structural.length)throw Object.assign(new Error(JSON.stringify(structural)),{code:'TRACE_INVALID',issues:structural});
+  if(s.kind==='c-tree'){
+   trace.metadata.tree=structuredClone(s.tree);
+   trace.lineSteps=api.projectLineSteps(snapshots);
+   for(const step of trace.lineSteps)api.getTreeView(trace.metadata.tree,step);
+  }
+  return freeze(trace);
+ }
+ function validateTrace(t){
+  const issues=[],add=(code,path,message)=>issues.push(api.issue(code,path,message));
+  if(t.version!==1||!t.id||!t.kind||!Array.isArray(t.snapshots)||!t.snapshots.length)return [api.issue('TRACE_INVALID','trace','필수 필드가 없습니다.')];
+  const seen=new Set();let stopped=false;
+  t.snapshots.forEach((s,i)=>{
+   const path=`snapshots[${i}]`,source=t.sources?.find(x=>x.id===s.at?.sourceId);
+   if(!source||!Number.isInteger(s.at.line)||s.at.line<1||s.at.line>source.text.split('\n').length)add('LOCATION_INVALID',path,'소스 줄 범위가 맞지 않습니다.');
+   if(seen.has(s.id))add('DUPLICATE_ID',path,s.id);seen.add(s.id);
+   if(stopped)add('AFTER_DIAGNOSTIC',path,'진단 뒤 단계가 있습니다.');stopped=!!s.diagnostic;
+   for(const [id,c]of Object.entries(s.state.cells)){
+    if(c.id!==id||!s.state.frames[c.owner]&&!s.state.objects[c.owner])add('CELL_INVALID',path,id);
+    if(c.lifetime==='live'&&c.value.kind==='pointer'&&c.value.target!==null&&s.state.cells[c.value.target]?.lifetime!=='live')add('POINTER_INVALID',path,id);
+   }
+   for(const w of s.writes){if(JSON.stringify(s.state.cells[w.cellId]?.value)!==JSON.stringify(w.after))add('WRITE_INVALID',path,w.cellId);if(i&&JSON.stringify(t.snapshots[i-1].state.cells[w.cellId]?.value??null)!==JSON.stringify(w.before))add('WRITE_BEFORE_INVALID',path,w.cellId);}
+  });return issues;
+ }
+ function checkScenario(s){const cases=[{id:'default',input:Object.fromEntries(s.inputs.map(d=>[d.key,d.default]))},...s.presets];const traces={},issues=[];
+  for(const c of cases){try{const t=compileScenario(s,c.input);traces[c.id]=t;for(const ex of (s.expected||[]).filter(x=>x.presetId===c.id)){if((t.snapshots.at(-1).diagnostic?.code||null)!==(ex.diagnosticCode||null))issues.push(api.issue('EXPECTED_DIAGNOSTIC',c.id,'진단 불일치'));for(const ck of ex.checks){const snap=ck.step==='last'?t.snapshots.at(-1):t.snapshots.find(x=>x.id===ck.step);if(JSON.stringify(snap?.state.cells[ck.cellId]?.value)!==JSON.stringify(ck.value))issues.push(api.issue('EXPECTED_VALUE',c.id,ck.cellId));}}}catch(e){issues.push(api.issue(e.code||'SCENARIO_ERROR',c.id,e.message));}}
+  return {ok:!issues.length,issues,traces};
+ }
+ const out={compileScenario,validateTrace,checkScenario};if(typeof module!=='undefined'&&module.exports)module.exports=out;Object.assign(root.DSInteractive??={},out);
+})(globalThis);
+</script>
+<script>(function(root){
+ const D=root.DSInteractive,renderers=new Map();
+ function registerRenderer(kind,renderer){if(!renderer||typeof renderer.render!=='function')throw Error('Renderer requires render');renderers.set(kind,renderer);}
+ const format=v=>!v?'—':v.kind==='int'?String(v.value):v.kind==='pointer'?(v.target===null?'NULL':`&${v.target}`):v.kind==='uninitialized'?'미초기화':'사용 불가';
+ const el=(tag,cls,text)=>{const x=document.createElement(tag);if(cls)x.className=cls;if(text!==undefined)x.textContent=text;return x;};
+ const memoryRenderer={render(snapshot,selection){
+  const container=el('div','memory-content');container.style.display='contents';const s=snapshot.state,groups=[...Object.values(s.frames),...Object.values(s.objects)];
+  for(const g of groups){const cells=Object.values(s.cells).filter(c=>c.owner===g.id);const frame=el('section','frame');frame.dataset.frameId=g.id;
+   const h=el('h3','',g.functionId?`${g.functionId}()`:`${g.type}`);h.append(el('small','',`${g.id} · ${g.lifetime==='ended'?'수명 종료':g.id===s.activeFrame?'실행 중':'대기'}`));frame.append(h);
+   for(const c of cells){const b=el('button','cell');b.type='button';b.dataset.cellId=c.id;b.classList.toggle('written',snapshot.writes.some(w=>w.cellId===c.id));b.classList.toggle('read',snapshot.reads.includes(c.id));b.classList.toggle('selected',selection===c.id);b.classList.toggle('ended',c.lifetime==='ended');b.setAttribute('aria-pressed',String(selection===c.id));b.setAttribute('aria-label',`${c.name}, 저장 값 ${format(c.value)}, 자신의 주소 ${c.address}${c.lifetime==='ended'?', 수명 종료':''}`);
+    b.append(el('span','cell-name',c.name),el('span','cell-address',`${c.type} · ${c.address}`),el('span','cell-value',c.lifetime==='ended'?`수명 종료 · ${format(c.value)}`:format(c.value)));frame.append(b);
+   }container.append(frame);
+  }if(!groups.length)container.append(el('p','empty','아직 호출 프레임이 없습니다.'));return container;
+ }};
+ function drawArrows(container,snapshot,selection){
+  container.querySelector('.memory-svg')?.remove();const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('class','memory-svg');svg.setAttribute('aria-hidden','true');
+  const base=container.getBoundingClientRect(),ratio=base.width/container.offsetWidth||1;svg.setAttribute('viewBox',`0 0 ${container.offsetWidth} ${container.offsetHeight}`);svg.innerHTML='<defs><marker id="ds-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>';
+  let lane=0;
+  for(const c of Object.values(snapshot.state.cells)){if(c.lifetime!=='live'||c.value.kind!=='pointer'||c.value.target===null)continue;const from=[...container.querySelectorAll('[data-cell-id]')].find(x=>x.dataset.cellId===c.id),to=[...container.querySelectorAll('[data-cell-id]')].find(x=>x.dataset.cellId===c.value.target);if(!from||!to)continue;
+   const f=from.getBoundingClientRect(),t=to.getBoundingClientRect(),same=Math.abs(f.left-t.left)<3;
+   let x1=(f.right-base.left)/ratio,y1=(f.top+f.height*.65-base.top)/ratio,x2=((same?t.right:t.left)-base.left)/ratio,y2=(t.top+t.height*.5-base.top)/ratio;
+   if(!same&&f.left>t.left){x1=(f.left-base.left)/ratio;x2=(t.right-base.left)/ratio;}
+   const bend=same?Math.min(container.offsetWidth-2,x1+8+(lane++%3)*5):(x1+x2)/2;
+   const path=document.createElementNS(ns,'path');path.setAttribute('d',`M${x1},${y1} C${bend},${y1} ${bend},${y2} ${x2},${y2}`);path.setAttribute('fill','none');path.setAttribute('stroke','currentColor');path.setAttribute('stroke-width',selection===c.id?'2.5':'1.4');path.setAttribute('marker-end','url(#ds-arrow)');path.style.color='var(--accent)';svg.append(path);
+  }container.append(svg);
+ }
+ registerRenderer('c-memory',memoryRenderer);Object.assign(D,{registerRenderer,renderers,memoryRenderer,drawArrows,format,el});
+})(globalThis);
+</script>
+<script>(function (root) {
+ 'use strict';
+ const D=root.DSInteractive;
+ const svg=(tag,attrs)=>{
+  const element=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(const [name,value] of Object.entries(attrs))element.setAttribute(name,value);
+  return element;
+ };
+
+ function render(step,selection,metadata){
+  const view=D.getTreeView(metadata.tree,step);
+  const scene=D.el('div','tree-scene');
+  if(view.rootId===null){
+   scene.append(D.el('p','tree-empty','빈 트리 · root = NULL'));
+   return scene;
+  }
+
+  const nodes=new Map(view.nodes.map(node=>[node.id,node])), points=new Map();
+  let slot=0, maxDepth=0;
+  function place(id,depth){
+   if(id===null)return;
+   const node=nodes.get(id);
+   place(node.leftId,depth+1);
+   points.set(id,{x:++slot,y:40+depth*76});
+   maxDepth=Math.max(maxDepth,depth);
+   place(node.rightId,depth+1);
+  }
+  place(view.rootId,0);
+  const width=slot+1, height=108+maxDepth*76;
+  scene.style.minWidth=Math.max(224,width*42)+'px';
+  scene.style.height=height+'px';
+
+  const links=svg('svg',{class:'tree-links',viewBox:'0 0 '+width+' '+height,preserveAspectRatio:'none','aria-hidden':'true'});
+  const pathIds=new Set(view.stack.map(frame=>frame.nodeId));
+  const selectedCell=step.state.cells[selection];
+  function edge(from,to,className){
+   links.append(svg('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,class:className,'vector-effect':'non-scaling-stroke'}));
+  }
+  scene.append(links);
+  for(const node of view.nodes){
+   const point=points.get(node.id);
+   for(const child of [node.leftId,node.rightId]){
+    if(child!==null)edge(point,points.get(child),pathIds.has(node.id)&&pathIds.has(child)?'tree-path':'tree-edge');
+   }
+   const active=view.activeNodeId===node.id;
+   const selected=selectedCell?.owner===node.id||
+    selectedCell?.lifetime==='live'&&selectedCell.value.kind==='pointer'&&step.state.cells[selectedCell.value.target]?.owner===node.id;
+   const label=String(node.key);
+   const button=D.el('button','tree-node',label);
+   button.type='button';
+   button.dataset.nodeId=node.id;
+   button.dataset.cellId=node.keyCellId;
+   button.style.left=(point.x/width*100)+'%';
+   button.style.top=point.y+'px';
+   button.classList.toggle('active',active);
+   button.classList.toggle('on-path',pathIds.has(node.id));
+   button.classList.toggle('selected',!!selected);
+   button.setAttribute('aria-pressed',String(!!selected));
+   const statuses=[active?'현재 호출':pathIds.has(node.id)?'복귀 대기':''];
+   if(node.outputOrder!==null){
+    const order=D.el('span','tree-order',node.outputOrder);
+    order.setAttribute('aria-hidden','true');
+    button.dataset.outputOrder=node.outputOrder;
+    button.append(order);
+    statuses.push('출력 '+node.outputOrder+'번째');
+   }
+   button.setAttribute('aria-label',[label+'번 노드',...statuses.filter(Boolean)].join(', '));
+   scene.append(button);
+  }
+  if(view.nullEdge){
+   const {nodeId,side}=view.nullEdge;
+   const point=points.get(nodeId);
+   const end={x:point.x+(side==='left'?-.57:.57),y:point.y+47};
+   edge(point,end,'tree-null-path');
+   const label=D.el('span','tree-null-label','NULL');
+   label.dataset.nullSide=side;
+   label.dataset.parentNode=nodeId;
+   label.style.left=(end.x/width*100)+'%';
+   label.style.top=end.y+'px';
+   scene.append(label);
+  }
+  return scene;
+ }
+
+ function formatTreeValue(value,state){
+  if(value?.kind==='pointer'&&value.target!==null){
+   const cell=state.cells[value.target], object=state.objects[cell?.owner];
+   if(object?.cellIds[0]===cell?.id&&object)return '&'+object.id;
+  }
+  return D.format(value);
+ }
+
+ function cellButton(cell,step,selection,related){
+  const button=D.el('button','tree-cell');
+  button.type='button';
+  button.dataset.cellId=cell.id;
+  const selected=cell.id===selection;
+  button.classList.toggle('related',related);
+  button.classList.toggle('read',step.reads.includes(cell.id));
+  button.classList.toggle('written',step.writes.some(write=>write.cellId===cell.id));
+  button.setAttribute('aria-pressed',String(selected));
+  const stored=formatTreeValue(cell.value,step.state);
+  const value=cell.lifetime==='ended'?'수명 종료 · 마지막 값 '+stored:stored;
+  button.append(D.el('span','tree-field',cell.name),D.el('strong','tree-cell-value',value),
+   D.el('span','tree-cell-address','자기 주소 '+cell.address));
+  return button;
+ }
+
+ function renderTreeDetails(step,selection,view){
+  const stack=D.el('ol','tree-stack-list'), rows=D.el('div','tree-storage');
+  const {state}=step, nodes=new Map(view.nodes.map(node=>[node.id,node]));
+  const selected=state.cells[selection];
+  const target=selected?.lifetime==='live'&&selected.value.kind==='pointer'?state.cells[selected.value.target]:null;
+  const chosen=nodes.has(selected?.owner)?selected.owner:nodes.has(target?.owner)?target.owner:null;
+  const labelFor=frame=>frame.parameterCellId===null?'호출자':frame.nodeId===null?'inorder(NULL)':'inorder('+nodes.get(frame.nodeId).key+'번 노드)';
+
+  for(const [index,frame] of view.stack.entries()){
+   const item=D.el('li','tree-frame');
+   const waiting=view.stack[index-1]?.resumeAt;
+   const status=index===0?'현재 실행':waiting?waiting.line+'행에서 재개':'순회가 끝날 때까지 대기';
+   item.dataset.frameId=frame.frameId;
+   item.dataset.frameState=index===0?'active':'waiting';
+   item.append(D.el('h3','',labelFor(frame)),D.el('span','tree-frame-status',status));
+   const cellIds=frame.parameterCellId?[frame.parameterCellId]:state.frames[frame.frameId].cellIds;
+   for(const id of cellIds){
+    const cell=state.cells[id];
+    item.append(cellButton(cell,step,selection,chosen!==null&&state.cells[cell.value.target]?.owner===chosen));
+   }
+   stack.append(item);
+  }
+  const ended=state.frames[step.executed?.frameId];
+  if(ended?.lifetime==='ended'&&ended.parameterCellId){
+   const item=D.el('li','tree-frame tree-frame-ended');
+   item.dataset.endedFrame=ended.id;
+   item.append(D.el('h3','','방금 반환한 호출'),cellButton(state.cells[ended.parameterCellId],step,selection,false));
+   stack.append(item);
+  }
+
+  for(const node of view.nodes){
+   const group=D.el('section','tree-object');
+   group.dataset.objectId=node.id;
+   group.classList.toggle('related',chosen===node.id);
+   group.append(D.el('h3','',node.key+'번 노드'));
+   for(const id of [node.keyCellId,node.leftCellId,node.rightCellId]){
+    const cell=state.cells[id];
+    group.append(cellButton(cell,step,selection,chosen===node.id||chosen!==null&&state.cells[cell.value.target]?.owner===chosen));
+   }
+   rows.append(group);
+  }
+  if(!view.nodes.length)rows.append(D.el('p','empty','저장된 트리 노드가 없습니다.'));
+  return {stack,rows,labelFor};
+ }
+ D.registerRenderer('c-tree',{render});
+ Object.assign(D,{renderTreeDetails,formatTreeValue});
+})(globalThis);
+</script>
+<script>(function(root){
+ const D=root.DSInteractive;
+ // View state is independent of the execution Trace. No scene adapter owns panels.
+ function mountShell(app,{onStep,onSpeed,redraw}){
+  const q=s=>app.querySelector(s),listeners=[],on=(el,type,fn)=>{el.addEventListener(type,fn);listeners.push(()=>el.removeEventListener(type,fn));};
+  const layout=q('.layout'),panels={left:q('.panel-left'),right:q('.panel-right')},toggles={left:q('[data-action=toggle-left]'),right:q('[data-action=toggle-right]')};
+  let narrow=innerWidth<1024,drawer=null,open={left:true,right:true},widths={left:null,right:null},scale=1,trace=null,drag=null;
+  const defaults=side=>side==='left'?Math.max(260,Math.min(320,innerWidth*.2)):Math.max(320,Math.min(400,innerWidth*.24));
+  function setWidth(side,value){const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='left'?480:720;
+   const room=innerWidth-320-(open[other]?(widths[other]||defaults(other)):0);widths[side]=Math.max(lo,Math.min(hi,room,value));sync();}
+  function sync(){
+   // Reopening a dock or crossing the breakpoint can invalidate a width that
+   // was legal while its sibling was closed. Reserve the scene before layout.
+   if(!narrow&&open.left&&open.right){const room=innerWidth-320;let left=widths.left||defaults('left'),right=widths.right||defaults('right');
+    if(left+right>room){right=Math.max(280,room-left);left=Math.max(220,Math.min(left,room-right));widths.left=left;widths.right=right;}}
+   for(const side of ['left','right']){const active=narrow?drawer===side:open[side],panel=panels[side];panel.classList.toggle('is-open',active);panel.inert=!active;panel.setAttribute('aria-hidden',String(!active));toggles[side].setAttribute('aria-expanded',String(active));
+    if(narrow&&active){panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');}else{panel.removeAttribute('role');panel.removeAttribute('aria-modal');}
+    const handle=q(`[data-resize=${side}]`);handle.setAttribute('aria-valuenow',String(Math.round(widths[side]||defaults(side))));handle.tabIndex=narrow?-1:0;
+    if(widths[side])layout.style.setProperty(side==='left'?'--pl-user':'--pr-user',widths[side]+'px');else layout.style.removeProperty(side==='left'?'--pl-user':'--pr-user');
+   }
+   q('.scrim').classList.toggle('is-on',narrow&&drawer!==null);q('.stage').inert=narrow&&drawer!==null;requestAnimationFrame(redraw);
+  }
+  function close(){const was=drawer;drawer=null;sync();if(was)toggles[was].focus({preventScroll:true});}
+  function toggle(side){if(narrow){if(drawer===side){close();return;}drawer=side;sync();panels[side].querySelector('[data-action=close-panels]').focus({preventScroll:true});}
+   else{open[side]=!open[side];sync();if(!open[side])toggles[side].focus({preventScroll:true});}}
+  on(app,'click',e=>{const btn=e.target.closest('button'),action=btn?.dataset.action;
+   if(action==='toggle-left')toggle('left');if(action==='toggle-right')toggle('right');if(e.target.closest('[data-action=close-panels]'))close();
+   if(action==='step')onStep(Number(btn.dataset.stepIndex));
+   if(btn?.dataset.speed){for(const b of app.querySelectorAll('[data-speed]'))b.setAttribute('aria-pressed',String(b===btn));onSpeed(Number(btn.dataset.speed));}
+   if(action?.startsWith('option-')){const key=action.slice(7);app.dataset[key]=String(app.dataset[key]!=='true');btn.setAttribute('aria-pressed',app.dataset[key]);requestAnimationFrame(redraw);}
+   if(action?.startsWith('zoom-')){scale=action==='zoom-reset'?1:Math.round(Math.max(.6,Math.min(1.8,scale+(action==='zoom-in'?.1:-.1)))*10)/10;
+    const memory=q('.memory');memory.dataset.scale=String(scale);memory.style.setProperty('--zoom',String(scale));redraw();if(action==='zoom-reset'){q('.stage-viewport').scrollTop=0;q('.stage-viewport').scrollLeft=0;}}
+  });
+  on(document,'keydown',e=>{
+   if(narrow&&drawer){if(e.key==='Escape'){e.preventDefault();close();return;}if(e.key==='Tab'){
+    const focusable=[...panels[drawer].querySelectorAll('button,input,select,summary,[tabindex="0"]')].filter(x=>!x.disabled&&x.getClientRects().length);
+    const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}
+   }}
+  });
+  for(const side of ['left','right']){const handle=q(`[data-resize=${side}]`);
+   on(handle,'keydown',e=>{if(!['ArrowLeft','ArrowRight','Home'].includes(e.key))return;e.preventDefault();e.stopPropagation();
+    if(e.key==='Home'){widths[side]=null;sync();}else setWidth(side,(widths[side]||defaults(side))+(e.key==='ArrowRight'?1:-1)*(side==='left'?1:-1)*16);});
+   on(handle,'pointerdown',e=>{if(narrow||e.button!==0)return;e.preventDefault();drag={side,id:e.pointerId,x:e.clientX,width:widths[side]||defaults(side)};handle.setPointerCapture(e.pointerId);layout.classList.add('is-resizing');});
+   on(handle,'pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;setWidth(side,drag.width+(e.clientX-drag.x)*(side==='left'?1:-1));});
+   const end=()=>{drag=null;layout.classList.remove('is-resizing');};on(handle,'pointerup',end);on(handle,'pointercancel',end);on(handle,'lostpointercapture',end);
+  }
+  on(window,'resize',()=>{const next=innerWidth<1024;if(next!==narrow){const focused=document.activeElement?.closest('.panel');narrow=next;drawer=null;sync();if(focused)toggles[focused===panels.left?'left':'right'].focus({preventScroll:true});}
+   else{if(!narrow)for(const side of ['left','right'])if(widths[side])setWidth(side,widths[side]);sync();}});
+  const observer=new ResizeObserver(redraw);observer.observe(q('.stage-viewport'));observer.observe(q('.memory'));sync();
+  return {update(next,entries,step,invalid=false){if(trace!==next){trace=next;const list=q('.step-list');list.replaceChildren(...entries.map((s,i)=>{const b=D.el('button','btn');b.dataset.action='step';b.dataset.stepIndex=i;const text=D.el('span','step-txt');const row=s.executed?.at||s.at;
+    const where=row?`${row.line}행 · ${s.diagnostic?'진단':s.phase==='before'?'실행 전':'실행 후'}`:'실행 전';
+    text.append(D.el('b','',s.title),D.el('span','',where));b.append(D.el('span','step-num num',i),text);return b;}));}
+   for(const b of app.querySelectorAll('[data-action=step]')){b.setAttribute('aria-pressed',String(Number(b.dataset.stepIndex)===step));b.disabled=invalid;}
+  },destroy(){observer.disconnect();listeners.forEach(f=>f());q('.stage').inert=false;}};
+ }
+ D.mountShell=mountShell;
+})(globalThis);
+</script>
+<script>(function(root){
+ const D=root.DSInteractive;
+ function mountPlayer(app,scenario){
+  const renderer=D.renderers.get(scenario.kind);if(!renderer)throw Error(`Renderer missing: ${scenario.kind}`);
+  const tree=scenario.kind==='c-tree';
+  const defaults=Object.fromEntries(scenario.inputs.map(d=>[d.key,d.default]));
+  const byPreset=new Map(scenario.presets.map(p=>[p.id,p.input]));
+  const caseField=tree&&scenario.inputs.length===1&&scenario.inputs[0].type==='enum'&&scenario.inputs[0];
+  const casesCovered=caseField&&caseField.options.every(o=>o.value===caseField.default||
+   scenario.presets.some(p=>p.input[caseField.key]===o.value));
+  const q=s=>app.querySelector(s),listeners=[],on=(node,event,fn)=>{node.addEventListener(event,fn);listeners.push(()=>node.removeEventListener(event,fn));};
+  app.dataset.kind=scenario.kind;
+  if(tree){
+   for(const element of app.querySelectorAll('.tree-only'))element.hidden=false;
+   for(const [side,label] of [['left','코드'],['right','호출과 메모리']]){
+    const toggle=q('[data-action=toggle-'+side+']');
+    toggle.setAttribute('aria-label',label);
+    toggle.querySelector('span').textContent=side==='right'?'메모리':label;
+    q('.panel-'+side).setAttribute('aria-label',label);
+    q('.panel-'+side+' .panel-head h2').textContent=label;
+   }
+   q('.stage-viewport').append(q('.view-btns'));
+   q('.stage').setAttribute('aria-label','트리 실행 보기');
+   q('.pane-heading h2').textContent='전체 트리';
+   q('.memory').setAttribute('aria-label','이진 트리와 현재 호출 경로');
+   q('.scene-note').textContent='굵은 선은 현재 호출 경로';
+   q('[data-action=prev]').setAttribute('aria-label','이전 줄');
+   q('[data-action=next]').setAttribute('aria-label','다음 줄');
+   q('[data-action=option-arrows]').hidden=true;
+   q('[data-action=option-addresses]').closest('section').hidden=true;
+   if(casesCovered)q('.inputs').hidden=true;
+  }
+  let input={...defaults},trace,step=0,selection=null,timer=null,destroyed=false,speed=1;
+  q('h1').textContent=scenario.title;document.title=scenario.title;q('.takeaway').textContent=scenario.takeaway||'';
+  const preset=q('[data-action=preset]');preset.append(new Option(casesCovered?caseField.options.find(o=>o.value===caseField.default).label:'기본 입력','default'));for(const p of scenario.presets)preset.append(new Option(p.label,p.id));
+  for(const d of scenario.inputs){const label=D.el('label','',d.label);const field=d.type==='enum'?document.createElement('select'):document.createElement('input');field.dataset.input=d.key;field.setAttribute('aria-label',d.label);if(d.type==='integer'){field.type='number';field.min=d.min;field.max=d.max;field.step='1';}else for(const o of d.options)field.append(new Option(o.label,o.value));label.append(field);q('.inputs').append(label);if(d.type==='enum'&&d.key==='mode'){label.hidden=true;q('.modes').hidden=false;for(const o of d.options){const b=D.el('button','',o.label);b.dataset.action='mode';b.dataset.modeValue=o.value;q('.modes').append(b);}}const change=()=>{const value=d.type==='integer'?(field.value===''?NaN:Number(field.value)):field.value;if(Object.is(input[d.key],value))return;input[d.key]=value;preset.value='default';recompile();};on(field,'change',change);if(d.type==='integer')on(field,'input',change);}
+  const play=q('[data-action=play]');const playIcon=running=>{play.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(running?'<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>':'<path d="M7 5l12 7-12 7z"/>')+'</svg>';};
+  const entries=()=>trace.lineSteps||trace.snapshots;
+  function redraw(){if(trace&&!destroyed&&!tree)D.drawArrows(q('.memory'),entries()[step],selection);}
+  const shell=D.mountShell(app,{onStep:move,onSpeed:value=>{speed=value;if(timer!==null){stop();toggle();}},redraw});
+  function stop(){if(timer!==null)clearInterval(timer);timer=null;playIcon(false);play.setAttribute('aria-label','재생');app.dataset.playing='false';}
+  function printNeighbor(direction){
+   const steps=entries();
+   for(let i=step+direction;i>0&&i<steps.length;i+=direction){
+    if(steps[i].prints.length>steps[i-1].prints.length)return i;
+   }
+   return -1;
+  }
+  function paintCode(s){
+   const position=tree?s.next?.at:s.at;
+   const executed=tree?s.executed?.at:null;
+   const source=trace.sources.find(item=>item.id===(position||executed)?.sourceId)||trace.sources[0];
+   const code=q('.code');
+   code.replaceChildren();
+   for(const shown of tree?trace.sources:[source]){
+    if(tree)code.append(D.el('div','code-section',shown.label||shown.id));
+    for(const [i,line] of shown.text.split('\n').entries()){
+     const row=D.el('div','code-line');
+     row.dataset.line=i+1;
+     row.dataset.sourceId=shown.id;
+     const current=position?.sourceId===shown.id&&position.line===i+1;
+     row.classList.toggle('current',current);
+     row.classList.toggle('executed',executed?.sourceId===shown.id&&executed.line===i+1);
+     if(current)row.setAttribute('aria-current','step');
+     row.append(D.el('span','line-number',i+1),D.el('span','',line));
+     code.append(row);
+    }
+   }
+   code.dataset.step=s.id;
+   const active=code.querySelector('.current');
+   if(active){
+    const row=active.getBoundingClientRect(),box=code.getBoundingClientRect();
+    if(row.top<box.top)code.scrollTop+=row.top-box.top;
+    else if(row.bottom>box.bottom)code.scrollTop+=row.bottom-box.bottom;
+   }
+   q('.source-label').textContent=tree?'':source.label||source.id;
+   q('.source-note').textContent=tree?scenario.supplement:source.provenance?.note||
+    (source.provenance?.supplement?'학습용 보충 코드 · 강의 개념을 함수 호출로 확장했습니다.':'강의 swap 함수 · 호출자와 헤더는 검산용으로 보충했습니다.');
+   q('.phase').textContent=tree?(executed?(trace.sources.find(item=>item.id===executed.sourceId)?.label||executed.sourceId)+
+    ' · '+executed.line+'행 · '+(s.diagnostic?'진단 후 중단':'실행 후'):'실행 전'):
+    `${source.label||source.id} · ${s.at.line}행 · ${s.phase==='diagnostic'?'진단 후 중단':s.phase==='before'?'실행 전':'실행 후'}`;
+  }
+  function paintTree(s){
+   const treeView=D.getTreeView(trace.metadata.tree,s);
+   const details=D.renderTreeDetails(s,selection,treeView);
+   q('.tree-stack').replaceChildren(details.stack);
+   q('.tree-memory-rows').replaceChildren(details.rows);
+   app.dataset.activeFrame=s.state.activeFrame??'';
+   if(selection===null)delete app.dataset.selectedCell;else app.dataset.selectedCell=selection;
+   const position=s.next?.at, frame=treeView.stack[0];
+   const positionText=position&&trace.sources.find(source=>source.id===position.sourceId).text.split('\n')[position.line-1].trim();
+   q('.tree-next').textContent=position?'다음 줄 · '+position.line+'행':s.diagnostic?'실행 중단':'순회 완료';
+   q('.tree-location').textContent=[frame&&details.labelFor(frame),positionText].filter(Boolean).join(' · ');
+   q('.tree-executed').textContent=s.diagnostic?s.diagnostic.message:s.executed?
+    '방금 '+s.executed.at.line+'행 · '+s.title:s.explanation;
+   q('.stdout-value').textContent=s.state.stdout.join('');
+   q('[data-action=previous-output]').disabled=printNeighbor(-1)<0;
+   q('[data-action=next-output]').disabled=printNeighbor(1)<0;
+  }
+  function paint(){
+   if(destroyed)return;
+   const focused=document.activeElement, focusedCell=focused?.dataset.cellId;
+   const region=focused?.closest('.tree-stack,.tree-memory,.memory');
+   for(const b of app.querySelectorAll('[data-mode-value]'))b.setAttribute('aria-pressed',String(b.dataset.modeValue===input.mode));
+   const steps=entries(),s=steps[step];
+   app.dataset.snapshot=s.id;app.dataset.index=step;
+   q('output[data-step]').textContent=`${step} / ${steps.length-1}`;
+   q('output[data-step]').dataset.step=s.id;
+   const scrub=q('[data-action=scrub]');
+   scrub.max=steps.length-1;scrub.value=step;
+   paintCode(s);
+   const memory=q('.memory');
+   memory.replaceChildren(renderer.render(s,selection,trace.metadata));
+   memory.dataset.step=s.id;
+   if(tree)paintTree(s);else redraw();
+   q('.step-title').textContent=s.title;q('.explanation').textContent=s.explanation;
+   q('.diagnostic').textContent=s.diagnostic?`${s.diagnostic.code}: ${s.diagnostic.message} 이후 실행은 진행하지 않습니다.`:'';
+   q('.changes').replaceChildren(...s.writes.map(w=>{const row=D.el('div','change');row.append(D.el('strong','',s.state.cells[w.cellId]?.name||w.cellId),D.el('div','',`${D.format(w.before)} → ${D.format(w.after)}`));return row;}));if(!s.writes.length)q('.changes').append(D.el('p','trace-message','이 단계에서는 저장 값이 바뀌지 않았습니다.'));
+   const c=s.state.cells[selection], format=tree?value=>D.formatTreeValue(value,s.state):D.format;const desc=q('.selection');desc.replaceChildren();if(c){desc.append(D.el('strong','',`${c.name} · ${c.id}`),document.createElement('br'),document.createTextNode(`자신의 주소 ${c.address} / 저장 값 ${format(c.value)}`));if(c.lifetime==='live'&&c.value.kind==='pointer'&&c.value.target){
+    const target=s.state.cells[c.value.target], object=tree&&s.state.objects[target.owner];
+    const detail=object?`대상 ${object.id} · ${object.type}`:`대상 ${target.id}의 값 ${D.format(target.value)}`;
+    desc.append(document.createElement('br'),document.createTextNode(detail));
+   }}else desc.textContent='변수를 선택하면 값과 주소를 구분해 볼 수 있습니다.';
+   for(const action of ['first','prev'])q(`[data-action=${action}]`).disabled=step===0;for(const action of ['last','next'])q(`[data-action=${action}]`).disabled=step===entries().length-1;
+   shell.update(trace,steps,step,play.disabled);
+   if(focusedCell&&region)[...region.querySelectorAll('[data-cell-id]')].find(b=>b.dataset.cellId===focusedCell)?.focus({preventScroll:true});
+  }
+  function recompile(){stop();step=0;selection=null;const issues=D.validateInput(scenario.inputs,input);q('.input-error').textContent=issues.map(i=>i.message).join(' ');for(const field of app.querySelectorAll('[data-input]')){const v=input[field.dataset.input];field.value=Number.isNaN(v)?'':v;field.setAttribute('aria-invalid',String(issues.some(i=>i.path===field.dataset.input)));}play.disabled=!!issues.length;
+   if(issues.length){if(trace)paint();for(const a of ['first','prev','next','last','scrub'])q(`[data-action=${a}]`).disabled=true;return;}q('[data-action=scrub]').disabled=false;trace=D.compileScenario(scenario,input);paint();}
+  function move(n){if(play.disabled)return;stop();step=Math.max(0,Math.min(entries().length-1,n));paint();}
+  function toggle(){if(play.disabled)return;if(timer!==null){stop();return;}if(step===entries().length-1)step=0;playIcon(true);play.setAttribute('aria-label','일시정지');app.dataset.playing='true';paint();timer=setInterval(()=>{step++;paint();if(step>=entries().length-1)stop();},900/speed);}
+  on(preset,'change',()=>{input={...(preset.value==='default'?defaults:byPreset.get(preset.value))};recompile();});
+  on(app,'click',e=>{const cell=e.target.closest('[data-cell-id]');if(cell){selection=cell.dataset.cellId;paint();return;}const action=e.target.closest('[data-action]')?.dataset.action;
+   if(action==='mode'){const value=e.target.closest('[data-mode-value]').dataset.modeValue;input.mode=value;preset.value='default';recompile();}
+   if(action==='first')move(0);if(action==='prev')move(step-1);if(action==='next')move(step+1);if(action==='last')move(entries().length-1);if(action==='play')toggle();
+   if(tree&&(action==='previous-output'||action==='next-output')){
+    const next=printNeighbor(action==='previous-output'?-1:1);
+    if(next>=0)move(next);
+   }
+   if(action==='theme'){const dark=document.documentElement.dataset.theme!=='dark';document.documentElement.dataset.theme=dark?'dark':'light';q('[data-action=theme]').innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(dark?'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>':'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>')+'</svg>';q('[data-action=theme]').setAttribute('aria-label',dark?'밝은 테마로 전환':'어두운 테마로 전환');}
+  });
+  on(q('[data-action=scrub]'),'input',e=>move(Number(e.target.value)));
+  on(document,'keydown',e=>{if(e.defaultPrevented||app.querySelector('[aria-modal=true]')||/INPUT|SELECT|TEXTAREA|BUTTON|SUMMARY/.test(e.target.tagName))return;if(['ArrowLeft','ArrowRight','Home','End',' '].includes(e.key)){e.preventDefault();if(e.key===' ')toggle();else move(e.key==='Home'?0:e.key==='End'?entries().length-1:step+(e.key==='ArrowRight'?1:-1));}});
+  on(window,'resize',redraw);
+  q('.provenance-text').textContent=scenario.sources.map(s=>`${s.label}: ${s.provenance?.path||'보충 예제'}${s.provenance?.page?' · p'+s.provenance.page:''}${s.provenance?.section?' · '+s.provenance.section:''}${s.provenance?.adjustments?' · '+s.provenance.adjustments:''}`).join('\n');q('.provenance-text').style.whiteSpace='pre-line';recompile();
+  return {destroy(){stop();destroyed=true;shell.destroy();listeners.forEach(f=>f());}};
+ }
+ D.mountPlayer=mountPlayer;
+})(globalThis);
+</script>
+<script>(function (root) {
+ 'use strict';
+ const cases={
+  intro:[[8,3,10],[3,1,null],[1,null,null],[10,null,null]],
+  lecture:[[18,7,26],[7,3,12],[3,null,null],[12,null,null],[26,null,31],[31,27,null],[27,null,null]],
+  empty:[]
+ };
+ const note='복습노트/1105/.pack/정리노트_1105_Tree.md';
+ const tree={rootCellId:'main.root',fields:{key:'key',left:'left',right:'right'}};
+ const at=(sourceId,line)=>({sourceId,line});
+ const walk=line=>at('walk',line);
+ const nodeId=key=>'node-'+key;
+ const keyCell=key=>nodeId(key)+'.key';
+ const pointer=key=>({kind:'pointer',target:key===null?null:keyCell(key)});
+ const cell=(owner,name,type,value)=>({
+  id:owner+'.'+name,name,type,owner,address:'&'+owner+'.'+name,value,lifetime:'live'
+ });
+
+ const scenario={
+  version:1,id:'inorder-1105',kind:'c-tree',tree,title:'중위 순회 한 줄씩 실행하기',
+  intro:'다음 줄을 실행하며 전체 트리에서 현재 호출을 찾아보세요.',
+  takeaway:'왼쪽 호출이 반환되면 현재 키를 출력합니다. 오른쪽 호출도 반환되면 현재 호출을 끝냅니다.',
+  supplement:'1105 강의의 트리와 방문 순서를 바탕으로 실행을 관찰할 C 함수와 호출자를 보충했습니다.',
+  sources:[
+   {id:'walk',label:'inorder 함수',language:'c',text:[
+    'void inorder(Node *p) {',
+    '    if (p == NULL) return;',
+    '    inorder(p->left);',
+    '    printf("%d ", p->key);',
+    '    inorder(p->right);',
+    '}'
+   ].join('\n'),provenance:{path:note,section:'§4 순회 · 중위 순회',supplement:true}},
+   {id:'driver',label:'호출자',language:'c',text:'inorder(root);',
+    provenance:{path:note,section:'§4 순회 · 중위 순회',supplement:true}}
+  ],
+  inputs:[{key:'treeCase',label:'트리 사례',type:'enum',default:'intro',options:[
+   {value:'intro',label:'입문 트리 · 4개 노드'},
+   {value:'lecture',label:'1105 강의 트리 · 7개 노드'},
+   {value:'empty',label:'빈 트리 · NULL'}
+  ]}],
+  presets:[
+   {id:'lecture',label:'1105 강의 트리',input:{treeCase:'lecture'}},
+   {id:'empty',label:'빈 트리',input:{treeCase:'empty'}}
+  ],
+  initialState({treeCase}){
+   const root=cell('main','root','Node *',pointer(cases[treeCase][0]?.[0]??null));
+   const cells={[root.id]:root}, objects={};
+   for(const [key,left,right] of cases[treeCase]){
+    const id=nodeId(key);
+    const fields=[
+     cell(id,'key','int',{kind:'int',value:key}),
+     cell(id,'left','Node *',pointer(left)),
+     cell(id,'right','Node *',pointer(right))
+    ];
+    objects[id]={id,type:'Node',storage:'static',cellIds:fields.map(field=>field.id),lifetime:'live'};
+    for(const field of fields)cells[field.id]=field;
+   }
+   const main={id:'main',functionId:'main',caller:null,cellIds:[root.id],lifetime:'live'};
+   return {frames:{main},objects,cells,activeFrame:'main',stdout:[]};
+  },
+  *generateEvents({treeCase}){
+   const nodes=new Map(cases[treeCase].map(([key,left,right])=>[key,{left,right}]));
+   let nextFrame=0, nextLine=0;
+   function* line(at,title,explanation,events){
+    const lineStepId='inorder-'+(++nextLine);
+    for(const event of events)yield {at,lineStepId,label:title,explanation,...event};
+   }
+   function* call(key,sourceCellId,callSite,resumeAt,memberOf,side){
+    const id='call-'+(++nextFrame), value=pointer(key), parameter=cell(id,'p','Node *',value);
+    const inputName=side?'p->'+side:'root';
+    const argument=key===null?'NULL':key+'번 노드의 주소';
+    const wait=resumeAt?' 현재 호출은 '+resumeAt.line+'행에서 재개합니다.':'';
+    yield* line(callSite,side?(side==='left'?'왼쪽 자식 호출':'오른쪽 자식 호출'):'루트에서 순회 시작',
+     inputName+'에 저장된 '+argument+'를 새 호출의 p에 복사합니다.'+wait,[
+      {kind:'read',cellId:sourceCellId,...(memberOf&&{memberOf})},
+      {kind:'call',frame:{id,functionId:'inorder',callSite,resumeAt,
+       argumentSourceCellId:sourceCellId,parameterCellId:parameter.id}},
+      {kind:'bind',cell:parameter,value,fromCellId:sourceCellId},
+      {kind:'enter',frameId:id}
+     ]);
+    const resume=resumeAt?' 호출자의 '+resumeAt.line+'행으로 돌아갑니다.':' 호출자로 돌아가 순회가 끝납니다.';
+    yield* line(walk(2),key===null?'NULL 기저 사례에서 반환':'NULL 조건 검사',
+     key===null?'p가 NULL이므로 반환합니다. 이 호출의 p는 수명이 끝납니다.'+resume:
+      'p가 '+argument+'를 담고 있어 다음 줄에서 왼쪽 자식을 호출합니다.',[
+      {kind:'read',cellId:parameter.id},
+      ...(key===null?[{kind:'return',frameId:id}]:[])
+     ]);
+    if(key===null)return;
+    const {left,right}=nodes.get(key);
+    yield* call(left,nodeId(key)+'.left',walk(3),walk(4),parameter.id,'left');
+    yield* line(walk(4),'현재 키 출력','왼쪽 호출에서 돌아왔습니다. p가 가리키는 노드의 key '+key+'을(를) 읽어 출력합니다.',[
+     {kind:'print-int',cellId:keyCell(key),memberOf:parameter.id}
+    ]);
+    yield* call(right,nodeId(key)+'.right',walk(5),walk(6),parameter.id,'right');
+    yield* line(walk(6),'현재 호출에서 반환','오른쪽 호출이 끝났습니다. 현재 호출의 p는 수명이 끝납니다.'+resume,[
+     {kind:'return',frameId:id}
+    ]);
+   }
+   yield* call(cases[treeCase][0]?.[0]??null,tree.rootCellId,at('driver',1),null);
+  }
+ };
+ if(typeof module!=='undefined'&&module.exports)module.exports=scenario;
+ else root.DSInteractive.scenario=scenario;
+})(globalThis);
+</script>
+<script>DSInteractive.player=DSInteractive.mountPlayer(document.querySelector('#app'),DSInteractive.scenario);</script>
+</body></html>
