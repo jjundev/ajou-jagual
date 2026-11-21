@@ -46,3 +46,23 @@ test('null, uninitialized, inactive returns and depth/object limits diagnose',()
  a.equal(applyEvent(x.state,{kind:'allocate',object:{id:'h',cellIds:[]},cells:[]},{objects:0}).diagnostic.code,'LIMIT_REACHED');
 });
 module.exports={setup,cell,I,P};
+test('struct member reads and int output follow the actual owner', () => {
+ const x = setup();
+ for (const id of ['a', 'b']) {
+  const cells = [cell(id + '.key', I(7), id), cell(id + '.left', P(null), id)];
+  x.apply({kind:'allocate', object:{id, cellIds:cells.map(c => c.id)}, cells});
+ }
+ x.apply({kind:'declare', cell:cell('p', P('a.key'))});
+ x.apply({kind:'declare', cell:cell('nil', P(null))});
+ const readMember = x.apply({kind:'read', cellId:'a.left', memberOf:'p'});
+ a.deepEqual(readMember.reads, ['p', 'a.left']);
+ const wrongOwner = x.apply({kind:'print-int', cellId:'b.key', memberOf:'p'});
+ a.equal(wrongOwner.diagnostic?.code, 'TARGET_MISMATCH');
+ a.deepEqual(wrongOwner.state.stdout, []);
+ a.equal(x.apply({kind:'read', cellId:'a.key', memberOf:'nil'}).diagnostic?.code, 'NULL_DEREFERENCE');
+ a.equal(x.apply({kind:'print-int', cellId:'a.left', memberOf:'p'}).diagnostic?.code, 'VALUE_INVALID');
+ a.equal(x.apply({kind:'read', cellId:'a.key', memberOf:'p', through:[]}).diagnostic?.code, 'ACCESS_INVALID');
+ const printMember = x.apply({kind:'print-int', cellId:'a.key', memberOf:'p'});
+ a.deepEqual(printMember.state.stdout, ['7 ']);
+ a.deepEqual(printMember.printed, {cellId:'a.key', text:'7 '});
+});

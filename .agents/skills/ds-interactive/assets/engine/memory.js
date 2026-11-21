@@ -11,7 +11,21 @@
   function write(id,v){const c=get(id);value(v);writes.push({cellId:id,before:clone(c.value),after:clone(v)});c.value=clone(v);}
   function add(c,v=c.value){if(state.cells[c.id])fault('DUPLICATE_ID',c.id);if(!state.frames[c.owner]&&!state.objects[c.owner])fault('OWNER_MISSING',c.owner);value(v);state.cells[c.id]={...clone(c),value:clone(v),lifetime:'live'};const owner=state.frames[c.owner]||state.objects[c.owner];if(!owner.cellIds.includes(c.id))owner.cellIds.push(c.id);if(state.objects[c.owner]&&state.activeFrame&&state.objects[c.owner].storage==='automatic'){const f=state.frames[state.activeFrame];if(!f.cellIds.includes(c.id))f.cellIds.push(c.id);}writes.push({cellId:c.id,before:null,after:clone(v)});}
   function access(id,chain=[]){for(let i=0;i<chain.length;i++){const v=read(chain[i]);if(v.kind!=='pointer')fault('NOT_POINTER',chain[i]);if(v.target===null)fault('NULL_DEREFERENCE',`${chain[i]}는 NULL입니다. 역참조할 대상이 없습니다.`);if(v.target!==(chain[i+1]||id))fault('TARGET_MISMATCH','화살표의 실제 대상과 접근한 저장 공간이 다릅니다.');get(v.target);}get(id);}
+  function readOperand(event){
+   if(event.memberOf!==undefined){
+    if(event.through!==undefined)fault('ACCESS_INVALID','멤버 접근과 역참조 경로를 함께 지정할 수 없습니다.');
+    const pointer=read(event.memberOf);
+    if(pointer.kind!=='pointer')fault('NOT_POINTER',event.memberOf);
+    if(pointer.target===null)fault('NULL_DEREFERENCE','NULL 포인터에서 멤버를 읽을 수 없습니다.');
+    const base=get(pointer.target), object=state.objects[base.owner], member=get(event.cellId);
+    if(object?.lifetime!=='live'||object.cellIds[0]!==base.id||member.owner!==object.id||!object.cellIds.includes(member.id)){
+     fault('TARGET_MISMATCH','포인터가 가리키는 객체에 속한 멤버만 읽을 수 있습니다.');
+    }
+   }else access(event.cellId,event.through);
+   return read(event.cellId);
+  }
   function end(ids){const ended=new Set(ids);for(const id of ids)if(state.cells[id])state.cells[id].lifetime='ended';for(const c of Object.values(state.cells))if(c.lifetime==='live'&&c.value.kind==='pointer'&&ended.has(c.value.target)){write(c.id,{kind:'indeterminate'});}for(const o of Object.values(state.objects))if(o.cellIds.length&&o.cellIds.every(id=>ended.has(id)))o.lifetime='ended';}
+  let printed;
   try{
    switch(e.kind){
     case 'observe':break;
@@ -22,7 +36,14 @@
     case 'enter':if(!state.frames[e.frameId]||state.frames[e.frameId].lifetime!=='live')fault('FRAME_MISSING',e.frameId);state.activeFrame=e.frameId;break;
     case 'bind':if(e.fromCellId){const v=read(e.fromCellId);if(JSON.stringify(v)!==JSON.stringify(e.value))fault('BIND_MISMATCH','복사 값과 호출자 값이 다릅니다.');}add(e.cell,e.value);break;
     case 'declare':add(e.cell);break;
-    case 'read':access(e.cellId,e.through);read(e.cellId);break;
+    case 'read':readOperand(e);break;
+    case 'print-int':{
+     const operand=readOperand(e);
+     if(operand.kind!=='int'||!Number.isSafeInteger(operand.value))fault('VALUE_INVALID','정수 값만 %d로 출력할 수 있습니다.');
+     const text=String(operand.value)+' ';
+     state.stdout.push(text);
+     printed={cellId:e.cellId,text};
+     break;}
     case 'write':access(e.cellId,e.through);write(e.cellId,e.value);break;
     case 'allocate':{
      if(state.objects[e.object.id])fault('DUPLICATE_ID',e.object.id);
@@ -37,7 +58,7 @@
     case 'diagnostic':fault(e.code,e.message);break;
     default:fault('EVENT_UNSUPPORTED',e.kind);
    }
-   return {state,reads:[...new Set(reads)],writes,diagnostic:null};
+   return {state,reads:[...new Set(reads)],writes,diagnostic:null,...(printed&&{printed})};
   }catch(err){if(!err.dsFault)throw err;return {state:clone(original),reads:[],writes:[],diagnostic:{code:err.code,message:err.message}};}
  }
  const api={initialMemory,applyEvent};if(typeof module!=='undefined'&&module.exports)module.exports=api;Object.assign(root.DSInteractive??={},api);
