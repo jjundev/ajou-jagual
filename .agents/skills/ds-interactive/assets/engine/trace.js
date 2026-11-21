@@ -1,6 +1,6 @@
 (function(root){
  'use strict';
- const api=typeof module!=='undefined'&&module.exports?{...require('./contract.js'),...require('./memory.js')}:root.DSInteractive;
+ const api=typeof module!=='undefined'&&module.exports?{...require('./contract.js'),...require('./memory.js'),...require('./line-steps.js')}:root.DSInteractive;
  function freeze(x){if(x&&typeof x==='object'){Object.freeze(x);for(const v of Object.values(x))freeze(v);}return x;}
  function compileScenario(s,input,limits={}){
   const issues=api.validateInput(s.inputs,input);if(issues.length)throw Object.assign(new Error(issues.map(x=>x.message).join(' ')),{code:'INPUT_INVALID',issues});
@@ -11,12 +11,17 @@
   while(!next.done){const e=next.value;
    const exhausted=snapshots.length>=(limits.steps??2000)-1;
    const event=exhausted?{...e,kind:'diagnostic',code:'LIMIT_REACHED',message:'단계 수 한도에 도달했습니다.'}:e;
+   const frameIdBefore=state.activeFrame;
    const r=api.applyEvent(state,event,limits);state=r.state;
-   snapshots.push({id:`step-${snapshots.length}`,at:event.at,phase:r.diagnostic?'diagnostic':'after',title:e.label||e.kind,explanation:e.explanation,...r});
+   const lineRecord=s.kind==='c-tree'?{lineStepId:e.lineStepId,eventKind:event.kind,frameIdBefore,
+    ...(event.kind==='bind'&&{fromCellId:event.fromCellId})}:{};
+   snapshots.push({id:`step-${snapshots.length}`,at:event.at,phase:r.diagnostic?'diagnostic':'after',title:e.label||e.kind,explanation:e.explanation,...r,...lineRecord});
    if(r.diagnostic){iterator.return?.();break;}next=iterator.next();
   }
   const trace={version:1,id:s.id,title:s.title,kind:s.kind,sources,inputs:structuredClone(input),presets:structuredClone(s.presets),snapshots,metadata:{supplement:s.supplement||'',addressModel:'기호 주소 · 실제 ABI 배치 아님'}};
-  const structural=validateTrace(trace);if(structural.length)throw Object.assign(new Error(JSON.stringify(structural)),{code:'TRACE_INVALID',issues:structural});return freeze(trace);
+  const structural=validateTrace(trace);if(structural.length)throw Object.assign(new Error(JSON.stringify(structural)),{code:'TRACE_INVALID',issues:structural});
+  if(s.kind==='c-tree')trace.lineSteps=api.projectLineSteps(snapshots);
+  return freeze(trace);
  }
  function validateTrace(t){
   const issues=[],add=(code,path,message)=>issues.push(api.issue(code,path,message));
