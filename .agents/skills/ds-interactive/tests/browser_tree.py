@@ -299,6 +299,10 @@ def check_tree_case(page, width, height):
 
     output = page.locator('.stdout-value')
     lesson = page.evaluate("DSInteractive.scenario.id") == 'inorder-1105'
+    watched_pointer = page.locator('.tree-watch [data-watch=p]')
+    if lesson:
+        expect(watched_pointer).to_have_count(1)
+        expect(watched_pointer.locator('..').locator('code')).to_have_text('p')
     cases = action('preset').locator('option').evaluate_all('(options)=>options.map(option=>option.value)')
     expected_outputs = {'default': '1 3 8 10 ', 'lecture': '3 7 12 18 26 27 31 ', 'empty': ''}
     total = 0
@@ -350,6 +354,16 @@ def check_tree_case(page, width, height):
                 'nodes':[[n['id'],points[n['id']],str(n['outputOrder']) if n['outputOrder'] else None]
                          for n in state['view']['nodes']],
             }, (case, index, actual)
+            if lesson:
+                view = state['view']
+                current = view['stack'][0]
+                node_id = current['nodeId']
+                if node_id is not None:
+                    key = next(item['key'] for item in view['nodes'] if item['id'] == node_id)
+                    pointer = f'{key}번 노드'
+                else:
+                    pointer = 'NULL' if current['parameterCellId'] is not None else '—'
+                assert watched_pointer.text_content() == pointer, (case, index, pointer)
             rows = list(range(max(0, index-1), min(len(states), max(3, index+2))))
             assert centered_rows(history_list) == rows, (case, index, rows)
         if lesson:

@@ -301,7 +301,11 @@
     for (const {entry,row,value} of watched) {
      const id = entry.cellId ?? step.state.activeFrame+'.'+entry.name;
      const cell = step.state.cells[id];
-     const current = cell?.lifetime==='live' ? D.format(cell.value) : '—';
+     let current = '—';
+     if (cell?.lifetime==='live') {
+      const node = cell.value.kind==='pointer' && view.nodes.find(node=>node.keyCellId===cell.value.target);
+      current = node ? node.key+'번 노드' : D.format(cell.value);
+     }
      if (value.textContent!==current) value.textContent = current;
      row.toggleAttribute('data-written',step.writes.some(write=>write.cellId===id));
     }

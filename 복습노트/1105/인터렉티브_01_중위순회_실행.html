@@ -251,6 +251,27 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   border-radius: var(--radius);
   background: var(--surface);
 }
+.tree-watch {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(min(100%,92px),1fr));
+  gap: 12px 8px;
+  margin: 8px 0 0; padding: 9px 12px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--surface); color: var(--ink-2);
+}
+.tree-watch-entry { display: grid; justify-items: start; gap: 2px; min-width: 0; }
+.tree-watch-entry dt { grid-row: 2; font-size: 12px; font-weight: 500; line-height: 1.4; }
+.tree-watch-entry dd {
+  grid-row: 1; margin: 0; color: var(--ink);
+  font: 600 15px/1.35 Consolas, monospace;
+}
+.tree-watch-entry dd code { font: inherit; }
+.tree-watch-equals { color: var(--ink-2); font-weight: 400; }
+.tree-watch-number { font-weight: 700; }
+.tree-watch-entry[data-written] .tree-watch-number {
+  color: var(--accent-ink);
+  outline: 1px solid var(--accent); outline-offset: 2px; border-radius: 2px;
+}
 .stdout-label { font-size: 13px; font-weight: 700; }
 .stdout-line { min-width: 0; font-size: 13px; overflow-wrap: anywhere; }
 .stdout-value { color: var(--tree-green); white-space: pre-wrap; font: 700 15px/1.45 Consolas, monospace; }
@@ -1036,6 +1057,24 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   q('.source-note').hidden = true;
   const tree = q('.memory-pane');
   tree.append(q('.tree-output'));
+  const watched = [];
+  if (scenario.watch?.length) {
+   const list = D.el('dl','tree-watch');
+   list.setAttribute('aria-label','현재 변수값');
+   for (const entry of scenario.watch) {
+    const row = D.el('div','tree-watch-entry');
+    const term = D.el('dt','',entry.label);
+    const expression = D.el('dd');
+    const equals = D.el('span','tree-watch-equals','=');
+    const value = D.el('strong','tree-watch-number');
+    value.dataset.watch = entry.name;
+    expression.append(D.el('code','',entry.name),' ',equals,' ',value);
+    row.append(term,expression);
+    list.append(row);
+    watched.push({entry,row,value});
+   }
+   tree.append(list);
+  }
   q('.view-btns').remove();
 
   const sidebar = D.el('div','tree-sidebar');
@@ -1193,6 +1232,17 @@ html[data-theme=dark] .app[data-kind=c-tree] {
      step.state.frames[frameId]?.parameterCellId ?? null;
    },
    paint(step, view, metadata, blocked) {
+    for (const {entry,row,value} of watched) {
+     const id = entry.cellId ?? step.state.activeFrame+'.'+entry.name;
+     const cell = step.state.cells[id];
+     let current = '—';
+     if (cell?.lifetime==='live') {
+      const node = cell.value.kind==='pointer' && view.nodes.find(node=>node.keyCellId===cell.value.target);
+      current = node ? node.key+'번 노드' : D.format(cell.value);
+     }
+     if (value.textContent!==current) value.textContent = current;
+     row.toggleAttribute('data-written',step.writes.some(write=>write.cellId===id));
+    }
     const returned = step.state.frames[step.executed?.frameId];
     const ended = !step.diagnostic && returned?.lifetime==='ended' && returned.parameterCellId ? returned : null;
     const message = blocked ? '입력값을 확인해 주세요.' : step.diagnostic?.message || step.explanation || step.title;
@@ -1577,6 +1627,7 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
 
  const scenario={
   version:1,id:'inorder-1105',kind:'c-tree',tree,title:'중위 순회 한 줄씩 실행하기',
+  watch:[{name:'p',label:'현재 호출이 가리키는 노드'}],
   intro:'루트에서 순회를 시작할 준비가 됐어요.',
   takeaway:'왼쪽 호출이 반환되면 현재 키를 출력합니다. 오른쪽 호출도 반환되면 현재 호출을 끝냅니다.',
   supplement:'1105 강의의 트리와 방문 순서를 바탕으로 실행을 관찰할 C 함수와 호출자를 보충했습니다.',

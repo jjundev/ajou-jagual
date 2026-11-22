@@ -2,7 +2,7 @@
   "version": 1,
   "hashes": {
     "brief.md": "c0b2724869c53f13e70442d867c090d183db6766cfb9e736c2b31137220a7d3c",
-    "evidence/browser/browser.json": "65893dcd92f11d89fa20249ae0b2df6ff511eb9b51f764dc8ab277a20ebdaac1",
+    "evidence/browser/browser.json": "00fc6167cc1b69e28af20dcf28dcc922502fc7715492b160dac9dde5d0d05d0b",
     "evidence/browser/candidate-inorder-1105-1024-dark-history.png": "655d5ef0b45735f0238a9bc32431e28c37b98c6c2c55ab70fed6b59768888349",
     "evidence/browser/candidate-inorder-1105-1024-dark-node.png": "076e34823ed0ecb5b5eb9c4b331e486066e0fa275628497501b440a2154dc5b7",
     "evidence/browser/candidate-inorder-1105-1024-dark-stack.png": "11a510841603274c7c841df1777f6974db954c361ef9fb183c0923e36d958362",
@@ -30,6 +30,9 @@
     "evidence/browser/chromium-1440-closed.png": "826116b9e0ce2751c4510d73b127b7887022855d16b3d82d9b45a504104d720d",
     "evidence/browser/chromium-1440-resized.png": "3f9b7eefbfacb62aae2e691b8b3f9cd37f4f521edec213a15838370ec2fa55a6",
     "evidence/browser/panels.json": "578ab7258855b157a20ee61969f301581647474579e74761d6501553eb2b33c3",
+    "evidence/browser/pointer-1440-light.png": "16b45708d5f6ddb254b09c6db73a490fa2950e306e8bea08693d337ccea8d1e3",
+    "evidence/browser/pointer-375-dark.png": "2592dd8d3e09bbd7c4d81388e0f6555b251b453a8687a68b74c9683a2b38764f",
+    "evidence/browser/pointer-375-light.png": "c3f4988a925e6f843a19f5d3f24adfd37a92e90aa95f817526de7357e738f987",
     "evidence/browser/visual-review.md": "d8155636cdfd8364b2f7e8bcb739f780c1b1f28cdb1db04d2e5239d6dc8ecea4",
     "evidence/browser/webkit-1440-resized.png": "55a568804936bf10e42b173caca7f8c1e823dec3c178ab1548f69b40ef0e130d",
     "evidence/browser/webkit-320-initial.png": "adc00e3a8dd37924ad102e60942203b820612e475885a40184aff7f1c538098b",
@@ -39,11 +42,12 @@
     "evidence/content.md": "7a4804b70ecf7e482a7f25eb3d0d5e40e4f5a1ba520de63e5a23edc5f2f533f5",
     "evidence/edge-scenes.json": "9626e748d7d6e387e26c6c4d0002337afa592b66d234945b019fa522f4daad61",
     "evidence/independent.json": "5969fa4079f3df9d222cce6e4385dcf0969a9414347c670d41700c2d6604556e",
+    "evidence/pointer-browser.json": "cbeebe092d0f570cf6c269a1a78f8c2aae23822c48326eb9c3e56d41ceb3a181",
     "evidence/pointer-regression.json": "9ac12548cdb376f2655f96db6d8d3c3c934dde3a1e60a93856406424f5389563",
     "evidence/schema.json": "a32dc23d2a919a131cbadac157a73c1fa255f2014ed0a1fb9c1f0d794c66bdf7",
-    "evidence/shell-ui.json": "fc43ba19041829b3572084e1fde6a8fd9c9266f6b623fcb76804ac69702673f2",
-    "preview.html": "66984bbeacb44cac38e64619955a6f85a9caacd4b124132d36a57aa507cae60b",
-    "scenario.cjs": "b85500ed68e89a2ceee48a04cd7a2bd9d727e995766e5c32645a27aa3b84c6a4",
+    "evidence/shell-ui.json": "2226cd77c24c3ad3f2c7768bea4ef4789f4e99723d7341f06f76536ba315dd29",
+    "preview.html": "1f71f0d81c85500c6ec42e050c8de8daa9f7dfa7da6ec70ff8db3e2996948b07",
+    "scenario.cjs": "13f87dba4ede2bf7f35e5d8c6b647f46efa34c73fc282f526e8c6b62f6673024",
     "source.json": "f947623545f41ca033549bf0f04af88fcdb0087015bf44765bd4e33ae8a0fb28",
     "trace.json": "4174b5c244ed18e0f418e7485afc945fd14b742f167ebe5146bf93b7681d4d2d"
   },
@@ -56,7 +60,7 @@
     "content": {
       "status": "pass",
       "evidence": "evidence/content.md",
-      "notes": "1105 PDF 19쪽과 정리노트 절을 대조하고 좌우 NULL 복귀, 출력, 매개변수 수명을 직접 확인. 현재 단계 문장을 각 줄의 호출·출력·반환과 함께 검토했다."
+      "notes": "1105 PDF 19쪽과 정리노트 절을 대조하고 좌우 NULL 복귀, 출력, 매개변수 수명을 직접 확인. 현재 단계 문장을 각 줄의 호출·출력·반환과 함께 검토했다. p 카드는 현재 활성 프레임의 변수에서 대상 노드 또는 NULL을 읽는다. 실행 Trace는 이전과 바이트가 같다."
     },
     "independent": {
       "status": "pass",
@@ -66,8 +70,8 @@
     "browser": {
       "status": "pass",
       "evidence": "evidence/browser/browser.json",
-      "notes": "Chromium의 줄 상태 450개를 확인했다. Chromium과 WebKit 데스크톱에서 폭 조절과 복원, 모바일 터치 환경에서 서랍과 줄 기록을 확인했다."
+      "notes": "Chromium에서 모든 사례의 450개 줄 상태와 현재 p 값을 대조했다. 데스크톱과 모바일 터치에서 호출 진입, NULL 반환, 되감기와 출력 아래 배치를 확인했다(pointer-browser.json)."
     }
   },
-  "reviewed_preview_sha256": "f95d333e570adc41af4d770fc64fb96780100ab0968298ee18572ab59af7e838"
+  "reviewed_preview_sha256": "12af6e25d243375f2d33a417850e2afabf3209ca9c0cdc358803f9f3af3486f4"
 }
