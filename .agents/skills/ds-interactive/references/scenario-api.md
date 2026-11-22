@@ -49,3 +49,17 @@ Snapshot: id initial/step-N,at,phase before/after/diagnostic,title,explanation,s
 - 한 줄에서 일어난 상세 이벤트에는 같은 `lineStepId`와 `at`을 준다. ID는 한 번 실행된 줄 하나에만 사용한다. 재귀 호출 한 줄의 읽기 → call → bind → enter를 묶는다. 호출 프레임에는 `argumentSourceCellId`, `parameterCellId`, `resumeAt:{sourceId,line}|null`이 필요하다. bind의 `fromCellId`는 `argumentSourceCellId`와 일치해야 한다. `resumeAt:null`인 순회가 외부 호출자로 반환되면 재생을 종료한다.
 - `trace.snapshots`는 상세 이벤트를 보존한다. `trace.lineSteps`의 `initial`과 `line-N`은 한 줄 단위 종료 상태다. `executed`와 `next`는 각 위치의 `{at,frameId}` 또는 null이다. `reads`와 `writes`는 한 줄에서 발생한 접근을 모으고, `prints`는 현재까지의 `{cellId,text}`를 차례로 담는다. 진단 시 다음 줄을 강조하지 않고 직전에 완료한 줄의 메모리를 표시한다.
 - `getTreeView(trace.metadata.tree,step)`는 그 단계의 포인터·프레임·출력에서 노드, 활성 경로, NULL 가지, 출력 순번을 계산한다. `registerRenderer(kind,{render(step,selection,metadata)})`는 같은 스텝을 받아 DOM을 반환한다.
+
+### 현재 변수 카드 설정
+
+선택 필드 `watch`에 학습 목표에 필요한 변수만 화면에 표시할 순서대로 넣는다. `name`은 코드에 나온 변수명, `label`은 변수 뜻이다. 고정 Cell을 표시하려면 `cellId`를 지정한다. 생략하면 현재 단계의 활성 프레임에 있는 `<activeFrame>.<name>` Cell을 표시한다.
+
+```js
+watch: [
+  { name: 'n', label: '노드 수', cellId: 'stats.n' },
+  { name: 'h', label: '최대 레벨', cellId: 'stats.h' },
+  { name: 'd', label: '호출 레벨' },
+],
+```
+
+카드는 현재 `lineStep.state.cells`에서 값을 읽고 `lineStep.writes`에 해당 Cell이 있으면 숫자를 강조한다. 현재 단계에 Cell이 없거나 수명이 끝났으면 `—`를 표시한다. `watch`를 생략하거나 빈 배열로 두면 카드가 나타나지 않는다.

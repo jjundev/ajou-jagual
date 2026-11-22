@@ -1,0 +1,67 @@
+{
+  "references": {
+    "자료구조_강의록_2026/Software_7_Tree.pdf": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+    "STT/1029 자구알.md": "6cb261fd9a19794106360f12c9cb401ed7dc702f32ec4b257ea42ae258dc5bd3",
+    "복습노트/1029/.pack/정리노트_1029_Tree.md": "34e60dec63e704c7d6f8f65ce4c2bf725a04cd782f7a69094ec7937a8290242b"
+  },
+  "primaryEvidence": {
+    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+    "pdfPages": [
+      5,
+      6
+    ],
+    "observation": "높이 3에서 노드 수의 극값과 노드 7개에서 높이의 극값"
+  },
+  "transcript": {
+    "path": "STT/1029 자구알.md",
+    "lineRange": [
+      119,
+      165
+    ]
+  },
+  "notes": [
+    {
+      "path": "복습노트/1029/.pack/정리노트_1029_Tree.md",
+      "sectionId": "s1-props"
+    },
+    {
+      "path": "복습노트/1029/.pack/정리노트_1029_Tree.md",
+      "sectionId": "s1-height"
+    }
+  ],
+  "sources": [
+    {
+      "id": "visit",
+      "label": "노드 수와 최대 레벨 세기",
+      "language": "c",
+      "provenance": {
+        "path": "복습노트/1029/.pack/정리노트_1029_Tree.md",
+        "sha256": "34e60dec63e704c7d6f8f65ce4c2bf725a04cd782f7a69094ec7937a8290242b",
+        "section": "§5–6 간선 수·노드 수와 높이",
+        "page": "5–6",
+        "supplement": true,
+        "adjustments": "강의 그림의 연결을 숫자 키로 구성하고 관찰용 C 함수를 작성함"
+      },
+      "text": "void visit(Node *p, int d) {\n    if (!p) return;\n    ++n;\n    if (d > h) h = d;\n    printf(\"%d \", p->key);\n    visit(p->left, d + 1);\n    visit(p->right, d + 1);\n}"
+    },
+    {
+      "id": "driver",
+      "label": "호출자 · n과 h는 0에서 시작",
+      "language": "c",
+      "provenance": {
+        "path": "복습노트/1029/.pack/정리노트_1029_Tree.md",
+        "sha256": "34e60dec63e704c7d6f8f65ce4c2bf725a04cd782f7a69094ec7937a8290242b",
+        "section": "§5–6 간선 수·노드 수와 높이",
+        "page": "5–6",
+        "supplement": true,
+        "adjustments": "강의 그림의 연결을 숫자 키로 구성하고 관찰용 C 함수를 작성함"
+      },
+      "text": "visit(root, 1);\nreport(n, h);"
+    }
+  ],
+  "verification": {
+    "oracle": "evidence/oracle.c",
+    "comparison": "evidence/verify.py",
+    "adjustments": "검산용 표준 헤더·노드 초기화·관측 로그를 추가함. 강의 원문 C 코드는 없음."
+  }
+}

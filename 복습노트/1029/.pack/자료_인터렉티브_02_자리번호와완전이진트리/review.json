@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "hashes": {
+    "brief.md": "0ede3d9e54b22f61cb1c3db48adc4a29b58064dd17b436101f5bace4289e938d",
+    "evidence/browser.json": "55db732b4bb131d4c53569a86759c28cb4bb0fa506db12728a0e88c8ca2194b9",
+    "evidence/content.md": "fe0dd76819d983ba38bcdc84cd14e67871aacc08472733814856c55336077a76",
+    "evidence/desktop-result.png": "c75068d8170a24c281d5245938c4959fd45b9bd7eef218abf06f0cb73b66ebc2",
+    "evidence/independent.json": "b0ce2258bbf92fdd11852cafad3601affa68447c7c5e225ac388c482240f82d6",
+    "evidence/mobile-dark-result.png": "bda9f65bf22cc819712549bc9a0a0555feeba183326629de95813ca4a60393cb",
+    "evidence/mobile-result.png": "97fde4b324a333e0cd085dbc509284d38df6925bc84d5a910641fdd44b7cabc7",
+    "evidence/oracle.c": "5fd499e654d1104eb9ac7c75c3fe6758685fa6df0f4ef2daf42282eba92f867b",
+    "evidence/schema.json": "807d5e0213431806a9428373d6c38d344e710d943c676fb74d07b2e8d70eb296",
+    "evidence/variable-browser.json": "8d7941ddd7d0e0af0c39a2d2416429ae262c0e8e8692344901d5b300ffbfb3c9",
+    "evidence/verify.py": "5e8e888cdf3a766b0e13b0a908437e7b6877c8e06a4782956a20b1844c7977b9",
+    "preview.html": "31d972601ff5b1973ad4ed8384a82a5a2550360c4c98740fb8512f4c9b17dc0e",
+    "scenario.cjs": "e0315706f68956b82e460beb28c1aafc1c22a8041457321bafab932e801ff6d1",
+    "source.json": "1b516fe9e64aef1e0464387be073521fed93f13c764e72efdbf0a8e0241d1602",
+    "trace.json": "257d7930ea076a9b88c1842bb47967fc9508373a53e73b0012d523cd3c35b70b"
+  },
+  "checks": {
+    "schema": {
+      "status": "pass",
+      "evidence": "evidence/schema.json",
+      "notes": "기본값과 나머지 네 사례의 스키마와 예상 결과가 모두 통과했다."
+    },
+    "content": {
+      "status": "pass",
+      "evidence": "evidence/content.md",
+      "notes": "강의 PDF 해당 페이지와 녹취와 정리노트를 대조했다. 각 코드 줄의 읽기와 쓰기, 분기 또는 호출 의미를 확인했다. 화면에 표시하는 변수값은 기존 실행 기록의 활성 프레임과 셀에서 읽는다. 기존 trace.json은 바이트가 같다."
+    },
+    "independent": {
+      "status": "pass",
+      "evidence": "evidence/independent.json",
+      "notes": "Apple Clang C17로 독립 구현을 실행했다. 각 줄의 중간 상태와 출력 누적이 다섯 사례 모두 일치했다."
+    },
+    "browser": {
+      "status": "pass",
+      "evidence": "evidence/browser.json",
+      "notes": "오프라인 Chromium에서 세 너비와 두 테마를 확인했다. 변수명·등호·값은 설명 위에 놓이며 카드가 넘치지 않는다. 모든 사례의 변수값, 쓰기 강조, 재생과 되감기를 확인했다(variable-browser.json)."
+    }
+  },
+  "reviewed_preview_sha256": "98fd74993b85f9c059fc5745c3d6305aa8fe33e660dba44e32f40c4bb9d74535"
+}

@@ -257,7 +257,7 @@ def check_tree_case(page, width, height):
     if wide:
         assert explanation.evaluate("e => e.previousElementSibling.matches('.tree-history-region')")
     else:
-        assert explanation.evaluate("e => e.previousElementSibling.matches('.tree-output')")
+        assert explanation.evaluate("e => e.previousElementSibling.matches('.tree-output, .tree-watch')")
 
     history_list = history.locator('.step-list')
     follow = page.get_by_role('button', name='실행 위치로')
@@ -290,6 +290,10 @@ def check_tree_case(page, width, height):
     assert page.locator('.tree-output').evaluate("""e =>
       e.parentElement.matches('.memory-pane') && e.previousElementSibling.matches('.memory')
     """), 'stdout should sit directly under the tree in the same column'
+    if page.locator('.tree-watch').count():
+        assert page.locator('.tree-watch').evaluate(
+            "e => e.previousElementSibling.matches('.tree-output')"
+        ), 'watched values should sit directly under stdout'
     if not wide:
         close_drawer('left')
 

@@ -123,6 +123,24 @@
   q('.source-note').hidden = true;
   const tree = q('.memory-pane');
   tree.append(q('.tree-output'));
+  const watched = [];
+  if (scenario.watch?.length) {
+   const list = D.el('dl','tree-watch');
+   list.setAttribute('aria-label','현재 변수값');
+   for (const entry of scenario.watch) {
+    const row = D.el('div','tree-watch-entry');
+    const term = D.el('dt','',entry.label);
+    const expression = D.el('dd');
+    const equals = D.el('span','tree-watch-equals','=');
+    const value = D.el('strong','tree-watch-number');
+    value.dataset.watch = entry.name;
+    expression.append(D.el('code','',entry.name),' ',equals,' ',value);
+    row.append(term,expression);
+    list.append(row);
+    watched.push({entry,row,value});
+   }
+   tree.append(list);
+  }
   q('.view-btns').remove();
 
   const sidebar = D.el('div','tree-sidebar');
@@ -280,6 +298,13 @@
      step.state.frames[frameId]?.parameterCellId ?? null;
    },
    paint(step, view, metadata, blocked) {
+    for (const {entry,row,value} of watched) {
+     const id = entry.cellId ?? step.state.activeFrame+'.'+entry.name;
+     const cell = step.state.cells[id];
+     const current = cell?.lifetime==='live' ? D.format(cell.value) : '—';
+     if (value.textContent!==current) value.textContent = current;
+     row.toggleAttribute('data-written',step.writes.some(write=>write.cellId===id));
+    }
     const returned = step.state.frames[step.executed?.frameId];
     const ended = !step.diagnostic && returned?.lifetime==='ended' && returned.parameterCellId ? returned : null;
     const message = blocked ? '입력값을 확인해 주세요.' : step.diagnostic?.message || step.explanation || step.title;

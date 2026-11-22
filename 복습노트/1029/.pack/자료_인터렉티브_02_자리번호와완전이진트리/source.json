@@ -1,0 +1,53 @@
+{
+  "references": {
+    "자료구조_강의록_2026/Software_7_Tree.pdf": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+    "STT/1029 자구알.md": "6cb261fd9a19794106360f12c9cb401ed7dc702f32ec4b257ea42ae258dc5bd3",
+    "복습노트/1029/.pack/정리노트_1029_Tree.md": "34e60dec63e704c7d6f8f65ce4c2bf725a04cd782f7a69094ec7937a8290242b"
+  },
+  "primaryEvidence": {
+    "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+    "pdfPages": [
+      7,
+      8
+    ],
+    "observation": "이진 트리의 완전·포화 조건과 1부터 시작하는 자리 번호"
+  },
+  "transcript": {
+    "path": "STT/1029 자구알.md",
+    "lineRange": [
+      169,
+      205
+    ]
+  },
+  "notes": [
+    {
+      "path": "복습노트/1029/.pack/정리노트_1029_Tree.md",
+      "sectionId": "s2-kinds"
+    },
+    {
+      "path": "복습노트/1029/.pack/정리노트_1029_Tree.md",
+      "sectionId": "s2-numbering"
+    }
+  ],
+  "sources": [
+    {
+      "id": "scan",
+      "label": "자리 번호 검사",
+      "language": "c",
+      "provenance": {
+        "path": "복습노트/1029/.pack/정리노트_1029_Tree.md",
+        "sha256": "34e60dec63e704c7d6f8f65ce4c2bf725a04cd782f7a69094ec7937a8290242b",
+        "section": "§7–8 이진 트리 분류와 자리 번호",
+        "page": "7–8",
+        "supplement": true,
+        "adjustments": "p7 자리 번호, p8 인덱스로 만든 관찰용 C 배열 판정"
+      },
+      "text": "for (i = 1; i <= limit; ++i) {\n  if (!slot[i]) {\n    if (!gap) gap = i;\n    continue;\n  }\n  printf(\"%d \", slot[i]->key);\n  ++n;\n  last = i;\n}\ncomplete = (n == last);\nperfect = n > 0 && n == limit;"
+    }
+  ],
+  "verification": {
+    "oracle": "evidence/oracle.c",
+    "comparison": "evidence/verify.py",
+    "adjustments": "검산용 표준 헤더·노드 초기화·관측 로그를 추가함. 강의 원문 C 코드는 없음."
+  }
+}
