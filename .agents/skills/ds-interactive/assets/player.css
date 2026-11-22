@@ -190,7 +190,13 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   left: 3px;
   color: var(--accent-ink);
 }
-[data-kind=c-tree] .code-line.executed:not(.current) { box-shadow: inset 2px 0 var(--scroll-hover); }
+[data-kind=c-tree] .code-line.current:not(.executed) {
+  background: transparent; color: inherit; font-weight: inherit; box-shadow: none;
+}
+[data-kind=c-tree] .code-line.executed {
+  background: var(--surface); color: var(--accent-ink); font-weight: 700;
+  box-shadow: inset 2px 0 var(--accent);
+}
 [data-kind=c-tree] .pane-heading { margin: 0; }
 [data-kind=c-tree] .scene-note { display: none; }
 [data-kind=c-tree] .memory { display: block; min-height: 0; padding: 0; }

@@ -45,23 +45,26 @@
    const code=q('.code');
    code.replaceChildren();
    const primary=trace.sources[0];
-   const shownSources=tree&&position&&source!==primary?[source,primary]:[tree?primary:source];
+   const auxiliary=tree?trace.sources.filter(item=>item!==primary&&
+    (item.id===position?.sourceId||item.id===executed?.sourceId)):[];
+   const shownSources=tree?[...auxiliary,primary]:[source];
    for(const shown of shownSources){
     for(const [i,line] of shown.text.split('\n').entries()){
-     if(tree&&shown!==primary&&position.line!==i+1)continue;
+     const current=position?.sourceId===shown.id&&position.line===i+1;
+     const completed=executed?.sourceId===shown.id&&executed.line===i+1;
+     if(tree&&shown!==primary&&!current&&!completed)continue;
      const row=D.el('div','code-line');
      row.dataset.line=i+1;
      row.dataset.sourceId=shown.id;
-     const current=position?.sourceId===shown.id&&position.line===i+1;
      row.classList.toggle('current',current);
-     row.classList.toggle('executed',executed?.sourceId===shown.id&&executed.line===i+1);
-     if(current)row.setAttribute('aria-current','step');
+     row.classList.toggle('executed',completed);
+     if(completed||current&&!executed)row.setAttribute('aria-current','step');
      row.append(D.el('span','line-number',i+1),D.el('span','',line));
      code.append(row);
     }
    }
    code.dataset.step=s.id;
-   const active=code.querySelector('.current');
+   const active=code.querySelector('.executed')||code.querySelector('.current');
    if(active){
     const row=active.getBoundingClientRect(),box=code.getBoundingClientRect();
     if(row.top<box.top)code.scrollTop+=row.top-box.top;
