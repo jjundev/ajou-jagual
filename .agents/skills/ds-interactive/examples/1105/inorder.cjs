@@ -18,7 +18,6 @@
 
  const scenario={
   version:1,id:'inorder-1105',kind:'c-tree',tree,title:'중위 순회 한 줄씩 실행하기',
-  watch:[{name:'p',label:'현재 호출이 가리키는 노드'}],
   intro:'루트에서 순회를 시작할 준비가 됐어요.',
   takeaway:'왼쪽 호출이 반환되면 현재 키를 출력합니다. 오른쪽 호출도 반환되면 현재 호출을 끝냅니다.',
   supplement:'1105 강의의 트리와 방문 순서를 바탕으로 실행을 관찰할 C 함수와 호출자를 보충했습니다.',

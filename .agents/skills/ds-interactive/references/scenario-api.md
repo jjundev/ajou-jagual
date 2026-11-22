@@ -52,7 +52,9 @@ Snapshot: id initial/step-N,at,phase before/after/diagnostic,title,explanation,s
 
 ### 현재 변수 카드 설정
 
-선택 필드 `watch`에 학습 목표에 필요한 변수만 화면에 표시할 순서대로 넣는다. `name`은 코드에 나온 변수명, `label`은 변수 뜻이다. 고정 Cell을 표시하려면 `cellId`를 지정한다. 생략하면 현재 단계의 활성 프레임에 있는 `<activeFrame>.<name>` Cell을 표시한다.
+노드 매개변수가 있는 `c-tree` 사례는 `parameterCellId`로 활성 호출의 매개변수를 찾아 현재 노드 카드를 자동으로 표시한다. 사례의 호출 기록에서 변수명을 읽고, 호출 전과 최종 반환 후에는 `—`, NULL 인자에서는 `NULL`을 표시한다. 같은 매개변수를 가리키는 기존 활성 프레임 `watch` 항목은 한 번만 보인다.
+
+선택 필드 `watch`에는 학습 목표에 필요한 추가 변수만 화면에 표시할 순서대로 넣는다. `name`은 코드에 나온 변수명, `label`은 변수 뜻이다. 고정 Cell을 표시하려면 `cellId`를 지정한다. 생략하면 현재 단계의 활성 프레임에 있는 `<activeFrame>.<name>` Cell을 표시한다.
 
 ```js
 watch: [
@@ -62,4 +64,4 @@ watch: [
 ],
 ```
 
-카드는 현재 `lineStep.state.cells`에서 값을 읽고 `lineStep.writes`에 해당 Cell이 있으면 값을 강조한다. 트리 노드를 가리키는 포인터는 `p = 18번 노드`처럼 대상 노드를 표시하고, 널 포인터는 `NULL`로 표시한다. 현재 단계에 Cell이 없거나 수명이 끝났으면 `—`를 표시한다. `watch`를 생략하거나 빈 배열로 두면 카드가 나타나지 않는다.
+카드는 현재 `lineStep.state.cells`에서 값을 읽고 `lineStep.writes`에 해당 Cell이 있으면 값을 강조한다. 트리 노드를 가리키는 포인터는 `p = 18번 노드`처럼 대상 노드를 표시하고, 널 포인터는 `NULL`로 표시한다. 현재 단계에 Cell이 없거나 수명이 끝났으면 `—`를 표시한다.

@@ -125,7 +125,7 @@
    }else desc.textContent='변수를 선택하면 값과 주소를 구분해 볼 수 있습니다.';
   }
   function recompile(){stop();treeUi?.reset();step=0;selection=null;const issues=D.validateInput(scenario.inputs,input);q('.input-error').textContent=issues.map(i=>i.message).join(' ');for(const field of app.querySelectorAll('[data-input]')){const v=input[field.dataset.input];field.value=Number.isNaN(v)?'':v;field.setAttribute('aria-invalid',String(issues.some(i=>i.path===field.dataset.input)));}play.disabled=!!issues.length;
-   if(issues.length){if(trace)paint();for(const a of ['first','prev','next','last','scrub',...(tree?['previous-output','next-output']:[])])q(`[data-action=${a}]`).disabled=true;return;}q('[data-action=scrub]').disabled=false;trace=D.compileScenario(scenario,input);paint();}
+   if(issues.length){if(trace)paint();for(const a of ['first','prev','next','last','scrub',...(tree?['previous-output','next-output']:[])])q(`[data-action=${a}]`).disabled=true;return;}q('[data-action=scrub]').disabled=false;trace=D.compileScenario(scenario,input);treeUi?.setTrace(trace);paint();}
   function move(n){if(play.disabled)return;stop();step=Math.max(0,Math.min(entries().length-1,n));paint();}
   function toggle(){if(play.disabled)return;if(timer!==null){stop();return;}if(step===entries().length-1)step=0;playIcon(true);play.setAttribute('aria-label','일시정지');app.dataset.playing='true';paint();timer=setInterval(()=>{step++;paint();if(step>=entries().length-1)stop();},900/speed);}
   on(preset,'change',()=>{input={...(preset.value==='default'?defaults:byPreset.get(preset.value))};recompile();});

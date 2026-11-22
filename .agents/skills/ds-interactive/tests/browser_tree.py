@@ -299,10 +299,8 @@ def check_tree_case(page, width, height):
 
     output = page.locator('.stdout-value')
     lesson = page.evaluate("DSInteractive.scenario.id") == 'inorder-1105'
-    watched_pointer = page.locator('.tree-watch [data-watch=p]')
-    if lesson:
-        expect(watched_pointer).to_have_count(1)
-        expect(watched_pointer.locator('..').locator('code')).to_have_text('p')
+    current_node = page.locator('.tree-watch [data-current-node]')
+    checked_nodes = 0
     cases = action('preset').locator('option').evaluate_all('(options)=>options.map(option=>option.value)')
     expected_outputs = {'default': '1 3 8 10 ', 'lecture': '3 7 12 18 26 27 31 ', 'empty': ''}
     total = 0
@@ -320,10 +318,22 @@ def check_tree_case(page, width, height):
               const input=Object.fromEntries([...document.querySelectorAll('[data-input]')]
                 .map(e=>[e.dataset.input,e.type==='number'?Number(e.value):e.value]));
               const t=D.compileScenario(D.scenario,input);
-              return t.lineSteps.map(step=>({
-                id:step.id,next:step.next,stdout:step.state.stdout.join(''),explanation:step.explanation ?? step.title,
-                frame:step.state.activeFrame??'',view:D.getTreeView(t.metadata.tree,step)
-              }));
+              const finalState=t.lineSteps.at(-1).state;
+              const names=new Set(Object.values(finalState.frames)
+                .filter(frame=>frame.parameterCellId)
+                .map(frame=>finalState.cells[frame.parameterCellId].name));
+              return t.lineSteps.map(step=>{
+                const view=D.getTreeView(t.metadata.tree,step);
+                const id=view.stack[0]?.parameterCellId;
+                const node=view.nodes.find(node=>node.id===view.activeNodeId);
+                const currentNode=names.size ? {
+                  name:id ? step.state.cells[id].name : names.size===1 ? [...names][0] : '현재 노드',
+                  value:node ? node.key+'번 노드' : id ? 'NULL' : '—',
+                  written:step.writes.some(write=>write.cellId===id)
+                } : null;
+                return {id:step.id,next:step.next,stdout:step.state.stdout.join(''),explanation:step.explanation ?? step.title,
+                  frame:step.state.activeFrame??'',view,currentNode};
+              });
             }"""
         )
         # Reuse stable browser-visible DOM coordinates across every checkpoint.
@@ -354,16 +364,18 @@ def check_tree_case(page, width, height):
                 'nodes':[[n['id'],points[n['id']],str(n['outputOrder']) if n['outputOrder'] else None]
                          for n in state['view']['nodes']],
             }, (case, index, actual)
-            if lesson:
-                view = state['view']
-                current = view['stack'][0]
-                node_id = current['nodeId']
-                if node_id is not None:
-                    key = next(item['key'] for item in view['nodes'] if item['id'] == node_id)
-                    pointer = f'{key}번 노드'
-                else:
-                    pointer = 'NULL' if current['parameterCellId'] is not None else '—'
-                assert watched_pointer.text_content() == pointer, (case, index, pointer)
+            expected_node = state['currentNode']
+            if expected_node is not None:
+                assert current_node.count() == 1 and current_node.is_visible(), (case, index, 'current node card missing')
+                assert current_node.evaluate("""(row, node) =>
+                    row.closest('.tree-watch').previousElementSibling.matches('.tree-output') &&
+                    row.querySelector('code').textContent === node.name &&
+                    row.querySelector('.tree-watch-number').textContent === node.value &&
+                    row.hasAttribute('data-written') === node.written
+                """, expected_node), (case, index, expected_node)
+                checked_nodes += 1
+            else:
+                assert not current_node.is_visible(), (case, index, 'unexpected current node card')
             rows = list(range(max(0, index-1), min(len(states), max(3, index+2))))
             assert centered_rows(history_list) == rows, (case, index, rows)
         if lesson:
@@ -376,7 +388,7 @@ def check_tree_case(page, width, height):
 
     preset('default')
     if not lesson:
-        return len(cases), total
+        return len(cases), total, checked_nodes
 
     if not wide:
         drawer('left')
@@ -616,4 +628,4 @@ def check_tree_case(page, width, height):
     })"""), 'lecture tree and output should fit together'
     assert page.locator('.tree-scene').evaluate("""e=>e.getBoundingClientRect().bottom <=
       e.closest('.stage-viewport').getBoundingClientRect().bottom + 1"""), 'whole tree must fit inside the visible viewport'
-    return len(cases), total
+    return len(cases), total, checked_nodes

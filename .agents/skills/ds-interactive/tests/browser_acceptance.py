@@ -24,6 +24,7 @@ def main(root,scratch):
   def left(opened):
    if page.viewport_size['width']<1024 and (page.locator('[data-action=toggle-left]').get_attribute('aria-expanded')=='true')!=opened:page.locator('[data-action=toggle-left]').click() if opened else page.keyboard.press('Escape')
   for file in pages:
+   digest=hashlib.sha256(file.read_bytes()).hexdigest()
    for width,height in [(1440,900),(1024,768),(375,812)]:
     for theme in ['light','dark']:
      page.set_viewport_size({'width':width,'height':height});page.goto(file.as_uri());page.wait_for_selector('[data-snapshot="initial"]');page.evaluate('document.fonts.ready')
@@ -34,7 +35,7 @@ def main(root,scratch):
      if page.evaluate('DSInteractive.scenario.kind')=='c-tree':
       topic=page.evaluate('DSInteractive.scenario.id')
       page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}.png'),full_page=True)
-      count,checked=check_tree_case(page,width,height)
+      count,checked,current_node_checked=check_tree_case(page,width,height)
       if width<1280:page.locator('[data-action=toggle-left]').click()
       history=page.get_by_role('heading',name='줄 기록',exact=True)
       history.scroll_into_view_if_needed()
@@ -59,9 +60,9 @@ def main(root,scratch):
       if touch_checked:
        check_history_touch(browser,file.as_uri())
       print(f'{topic} {width} {theme}: {checked} line steps',flush=True)
-      results.append({'topic':topic,'file':file.name,'sha256':hashlib.sha256(file.read_bytes()).hexdigest(),
+      results.append({'topic':topic,'file':file.name,'sha256':digest,
                       'viewport':[width,height],'theme':theme,'presets':count,'snapshots_checked':checked,
-                      'touch_checked':touch_checked,'status':'pass'})
+                      'touch_checked':touch_checked,'current_node_checked':current_node_checked,'status':'pass'})
       continue
      left(True)
      presets=page.locator('[data-action=preset] option').evaluate_all('(es)=>es.map(e=>e.value)');steps_checked=0
@@ -107,7 +108,8 @@ def main(root,scratch):
      topic=page.evaluate('DSInteractive.scenario.id')
      page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}.png'),full_page=True)
      print(f'{topic} {width} {theme}: {steps_checked} snapshots',flush=True)
-     results.append({'topic':topic,'file':file.name,'sha256':hashlib.sha256(file.read_bytes()).hexdigest(),'viewport':[width,height],'theme':theme,'presets':len(presets),'snapshots_checked':steps_checked,'status':'pass'})
+     results.append({'topic':topic,'file':file.name,'sha256':digest,'viewport':[width,height],'theme':theme,'presets':len(presets),'snapshots_checked':steps_checked,'status':'pass'})
+   assert hashlib.sha256(file.read_bytes()).hexdigest()==digest, (file,'changed during browser checks')
   browser.close()
  assert not errors,errors;assert not external,external
  report={'status':'pass','transport':'file://, offline=True','results':results,'console_errors':errors,'external_requests':external}

@@ -5,7 +5,7 @@ description: Use when 자구알(자료구조및알고리즘이해)의 인터랙�
 
 # DS Interactive
 
-자구알의 개념을 입력·사례·실행 단계로 탐색하는 **오프라인 HTML**을 만든다. 코드를 따라가며 매개변수의 값 복사, 포인터의 주소 값, 대상 객체의 변경을 같은 상태에서 보여 준다. 포인터 예제는 공통 좌우 패널과 중앙 메모리 장면을 쓴다. 이진 트리 재귀 순회는 넓은 화면에서 왼쪽에 코드·줄 기록·단계 설명, 가운데에 전체 트리·출력, 오른쪽에 호출 스택·예제 정보를 둔다. 높이·개수처럼 실행 중 추적할 변수가 학습 목표에 필요하면 출력 바로 아래에 [현재 변수 카드](references/design.md)를 둔다. 넓은 화면에서는 패널을 각각 접고 경계를 끌어 너비를 조절할 수 있다. 조절한 너비는 브라우저에 저장하며 왼쪽 패널을 열면 줄 기록이 바로 표시된다. 좁은 화면에서는 트리와 출력을 먼저 보여 주고, 필요한 패널을 상단 버튼으로 열면 화면 가장자리의 서랍에 표시한다. 호출 스택의 행이나 트리 노드를 누르면 해당 단계의 저장 값과 주소를 확인할 수 있다.
+자구알의 개념을 입력·사례·실행 단계로 탐색하는 **오프라인 HTML**을 만든다. 코드를 따라가며 매개변수의 값 복사, 포인터의 주소 값, 대상 객체의 변경을 같은 상태에서 보여 준다. 포인터 예제는 공통 좌우 패널과 중앙 메모리 장면을 쓴다. 이진 트리 재귀 순회는 넓은 화면에서 왼쪽에 코드·줄 기록·단계 설명, 가운데에 전체 트리·출력, 오른쪽에 호출 스택·예제 정보를 둔다. 재귀 트리는 출력 바로 아래의 [현재 변수 카드](references/design.md)에 현재 호출의 노드 매개변수를 기본으로 표시한다. 높이·개수처럼 더 추적할 변수는 `watch`에 추가한다. 넓은 화면에서는 패널을 각각 접고 경계를 끌어 너비를 조절할 수 있다. 조절한 너비는 브라우저에 저장하며 왼쪽 패널을 열면 줄 기록이 바로 표시된다. 좁은 화면에서는 트리와 출력을 먼저 보여 주고, 필요한 패널을 상단 버튼으로 열면 화면 가장자리의 서랍에 표시한다. 호출 스택의 행이나 트리 노드를 누르면 해당 단계의 저장 값과 주소를 확인할 수 있다.
 
 ## 요청 해석
 
@@ -27,14 +27,14 @@ description: Use when 자구알(자료구조및알고리즘이해)의 인터랙�
 5. 실제 C 컴파일러로 정의된 코드의 bind/write와 결과를 독립 검산한다. 없으면 별도 Python 표를 사용하고 `compiler_unavailable`을 기록한다. UB를 실행해 정답을 정하지 않는다. 포인터 예제는 `python3 "S/tests/independent.py" "EVIDENCE"`, 중위 순회는 `python3 "S/tests/inorder_oracle.py" "RUN/trace.json"`으로 재검산할 수 있다.
 6. `node "S/scripts/build.cjs" "RUN/scenario.cjs" "RUN/preview.html"`. CSS와 JS를 HTML에 포함하고, Pretendard는 복습노트 공용 자원을 상대 경로로 참조한다. [design](references/design.md)의 배치·접근성 기준과 [verification](references/verification.md)의 브라우저 검사를 적용한다. 시나리오 내용 변경 후 다시 build/check/검산한다.
 7. `node "S/scripts/review.cjs" init "RUN"`은 `not_run` 검토를 만든다. 이미 있으면 검토 파일을 보존하고 새 현재 해시로 재검토한다. schema/content/independent/browser 각각 실제 증거와 사람이 읽을 판정 이유를 남긴다. `createReview`는 합격을 판정하지 않는다. 내용 검토는 각 줄의 복사·읽기·쓰기가 C 의미와 맞는지 검토한다. 자동 구조 검사로 대체하지 않는다.
-8. 모든 검토를 완료한 뒤 `node "S/scripts/review.cjs" check "RUN"`를 통과시키고 `node "S/scripts/save.cjs" "RUN" "대상폴더" "자료이름"`으로 저장한다. [verification](references/verification.md)의 해시·증거 계약을 따른다. 실패·미검토·논쟁·변경된 파일은 저장할 수 없다. 저장할 때 공개본과 보관용 preview의 공용 글꼴 상대 경로를 각 위치에 맞춰 바꾼다.
+8. 모든 검토를 마치면 `node "S/scripts/verify-build.cjs" "RUN"`을 통과시키고 `node "S/scripts/save.cjs" "RUN" "대상폴더" "자료이름"`으로 저장한다. 재귀 트리는 브라우저 검사 결과인 `browser.json`을 RUN의 evidence에 저장하고 browser 판정에 연결한다. 저장은 검토 해시, 재빌드 결과, 현재 노드 카드 검사 결과를 확인한다. [검토·저장 계약](references/verification.md)을 따른다.
 9. 관련 절에 [note-links](references/note-links.md)의 관찰 문맥 링크만 dry-run 후 추가한다. `target="_self"`, URL 인코딩한 상대 경로이며 기존 노트는 백업한다. 노트 재생성 후 `node "S/scripts/relink.cjs" "REPO" 0928`로 복원한다. 누락·모호한 절은 해당 연결만 skipped로 보고한다.
 
 ## 저장과 확인
 
 공개 파일은 `복습노트/<날짜>/인터렉티브_NN_<이름>.html`, 근거는 `.pack/자료_인터렉티브_NN_<이름>/`이다. 번호는 최소 두 자리이며 100도 허용한다. 신규 생성은 기존 HTML 또는 자료 폴더를 덮어쓰지 않는다. 사용자가 기존 자료 수정을 명시하면 [verification](references/verification.md)의 백업·재검증·동일 경로 갱신 절차를 따른다. 자료 폴더에는 scenario/brief/source/trace/review, evidence, 상대 `note-links.json`을 보존한다. 저장소 안에서는 인터넷 없이 열 수 있다. 다른 PC에 HTML 하나만 옮기려면 `export-standalone-note`에 공개 HTML 경로를 지정한다.
 
-최종 경로에서 입력·모드·단계와 노트의 현재 탭 이동·뒤로가기를 확인한다. 1105는 [최종 경로 자동 검사](references/verification.md)로 정리노트 링크 왕복을 확인할 수 있다. 재연결 결과는 unchanged여야 한다. 모든 최종 경로와 검산 방식·확인하지 못한 범위를 보고한다. 커밋·푸시·외부 게시를 자동 수행하지 않는다.
+저장 후 `node "S/scripts/verify-build.cjs" "보관 자료 폴더" "공개 HTML"`로 재빌드 결과와 공개 HTML의 일치를 확인한다. 최종 경로에서 입력·모드·단계와 노트의 현재 탭 이동·뒤로가기를 확인한다. 1105는 [최종 경로 자동 검사](references/verification.md)로 정리노트 링크 왕복을 확인할 수 있다. 재연결 결과는 unchanged여야 한다. 모든 최종 경로와 검산 방식·확인하지 못한 범위를 보고한다. 커밋·푸시·외부 게시를 자동 수행하지 않는다.
 
 ## 주의할 판단
 

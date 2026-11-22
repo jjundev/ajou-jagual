@@ -123,23 +123,35 @@
   q('.source-note').hidden = true;
   const tree = q('.memory-pane');
   tree.append(q('.tree-output'));
-  const watched = [];
-  if (scenario.watch?.length) {
-   const list = D.el('dl','tree-watch');
-   list.setAttribute('aria-label','현재 변수값');
-   for (const entry of scenario.watch) {
-    const row = D.el('div','tree-watch-entry');
-    const term = D.el('dt','',entry.label);
-    const expression = D.el('dd');
-    const equals = D.el('span','tree-watch-equals','=');
-    const value = D.el('strong','tree-watch-number');
-    value.dataset.watch = entry.name;
-    expression.append(D.el('code','',entry.name),' ',equals,' ',value);
-    row.append(term,expression);
-    list.append(row);
-    watched.push({entry,row,value});
+  const variables = D.el('dl','tree-watch');
+  variables.setAttribute('aria-label','현재 변수값');
+  tree.append(variables);
+  function watchRow(name, label) {
+   const row = D.el('div','tree-watch-entry');
+   const codeName = D.el('code','',name);
+   const expression = D.el('dd');
+   const equals = D.el('span','tree-watch-equals','=');
+   const value = D.el('strong','tree-watch-number');
+   value.dataset.watch = name;
+   expression.append(codeName,' ',equals,' ',value);
+   row.append(D.el('dt','',label),expression);
+   variables.append(row);
+   return {row,codeName,value};
+  }
+  const currentNode = watchRow('현재 노드','현재 호출이 가리키는 노드');
+  currentNode.row.dataset.currentNode = '';
+  const watched = (scenario.watch ?? []).map(entry=>({...watchRow(entry.name,entry.label),entry}));
+  let parameterNames = [];
+  function paintWatch({row,value}, id, step, view) {
+   const cell = step.state.cells[id];
+   let current = '—';
+   if (cell?.lifetime==='live') {
+    const target = cell.value.kind==='pointer' ? step.state.cells[cell.value.target] : null;
+    const node = target && view.nodes.find(node=>node.id===target.owner);
+    current = node ? node.key+'번 노드' : D.format(cell.value);
    }
-   tree.append(list);
+   if (value.textContent!==current) value.textContent = current;
+   row.toggleAttribute('data-written',step.writes.some(write=>write.cellId===id));
   }
   q('.view-btns').remove();
 
@@ -297,17 +309,29 @@
     return view.nodes.find(node=>node.id===nodeId)?.keyCellId ??
      step.state.frames[frameId]?.parameterCellId ?? null;
    },
+   setTrace(trace) {
+    const {frames,cells} = trace.lineSteps.at(-1).state;
+    parameterNames = [...new Set(Object.values(frames)
+     .filter(frame=>frame.parameterCellId)
+     .map(frame=>cells[frame.parameterCellId].name))];
+    currentNode.row.hidden = parameterNames.length === 0;
+    variables.hidden = currentNode.row.hidden && watched.length === 0;
+   },
    paint(step, view, metadata, blocked) {
-    for (const {entry,row,value} of watched) {
+    const parameterId = view.stack[0]?.parameterCellId;
+    const parameter = step.state.cells[parameterId];
+    const name = parameter?.name ?? (parameterNames.length === 1 ? parameterNames[0] : '현재 노드');
+    if (!currentNode.row.hidden) {
+     currentNode.codeName.textContent = name;
+     currentNode.value.dataset.watch = name;
+     paintWatch(currentNode,parameterId,step,view);
+    }
+    for (const item of watched) {
+     const {entry,row} = item;
      const id = entry.cellId ?? step.state.activeFrame+'.'+entry.name;
-     const cell = step.state.cells[id];
-     let current = '—';
-     if (cell?.lifetime==='live') {
-      const node = cell.value.kind==='pointer' && view.nodes.find(node=>node.keyCellId===cell.value.target);
-      current = node ? node.key+'번 노드' : D.format(cell.value);
-     }
-     if (value.textContent!==current) value.textContent = current;
-     row.toggleAttribute('data-written',step.writes.some(write=>write.cellId===id));
+     row.hidden = !entry.cellId && parameterNames.includes(entry.name) &&
+      (parameter ? id === parameterId : !step.state.cells[id]);
+     paintWatch(item,id,step,view);
     }
     const returned = step.state.frames[step.executed?.frameId];
     const ended = !step.diagnostic && returned?.lifetime==='ended' && returned.parameterCellId ? returned : null;
