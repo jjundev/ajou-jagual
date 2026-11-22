@@ -1,0 +1,67 @@
+{
+  "date": "1102",
+  "references": [
+    {
+      "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+      "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+      "pages": [
+        16,
+        17
+      ]
+    },
+    {
+      "path": "복습노트/1102/.pack/정리노트_1102_Tree.md",
+      "sha256": "fc1d03c324768fb743802285e382c2bd470355c36d70e49cf82fd3a619c74460",
+      "section": "노드 개수 get_node_count · 높이 get_height"
+    },
+    {
+      "path": "STT/1102 자구알.md",
+      "sha256": "1db90f1691d9b076c22a677da6b2c64d14b4a61511b91f01ee30819f4a5542d9",
+      "section": "Part 07"
+    }
+  ],
+  "sources": [
+    {
+      "id": "algorithm",
+      "label": "calc 함수",
+      "language": "c",
+      "text": "int calc(Node *p, int sum) {\n  if (!p) return 0;\n  int l, r;\n  l = calc(p->left, sum);\n  r = calc(p->right, sum);\n  if (sum)\n    return 1 + l + r;\n  return 1 + max(l, r);\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+        "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+        "page": "16, 17",
+        "section": "노드 개수 get_node_count · 높이 get_height",
+        "supplement": true,
+        "adjustments": "강의의 두 알고리즘을 calc로 합치고 sum으로 계산을 고릅니다. 양쪽 호출을 별도 문장에 두어 화면의 왼쪽→오른쪽 실행이 C 코드와 일치합니다. p16의 트리 모양을 보존하고 식별용 숫자와 다른 트리 사례를 보충했습니다."
+      }
+    },
+    {
+      "id": "driver-0",
+      "label": "호출자",
+      "language": "c",
+      "text": "result = calc(root, 0);",
+      "provenance": {
+        "path": "복습노트/1102/.pack/정리노트_1102_Tree.md",
+        "sha256": "fc1d03c324768fb743802285e382c2bd470355c36d70e49cf82fd3a619c74460",
+        "section": "노드 개수 get_node_count · 높이 get_height",
+        "supplement": true,
+        "adjustments": "트리를 준비하는 호출자입니다. result는 호출 전에 선언해 두었습니다."
+      }
+    },
+    {
+      "id": "driver-1",
+      "label": "호출자",
+      "language": "c",
+      "text": "result = calc(root, 1);",
+      "provenance": {
+        "path": "복습노트/1102/.pack/정리노트_1102_Tree.md",
+        "sha256": "fc1d03c324768fb743802285e382c2bd470355c36d70e49cf82fd3a619c74460",
+        "section": "노드 개수 get_node_count · 높이 get_height",
+        "supplement": true,
+        "adjustments": "트리를 준비하는 호출자입니다. result는 호출 전에 선언해 두었습니다."
+      }
+    }
+  ],
+  "simplifications": "강의의 두 알고리즘을 calc로 합치고 sum으로 계산을 고릅니다. 양쪽 호출을 별도 문장에 두어 화면의 왼쪽→오른쪽 실행이 C 코드와 일치합니다. p16의 트리 모양을 보존하고 식별용 숫자와 다른 트리 사례를 보충했습니다.",
+  "compiler_scaffold": "stdio.h, Node 구조체, 정적 트리, main, int max 함수"
+}

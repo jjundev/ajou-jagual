@@ -1,0 +1,67 @@
+{
+  "date": "1102",
+  "references": [
+    {
+      "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+      "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+      "pages": [
+        10,
+        12
+      ]
+    },
+    {
+      "path": "복습노트/1102/.pack/정리노트_1102_Tree.md",
+      "sha256": "fc1d03c324768fb743802285e382c2bd470355c36d70e49cf82fd3a619c74460",
+      "section": "전위 순회와 목차 · 후위 순회와 디렉토리 용량"
+    },
+    {
+      "path": "STT/1102 자구알.md",
+      "sha256": "1db90f1691d9b076c22a677da6b2c64d14b4a61511b91f01ee30819f4a5542d9",
+      "section": "Part 03–05"
+    }
+  ],
+  "sources": [
+    {
+      "id": "algorithm",
+      "label": "walk 함수",
+      "language": "c",
+      "text": "void walk(Node *p, int pre) {\n  if (!p) return;\n  if (pre)\n    printf(\"%d \", p->data);\n  walk(p->left, pre);\n  walk(p->right, pre);\n  if (!pre)\n    printf(\"%d \", p->data);\n}",
+      "provenance": {
+        "path": "자료구조_강의록_2026/Software_7_Tree.pdf",
+        "sha256": "fa120f543b739f5d5dc437412cbef624c0c0324d32f2410f1c337b3615dbafde",
+        "page": "10, 12",
+        "section": "전위 순회와 목차 · 후위 순회와 디렉토리 용량",
+        "supplement": true,
+        "adjustments": "재귀 함수를 한 함수에 합치고 pre로 출력 위치를 고릅니다. NULL 조기 반환과 출력 구분용 공백을 추가했습니다. 트리와 호출자는 보충 예제입니다."
+      }
+    },
+    {
+      "id": "driver-0",
+      "label": "호출자",
+      "language": "c",
+      "text": "walk(root, 0);",
+      "provenance": {
+        "path": "복습노트/1102/.pack/정리노트_1102_Tree.md",
+        "sha256": "fc1d03c324768fb743802285e382c2bd470355c36d70e49cf82fd3a619c74460",
+        "section": "전위 순회와 목차 · 후위 순회와 디렉토리 용량",
+        "supplement": true,
+        "adjustments": "트리를 준비하는 호출자입니다."
+      }
+    },
+    {
+      "id": "driver-1",
+      "label": "호출자",
+      "language": "c",
+      "text": "walk(root, 1);",
+      "provenance": {
+        "path": "복습노트/1102/.pack/정리노트_1102_Tree.md",
+        "sha256": "fc1d03c324768fb743802285e382c2bd470355c36d70e49cf82fd3a619c74460",
+        "section": "전위 순회와 목차 · 후위 순회와 디렉토리 용량",
+        "supplement": true,
+        "adjustments": "트리를 준비하는 호출자입니다."
+      }
+    }
+  ],
+  "simplifications": "재귀 함수를 한 함수에 합치고 pre로 출력 위치를 고릅니다. NULL 조기 반환과 출력 구분용 공백을 추가했습니다. 트리와 호출자는 보충 예제입니다.",
+  "compiler_scaffold": "stdio.h, Node 구조체, 정적 트리, main"
+}
