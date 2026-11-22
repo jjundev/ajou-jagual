@@ -9,7 +9,7 @@ function buildPage({scenario,outDir=process.cwd()}){
  let html=read('shell.html').replace('/*FONT_HREF*/',fontHref(outDir)).replace('/*CSS*/',read('player.css'));
  const tree=s.kind==='c-tree';
  const list=['engine/contract.js','engine/memory.js',...(tree?['engine/line-steps.js','engine/tree.js']:[]),
-  'engine/trace.js','memory-svg.js',...(tree?['tree-svg.js']:[]),'shell.js','player.js'].map(read);
+  'engine/trace.js','memory-svg.js',...(tree?['tree-svg.js','tree-ui.js']:[]),'shell.js','player.js'].map(read);
  // Browser must take the browser branch; the Node source remains byte-equivalent inside the script.
  list.push(sourceText);list.push("DSInteractive.player=DSInteractive.mountPlayer(document.querySelector('#app'),DSInteractive.scenario);");
  html=html.replace('<!--SCRIPTS-->',list.map(js=>`<script>${js.replace(/<\/script/gi,'<\\/script')}</script>`).join('\n'));

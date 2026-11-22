@@ -2,7 +2,7 @@
 from pathlib import Path
 import json,sys,hashlib
 from playwright.sync_api import sync_playwright
-from browser_tree import check_tree_case
+from browser_tree import check_history_touch, check_tree_case
 
 def discover_pages(root):
  root=Path(root).resolve()
@@ -32,16 +32,36 @@ def main(root,scratch):
      assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(file,width,'overflow')
      assert page.evaluate("async () => (await document.fonts.load('400 16px Pretendard', '한글')).some(f => f.status === 'loaded')")
      if page.evaluate('DSInteractive.scenario.kind')=='c-tree':
-      count,checked=check_tree_case(page,width,height)
       topic=page.evaluate('DSInteractive.scenario.id')
       page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}.png'),full_page=True)
-      if width<1024:
-       page.locator('[data-action=toggle-right]').click()
-       page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}-memory.png'),full_page=True)
+      count,checked=check_tree_case(page,width,height)
+      if width<1280:page.locator('[data-action=toggle-left]').click()
+      history=page.get_by_role('heading',name='줄 기록',exact=True)
+      history.scroll_into_view_if_needed()
+      page.wait_for_function("""() => {
+        const list=document.querySelector('.tree-history .step-list');
+        const active=list.querySelector('[aria-pressed=true]').getBoundingClientRect();
+        const visible=list.getBoundingClientRect();
+        return active.top>=visible.top && active.bottom<=visible.bottom;
+      }""")
+      page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}-history.png'),full_page=True)
+      if width<1280:
        page.keyboard.press('Escape')
+       page.locator('[data-action=toggle-right]').click()
+      page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}-stack.png'),full_page=True)
+      if width<1280:page.keyboard.press('Escape')
+      first_node=page.locator('.tree-node.active')
+      if first_node.count():
+       first_node.click()
+       page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}-node.png'),full_page=True)
+       page.keyboard.press('Escape')
+      touch_checked=topic=='inorder-1105' and width==375 and theme=='light'
+      if touch_checked:
+       check_history_touch(browser,file.as_uri())
       print(f'{topic} {width} {theme}: {checked} line steps',flush=True)
       results.append({'topic':topic,'file':file.name,'sha256':hashlib.sha256(file.read_bytes()).hexdigest(),
-                      'viewport':[width,height],'theme':theme,'presets':count,'snapshots_checked':checked,'status':'pass'})
+                      'viewport':[width,height],'theme':theme,'presets':count,'snapshots_checked':checked,
+                      'touch_checked':touch_checked,'status':'pass'})
       continue
      left(True)
      presets=page.locator('[data-action=preset] option').evaluate_all('(es)=>es.map(e=>e.value)');steps_checked=0

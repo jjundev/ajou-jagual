@@ -7,7 +7,7 @@ Scenario 필드: `version:1,id,title,kind:'c-memory'|'c-tree',sources,inputs,pre
 | 형식 | 필드 |
 |---|---|
 | Source | id,label,language c/pseudocode,text,provenance |
-| provenance | path,sha256,section?,page?,supplement:boolean,adjustments,note?(코드 아래 한 줄 안내. 없으면 0928 기본 문구) |
+| provenance | path,sha256,section?,page?,supplement:boolean,adjustments,note?(포인터 화면의 코드 아래 한 줄 안내. 생략하면 기본 문구를 표시한다. 트리 화면은 출처를 저작·검토 데이터에 두며 이 안내를 숨긴다.) |
 | Input | key,label,type integer/enum,default,min/max 또는 options:[{value,label}] |
 | Preset | id,label,input (모든 key 포함) |
 | Value | {kind:'int',value:정수}, {kind:'pointer',target:Cell ID 또는 null}, {kind:'uninitialized'}, {kind:'indeterminate'} |
