@@ -39,3 +39,14 @@ test('graph build embeds the graph player and keeps the graph layout in the scen
  a.equal(typeof ctx.DSInteractive.mountGraphPlayer,'function');
  a.equal(JSON.stringify(ctx.DSInteractive.scenario.graph),JSON.stringify({positions:[[40,40],[100,100]]}));
 });
+
+test('a new build uses the versioned common UI by default',()=>{
+ const {buildPage}=require('../scripts/build.cjs');
+ const sourceText=require('node:fs').readFileSync(require.resolve('../examples/0928/value-address.cjs'),'utf8');
+ const build=buildPage({scenario:{sourceText}});
+ a.equal(build.uiVersion,1);
+ a.match(build.html,/data-ui-version="1"/);
+ const legacy=buildPage({scenario:{sourceText},uiVersion:0});
+ a.doesNotMatch(legacy.html,/data-ui-version="1"/);
+ a.equal(legacy.hashes.trace,build.hashes.trace);
+});

@@ -7,6 +7,7 @@ const {buildPage} = require('../scripts/build.cjs');
 const {createReview, verifyReview} = require('../scripts/review.cjs');
 const {rebaseFont} = require('../scripts/fonts.cjs');
 const {save} = require('../scripts/save.cjs');
+const {fixtureReport} = require('./fixtures/study-report.cjs');
 
 test('saved and archived pages use the reviewed shared font from their own directories', t => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ds font 한글 '));
@@ -21,10 +22,12 @@ test('saved and archived pages use the reviewed shared font from their own direc
     'preview.html': html, 'scenario.cjs': sourceText, 'trace.json': JSON.stringify(traces),
     'source.json': '{}', 'brief.md': 'fixture', 'evidence/pass.md': 'fixture',
   })) fs.writeFileSync(path.join(run, name), text);
+  fs.writeFileSync(path.join(run, 'evidence/browser.json'), JSON.stringify(fixtureReport(run)));
   const review = createReview(run);
   for (const check of Object.values(review.checks)) {
     Object.assign(check, {status: 'pass', evidence: 'evidence/pass.md', notes: 'fixture'});
   }
+  review.checks.browser.evidence = 'evidence/browser.json';
   fs.writeFileSync(path.join(run, 'review.json'), JSON.stringify(review));
 
   const result = save({run, dest, name: '값과 주소'});

@@ -8,11 +8,19 @@ from urllib.parse import unquote, urlsplit
 
 from playwright.sync_api import expect, sync_playwright
 
+from browser_graph_layout import open_options
+
 
 PACKS = {
     '0928': ('정리노트_0928_ArrayStructureList.html', 3, 4),
     '1105': ('정리노트_1105_Tree.html', 1, 1),
+    '1116': ('정리노트_1116_Graph.html', 2, 3),
     '1119': ('정리노트_1119_Graph.html', 2, 4),
+}
+LINK_SECTIONS = {
+    '1105': ['s0-inorder'],
+    '1116': ['s1-euler', 's2-terms', 's3-adj-matrix'],
+    '1119': ['s0-dfs-not-done', 's1-bfs-trace', 's1-compare', 's2-components'],
 }
 INORDER_FILE = '인터렉티브_01_중위순회_실행.html'
 FONT_HREF = rb'(data-ds-interactive-font href=")[^"]+'
@@ -33,16 +41,23 @@ def check_public_files(browser, files):
             ).some(face => face.status === 'loaded')"""), file
             page.locator('[data-action=next]').click()
             expect(page.locator('#app')).to_have_attribute('data-index', '1')
-            if page.locator('[data-action=tree-options]').count():
+            graph_view = page.locator('#app').get_attribute('data-graph-view')
+            if graph_view:
+                open_options(page)
+            elif page.locator('[data-action=tree-options]').count():
                 page.locator('[data-action=tree-options]').click()
             page.locator('[data-action=last]').click()
             expect(page.locator('[data-action=next]')).to_be_disabled()
-            if page.locator('.graph-scene').count():
-                page.locator('[data-input=setup]').select_option(index=1)
+            if graph_view:
+                if graph_view == 'traversal':
+                    page.locator('[data-input=setup]').select_option(index=1)
+                else:
+                    page.locator('[data-action=preset]').select_option(index=1)
                 expect(page.locator('#app')).to_have_attribute('data-index', '0')
                 if page.locator('[data-mode-value=bfs]').count():
                     page.locator('[data-mode-value=bfs]').click()
                     expect(page.locator('[data-graph-state=queue]')).to_be_visible()
+                open_options(page)
                 page.locator('[data-action=last]').click()
                 expect(page.locator('[data-action=next]')).to_be_disabled()
             rows.append({'file': file.name, 'sha256': hashlib.sha256(public).hexdigest(),
@@ -60,10 +75,8 @@ def check_note_links(browser, note, files, expected_count, date, mobile=False):
         expect(links).to_have_count(expected_count)
         sections = links.evaluate_all(
             'links => links.map(link => link.closest("article,section").id)')
-        if date == '1105':
-            assert sections == ['s0-inorder'], sections
-        if date == '1119':
-            assert sections == ['s0-dfs-not-done', 's1-bfs-trace', 's1-compare', 's2-components'], sections
+        if date in LINK_SECTIONS:
+            assert sections == LINK_SECTIONS[date], sections
 
         rows = []
         for section in sections:
@@ -109,7 +122,7 @@ def main():
         browser = playwright.chromium.launch()
         rows = check_public_files(browser, files)
         rows += check_note_links(browser, folder / note_name, files, link_count, args.date)
-        if args.date in {'1105', '1119'}:
+        if args.date in LINK_SECTIONS:
             rows += check_note_links(browser, folder / note_name, files, link_count, args.date, mobile=True)
         browser.close()
 

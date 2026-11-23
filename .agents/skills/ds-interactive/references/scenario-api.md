@@ -70,4 +70,6 @@ watch: [
 
 `c-graph`의 DFS·BFS 장면은 공통 Snapshot을 사용한다. `graph.positions`에는 정점 번호 순서대로 360 × 220 뷰박스에서의 좌표를 넣는다. 행렬은 `graph.a.<v>.<w>`, 방문 값은 `graph.visited.<v>`, 발견 간선의 부모는 `graph.parent.<v>`에서 읽는다. 초기 부모는 -1이다. Snapshot의 행렬 읽기는 검사 칸과 해당 간선을 강조한다.
 
-활성 프레임의 `v` 또는 `i`가 현재 정점이다. DFS 스택은 각 프레임의 호출자에서, BFS 큐는 살아 있는 `head`, `tail`, `q.<index>`에서 계산한다. BFS의 소스 ID는 `bfs`로 지정한다. `graph.count`가 있으면 방문 배열 옆에 성분 수를 표시한다.
+활성 프레임의 `v` 또는 `i`가 현재 정점이다. 현재 값 카드는 현재 정점과 행렬에서 검사하는 이웃을 표시한다. 연결 성분은 이웃 대신 `graph.count`의 값을 표시한다. DFS 스택은 각 프레임의 호출자에서, BFS 큐는 살아 있는 `head`, `tail`, `q.<index>`에서 계산한다. BFS의 소스 ID는 `bfs`로 지정한다.
+
+그래프 셸과 반응형 배치는 [그래프 배치](design.md)를 공통으로 따른다. `graph.view: 'bridges'`는 이동 기록과 차수, `graph.view: 'degree'`는 방향 그래프, 인접 행렬과 진출·진입 차수를 표시한다. `graph.view` 생략 시 DFS·BFS·연결 성분에 쓰는 탐색 장면을 사용한다.

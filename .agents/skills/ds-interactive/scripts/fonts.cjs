@@ -20,4 +20,8 @@ function rebaseFont(html, from, to) {
   return html.replace(fontLink, (_, start, end) => start + fontHref(to) + end);
 }
 
-module.exports = {fontHref, rebaseFont};
+function withoutFontHref(html) {
+  return html.replace(fontLink, '$1$2');
+}
+
+module.exports = {fontHref, rebaseFont, withoutFontHref};

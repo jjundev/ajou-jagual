@@ -85,13 +85,6 @@
     return list;
   }
 
-  function message(snapshot) {
-    const step = D.el('div', 'gi-message');
-    step.append(D.el('strong', '', snapshot.phase === 'before' ? '첫 단계 전' : snapshot.title),
-      D.el('p', '', snapshot.explanation));
-    return step;
-  }
-
   function bridgeView(snapshot, graph) {
     const start = graph.vertices[value(snapshot, 'start')][0];
     const edges = graph.bridges
@@ -123,22 +116,30 @@
     const parity = D.el('p', 'gi-meta', `홀수 차수 ${odd.length}개${odd.length ? ' (' + odd.join(', ') + ')' : ''} · ${connected ? '모든 다리가 연결됨' : '다리 배치가 끊어짐'}`);
     const analysis = D.el('div', 'gi-degree');
     analysis.append(stats, parity);
+    const result = D.el('div', 'gi-trail');
+    result.append(D.el('p', 'gi-route', trail.join(' → ')));
     if (snapshot.at.line === 5) {
       const verdict = !connected ? '떨어진 다리 묶음에 갈 수 없어서 전체를 잇는 경로가 없어요.'
         : odd.length === 0 ? '홀수 차수 정점이 0개예요. 출발점으로 돌아오는 오일러 회로가 있어요.'
           : odd.length === 2 ? `오일러 경로의 두 끝점은 ${odd.join('와 ')}예요. ${odd.includes(start) ? '선택한 출발점은 그중 하나예요.' : '출발점을 둘 중 하나로 바꿔 보세요.'}`
             : '끝점 두 곳을 제외한 모든 정점은 들어오는 다리와 나가는 다리가 짝을 이뤄야 해요. 여기서는 홀수 차수가 4개라 오일러 경로도 없어요.';
-      analysis.append(D.el('p', 'gi-verdict', verdict));
+      result.append(D.el('p', 'gi-verdict', verdict));
     }
-    const trailData = D.el('div', 'gi-trail');
-    trailData.append(D.el('p', 'gi-route', trail.join(' → ')),
-      D.el('p', 'gi-meta', `현재 ${trail.at(-1)} · 건넌 다리 ${visited.length}/${edges.length}`));
+    const trailData = D.el('ol', 'gi-crossings');
+    for (const [index, edge] of visited.entries()) {
+      trailData.append(D.el('li', '', `${edge.id} · ${trail[index]} → ${trail[index + 1]}`));
+    }
     const figure = D.el('figure', 'gi-figure');
     figure.append(drawGraph(graph.vertices, edges, trail.at(-1), false),
       D.el('figcaption', '', '같은 두 정점을 잇는 다리도 각각 세어요. 이름 옆의 숫자는 건넌 순서예요.'));
-    const content = D.el('div', 'gi-scene');
-    content.append(figure, panel('이동 기록', trailData), panel('정점별 차수', analysis), message(snapshot));
-    return content;
+    const detail = D.el('div', 'gi-scene');
+    detail.append(panel('이동 기록', visited.length ? trailData : D.el('p', 'gi-meta', '아직 건넌 다리 없음')),
+      panel('정점별 차수', analysis));
+    const current = [
+      {id: 'position', label: '현재 위치', value: trail.at(-1)},
+      {id: 'crossings', label: '건넌 다리 수', value: `${visited.length}/${edges.length}`},
+    ];
+    return {overview: figure, result: panel('이동 경로', result), current, detail};
   }
 
   function matrixTable(vertices, matrix, active, axis, v) {
@@ -199,12 +200,17 @@
       key: id, label: `${label} · ${v}${name}`, result: value(snapshot, id),
       emphasis: hasWrite(snapshot, id) ? 'gi-counter' : '',
     })));
-    const overview = D.el('div', 'gi-overview');
+    const overview = D.el('div', 'graph-overview');
     overview.append(figure, matrixTable(vertices, matrix, active, axis, v));
-    const content = D.el('div', 'gi-scene');
-    content.append(overview, panel(axis === 'out' ? `${v}행 읽기 → 진출 차수`
-      : axis === 'in' ? `${v}열 읽기 → 진입 차수` : '행의 합과 열의 합', counts), message(snapshot));
-    return content;
+    const result = panel('차수 누적값', counts);
+    const current = [
+      {id: 'vertex', label: '기준 정점', name: 'v', value: v, cell: 'v'},
+      {id: 'axis', label: '읽는 행 또는 열', value: axis === 'out' ? v + '행' : axis === 'in' ? v + '열' : undefined},
+    ];
+    const status = D.el('p', 'gi-meta', active
+      ? `[${active.split('.').slice(1).join(', ')}] = ${value(snapshot, active)}`
+      : '이 단계에서 읽은 행렬 칸 없음');
+    return {overview, result, current, detail: panel('읽은 행렬 칸', status)};
   }
 
   function render(snapshot, graph) {
@@ -215,28 +221,13 @@
     const q = selector => app.querySelector(selector);
     const graph = scenario.graph;
     const bridges = graph.view === 'bridges';
-    D.registerRenderer('c-graph', {render: snapshot => render(snapshot, graph)});
-    app.dataset.graphInspection = scenario.graph.view;
-    q('.pane-heading h2').textContent = bridges ? '땅과 다리' : '화살표와 인접 행렬';
-    q('.scene-note').textContent = bridges ? '다리 이름순으로 건너기' : '행은 출발 · 열은 도착';
-    q('.stage').setAttribute('aria-label', '그래프 단계 보기');
-    q('.memory').setAttribute('aria-label', '그래프와 현재 상태');
-    q('.view-btns').hidden = true;
-    q('[data-action=option-addresses]').closest('section').hidden = true;
-    q('.selection').closest('section').hidden = true;
-    q('.provenance p').textContent = '← / → 단계 이동 · Space 재생 · Home / End 처음과 마지막.';
-    q('.provenance p:last-child').hidden = true;
+    app.dataset.graphView = graph.view;
+    const player = D.mountGraphShell(app, scenario, {
+      render: snapshot => render(snapshot, graph),
+      heading: bridges ? '땅과 다리' : '화살표와 인접 행렬',
+      note: bridges ? '다리 이름순으로 건너기' : '행은 출발 · 열은 도착',
+    });
     const configuration = q('.configuration');
-    configuration.querySelector('h2').hidden = true;
-    const viewport = q('.stage-viewport');
-    viewport.before(configuration);
-    viewport.tabIndex = 0;
-    viewport.setAttribute('role', 'region');
-    viewport.setAttribute('aria-label', '그래프 장면');
-    const live = D.el('span', 'gi-sr');
-    live.setAttribute('aria-live', 'polite');
-    q('.stage').append(live);
-    const player = D.mountPlayer(app, scenario);
     const preset = q('[data-action=preset]');
     preset.options[0].textContent = bridges ? '원본 · A 출발' : 'G3 · 정점 1';
     const custom = new Option('직접 설정', 'custom');
@@ -251,18 +242,12 @@
     };
     configuration.addEventListener('input', syncPreset);
     configuration.addEventListener('change', syncPreset);
-    const sync = () => { live.textContent = q('.explanation').textContent; };
-    const observer = new MutationObserver(sync);
-    observer.observe(q('.explanation'), {childList: true});
-    sync();
     return {destroy() {
-      observer.disconnect();
       configuration.removeEventListener('input', syncPreset);
       configuration.removeEventListener('change', syncPreset);
       player.destroy();
     }};
   }
 
-  D.drawArrows = () => {};
   D.mountGraphPlayer = mountGraphPlayer;
 })(globalThis);

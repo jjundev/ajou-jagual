@@ -418,52 +418,172 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   [data-kind=c-tree] .brand { white-space: normal; line-height: 1.35; }
 }
 
+[data-kind=c-graph] .topbar { padding: 6px 16px; }
+[data-kind=c-graph] .brand { display: block; }
+.graph-header-tools { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.graph-header-tools .configuration { margin: 0; border: 0; padding: 0; }
+.graph-header-tools label { min-width: 0; }
+:is(.graph-header-tools, .stage > .configuration) label:has(> select) { position: relative; }
+:is(.graph-header-tools, .stage > .configuration) label:has(> select)::after {
+  content: '';
+  position: absolute;
+  inset-inline-end: 12px;
+  bottom: 19px;
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  pointer-events: none;
+  border: solid var(--ink-2);
+  border-width: 0 1.5px 1.5px 0;
+}
+.graph-header-tools select {
+  max-width: 100%;
+  min-height: 44px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  font-size: 14px;
+}
+[data-kind=c-graph] .stage > .configuration {
+  flex: none;
+  margin: 0;
+  padding: 6px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+}
+[data-kind=c-graph] :is(.graph-header-tools, .stage > .configuration) select {
+  appearance: none;
+  padding-inline: 12px 30px;
+}
+[data-kind=c-graph] .stage > .configuration input { padding-inline: 12px; }
+[data-kind=c-graph] .topbar .modes button { padding-inline: 16px; }
+[data-kind=c-graph] .configuration .input-error { margin: 0; }
+[data-kind=c-graph] .stage-viewport { padding: 16px; }
+[data-kind=c-graph] .pane-heading { margin-bottom: 8px; }
+[data-kind=c-graph] :is(.pane-heading h2, .source-pane h2, .graph-details > h2) { font-size: 16px; }
+[data-kind=c-graph] .memory-pane { container-type: inline-size; }
+[data-kind=c-graph] .memory { display: block; min-height: 0; padding: 0; }
+[data-kind=c-graph] .source-pane { margin: 0; padding: 0; border: 0; }
+[data-kind=c-graph] .code { max-height: min(35vh, 320px); }
+[data-kind=c-graph] .code-line { position: relative; min-width: 0; padding-left: 16px; white-space: pre-wrap; }
+[data-kind=c-graph] .code-line > :last-child { min-width: 0; overflow-wrap: anywhere; }
+[data-kind=c-graph] .code-line.current:not(.executed) { background: none; color: inherit; box-shadow: none; }
+.graph-next-source { color: var(--ink-2); }
+.graph-next-line::before {
+  content: '▶';
+  position: absolute;
+  left: 1px;
+  color: var(--accent-ink);
+}
+[data-kind=c-graph] .layout:not(.is-docked) .panel-left { width: min(336px, 88vw); }
+[data-kind=c-graph] .layout:not(.is-docked) .panel-head { justify-content: flex-end; }
+
+.graph-history { position: relative; margin-top: 20px; }
+.graph-history h2 { margin: 0 0 8px; min-height: 44px; display: flex; align-items: center; }
+.graph-follow { position: absolute; inset: 0 0 auto auto; color: var(--accent-ink); }
+.graph-history .step-list {
+  height: 134px;
+  margin: 0;
+  gap: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.graph-history .step-list::after { content: ''; flex: 0 0 44px; }
+.graph-history .steps .btn { height: 44px; min-height: 44px; padding: 4px 6px; gap: 6px; }
+.graph-history .step-txt { flex-direction: row; align-items: baseline; gap: 5px; white-space: nowrap; }
+.graph-history .step-txt > * { overflow: hidden; text-overflow: ellipsis; font-size: 13px; }
+.graph-history .step-txt b { flex: 0 0 auto; max-width: 60%; }
+.graph-history .steps .btn[aria-pressed=true] { border-color: var(--accent); }
+.graph-explanation { margin-top: 12px; font-size: 14px; }
+.graph-explanation .explanation { line-height: 1.55; }
+.graph-detail-content > * { margin: 0; }
+.graph-changes { margin-top: 12px; }
+.graph-changes summary { cursor: pointer; min-height: 44px; padding-block: 8px; }
+[data-kind=c-graph] .provenance { margin-top: 20px; }
+
+.graph-scene { display: grid; gap: 12px; }
+.graph-overview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 12px;
+}
+.graph-overview > * { min-width: 0; }
+.graph-result, .graph-watch {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.graph-result h3 { margin: 0 0 5px; font-size: 14px; }
+.graph-watch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+.graph-watch-entry { display: flex; flex-direction: column-reverse; gap: 3px; overflow-wrap: anywhere; }
+.graph-watch dt { font-size: 12px; color: var(--ink-2); }
+.graph-watch dd { margin: 0; font-size: 14px; }
+.graph-watch-value { font-variant-numeric: tabular-nums; }
+.graph-watch-entry[data-written] .graph-watch-value { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+[data-kind=c-graph] .playbar { gap: 8px; margin-top: 8px; z-index: 5; }
+[data-kind=c-graph] .scrub { min-width: 0; order: 0; }
+[data-kind=c-graph] :is(.speeds, .topbar .modes) button { min-width: 44px; min-height: 44px; }
+.graph-speed-trigger { padding: 0 8px; }
+.graph-speed-trigger::after { content: '⌃'; margin-left: 4px; }
+.graph-playback-options {
+  position: absolute;
+  inset: auto 0 calc(100% - 1px) auto;
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  box-shadow: 0 4px 20px #0002;
+}
+.graph-playback-options .speeds { justify-content: center; margin: 0; }
+.graph-playback-options button { min-height: 44px; }
+.graph-jumps, .graph-endpoints { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+
+@container (width < 470px) {
+  .graph-overview { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  [data-kind=c-graph] .topbar {
+    display: grid;
+    grid-template-columns: auto minmax(0,1fr) auto auto;
+    padding: 4px 10px 8px;
+    gap: 4px;
+  }
+  [data-kind=c-graph] .brand { font-size: 15px; }
+  [data-kind=c-graph] .panel-toggle { justify-content: center; padding: 0; }
+  [data-kind=c-graph] .panel-toggle span { display: none; }
+  [data-kind=c-graph] .theme-toggle { grid-area: 1 / 3; }
+  [data-kind=c-graph] [data-action=toggle-right] { grid-area: 1 / 4; }
+  .graph-header-tools { grid-area: 2 / 2 / 3 / -1; flex-wrap: wrap; gap: 4px 6px; }
+  [data-kind=c-graph] .stage-viewport { padding: 12px; }
+  [data-kind=c-graph] .scene-note { display: none; }
+  [data-kind=c-graph] .playbar .scrub { order: 2; flex-basis: 100%; gap: 0; }
+  .graph-speed-trigger { margin-left: auto; }
+}
+@media (max-width: 480px) {
+  .graph-header-tools select { font-size: 13px; }
+  [data-kind=c-graph] .topbar .modes button { padding-inline: 12px; }
+  .graph-scene, .graph-overview { gap: 8px; }
+  .graph-result, .graph-watch { padding: 6px 10px; }
+}
+
 [data-kind=c-graph] {
   --graph-selected: color-mix(in srgb, var(--accent) 13%, var(--bg));
   --graph-edge: color-mix(in srgb, var(--ink-2) 55%, var(--bg));
 }
 
-[data-kind=c-graph] .configuration {
-  margin: 0;
-  padding: 8px clamp(12px, 2vw, 24px);
-  border-top: 0;
-  border-bottom: 1px solid var(--line);
-}
-
-[data-kind=c-graph] .configuration .inputs {
-  display: flex;
-  gap: 0;
-}
-
-[data-kind=c-graph] .inputs label:not([hidden]) {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-}
-
-[data-kind=c-graph] .configuration select { width: auto; }
-
-[data-kind=c-graph] .stage-viewport { padding: 16px clamp(12px, 2vw, 24px); }
-[data-kind=c-graph] .pane-heading { margin-bottom: 10px; }
-[data-kind=c-graph] .memory-pane { container-type: inline-size; }
-[data-kind=c-graph] .memory { display: block; min-height: 0; padding: 0; }
-[data-kind=c-graph] .source-pane { margin-top: 0; padding-top: 0; border: 0; }
-[data-kind=c-graph] .code { max-height: min(35vh, 320px); }
-[data-kind=c-graph] .code-line { min-width: 0; white-space: pre-wrap; }
-[data-kind=c-graph] .code-line span:last-child { overflow-wrap: normal; }
-[data-kind=c-graph] .step-list { max-height: 225px; overflow: auto; }
-[data-kind=c-graph] .step-num { width: 34px; height: 30px; white-space: nowrap; }
-[data-kind=c-graph] .explanation-pane > .sec:has(> .changes) { margin-top: 0; padding-top: 0; border: 0; }
-[data-kind=c-graph] .scrub { min-width: 92px; }
-[data-kind=c-graph] .speeds button { min-height: 44px; }
-
-.graph-overview {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 218px), 1fr));
-  align-items: center;
-  gap: 16px;
-}
+.graph-header-tools .inputs { display: flex; }
 
 .graph-figure {
   margin: 0;
@@ -523,44 +643,25 @@ html[data-theme=dark] .app[data-kind=c-tree] {
 .graph-matrix th { color: var(--ink-2); background: var(--surface); }
 .graph-matrix td.is-reading { box-shadow: inset 0 0 0 2px var(--warn); font-weight: 750; }
 
-.graph-message {
-  margin-top: 14px;
-  padding: 9px 12px;
-  border-inline-start: 3px solid var(--accent);
-  background: var(--surface);
-}
-
-.graph-message p { margin: 2px 0 0; font-size: 14px; }
-.graph-data { display: grid; gap: 10px; margin-top: 12px; }
+.graph-data { display: grid; gap: 10px; }
 .graph-state h3 { margin: 0 0 5px; font-size: 14px; }
-.graph-count { margin-inline-start: 10px; color: var(--accent-ink); font: 650 13px ui-monospace, monospace; }
 .graph-values { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 5px; margin: 0; padding: 0; list-style: none; }
 .graph-values li { min-width: 35px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 6px; text-align: center; font: 14px/1.5 ui-monospace, monospace; }
 .graph-values li.is-written { box-shadow: inset 0 0 0 1px var(--accent-ink); background: var(--graph-selected); }
 .graph-values li.is-reading { outline: 1px dashed var(--warn); outline-offset: -2px; }
 .graph-values small { display: block; color: var(--ink-2); font-size: 11px; }
 .graph-empty { margin: 0; color: var(--ink-2); font-size: 13px; }
-.graph-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-
-@media (max-width: 640px) {
-  [data-kind=c-graph] .topbar { flex-wrap: wrap; }
-  [data-kind=c-graph] .brand { display: block; flex-basis: 100%; order: -1; font-size: 16px; padding-inline: 4px; }
-  .graph-drawing { max-height: 174px; }
-}
-
 @container (width < 470px) {
-  .graph-overview { display: contents; }
-  .graph-scene { display: flex; flex-direction: column; }
-  .graph-matrix { order: 1; margin: 16px 0 0; }
-  .graph-drawing { max-height: 174px; }
+  .graph-drawing { max-height: 145px; }
+  .graph-matrix th, .graph-matrix td { height: 24px; }
 }
 
 @media (max-width: 480px) {
-  [data-kind=c-graph] .playbar { justify-content: space-between; }
-  [data-kind=c-graph] .playbar .scrub { order: 2; flex-basis: calc(100% - 150px); }
-  [data-kind=c-graph] .speeds { order: 3; margin-left: 0; }
-  [data-kind=c-graph] .speeds button { min-width: 44px; padding: 0 3px; }
-  [data-kind=c-graph] .topbar .modes button { min-width: 44px; min-height: 44px; }
+  [data-graph-view=traversal] .graph-header-tools { grid-column: 1 / -1; justify-content: space-between; }
+  [data-graph-view=traversal] .graph-header-tools .configuration { flex: 1 1 180px; min-width: 0; }
+  .graph-legend { gap: 3px 8px; padding: 0 4px 5px; font-size: 11px; }
+  .graph-drawing { max-height: 138px; }
+  .graph-result .graph-values li { padding: 1px 4px; min-width: 25px; }
 }
 </style></head>
 <body><main id="app" class="app" data-addresses="true" data-arrows="true">
@@ -756,13 +857,13 @@ html[data-theme=dark] .app[data-kind=c-tree] {
  function mountShell(app,{onStep,onSpeed,redraw,onPanelsChange}){
   const q=s=>app.querySelector(s),listeners=[],on=(el,type,fn)=>{el.addEventListener(type,fn);listeners.push(()=>el.removeEventListener(type,fn));};
   const layout=q('.layout'),panels={left:q('.panel-left'),right:q('.panel-right')},toggles={left:q('[data-action=toggle-left]'),right:q('[data-action=toggle-right]')};
-  const tree=app.dataset.kind==='c-tree';
+  const tree=app.dataset.kind==='c-graph';
   const compact=matchMedia(tree?'(width < 1280px)':'(width < 1024px)');
   const stage=q('.stage'),header=q('.topbar');
   const sides=['left','right'], sibling=side=>side==='left'?'right':'left';
   const limits={left:{min:220,max:480,prop:'--pl-user'},right:{min:280,max:720,prop:'--pr-user'}};
   const handles={left:q('[data-resize=left]'),right:q('[data-resize=right]')};
-  const treeWidthKey='ds-interactive:tree-panel-widths';
+  const treeWidthKey='ds-interactive:graph-panel-widths';
   const treeDefaults={left:320,right:300};
   const shown={...treeDefaults};
   const sceneMin=400;
@@ -1080,6 +1181,292 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
 <script>(function (root) {
   'use strict';
   const D = root.DSInteractive;
+
+  function watchCard(entries, snapshot) {
+    const card = D.el('dl', 'graph-watch');
+    card.setAttribute('aria-label', '현재 값');
+    for (const {id, label, name, value, cell} of entries) {
+      const row = D.el('div', 'graph-watch-entry');
+      const expression = D.el('dd');
+      row.dataset.graphWatch = id;
+      row.toggleAttribute('data-written', Boolean(cell && snapshot.writes.some(write => write.cellId === cell)));
+      if (name) expression.append(D.el('code', '', name), ' = ');
+      const current = D.el('strong', 'graph-watch-value', value == null ? '—' : String(value));
+      expression.append(current);
+      row.append(D.el('dt', '', label), expression);
+      card.append(row);
+    }
+    return card;
+  }
+
+  function mountPlayback(app, signal, hasOutput) {
+    const bar = app.querySelector('.playbar');
+    const trigger = D.el('button', 'text-btn graph-speed-trigger', '1×');
+    trigger.type = 'button';
+    trigger.dataset.action = 'graph-options';
+    trigger.setAttribute('aria-controls', 'graph-playback-options');
+    const popup = D.el('div', 'graph-playback-options');
+    popup.id = 'graph-playback-options';
+    popup.setAttribute('role', 'group');
+    popup.setAttribute('aria-label', '재생 옵션');
+    popup.append(bar.querySelector('.speeds'));
+
+    let jumps;
+    if (hasOutput) {
+      jumps = D.el('div', 'graph-jumps');
+      for (const [action, label] of [['previous-output', '이전 출력'], ['next-output', '다음 출력']]) {
+        const button = D.el('button', 'btn', label);
+        button.type = 'button';
+        button.dataset.action = action;
+        jumps.append(button);
+      }
+      popup.append(jumps);
+    }
+    const endpoints = D.el('div', 'graph-endpoints');
+    for (const button of bar.querySelectorAll('[data-action=first], [data-action=last]')) {
+      button.classList.replace('icon-btn', 'btn');
+      button.textContent = button.getAttribute('aria-label');
+      endpoints.append(button);
+    }
+    popup.append(endpoints);
+    bar.append(trigger, popup);
+
+    let pinned = false;
+    function show(open) {
+      popup.hidden = !open;
+      trigger.setAttribute('aria-expanded', String(open));
+    }
+    function setSpeed(button) {
+      trigger.textContent = button.textContent;
+      trigger.setAttribute('aria-label', '재생 옵션 · 현재 배속 ' + button.textContent);
+    }
+    show(false);
+    setSpeed(popup.querySelector('[data-speed="1"]'));
+    const on = (target, event, handler) => target.addEventListener(event, handler, {signal});
+    on(trigger, 'click', () => {
+      pinned = !pinned;
+      show(pinned);
+    });
+    on(bar, 'pointerenter', event => { if (event.pointerType === 'mouse') show(true); });
+    on(bar, 'pointerleave', event => {
+      if (event.pointerType === 'mouse' && !pinned && !popup.contains(document.activeElement)) show(false);
+    });
+    on(popup, 'focusout', event => {
+      if (!pinned && !bar.matches(':hover') && !popup.contains(event.relatedTarget)) show(false);
+    });
+    on(document, 'pointerdown', event => {
+      if (!bar.contains(event.target)) { pinned = false; show(false); }
+    });
+    on(document, 'keydown', event => {
+      if (event.defaultPrevented || event.key !== 'Escape' || popup.hidden) return;
+      event.preventDefault();
+      if (popup.contains(document.activeElement)) trigger.focus({preventScroll: true});
+      pinned = false;
+      show(false);
+    });
+    on(popup, 'click', event => {
+      const button = event.target.closest('button');
+      if (button?.dataset.speed) setSpeed(button);
+    });
+    return jumps;
+  }
+
+  function mountGraphShell(app, scenario, {render, heading, note, hasOutput = false}) {
+    const q = selector => app.querySelector(selector);
+    const events = new AbortController();
+    const on = (target, event, handler) => target.addEventListener(event, handler, {signal: events.signal});
+    const left = q('#panel-left');
+    const right = q('#panel-right');
+    const code = q('.source-pane');
+    const list = q('.step-list');
+    const history = list.closest('section');
+    const historyTitle = history.querySelector('h2');
+    const follow = D.el('button', 'text-btn graph-follow', '실행 위치로');
+    follow.type = 'button';
+    follow.hidden = true;
+    history.className = 'graph-history';
+    historyTitle.textContent = '줄 기록';
+    historyTitle.id = 'graph-history-title';
+    historyTitle.after(follow);
+    list.tabIndex = 0;
+    list.setAttribute('role', 'region');
+    list.setAttribute('aria-labelledby', historyTitle.id);
+    list.removeAttribute('aria-label');
+    code.append(history);
+    q('.source-note').hidden = true;
+    for (const [side, panel, label] of [['left', left, '실행 코드'], ['right', right, '실행 상태']]) {
+      const toggle = q('[data-action=toggle-' + side + ']');
+      toggle.querySelector('span').textContent = label;
+      toggle.setAttribute('aria-label', label + ' 패널');
+      toggle.title = label + ' 패널';
+      panel.setAttribute('aria-label', label);
+      panel.querySelector('.panel-head h2').remove();
+    }
+    q('.pane-heading h2').textContent = heading;
+    q('.scene-note').textContent = note;
+    q('.stage').setAttribute('aria-label', '그래프 실행 보기');
+    const memory = q('.memory');
+    memory.setAttribute('aria-label', '그래프, 결과와 현재 값');
+    q('.view-btns').hidden = true;
+    q('.tree-output').remove();
+
+    const header = q('.topbar');
+    const configuration = q('.configuration');
+    configuration.querySelector('h2').hidden = true;
+    const headerInputs = D.el('div', 'graph-header-tools');
+    headerInputs.append(q('.modes'));
+    header.insertBefore(headerInputs, q('[data-action=theme]'));
+    const viewport = q('.stage-viewport');
+    const presetLabel = q('[data-action=preset]').closest('label');
+    if (presetLabel.hidden) {
+      headerInputs.prepend(configuration);
+    } else {
+      headerInputs.prepend(presetLabel);
+      viewport.before(configuration);
+    }
+    viewport.tabIndex = 0;
+    viewport.setAttribute('role', 'region');
+    viewport.setAttribute('aria-label', '그래프 단계');
+
+    const message = q('.explanation').closest('section');
+    message.className = 'graph-explanation';
+    message.querySelector('h2').hidden = true;
+    message.querySelector('.phase').hidden = true;
+    message.querySelector('.step-title').hidden = true;
+    const changes = q('.changes').closest('section');
+    const changeDetails = D.el('details', 'graph-changes');
+    changeDetails.append(D.el('summary', '', changes.querySelector('h2').textContent), q('.changes'));
+    const details = D.el('section', 'graph-details');
+    details.append(D.el('h2', 'sec-title', '실행 상태 상세'));
+    const state = D.el('div', 'graph-detail-content');
+    const selection = q('.selection');
+    selection.hidden = true;
+    details.append(state, changeDetails, selection);
+    const example = q('.provenance');
+    example.querySelector('summary').textContent = '예제 정보';
+    example.querySelector('p').textContent = '← / → 단계 이동 · Space 재생 · Home / End 처음과 마지막.';
+    example.querySelector('p:last-child').hidden = true;
+    example.querySelector('summary').after(q('.takeaway').closest('section'));
+    left.querySelector('.panel-inner').replaceChildren(left.querySelector('.panel-head'), code);
+    right.querySelector('.panel-inner').replaceChildren(right.querySelector('.panel-head'), details, example);
+    memory.after(message);
+
+    D.registerRenderer('c-graph', {render(snapshot) {
+      const {overview, result, current, detail} = render(snapshot);
+      const scene = D.el('div', 'graph-scene');
+      result.classList.add('graph-result');
+      scene.append(overview, result, watchCard(current, snapshot));
+      state.replaceChildren(detail);
+      return scene;
+    }});
+
+    let lastTrace;
+    let followedTop = 0;
+    let leftOpen = false;
+    const jumps = mountPlayback(app, events.signal, hasOutput);
+    let outputSteps = [];
+    let outputTargets = {};
+    function noticeScroll() {
+      const maxTop = list.scrollHeight - list.clientHeight;
+      if (leftOpen && Math.abs(list.scrollTop - Math.min(followedTop, maxTop)) > 1) follow.hidden = false;
+    }
+    function trackRow() {
+      if (!leftOpen || !follow.hidden) return;
+      const row = list.querySelector('[aria-pressed=true]');
+      if (!row) return;
+      const position = row.getBoundingClientRect();
+      const top = list.getBoundingClientRect().top + list.clientTop;
+      const center = top + (row.dataset.stepIndex === '0' ? position.height : list.clientHeight) / 2;
+      list.scrollTop += Math.round(position.top + position.height / 2 - center);
+      followedTop = list.scrollTop;
+    }
+    on(list, 'scroll', noticeScroll);
+    on(follow, 'click', () => {
+      list.focus({preventScroll: true});
+      follow.hidden = true;
+      trackRow();
+    });
+
+    // The shared player owns the clock and execution. Decorate its shell update
+    // to derive the graph controls from the exact entries it is displaying.
+    const mountShell = D.mountShell;
+    D.mountShell = (app, options) => {
+      const shell = mountShell(app, {...options, onPanelsChange({narrow, drawer, leftOpen: opened}) {
+        leftOpen = opened;
+        if (leftOpen) {
+          history.after(message);
+          trackRow();
+        } else {
+          memory.after(message);
+        }
+        if (narrow && drawer && app.dataset.playing === 'true') q('[data-action=play]').click();
+      }});
+      if (jumps) on(jumps, 'click', event => {
+        const target = outputTargets[event.target.closest('button')?.dataset.action];
+        if (target !== undefined) options.onStep(target);
+      });
+      return {
+        ...shell,
+        update(trace, entries, step, invalid) {
+          if (trace !== lastTrace) {
+            lastTrace = trace;
+            follow.hidden = true;
+            followedTop = list.scrollTop = 0;
+            if (jumps) outputSteps = entries.flatMap((entry, i) =>
+              i && entry.state.stdout.length > entries[i - 1].state.stdout.length ? [i] : []);
+          } else {
+            noticeScroll();
+          }
+          shell.update(trace, entries, step, invalid);
+          const shown = entries[step];
+          const next = shown.phase === 'before' ? shown : entries[step + 1];
+          const currentLine = q('.code-line.current');
+          if (shown.phase === 'after') currentLine?.classList.add('executed');
+          if (next && next.at.sourceId === currentLine?.dataset.sourceId) {
+            q('.code-line[data-line="' + next.at.line + '"]')?.classList.add('graph-next-line');
+          } else if (next) {
+            const source = trace.sources.find(source => source.id === next.at.sourceId);
+            const row = D.el('div', 'code-line graph-next-line graph-next-source');
+            row.dataset.sourceId = next.at.sourceId;
+            row.dataset.line = next.at.line;
+            row.append(D.el('span', 'line-number', next.at.line), D.el('span', '',
+              (source.label || source.id) + ' · ' + source.text.split('\n')[next.at.line - 1].trim()));
+            q('.code').prepend(row);
+          }
+          if (jumps) {
+            outputTargets = {
+              'previous-output': outputSteps.findLast(index => index < step),
+              'next-output': outputSteps.find(index => index > step),
+            };
+            for (const button of jumps.querySelectorAll('button')) {
+              button.disabled = invalid || outputTargets[button.dataset.action] === undefined;
+            }
+          }
+          trackRow();
+        },
+      };
+    };
+    let player;
+    try {
+      player = D.mountPlayer(app, scenario);
+      if (presetLabel.hidden) {
+        for (const label of configuration.querySelectorAll('.inputs label')) {
+          if (label.firstChild?.nodeType === Node.TEXT_NODE) label.firstChild.remove();
+        }
+      }
+    } finally {
+      D.mountShell = mountShell;
+    }
+    return {destroy() { events.abort(); player.destroy(); }};
+  }
+
+  D.drawArrows = () => {};
+  D.mountGraphShell = mountGraphShell;
+})(globalThis);
+</script>
+<script>(function (root) {
+  'use strict';
+  const D = root.DSInteractive;
   const namespace = 'http://www.w3.org/2000/svg';
 
   function svg(tag, attributes = {}) {
@@ -1174,7 +1561,7 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
   }
 
   function render(snapshot, positions) {
-    const {state, reads, writes, explanation, title} = snapshot;
+    const {state, reads, writes} = snapshot;
     const value = id => {
       const cell = state.cells[id];
       return cell?.lifetime === 'live' && cell.value.kind === 'int' ? cell.value.value : undefined;
@@ -1189,8 +1576,15 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
     const inspection = readAddress?.split('.').slice(2).map(Number);
     const queueMode = snapshot.at.sourceId === 'bfs';
     const count = value('graph.count');
+    const currentCell = value(`${active}.v`) === undefined ? `${active}.i` : `${active}.v`;
+    const watch = [{id: 'vertex', label: '현재 정점', value: vertices.includes(current) ? current : undefined,
+      name: state.cells[currentCell]?.name, cell: currentCell}];
+    if (count !== undefined) {
+      watch.push({id: 'count', label: '성분 수', name: 'count', value: count, cell: 'graph.count'});
+    } else {
+      watch.push({id: 'neighbor', label: '검사 중인 이웃', value: inspection?.[1]});
+    }
 
-    const scene = D.el('div', 'graph-scene');
     const overview = D.el('div', 'graph-overview');
     const figure = D.el('figure', 'graph-figure');
     const legend = D.el('figcaption', 'graph-legend');
@@ -1202,9 +1596,6 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
     figure.append(drawing(positions, vertices, matrix, visited, parents, current, inspection), legend);
     overview.append(figure, matrixTable(vertices, matrix, inspection));
 
-    const message = D.el('div', 'graph-message');
-    message.append(D.el('strong', '', title), D.el('p', '', explanation));
-
     const data = D.el('div', 'graph-data');
     const visits = vertices.map(v => {
       const item = chip(visited[v], `[${v}]`);
@@ -1214,9 +1605,6 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
       return item;
     });
     const visitedRow = stateRow('visited', visits, '', 'visited');
-    if (count !== undefined) {
-      visitedRow.querySelector('h3').append(D.el('span', 'graph-count', `count = ${count}`));
-    }
     if (queueMode) {
       const queue = [];
       const head = value(`${active}.head`);
@@ -1234,57 +1622,23 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
       }
       data.append(stateRow('호출 스택 · 위 → 아래', calls, '비어 있음', 'stack'));
     }
-    data.append(visitedRow, stateRow('출력 순서', state.stdout.map(v => chip(v.trim())), '아직 출력 없음', 'output'));
-    scene.append(overview, message, data);
-    return scene;
+    data.append(visitedRow);
+    const result = stateRow(count === undefined ? '방문 출력 순서' : '성분별 정점 출력',
+      state.stdout.map(v => chip(v.trim())), '아직 출력 없음', 'output');
+    return {overview, result, current: watch, detail: data};
   }
 
   function mountGraphPlayer(app, scenario) {
-    D.registerRenderer('c-graph', {render: snapshot => render(snapshot, scenario.graph.positions)});
-    const q = selector => app.querySelector(selector);
-    q('[data-action=toggle-left] span').textContent = '코드';
-    q('[data-action=toggle-left]').setAttribute('aria-label', '코드 패널');
-    q('#panel-left').setAttribute('aria-label', '코드 패널');
-    q('#panel-left .panel-head h2').textContent = '코드';
-    q('.pane-heading h2').textContent = '그래프 탐색';
-    q('.scene-note').textContent = '정점 번호 오름차순';
-    q('.stage').setAttribute('aria-label', '그래프와 실행 상태');
-    q('.memory').setAttribute('aria-label', '그래프, 인접 행렬, 방문 상태');
-    q('.view-btns').hidden = true;
-    q('[data-action=option-addresses]').closest('section').hidden = true;
-    q('.explanation').closest('section').hidden = true;
-    q('.selection').closest('section').hidden = true;
-    q('.provenance p').textContent = '← / → 단계 이동 · Space 재생 · Home / End 처음과 마지막.';
-    const configuration = q('.configuration');
-    configuration.querySelector('h2').hidden = true;
-    q('[data-action=preset]').closest('label').hidden = true;
-    q('.stage-viewport').before(configuration);
-    const viewport = q('.stage-viewport');
-    viewport.tabIndex = 0;
-    viewport.setAttribute('role', 'region');
-    viewport.setAttribute('aria-label', '그래프 단계');
-    const live = D.el('span', 'graph-sr');
-    live.setAttribute('aria-live', 'polite');
-    q('.stage').append(live);
-    const player = D.mountPlayer(app, scenario);
-    const syncMessage = () => {
-      live.textContent = [q('.phase').textContent, q('.explanation').textContent].join('. ');
-      const list = q('.step-list');
-      const row = list.querySelector('[aria-pressed=true]');
-      if (!row) return;
-      const active = row.getBoundingClientRect();
-      const visible = list.getBoundingClientRect();
-      if (active.top < visible.top) list.scrollTop += active.top - visible.top;
-      else if (active.bottom > visible.bottom) list.scrollTop += active.bottom - visible.bottom;
-    };
-    const observer = new MutationObserver(syncMessage);
-    observer.observe(q('.explanation'), {childList: true});
-    syncMessage();
-    return {destroy() { observer.disconnect(); player.destroy(); }};
+    app.dataset.graphView = 'traversal';
+    app.querySelector('[data-action=preset]').closest('label').hidden = true;
+    return D.mountGraphShell(app, scenario, {
+      render: snapshot => render(snapshot, scenario.graph.positions),
+      heading: '그래프 탐색',
+      note: '정점 번호 오름차순',
+      hasOutput: true,
+    });
   }
 
-  // The graph scene has its own SVG and does not position pointer arrows.
-  D.drawArrows = () => {};
   D.mountGraphPlayer = mountGraphPlayer;
 })(globalThis);
 </script>

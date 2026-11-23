@@ -1,31 +1,4 @@
-[data-graph-inspection] .stage > .configuration {
-  flex: none;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.45fr);
-  align-items: end;
-  margin: 0;
-  padding: 12px 20px;
-  border-top: 0;
-  border-bottom: 1px solid var(--line);
-  gap: 10px;
-}
-[data-graph-inspection] .input-error {
-  grid-column: 1 / -1;
-  margin: 0;
-}
-[data-graph-inspection] .stage-viewport { padding: 16px 20px; }
-[data-graph-inspection] .pane-heading { margin-bottom: 12px; }
-[data-graph-inspection] .memory-pane { max-width: 760px; }
-[data-graph-inspection] .memory {
-  display: block;
-  min-height: 0;
-  padding: 0;
-}
-[data-graph-inspection] .source-pane { margin-top: 0; padding-top: 0; border-top: 0; }
-[data-graph-inspection] .code-line { min-width: 0; white-space: pre-wrap; }
-[data-graph-inspection] .code-line > :last-child { min-width: 0; }
-[data-graph-inspection] .layout.is-docked:has(.panel-right.is-open) .gi-message { display: none; }
-[data-graph-inspection] .view-btns[hidden] { display: none; }
+:is([data-graph-view=bridges], [data-graph-view=degree]) .memory-pane { max-width: 760px; }
 .gi-scene { display: grid; gap: 12px; }
 .gi-figure { margin: 0; min-width: 0; }
 .gi-figure figcaption, .gi-meta { font-size: 13px; color: var(--ink-2); margin: 0; }
@@ -57,12 +30,6 @@
 .gi-node.gi-current .gi-halo { display: block; fill: none; stroke: var(--accent); stroke-width: 2; }
 .gi-node.gi-current circle { stroke: var(--accent-ink); stroke-width: 2; }
 .gi-node text { fill: var(--ink); font-size: 18px; font-weight: 700; }
-.gi-overview {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  align-items: center;
-  gap: 12px;
-}
 .gi-panel { padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--radius); }
 .gi-panel h3 { margin: 0 0 8px; font-size: 14px; }
 .gi-stats { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
@@ -92,34 +59,22 @@
   color: var(--accent-ink);
 }
 .gi-matrix td.gi-focus { outline: 2px solid var(--accent-ink); outline-offset: -2px; font-weight: 700; }
-.gi-message { border-left: 3px solid var(--accent); padding: 6px 10px; background: var(--surface); }
-.gi-message strong { font-size: 14px; }
-.gi-message p { margin: 2px 0 0; font-size: 14px; }
-.gi-sr { position: absolute; overflow: hidden; clip-path: inset(50%); width: 1px; height: 1px; }
-@media (max-width: 1199px) {
-  [data-graph-inspection] .stage-viewport,
-  [data-graph-inspection] .stage > .configuration { padding-left: 12px; padding-right: 12px; }
-}
 @media (max-width: 480px), (min-width: 1024px) and (max-width: 1150px) {
-  [data-graph-inspection] .configuration label { gap: 0; }
-  [data-graph-inspection] .stage-viewport { padding-top: 9px; }
-  [data-graph-inspection] .pane-heading h2 { font-size: 16px; }
-  [data-graph-inspection] .pane-heading { margin-bottom: 7px; }
+  :is([data-graph-view=bridges], [data-graph-view=degree]) .configuration label { gap: 0; }
+  :is([data-graph-view=bridges], [data-graph-view=degree]) .pane-heading h2 { font-size: 16px; }
+  :is([data-graph-view=bridges], [data-graph-view=degree]) .pane-heading { margin-bottom: 7px; }
   .gi-scene { gap: 8px; }
-  .gi-overview { gap: 8px; }
   .gi-diagram { max-height: 186px; }
   .gi-matrix th, .gi-matrix td { height: 27px; }
 }
 
 @media (max-width: 480px) {
-  [data-graph-inspection] .configuration select,
-  [data-graph-inspection] .configuration input { padding-inline: 5px; font-size: 13px; }
-  [data-graph-inspection] .playbar .transport-buttons { flex-basis: 100%; justify-content: center; }
-  [data-graph-inspection] .playbar .scrub { order: 2; flex: 1 1 100px; min-width: 0; }
-  [data-graph-inspection] .playbar .speeds { order: 3; margin-left: 0; }
-  .gi-overview { grid-template-columns: minmax(0, 1fr); }
-  .gi-overview .gi-diagram { max-height: 110px; }
+  :is([data-graph-view=bridges], [data-graph-view=degree]) .configuration select,
+  :is([data-graph-view=bridges], [data-graph-view=degree]) .configuration input { font-size: 13px; }
+  [data-graph-view=bridges] .gi-diagram { max-height: 155px; }
+  [data-graph-view=degree] .gi-diagram { max-height: 100px; }
+  .gi-panel.graph-result { padding: 6px 10px; }
+  .graph-result .gi-stat { padding: 3px 5px; }
+  .graph-result .gi-stat dd { font-size: 14px; }
 }
-@media (max-width: 345px) {
-  [data-graph-inspection] .stage > .configuration { grid-template-columns: minmax(0, 1fr); gap: 5px; }
-}
+.gi-crossings { margin: 0; padding-inline-start: 20px; font-size: 14px; }

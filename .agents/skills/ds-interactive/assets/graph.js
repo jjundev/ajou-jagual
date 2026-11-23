@@ -95,7 +95,7 @@
   }
 
   function render(snapshot, positions) {
-    const {state, reads, writes, explanation, title} = snapshot;
+    const {state, reads, writes} = snapshot;
     const value = id => {
       const cell = state.cells[id];
       return cell?.lifetime === 'live' && cell.value.kind === 'int' ? cell.value.value : undefined;
@@ -110,8 +110,15 @@
     const inspection = readAddress?.split('.').slice(2).map(Number);
     const queueMode = snapshot.at.sourceId === 'bfs';
     const count = value('graph.count');
+    const currentCell = value(`${active}.v`) === undefined ? `${active}.i` : `${active}.v`;
+    const watch = [{id: 'vertex', label: '현재 정점', value: vertices.includes(current) ? current : undefined,
+      name: state.cells[currentCell]?.name, cell: currentCell}];
+    if (count !== undefined) {
+      watch.push({id: 'count', label: '성분 수', name: 'count', value: count, cell: 'graph.count'});
+    } else {
+      watch.push({id: 'neighbor', label: '검사 중인 이웃', value: inspection?.[1]});
+    }
 
-    const scene = D.el('div', 'graph-scene');
     const overview = D.el('div', 'graph-overview');
     const figure = D.el('figure', 'graph-figure');
     const legend = D.el('figcaption', 'graph-legend');
@@ -123,9 +130,6 @@
     figure.append(drawing(positions, vertices, matrix, visited, parents, current, inspection), legend);
     overview.append(figure, matrixTable(vertices, matrix, inspection));
 
-    const message = D.el('div', 'graph-message');
-    message.append(D.el('strong', '', title), D.el('p', '', explanation));
-
     const data = D.el('div', 'graph-data');
     const visits = vertices.map(v => {
       const item = chip(visited[v], `[${v}]`);
@@ -135,9 +139,6 @@
       return item;
     });
     const visitedRow = stateRow('visited', visits, '', 'visited');
-    if (count !== undefined) {
-      visitedRow.querySelector('h3').append(D.el('span', 'graph-count', `count = ${count}`));
-    }
     if (queueMode) {
       const queue = [];
       const head = value(`${active}.head`);
@@ -155,56 +156,22 @@
       }
       data.append(stateRow('호출 스택 · 위 → 아래', calls, '비어 있음', 'stack'));
     }
-    data.append(visitedRow, stateRow('출력 순서', state.stdout.map(v => chip(v.trim())), '아직 출력 없음', 'output'));
-    scene.append(overview, message, data);
-    return scene;
+    data.append(visitedRow);
+    const result = stateRow(count === undefined ? '방문 출력 순서' : '성분별 정점 출력',
+      state.stdout.map(v => chip(v.trim())), '아직 출력 없음', 'output');
+    return {overview, result, current: watch, detail: data};
   }
 
   function mountGraphPlayer(app, scenario) {
-    D.registerRenderer('c-graph', {render: snapshot => render(snapshot, scenario.graph.positions)});
-    const q = selector => app.querySelector(selector);
-    q('[data-action=toggle-left] span').textContent = '코드';
-    q('[data-action=toggle-left]').setAttribute('aria-label', '코드 패널');
-    q('#panel-left').setAttribute('aria-label', '코드 패널');
-    q('#panel-left .panel-head h2').textContent = '코드';
-    q('.pane-heading h2').textContent = '그래프 탐색';
-    q('.scene-note').textContent = '정점 번호 오름차순';
-    q('.stage').setAttribute('aria-label', '그래프와 실행 상태');
-    q('.memory').setAttribute('aria-label', '그래프, 인접 행렬, 방문 상태');
-    q('.view-btns').hidden = true;
-    q('[data-action=option-addresses]').closest('section').hidden = true;
-    q('.explanation').closest('section').hidden = true;
-    q('.selection').closest('section').hidden = true;
-    q('.provenance p').textContent = '← / → 단계 이동 · Space 재생 · Home / End 처음과 마지막.';
-    const configuration = q('.configuration');
-    configuration.querySelector('h2').hidden = true;
-    q('[data-action=preset]').closest('label').hidden = true;
-    q('.stage-viewport').before(configuration);
-    const viewport = q('.stage-viewport');
-    viewport.tabIndex = 0;
-    viewport.setAttribute('role', 'region');
-    viewport.setAttribute('aria-label', '그래프 단계');
-    const live = D.el('span', 'graph-sr');
-    live.setAttribute('aria-live', 'polite');
-    q('.stage').append(live);
-    const player = D.mountPlayer(app, scenario);
-    const syncMessage = () => {
-      live.textContent = [q('.phase').textContent, q('.explanation').textContent].join('. ');
-      const list = q('.step-list');
-      const row = list.querySelector('[aria-pressed=true]');
-      if (!row) return;
-      const active = row.getBoundingClientRect();
-      const visible = list.getBoundingClientRect();
-      if (active.top < visible.top) list.scrollTop += active.top - visible.top;
-      else if (active.bottom > visible.bottom) list.scrollTop += active.bottom - visible.bottom;
-    };
-    const observer = new MutationObserver(syncMessage);
-    observer.observe(q('.explanation'), {childList: true});
-    syncMessage();
-    return {destroy() { observer.disconnect(); player.destroy(); }};
+    app.dataset.graphView = 'traversal';
+    app.querySelector('[data-action=preset]').closest('label').hidden = true;
+    return D.mountGraphShell(app, scenario, {
+      render: snapshot => render(snapshot, scenario.graph.positions),
+      heading: '그래프 탐색',
+      note: '정점 번호 오름차순',
+      hasOutput: true,
+    });
   }
 
-  // The graph scene has its own SVG and does not position pointer arrows.
-  D.drawArrows = () => {};
   D.mountGraphPlayer = mountGraphPlayer;
 })(globalThis);

@@ -1,19 +1,23 @@
 const {test}=require('node:test'),a=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),p=require('node:path'),crypto=require('node:crypto');
 const tmp=()=>fs.mkdtempSync(p.join(os.tmpdir(),'ds delivery 한글 '));
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
-function approve(run, browserEvidence='evidence/pass.md'){
+const {fixtureReport}=require('./fixtures/study-report.cjs');
+const studyReport='evidence/study.json';
+function approve(run, browserEvidence=studyReport){
  const {createReview}=require('../scripts/review.cjs'),review=createReview(run);
+ if(!fs.readFileSync(p.join(run,'preview.html'),'utf8').includes('data-ui-version="1"')) delete review.ui_version;
  for(const v of Object.values(review.checks))Object.assign(v,{status:'pass',evidence:'evidence/pass.md',notes:'manually observed fixture'});
  review.checks.browser.evidence=browserEvidence;
  fs.writeFileSync(p.join(run,'review.json'),JSON.stringify(review));
 }
-function runFixture(base, example='../examples/0928/value-address.cjs'){
+function runFixture(base, example='../examples/0928/value-address.cjs', transform=source=>source,uiVersion=1){
  const run=p.join(base,'run'), scenario=require.resolve(example), {buildPage}=require('../scripts/build.cjs');
  fs.mkdirSync(p.join(run,'evidence'),{recursive:true});
- const sourceText=fs.readFileSync(scenario,'utf8');
- const {html,traces}=buildPage({scenario:{definition:require(scenario),sourceText},outDir:run});
+ const sourceText=transform(fs.readFileSync(scenario,'utf8'));
+ const {html,traces}=buildPage({scenario:{sourceText},outDir:run,uiVersion});
  for(const [name,text] of Object.entries({'scenario.cjs':sourceText,'trace.json':JSON.stringify(traces),'source.json':'[]','brief.md':'reviewed','preview.html':html,'evidence/pass.md':'actual evidence'}))fs.writeFileSync(p.join(run,name),text);
- approve(run);
+ if(uiVersion) fs.writeFileSync(p.join(run,studyReport),JSON.stringify(fixtureReport(run)));
+ approve(run,uiVersion?studyReport:'evidence/pass.md');
  return run;
 }
 test('publication rejects a reviewed preview from a different scenario build', t=>{
@@ -54,32 +58,101 @@ test('published HTML is checked against a fresh build in its own directory', t=>
  fs.appendFileSync(published.html,'<!-- changed public HTML -->');
  a.throws(()=>checkPublished(published.dir,published.html),/REBUILD_MISMATCH/);
 });
-test('recursive publication requires current-node browser results for the reviewed HTML', t=>{
+test('archived recursive publication retains the current-node evidence check', t=>{
  const dir=tmp();t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
- const run=runFixture(dir,'../examples/1105/inorder.cjs'),dest=p.join(dir,'notes');
- const {save}=require('../scripts/save.cjs');
- a.throws(()=>save({run,dest,name:'unchecked'}),/CURRENT_NODE_UNVERIFIED/);
+ const run=runFixture(dir,'../examples/1105/inorder.cjs',source=>source,0);
+ const {checkReady}=require('../scripts/verify-build.cjs'),{save}=require('../scripts/save.cjs');
+ const archived=()=>checkReady(run,{archived:true});
+ a.throws(()=>save({run,dest:p.join(dir,'notes'),name:'legacy'}),/NEW_UI_REQUIRED/);
+ a.throws(archived,/CURRENT_NODE_UNVERIFIED/);
  const file='evidence/browser.json';
  const sha256=hash(fs.readFileSync(p.join(run,'preview.html')));
  const traces=JSON.parse(fs.readFileSync(p.join(run,'trace.json')));
- const checkpoints=Object.values(traces).reduce((total,t)=>total+t.lineSteps.length,0);
+ const checkpoints=Object.values(traces).reduce((total,tr)=>total+tr.lineSteps.length,0);
  const results=[[1440,900],[1024,768],[375,812]].flatMap(viewport=>['light','dark'].map(theme=>({
   viewport,theme,sha256,status:'pass',current_node_checked:checkpoints,
  })));
  const writeReport=()=>{fs.writeFileSync(p.join(run,file),JSON.stringify({status:'pass',results}));approve(run,file);};
  results[0].current_node_checked=0;
  writeReport();
- a.throws(()=>save({run,dest,name:'missing'}),/CURRENT_NODE_UNVERIFIED/);
+ a.throws(archived,/CURRENT_NODE_UNVERIFIED/);
  results[0].current_node_checked=checkpoints;
  results[0].sha256='stale';
  writeReport();
- a.throws(()=>save({run,dest,name:'wrong-build'}),/CURRENT_NODE_UNVERIFIED/);
+ a.throws(archived,/CURRENT_NODE_UNVERIFIED/);
  results[0].sha256=sha256;
  writeReport();
- const published=save({run,dest,name:'complete'});
- const {checkPublished}=require('../scripts/verify-build.cjs');
- a.doesNotThrow(()=>checkPublished(published.dir,published.html));
+ a.doesNotThrow(archived);
 });
+test('archived graph publication retains the layout and build evidence check', t=>{
+ const dir=tmp();t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const run=runFixture(dir,'../examples/0928/value-address.cjs',source=>source.replace('c-memory','c-graph'),0);
+ const browser='evidence/browser.json';
+ const preview=fs.readFileSync(p.join(run,'preview.html'),'utf8');
+ const sha256=hash(preview),build_sha256=hash(require('../scripts/fonts.cjs').withoutFontHref(preview));
+ const traces=Object.values(JSON.parse(fs.readFileSync(p.join(run,'trace.json'))));
+ const snapshots=traces.reduce((total,trace)=>total+trace.snapshots.length,0);
+ const results=[[1440,900],[1280,800],[1279,800],[375,812]].flatMap(viewport=>['light','dark'].map(theme=>({
+  viewport,theme,sha256,build_sha256,status:'pass',graph_layout_version:2,graph_view:'traversal',
+  presets:traces.length,snapshots_checked:snapshots,
+  mobile_first_screen:viewport[0]===375 ? ['initial','middle','last'] : undefined,
+ })));
+ const {checkReady}=require('../scripts/verify-build.cjs');
+ const archived=()=>checkReady(run,{archived:true});
+ const writeReport=rows=>{
+  fs.writeFileSync(p.join(run,browser),JSON.stringify({status:'pass',results:rows,console_errors:[],external_requests:[]}));
+  approve(run,browser);
+ };
+ a.throws(archived,/GRAPH_LAYOUT_UNVERIFIED/);
+ writeReport(results.slice(1));
+ a.throws(archived,/GRAPH_LAYOUT_UNVERIFIED/);
+ writeReport(results.map(result=>({...result,build_sha256:'stale'})));
+ a.throws(archived,/GRAPH_LAYOUT_UNVERIFIED/);
+ writeReport(results);
+ a.doesNotThrow(archived);
+});
+for(const [kind,example,transform] of [
+ ['c-memory','../examples/0928/value-address.cjs',source=>source],
+ ['c-tree','../examples/1105/inorder.cjs',source=>source],
+ ['c-graph','../examples/0928/value-address.cjs',source=>source.replace('c-memory','c-graph')],
+]){
+ test(kind+' publication requires current layout, padding and mobile evidence', t=>{
+  const dir=tmp();t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+  const run=runFixture(dir,example,transform);
+  const {save}=require('../scripts/save.cjs'),{checkReady,checkPublished}=require('../scripts/verify-build.cjs');
+  const dest=p.join(dir,'notes');
+  const report=fixtureReport(run);
+  const rowFor=width=>report.results.find(row=>row.viewport[0]===width);
+  const replace=(width,change)=>report.results.map(row=>row===rowFor(width)?{...row,...change}:row);
+  const writeReport=(overrides={})=>{
+   fs.writeFileSync(p.join(run,studyReport),JSON.stringify({...report,...overrides}));
+   approve(run);
+  };
+  approve(run,'evidence/pass.md');
+  a.throws(()=>save({run,dest,name:kind}),/STUDY_UI_UNVERIFIED/);
+  a.equal(fs.existsSync(dest),false);
+  for(const results of [
+   report.results.filter(row=>row.viewport[0]!==320),
+   replace(320,{controls_checked:false}),
+   replace(375,{layout_checked:false}),
+   replace(375,{mobile_first_screen:['initial','middle']}),
+   replace(375,{sha256:'stale-preview'}),
+   replace(375,{build_sha256:'stale-build'}),
+   replace(375,{ui_version:0}),
+   replace(375,{snapshots_checked:0}),
+  ]){
+   writeReport({results});
+   a.throws(()=>checkReady(run),/STUDY_UI_UNVERIFIED/);
+  }
+  writeReport({console_errors:['render failed']});
+  a.throws(()=>checkReady(run),/STUDY_UI_UNVERIFIED/);
+  writeReport();
+  const published=save({run,dest,name:kind});
+  a.doesNotThrow(()=>checkPublished(published.dir,published.html));
+  fs.appendFileSync(published.html,'<!-- changed layout -->');
+  a.throws(()=>checkPublished(published.dir,published.html),/REBUILD_MISMATCH/);
+ });
+}
 test('save requires real completed reviews, current hashes and exclusive numbering',()=>{
  const dir=tmp();try{const {save}=require('../scripts/save.cjs'),{verifyReview}=require('../scripts/review.cjs'),run=runFixture(dir),dest=p.join(dir,'0928');fs.mkdirSync(dest);fs.writeFileSync(p.join(dest,'인터렉티브_01_existing.html'),'keep');fs.mkdirSync(p.join(dest,'.pack','자료_인터렉티브_02_reserved'),{recursive:true});const result=save({run,dest,name:'값과 주소'});a.equal(result.nn,3);a.match(fs.readFileSync(result.html,'utf8'),/data-ds-interactive-font/);a.deepEqual(verifyReview(result.dir),[]);
   fs.appendFileSync(p.join(run,'scenario.cjs'),'changed');a.throws(()=>save({run,dest,name:'x'}),/HASH/);a.equal(fs.readFileSync(p.join(dest,'인터렉티브_01_existing.html'),'utf8'),'keep');

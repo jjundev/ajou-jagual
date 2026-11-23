@@ -7,6 +7,8 @@ description: Use when 자구알(자료구조및알고리즘이해)의 인터랙�
 
 자구알의 개념을 입력·사례·실행 단계로 탐색하는 **오프라인 HTML**을 만든다. 코드를 따라가며 매개변수의 값 복사, 포인터의 주소 값, 대상 객체의 변경을 같은 상태에서 보여 준다. 포인터 예제는 공통 좌우 패널과 중앙 메모리 장면을 쓴다. 이진 트리 재귀 순회는 넓은 화면에서 왼쪽에 코드·줄 기록·단계 설명, 가운데에 전체 트리·출력, 오른쪽에 호출 스택·예제 정보를 둔다. 재귀 트리는 출력 바로 아래의 [현재 변수 카드](references/design.md)에 현재 호출의 노드 매개변수를 기본으로 표시한다. 높이·개수처럼 더 추적할 변수는 `watch`에 추가한다. 넓은 화면에서는 패널을 각각 접고 경계를 끌어 너비를 조절할 수 있다. 조절한 너비는 브라우저에 저장하며 왼쪽 패널을 열면 줄 기록이 바로 표시된다. 좁은 화면에서는 트리와 출력을 먼저 보여 주고, 필요한 패널을 상단 버튼으로 열면 화면 가장자리의 서랍에 표시한다. 호출 스택의 행이나 트리 노드를 누르면 해당 단계의 저장 값과 주소를 확인할 수 있다.
 
+그래프 자료는 [1102와 같은 학습 화면](references/design.md)을 사용한다. 상단은 제목과 사례·모드, 왼쪽은 실행 코드·줄 기록 3행·현재 단계 설명, 오른쪽은 실행 상태 상세·접힌 예제 정보다. 중앙은 그래프와 인접 행렬(해당하는 경우) → 결과 → 현재 값 카드 순서다. 왼쪽을 닫으면 설명을 카드 아래에 배치한다. 1280px 미만에서는 두 서랍을 닫고 시작하며 375×812 모바일 첫 화면에 결과와 현재 값 카드가 모두 들어와야 한다.
+
 ## 요청 해석
 
 `/ds-interactive 0928`, 날짜 범위, 주제, C 파일 경로, 붙여 넣은 함수 코드를 받는다. 기존 자료 연결만 요청하면 생성하지 말고 `relink`를 쓴다. 먼저 저장된 자료와 근거를 확인해 같은 자료를 중복 생성하지 않는다.
@@ -27,7 +29,7 @@ description: Use when 자구알(자료구조및알고리즘이해)의 인터랙�
 5. 실제 C 컴파일러로 정의된 코드의 bind/write와 결과를 독립 검산한다. 없으면 별도 Python 표를 사용하고 `compiler_unavailable`을 기록한다. UB를 실행해 정답을 정하지 않는다. 포인터 예제는 `python3 "S/tests/independent.py" "EVIDENCE"`, 중위 순회는 `python3 "S/tests/inorder_oracle.py" "RUN/trace.json"`으로 재검산할 수 있다.
 6. `node "S/scripts/build.cjs" "RUN/scenario.cjs" "RUN/preview.html"`. CSS와 JS를 HTML에 포함하고, Pretendard는 복습노트 공용 자원을 상대 경로로 참조한다. [design](references/design.md)의 배치·접근성 기준과 [verification](references/verification.md)의 브라우저 검사를 적용한다. 시나리오 내용 변경 후 다시 build/check/검산한다.
 7. `node "S/scripts/review.cjs" init "RUN"`은 `not_run` 검토를 만든다. 이미 있으면 검토 파일을 보존하고 새 현재 해시로 재검토한다. schema/content/independent/browser 각각 실제 증거와 사람이 읽을 판정 이유를 남긴다. `createReview`는 합격을 판정하지 않는다. 내용 검토는 각 줄의 복사·읽기·쓰기가 C 의미와 맞는지 검토한다. 자동 구조 검사로 대체하지 않는다.
-8. 모든 검토를 마치면 `node "S/scripts/verify-build.cjs" "RUN"`을 통과시키고 `node "S/scripts/save.cjs" "RUN" "대상폴더" "자료이름"`으로 저장한다. 재귀 트리는 브라우저 검사 결과인 `browser.json`을 RUN의 evidence에 저장하고 browser 판정에 연결한다. 저장은 검토 해시, 재빌드 결과, 현재 노드 카드 검사 결과를 확인한다. [검토·저장 계약](references/verification.md)을 따른다.
+8. 모든 검토를 마치면 `node "S/scripts/verify-build.cjs" "RUN"`을 통과시키고 `node "S/scripts/save.cjs" "RUN" "대상폴더" "자료이름"`으로 저장한다. 재귀 트리는 브라우저 검사 결과인 `browser.json`을 RUN의 evidence에 저장하고 browser 판정에 연결한다. 그래프도 `browser.json`을 browser 판정에 지정하며, 같은 빌드에서 그래프 해상도 4종·테마 2종의 패널·장면 배치, 모바일 초기·중간·종료 단계에서의 결과와 현재 값 카드 노출, 모든 사례의 실행 단계를 확인해야 한다. 저장은 검토 해시와 재빌드 결과를 확인한다. [검토·저장 계약](references/verification.md)을 따른다.
 9. 관련 절에 [note-links](references/note-links.md)의 관찰 문맥 링크만 dry-run 후 추가한다. `target="_self"`, URL 인코딩한 상대 경로이며 기존 노트는 백업한다. 노트 재생성 후 `node "S/scripts/relink.cjs" "REPO" 0928`로 복원한다. 누락·모호한 절은 해당 연결만 skipped로 보고한다.
 
 ## 저장과 확인

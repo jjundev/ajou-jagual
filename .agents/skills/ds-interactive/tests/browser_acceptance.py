@@ -1,9 +1,12 @@
 """file:// offline browser acceptance. ROOT = repo or run folder, SCRATCH must be empty."""
 from pathlib import Path
-import json,sys,hashlib
+import json,sys,hashlib,re
 from playwright.sync_api import sync_playwright
 from browser_tree import check_history_touch, check_tree_case
+import browser_study
 from browser_graph_traversal import check_page as check_graph_traversal
+from browser_graph_inspection import check_page as check_graph_inspection
+from browser_graph_layout import GRAPH_VIEWPORTS, check_layout, mobile_first_screen, scene_order
 
 def discover_pages(root):
  root=Path(root).resolve()
@@ -19,28 +22,70 @@ def main(root,scratch):
  assert pages,'No materials found: pass a repository, date directory, RUN directory or HTML file'
  results=[];errors=[];external=[]
  with sync_playwright() as pw:
-  browser=pw.chromium.launch();context=browser.new_context(offline=True,reduced_motion='reduce')
-  context.route('**/*',lambda route: (external.append(route.request.url),route.abort()) if route.request.url.startswith(('http:','https:')) else route.continue_())
-  page=context.new_page();page.set_default_timeout(10000);page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:errors.append(m.text) if m.type=='error' else None)
+  browser=pw.chromium.launch()
+  def new_page(**kwargs):
+   context=browser.new_context(offline=True,reduced_motion='reduce',**kwargs)
+   context.route('**/*',lambda route: (external.append(route.request.url),route.abort()) if route.request.url.startswith(('http:','https:')) else route.continue_())
+   page=context.new_page();page.set_default_timeout(10000);page.on('pageerror',lambda e:errors.append(str(e)));page.on('console',lambda m:errors.append(m.text) if m.type=='error' else None)
+   return page
+  desktop=new_page()
+  touch=new_page(is_mobile=True,has_touch=True)
+  page=desktop
   def left(opened):
    if page.viewport_size['width']<1024 and (page.locator('[data-action=toggle-left]').get_attribute('aria-expanded')=='true')!=opened:page.locator('[data-action=toggle-left]').click() if opened else page.keyboard.press('Escape')
   for file in pages:
-   digest=hashlib.sha256(file.read_bytes()).hexdigest()
-   for width,height in [(1440,900),(1024,768),(375,812)]:
+   original=file.read_bytes();digest=hashlib.sha256(original).hexdigest()
+   desktop.goto(file.as_uri());desktop.wait_for_selector('[data-snapshot="initial"]')
+   kind=desktop.evaluate('DSInteractive.scenario.kind')
+   ui_version=desktop.locator('#app').get_attribute('data-ui-version')
+   viewports=(browser_study.VIEWPORTS if ui_version else
+              GRAPH_VIEWPORTS if kind=='c-graph' else [(1440,900),(1024,768),(375,812)])
+   for width,height in viewports:
+    page=touch if width<=375 and (ui_version or kind=='c-graph') else desktop
     for theme in ['light','dark']:
      page.set_viewport_size({'width':width,'height':height});page.goto(file.as_uri());page.wait_for_selector('[data-snapshot="initial"]');page.evaluate('document.fonts.ready')
      if theme=='dark':page.locator('[data-action=theme]').click()
      assert page.locator('html').get_attribute('data-theme')==theme
      assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(file,width,'overflow')
      assert page.evaluate("async () => (await document.fonts.load('400 16px Pretendard', '한글')).some(f => f.status === 'loaded')")
-     if page.locator('.graph-scene').count():
-      count, checked = check_graph_traversal(page, width, height)
-      topic = page.evaluate('DSInteractive.scenario.id')
+     if ui_version:
+      topic=page.evaluate('DSInteractive.scenario.id')
+      browser_study.check_layout(page, kind, width, height, theme)
+      mobile=browser_study.check_mobile_stages(page, kind, out, topic, theme) if width==375 else None
+      if kind=='c-graph':
+       view=page.locator('#app').get_attribute('data-graph-view')
+       count, checked = (check_graph_traversal(page, width) if view=='traversal'
+                         else check_graph_inspection(page, view))
+      else:
+       count, checked=browser_study.check_tree_or_memory(page, kind, width)
+      if page.locator('.study-playback-options').is_visible():page.keyboard.press('Escape')
+      browser_study.check_scene(page, kind, fallback=width<1280, first_screen=width==375)
+      build=hashlib.sha256(re.sub(rb'(data-ds-interactive-font href=")[^"]*', rb'\g<1>', original, count=1)).hexdigest()
       page.screenshot(path=str(out/f'{topic}-{width}-{theme}.png'))
-      results.append({'topic':topic,'file':file.name,'sha256':digest,'viewport':[width,height],
-                      'theme':theme,'presets':count,'snapshots_checked':checked,'status':'pass'})
+      results.append({'topic':topic,'file':file.name,'sha256':digest,'build_sha256':build,
+                      'viewport':[width,height],'theme':theme,'kind':kind,'ui_version':int(ui_version),
+                      'layout_checked':True,'controls_checked':True,'mobile_first_screen':mobile,
+                      'presets':count,'snapshots_checked':checked,'status':'pass'})
+      print(f'{topic} {width} {theme}: common UI and {checked} snapshots',flush=True)
       continue
-     if page.evaluate('DSInteractive.scenario.kind')=='c-tree':
+     if kind=='c-graph':
+      view=page.evaluate("DSInteractive.scenario.graph?.view ?? 'traversal'")
+      topic=page.evaluate('DSInteractive.scenario.id')
+      check_layout(page, view, width, height, theme)
+      mobile=mobile_first_screen(page, view, out, topic, theme) if width==375 else None
+      count, checked = (check_graph_traversal(page, width) if view=='traversal'
+                        else check_graph_inspection(page, view))
+      if page.locator('.graph-playback-options').is_visible():page.keyboard.press('Escape')
+      scene_order(page, view, width < 1280, first_screen=width==375)
+      build=hashlib.sha256(re.sub(rb'(data-ds-interactive-font href=")[^"]*', rb'\g<1>', original, count=1)).hexdigest()
+      topic=page.evaluate('DSInteractive.scenario.id')
+      page.screenshot(path=str(out/f'{topic}-{width}-{theme}.png'))
+      results.append({'topic':topic,'file':file.name,'sha256':digest,'build_sha256':build,
+                      'viewport':[width,height],'theme':theme,'graph_view':view,'graph_layout_version':2,'mobile_first_screen':mobile,
+                      'presets':count,'snapshots_checked':checked,'status':'pass'})
+      print(f'{topic} {width} {theme}: graph layout and {checked} snapshots',flush=True)
+      continue
+     if kind=='c-tree':
       topic=page.evaluate('DSInteractive.scenario.id')
       page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}.png'),full_page=True)
       count,checked,current_node_checked=check_tree_case(page,width,height)
