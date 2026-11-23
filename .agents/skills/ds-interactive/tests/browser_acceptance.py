@@ -6,6 +6,7 @@ from browser_tree import check_history_touch, check_tree_case
 import browser_study
 from browser_graph_traversal import check_page as check_graph_traversal
 from browser_graph_inspection import check_page as check_graph_inspection
+from browser_graph_decisions import check_page as check_graph_decisions
 from browser_graph_layout import GRAPH_VIEWPORTS, check_layout, mobile_first_screen, scene_order
 
 def discover_pages(root):
@@ -54,8 +55,11 @@ def main(root,scratch):
       mobile=browser_study.check_mobile_stages(page, kind, out, topic, theme) if width==375 else None
       if kind=='c-graph':
        view=page.locator('#app').get_attribute('data-graph-view')
-       count, checked = (check_graph_traversal(page, width) if view=='traversal'
-                         else check_graph_inspection(page, view))
+       if view in ('mst', 'topo'):
+        count, checked = check_graph_decisions(page, view)
+       else:
+        count, checked = (check_graph_traversal(page, width) if view=='traversal'
+                          else check_graph_inspection(page, view))
       else:
        count, checked=browser_study.check_tree_or_memory(page, kind, width)
       if page.locator('.study-playback-options').is_visible():page.keyboard.press('Escape')
@@ -65,6 +69,7 @@ def main(root,scratch):
       results.append({'topic':topic,'file':file.name,'sha256':digest,'build_sha256':build,
                       'viewport':[width,height],'theme':theme,'kind':kind,'ui_version':int(ui_version),
                       'layout_checked':True,'controls_checked':True,'mobile_first_screen':mobile,
+                      'preset_label_checked':int(ui_version)>=2,
                       'presets':count,'snapshots_checked':checked,'status':'pass'})
       print(f'{topic} {width} {theme}: common UI and {checked} snapshots',flush=True)
       continue

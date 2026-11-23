@@ -5,12 +5,14 @@ const {fixtureReport}=require('./fixtures/study-report.cjs');
 const studyReport='evidence/study.json';
 function approve(run, browserEvidence=studyReport){
  const {createReview}=require('../scripts/review.cjs'),review=createReview(run);
- if(!fs.readFileSync(p.join(run,'preview.html'),'utf8').includes('data-ui-version="1"')) delete review.ui_version;
+ const version=fs.readFileSync(p.join(run,'preview.html'),'utf8').match(/data-ui-version="(\d+)"/);
+ if(version) review.ui_version=Number(version[1]);
+ else delete review.ui_version;
  for(const v of Object.values(review.checks))Object.assign(v,{status:'pass',evidence:'evidence/pass.md',notes:'manually observed fixture'});
  review.checks.browser.evidence=browserEvidence;
  fs.writeFileSync(p.join(run,'review.json'),JSON.stringify(review));
 }
-function runFixture(base, example='../examples/0928/value-address.cjs', transform=source=>source,uiVersion=1){
+function runFixture(base, example='../examples/0928/value-address.cjs', transform=source=>source,uiVersion=require('../scripts/build.cjs').CURRENT_UI_VERSION){
  const run=p.join(base,'run'), scenario=require.resolve(example), {buildPage}=require('../scripts/build.cjs');
  fs.mkdirSync(p.join(run,'evidence'),{recursive:true});
  const sourceText=transform(fs.readFileSync(scenario,'utf8'));
@@ -139,6 +141,7 @@ for(const [kind,example,transform] of [
    replace(375,{sha256:'stale-preview'}),
    replace(375,{build_sha256:'stale-build'}),
    replace(375,{ui_version:0}),
+   replace(375,{preset_label_checked:false}),
    replace(375,{snapshots_checked:0}),
   ]){
    writeReport({results});

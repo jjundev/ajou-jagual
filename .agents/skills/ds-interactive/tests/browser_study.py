@@ -110,7 +110,7 @@ def check_scene(page, kind, *, fallback, first_screen=False):
       const explanation = q('.study-explanation');
       verify(explanation && (fallback ? q('.memory').nextElementSibling : q('.study-history').nextElementSibling) === explanation,
         'step explanation is in the wrong place');
-      if (kind === 'c-graph' && q('#app').dataset.graphView !== 'bridges') {
+      if (kind === 'c-graph' && ['traversal', 'degree'].includes(q('#app').dataset.graphView)) {
         const matrix = q('.graph-matrix,.gi-matrix'), figure = q('.graph-figure,.gi-figure');
         verify(matrix && figure && matrix === figure.nextElementSibling, 'matrix is out of order');
         const a = rect(figure), b = rect(matrix);
@@ -135,7 +135,14 @@ def check_layout(page, kind, width, height, theme):
     narrow = width < 1280
     toggle = lambda side: page.locator(f'[data-action=toggle-{side}]')
     app = page.locator('#app')
-    expect(app).to_have_attribute('data-ui-version', '1')
+    ui_version = int(app.get_attribute('data-ui-version'))
+    if ui_version >= 2:
+        preset = page.locator('[data-action=preset]')
+        expect(preset).to_have_attribute('aria-label', '사례')
+        if preset.is_visible():
+            expect(preset).to_have_accessible_name('사례')
+        assert preset.evaluate('''select => [...select.parentElement.childNodes].every(node =>
+            node === select || !node.textContent.trim())'''), 'Unexpected text beside the case selector'
     expect(page.locator('.brand')).to_be_visible()
     for side in ('left', 'right'):
         expect(toggle(side)).to_have_attribute('aria-expanded', str(not narrow).lower())

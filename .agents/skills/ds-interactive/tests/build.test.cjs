@@ -44,9 +44,14 @@ test('a new build uses the versioned common UI by default',()=>{
  const {buildPage}=require('../scripts/build.cjs');
  const sourceText=require('node:fs').readFileSync(require.resolve('../examples/0928/value-address.cjs'),'utf8');
  const build=buildPage({scenario:{sourceText}});
- a.equal(build.uiVersion,1);
- a.match(build.html,/data-ui-version="1"/);
+ a.equal(build.uiVersion,2);
+ a.match(build.html,/data-ui-version="2"/);
+ a.match(build.html,/<label><select data-action="preset" aria-label="사례">/);
+ a.match(build.html,/\[data-ui-version="2"\] \.topbar/);
+ const archived=buildPage({scenario:{sourceText},uiVersion:1});
+ a.match(archived.html,/<label>사례<select data-action="preset" aria-label="사례">/);
  const legacy=buildPage({scenario:{sourceText},uiVersion:0});
- a.doesNotMatch(legacy.html,/data-ui-version="1"/);
+ a.doesNotMatch(legacy.html,/data-ui-version=/);
  a.equal(legacy.hashes.trace,build.hashes.trace);
+ a.equal(archived.hashes.trace,build.hashes.trace);
 });

@@ -90,6 +90,7 @@ function requireStudyEvidence(file, built, previewSha) {
     result.sha256 === previewSha && result.build_sha256 === buildSha &&
     result.ui_version === built.uiVersion && result.kind === built.kind &&
     result.layout_checked === true && result.controls_checked === true &&
+    (built.uiVersion < 2 || result.preset_label_checked === true) &&
     result.presets === traces.length && result.snapshots_checked === snapshots &&
     (result.viewport?.[0] !== 375 || JSON.stringify(result.mobile_first_screen) === JSON.stringify(mobileStages)),
   report => [report.console_errors, report.external_requests].every(list => Array.isArray(list) && list.length === 0));

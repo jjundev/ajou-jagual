@@ -7,11 +7,13 @@ const {hash} = require('../../scripts/review.cjs');
 
 function fixtureReport(run) {
   const preview = fs.readFileSync(path.join(run, 'preview.html'), 'utf8');
+  const uiVersion = Number(preview.match(/data-ui-version="(\d+)"/)[1]);
   const traces = Object.values(JSON.parse(fs.readFileSync(path.join(run, 'trace.json'))));
   const snapshots = traces.reduce((total, trace) => total + (trace.lineSteps || trace.snapshots).length, 0);
   const results = [[1440,900],[1280,800],[1279,800],[375,812],[320,812]].flatMap(viewport =>
     ['light','dark'].map(theme => ({
-      viewport, theme, status: 'pass', ui_version: 1, kind: traces[0].kind,
+      viewport, theme, status: 'pass', ui_version: uiVersion, kind: traces[0].kind,
+      preset_label_checked: uiVersion >= 2,
       sha256: hash(preview), build_sha256: hash(withoutFontHref(preview)),
       layout_checked: true, controls_checked: true, presets: traces.length, snapshots_checked: snapshots,
       mobile_first_screen: viewport[0] === 375 ? ['initial','middle','last'] : null,

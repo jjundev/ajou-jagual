@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "ui_version": 2,
+  "hashes": {
+    "brief.md": "a222285580fb54752d3765b393c54617c8a5e49be4b1023648991889e7bbecb1",
+    "evidence/blocked.png": "1a206395e2a395abd65648c1e654a14a6606fee90ce35b891db5be82e18ec0c7",
+    "evidence/browser.json": "b394968cd5093a9fbcc7d948974e052e8d8d24058a02d16ce1f221f3e00d419a",
+    "evidence/check.json": "28d2bf2bb50e6e3e02a8acb2d2021103a6390b1054f93f9140b7243d2c56a248",
+    "evidence/content.md": "337f4471ebd0c7d0899db16f6d821c0e9d52fb67c4cfa4c22826dec414d84bf3",
+    "evidence/independent.json": "fcb694237c52b7d3c83494c06c0029f19390a4d824ffe1ccadddf56792252e9a",
+    "evidence/oracle.py": "e72f48ac85e319b1d95d1c715a23d994652bc20191814a498e4aa789479a7e51",
+    "preview.html": "0440edc0ea39e0e93326468ba6e11284f43bbfc9fd12efd7987d69b34ae98906",
+    "scenario.cjs": "2265ffbc7624cde2a7bad49a7bda5306af5ad3f8b19b0672c878c93173e6c39f",
+    "source.json": "32daace88874f719dee734e3cc0e746b9b730db24a40be6208ef7400832db702",
+    "trace.json": "0d0e92ed2261d6ca73ac0726b6940c95a585334a88b25582b61b995428efa6da"
+  },
+  "checks": {
+    "schema": {
+      "status": "pass",
+      "evidence": "evidence/check.json",
+      "notes": "check.cjs가 기본값과 전체 preset 3개, 총 67개 단계를 검사했습니다."
+    },
+    "content": {
+      "status": "pass",
+      "evidence": "evidence/content.md",
+      "notes": "강의 슬라이드 이미지와 정리노트·전사에 맞춰 실행 줄, 중간 상태, 강의 정정 및 보충 사례를 대조했습니다."
+    },
+    "independent": {
+      "status": "pass",
+      "evidence": "evidence/independent.json",
+      "notes": "별도의 Python에서 간선 삭제 직후의 진입 차수, 가능한 후보와 출력, 실패 때 남은 그래프를 대조했습니다."
+    },
+    "browser": {
+      "status": "pass",
+      "evidence": "evidence/browser.json",
+      "notes": "Chromium offline file://에서 화면 크기 5종과 두 테마의 모든 사례·단계를 확인했습니다. 드롭다운 옆 텍스트 없이 접근성 이름 사례를 유지하는지 확인하고, 데스크톱과 모바일 화면을 시각 검토했습니다."
+    }
+  },
+  "reviewed_preview_sha256": "cfad8b204400626a68384b2d178742e8292eaf1ca3ea8d24eb54f2032c069a9e"
+}

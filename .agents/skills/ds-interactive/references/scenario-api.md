@@ -77,3 +77,5 @@ watch: [
 활성 프레임의 `v` 또는 `i`가 현재 정점이다. 현재 값 카드는 현재 정점과 행렬에서 검사하는 이웃을 표시한다. 연결 성분은 이웃 대신 `graph.count`의 값을 표시한다. DFS 스택은 각 프레임의 호출자에서, BFS 큐는 살아 있는 `head`, `tail`, `q.<index>`에서 계산한다. BFS의 소스 ID는 `bfs`로 지정한다.
 
 그래프 셸과 반응형 배치는 [그래프 배치](design.md)를 공통으로 따른다. `graph.view: 'bridges'`는 이동 기록과 차수, `graph.view: 'degree'`는 방향 그래프, 인접 행렬과 진출·진입 차수를 표시한다. `graph.view` 생략 시 DFS·BFS·연결 성분에 쓰는 탐색 장면을 사용한다.
+
+최소 비용 신장 트리와 위상 정렬에는 공통 UI의 `graph.view: 'mst'`와 `graph.view: 'topo'`를 사용한다. `graph.vertices`는 `[정점 ID, x, y]`, `graph.edges`는 `[출발, 도착, 가중치?]`의 배열이다. MST는 `edge.<index>`의 양수 채택 순번·0 미검사·−1 제외에서 연결 요소와 비용을 계산한다. 위상 정렬은 `edge.<index>`와 `node.<id>`의 잔존 여부에서 진입 차수와 후보를 계산하고 `stdout`에서 출력을 읽는다. 두 장면에는 인접 행렬이 없다.

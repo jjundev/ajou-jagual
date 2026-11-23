@@ -1,6 +1,6 @@
 const fs=require('node:fs'),p=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto'),{checkScenario}=require('../assets/engine/trace.js');
 const {fontHref}=require('./fonts.cjs');
-const UI_VERSIONS=[0,1];
+const UI_VERSIONS=[0,1,2];
 const CURRENT_UI_VERSION=UI_VERSIONS.at(-1);
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 // Graphs reuse the tree panel policy. Legacy tree and pointer bundles keep their original bytes.
@@ -19,12 +19,22 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION})
  const assets=p.join(__dirname,'../assets'),read=f=>fs.readFileSync(p.join(assets,f),'utf8');
  const tree=s.kind==='c-tree',graph=s.kind==='c-graph';
  const inspection=graph&&['bridges','degree'].includes(s.graph?.view);
- const graphAsset=inspection?'graph-inspection':'graph';
- const common=uiVersion!==0, ui='ui/v'+uiVersion+'/';
+ const decisions=graph&&['mst','topo'].includes(s.graph?.view);
+ if(decisions&&uiVersion===0)throw Error('UI_VERSION_UNSUPPORTED: '+uiVersion+' for '+s.graph.view);
+ const graphAsset=decisions?'graph-decisions':inspection?'graph-inspection':'graph';
+ const common=uiVersion!==0, ui='ui/v1/';
+ const caseWithoutLabel=uiVersion>=2;
  const css=['player.css',...(common?[ui+'study.css']:graph?['graph-shell.css']:[]),
-  ...(graph?[graphAsset+'.css']:[])].map(read).join('\n');
+  ...(graph?[graphAsset+'.css']:[])].map(file=>{
+  const stylesheet=read(file);
+  return caseWithoutLabel&&file===ui+'study.css'
+   ?stylesheet.replaceAll('[data-ui-version="1"]','[data-ui-version="'+uiVersion+'"]')
+   :stylesheet;
+ }).join('\n');
  let html=read('shell.html').replace('/*FONT_HREF*/',fontHref(outDir)).replace('/*CSS*/',css);
  if(common)html=html.replace('id="app"','id="app" data-ui-version="'+uiVersion+'"');
+ // Keep the label element for layout and the select's aria-label for its accessible name.
+ if(caseWithoutLabel)html=html.replace('<label>사례<select data-action="preset"', '<label><select data-action="preset"');
  const runtime=common?[ui+'shell.js',ui+'study.js',ui+'adapters.js',ui+'player.js']:
   [...(tree?['tree-ui.js']:[]),'shell.js','player.js',...(graph?['graph-shell.js']:[])];
  const list=['engine/contract.js','engine/memory.js',...(tree?['engine/line-steps.js','engine/tree.js']:[]),
@@ -33,7 +43,7 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION})
  // Browser must take the browser branch; the Node source remains byte-equivalent inside the script.
  list.push(sourceText);list.push(`DSInteractive.player=DSInteractive.${graph?'mountGraphPlayer':'mountPlayer'}(document.querySelector('#app'),DSInteractive.scenario);`);
  html=html.replace('<!--SCRIPTS-->',list.map(js=>`<script>${js.replace(/<\/script/gi,'<\\/script')}</script>`).join('\n'));
- return {html,uiVersion,kind:s.kind,traces:result.traces,graphView:graph?(inspection?s.graph.view:'traversal'):null,hashes:{scenario:sha(sourceText),trace:sha(JSON.stringify(result.traces,null,2)),preview:sha(html)}};
+ return {html,uiVersion,kind:s.kind,traces:result.traces,graphView:graph?(decisions||inspection?s.graph.view:'traversal'):null,hashes:{scenario:sha(sourceText),trace:sha(JSON.stringify(result.traces,null,2)),preview:sha(html)}};
 }
 module.exports={buildPage,sha,CURRENT_UI_VERSION};
 if(require.main===module){const file=p.resolve(process.argv[2]),r=buildPage({outDir:p.dirname(p.resolve(process.argv[3])),scenario:{sourceText:fs.readFileSync(file,'utf8')}});fs.writeFileSync(process.argv[3],r.html);console.log(JSON.stringify({file:process.argv[3],ui_version:r.uiVersion,hashes:r.hashes}));}

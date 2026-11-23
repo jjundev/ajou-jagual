@@ -1,0 +1,74 @@
+.decision-figure { margin: 0; }
+.decision-diagram {
+  display: block;
+  width: 100%;
+  max-width: 610px;
+  max-height: 330px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.decision-edge path { fill: none; stroke: var(--ink-2); stroke-width: 1.7; }
+.decision-edge text, .decision-node text { fill: var(--ink); font-weight: 700; font-family: inherit; }
+.decision-edge text {
+  font-size: 14px;
+  stroke: var(--surface);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+.decision-edge[data-status="chosen"] path, .decision-edge[data-status="chosen-current"] path {
+  stroke: var(--accent-ink);
+  stroke-width: 4;
+}
+.decision-edge[data-status="current"] path, .decision-edge[data-status="boundary"] path {
+  stroke: var(--accent-ink);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+.decision-edge[data-status="current"] path { stroke-width: 3.5; }
+.decision-edge[data-status="chosen-current"] path { stroke-width: 5.5; }
+.decision-edge[data-status="rejected"] path { stroke: var(--warn); opacity: .6; stroke-dasharray: 2 5; }
+.decision-edge:is([data-status="cycle"], [data-status="rejected-current"]) path {
+  stroke: var(--warn);
+  stroke-width: 3.5;
+}
+.decision-edge[data-status="rejected-current"] path { stroke-dasharray: 6 4; }
+.decision-arrow-available { fill: var(--ink-2); }
+.decision-arrow-current { fill: var(--accent-ink); }
+.decision-arrow-cycle { fill: var(--warn); }
+.decision-node circle { fill: var(--bg); stroke: var(--ink-2); stroke-width: 1.5; }
+.decision-node text { font-size: 17px; }
+.decision-node:is([data-status="chosen"], [data-status="current"]) > circle {
+  stroke: var(--accent-ink);
+  stroke-width: 2;
+  fill: color-mix(in srgb, var(--accent) 17%, var(--bg));
+}
+.decision-node[data-status="current"] > circle { stroke-width: 3.5; }
+.decision-node[data-status="removed"] { opacity: .45; }
+.decision-node[data-status="removed"] > circle { stroke-dasharray: 2.5 3.5; }
+.decision-degree text { font-size: 12px; }
+.decision-legend { display: flex; flex-wrap: wrap; gap: 5px 13px; margin-top: 6px; font-size: 12px; color: var(--ink-2); }
+.decision-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.decision-legend span::before { content: ''; width: 15px; border-top: 2px solid var(--ink-2); }
+.decision-legend [data-status="chosen"]::before { border-top: 4px solid var(--accent-ink); }
+.decision-legend [data-status="boundary"]::before { border-color: var(--accent-ink); border-top-style: dashed; }
+.decision-legend [data-status="current"]::before { border-top: 3px dashed var(--accent-ink); }
+.decision-legend [data-status="rejected"]::before { border-color: var(--warn); border-top-style: dotted; }
+.decision-legend [data-status="removed"]::before { opacity: .65; border-top-style: dotted; }
+[data-graph-view="topo"] .decision-legend [data-status]::before {
+  box-sizing: border-box;
+  width: 11px;
+  height: 11px;
+  border: 1px solid var(--ink-2);
+  border-radius: 50%;
+}
+[data-graph-view="topo"] .decision-legend [data-status="chosen"]::before {
+  border-color: var(--accent-ink);
+  background: color-mix(in srgb, var(--accent) 17%, var(--bg));
+}
+[data-graph-view="topo"] .decision-legend [data-status="current"]::before { border: 2px solid var(--accent-ink); }
+[data-graph-view="topo"] .decision-legend [data-status="removed"]::before { border-style: dashed; }
+.decision-details { display: grid; gap: 14px; font-size: 14px; }
+.decision-details h3 { margin: 0 0 4px; font-size: 14px; }

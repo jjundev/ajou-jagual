@@ -16,11 +16,13 @@ PACKS = {
     '1105': ('정리노트_1105_Tree.html', 1, 1),
     '1116': ('정리노트_1116_Graph.html', 2, 3),
     '1119': ('정리노트_1119_Graph.html', 2, 4),
+    '1123': ('정리노트_1123_Graph.html', 2, 5),
 }
 LINK_SECTIONS = {
     '1105': ['s0-inorder'],
     '1116': ['s1-euler', 's2-terms', 's3-adj-matrix'],
     '1119': ['s0-dfs-not-done', 's1-bfs-trace', 's1-compare', 's2-components'],
+    '1123': ['s1-kruskal', 's1-union', 's2-prim', 's3-removal', 's3-cycle'],
 }
 INORDER_FILE = '인터렉티브_01_중위순회_실행.html'
 FONT_HREF = rb'(data-ds-interactive-font href=")[^"]+'
@@ -57,9 +59,22 @@ def check_public_files(browser, files):
                 if page.locator('[data-mode-value=bfs]').count():
                     page.locator('[data-mode-value=bfs]').click()
                     expect(page.locator('[data-graph-state=queue]')).to_be_visible()
+                if graph_view == 'mst':
+                    page.locator('[data-action=preset]').select_option('tie-kruskal')
+                    page.locator('[data-mode-value=prim]').click()
+                    expect(page.locator('[data-action=preset]')).to_have_value('tie-prim')
+                    expect(page.locator('.code-line.current')).to_have_attribute('data-source-id', 'prim')
+                if graph_view == 'topo':
+                    page.locator('[data-action=preset]').select_option('cycle')
+                    open_options(page).locator('[data-action=next-output]').click()
+                    expect(page.locator('[data-decision-state=topo-result]')).to_have_text('1')
                 open_options(page)
                 page.locator('[data-action=last]').click()
                 expect(page.locator('[data-action=next]')).to_be_disabled()
+                if graph_view == 'mst':
+                    expect(page.locator('[data-decision-state=mst-result]')).to_contain_text('총비용 102')
+                if graph_view == 'topo':
+                    expect(page.locator('[data-decision-state=cycle]')).to_have_text('0 → 2 → 5 → 0')
             rows.append({'file': file.name, 'sha256': hashlib.sha256(public).hexdigest(),
                          'content_matches_reviewed_preview': True, 'final_playback': 'pass'})
     return rows
