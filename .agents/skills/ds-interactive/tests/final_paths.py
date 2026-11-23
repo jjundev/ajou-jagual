@@ -42,7 +42,7 @@ def check_public_files(browser, files):
             page.locator('[data-action=next]').click()
             expect(page.locator('#app')).to_have_attribute('data-index', '1')
             graph_view = page.locator('#app').get_attribute('data-graph-view')
-            if graph_view:
+            if graph_view or page.locator('#app').get_attribute('data-ui-version'):
                 open_options(page)
             elif page.locator('[data-action=tree-options]').count():
                 page.locator('[data-action=tree-options]').click()

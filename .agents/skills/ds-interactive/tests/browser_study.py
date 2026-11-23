@@ -21,6 +21,11 @@ def check_controls(page):
       if (mode) verify(q('.study-header-tools .modes button').filter(button => button.checkVisibility()).length === mode.options.length,
         'mode controls are incomplete');
       const viewportWidth = document.documentElement.clientWidth;
+      for (const control of q('.topbar > button,.transport-buttons button,.study-speed-trigger')) {
+        const box = control.getBoundingClientRect();
+        verify(box.width >= 44 && box.height >= 44 && box.left >= -1 && box.right <= viewportWidth + 1,
+          (control.getAttribute('aria-label') || control.textContent) + ' is out of bounds or too small');
+      }
       verify(document.documentElement.scrollWidth <= viewportWidth && innerWidth === viewportWidth,
         'document extends beyond the viewport');
       const top = document.querySelector('.topbar').getBoundingClientRect();

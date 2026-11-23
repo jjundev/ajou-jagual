@@ -43,6 +43,10 @@ Source.text의 `{{a}}`처럼 **정수 Input key**만 치환할 수 있다. Trace
 
 Snapshot: id initial/step-N,at,phase before/after/diagnostic,title,explanation,state,reads,writes:[{cellId,before,after}],diagnostic:null/{code,message}. Trace: version,id,title,kind,sources,inputs(선택값),presets,snapshots,metadata. `c-memory` 재생은 선택한 Snapshot을 코드·메모리·변화에 표시한다.
 
+## 신규 자료의 공통 렌더링
+
+`scenario.cjs`의 Trace와 별도로 실행 상태를 저장하지 않는다. 빌더가 현행 공통 UI를 선택한다. 렌더러는 같은 실행 단계에서 그림(`overview`), 결과(`result`), 현재 값(`current`), 상세 상태(`detail`)를 만든다. 현재 값 항목은 `id`, `label`, `value`와 필요할 때 코드 이름 `name`, 쓰기 강조에 쓸 Cell ID `cell`을 사용한다. 공통 셸이 이를 배치한다. 포인터·트리의 추가 관찰 변수는 `watch`로 지정할 수 있다. 패널과 조작부는 [디자인 기준](design.md)을 공유한다.
+
 ## 이진 트리의 소스 줄과 호출
 
 - `tree:{rootCellId,fields:{key,left,right}}`를 지정한다. 필드 값은 각 객체의 Cell 이름이다. `root`, `left`, `right`에는 NULL 또는 객체 첫 Cell의 주소를 넣는다. 첫 Cell은 엔진이 객체를 찾는 기준이며 화면은 객체 주소와 멤버 주소를 구별한다. 순환·공유 자식·잘못된 링크는 `TREE_INVALID`다.
