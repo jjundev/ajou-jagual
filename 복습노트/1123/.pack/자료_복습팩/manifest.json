@@ -1,0 +1,458 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "1123",
+  "slug": "Graph",
+  "note_title": "최소 비용 신장 트리와 위상 정렬 — 5살도 이해하는 정리노트",
+  "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1123 수업 (Software_10 Graph)",
+  "review_title": "복습문제 8선 — 1123 수업 범위",
+  "review_intro": "강의 예제 기반 자체 출제 5개와 교과서 연습문제 3개예요. 먼저 풀고 막히면 힌트를 열어 보세요.",
+  "footer_note": "출처 · 이정원 교수님 강의록(Software_10 Graph)과 1123 수업 녹음 전사.",
+  "footer_review": "출처 · Software_10 Graph와 교과서 11장 「그래프 II」. 간선 선택과 위상 순서를 Python으로 검산했어요.",
+  "rules": [
+    "trace-v1",
+    "layout-v2"
+  ],
+  "sessions": [
+    {
+      "date": "1123",
+      "stt": "STT/1123 자구알.md",
+      "summary": "summaries/stt-1123.md",
+      "slides": "S10 p18, S10 p20–27, S10 p35–37"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "short": "1 MST와 욕심쟁이",
+      "title": "1. 신장 트리와 욕심쟁이 방법",
+      "topics": [
+        {
+          "id": "s0-mst",
+          "title": "신장 트리와 최소 비용",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "신장 트리",
+            "사이클",
+            "가중치 합"
+          ]
+        },
+        {
+          "id": "s0-greedy",
+          "title": "욕심쟁이 선택과 산 오르기",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "욕심쟁이 방법",
+            "힐 클라이밍",
+            "지역 최적해",
+            "전역 최적해",
+            "봉우리"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "short": "2 Kruskal",
+      "title": "2. Kruskal과 사이클 검사",
+      "topics": [
+        {
+          "id": "s1-kruskal",
+          "title": "간선을 작은 가중치부터 고르기",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "Kruskal",
+            "오름차순",
+            "사이클",
+            "102"
+          ]
+        },
+        {
+          "id": "s1-union",
+          "title": "서로소 집합으로 사이클 판정",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "union-find",
+            "같은 집합",
+            "다른 집합"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "short": "3 Prim",
+      "title": "3. Prim과 두 MST 알고리즘 비교",
+      "topics": [
+        {
+          "id": "s2-prim",
+          "title": "시작 정점에서 영토 넓히기",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "Prim",
+            "시작 정점",
+            "영토",
+            "102"
+          ]
+        },
+        {
+          "id": "s2-compare",
+          "title": "두 알고리즘의 선택 범위와 최적성",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "Kruskal",
+            "Prim",
+            "연결 가중 무방향 그래프",
+            "최소 비용",
+            "도로"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "short": "4 위상 정렬",
+      "title": "4. 방향 그래프의 위상 정렬",
+      "topics": [
+        {
+          "id": "s3-topo",
+          "title": "선수 과목의 순서를 만족시키기",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "위상 정렬",
+            "방향 그래프",
+            "선수 과목",
+            "선행"
+          ]
+        },
+        {
+          "id": "s3-removal",
+          "title": "선행 정점이 없는 정점 제거하기",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "진입 차수",
+            "나가는 간선",
+            "0, 1, 2, 3, 4, 5"
+          ]
+        },
+        {
+          "id": "s3-cycle",
+          "title": "정렬이 멈추는 조건",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "진입 차수",
+            "사이클",
+            "위상 정렬 불가",
+            "topo_sort(G)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "short": "5 요약 · 예고",
+      "title": "5. 요약 · 예고",
+      "topics": [
+        {
+          "id": "s4-cheatsheet",
+          "title": "한 장으로 다시 보기",
+          "layers": [],
+          "supp": false,
+          "required_terms": []
+        },
+        {
+          "id": "s4-next",
+          "title": "다음 수업 예고",
+          "layers": [],
+          "supp": false,
+          "required_terms": []
+        },
+        {
+          "id": "s4-links",
+          "title": "복습문제와 강의록",
+          "layers": [],
+          "supp": false,
+          "required_terms": []
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s4-next",
+  "forbidden_outside_preview": [
+    "최단 경로",
+    "Dijkstra",
+    "Floyd",
+    "합병 정렬",
+    "퀵 정렬"
+  ],
+  "parts": [
+    {
+      "id": "partL",
+      "title": "강의 예제 기반 자체 출제",
+      "short": "강의 예제"
+    },
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "source": "lecture-s10-p21-mst-greedy",
+      "source_kind": "lecture-code",
+      "part": "partL",
+      "variant": false,
+      "anchor": "s0-greedy",
+      "level": 2,
+      "date": "1123",
+      "terms": [
+        "6개, 전체 가중치 합 최소, 지역 최적해"
+      ],
+      "answer": "6개, 전체 가중치 합 최소, 지역 최적해",
+      "objectives": [
+        "신장 트리 간선 수와 MST 가중치 합 구분",
+        "지역 최적과 전역 최적 구분"
+      ],
+      "task_family": "mst-and-local-optimum",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "pdf_page": 21,
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+        "example": "mst-greedy",
+        "taught_on": "1123",
+        "extra_pages": [
+          20
+        ]
+      }
+    },
+    {
+      "id": "p2",
+      "source": "lecture-s10-p22-kruskal",
+      "source_kind": "lecture-code",
+      "part": "partL",
+      "variant": false,
+      "anchor": "s1-kruskal",
+      "level": 2,
+      "date": "1123",
+      "terms": [
+        "AF CD BG BC DE EF / DG EG 제외 / 102"
+      ],
+      "answer": "AF CD BG BC DE EF / DG EG 제외 / 102",
+      "objectives": [
+        "간선 정렬 및 Kruskal 추적",
+        "서로소 집합 사이클 판정과 병합",
+        "중단 조건"
+      ],
+      "task_family": "mst-kruskal-trace",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "pdf_page": 22,
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+        "example": "kruskal",
+        "taught_on": "1123",
+        "extra_pages": [
+          23,
+          24
+        ]
+      }
+    },
+    {
+      "id": "p3",
+      "source": "lecture-s10-p25-prim",
+      "source_kind": "lecture-code",
+      "part": "partL",
+      "variant": false,
+      "anchor": "s2-prim",
+      "level": 2,
+      "date": "1123",
+      "terms": [
+        "A F E D C B G / AF EF DE CD BC BG / 102"
+      ],
+      "answer": "A F E D C B G / AF EF DE CD BC BG / 102",
+      "objectives": [
+        "시작점과 경계 최소 간선 선택",
+        "새 정점 추가 및 가중치 합",
+        "Kruskal과의 선택 범위 및 최적성"
+      ],
+      "task_family": "mst-prim-trace",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "pdf_page": 25,
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+        "example": "prim",
+        "taught_on": "1123",
+        "extra_pages": [
+          26,
+          27
+        ]
+      }
+    },
+    {
+      "id": "p4",
+      "source": "lecture-s10-p35-topo-order",
+      "source_kind": "lecture-code",
+      "part": "partL",
+      "variant": false,
+      "anchor": "s3-removal",
+      "level": 2,
+      "date": "1123",
+      "terms": [
+        "0 1 2 3 4 5 / 1 4 0 2 3 5 / 0이 2보다 먼저"
+      ],
+      "answer": "0 1 2 3 4 5 / 1 4 0 2 3 5 / 0이 2보다 먼저",
+      "objectives": [
+        "선수 관계 보존 여부",
+        "진입 차수 0 정점 삭제 추적",
+        "복수 정답"
+      ],
+      "task_family": "toposort-order-validation",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "pdf_page": 35,
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+        "example": "topo-order",
+        "taught_on": "1123",
+        "extra_pages": [
+          36,
+          37
+        ]
+      }
+    },
+    {
+      "id": "p5",
+      "source": "lecture-s10-p37-topo-cycle",
+      "source_kind": "lecture-code",
+      "part": "partL",
+      "variant": false,
+      "anchor": "s3-cycle",
+      "level": 2,
+      "date": "1123",
+      "terms": [
+        "1 4 제거 / 0 2 3 5 남음 / 위상 정렬 불가"
+      ],
+      "answer": "1 4 제거 / 0 2 3 5 남음 / 위상 정렬 불가",
+      "objectives": [
+        "남은 정점이 있을 때 정렬 실패 감지",
+        "사이클 확인"
+      ],
+      "task_family": "toposort-cycle-after-prefix",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "pdf_page": 37,
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+        "example": "topo-cycle",
+        "taught_on": "1123",
+        "extra_pages": [
+          35,
+          36
+        ]
+      }
+    },
+    {
+      "id": "p6",
+      "source": "textbook-ch11-q02",
+      "source_kind": "textbook",
+      "part": "partD",
+      "variant": false,
+      "anchor": "s1-kruskal",
+      "level": 2,
+      "date": "1123",
+      "terms": [
+        "AD CE DF AB BE EG / 39"
+      ],
+      "answer": "AD CE DF AB BE EG / 39"
+    },
+    {
+      "id": "p7",
+      "source": "textbook-ch11-q03",
+      "source_kind": "textbook",
+      "part": "partD",
+      "variant": false,
+      "anchor": "s2-prim",
+      "level": 2,
+      "date": "1123",
+      "terms": [
+        "A D F B E C G / AD DF AB BE CE EG / 39"
+      ],
+      "answer": "A D F B E C G / AD DF AB BE CE EG / 39"
+    },
+    {
+      "id": "p8",
+      "source": "textbook-ch11-q10",
+      "source_kind": "textbook",
+      "part": "partD",
+      "variant": false,
+      "anchor": "s3-removal",
+      "level": 2,
+      "date": "1123",
+      "terms": [
+        "cs1 cs2 cs3 cs4 cs5 cs6 cs7 cs8"
+      ],
+      "answer": "cs1 cs2 cs3 cs4 cs5 cs6 cs7 cs8"
+    }
+  ],
+  "links": [
+    {
+      "topic": "s4-links",
+      "href": "%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1123_Graph-%EB%AC%B8%EC%A0%9C.pdf"
+    },
+    {
+      "topic": "s4-links",
+      "href": "../../자료구조_강의록_2026/Software_10_Graph.pdf"
+    },
+    {
+      "topic": "s4-links",
+      "href": "../1119/정리노트_1119_Graph.html#s3-spanning"
+    },
+    {
+      "topic": "s4-links",
+      "href": "../1119/정리노트_1119_Graph.html#s3-mst"
+    }
+  ]
+}

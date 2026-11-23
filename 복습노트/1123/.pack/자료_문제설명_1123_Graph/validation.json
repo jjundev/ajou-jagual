@@ -1,0 +1,329 @@
+{
+  "review_policy_version": "problem-explain-2026-10-15",
+  "input_hash": "ee8d426d127f1822161093727d1c7bdbee7ee66b4e7d51eb919d1780748dabb3",
+  "references": [
+    {
+      "path": "/workspace/ajou-jagual/.agents/skills/ds-problem-explain/SKILL.md",
+      "sha256": "199b4675700ef86cae5604fefbd3203af72b5c5c18f23ef0bfcf68f45f5fb13c"
+    },
+    {
+      "path": "/workspace/ajou-jagual/.agents/skills/ds-problem-explain/references/authoring.md",
+      "sha256": "b50bc4fb13315037c58a2c108b762595b8d521dcc6cf2fcee2fa8438028d40b9"
+    },
+    {
+      "path": "/workspace/ajou-jagual/.agents/skills/ds-problem-explain/references/verification.md",
+      "sha256": "8762005ad80cd1355859178d526ddb64ec424bc6cc40fe662f95d747f3f97780"
+    },
+    {
+      "path": "/workspace/ajou-jagual/.agents/skills/ds-review-pack/references/problem-explain.md",
+      "sha256": "83f3160e549dc1744ee3f1e08f81a4a9dac7da914669cf3d3925ec149d98fc80"
+    },
+    {
+      "path": "/workspace/ajou-jagual/STT/1123 자구알.md",
+      "sha256": "6eb505d719a75284096d5d3129c2090787af3b46165b69205204ffb54d43b91b"
+    },
+    {
+      "path": "/workspace/ajou-jagual/교과서/11_그래프 II_연습문제.json",
+      "sha256": "6bff6e06366719d23bca816c9054330d987b312469cba12355f752e8e8f657cc"
+    },
+    {
+      "path": "/workspace/ajou-jagual/교과서/assets/ch11-q02-network.svg",
+      "sha256": "3fb8570a15fabc9a20136493339adf463415d9bb6e55a558d4afcef6344c6ca2"
+    },
+    {
+      "path": "/workspace/ajou-jagual/교과서/assets/ch11-q10-dag.svg",
+      "sha256": "2e0b3ef956df3a4f17e2995d966c151be82b0a36058519f99f6bcba968d1cde1"
+    },
+    {
+      "path": "/workspace/ajou-jagual/교과서/origin/11_그래프 II_연습문제.pdf",
+      "sha256": "61767ed623fd04cef4e298920d82e12b8e30bcea12a2da354e3732abc8ef7e10"
+    },
+    {
+      "path": "/workspace/ajou-jagual/복습노트/1123/.pack/자료_복습팩/복습문제_1123_Graph.json",
+      "sha256": "dafaef1d10b0f510fe5158bd0e930d4a04ea10208ece9e9ed56f045adc2fbc82"
+    },
+    {
+      "path": "/workspace/ajou-jagual/복습노트/1123/복습문제_1123_Graph-문제.pdf",
+      "sha256": "c8120dcb1841512ca2fb65e307b496a4b16db25cce2d2559ec758d98fe90e84b"
+    },
+    {
+      "path": "/workspace/ajou-jagual/복습노트/1123/정리노트_1123_Graph.html",
+      "sha256": "a2b6d18b5fea97d724d9184ebbc52babacafe828d9c1b51853ba24be27f82d4b"
+    },
+    {
+      "path": "/workspace/ajou-jagual/자료구조_강의록_2026/Software_10_Graph.pdf",
+      "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10"
+    }
+  ],
+  "source_visual": {
+    "status": "pass",
+    "reviewer": "Codex /root/explain",
+    "evidence": "실제 PDF 래스터 evidence/lecture-20~27.png, lecture-35~37.png 및 textbook-1~2.png를 source.json의 해당 조건·그림·질문과 대조. P1은 S10 p20 도로 예와 p21 탐욕 조건 및 STT 1123 29~45행의 산 예 확인. P2는 p22 종료 규칙, p23의 아홉 간선·선택 그림, p24 집합 판정 확인. P3은 p25 비교 말풍선의 높다 오타와 p26의 1회 과잉 반복, p27 단계 그림을 대조. 자체 질문에는 p25의 n−1 규칙과 수치 27<29 적용을 명시. P4·P5는 p35 여덟 선수 간선, p36의 1→4 제거 순서, p37 진입 차수 0·실패 조건 대조. 5→0은 P5 자체 추가. P6·P7은 교과서 PDF 첫 페이지(438쪽) 2·3번의 공유 네트워크 정점 7개 및 모든 가중치 11개, P7 시작 A 대조. P8은 PDF 둘째 페이지(439쪽) 10번의 cs1~cs8 및 굽은 cs3→cs8 포함 방향 간선 10개 대조."
+  },
+  "browser": {
+    "status": "pass",
+    "reviewer": "Codex /root/explain",
+    "evidence": "실제 HTTP preview · Chromium 154 · 1280×900, 1024×900, 375×812의 light/dark에서 8개씩. 목차·pager·문제/원문·요약·KaTeX·표·그림 확대·인쇄·패널 전환과 움직임·링크 대상과 PDF #page 및 HTML #id 확인. 외부 요청·콘솔/KaTeX 오류·누락 자원·문서 가로 넘침 0. 최초 실행에서 템플릿이 참조하지 않는 Chromium 기본 /favicon.ico 요청이 preview allowlist에서 404였고, 재실행에서는 그 요청만 브라우저 route에서 204로 처리하여 화면과 실제 자원 요청을 그대로 검증. 작업 폴더 browser.py, browser-final-results.txt의 6개 프로필과 browser-layout-results.txt 및 browser-shots 참조."
+  },
+  "content": {
+    "status": "pass",
+    "reviewer": "Codex /root/explain",
+    "evidence": "8문항·15 소문항의 일곱 조각 구역·상태 비교표·되짚기·요약을 원 자료, stage HTML 및 독립 재산출과 대조. 항목별 근거는 items.",
+    "items": {
+      "p1:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "연결 집합 일곱 개에서 하나가 되려면 합치기 6회, 정점 1개 경계와 도로 길이 합의 단위 확인."
+      },
+      "p1:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "이웃과 전체 범위의 구분 및 높이 10→8→15 반례 확인."
+      },
+      "p2:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "여덟 검사 행의 집합 변화와 EF에서 채택 수 6개, AB 미검사 확인."
+      },
+      "p2:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "DG와 EG를 더하기 전 경로의 모든 간선이 먼저 채택되는지 각 표의 행에서 확인."
+      },
+      "p3:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "여섯 단계의 전체 컷 후보와 최소값을 대조하고, 정점 수−간선 수=1을 확인. p26 과잉 반복의 구체적 실패를 명시."
+      },
+      "p3:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "S={A,F}의 모든 인접 간선에서 내부 AF 제외 확인. p25 말풍선 오기의 수치 해석을 명시."
+      },
+      "p3:c": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "두 번째 단계에서 전역 최저 CD(12)와 현재 경계 최저 EF(27)의 차이를 설명하고 최종 비용 대조."
+      },
+      "p4:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "진입 차수 벡터, 각 후보 표, 첫 후보 세 집합과 8개 간선 방향의 대조 확인."
+      },
+      "p4:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "1을 지운 뒤 4의 진입 차수가 0이 되는 것과 세 목적지의 위치 비교 확인."
+      },
+      "p4:c": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "위치 검사와 진입 차수 검사에서 2가 첫 후보에 없는 것을 비교."
+      },
+      "p5:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "행별 후보, 남은 진입 차수의 합 6 및 제거한 화살표 3개 확인."
+      },
+      "p5:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "사이클의 가장 빠른 정점이 항상 선행 간선을 위반함을 논증. 간선 제거 역검산 확인."
+      },
+      "p6:main": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "가중치 동률 처리, 모든 판정 행, 비용 하한 9+30과 39 달성, 유일성을 대조."
+      },
+      "p7:main": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "A에서 시작한 모든 경계 목록의 최솟값과 도달성 및 비용 하한 대조."
+      },
+      "p8:main": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain",
+        "evidence": "초기 차수 합 10, 후보와 갱신 표, 열 화살표의 위치 조건 및 대체 답의 타당성을 대조."
+      }
+    }
+  },
+  "independent": {
+    "status": "pass",
+    "reviewer": "Codex /root/explain_independent + /root/explain",
+    "evidence": "별도 담당자가 문제와 그림만 담은 blind-input.json을 바탕으로 독립 스크립트를 작성했고, 현재 evidence에서 재실행한 결과가 independent-results.txt와 바이트 일치함. 모든 소문항을 원 답 및 저작 조각과 대조.",
+    "items": {
+      "p1:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P1(a) 구간 대조.",
+        "method": "proof",
+        "conclusion": "6개, 선택 가중치 합 최소"
+      },
+      "p1:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P1(b) 구간 대조.",
+        "method": "qualitative",
+        "conclusion": "높은 이웃 없음과 더 높은 봉우리의 존재로 지역 최적해"
+      },
+      "p2:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P2(a) 구간 대조.",
+        "method": "exact",
+        "conclusion": "AF,CD,BG,BC,DE,EF. DG·EG 제외, 102"
+      },
+      "p2:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P2(b) 구간 대조.",
+        "method": "exact",
+        "conclusion": "{BCDG}와 {BCDEG}, 기존 경로가 각각 D–C–B–G와 E–D–C–B–G"
+      },
+      "p3:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P3(a) 구간 대조.",
+        "method": "exact",
+        "conclusion": "A,F,E,D,C,B,G. 비용 102"
+      },
+      "p3:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P3(b) 구간 대조.",
+        "method": "exact",
+        "conclusion": "AB(29)와 EF(27)만 후보, 27<29"
+      },
+      "p3:c": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P3(c) 구간 대조.",
+        "method": "exact",
+        "conclusion": "경계 비교와 전체 정렬·성분 합치기. 유일 MST 비용 102"
+      },
+      "p4:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P4(a) 구간 대조.",
+        "method": "exact",
+        "conclusion": "0,1,2,3,4,5. {0,1}, {1,2}, {2,4}"
+      },
+      "p4:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P4(b) 구간 대조.",
+        "method": "exact",
+        "conclusion": "1,4,0,2,3,5"
+      },
+      "p4:c": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P4(c) 구간 대조.",
+        "method": "exact",
+        "conclusion": "0→2만 위반"
+      },
+      "p5:a": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P5(a) 구간 대조.",
+        "method": "exact",
+        "conclusion": "1,4 제거. 0,2,3,5 남음"
+      },
+      "p5:b": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P5(b) 구간 대조.",
+        "method": "proof",
+        "conclusion": "0→2→5→0 때문에 선형 순서 없음"
+      },
+      "p6:main": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P6 구간 대조.",
+        "method": "exact",
+        "conclusion": "알파벳 동점 순서로 AD,CE,DF,AB,BE,EG. 유일 MST 39"
+      },
+      "p7:main": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P7 구간 대조.",
+        "method": "exact",
+        "conclusion": "A,D,F,B,E,C,G. AD,DF,AB,BE,CE,EG. 39"
+      },
+      "p8:main": {
+        "status": "pass",
+        "reviewer": "Codex /root/explain_independent + /root/explain",
+        "evidence": "evidence/independent-verify.py 재실행 및 evidence/independent-results.txt P8 구간 대조.",
+        "method": "exact",
+        "conclusion": "cs1~cs8 오름차순은 가능한 해. 순열로 총 25개 확인"
+      }
+    }
+  },
+  "artifact_hashes": {
+    ".pack/figures_문제설명_1123_Graph/explain-fig-1.svg": "54d82ffa898353b45b43e9e8be450f3479bff1ecab90b402c8053b6e156b5b11",
+    ".pack/figures_문제설명_1123_Graph/explain-fig-2.svg": "28d778af204fe2284cce5974218d52ad543e3a2cae32e63a2b66a402bb223ac8",
+    ".pack/figures_문제설명_1123_Graph/explain-fig-3.svg": "b0073a269c41e4166f389bc98d5bf15ac3ee0f1a8bc026f05134a23745d8f393",
+    ".pack/figures_문제설명_1123_Graph/explain-fig-4.svg": "1d25000ec2f644028df9360f5a66fa26eee35d1f1f37eb0a6b83d8c8c11507fb",
+    ".pack/figures_문제설명_1123_Graph/explain-fig-5.svg": "40cee82ef14f78ab67d37b4faa3c91ddfbf35c9b383229996c1a00c39af3b3cd",
+    ".pack/figures_문제설명_1123_Graph/explain-fig-6.svg": "673c585456f0ea40c41d3c67952ff3650e495da035716f28402634848a168666",
+    ".pack/figures_문제설명_1123_Graph/p2-explain-svg2-trace-explain-kruskal-lecture-k2.svg": "76a9038d952404854069f6ae015e7749aa8bdd4e382a2f0160d4c455b30367e5",
+    ".pack/figures_문제설명_1123_Graph/p2-explain-svg3-trace-explain-kruskal-lecture-k3.svg": "7f0857c27e5c4e2be57750e141b36fbc0a4ac7ab86b4e15afb00b9cd4cc5ede5",
+    ".pack/figures_문제설명_1123_Graph/p2-explain-trace-explain-kruskal-lecture-k1.svg": "385d2c7e621b151dc038413ea0af65f0c43412606bdf331a2a8515ed5b5c8eb3",
+    ".pack/figures_문제설명_1123_Graph/p3-explain-svg2-trace-explain-prim-lecture-k2.svg": "1058d62c53c9192a86089ba7aa7bdfdb77619ee0e92dc49f8558f1260b0b9e95",
+    ".pack/figures_문제설명_1123_Graph/p3-explain-svg3-trace-explain-prim-lecture-k3.svg": "c8f6b3ae7aed2aef79d72f9c6452238e8925eb5df1c2b36084bd1e64974586ec",
+    ".pack/figures_문제설명_1123_Graph/p3-explain-trace-explain-prim-lecture-k1.svg": "89978fbcd6de29854621be7227ce58e496e4a20f10dfc8cba724fe870c08f6a3",
+    ".pack/figures_문제설명_1123_Graph/p4-explain-svg2-trace-explain-topo-lecture-k2.svg": "5621b682994d4342d44fc7f09f38be6515afcb758cde1d8ef166f70a979a0772",
+    ".pack/figures_문제설명_1123_Graph/p4-explain-svg3-trace-explain-topo-lecture-k3.svg": "d206d4f6e65b7506c258b239a56c65db4b006f0026d47556ebcb08041ff305b3",
+    ".pack/figures_문제설명_1123_Graph/p4-explain-svg4-trace-explain-topo-lecture-alt-k1.svg": "2a72b9a1cda7bf26b7b85076c31a7bec9d4827fcca5dbfb2b2844df14ffa4c44",
+    ".pack/figures_문제설명_1123_Graph/p4-explain-svg5-trace-explain-topo-lecture-alt-k2.svg": "1859cd141b58a2130e6b5bf7ed928904dbbc4ce4afeac30ad2302cf0e49cd13e",
+    ".pack/figures_문제설명_1123_Graph/p4-explain-svg6-trace-explain-topo-lecture-alt-k3.svg": "663716670f55ac833c809058937b7087c3d8faa8d8d44f4815437dd5d19f0621",
+    ".pack/figures_문제설명_1123_Graph/p4-explain-trace-explain-topo-lecture-k1.svg": "2c57715dee7b0d386cde5c576218003b87cfb7a2217e24640aba20cdae098474",
+    ".pack/figures_문제설명_1123_Graph/p6-explain-svg2-trace-explain-book-p6-k2.svg": "e72ca91701d7ec3c31d52cb8546bc783f49607a03a2c5389a57372c0e02b1399",
+    ".pack/figures_문제설명_1123_Graph/p6-explain-svg3-trace-explain-book-p6-k3.svg": "c6fd4e932a4e798f7705838f335b0daf8f1b38fa52ade374795a37caa9095b01",
+    ".pack/figures_문제설명_1123_Graph/p6-explain-svg4-trace-explain-book-p6-k4.svg": "8d2429c271821a2ebdd958f0b0f5e91581d33a63b643c7fa37351245817dad9a",
+    ".pack/figures_문제설명_1123_Graph/p6-explain-trace-explain-book-p6-k1.svg": "f0b39a5088c213c34314c21f6eb5674a125b41e6e6b566da48e9c89e77372499",
+    ".pack/figures_문제설명_1123_Graph/p7-explain-svg2-trace-explain-book-p7-k2.svg": "8fd2630b44f878b35e75bab2255076c31c8747f7636575d548fa78a0fa8689e7",
+    ".pack/figures_문제설명_1123_Graph/p7-explain-svg3-trace-explain-book-p7-k3.svg": "cf06777920f1f299e09b598564a68d3783efa5b64a2604eb3ed33fb3688d7570",
+    ".pack/figures_문제설명_1123_Graph/p7-explain-svg4-trace-explain-book-p7-k4.svg": "f7f8a32a3f1daeb0efc2642ce6567e4026488b475652d2b29174bc81e71f1685",
+    ".pack/figures_문제설명_1123_Graph/p7-explain-trace-explain-book-p7-k1.svg": "6889fbabc8faf774ecebb8b25f78756dcfd58c4471cda8610c78863da221b6a1",
+    ".pack/figures_문제설명_1123_Graph/p8-explain-svg2-trace-explain-book-p8-k2.svg": "1b237a83725b55817cfe7cd11f4a97952e9c18f49fd7ba32a7d5bfbc371b0d25",
+    ".pack/figures_문제설명_1123_Graph/p8-explain-svg3-trace-explain-book-p8-k3.svg": "e9d0c179041f963cf9b6e165f4be1436ee591a9b2b2cb3fd11d69385bbbf0508",
+    ".pack/figures_문제설명_1123_Graph/p8-explain-svg4-trace-explain-book-p8-k4.svg": "1f0590104c07b0b986ee0d45f873e4b3f36330baa9a5f6d64ca37be941cfbff0",
+    ".pack/figures_문제설명_1123_Graph/p8-explain-trace-explain-book-p8-k1.svg": "a48eaa490ef230e1f97080edd1ba9578c85b7a430b9fd02f519a1afacb8ec630",
+    ".pack/문제설명_1123_Graph.md": "af27f0fb9d42c491edb906e7d0b683692a1b24faf9508b944b24d8c1d6a961da",
+    ".pack/자료_문제설명_1123_Graph/evidence/blind-input.json": "8101e25cfbc8adbc4434a8429a1bfb237c4a62862142eb7b99f8777367b8f3d6",
+    ".pack/자료_문제설명_1123_Graph/evidence/independent-results.txt": "9a9d0fa6290a196e301ec592df0c80243b8103801bb009d5a57d9a089f5cf77b",
+    ".pack/자료_문제설명_1123_Graph/evidence/independent-verify.py": "c3c21909fc4cd95323aea1a0ab6a5687fdfd7cf53eb08a40b13c9146e471dbdf",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-20.png": "8a3986027448093dc2ea437964129e857871240afc359e0e3f0b5ba534e9b061",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-21.png": "7a83dddb10473cfe436ba765ea2e57b6dadc78ae153026c0b5dd62a9fcc26ef4",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-22.png": "ec29033815df3555ee7098e9cd52b08375b3f5a58f845dc8dd20559c5c32cfe7",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-23.png": "7136f1b53142346568e8bc76a6620d02695bebe881acd5472926729fd66c6d93",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-24.png": "e3f09595cb36234a3cd812d35f551bdab855824ce537ecfd019cb2008784e1bd",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-25.png": "c976bb688ba4c3c5cf37c3f501638951c8514aed7a85dd087149cb451a84c683",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-26.png": "9764acc9886201a2c6ea674bfb4ffac6e799a09f726be830de2029c676e5fcb8",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-27.png": "c47687ff36f76db95d4f2835a369ff2548906b566c5a1ca9bfddc6af6e773c88",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-35.png": "eddd0b1157472d1a5e51281a9eec80e6b940b5c5fe7c82fab20eb4fdb4907aaa",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-36.png": "b6b97dc838c47a06523fd4cb5ff7c4610196185f1bcb151b277705f4ef6c80b3",
+    ".pack/자료_문제설명_1123_Graph/evidence/lecture-37.png": "2742ed60344e2d48ece767ad2ffbddb350b0edbdecc7a574b96fe5430ba1fd4b",
+    ".pack/자료_문제설명_1123_Graph/evidence/textbook-1.png": "e1f6938125973b7abfa17bd618db8aa29e6d360a39283296890a398c32d5dda9",
+    ".pack/자료_문제설명_1123_Graph/evidence/textbook-2.png": "569e5e0427e4b9cb8974a5cefd790a9af1cb83821b3ac9cf5bb5c26e3534c661",
+    ".pack/자료_문제설명_1123_Graph/fragments/p1.html": "e2c3ad93bd4a48b7d076088b0d5a95cd38671ade54a7b0017692813fe40dc9b2",
+    ".pack/자료_문제설명_1123_Graph/fragments/p2.html": "9e76599d4b95040651349bc5a5edb35941ff38644e20109ca6ec4deaa07bcb96",
+    ".pack/자료_문제설명_1123_Graph/fragments/p3.html": "8fcbc0d3c17e4210c5b0d2712d1e1b10ebd263cea3772fae5a50fac55ac44913",
+    ".pack/자료_문제설명_1123_Graph/fragments/p4.html": "6820f3bede21cf206545877f2ec05a1bffb3a0af802aee8b4b398e255a856a94",
+    ".pack/자료_문제설명_1123_Graph/fragments/p5.html": "06f06802a90879678a1de08b54c2980ba57b71483cfcf30d2f3bf26c8786d394",
+    ".pack/자료_문제설명_1123_Graph/fragments/p6.html": "a4b803ce95771d5c1dda4f6621a6f73eaa665a8aec33c6c7799e5a8532ce6fbd",
+    ".pack/자료_문제설명_1123_Graph/fragments/p7.html": "ca0a5b8d868889ab105a8b19f582ebe87f5d01f0a5e9df80f718140f4fa2c75e",
+    ".pack/자료_문제설명_1123_Graph/fragments/p8.html": "1e3d996eed1782a701abc3439b4a60385c2fb52acc0456ba5c164321a9a0d054",
+    ".pack/자료_문제설명_1123_Graph/template-provenance.json": "a376ae004fc7e8f20bc15f799d5ab43224813dfec2a3988cace02408cb719b75",
+    ".pack/자료_문제설명_1123_Graph/traces/explain-book-p6.json": "b507c7eb0a2f1fc3eb8117abb29b2cff969ee4da406ef3ab7b92f06b05965bf8",
+    ".pack/자료_문제설명_1123_Graph/traces/explain-book-p7.json": "ac7ca94ed6ed86af08087d10e84ce8942ca66cd04bd54b1901108034e50ac261",
+    ".pack/자료_문제설명_1123_Graph/traces/explain-book-p8.json": "3cf9849f8e3e5cb107a5568086b742b46876719377bb064928417d1557b54366",
+    ".pack/자료_문제설명_1123_Graph/traces/explain-kruskal-lecture.json": "b147454b7fe11fdbd637bca67578223c932f9f7b9f93f36b45592c340ecfab7d",
+    ".pack/자료_문제설명_1123_Graph/traces/explain-prim-lecture.json": "4feb5a171311f5987a889cc75b183c8efa96885b0aa82eab6bd05c15bb458b29",
+    ".pack/자료_문제설명_1123_Graph/traces/explain-topo-lecture-alt.json": "aef4d8e66d31424529990ea78b30b30091b19ca58202d57f6eb46ac40c35d3f3",
+    ".pack/자료_문제설명_1123_Graph/traces/explain-topo-lecture.json": "6ae60a1cd1975eca6442096cc2f34498533b40ad485fc797aea78b419653fc64",
+    "문제설명_1123_Graph.html": "1422221bca59551f11d616ba38bfc504b98911a0d5ad886228578c5cf1bf0894",
+    ".pack/자료_문제설명_1123_Graph/manifest.json": "0b94929e2409292508d90209f82163f5afed3aefd72cb7b880d70faf4cc59163"
+  }
+}

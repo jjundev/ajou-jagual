@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "id": "explain-kruskal-lecture",
+  "title": "선택한 간선의 변화",
+  "structures": [
+    {
+      "id": "order",
+      "kind": "array",
+      "size": 6,
+      "label": "선택한 간선의 변화"
+    }
+  ],
+  "steps": [
+    {
+      "text": "AF(10) 선택. 검사 뒤 집합은 AF / B / C / D / E / G예요.",
+      "key": true,
+      "state": {
+        "order": {
+          "values": [
+            "AF",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            0
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "CD(12) 선택. 검사 뒤 집합은 AF / B / CD / E / G예요.",
+      "key": false,
+      "state": {
+        "order": {
+          "values": [
+            "AF",
+            "CD",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            1
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "BG(15) 선택. 검사 뒤 집합은 AF / BG / CD / E예요.",
+      "key": false,
+      "state": {
+        "order": {
+          "values": [
+            "AF",
+            "CD",
+            "BG",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            2
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "BC(16) 선택. 검사 뒤 집합은 AF / BCDG / E예요.",
+      "key": false,
+      "state": {
+        "order": {
+          "values": [
+            "AF",
+            "CD",
+            "BG",
+            "BC",
+            "",
+            ""
+          ],
+          "hi": [
+            3
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "DG(18) 제외. 검사 뒤 집합은 AF / BCDG / E예요.",
+      "key": true,
+      "state": {
+        "order": {
+          "values": [
+            "AF",
+            "CD",
+            "BG",
+            "BC",
+            "",
+            ""
+          ],
+          "hi": [
+            3
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "DE(22) 선택. 검사 뒤 집합은 AF / BCDEG예요.",
+      "key": false,
+      "state": {
+        "order": {
+          "values": [
+            "AF",
+            "CD",
+            "BG",
+            "BC",
+            "DE",
+            ""
+          ],
+          "hi": [
+            4
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "EG(25) 제외. 검사 뒤 집합은 AF / BCDEG예요.",
+      "key": false,
+      "state": {
+        "order": {
+          "values": [
+            "AF",
+            "CD",
+            "BG",
+            "BC",
+            "DE",
+            ""
+          ],
+          "hi": [
+            4
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "EF(27) 선택. 검사 뒤 집합은 ABCDEFG예요.",
+      "key": true,
+      "state": {
+        "order": {
+          "values": [
+            "AF",
+            "CD",
+            "BG",
+            "BC",
+            "DE",
+            "EF"
+          ],
+          "hi": [
+            5
+          ],
+          "ptr": {}
+        }
+      }
+    }
+  ]
+}

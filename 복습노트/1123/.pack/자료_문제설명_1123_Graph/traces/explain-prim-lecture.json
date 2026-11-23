@@ -1,0 +1,162 @@
+{
+  "version": 1,
+  "id": "explain-prim-lecture",
+  "title": "현재 트리에 들어온 정점",
+  "structures": [
+    {
+      "id": "order",
+      "kind": "array",
+      "size": 7,
+      "label": "현재 트리에 들어온 정점"
+    }
+  ],
+  "steps": [
+    {
+      "text": "시작 정점은 A예요.",
+      "key": false,
+      "state": {
+        "order": {
+          "values": [
+            "A",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            0
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "AF → F 선택. 안쪽 정점은 A, F예요.",
+      "key": true,
+      "state": {
+        "order": {
+          "values": [
+            "A",
+            "F",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            1
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "EF → E 선택. 안쪽 정점은 A, F, E예요.",
+      "key": true,
+      "state": {
+        "order": {
+          "values": [
+            "A",
+            "F",
+            "E",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            2
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "DE → D 선택. 안쪽 정점은 A, F, E, D예요.",
+      "key": false,
+      "state": {
+        "order": {
+          "values": [
+            "A",
+            "F",
+            "E",
+            "D",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            3
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "CD → C 선택. 안쪽 정점은 A, F, E, D, C예요.",
+      "key": false,
+      "state": {
+        "order": {
+          "values": [
+            "A",
+            "F",
+            "E",
+            "D",
+            "C",
+            "",
+            ""
+          ],
+          "hi": [
+            4
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "BC → B 선택. 안쪽 정점은 A, F, E, D, C, B예요.",
+      "key": false,
+      "state": {
+        "order": {
+          "values": [
+            "A",
+            "F",
+            "E",
+            "D",
+            "C",
+            "B",
+            ""
+          ],
+          "hi": [
+            5
+          ],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "BG → G 선택. 안쪽 정점은 A, F, E, D, C, B, G예요.",
+      "key": true,
+      "state": {
+        "order": {
+          "values": [
+            "A",
+            "F",
+            "E",
+            "D",
+            "C",
+            "B",
+            "G"
+          ],
+          "hi": [
+            6
+          ],
+          "ptr": {}
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "id": "kruskal-1123",
+  "title": "가중치 순서로 간선 선택",
+  "structures": [
+    {
+      "id": "accepted",
+      "kind": "array",
+      "size": 6,
+      "label": "채택한 간선"
+    }
+  ],
+  "steps": [
+    {
+      "text": "시작. 검사 0개, 채택 0개. 연결 요소: {a}, {b}, {c}, {d}, {e}, {f}, {g}.",
+      "state": {
+        "accepted": {
+          "values": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "hi": [],
+          "ptr": {}
+        }
+      }
+    },
+    {
+      "text": "1번째 검사. af(10) 채택. 채택 1개. 연결 요소: {a, f}, {b}, {c}, {d}, {e}, {g}.",
+      "state": {
+        "accepted": {
+          "values": [
+            "af",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            0
+          ],
+          "ptr": {}
+        }
+      },
+      "key": true
+    },
+    {
+      "text": "2번째 검사. cd(12) 채택. 채택 2개. 연결 요소: {a, f}, {b}, {c, d}, {e}, {g}.",
+      "state": {
+        "accepted": {
+          "values": [
+            "af",
+            "cd",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            1
+          ],
+          "ptr": {}
+        }
+      },
+      "key": false
+    },
+    {
+      "text": "3번째 검사. bg(15) 채택. 채택 3개. 연결 요소: {a, f}, {b, g}, {c, d}, {e}.",
+      "state": {
+        "accepted": {
+          "values": [
+            "af",
+            "cd",
+            "bg",
+            "",
+            "",
+            ""
+          ],
+          "hi": [
+            2
+          ],
+          "ptr": {}
+        }
+      },
+      "key": false
+    },
+    {
+      "text": "4번째 검사. bc(16) 채택. 채택 4개. 연결 요소: {a, f}, {b, c, d, g}, {e}.",
+      "state": {
+        "accepted": {
+          "values": [
+            "af",
+            "cd",
+            "bg",
+            "bc",
+            "",
+            ""
+          ],
+          "hi": [
+            3
+          ],
+          "ptr": {}
+        }
+      },
+      "key": false
+    },
+    {
+      "text": "5번째 검사. dg(18) d와 g는 d–c–b–g로 연결되어 제외. 채택 4개. 연결 요소: {a, f}, {b, c, d, g}, {e}.",
+      "state": {
+        "accepted": {
+          "values": [
+            "af",
+            "cd",
+            "bg",
+            "bc",
+            "",
+            ""
+          ],
+          "hi": [],
+          "ptr": {}
+        }
+      },
+      "key": true
+    },
+    {
+      "text": "6번째 검사. de(22) 채택. 채택 5개. 연결 요소: {a, f}, {b, c, d, e, g}.",
+      "state": {
+        "accepted": {
+          "values": [
+            "af",
+            "cd",
+            "bg",
+            "bc",
+            "de",
+            ""
+          ],
+          "hi": [
+            4
+          ],
+          "ptr": {}
+        }
+      },
+      "key": false
+    },
+    {
+      "text": "7번째 검사. eg(25) e와 g는 e–d–c–b–g로 연결되어 제외. 채택 5개. 연결 요소: {a, f}, {b, c, d, e, g}.",
+      "state": {
+        "accepted": {
+          "values": [
+            "af",
+            "cd",
+            "bg",
+            "bc",
+            "de",
+            ""
+          ],
+          "hi": [],
+          "ptr": {}
+        }
+      },
+      "key": false
+    },
+    {
+      "text": "8번째 검사. ef(27) 채택. 채택 6개. 연결 요소: {a, b, c, d, e, f, g}.",
+      "state": {
+        "accepted": {
+          "values": [
+            "af",
+            "cd",
+            "bg",
+            "bc",
+            "de",
+            "ef"
+          ],
+          "hi": [
+            5
+          ],
+          "ptr": {}
+        }
+      },
+      "key": true
+    }
+  ]
+}

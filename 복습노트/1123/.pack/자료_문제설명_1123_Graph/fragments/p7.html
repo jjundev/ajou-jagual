@@ -1,0 +1,58 @@
+<div class="layer eli5" data-explanation="understand">
+  <h4>문제의 단서</h4>
+  <p>같은 무방향 가중 네트워크에서 A부터 Prim으로 트리를 키워요. 매 단계의 선택 간선과 새로 연결되는 정점을 구해요.</p>
+  <ul><li>아직 트리 밖인 정점 하나씩을 연결해 정점 7개를 모두 포함해요.</li></ul>
+</div>
+<div class="layer formal" data-explanation="recall">
+  <h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4>
+  <p><b>‘Prim, A에서 시작’ → 트리에 속한 정점 집합을 $S=\{A\}$로 놓아요.</b> 경계 간선은 한 끝이 $S$에 있고 다른 끝이 바깥에 있는 간선이에요. 매번 현재 경계에서 가중치가 가장 작은 간선을 골라 바깥쪽 정점을 추가하면 트리가 연결된 채로 커져요. 현재 정점 집합의 어느 정점에 붙은 간선이든 경계를 건너면 후보예요.</p>
+</div>
+<div class="layer" data-explanation="start">
+  <h4>종이에 적을 첫 줄</h4>
+  <p>$S=\{A\}$, 경계 후보는 AD(5), AB(7)이므로 AD(5)를 선택하고 $S=\{A,D\}$로 바꿔요.</p>
+</div>
+<div class="layer formal" data-explanation="solve">
+  <h4>왜 이렇게 푸는지 함께 따라가요</h4>
+  <div data-subpart="main">
+    <div class="table-wrap"><table class="cmp">
+      <thead><tr><th scope="col">단계</th><th scope="col">선택 전 트리 정점</th><th scope="col">경계 후보와 가중치</th><th scope="col">추가 정점</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>A</td><td><b>AD(5)</b>, AB(7)</td><td>D</td></tr>
+        <tr><td>2</td><td>A, D</td><td><b>DF(6)</b>, AB(7), BD(9), DE(15)</td><td>F</td></tr>
+        <tr><td>3</td><td>A, D, F</td><td><b>AB(7)</b>, EF(8), BD(9), FG(11), DE(15)</td><td>B</td></tr>
+        <tr><td>4</td><td>A, D, F, B</td><td><b>BE(7)</b>, BC(8), EF(8), FG(11), DE(15)</td><td>E</td></tr>
+        <tr><td>5</td><td>A, D, F, B, E</td><td><b>CE(5)</b>, BC(8), EG(9), FG(11)</td><td>C</td></tr>
+        <tr><td>6</td><td>A, D, F, B, E, C</td><td><b>EG(9)</b>, FG(11)</td><td>G</td></tr>
+      </tbody>
+    </table></div>
+    <p>3단계의 AB는 A를 통해 추가할 수 있어요. 같은 7인 BE는 두 끝이 모두 바깥이어서 B가 들어온 4단계에 후보가 돼요. 4단계의 BC와 EF는 둘 다 8이지만 BE(7)가 더 가벼워요. 이 그림에서는 A에서 시작할 때 매 단계의 최솟값에 동점이 없어요. 경계 후보의 최솟값이 동점이면 둘 중 하나를 골라도 돼요.</p>
+    <p><b>완성 답</b>은 정점 순서 A, D, F, B, E, C, G, 간선 순서 AD, DF, AB, BE, CE, EG예요. 비용은 $5+6+7+7+5+9=39$예요.</p>
+  </div>
+<div class="trace-block" data-trace="explain-book-p7" data-trace-sha="42dcdbf7af8b" data-trace-target="explain">
+<figure class="figure"><svg id="trace-explain-book-p7-k1" viewBox="0 0 320 112" role="img" aria-label="A을 선택해요."><text class="fig-muted" x="20" y="32" font-size="13" text-anchor="start">Prim에서 트리에 추가한 정점</text><rect class="fig-accent" x="20" y="38" width="40" height="32"/><text class="fig-text" x="40" y="58.5" font-size="13" text-anchor="middle">A</text><rect class="fig-ink" x="60" y="38" width="40" height="32"/><text class="fig-text" x="80" y="58.5" font-size="13" text-anchor="middle"></text><rect class="fig-ink" x="100" y="38" width="40" height="32"/><text class="fig-text" x="120" y="58.5" font-size="13" text-anchor="middle"></text><rect class="fig-ink" x="140" y="38" width="40" height="32"/><text class="fig-text" x="160" y="58.5" font-size="13" text-anchor="middle"></text><rect class="fig-ink" x="180" y="38" width="40" height="32"/><text class="fig-text" x="200" y="58.5" font-size="13" text-anchor="middle"></text><rect class="fig-ink" x="220" y="38" width="40" height="32"/><text class="fig-text" x="240" y="58.5" font-size="13" text-anchor="middle"></text><rect class="fig-ink" x="260" y="38" width="40" height="32"/><text class="fig-text" x="280" y="58.5" font-size="13" text-anchor="middle"></text></svg><figcaption>단계 1. A을 선택해요.</figcaption></figure>
+<figure class="figure"><svg id="trace-explain-book-p7-k2" viewBox="0 0 320 112" role="img" aria-label="F을 선택해요."><text class="fig-muted" x="20" y="32" font-size="13" text-anchor="start">Prim에서 트리에 추가한 정점</text><rect class="fig-ink" x="20" y="38" width="40" height="32"/><text class="fig-text" x="40" y="58.5" font-size="13" text-anchor="middle">A</text><rect class="fig-ink" x="60" y="38" width="40" height="32"/><text class="fig-text" x="80" y="58.5" font-size="13" text-anchor="middle">D</text><rect class="fig-accent" x="100" y="38" width="40" height="32"/><text class="fig-text" x="120" y="58.5" font-size="13" text-anchor="middle">F</text><rect class="fig-ink" x="140" y="38" width="40" height="32"/><text class="fig-text" x="160" y="58.5" font-size="13" text-anchor="middle"></text><rect class="fig-ink" x="180" y="38" width="40" height="32"/><text class="fig-text" x="200" y="58.5" font-size="13" text-anchor="middle"></text><rect class="fig-ink" x="220" y="38" width="40" height="32"/><text class="fig-text" x="240" y="58.5" font-size="13" text-anchor="middle"></text><rect class="fig-ink" x="260" y="38" width="40" height="32"/><text class="fig-text" x="280" y="58.5" font-size="13" text-anchor="middle"></text></svg><figcaption>단계 3. F을 선택해요.</figcaption></figure>
+<figure class="figure"><svg id="trace-explain-book-p7-k3" viewBox="0 0 320 112" role="img" aria-label="E을 선택해요."><text class="fig-muted" x="20" y="32" font-size="13" text-anchor="start">Prim에서 트리에 추가한 정점</text><rect class="fig-ink" x="20" y="38" width="40" height="32"/><text class="fig-text" x="40" y="58.5" font-size="13" text-anchor="middle">A</text><rect class="fig-ink" x="60" y="38" width="40" height="32"/><text class="fig-text" x="80" y="58.5" font-size="13" text-anchor="middle">D</text><rect class="fig-ink" x="100" y="38" width="40" height="32"/><text class="fig-text" x="120" y="58.5" font-size="13" text-anchor="middle">F</text><rect class="fig-ink" x="140" y="38" width="40" height="32"/><text class="fig-text" x="160" y="58.5" font-size="13" text-anchor="middle">B</text><rect class="fig-accent" x="180" y="38" width="40" height="32"/><text class="fig-text" x="200" y="58.5" font-size="13" text-anchor="middle">E</text><rect class="fig-ink" x="220" y="38" width="40" height="32"/><text class="fig-text" x="240" y="58.5" font-size="13" text-anchor="middle"></text><rect class="fig-ink" x="260" y="38" width="40" height="32"/><text class="fig-text" x="280" y="58.5" font-size="13" text-anchor="middle"></text></svg><figcaption>단계 5. E을 선택해요.</figcaption></figure>
+<figure class="figure"><svg id="trace-explain-book-p7-k4" viewBox="0 0 320 112" role="img" aria-label="G을 선택해요."><text class="fig-muted" x="20" y="32" font-size="13" text-anchor="start">Prim에서 트리에 추가한 정점</text><rect class="fig-ink" x="20" y="38" width="40" height="32"/><text class="fig-text" x="40" y="58.5" font-size="13" text-anchor="middle">A</text><rect class="fig-ink" x="60" y="38" width="40" height="32"/><text class="fig-text" x="80" y="58.5" font-size="13" text-anchor="middle">D</text><rect class="fig-ink" x="100" y="38" width="40" height="32"/><text class="fig-text" x="120" y="58.5" font-size="13" text-anchor="middle">F</text><rect class="fig-ink" x="140" y="38" width="40" height="32"/><text class="fig-text" x="160" y="58.5" font-size="13" text-anchor="middle">B</text><rect class="fig-ink" x="180" y="38" width="40" height="32"/><text class="fig-text" x="200" y="58.5" font-size="13" text-anchor="middle">E</text><rect class="fig-ink" x="220" y="38" width="40" height="32"/><text class="fig-text" x="240" y="58.5" font-size="13" text-anchor="middle">C</text><rect class="fig-accent" x="260" y="38" width="40" height="32"/><text class="fig-text" x="280" y="58.5" font-size="13" text-anchor="middle">G</text></svg><figcaption>단계 7. G을 선택해요.</figcaption></figure>
+</div>
+<!-- /trace explain-book-p7 -->
+
+</div>
+<div class="layer formal" data-explanation="verify">
+  <h4>완성 답과 검산</h4>
+  <div data-subpart="main">
+    <p>AD와 DF로 D, F에 닿고, AB와 BE로 B, E에 닿아요. E에서 CE와 EG를 통해 C, G까지 닿으므로 간선 6개로 정점 7개가 모두 연결돼요.</p>
+    <p>G에는 EG(9)와 FG(11)만 닿으므로 아무 신장 트리에서나 그중 한 간선에 적어도 9가 들어요. 그 간선 하나를 빼고 세는 나머지 다섯 개는 전체에서 가장 가벼운 다섯 개(5, 5, 6, 7, 7)보다 가벼울 수 없어요. 비용 하한 39에 도달했으므로 이 트리가 최소예요.</p>
+  </div>
+</div>
+<div class="layer warn" data-explanation="pitfall">
+  <h4>막히기 쉬운 지점</h4>
+  <p>가장 최근 추가한 정점에서만 이어 가면 F에 도달한 뒤 EF(8)를 선택하게 돼요. A도 이미 트리에 있으므로 그 시점에는 AB(7)가 더 가벼운 경계 간선이에요.</p>
+</div>
+<div class="layer" data-explanation="retry">
+  <h4>가리고 다시 풀어요</h4>
+  <ul><li>A, D, F에 동그라미를 치고, 양 끝 중 동그라미가 하나만 있는 간선을 표시해요. AB와 BE 중 어느 쪽에 표시했는지 확인해요.</li><li>E가 추가된 직후 처음으로 경계에 들어오는 가중치 5 간선을 찾아요.</li></ul>
+</div>
+<div class="sum" hidden>
+  <div class="summary-group"><h4>첫 줄과 선택 기준</h4><p>A만 넣고 AD(5)와 AB(7)부터 비교해요. 이후 현재 트리 안에서 밖으로 나가는 모든 간선 중 최솟값을 골라요.</p></div>
+  <div class="summary-group"><h4>답과 검산</h4><p>AD, DF, AB, BE, CE, EG 순서로 골라 7개 정점을 연결해요. A에서 시작하면 매번 최소 후보는 하나이고, 비용 39는 G에 필요한 최소 9와 다른 다섯 간선의 최소 합 30에 도달해요.</p></div>
+</div>

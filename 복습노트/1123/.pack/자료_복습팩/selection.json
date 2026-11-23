@@ -1,0 +1,369 @@
+{
+  "range": "1123",
+  "mode": "new",
+  "taught_evidence": [
+    {
+      "path": "STT/1123 자구알.md",
+      "locator": "Part 01–05",
+      "sha256": "6eb505d719a75284096d5d3129c2090787af3b46165b69205204ffb54d43b91b"
+    },
+    {
+      "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+      "locator": "S10 p18, 20–27, 35–37",
+      "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10"
+    }
+  ],
+  "concept_overrides": {},
+  "selected": [
+    {
+      "id": "p1",
+      "source": "lecture-s10-p21-mst-greedy",
+      "source_kind": "lecture-code",
+      "original_id": "lecture-s10-p21-mst-greedy",
+      "prerequisites": [
+        "s0-greedy"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "locator": "S10 p21, 20",
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10"
+      },
+      "answer": "6개, 전체 가중치 합 최소, 지역 최적해",
+      "verification": {
+        "method": "lecture-reference",
+        "reference": "answers.py 및 S10 p20–21·STT Part 01",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p2",
+      "source": "lecture-s10-p22-kruskal",
+      "source_kind": "lecture-code",
+      "original_id": "lecture-s10-p22-kruskal",
+      "prerequisites": [
+        "s1-kruskal"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "locator": "S10 p22, 23, 24",
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10"
+      },
+      "answer": "AF CD BG BC DE EF / DG EG 제외 / 102",
+      "verification": {
+        "method": "python",
+        "reference": "answers.py",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p3",
+      "source": "lecture-s10-p25-prim",
+      "source_kind": "lecture-code",
+      "original_id": "lecture-s10-p25-prim",
+      "prerequisites": [
+        "s2-prim"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "locator": "S10 p25, 26, 27",
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10"
+      },
+      "answer": "A F E D C B G / AF EF DE CD BC BG / 102",
+      "verification": {
+        "method": "python",
+        "reference": "answers.py",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p4",
+      "source": "lecture-s10-p35-topo-order",
+      "source_kind": "lecture-code",
+      "original_id": "lecture-s10-p35-topo-order",
+      "prerequisites": [
+        "s3-removal"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "locator": "S10 p35, 36, 37",
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10"
+      },
+      "answer": "0 1 2 3 4 5 / 1 4 0 2 3 5 / 0이 2보다 먼저",
+      "verification": {
+        "method": "python",
+        "reference": "answers.py",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p5",
+      "source": "lecture-s10-p37-topo-cycle",
+      "source_kind": "lecture-code",
+      "original_id": "lecture-s10-p37-topo-cycle",
+      "prerequisites": [
+        "s3-cycle"
+      ],
+      "evidence": {
+        "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+        "locator": "S10 p37, 35, 36",
+        "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10"
+      },
+      "answer": "1 4 제거 / 0 2 3 5 남음 / 위상 정렬 불가",
+      "verification": {
+        "method": "python",
+        "reference": "answers.py",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p6",
+      "source": "textbook-ch11-q02",
+      "source_kind": "textbook",
+      "original_id": "ch11-q02",
+      "prerequisites": [
+        "가중치 정렬",
+        "사이클 검사"
+      ],
+      "evidence": {
+        "path": "교과서/11_그래프 II_연습문제.json",
+        "locator": "ch11-q02 · 11장 02번",
+        "sha256": "6bff6e06366719d23bca816c9054330d987b312469cba12355f752e8e8f657cc"
+      },
+      "answer": "AD CE DF AB BE EG / 39",
+      "verification": {
+        "method": "python",
+        "reference": "answers.py",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p7",
+      "source": "textbook-ch11-q03",
+      "source_kind": "textbook",
+      "original_id": "ch11-q03",
+      "prerequisites": [
+        "p6 교과서 2번 그래프",
+        "트리 경계 선택"
+      ],
+      "evidence": {
+        "path": "교과서/11_그래프 II_연습문제.json",
+        "locator": "ch11-q03 · 11장 03번",
+        "sha256": "6bff6e06366719d23bca816c9054330d987b312469cba12355f752e8e8f657cc"
+      },
+      "answer": "A D F B E C G / AD DF AB BE CE EG / 39",
+      "verification": {
+        "method": "python",
+        "reference": "answers.py",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "p8",
+      "source": "textbook-ch11-q10",
+      "source_kind": "textbook",
+      "original_id": "ch11-q10",
+      "prerequisites": [
+        "선수 정점",
+        "진입 차수 0 제거"
+      ],
+      "evidence": {
+        "path": "교과서/11_그래프 II_연습문제.json",
+        "locator": "ch11-q10 · 11장 10번",
+        "sha256": "6bff6e06366719d23bca816c9054330d987b312469cba12355f752e8e8f657cc"
+      },
+      "answer": "cs1 cs2 cs3 cs4 cs5 cs6 cs7 cs8",
+      "verification": {
+        "method": "python",
+        "reference": "answers.py",
+        "result": "pass"
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "source": "2016-final-ljw-q8",
+      "reason": "Dijkstra 최단 경로는 예고 범위"
+    },
+    {
+      "source": "2015-ljw-q7",
+      "reason": "Dijkstra 최단 경로는 예고 범위"
+    },
+    {
+      "source": "2019-final-q11",
+      "reason": "Floyd 알고리즘 미학습"
+    },
+    {
+      "source": "2019-final-q7",
+      "reason": "Dijkstra 최단 경로는 예고 범위"
+    },
+    {
+      "source": "2017-final2-q5",
+      "reason": "Dijkstra 최단 경로는 예고 범위"
+    },
+    {
+      "source": "2017-final-kdh-q4",
+      "reason": "Prim 소문항과 함께 아직 배우지 않은 Dijkstra 소문항을 요구하는 복합 원문"
+    },
+    {
+      "source": "unk-final-ltk-q6",
+      "reason": "최단 경로 예고 범위이며 원본 그림 첨부 누락"
+    },
+    {
+      "source": "unk-final-ltk-q9",
+      "reason": "Floyd 미학습이며 원본 그림 첨부 누락"
+    },
+    {
+      "source": "textbook-ch10-q01",
+      "reason": "인접 행렬 진출 차수가 평가 목표"
+    },
+    {
+      "source": "textbook-ch10-q10",
+      "reason": "선행 미포함 문항에 의존하는 인접 리스트 구현"
+    },
+    {
+      "source": "textbook-ch10-q12",
+      "reason": "파일 입출력을 통한 행렬 표현 구현"
+    },
+    {
+      "source": "textbook-ch10-q15",
+      "reason": "앞선 날짜 DFS 방문 순서"
+    },
+    {
+      "source": "textbook-ch11-q06",
+      "reason": "Floyd 알고리즘과 선행 문항에 의존"
+    },
+    {
+      "source": "textbook-ch10-q07",
+      "reason": "이전 날짜의 표현/차수와 모든 사이클 열거를 묶은 문제"
+    },
+    {
+      "source": "textbook-ch11-q05",
+      "reason": "Dijkstra의 거리 배열은 예고 범위"
+    }
+  ],
+  "coverage": [
+    {
+      "objective": "신장 트리 간선 수와 MST 가중치 합 구분",
+      "questions": [
+        "p1"
+      ],
+      "locator": "S10 p21, 20"
+    },
+    {
+      "objective": "지역 최적과 전역 최적 구분",
+      "questions": [
+        "p1"
+      ],
+      "locator": "S10 p21, 20"
+    },
+    {
+      "objective": "간선 정렬 및 Kruskal 추적",
+      "questions": [
+        "p2"
+      ],
+      "locator": "S10 p22, 23, 24"
+    },
+    {
+      "objective": "서로소 집합 사이클 판정과 병합",
+      "questions": [
+        "p2"
+      ],
+      "locator": "S10 p22, 23, 24"
+    },
+    {
+      "objective": "중단 조건",
+      "questions": [
+        "p2"
+      ],
+      "locator": "S10 p22, 23, 24"
+    },
+    {
+      "objective": "시작점과 경계 최소 간선 선택",
+      "questions": [
+        "p3"
+      ],
+      "locator": "S10 p25, 26, 27"
+    },
+    {
+      "objective": "새 정점 추가 및 가중치 합",
+      "questions": [
+        "p3"
+      ],
+      "locator": "S10 p25, 26, 27"
+    },
+    {
+      "objective": "Kruskal과의 선택 범위 및 최적성",
+      "questions": [
+        "p3"
+      ],
+      "locator": "S10 p25, 26, 27"
+    },
+    {
+      "objective": "선수 관계 보존 여부",
+      "questions": [
+        "p4"
+      ],
+      "locator": "S10 p35, 36, 37"
+    },
+    {
+      "objective": "진입 차수 0 정점 삭제 추적",
+      "questions": [
+        "p4"
+      ],
+      "locator": "S10 p35, 36, 37"
+    },
+    {
+      "objective": "복수 정답",
+      "questions": [
+        "p4"
+      ],
+      "locator": "S10 p35, 36, 37"
+    },
+    {
+      "objective": "남은 정점이 있을 때 정렬 실패 감지",
+      "questions": [
+        "p5"
+      ],
+      "locator": "S10 p37, 35, 36"
+    },
+    {
+      "objective": "사이클 확인",
+      "questions": [
+        "p5"
+      ],
+      "locator": "S10 p37, 35, 36"
+    },
+    {
+      "objective": "연결 가중 무방향 그래프의 Kruskal 추적과 동률",
+      "questions": [
+        "p6"
+      ],
+      "locator": "S10 p22–24"
+    },
+    {
+      "objective": "같은 네트워크를 A 시작 Prim으로 추적",
+      "questions": [
+        "p7"
+      ],
+      "locator": "S10 p25–27"
+    },
+    {
+      "objective": "방향 그래프에 대해 가능한 위상 순서 하나",
+      "questions": [
+        "p8"
+      ],
+      "locator": "S10 p35–37"
+    }
+  ],
+  "preview": [
+    "S10 p29 최단 경로",
+    "S9 정렬 동영상"
+  ],
+  "excluded_scope": [
+    "S10 p19 DFS 신장 트리 구현",
+    "S10 p28 Prim의 우선순위 큐 구현",
+    "S10 p30–34 Dijkstra",
+    "union-find 내부 구현과 위상 정렬의 큐 구현",
+    "수업 개념과 무관한 개인 일화"
+  ]
+}
