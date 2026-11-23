@@ -1,5 +1,6 @@
 const fs=require('node:fs'),p=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto'),{checkScenario}=require('../assets/engine/trace.js');
 const {fontHref}=require('./fonts.cjs');
+const {CURRENT_THEME_VERSION,addTheme}=require('./theme.cjs');
 const UI_VERSIONS=[0,1,2];
 const CURRENT_UI_VERSION=UI_VERSIONS.at(-1);
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
@@ -11,7 +12,8 @@ function graphPanelShell(source) {
  return source.replace(profile, "const tree=app.dataset.kind==='c-graph';")
   .replace(storage, "const treeWidthKey='ds-interactive:graph-panel-widths';");
 }
-function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION}){
+function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,themeVersion=CURRENT_THEME_VERSION}){
+ if(![0,CURRENT_THEME_VERSION].includes(themeVersion))throw Error('THEME_VERSION_UNSUPPORTED: '+themeVersion);
  if(!UI_VERSIONS.includes(uiVersion))throw Error('UI_VERSION_UNSUPPORTED: '+uiVersion);
  const {definition,sourceText}=scenario;if(/\brequire\s*\(|\bimport\s*(?:\(|[\s{*])/m.test(sourceText))throw Error('External require/import is not supported');
  const ctx={module:{exports:{}},structuredClone};vm.runInNewContext(sourceText,ctx,{timeout:2000});const s=definition??ctx.module.exports;if(ctx.module.exports.id!==s.id)throw Error('Scenario id mismatch');
@@ -43,7 +45,8 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION})
  // Browser must take the browser branch; the Node source remains byte-equivalent inside the script.
  list.push(sourceText);list.push(`DSInteractive.player=DSInteractive.${graph?'mountGraphPlayer':'mountPlayer'}(document.querySelector('#app'),DSInteractive.scenario);`);
  html=html.replace('<!--SCRIPTS-->',list.map(js=>`<script>${js.replace(/<\/script/gi,'<\\/script')}</script>`).join('\n'));
- return {html,uiVersion,kind:s.kind,traces:result.traces,graphView:graph?(decisions||inspection?s.graph.view:'traversal'):null,hashes:{scenario:sha(sourceText),trace:sha(JSON.stringify(result.traces,null,2)),preview:sha(html)}};
+ if(themeVersion)html=addTheme(html);
+ return {html,uiVersion,themeVersion,kind:s.kind,traces:result.traces,graphView:graph?(decisions||inspection?s.graph.view:'traversal'):null,hashes:{scenario:sha(sourceText),trace:sha(JSON.stringify(result.traces,null,2)),preview:sha(html)}};
 }
 module.exports={buildPage,sha,CURRENT_UI_VERSION};
 if(require.main===module){const file=p.resolve(process.argv[2]),r=buildPage({outDir:p.dirname(p.resolve(process.argv[3])),scenario:{sourceText:fs.readFileSync(file,'utf8')}});fs.writeFileSync(process.argv[3],r.html);console.log(JSON.stringify({file:process.argv[3],ui_version:r.uiVersion,hashes:r.hashes}));}

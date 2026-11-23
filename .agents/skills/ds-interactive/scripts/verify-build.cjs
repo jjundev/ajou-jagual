@@ -3,6 +3,7 @@ const path = require('node:path');
 const {buildPage, sha, CURRENT_UI_VERSION} = require('./build.cjs');
 const {rebaseFont, withoutFontHref} = require('./fonts.cjs');
 const {readReview, verifyReview} = require('./review.cjs');
+const {CURRENT_THEME_VERSION, addTheme, removeTheme} = require('./theme.cjs');
 
 const treeViewports = [[1440, 900], [1024, 768], [375, 812]];
 const graphViewports = [[1440, 900], [1280, 800], [1279, 800], [375, 812]];
@@ -26,19 +27,38 @@ function checkReady(run, {archived = false} = {}) {
   const review = readReview(run);
   const uiVersion = Object.hasOwn(review, 'ui_version') ? review.ui_version : 0;
   if (!archived && uiVersion !== CURRENT_UI_VERSION) throw Error('NEW_UI_REQUIRED: ' + run);
+  const themeVersion = review.theme_version ?? 0;
+  if (!archived && themeVersion !== CURRENT_THEME_VERSION) throw Error('NEW_THEME_REQUIRED: ' + run);
   const sourceText = fs.readFileSync(path.join(run, 'scenario.cjs'), 'utf8');
-  const built = buildPage({scenario: {sourceText}, outDir: run, uiVersion});
-  requireBuildBytes(path.join(run, 'preview.html'), built.html);
-
+  const preview = path.join(run, 'preview.html');
+  const built = buildPage({scenario: {sourceText}, outDir: run, uiVersion, themeVersion});
   const evidence = path.join(run, review.checks.browser.evidence);
-  const reviewedSha = (archived && review.reviewed_preview_sha256) || built.hashes.preview;
+  let reviewedSha = (archived && review.reviewed_preview_sha256) || built.hashes.preview;
+  let layoutBuild = built;
+  let html = built.html;
+
+  // A theme-only update keeps the exact reviewed HTML even for older players
+  // whose original runtime assets differ from the current builder.
+  const baseSha = review.theme_base_sha256;
+  if (baseSha !== undefined) {
+    if (!archived || themeVersion !== CURRENT_THEME_VERSION) throw Error('THEME_BASE_NOT_ARCHIVED: ' + run);
+    html = fs.readFileSync(preview, 'utf8');
+    const base = removeTheme(html);
+    if (sha(base) !== baseSha || !base.includes('<script>' + sourceText.replace(/<\/script/gi, '<\\/script') + '</script>') ||
+        addTheme(base) !== html) throw Error('REBUILD_MISMATCH: ' + preview);
+    layoutBuild = {...built, html: base};
+    reviewedSha = review.reviewed_preview_sha256 || baseSha;
+  } else {
+    requireBuildBytes(preview, html);
+  }
+  if (themeVersion) requireThemeEvidence(run, sha(withoutFontHref(html)));
   if (built.uiVersion !== 0) {
-    requireStudyEvidence(evidence, built, reviewedSha);
-    return built.html;
+    requireStudyEvidence(evidence, layoutBuild, reviewedSha);
+    return html;
   }
   if (built.graphView) {
-    requireGraphEvidence(evidence, built, reviewedSha);
-    return built.html;
+    requireGraphEvidence(evidence, layoutBuild, reviewedSha);
+    return html;
   }
 
   const checkpoints = Object.values(built.traces).reduce((total, {lineSteps}) => {
@@ -46,8 +66,21 @@ function checkReady(run, {archived = false} = {}) {
     const hasNodeCalls = frames && Object.values(frames).some(frame=>frame.parameterCellId);
     return total + (hasNodeCalls ? lineSteps.length : 0);
   }, 0);
-  if (checkpoints) requireNodeEvidence(evidence, reviewedSha, checkpoints);
-  return built.html;
+  // Some reviewed legacy layouts predate the current-node card.
+  if (checkpoints && (baseSha === undefined || /dataset\.currentNode|data-current-node/.test(layoutBuild.html))) {
+    requireNodeEvidence(evidence, reviewedSha, checkpoints);
+  }
+  return html;
+}
+
+function requireThemeEvidence(run, buildSha) {
+  const file = path.join(run, 'evidence', 'theme.json');
+  let report;
+  try { report = JSON.parse(fs.readFileSync(file, 'utf8')); } catch {}
+  if (report?.status !== 'pass' || report.build_sha256 !== buildSha ||
+      ![report.system, report.storage, report.storage_unavailable, report.cross_tab].every(value => value === true)) {
+    throw Error('THEME_UNVERIFIED: ' + file);
+  }
 }
 
 function requireBrowserResults(file, error, viewports, matches, validReport = () => true) {

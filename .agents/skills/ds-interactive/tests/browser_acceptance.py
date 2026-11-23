@@ -44,8 +44,9 @@ def main(root,scratch):
    for width,height in viewports:
     page=touch if width<=375 and (ui_version or kind=='c-graph') else desktop
     for theme in ['light','dark']:
+     page.emulate_media(color_scheme=theme)
      page.set_viewport_size({'width':width,'height':height});page.goto(file.as_uri());page.wait_for_selector('[data-snapshot="initial"]');page.evaluate('document.fonts.ready')
-     if theme=='dark':page.locator('[data-action=theme]').click()
+     if theme=='dark' and not page.locator('#interactive-theme').count():page.locator('[data-action=theme]').click()
      assert page.locator('html').get_attribute('data-theme')==theme
      assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(file,width,'overflow')
      assert page.evaluate("async () => (await document.fonts.load('400 16px Pretendard', '한글')).some(f => f.status === 'loaded')")

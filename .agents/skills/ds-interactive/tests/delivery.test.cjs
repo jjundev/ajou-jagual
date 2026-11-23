@@ -1,13 +1,13 @@
 const {test}=require('node:test'),a=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),p=require('node:path'),crypto=require('node:crypto');
 const tmp=()=>fs.mkdtempSync(p.join(os.tmpdir(),'ds delivery 한글 '));
 const hash=x=>crypto.createHash('sha256').update(x).digest('hex');
-const {fixtureReport}=require('./fixtures/study-report.cjs');
+const {fixtureReport,fixtureThemeReport}=require('./fixtures/study-report.cjs');
 const studyReport='evidence/study.json';
 function approve(run, browserEvidence=studyReport){
  const {createReview}=require('../scripts/review.cjs'),review=createReview(run);
  const version=fs.readFileSync(p.join(run,'preview.html'),'utf8').match(/data-ui-version="(\d+)"/);
  if(version) review.ui_version=Number(version[1]);
- else delete review.ui_version;
+ else { delete review.ui_version; delete review.theme_version; }
  for(const v of Object.values(review.checks))Object.assign(v,{status:'pass',evidence:'evidence/pass.md',notes:'manually observed fixture'});
  review.checks.browser.evidence=browserEvidence;
  fs.writeFileSync(p.join(run,'review.json'),JSON.stringify(review));
@@ -16,9 +16,12 @@ function runFixture(base, example='../examples/0928/value-address.cjs', transfor
  const run=p.join(base,'run'), scenario=require.resolve(example), {buildPage}=require('../scripts/build.cjs');
  fs.mkdirSync(p.join(run,'evidence'),{recursive:true});
  const sourceText=transform(fs.readFileSync(scenario,'utf8'));
- const {html,traces}=buildPage({scenario:{sourceText},outDir:run,uiVersion});
+ const {html,traces}=buildPage({scenario:{sourceText},outDir:run,uiVersion,themeVersion:uiVersion ? 1 : 0});
  for(const [name,text] of Object.entries({'scenario.cjs':sourceText,'trace.json':JSON.stringify(traces),'source.json':'[]','brief.md':'reviewed','preview.html':html,'evidence/pass.md':'actual evidence'}))fs.writeFileSync(p.join(run,name),text);
- if(uiVersion) fs.writeFileSync(p.join(run,studyReport),JSON.stringify(fixtureReport(run)));
+ if(uiVersion) {
+  fs.writeFileSync(p.join(run,studyReport),JSON.stringify(fixtureReport(run)));
+  fs.writeFileSync(p.join(run,'evidence/theme.json'),JSON.stringify(fixtureThemeReport(html)));
+ }
  approve(run,uiVersion?studyReport:'evidence/pass.md');
  return run;
 }
@@ -183,4 +186,44 @@ test('interleaved saves with different names reserve distinct numbers',()=>{
   fs.mkdirSync=function(file,...args){if(!interleaved&&/자료_인터렉티브_\d+_A$/.test(String(file))){interleaved=true;other=save({run,dest,name:'B'});}return real.call(fs,file,...args);};
   const own=save({run,dest,name:'A'});a.notEqual(own.nn,other.nn);a.deepEqual([own.nn,other.nn].sort(),[1,2]);a.equal(fs.readFileSync(own.html,'utf8'),fs.readFileSync(other.html,'utf8'));
  }finally{fs.mkdirSync=real;fs.rmSync(dir,{recursive:true,force:true});}
+});
+
+test('new publication requires theme evidence for the preview being saved', t=>{
+ const dir=tmp();t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const run=runFixture(dir);
+ const evidence=p.join(run,'evidence/theme.json');
+ const report=JSON.parse(fs.readFileSync(evidence,'utf8'));
+ const {checkReady}=require('../scripts/verify-build.cjs');
+ for(const invalid of [{...report,build_sha256:'old'}, {...report,storage:false}]){
+  fs.writeFileSync(evidence,JSON.stringify(invalid));
+  approve(run);
+  a.throws(()=>checkReady(run),/THEME_UNVERIFIED/);
+ }
+ fs.writeFileSync(evidence,JSON.stringify(report));
+ approve(run);
+ a.doesNotThrow(()=>checkReady(run));
+});
+
+test('theme-only updates preserve the archived HTML and cannot be used for new publication', t=>{
+ const dir=tmp();t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const run=runFixture(dir);
+ const preview=p.join(run,'preview.html'), reviewPath=p.join(run,'review.json');
+ const evidence=p.join(run,studyReport), themeEvidence=p.join(run,'evidence/theme.json');
+ const {addTheme,removeTheme}=require('../scripts/theme.cjs');
+ const {currentHashes}=require('../scripts/review.cjs');
+ const {checkReady}=require('../scripts/verify-build.cjs');
+ const base=removeTheme(fs.readFileSync(preview,'utf8')).replace('<title>', '<!-- archived layout --><title>');
+ fs.writeFileSync(preview,base);
+ fs.writeFileSync(evidence,JSON.stringify(fixtureReport(run)));
+ const update=(html)=>{
+  fs.writeFileSync(preview,html);
+  fs.writeFileSync(themeEvidence,JSON.stringify(fixtureThemeReport(html)));
+  const review=JSON.parse(fs.readFileSync(reviewPath,'utf8'));
+  fs.writeFileSync(reviewPath,JSON.stringify({...review,theme_base_sha256:hash(base),hashes:currentHashes(run)}));
+ };
+ update(addTheme(base));
+ a.throws(()=>checkReady(run),/THEME_BASE_NOT_ARCHIVED/);
+ a.equal(checkReady(run,{archived:true}),addTheme(base));
+ update(addTheme(base).replace('archived layout','unreviewed layout'));
+ a.throws(()=>checkReady(run,{archived:true}),/REBUILD_MISMATCH/);
 });

@@ -31,6 +31,12 @@ description: Use when 자구알(자료구조및알고리즘이해)의 인터랙�
 8. 모든 검토를 마치면 `node "S/scripts/verify-build.cjs" "RUN"`을 통과시키고 `node "S/scripts/save.cjs" "RUN" "대상폴더" "자료이름"`으로 저장한다. 실제 Chromium으로 화면 크기 5종과 밝은·어두운 테마에서 패널·조작부 패딩·선택 항목 잘림·중앙 배치를 검사하고 375×812 초기·중간·종료 단계의 첫 화면을 확인한다. 현재 빌드의 `browser.json`을 RUN의 evidence에 보관하고 browser 판정에 연결한다. 필수 검사가 빠진 자료는 발행하지 않는다. [검토·저장 계약](references/verification.md)을 따른다.
 9. 관련 절에 [note-links](references/note-links.md)의 관찰 문맥 링크만 dry-run 후 추가한다. `target="_self"`, URL 인코딩한 상대 경로이며 기존 노트는 백업한다. 노트 재생성 후 `node "S/scripts/relink.cjs" "REPO" 0928`로 복원한다. 누락·모호한 절은 해당 연결만 skipped로 보고한다.
 
+### 테마 동작 확인
+
+공통 테마는 시스템의 라이트·다크 모드를 실시간으로 따른다. 수동으로 시스템과 다른 모드를 선택하면 정리노트와 같은 `od-theme` 키에 저장한다. 시스템과 같은 모드를 선택하면 저장값을 지운다. 같은 출처의 정리노트·인터랙티브·다른 탭에 선택을 공유하고, 저장소 접근이 막히면 현재 페이지에서 전환할 수 있다. 모든 신규 HTML은 빌더가 넣은 공통 테마를 사용한다.
+
+`python3 "S/tests/browser_theme.py" "RUN" "RUN/evidence/theme.json"`으로 시스템 변경, 수동 선택 복원, 시스템으로 복귀, 탭 동기화, 저장 불가 시 동작을 확인한다. 발행 검사는 현재 HTML에 대응하는 이 증거를 요구한다.
+
 ## 저장과 확인
 
 공개 파일은 `복습노트/<날짜>/인터렉티브_NN_<이름>.html`, 근거는 `.pack/자료_인터렉티브_NN_<이름>/`이다. 번호는 최소 두 자리이며 100도 허용한다. 신규 생성은 기존 HTML 또는 자료 폴더를 덮어쓰지 않는다. 사용자가 기존 자료 수정을 명시하면 [verification](references/verification.md)의 백업·재검증·동일 경로 갱신 절차를 따른다. 자료 폴더에는 scenario/brief/source/trace/review, evidence, 상대 `note-links.json`을 보존한다. 저장소 안에서는 인터넷 없이 열 수 있다. 다른 PC에 HTML 하나만 옮기려면 `export-standalone-note`에 공개 HTML 경로를 지정한다.

@@ -88,7 +88,8 @@ def main(root,out):
      page.set_viewport_size({'width':width,'height':height});page.goto(file.as_uri());page.wait_for_selector('[data-snapshot]');page.evaluate('document.fonts.ready')
      tree=page.evaluate("DSInteractive.scenario.kind==='c-tree'")
      assert page.locator('.topbar').count()==1,'missing biology topbar'
-     if theme=='dark':page.locator('[data-action=theme]').click()
+     if page.locator('#interactive-theme').count():page.emulate_media(color_scheme=theme)
+     elif theme=='dark':page.locator('[data-action=theme]').click()
      assert page.evaluate('getComputedStyle(document.querySelector("#app")).backgroundColor')==('rgb(255, 255, 255)' if theme=='light' else 'rgb(23, 23, 28)')
      if tree and width<1280:page.locator('[data-action=toggle-left]').click()
      typography=page.evaluate('''(()=>{const style=s=>{const el=document.querySelector(s);if(!el)return null;const c=getComputedStyle(el);return [c.fontFamily,c.fontSize,c.fontWeight,c.lineHeight]};return {body:style('#app'),brand:style('.brand'),section:style('.source-pane .sec-title')||style('.sec-title'),prose:style('.tree-step-explanation')||style('.explanation'),warning:style('.takeaway'),faces:[...document.fonts].filter(f=>f.family==='Pretendard').map(f=>[f.weight,f.status])};})()''')

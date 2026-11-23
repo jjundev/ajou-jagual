@@ -205,7 +205,7 @@ def check_layout(page, view, width, height, theme):
         page.reload()
         page.wait_for_selector('#app[data-snapshot=initial]')
         page.evaluate('document.fonts.ready')
-        if theme == 'dark':
+        if theme == 'dark' and not page.locator('#interactive-theme').count():
             page.locator('[data-action=theme]').click()
         for handle, default in zip(handles, (320, 300)):
             expect(handle).to_have_attribute('aria-valuenow', str(default + 16))

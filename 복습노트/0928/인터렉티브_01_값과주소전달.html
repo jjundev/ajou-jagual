@@ -1,5 +1,54 @@
 <!doctype html>
-<html lang="ko" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DS Interactive</title><link rel="stylesheet" data-ds-interactive-font href="../_assets/problem-explain/v1/pretendard/pretendard.css"><style>/* Shell tokens and component geometry adapted from bio-interactive template. */
+<html lang="ko" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DS Interactive</title><script id="interactive-theme">(() => {
+  const root = document.documentElement;
+  const system = matchMedia('(prefers-color-scheme: dark)');
+  const key = 'od-theme';
+  const preference = value => value === 'light' || value === 'dark' ? value : null;
+  const systemTheme = () => system.matches ? 'dark' : 'light';
+  let override = null;
+  let button;
+
+  try { override = preference(localStorage.getItem(key)); } catch {}
+
+  function apply() {
+    const theme = override || systemTheme();
+    root.dataset.theme = theme;
+    if (!button) return;
+
+    const dark = theme === 'dark';
+    const label = dark ? '라이트 모드로 전환' : '다크 모드로 전환';
+    const icon = dark
+      ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 4l2 2m12 12 2 2M2 12h2m16 0h2M4 20l2-2M18 6l2-2"/>'
+      : '<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>';
+    button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true">' + icon + '</svg>';
+    button.setAttribute('aria-label', label);
+    button.title = label;
+  }
+
+  apply();
+  system.addEventListener('change', apply);
+  window.addEventListener('storage', event => {
+    if (event.key !== key && event.key !== null) return;
+    override = preference(event.newValue);
+    apply();
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    button = document.querySelector('[data-action="theme"]');
+    button.addEventListener('click', event => {
+      // Archived players still delegate this button's click at the app root.
+      event.stopPropagation();
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      override = next === systemTheme() ? null : next;
+      try {
+        if (override) localStorage.setItem(key, override);
+        else localStorage.removeItem(key);
+      } catch {}
+      apply();
+    });
+    apply();
+  }, {once: true});
+})();
+</script><link rel="stylesheet" data-ds-interactive-font href="../_assets/problem-explain/v1/pretendard/pretendard.css"><style>/* Shell tokens and component geometry adapted from bio-interactive template. */
 :root{color-scheme:light;--bg:#ffffff;--surface:#f7f8fa;--ink:#111111;--ink-2:#6b7280;--line:#d9dee7;--accent:#1677ff;--accent-ink:#1b64da;--btn-bg:#1b64da;--on-btn:#ffffff;--warn:#b54708;--scroll:#c9d0db;--scroll-hover:#9aa3b2;--read:#27598c;--ended:#6b7280}
 html[data-theme=dark]{color-scheme:dark;--bg:#17171c;--surface:#212128;--ink:#f2f4f6;--ink-2:#a3abb8;--line:#34353d;--accent:#3182f6;--accent-ink:#6ea4ff;--btn-bg:#1b64da;--on-btn:#ffffff;--warn:#f5a15c;--scroll:#3f414b;--scroll-hover:#5b5e6a;--read:#abd1ff;--ended:#a3abb8}
 html,body{height:100%;overflow:hidden}button,input,select{font:inherit;color:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}[hidden]{display:none!important}

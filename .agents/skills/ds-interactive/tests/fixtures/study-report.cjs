@@ -21,4 +21,11 @@ function fixtureReport(run) {
   return {status: 'pass', results, console_errors: [], external_requests: []};
 }
 
-module.exports = {fixtureReport};
+function fixtureThemeReport(preview) {
+  return {
+    status: 'pass', build_sha256: hash(withoutFontHref(preview)),
+    system: true, storage: true, storage_unavailable: true, cross_tab: true,
+  };
+}
+
+module.exports = {fixtureReport, fixtureThemeReport};

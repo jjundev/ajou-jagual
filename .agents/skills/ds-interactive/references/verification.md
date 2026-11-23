@@ -34,6 +34,14 @@ python "S/tests/final_paths.py" "REPO" "SCRATCH/final-paths-1105.json" --date 11
 
 1116·1119 최종 링크는 `final_paths.py --date 1116` 또는 `--date 1119`로 데스크톱·모바일에서 검사한다.
 
+### 테마 검증
+
+```
+python3 "S/tests/browser_theme.py" "RUN" "RUN/evidence/theme.json"
+```
+
+`theme_version`은 레이아웃의 `ui_version`과 독립적이다. 신규 발행은 현재 테마 버전과 글꼴 경로를 정규화한 현재 HTML SHA-256에 대응하는 증거를 요구한다. 시스템 초기값 및 변경, 저장 및 새로고침, 시스템으로 복귀, 같은 출처 탭 동기화, 저장 불가 시 전환을 확인한다. 일반 배치 검사도 시스템 라이트·다크 모드로 실행한다.
+
 ### 발행 검사
 
 ```
@@ -64,3 +72,6 @@ node "S/scripts/verify-build.cjs" "보관 자료 폴더" "공개 HTML"
 신규 생성은 save의 덮어쓰기 금지를 유지한다. 사용자가 기존 자료 수정을 요청한 경우에는 해당 HTML과 전체 pack을 별도 고유 작업 폴더에 먼저 백업한다. 복사한 pack의 scenario로 새 preview를 빌드하고, 변경된 UI의 브라우저·시각 증거와 현재 schema/독립 검산을 갱신한다. 내용이 그대로면 scenario/trace/source의 기존 해시 일치와 내용 검토 근거를 확인한다. 수정된 preview에 과거 browser 증거만 붙여 합격 처리하지 않는다.
 
 모든 증거를 확정한 뒤 review 해시를 다시 계산하고 `verify-build.cjs RUN`을 통과시킨다. 교체 직전 대상이 백업 시점과 같은지 확인하고, 같은 HTML 경로와 대응 pack을 갱신한다. 실패하면 이번 교체분만 백업으로 복원한다. 교체 직후 `verify-build.cjs "보관 자료 폴더" "공개 HTML"`로 최종 파일을 확인한다. 이 검사에서 실패하면 백업을 복원한다. 정리노트와 관련 없는 pack은 바꾸지 않는다. 링크는 그대로 왕복 확인한다. 검증 보고서에 백업 위치·대상 해시·실제 확인 범위를 남긴다.
+
+
+테마만 갱신하는 기존 발행본은 보관 preview의 검토 해시를 확인하고 공개본과 대조한다. 공개본에 별도로 적용된 변경이 있으면 변경 이력을 확인하고 해당 공개본을 기준으로 preview를 맞춘다. 테마를 추가하기 전의 preview 해시는 `theme_base_sha256`에 기록하고, 원래 레이아웃·시나리오 증거와 함께 새 HTML의 `evidence/theme.json`을 보관한다. 이 경로의 발행본 검사는 원래 HTML에 동일한 공통 테마 스크립트만 추가됐는지 확인하고 현재 preview·공개본과 대조한다. 보관본 전용 형식이며 신규 발행은 전체 재빌드와 현재 브라우저 증거를 요구한다.

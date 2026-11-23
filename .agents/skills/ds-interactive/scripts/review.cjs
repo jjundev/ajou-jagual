@@ -1,8 +1,9 @@
 const fs=require('node:fs'),p=require('node:path'),crypto=require('node:crypto');
 const {CURRENT_UI_VERSION}=require('./build.cjs');
+const {CURRENT_THEME_VERSION}=require('./theme.cjs');
 const hash=b=>crypto.createHash('sha256').update(b).digest('hex');
 function currentHashes(dir){const out={};function scan(folder,prefix=''){for(const e of fs.readdirSync(folder,{withFileTypes:true})){const rel=prefix+e.name;if(e.isSymbolicLink())throw Error('SYMLINK_NOT_SUPPORTED: '+rel);if(e.isDirectory()){if(prefix||e.name==='evidence')scan(p.join(folder,e.name),rel+'/');}else if(prefix||['scenario.cjs','trace.json','preview.html','source.json','brief.md','source.c'].includes(e.name))out[rel]=hash(fs.readFileSync(p.join(folder,e.name)));}}scan(dir);return out;}
-function createReview(dir){return {version:1,ui_version:CURRENT_UI_VERSION,hashes:currentHashes(dir),checks:Object.fromEntries(['schema','content','independent','browser'].map(k=>[k,{status:'not_run',evidence:'',notes:''}]))};}
+function createReview(dir){return {version:1,ui_version:CURRENT_UI_VERSION,theme_version:CURRENT_THEME_VERSION,hashes:currentHashes(dir),checks:Object.fromEntries(['schema','content','independent','browser'].map(k=>[k,{status:'not_run',evidence:'',notes:''}]))};}
 const readReview=dir=>JSON.parse(fs.readFileSync(p.join(dir,'review.json'),'utf8'));
 function verifyReview(dir){const issues=[],add=(code,message)=>issues.push({code,message});let review,now;try{review=readReview(dir);now=currentHashes(dir);}catch(e){return [{code:'REVIEW_MISSING',message:e.message}];}
  if(review.version!==1)add('REVIEW_VERSION','version 1 required');
