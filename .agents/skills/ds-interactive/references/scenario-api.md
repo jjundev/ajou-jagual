@@ -2,7 +2,7 @@
 
 저작 단위는 버전 1의 신뢰된 `.cjs` 파일이다. 외부 require/import 없이 Node에서는 `module.exports=scenario`, 브라우저에서는 `globalThis.DSInteractive.scenario=scenario`로 등록한다. [포인터 예제](../examples/0928/value-address.cjs) 또는 [중위 순회 예제](../examples/1105/inorder.cjs)를 복사해 실제 근거·주제에 맞게 작성한다. C를 자동 파싱하지 않는다.
 
-Scenario 필드: `version:1,id,title,kind:'c-memory'|'c-tree',sources,inputs,presets,initialState(input),generateEvents(input),expected`. 선택 사항 intro/takeaway는 학습 안내다.
+Scenario 필드: `version:1,id,title,kind:'c-memory'|'c-tree'|'c-graph',sources,inputs,presets,initialState(input),generateEvents(input),expected`. 선택 사항 intro/takeaway는 학습 안내다.
 
 | 형식 | 필드 |
 |---|---|
@@ -65,3 +65,9 @@ watch: [
 ```
 
 카드는 현재 `lineStep.state.cells`에서 값을 읽고 `lineStep.writes`에 해당 Cell이 있으면 값을 강조한다. 트리 노드를 가리키는 포인터는 `p = 18번 노드`처럼 대상 노드를 표시하고, 널 포인터는 `NULL`로 표시한다. 현재 단계에 Cell이 없거나 수명이 끝났으면 `—`를 표시한다.
+
+## 인접 행렬 탐색 장면
+
+`c-graph`의 DFS·BFS 장면은 공통 Snapshot을 사용한다. `graph.positions`에는 정점 번호 순서대로 360 × 220 뷰박스에서의 좌표를 넣는다. 행렬은 `graph.a.<v>.<w>`, 방문 값은 `graph.visited.<v>`, 발견 간선의 부모는 `graph.parent.<v>`에서 읽는다. 초기 부모는 -1이다. Snapshot의 행렬 읽기는 검사 칸과 해당 간선을 강조한다.
+
+활성 프레임의 `v` 또는 `i`가 현재 정점이다. DFS 스택은 각 프레임의 호출자에서, BFS 큐는 살아 있는 `head`, `tail`, `q.<index>`에서 계산한다. BFS의 소스 ID는 `bfs`로 지정한다. `graph.count`가 있으면 방문 배열 옆에 성분 수를 표시한다.

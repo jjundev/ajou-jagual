@@ -27,3 +27,15 @@ test('inorder build embeds the tree renderer and compiles offline',()=>{
  a.equal(trace.lineSteps.at(-1).state.stdout.join(''),'3 7 12 18 26 27 31 ');
  a.equal(typeof api.renderers.get('c-tree')?.render,'function');
 });
+test('graph build embeds the graph player and keeps the graph layout in the scenario',()=>{
+ const {buildPage}=require('../scripts/build.cjs');
+ const graphText=text.replace("kind:'c-memory'","kind:'c-graph',graph:{positions:[[40,40],[100,100]]}");
+ const {html,traces}=buildPage({scenario:{sourceText:graphText}});
+ a.doesNotMatch(html,/<script[^>]+src=|@import|fetch\(/i);
+ a.equal(traces.default.kind,'c-graph');
+ const ctx={structuredClone};
+ const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
+ for(const script of scripts.slice(0,-1))vm.runInNewContext(script,ctx);
+ a.equal(typeof ctx.DSInteractive.mountGraphPlayer,'function');
+ a.equal(JSON.stringify(ctx.DSInteractive.scenario.graph),JSON.stringify({positions:[[40,40],[100,100]]}));
+});

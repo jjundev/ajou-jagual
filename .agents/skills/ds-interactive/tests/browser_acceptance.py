@@ -3,6 +3,7 @@ from pathlib import Path
 import json,sys,hashlib
 from playwright.sync_api import sync_playwright
 from browser_tree import check_history_touch, check_tree_case
+from browser_graph_traversal import check_page as check_graph_traversal
 
 def discover_pages(root):
  root=Path(root).resolve()
@@ -32,6 +33,13 @@ def main(root,scratch):
      assert page.locator('html').get_attribute('data-theme')==theme
      assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(file,width,'overflow')
      assert page.evaluate("async () => (await document.fonts.load('400 16px Pretendard', '한글')).some(f => f.status === 'loaded')")
+     if page.locator('.graph-scene').count():
+      count, checked = check_graph_traversal(page, width, height)
+      topic = page.evaluate('DSInteractive.scenario.id')
+      page.screenshot(path=str(out/f'{topic}-{width}-{theme}.png'))
+      results.append({'topic':topic,'file':file.name,'sha256':digest,'viewport':[width,height],
+                      'theme':theme,'presets':count,'snapshots_checked':checked,'status':'pass'})
+      continue
      if page.evaluate('DSInteractive.scenario.kind')=='c-tree':
       topic=page.evaluate('DSInteractive.scenario.id')
       page.screenshot(path=str(out/f'{file.parent.name}-{topic}-{width}-{theme}.png'),full_page=True)

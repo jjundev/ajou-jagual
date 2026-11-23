@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "hashes": {
+    "brief.md": "aaac7e0322a2d369db3130f85b60691a5c1222c1ebd86a73c7ec3b167ff43526",
+    "evidence/browser.json": "198e7449a2d1ca8e533a76b6faa8c410c0e13d33ca841a313c1f2a04d8bf3b7d",
+    "evidence/content.md": "7912217394e3a971142a3c7a5d71ea85012b84446add624254b47272d5a5e1a1",
+    "evidence/independent.json": "5c10f87cb04ca683513b99b356d8f9694b7592f636acd044df77b1e8cfd4c4c2",
+    "evidence/oracle.py": "913384a1185f83714d477e3fd16cd92fe4d101ccfed2a95b2e88625436d40085",
+    "evidence/schema.json": "2155cefbe056525755a66777bd616e7c0513602141a537fedd26ddfaae2da6c3",
+    "preview.html": "c2102506d4d69c60c90876582e7645e8b754a13c5825def001dde80998e92c64",
+    "scenario.cjs": "88914d80cdd329d6dc3759a214ad76ffd15ea90e493be8bde08de93e4966ac3d",
+    "source.c": "b213343eba54e77393f54e6a8f396fb7dc3c867bb3701349b574e8a9b4d2a29e",
+    "source.json": "06987aaba4d9f97b1c8bb2d661caf3f83953bd9303491722cbfe1f45c72fe226",
+    "trace.json": "0c6c66c0bd9122c038a3237de04c15431230363b3a3e6573540d96e2d378c7f0"
+  },
+  "checks": {
+    "schema": {
+      "status": "pass",
+      "evidence": "evidence/schema.json",
+      "notes": "기본값과 모든 입력 조합에서 구조 검사, 예상 방문 배열·성분 수 검사 및 진단 없음 확인."
+    },
+    "content": {
+      "status": "pass",
+      "evidence": "evidence/content.md",
+      "notes": "강의록과 수업 정리 범위를 대조하고 인접 여부·단락 평가, 호출 인자, 방문 표시와 반환 순서를 직접 검토."
+    },
+    "independent": {
+      "status": "pass",
+      "evidence": "evidence/independent.json",
+      "notes": "화면에 표시된 보충 C를 clang C17·UBSan으로 실행해 중간 읽기·쓰기·호출과 표준 출력을 독립 대조."
+    },
+    "browser": {
+      "status": "pass",
+      "evidence": "evidence/browser.json",
+      "notes": "오프라인 Chromium 3개 화면 크기와 2개 테마에서 모든 사례의 코드·그래프·스택/큐·출력 일치, 재생·키보드·서랍 조작 및 스크린샷 확인."
+    }
+  },
+  "reviewed_preview_sha256": "dc8a346caf414f259f6bb8683d45114a05e2cb9bd15e025c812561af1093a6e2"
+}
