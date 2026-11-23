@@ -729,12 +729,10 @@ for i←0 to  do
 ### 복습문제와 강의록
 
 - [11/23 복습문제](복습문제_1123_Graph.md)
-- [S10 그래프 강의록](../../../자료구조_강의록_2026/Software_10_Graph.pdf)
+- S10 그래프 강의록
 - [11/19 정리노트 · 신장 트리](../../1119/정리노트_1119_Graph.html#s3-spanning)
 - [11/19 정리노트 · 최소 비용 신장 트리](../../1119/정리노트_1119_Graph.html#s3-mst)
 
 ---
 
 출처 · 이정원 교수님 강의록(Software_10 Graph)과 1123 수업 녹음 전사.
-
-[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1123_Graph-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1123_Graph-%EB%8B%B5%EC%95%88.pdf)

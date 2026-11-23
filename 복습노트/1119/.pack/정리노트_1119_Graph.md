@@ -1052,11 +1052,9 @@ MST는 간선 가중치의 합이 가장 작은 신장 트리예요.
 *1119 수업*
 
 - [1119 복습문제](복습문제_1119_Graph.md)
-- [강의록 S10 그래프(Graph)](../../../자료구조_강의록_2026/Software_10_Graph.pdf)
+- 강의록 S10 그래프(Graph)
 - [1116 정리노트: DFS 의사코드 읽기](../../1116/정리노트_1116_Graph.html#s4-dfs-pseudo)
 
 ---
 
 출처: 이정원 교수님 강의록(Software_10) · 수업 녹음 전사(1119).
-
-[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1119_Graph-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1119_Graph-%EB%8B%B5%EC%95%88.pdf)

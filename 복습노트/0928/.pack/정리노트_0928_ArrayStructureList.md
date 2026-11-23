@@ -1425,10 +1425,8 @@ void main()
 *0928 수업 · S3 p19–31*
 
 - [기출 복습문제 0928](복습문제_0928_ArrayStructureList.md) — 문제은행에 포인터·동적 메모리 할당 기출이 없어서 이번에는 문항이 0개예요.
-- [강의록 Software_3 ArrayStructureList (S3 p19–31)](../../../자료구조_강의록_2026/Software_3_ArrayStructureList.pdf)
+- 강의록 Software_3 ArrayStructureList (S3 p19–31)
 
 ---
 
 출처: 이정원 교수님 강의록(Software_3) · 수업 녹음 전사(0928).
-
-[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0928_ArrayStructureList-%EB%8B%B5%EC%95%88.pdf)

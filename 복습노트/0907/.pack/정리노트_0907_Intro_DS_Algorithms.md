@@ -1186,5 +1186,3 @@ S1 p14의 비교표를 정리하면 이래요.
 ---
 
 출처: 이정원 교수님 강의록(Software_1) · 수업 녹음 전사(0907).
-
-[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0907_Intro_DS_Algorithms-%EB%8B%B5%EC%95%88.pdf)

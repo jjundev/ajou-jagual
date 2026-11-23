@@ -151,8 +151,33 @@ def test_release_keeps_pdfs_and_archives_legacy_without_public_html(tmp_path, mo
     assert not fixture.stage.exists()
     assert not fixture.old.exists()
     assert extract_cards(read_review(fixture.old)) == before
-    assert "답안지 PDF" in (actual / fixture.note.name).read_text(encoding="utf-8")
+    published_note = (actual / fixture.note.name).read_text(encoding="utf-8")
+    assert ".pdf" not in published_note
+    assert fixture.review.name not in published_note
+    published_md = actual / ".pack" / fixture.note.with_suffix(".md").name
+    assert ".pdf" not in published_md.read_text(encoding="utf-8")
     assert all((actual / name).read_bytes() == b"test PDF fixture" for name in fixture.pdfs)
+
+
+@pytest.mark.parametrize("suffix,link", [
+    (".html", '<a href="https://example.org/lecture%2EPDF?download=1#page=2">강의록</a>'),
+    (".md", '[강의록](<lecture notes.pdf#page=2> "강의록")'),
+    (".md", '[강의록][lecture]\n\n[lecture]: lecture.pdf#page=2'),
+])
+def test_release_rejects_pdf_links_in_notes(tmp_path, monkeypatch, suffix, link):
+    fixture = release_fixture(tmp_path, monkeypatch)
+    path = fixture.note if suffix == ".html" else fixture.stage / ".pack" / fixture.note.with_suffix(suffix).name
+    text = path.read_text(encoding="utf-8")
+    if suffix == ".html":
+        text = text.replace("</main>", link + "</main>")
+    else:
+        text += "\n" + link + "\n"
+    path.write_text(text, encoding="utf-8")
+    approve_browser(fixture)
+    before = live_files_and_bytes(fixture.live)
+    with pytest.raises(ValueError, match="정리노트 PDF 링크"):
+        publish(fixture.repo, fixture.run)
+    assert live_files_and_bytes(fixture.live) == before
 
 
 @pytest.mark.parametrize("mode,mutation", [

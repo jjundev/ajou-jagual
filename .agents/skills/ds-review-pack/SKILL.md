@@ -140,6 +140,7 @@ B1에서 그대로 가져오지 않은 원본마다 전사 에이전트 1명을 
 
 ### 3. 작성
 - 메인 읽기 — 브리프의 [작성자 브리프 (메인 에이전트가 섹션마다 1명, 병렬, 모델은 SKILL.md "에이전트 모델")](references/content-rules.md), [작성자 브리프 (메인 에이전트가 1명, 모델은 SKILL.md "에이전트 모델")](references/card-rules.md)와 위젯 배정의 [언제](references/widget-rules.md). 섹션·카드의 세부 작성 규칙과 위젯·trace 문서는 담당자에게 경로로 넘긴다.
+- 정리노트 HTML·동반 Markdown·제작 manifest의 `links`에 PDF 링크를 넣지 않는다. 강의록·실습·과제는 자료명이나 강의록 쪽 번호를 텍스트로 적는다. 문제지·답안지 PDF는 날짜 폴더에 발행한다.
 - 정리노트 HTML의 본문·인용·요약·푸터에 녹음 시각, Part 번호, 시각 미제공 등 위치 표시와 그 안내 문장을 싣지 않는다. 토픽 머리의 수업 날짜 태그(`tag date`)·강의록 페이지·푸터 일반 출처는 유지하되 인용 끝 `(MMDD)`는 붙이지 않고, 위치 근거는 내부 STT 요약에만 둔다. 신규·기존 갱신 모드 모두 `recording-locator`·`quote-date` 검사 통과가 필수다.
 - 섹션마다 작성자 1명과 전체 카드를 맡을 작성자 1명을 띄운다.
 - 신규 작성자는 [섹션 브리프](references/content-rules.md) 또는 [카드 브리프](references/card-rules.md)의 `preview_layout.py author` 명령으로 실제 템플릿을 확인한다. `fail`이면 보고서에 표시된 영역·수치를 기준으로 해당 조각을 고치고 다시 실행한다. `unavailable`이면 영향을 받는 섹션·카드와 사유를 7단계 검사자에게 넘긴다. 메인은 판정, `layout.json` 경로, 남은 결함만 받는다.
@@ -191,7 +192,7 @@ python3 "$SKILL/scripts/release_review.py" browser-request --repo "$REPO" --run 
 
 - 메인 읽기 (문항이 있을 때) — [생성과 기계 검사](references/pdf-build.md), [쪽별 실화면 검토](references/pdf-build.md), [발행](references/pdf-build.md). PDF만 소급 생성할 때는 [backfill](references/pdf-build.md), 생성기를 고칠 때는 관련 배치·강의 코드·글꼴 절을 추가로 본다.
 - 7단계 브라우저 승인을 받은 작업용 복습문제 HTML을 `REVIEW`로 지정해 전체 PDF를 만든다. 새 검사 서브에이전트가 `PDF_RUN`의 모든 쪽을 실제로 열어 검토한다. 메인은 판정을 받아 PDF를 같은 작업 폴더에 발행한다. 0문항이면 PDF를 건너뛴다.
-- 아래 명령으로 정리노트, 문항 원고·MD·그림과 PDF 쌍을 함께 발행한다. 발행기는 문제 링크를 PDF로 연결하고 작업 폴더를 정리한다. 중단한 작업 폴더는 같은 인자로 `release_review.py discard`를 실행해 지운다. 문항 0개인 팩은 문제 링크를 생략한다.
+- 아래 명령으로 정리노트, 문항 원고·MD·그림과 PDF 쌍을 함께 발행한다. 발행기는 정리노트 HTML·동반 Markdown·제작 manifest에 PDF 링크가 있으면 중단한다. 발행에 성공하면 작업 폴더를 정리한다. 중단한 작업 폴더는 같은 인자로 `release_review.py discard`를 실행해 지운다.
 
 ```bash
 python3 "$SKILL/scripts/release_review.py" publish --repo "$REPO" --run "$RUN"

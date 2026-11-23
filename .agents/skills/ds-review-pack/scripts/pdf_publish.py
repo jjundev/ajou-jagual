@@ -53,23 +53,22 @@ def refreshed_documents(source, report):
     explain = root / '.pack' / f'자료_문제설명_{key}' / 'manifest.json'
     manifest = json.loads(explain.read_text(encoding='utf-8')) if explain.is_file() else None
     hashes_changed = False
-    for role in ('정리노트', '문제설명'):
-        for ext, folder in (('.html', root), ('.md', root / '.pack')):
-            path = folder / f'{role}_{key}{ext}'
-            if not path.is_file():
-                continue
-            raw = path.read_bytes()
-            old = raw.decode('utf-8')
-            old_hash = hashlib.sha256(raw).hexdigest()
-            refreshed = refresh_pages(old, source, prior, current, markdown=ext == '.md')
-            if refreshed == old:
-                continue
-            content = refreshed.encode('utf-8')
-            updates[path] = (old_hash, content)
-            rel = path.relative_to(root).as_posix()
-            if manifest and manifest['files'].get(rel) == old_hash:
-                manifest['files'][rel] = hashlib.sha256(content).hexdigest()
-                hashes_changed = True
+    for ext, folder in (('.html', root), ('.md', root / '.pack')):
+        path = folder / f'문제설명_{key}{ext}'
+        if not path.is_file():
+            continue
+        raw = path.read_bytes()
+        old = raw.decode('utf-8')
+        old_hash = hashlib.sha256(raw).hexdigest()
+        refreshed = refresh_pages(old, source, prior, current, markdown=ext == '.md')
+        if refreshed == old:
+            continue
+        content = refreshed.encode('utf-8')
+        updates[path] = (old_hash, content)
+        rel = path.relative_to(root).as_posix()
+        if manifest and manifest['files'].get(rel) == old_hash:
+            manifest['files'][rel] = hashlib.sha256(content).hexdigest()
+            hashes_changed = True
     if hashes_changed:
         updated = (json.dumps(manifest, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
         updates[explain] = (digest(explain), updated)

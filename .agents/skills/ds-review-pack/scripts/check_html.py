@@ -23,6 +23,7 @@ from urllib.parse import unquote
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import manifest as manifest_mod  # noqa: E402
 import trace_figs  # noqa: E402
+from review_links import is_pdf_link  # noqa: E402
 
 VOID_TAGS = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"}
 CONTAINER_CLASSES = {"topic", "card"}
@@ -429,6 +430,7 @@ def check_common(doc: Doc, source: str, path: Path, *, rules: frozenset[str] = f
                 for topic in long_hand_traces(source)]
     is_note = name.startswith("정리노트_") or any("topic" in c.classes for c in doc.containers.values())
     if is_note:
+        out += [Problem("note-pdf-link", name, href) for href in doc.hrefs if is_pdf_link(href)]
         out += [Problem("recording-locator", name, match.group(0))
                 for match in RECORDING_LOCATOR_RE.finditer(doc.body_text)]
         out += [Problem("quote-date", name, q.strip()[-40:])

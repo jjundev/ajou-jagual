@@ -1,28 +1,49 @@
-"""Point a published page's review links at its corresponding worksheet."""
+"""Inspect note links and keep problem explanation page links aligned."""
 import html
 import re
 from pathlib import Path
-from urllib.parse import quote, unquote, urlsplit
+from urllib.parse import unquote, urlsplit
 
-from review_source import NAME, nfc
+from review_source import nfc
 
 HTML_LINK = re.compile(r"""(\bhref\s*=\s*)(["'])([^"']+)\2""", re.I)
 MD_LINK = re.compile(r"(\]\()([^\s)]+)(\))")
 
 
-def rewrite(text: str, source: Path, pages: dict[str, int], *, markdown: bool = False) -> str:
-    def pdf_target(value: str) -> str:
-        url = urlsplit(html.unescape(value))
-        if url.scheme or url.netloc or not url.path:
-            return value
-        path = Path(unquote(url.path))
-        if not NAME.fullmatch(nfc(path.name)) or nfc(path.name) != nfc(source.name):
-            return value
-        target = quote(path.with_name(nfc(path.stem) + "-문제.pdf").as_posix(), safe="/")
-        page = pages.get(unquote(url.fragment))
-        return f"{target}#page={page}" if page else target
+HTML_ANCHOR = re.compile(r"""<a\b(?P<attrs>[^>]*)>(?P<label>.*?)</a\s*>""", re.I | re.S)
+MD_DESTINATION = re.compile(
+    r"(?:\]\(\s*|^ {0,3}\[[^\]\n]+\]:\s*)(?:<([^>\n]+)>|([^\s)]+))",
+    re.M,
+)
+MD_AUTOLINK = re.compile(r"<((?:[a-z][a-z0-9+.-]*:)[^<>\s]+)>", re.I)
 
-    return _rewrite_links(text, pdf_target, markdown)
+
+def is_pdf_link(value: str) -> bool:
+    return unquote(urlsplit(html.unescape(value.strip())).path).lower().endswith(".pdf")
+
+
+def markdown_link_targets(text: str):
+    for match in MD_DESTINATION.finditer(text):
+        yield match[1] or match[2]
+    yield from MD_AUTOLINK.findall(text)
+
+
+def is_working_review_link(value: str, source: Path) -> bool:
+    url = urlsplit(html.unescape(value))
+    return not (url.scheme or url.netloc) and nfc(unquote(url.path)) in {
+        nfc(source.name), "./" + nfc(source.name),
+    }
+
+
+def unlink_working_review(text: str, source: Path) -> str:
+    """Preserve the label of a link to the temporary HTML discarded at publish."""
+    def replace(match):
+        href = HTML_LINK.search(match["attrs"])
+        if href and is_working_review_link(href[3], source):
+            return match["label"]
+        return match[0]
+
+    return HTML_ANCHOR.sub(replace, text)
 
 
 def refresh_pages(text: str, source: Path, prior: dict[str, int], current: dict[str, int], *, markdown: bool = False) -> str:
@@ -47,21 +68,3 @@ def _rewrite_links(text, replace, markdown: bool) -> str:
     if markdown:
         text = MD_LINK.sub(lambda m: m[1] + replace(m[2]) + m[3], text)
     return text
-
-
-def add_pdf_links(text: str, source: Path, *, markdown: bool = False) -> str:
-    problem, answer = (quote(nfc(source.stem) + tail, safe="") for tail in ("-문제.pdf", "-답안.pdf"))
-    if markdown:
-        block = f"\n[문제지 PDF](../{problem}) · [답안지 PDF](../{answer})\n"
-        if f"](../{answer})" not in text and f"]({answer})" not in text:
-            return text.rstrip() + "\n" + block
-        return text
-    if f'href="{answer}"' in text or f'href="{source.stem}-답안.pdf"' in text:
-        return text
-    block = f'<p class="review-pdfs"><a href="{problem}">문제지 PDF</a> · <a href="{answer}">답안지 PDF</a></p>'
-    at = text.find("</article>", text.find('id="s3-links"'))
-    if at < 0:
-        at = text.rfind("</main>")
-    if at < 0:
-        raise ValueError("정리노트 PDF 링크 위치가 없어요")
-    return text[:at] + block + "\n" + text[at:]

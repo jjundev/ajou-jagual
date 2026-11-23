@@ -1257,12 +1257,10 @@ DFS는 정점을 방문 표시한 뒤, 아직 방문하지 않은 인접 정점�
 *1116 수업*
 
 - [1116 복습문제](복습문제_1116_Graph.md)
-- [강의록 S10 그래프(Graph)](../../../자료구조_강의록_2026/Software_10_Graph.pdf)
-- [강의록 S8 힙(Heap): 허프만 코드 p17–19](../../../자료구조_강의록_2026/Software_8_Heap.pdf)
+- 강의록 S10 그래프(Graph)
+- 강의록 S8 힙(Heap): 허프만 코드 p17–19
 - [1112 정리노트: 허프만 트리 만들기](../../1112/정리노트_1112_Heap.html#s2-huffman-build)
 
 ---
 
 출처: 이정원 교수님 강의록(Software_8, Software_10) · 수업 녹음 전사(1116).
-
-[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1116_Graph-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_1116_Graph-%EB%8B%B5%EC%95%88.pdf)

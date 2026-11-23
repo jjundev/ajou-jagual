@@ -10,10 +10,11 @@ import sys
 
 from browser_review import MODES, require_pass, required_cases, write_request
 
+from check_html import parse_html
 from pack_layout import RANGE_RE, nfc, normalized_child, pdf_report_path
 from pdf_cards import digest, read_pack
 from pdf_publish import lock_handle
-from review_links import add_pdf_links, rewrite
+from review_links import is_pdf_link, is_working_review_link, markdown_link_targets, unlink_working_review
 from review_source import archive_review, archived_markup, review_paths, source_file, read_archive
 from update_review import extract_cards, publish_update
 
@@ -122,15 +123,12 @@ def release_files(stage: Path, record: dict) -> tuple[Path, dict[Path, bytes]]:
         raise ValueError("복습문제 원고와 검증한 문항이 달라요")
     report_path = pdf_report_path(stage)
     pdfs = [source.with_name(source.stem + tail) for tail in ("-문제.pdf", "-답안.pdf")]
-    pages = {}
     report = None
     if pack.cards:
         report = json.loads(report_path.read_text(encoding="utf-8"))
         if (report.get("status") != "published" or report.get("source_sha256") != pack.source_sha256
                 or any(digest(p) != report["artifact_hashes"].get(nfc(p.name)) for p in pdfs)):
             raise ValueError("현재 원고의 검증·발행된 PDF 쌍이 필요해요")
-        pages = {pid: page for page, pid in enumerate(report["probes"]["problems"]["page_ids"], 1)
-                 if pid in {c.id for c in pack.cards}}
     data = stage / ".pack"
     note = stage / nfc(source.name).replace("복습문제_", "정리노트_", 1)
     if not note.is_file():
@@ -144,11 +142,13 @@ def release_files(stage: Path, record: dict) -> tuple[Path, dict[Path, bytes]]:
     manifest = data / "자료_복습팩/manifest.json"
     if manifest.is_file():
         payload = json.loads(manifest.read_text(encoding="utf-8"))
-        for link in payload.get("links", []):
-            href = rewrite(f'href="{link["href"]}"', source, pages)
-            if href != f'href="{link["href"]}"':
-                link["href"] = href[6:-1]
-        files[manifest] = (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        links = payload.get("links", [])
+        if any(is_pdf_link(link["href"]) for link in links):
+            raise ValueError("정리노트 PDF 링크가 제작 manifest에 있어요")
+        published_links = [link for link in links if not is_working_review_link(link["href"], source)]
+        if published_links != links:
+            payload["links"] = published_links
+            files[manifest] = (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     if report:
         files.update({p: p.read_bytes() for p in pdfs})
         # Build evidence is left intact. The published location is discoverable by the pack.
@@ -156,13 +156,18 @@ def release_files(stage: Path, record: dict) -> tuple[Path, dict[Path, bytes]]:
     for p in (note, data / note.with_suffix(".md").name):
         if not p.is_file():
             raise ValueError(f"발행할 정리노트가 없어요: {p.name}")
-        markdown = p.suffix == ".md"
-        text = p.read_text(encoding="utf-8")
-        if pack.cards:
-            text = add_pdf_links(rewrite(text, source, pages, markdown=markdown), source, markdown=markdown)
-        elif nfc(source.name) in text:
+        raw = p.read_bytes()
+        text = raw.decode("utf-8")
+        links = parse_html(text).hrefs
+        if p.suffix == ".md":
+            links.extend(markdown_link_targets(text))
+        if any(is_pdf_link(href) for href in links):
+            raise ValueError(f"정리노트 PDF 링크가 있어요: {p.name}")
+        if not pack.cards and nfc(source.name) in text:
             raise ValueError("문항 0개에 복습문제 링크가 있어요")
-        files[p] = text.encode("utf-8")
+        if p == note:
+            raw = unlink_working_review(text, source).encode("utf-8")
+        files[p] = raw
     return source, files
 
 

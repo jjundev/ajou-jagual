@@ -1358,10 +1358,8 @@ p17의 1단계에서 과정이 생략됐다는 점을 짚었어요.
 *0917 수업*
 
 - [복습문제: 기출 복습문제 8선 — 9월 17일 수업 범위](복습문제_0917_Recursion.md)
-- [강의록 Software_2_Recursion.pdf (CHAP 2 Recursion)](../../../자료구조_강의록_2026/Software_2_Recursion.pdf)
+- 강의록 Software_2_Recursion.pdf (CHAP 2 Recursion)
 
 ---
 
 출처: 이정원 교수님 강의록(Software_1–2) · 수업 녹음 전사(0917).
-
-[문제지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion-%EB%AC%B8%EC%A0%9C.pdf) · [답안지 PDF](../%EB%B3%B5%EC%8A%B5%EB%AC%B8%EC%A0%9C_0917_Recursion-%EB%8B%B5%EC%95%88.pdf)
