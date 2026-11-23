@@ -43,6 +43,10 @@ def check_controls(page):
           const label = control.getAttribute('aria-label') || control.textContent;
           verify(box.left >= -1 && box.right <= viewportWidth + 1 && box.width >= 44 && box.height >= 44, label);
           verify(box.bottom <= stage.top + 1, label + ' overlaps the scene');
+          for (const fraction of [.25, .5, .75]) {
+            const at = document.elementFromPoint(box.left + box.width * fraction, box.top + box.height / 2);
+            verify(at === control || control.contains(at), label + ' is covered');
+          }
           const padding = control.matches('button') && innerWidth > 480 ? 16 : 12;
           const arrowSpace = control.matches('select') ? 30 : padding;
           verify(parseFloat(style.paddingInlineStart) === padding && parseFloat(style.paddingInlineEnd) === arrowSpace,
@@ -330,4 +334,19 @@ def check_tree_or_memory(page, kind, width):
             cell.click()
             expect(page.locator('.selection dl')).to_have_count(1)
             expect(cell).to_be_focused()
+        if width < 1280:
+            page.locator('[data-action=toggle-right]').click()
+        panel = page.locator('#panel-right')
+        zoom = panel.locator('[data-action=zoom-in]')
+        zoom.click()
+        expect(page.locator('.memory')).not_to_have_attribute('data-scale', '1')
+        panel.locator('[data-action=zoom-reset]').click()
+        expect(page.locator('.memory')).to_have_attribute('data-scale', '1')
+        addresses = panel.locator('[data-action=option-addresses]')
+        addresses.click()
+        expect(app).to_have_attribute('data-addresses', 'false')
+        addresses.click()
+        expect(app).to_have_attribute('data-addresses', 'true')
+        if width < 1280:
+            page.keyboard.press('Escape')
     return len(cases), checked

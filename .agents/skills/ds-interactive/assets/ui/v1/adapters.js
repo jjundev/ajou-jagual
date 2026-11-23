@@ -120,7 +120,6 @@
 
     return {
       heading: '전체 트리',
-      hasOutput: true,
       reset() {
         expanded = opener = node = null;
         if (dialog.open) dialog.close();

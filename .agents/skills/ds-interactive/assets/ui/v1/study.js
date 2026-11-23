@@ -19,7 +19,7 @@
     return card;
   }
 
-  function mountPlayback(app, signal, jumpOutput, hasOutput) {
+  function mountPlayback(app, signal, jumpOutput) {
     const bar = app.querySelector('.playbar');
     const trigger = D.el('button', 'text-btn study-speed-trigger', '1×');
     trigger.type = 'button';
@@ -31,21 +31,19 @@
     popup.setAttribute('aria-label', '재생 옵션');
     popup.append(bar.querySelector('.speeds'));
 
-    let jumps;
-    if (hasOutput) {
-      jumps = D.el('div', 'study-jumps');
-      for (const [action, label] of [['previous-output', '이전 출력'], ['next-output', '다음 출력']]) {
-        const button = D.el('button', 'btn', label);
-        button.type = 'button';
-        button.dataset.action = action;
-        jumps.append(button);
-      }
-      popup.append(jumps);
-      jumps.addEventListener('click', event => {
-        const action = event.target.closest('button')?.dataset.action;
-        if (action) jumpOutput(action === 'previous-output' ? -1 : 1);
-      }, {signal});
+    const jumps = D.el('div', 'study-jumps');
+    jumps.hidden = true;
+    for (const [action, label] of [['previous-output', '이전 출력'], ['next-output', '다음 출력']]) {
+      const button = D.el('button', 'btn', label);
+      button.type = 'button';
+      button.dataset.action = action;
+      jumps.append(button);
     }
+    popup.append(jumps);
+    jumps.addEventListener('click', event => {
+      const action = event.target.closest('button')?.dataset.action;
+      if (action) jumpOutput(action === 'previous-output' ? -1 : 1);
+    }, {signal});
     const endpoints = D.el('div', 'study-endpoints');
     for (const button of bar.querySelectorAll('[data-action=first], [data-action=last]')) {
       button.classList.replace('icon-btn', 'btn');
@@ -132,7 +130,6 @@
     q('.stage').setAttribute('aria-label', '실행 보기');
     const memory = q('.memory');
     memory.setAttribute('aria-label', '그림, 결과와 현재 값');
-    q('.view-btns').hidden = !design.memory;
     q('.tree-output').remove();
 
     const header = q('.topbar');
@@ -169,7 +166,13 @@
     details.append(D.el('h2', 'sec-title', '실행 상태 상세'));
     const state = D.el('div', 'study-detail-content');
     details.append(state);
-    if (design.memory) details.append(selection, viewOptions);
+    const zoom = q('.view-btns');
+    if (design.memory) {
+      viewOptions.append(zoom);
+      details.append(selection, viewOptions);
+    } else {
+      zoom.remove();
+    }
     details.append(changeDetails);
     const example = q('.provenance');
     example.querySelector('summary').textContent = '예제 정보';
@@ -182,7 +185,7 @@
 
     const scene = D.el('div', 'study-scene');
     memory.append(scene);
-    const playback = mountPlayback(app, signal, jumpOutput, design.hasOutput);
+    const playback = mountPlayback(app, signal, jumpOutput);
     const {jumps} = playback;
     let followedTop = 0;
     let leftOpen = false;
@@ -232,10 +235,9 @@
       }));
       if (!snapshot.writes.length) changesList.append(D.el('p', 'trace-message', '이 단계에서는 저장 값이 바뀌지 않았습니다.'));
       if (design.memory) selection.replaceChildren(design.selectionDetails(snapshot, stateInfo.selection));
-      if (jumps) {
-        q('[data-action=previous-output]').disabled = stateInfo.blocked || !stateInfo.hasPreviousOutput;
-        q('[data-action=next-output]').disabled = stateInfo.blocked || !stateInfo.hasNextOutput;
-      }
+      jumps.hidden = !stateInfo.hasOutput;
+      q('[data-action=previous-output]').disabled = stateInfo.blocked || !stateInfo.hasPreviousOutput;
+      q('[data-action=next-output]').disabled = stateInfo.blocked || !stateInfo.hasNextOutput;
       if (id || frame || node) {
         [...app.querySelectorAll('button[data-cell-id],button[data-inspect-frame],button[data-node-id]')]
           .find(button => id && button.dataset.cellId === id || frame && button.dataset.inspectFrame === frame ||

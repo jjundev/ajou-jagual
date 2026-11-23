@@ -184,8 +184,9 @@
         button.setAttribute('aria-pressed', String(button.dataset.modeValue === input.mode));
       }
       paintCode(snapshot, steps[step + 1]);
-      ui.paint(snapshot, {selection, trace, blocked: play.disabled, hasPreviousOutput: outputStep(-1) >= 0,
-        hasNextOutput: outputStep(1) >= 0});
+      ui.paint(snapshot, {selection, trace, blocked: play.disabled,
+        hasOutput: steps.at(-1).state.stdout.length > steps[0].state.stdout.length,
+        hasPreviousOutput: outputStep(-1) >= 0, hasNextOutput: outputStep(1) >= 0});
       for (const action of ['first', 'prev']) q('[data-action=' + action + ']').disabled = step === 0 || play.disabled;
       for (const action of ['last', 'next']) q('[data-action=' + action + ']').disabled = step === steps.length - 1 || play.disabled;
       shell.update(trace, steps, step, play.disabled);
