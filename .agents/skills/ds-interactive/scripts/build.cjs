@@ -1,6 +1,7 @@
 const fs=require('node:fs'),p=require('node:path'),vm=require('node:vm'),crypto=require('node:crypto'),{checkScenario}=require('../assets/engine/trace.js');
 const {fontHref}=require('./fonts.cjs');
 const {CURRENT_THEME_VERSION,addTheme}=require('./theme.cjs');
+const {addLegacyPresetLabel}=require('./preset-label.cjs');
 const UI_VERSIONS=[0,1,2];
 const CURRENT_UI_VERSION=UI_VERSIONS.at(-1);
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
@@ -25,18 +26,18 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,t
  if(decisions&&uiVersion===0)throw Error('UI_VERSION_UNSUPPORTED: '+uiVersion+' for '+s.graph.view);
  const graphAsset=decisions?'graph-decisions':inspection?'graph-inspection':'graph';
  const common=uiVersion!==0, ui='ui/v1/';
- const caseWithoutLabel=uiVersion>=2;
+ const legacyPresetLabel=uiVersion<2;
  const css=['player.css',...(common?[ui+'study.css']:graph?['graph-shell.css']:[]),
   ...(graph?[graphAsset+'.css']:[])].map(file=>{
   const stylesheet=read(file);
-  return caseWithoutLabel&&file===ui+'study.css'
+  return !legacyPresetLabel&&file===ui+'study.css'
    ?stylesheet.replaceAll('[data-ui-version="1"]','[data-ui-version="'+uiVersion+'"]')
    :stylesheet;
  }).join('\n');
  let html=read('shell.html').replace('/*FONT_HREF*/',fontHref(outDir)).replace('/*CSS*/',css);
  if(common)html=html.replace('id="app"','id="app" data-ui-version="'+uiVersion+'"');
- // Keep the label element for layout and the select's aria-label for its accessible name.
- if(caseWithoutLabel)html=html.replace('<label>사례<select data-action="preset"', '<label><select data-action="preset"');
+ // Preserve the original markup when reproducing old reviews.
+ if(legacyPresetLabel)html=addLegacyPresetLabel(html);
  const runtime=common?[ui+'shell.js',ui+'study.js',ui+'adapters.js',ui+'player.js']:
   [...(tree?['tree-ui.js']:[]),'shell.js','player.js',...(graph?['graph-shell.js']:[])];
  const list=['engine/contract.js','engine/memory.js',...(tree?['engine/line-steps.js','engine/tree.js']:[]),

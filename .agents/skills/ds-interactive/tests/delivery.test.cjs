@@ -227,3 +227,32 @@ test('theme-only updates preserve the archived HTML and cannot be used for new p
  update(addTheme(base).replace('archived layout','unreviewed layout'));
  a.throws(()=>checkReady(run,{archived:true}),/REBUILD_MISMATCH/);
 });
+
+test('archived preset label updates preserve the selector and require browser evidence', t=>{
+ const dir=tmp();t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const run=runFixture(dir,'../examples/0928/value-address.cjs',source=>source,1);
+ const preview=p.join(run,'preview.html'), reviewPath=p.join(run,'review.json');
+ const themeEvidence=p.join(run,'evidence/theme.json');
+ const {removeTheme}=require('../scripts/theme.cjs');
+ const {addLegacyPresetLabel,removeLegacyPresetLabel}=require('../scripts/preset-label.cjs');
+ const {currentHashes}=require('../scripts/review.cjs');
+ const {checkReady}=require('../scripts/verify-build.cjs');
+ const old=fs.readFileSync(preview,'utf8'), html=removeLegacyPresetLabel(old);
+ const base=removeTheme(old);
+ a.notEqual(html,old);
+ a.match(html,/<label> <select data-action="preset" aria-label="사례">/);
+ a.equal(addLegacyPresetLabel(html),old);
+ fs.writeFileSync(preview,base);
+ fs.writeFileSync(p.join(run,studyReport),JSON.stringify(fixtureReport(run)));
+ fs.writeFileSync(preview,html);
+ const review=JSON.parse(fs.readFileSync(reviewPath,'utf8'));
+ const writeReview=(checked)=>{
+  fs.writeFileSync(themeEvidence,JSON.stringify({...fixtureThemeReport(html),preset_label_checked:checked}));
+  fs.writeFileSync(reviewPath,JSON.stringify({...review,reviewed_preview_sha256:hash(base),
+   theme_base_sha256:hash(base),preset_label_removed:true,hashes:currentHashes(run)}));
+ };
+ writeReview(false);
+ a.throws(()=>checkReady(run,{archived:true}),/THEME_UNVERIFIED/);
+ writeReview(true);
+ a.equal(checkReady(run,{archived:true}),html);
+});

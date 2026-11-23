@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from playwright.sync_api import expect, sync_playwright
+from browser_preset import check_preset_pages
 
 
 def check_theme(page, url):
@@ -84,27 +85,32 @@ def check_cross_tab(browser, preview):
         expect(first.locator('html')).to_have_css('color-scheme', 'light')
 
 
-def check_preview(browser, preview):
+def check_preview(browser, preview, *, check_preset=False):
     with browser.new_context(offline=True) as context:
         page = context.new_page()
         errors = []
         page.on('pageerror', lambda error: errors.append(str(error)))
+        if check_preset:
+            check_preset_pages(page, preview.as_uri())
         check_theme(page, preview.as_uri())
         check_storage_unavailable(page, preview.as_uri())
         assert not errors, errors
     check_cross_tab(browser, preview)
     normalized = re.sub(rb'(data-ds-interactive-font href=")[^"]*', rb'\g<1>',
                         preview.read_bytes(), count=1)
-    return {'status': 'pass', 'build_sha256': hashlib.sha256(normalized).hexdigest(),
+    report = {'status': 'pass', 'build_sha256': hashlib.sha256(normalized).hexdigest(),
             'system': True, 'storage': True, 'storage_unavailable': True, 'cross_tab': True}
+    if check_preset:
+        report['preset_label_checked'] = True
+    return report
 
 
-def main(source, output):
+def main(source, output, option=None):
     source = Path(source).resolve()
     preview = source / 'preview.html' if source.is_dir() else source
     with sync_playwright() as pw:
         browser = pw.chromium.launch()
-        report = check_preview(browser, preview)
+        report = check_preview(browser, preview, check_preset=option == '--preset-label')
         browser.close()
     Path(output).write_text(json.dumps(report, indent=2) + '\n', encoding='utf8')
 

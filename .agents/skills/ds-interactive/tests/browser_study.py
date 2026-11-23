@@ -1,5 +1,6 @@
 """Browser contract for the common learning UI, independent of scene semantics."""
 from playwright.sync_api import expect
+from browser_preset import check_preset_label
 
 from browser_graph_layout import open_options
 
@@ -137,12 +138,7 @@ def check_layout(page, kind, width, height, theme):
     app = page.locator('#app')
     ui_version = int(app.get_attribute('data-ui-version'))
     if ui_version >= 2:
-        preset = page.locator('[data-action=preset]')
-        expect(preset).to_have_attribute('aria-label', '사례')
-        if preset.is_visible():
-            expect(preset).to_have_accessible_name('사례')
-        assert preset.evaluate('''select => [...select.parentElement.childNodes].every(node =>
-            node === select || !node.textContent.trim())'''), 'Unexpected text beside the case selector'
+        check_preset_label(page)
     expect(page.locator('.brand')).to_be_visible()
     for side in ('left', 'right'):
         expect(toggle(side)).to_have_attribute('aria-expanded', str(not narrow).lower())
