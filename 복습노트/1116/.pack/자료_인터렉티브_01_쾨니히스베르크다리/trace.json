@@ -1,0 +1,5936 @@
+{
+  "default": {
+    "version": 1,
+    "id": "1116-bridges",
+    "title": "쾨니히스베르크 다리 건너기",
+    "kind": "c-graph",
+    "sources": [
+      {
+        "id": "walk",
+        "label": "다리 건너기 의사코드",
+        "language": "pseudocode",
+        "text": "다리_건너기(출발점)\n    현재 위치의 미사용 다리를 이름순으로 고른다\n    다리를 건너고 순서를 기록한다\n    건널 수 있는 동안 반복한다\n    남은 다리와 도착점을 확인한다",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+          "page": "3",
+          "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+          "supplement": true,
+          "adjustments": "p3의 다리 그림을 토대로 건너기 순서를 보충했어요.",
+          "note": "학습용 의사코드예요. 이 규칙은 가능한 경로를 모두 찾지 않고 한 번의 시도를 보여 줘요."
+        }
+      }
+    ],
+    "inputs": {
+      "layout": "original",
+      "start": "A"
+    },
+    "presets": [
+      {
+        "id": "two-odd",
+        "label": "열린 경로",
+        "input": {
+          "layout": "twoOdd",
+          "start": "C"
+        }
+      },
+      {
+        "id": "even",
+        "label": "회로",
+        "input": {
+          "layout": "even",
+          "start": "A"
+        }
+      },
+      {
+        "id": "split",
+        "label": "연결 끊김",
+        "input": {
+          "layout": "split",
+          "start": "A"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "id": "initial",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "before",
+        "title": "호출 전 · 초기 상태",
+        "explanation": "먼저 홀수 차수인 지점을 찾고, 출발점으로 돌아올 수 있을지 예상해 보세요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-1",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 a 고르기",
+        "explanation": "A에서 건널 수 있는 미사용 다리 중 a를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.a"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-2",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "A → B",
+        "explanation": "다리 a를 1번째로 건너 B에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.a",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 1
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-3",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 b 고르기",
+        "explanation": "B에서 건널 수 있는 미사용 다리 중 b를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.b"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-4",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "B → A",
+        "explanation": "다리 b를 2번째로 건너 A에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.b",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 2
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-5",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 c 고르기",
+        "explanation": "A에서 건널 수 있는 미사용 다리 중 c를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.c"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-6",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "A → C",
+        "explanation": "다리 c를 3번째로 건너 C에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.c",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 3
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-7",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 d 고르기",
+        "explanation": "C에서 건널 수 있는 미사용 다리 중 d를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.d"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-8",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "C → A",
+        "explanation": "다리 d를 4번째로 건너 A에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.d",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 4
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-9",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 e 고르기",
+        "explanation": "A에서 건널 수 있는 미사용 다리 중 e를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.e"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-10",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "A → D",
+        "explanation": "다리 e를 5번째로 건너 D에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.e",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 5
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-11",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 f 고르기",
+        "explanation": "D에서 건널 수 있는 미사용 다리 중 f를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.f"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-12",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "D → B",
+        "explanation": "다리 f를 6번째로 건너 B에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 6
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.f",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 6
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-13",
+        "at": {
+          "sourceId": "walk",
+          "line": 5
+        },
+        "phase": "after",
+        "title": "건너기 결과",
+        "explanation": "B에서 더 건널 수 없어요. 다리 g가 남았어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 6
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      }
+    ],
+    "metadata": {
+      "supplement": "",
+      "addressModel": "기호 주소 · 실제 ABI 배치 아님"
+    }
+  },
+  "two-odd": {
+    "version": 1,
+    "id": "1116-bridges",
+    "title": "쾨니히스베르크 다리 건너기",
+    "kind": "c-graph",
+    "sources": [
+      {
+        "id": "walk",
+        "label": "다리 건너기 의사코드",
+        "language": "pseudocode",
+        "text": "다리_건너기(출발점)\n    현재 위치의 미사용 다리를 이름순으로 고른다\n    다리를 건너고 순서를 기록한다\n    건널 수 있는 동안 반복한다\n    남은 다리와 도착점을 확인한다",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+          "page": "3",
+          "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+          "supplement": true,
+          "adjustments": "p3의 다리 그림을 토대로 건너기 순서를 보충했어요.",
+          "note": "학습용 의사코드예요. 이 규칙은 가능한 경로를 모두 찾지 않고 한 번의 시도를 보여 줘요."
+        }
+      }
+    ],
+    "inputs": {
+      "layout": "twoOdd",
+      "start": "C"
+    },
+    "presets": [
+      {
+        "id": "two-odd",
+        "label": "열린 경로",
+        "input": {
+          "layout": "twoOdd",
+          "start": "C"
+        }
+      },
+      {
+        "id": "even",
+        "label": "회로",
+        "input": {
+          "layout": "even",
+          "start": "A"
+        }
+      },
+      {
+        "id": "split",
+        "label": "연결 끊김",
+        "input": {
+          "layout": "split",
+          "start": "A"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "id": "initial",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "before",
+        "title": "호출 전 · 초기 상태",
+        "explanation": "먼저 홀수 차수인 지점을 찾고, 출발점으로 돌아올 수 있을지 예상해 보세요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-1",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 c 고르기",
+        "explanation": "C에서 건널 수 있는 미사용 다리 중 c를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.c"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-2",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "C → A",
+        "explanation": "다리 c를 1번째로 건너 A에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.c",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 1
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-3",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 b 고르기",
+        "explanation": "A에서 건널 수 있는 미사용 다리 중 b를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.b"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-4",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "A → B",
+        "explanation": "다리 b를 2번째로 건너 B에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.b",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 2
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-5",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 f 고르기",
+        "explanation": "B에서 건널 수 있는 미사용 다리 중 f를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.f"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-6",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "B → D",
+        "explanation": "다리 f를 3번째로 건너 D에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.f",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 3
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-7",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 e 고르기",
+        "explanation": "D에서 건널 수 있는 미사용 다리 중 e를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.e"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-8",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "D → A",
+        "explanation": "다리 e를 4번째로 건너 A에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.e",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 4
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-9",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 d 고르기",
+        "explanation": "A에서 건널 수 있는 미사용 다리 중 d를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.d"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-10",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "A → C",
+        "explanation": "다리 d를 5번째로 건너 C에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.d",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 5
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-11",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 g 고르기",
+        "explanation": "C에서 건널 수 있는 미사용 다리 중 g를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.g"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-12",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "C → D",
+        "explanation": "다리 g를 6번째로 건너 D에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 6
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.g",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 6
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-13",
+        "at": {
+          "sourceId": "walk",
+          "line": 5
+        },
+        "phase": "after",
+        "title": "건너기 결과",
+        "explanation": "모든 다리를 한 번씩 건넜어요. 출발점은 C, 도착점은 D예요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f",
+                "order.g"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 6
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      }
+    ],
+    "metadata": {
+      "supplement": "",
+      "addressModel": "기호 주소 · 실제 ABI 배치 아님"
+    }
+  },
+  "even": {
+    "version": 1,
+    "id": "1116-bridges",
+    "title": "쾨니히스베르크 다리 건너기",
+    "kind": "c-graph",
+    "sources": [
+      {
+        "id": "walk",
+        "label": "다리 건너기 의사코드",
+        "language": "pseudocode",
+        "text": "다리_건너기(출발점)\n    현재 위치의 미사용 다리를 이름순으로 고른다\n    다리를 건너고 순서를 기록한다\n    건널 수 있는 동안 반복한다\n    남은 다리와 도착점을 확인한다",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+          "page": "3",
+          "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+          "supplement": true,
+          "adjustments": "p3의 다리 그림을 토대로 건너기 순서를 보충했어요.",
+          "note": "학습용 의사코드예요. 이 규칙은 가능한 경로를 모두 찾지 않고 한 번의 시도를 보여 줘요."
+        }
+      }
+    ],
+    "inputs": {
+      "layout": "even",
+      "start": "A"
+    },
+    "presets": [
+      {
+        "id": "two-odd",
+        "label": "열린 경로",
+        "input": {
+          "layout": "twoOdd",
+          "start": "C"
+        }
+      },
+      {
+        "id": "even",
+        "label": "회로",
+        "input": {
+          "layout": "even",
+          "start": "A"
+        }
+      },
+      {
+        "id": "split",
+        "label": "연결 끊김",
+        "input": {
+          "layout": "split",
+          "start": "A"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "id": "initial",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "before",
+        "title": "호출 전 · 초기 상태",
+        "explanation": "먼저 홀수 차수인 지점을 찾고, 출발점으로 돌아올 수 있을지 예상해 보세요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-1",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 b 고르기",
+        "explanation": "A에서 건널 수 있는 미사용 다리 중 b를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.b"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-2",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "A → B",
+        "explanation": "다리 b를 1번째로 건너 B에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.b",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 1
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-3",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 f 고르기",
+        "explanation": "B에서 건널 수 있는 미사용 다리 중 f를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.f"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-4",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "B → D",
+        "explanation": "다리 f를 2번째로 건너 D에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.f",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 2
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-5",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 e 고르기",
+        "explanation": "D에서 건널 수 있는 미사용 다리 중 e를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.e"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-6",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "D → A",
+        "explanation": "다리 e를 3번째로 건너 A에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.e",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 3
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-7",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 c 고르기",
+        "explanation": "A에서 건널 수 있는 미사용 다리 중 c를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.c"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-8",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "A → C",
+        "explanation": "다리 c를 4번째로 건너 C에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.c",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 4
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-9",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 d 고르기",
+        "explanation": "C에서 건널 수 있는 미사용 다리 중 d를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.d"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-10",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "C → A",
+        "explanation": "다리 d를 5번째로 건너 A에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.d",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 5
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-11",
+        "at": {
+          "sourceId": "walk",
+          "line": 5
+        },
+        "phase": "after",
+        "title": "건너기 결과",
+        "explanation": "모든 다리를 한 번씩 건너 출발점 A로 돌아왔어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.b",
+                "order.c",
+                "order.d",
+                "order.e",
+                "order.f"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.c": {
+              "id": "order.c",
+              "name": "다리 c를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.c",
+              "value": {
+                "kind": "int",
+                "value": 4
+              },
+              "lifetime": "live"
+            },
+            "order.d": {
+              "id": "order.d",
+              "name": "다리 d를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.d",
+              "value": {
+                "kind": "int",
+                "value": 5
+              },
+              "lifetime": "live"
+            },
+            "order.e": {
+              "id": "order.e",
+              "name": "다리 e를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.e",
+              "value": {
+                "kind": "int",
+                "value": 3
+              },
+              "lifetime": "live"
+            },
+            "order.f": {
+              "id": "order.f",
+              "name": "다리 f를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.f",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      }
+    ],
+    "metadata": {
+      "supplement": "",
+      "addressModel": "기호 주소 · 실제 ABI 배치 아님"
+    }
+  },
+  "split": {
+    "version": 1,
+    "id": "1116-bridges",
+    "title": "쾨니히스베르크 다리 건너기",
+    "kind": "c-graph",
+    "sources": [
+      {
+        "id": "walk",
+        "label": "다리 건너기 의사코드",
+        "language": "pseudocode",
+        "text": "다리_건너기(출발점)\n    현재 위치의 미사용 다리를 이름순으로 고른다\n    다리를 건너고 순서를 기록한다\n    건널 수 있는 동안 반복한다\n    남은 다리와 도착점을 확인한다",
+        "provenance": {
+          "path": "자료구조_강의록_2026/Software_10_Graph.pdf",
+          "page": "3",
+          "sha256": "d14a1223c5c792c7f0439a3cbdf89b0764bf3271278ce61fbb552ac793e24f10",
+          "supplement": true,
+          "adjustments": "p3의 다리 그림을 토대로 건너기 순서를 보충했어요.",
+          "note": "학습용 의사코드예요. 이 규칙은 가능한 경로를 모두 찾지 않고 한 번의 시도를 보여 줘요."
+        }
+      }
+    ],
+    "inputs": {
+      "layout": "split",
+      "start": "A"
+    },
+    "presets": [
+      {
+        "id": "two-odd",
+        "label": "열린 경로",
+        "input": {
+          "layout": "twoOdd",
+          "start": "C"
+        }
+      },
+      {
+        "id": "even",
+        "label": "회로",
+        "input": {
+          "layout": "even",
+          "start": "A"
+        }
+      },
+      {
+        "id": "split",
+        "label": "연결 끊김",
+        "input": {
+          "layout": "split",
+          "start": "A"
+        }
+      }
+    ],
+    "snapshots": [
+      {
+        "id": "initial",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "before",
+        "title": "호출 전 · 초기 상태",
+        "explanation": "먼저 홀수 차수인 지점을 찾고, 출발점으로 돌아올 수 있을지 예상해 보세요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.g",
+                "order.h"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.h": {
+              "id": "order.h",
+              "name": "다리 h를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.h",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-1",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 a 고르기",
+        "explanation": "A에서 건널 수 있는 미사용 다리 중 a를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.g",
+                "order.h"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.h": {
+              "id": "order.h",
+              "name": "다리 h를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.h",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.a"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-2",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "A → B",
+        "explanation": "다리 a를 1번째로 건너 B에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.g",
+                "order.h"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.h": {
+              "id": "order.h",
+              "name": "다리 h를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.h",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.a",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 1
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-3",
+        "at": {
+          "sourceId": "walk",
+          "line": 2
+        },
+        "phase": "after",
+        "title": "다리 b 고르기",
+        "explanation": "B에서 건널 수 있는 미사용 다리 중 b를 골라요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.g",
+                "order.h"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.h": {
+              "id": "order.h",
+              "name": "다리 h를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.h",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [
+          "order.b"
+        ],
+        "writes": [],
+        "diagnostic": null
+      },
+      {
+        "id": "step-4",
+        "at": {
+          "sourceId": "walk",
+          "line": 3
+        },
+        "phase": "after",
+        "title": "B → A",
+        "explanation": "다리 b를 2번째로 건너 A에 도착했어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.g",
+                "order.h"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.h": {
+              "id": "order.h",
+              "name": "다리 h를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.h",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [
+          {
+            "cellId": "order.b",
+            "before": {
+              "kind": "int",
+              "value": 0
+            },
+            "after": {
+              "kind": "int",
+              "value": 2
+            }
+          }
+        ],
+        "diagnostic": null
+      },
+      {
+        "id": "step-5",
+        "at": {
+          "sourceId": "walk",
+          "line": 5
+        },
+        "phase": "after",
+        "title": "건너기 결과",
+        "explanation": "A에서 더 건널 수 없어요. 다리 g, h가 남았어요.",
+        "state": {
+          "frames": {},
+          "activeFrame": null,
+          "stdout": [],
+          "objects": {
+            "walk": {
+              "id": "walk",
+              "type": "건너기 기록",
+              "storage": "static",
+              "cellIds": [
+                "start",
+                "order.a",
+                "order.b",
+                "order.g",
+                "order.h"
+              ],
+              "lifetime": "live"
+            }
+          },
+          "cells": {
+            "start": {
+              "id": "start",
+              "name": "출발점",
+              "type": "int",
+              "owner": "walk",
+              "address": "&start",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.a": {
+              "id": "order.a",
+              "name": "다리 a를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.a",
+              "value": {
+                "kind": "int",
+                "value": 1
+              },
+              "lifetime": "live"
+            },
+            "order.b": {
+              "id": "order.b",
+              "name": "다리 b를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.b",
+              "value": {
+                "kind": "int",
+                "value": 2
+              },
+              "lifetime": "live"
+            },
+            "order.g": {
+              "id": "order.g",
+              "name": "다리 g를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.g",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            },
+            "order.h": {
+              "id": "order.h",
+              "name": "다리 h를 건넌 순서",
+              "type": "int",
+              "owner": "walk",
+              "address": "&order.h",
+              "value": {
+                "kind": "int",
+                "value": 0
+              },
+              "lifetime": "live"
+            }
+          }
+        },
+        "reads": [],
+        "writes": [],
+        "diagnostic": null
+      }
+    ],
+    "metadata": {
+      "supplement": "",
+      "addressModel": "기호 주소 · 실제 ABI 배치 아님"
+    }
+  }
+}

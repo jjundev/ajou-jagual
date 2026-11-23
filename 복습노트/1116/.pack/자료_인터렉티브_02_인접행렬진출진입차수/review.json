@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "hashes": {
+    "brief.md": "8e6fdf805cc408d816a805eb5d02e902ad966263fc0060a2e4bfd3c25d5c129f",
+    "evidence/browser.json": "c32ffdd7a8f98c02376d79bc0c825b09ab6c57900a89db9d77cfb969542a486d",
+    "evidence/content.md": "3145ab2e9260f4e1af9944fdf2e7c3eff39411d867014a609f4e0b2a02e9f45a",
+    "evidence/independent.txt": "78705230c72a9894d91fe6fb98d4273dc1451df4121f589d78dfedfa99f6073f",
+    "evidence/oracle.py": "7037106e876ff380df6b661301bffec5e7fe70225ec7db486cbb2d2e5ab7b107",
+    "evidence/schema.json": "89b2e32d698073ef6a9c4b55216f196a2569be6e38d8b5faff583344f0ecd1b4",
+    "preview.html": "04c5e8cb02906153488f89a6fd5c2b46b8167a0efc6c2dc5cba418895c95cd8b",
+    "scenario.cjs": "4413b60641d9ad2698337f4d15cc42580c4caa55091313986c4e5392b52c6aea",
+    "source.c": "9af4a463280c1477102d2e994a1acece7b263a8bb29b3dfe2acb90830ccd01c7",
+    "source.json": "78c7a22f3912264553cc983419021c923d3820cf3249198c15244aae2976e0e1",
+    "trace.json": "d7e8e47c2f79b3e135a9deed18cfc1cdd92f5cf08971cc86f8c3197e12231ce3"
+  },
+  "checks": {
+    "schema": {
+      "status": "pass",
+      "evidence": "evidence/schema.json",
+      "notes": "check.cjs에서 기본값과 세 프리셋의 위치, 이벤트, 저장 값 조건을 모두 통과했다."
+    },
+    "content": {
+      "status": "pass",
+      "evidence": "evidence/content.md",
+      "notes": "G3 그림과 행렬을 대조하고 6행과 9행의 접근 방향, 0을 포함한 읽기, 각 누적 변수의 쓰기를 확인했다."
+    },
+    "independent": {
+      "status": "pass",
+      "evidence": "evidence/independent.txt",
+      "notes": "C11 원본과 계측 버전을 실행했다. 네 사례에서 24개의 읽기 및 누적 전후값과 최종 두 차수를 단계 기록과 대조했다."
+    },
+    "browser": {
+      "status": "pass",
+      "evidence": "evidence/browser.json",
+      "notes": "오프라인 Chromium의 3개 너비 및 두 테마에서 기본값·모든 사례의 전 단계와 입력·단계 조작을 확인했다. 실제 화면에서 글씨, 강조, 다리와 화살표 배치를 검토했다."
+    }
+  },
+  "reviewed_preview_sha256": "ddbe6f5e8d8d637e52828fca2722ed5773b3ddd6e2ea86f02ae85c71cfd629e6"
+}

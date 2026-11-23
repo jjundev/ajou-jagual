@@ -7,9 +7,11 @@ function buildPage({scenario,outDir=process.cwd()}){
  const result=checkScenario(s);if(!result.ok)throw Error(JSON.stringify(result.issues));if(!['c-memory','c-tree','c-graph'].includes(s.kind))throw Error(`Renderer missing: ${s.kind}`);
  const assets=p.join(__dirname,'../assets'),read=f=>fs.readFileSync(p.join(assets,f),'utf8');
  const tree=s.kind==='c-tree',graph=s.kind==='c-graph';
- let html=read('shell.html').replace('/*FONT_HREF*/',fontHref(outDir)).replace('/*CSS*/',read('player.css')+(graph?'\n'+read('graph.css'):''));
+ const inspection=graph&&['bridges','degree'].includes(s.graph?.view);
+ const graphAsset=inspection?'graph-inspection':'graph';
+ let html=read('shell.html').replace('/*FONT_HREF*/',fontHref(outDir)).replace('/*CSS*/',read('player.css')+(graph?'\n'+read(graphAsset+'.css'):''));
  const list=['engine/contract.js','engine/memory.js',...(tree?['engine/line-steps.js','engine/tree.js']:[]),
-  'engine/trace.js','memory-svg.js',...(tree?['tree-svg.js','tree-ui.js']:[]),'shell.js','player.js',...(graph?['graph.js']:[])].map(read);
+  'engine/trace.js','memory-svg.js',...(tree?['tree-svg.js','tree-ui.js']:[]),'shell.js','player.js',...(graph?[graphAsset+'.js']:[])].map(read);
  // Browser must take the browser branch; the Node source remains byte-equivalent inside the script.
  list.push(sourceText);list.push(`DSInteractive.player=DSInteractive.${graph?'mountGraphPlayer':'mountPlayer'}(document.querySelector('#app'),DSInteractive.scenario);`);
  html=html.replace('<!--SCRIPTS-->',list.map(js=>`<script>${js.replace(/<\/script/gi,'<\\/script')}</script>`).join('\n'));
