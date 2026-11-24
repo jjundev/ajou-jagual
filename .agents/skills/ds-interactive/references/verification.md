@@ -78,3 +78,9 @@ node "S/scripts/verify-build.cjs" "보관 자료 폴더" "공개 HTML"
 
 
 구형 공개본의 사례 텍스트만 제거할 때는 레이아웃과 실행 코드를 보존한다. 일부 기존 트리 런타임은 라벨의 첫 번째 자식 노드를 지우므로 `removeLegacyPresetLabel`이 남기는 공백을 유지한다. `browser_theme.py RUN RUN/evidence/theme.json --preset-label`로 1440px·375px에서 문구, 접근성 이름, 옵션 전환을 확인하고 같은 HTML의 테마 검사도 다시 수행한다. 보관 검토의 `preset_label_removed`는 이 증거와 기존 HTML의 원본 해시를 함께 검증한다.
+
+### 기존 UI의 헤더 선택기 갱신
+
+기존 레이아웃과 실행 코드를 바꾸지 않고 헤더 선택기만 갱신할 때는 `scripts/header-selector.cjs`의 변환을 적용한다. 새 발행본은 UI v3부터 이 변환을 기본으로 적용한다. 기존 발행본은 보관 검토의 UI 버전을 유지하고 `header_selector_version`에 변환 버전을 기록한다. 발행 검사는 변환 전 HTML을 복원해 기존 검토와 대조하고, 변환 후 preview와 공개 HTML의 일치를 검증한다.
+
+`python3 tests/browser_header_selector.py MANIFEST.json`은 새 파일을 Chromium에서 검사한다. manifest는 `preview` 경로와 `evidence` 출력 경로를 가진 객체의 배열이다. 5개 화면 크기와 두 테마에서 헤더의 메뉴 수, 배치, 입력값, 기존 사례와 직접 조합을 확인하고 `evidence/header-selector.json`을 생성한다. 기존 검토 해시와 변환된 파일의 새 증거 해시를 함께 기록한다. UI v3 신규 발행은 같은 검사를 `browser_acceptance.py`에서 수행한다.

@@ -145,6 +145,8 @@ for(const [kind,example,transform] of [
    replace(375,{build_sha256:'stale-build'}),
    replace(375,{ui_version:0}),
    replace(375,{preset_label_checked:false}),
+   replace(375,{header_selector_checked:false}),
+   replace(375,{input_behavior_checked:false}),
    replace(375,{snapshots_checked:0}),
   ]){
    writeReport({results});

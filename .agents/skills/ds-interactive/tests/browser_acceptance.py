@@ -4,6 +4,7 @@ import json,sys,hashlib,re
 from playwright.sync_api import sync_playwright
 from browser_tree import check_history_touch, check_tree_case
 import browser_study
+from browser_header_selector import check_header_selector
 from browser_graph_traversal import check_page as check_graph_traversal
 from browser_graph_inspection import check_page as check_graph_inspection
 from browser_graph_decisions import check_page as check_graph_decisions
@@ -53,6 +54,7 @@ def main(root,scratch):
      if ui_version:
       topic=page.evaluate('DSInteractive.scenario.id')
       browser_study.check_layout(page, kind, width, height, theme)
+      header_checked=check_header_selector(page) if int(ui_version)>=3 else {}
       mobile=browser_study.check_mobile_stages(page, kind, out, topic, theme) if width==375 else None
       if kind=='c-graph':
        view=page.locator('#app').get_attribute('data-graph-view')
@@ -70,7 +72,7 @@ def main(root,scratch):
       results.append({'topic':topic,'file':file.name,'sha256':digest,'build_sha256':build,
                       'viewport':[width,height],'theme':theme,'kind':kind,'ui_version':int(ui_version),
                       'layout_checked':True,'controls_checked':True,'mobile_first_screen':mobile,
-                      'preset_label_checked':int(ui_version)>=2,
+                      'preset_label_checked':int(ui_version)>=2,**header_checked,
                       'presets':count,'snapshots_checked':checked,'status':'pass'})
       print(f'{topic} {width} {theme}: common UI and {checked} snapshots',flush=True)
       continue

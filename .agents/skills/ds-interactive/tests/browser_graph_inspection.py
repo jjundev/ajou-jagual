@@ -99,7 +99,11 @@ def check_page(page, kind):
     action('play').click()
     expect(app).to_have_attribute('data-playing', 'true')
     field = page.locator('[data-input=start]' if kind == 'bridges' else '[data-input=vertex]')
-    if kind == 'bridges':
+    direct = action('preset').locator('option[data-header-choice]')
+    if kind == 'bridges' and direct.count():
+        action('preset').select_option(direct.nth(1).get_attribute('value'))
+        expect(field).to_have_value('B')
+    elif kind == 'bridges':
         field.select_option(index=1)
     else:
         field.fill('')
@@ -108,7 +112,10 @@ def check_page(page, kind):
         expect(page.locator('.input-error')).not_to_have_text('')
         field.fill('2')
         expect(field).to_have_attribute('aria-invalid', 'false')
-    expect(action('preset')).to_have_value('custom')
+    if kind == 'degree' and direct.count():
+        expect(action('preset')).to_have_value(next(case['id'] for case in cases if case['input'] == {'matrix': 'g3', 'vertex': 2}))
+    elif not direct.count():
+        expect(action('preset')).to_have_value('custom')
     expect(app).to_have_attribute('data-playing', 'false')
     expect(app).to_have_attribute('data-index', '0')
     action('preset').select_option('default')

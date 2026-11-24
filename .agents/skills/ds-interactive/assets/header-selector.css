@@ -1,0 +1,21 @@
+.topbar > .header-case-moved {
+  display: block;
+  flex: 0 1 19rem;
+  min-width: 0;
+}
+.topbar > .header-case-moved select {
+  width: 100%;
+  min-height: 44px;
+}
+@media (max-width: 720px) {
+  .topbar:has(> .header-case-moved) {
+    flex-wrap: wrap;
+  }
+  .topbar > .header-case-moved {
+    order: 1;
+    flex-basis: 100%;
+  }
+  .topbar .graph-header-tools {
+    grid-column-start: 1;
+  }
+}

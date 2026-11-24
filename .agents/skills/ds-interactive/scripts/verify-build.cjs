@@ -4,6 +4,7 @@ const {buildPage, sha, CURRENT_UI_VERSION} = require('./build.cjs');
 const {rebaseFont, withoutFontHref} = require('./fonts.cjs');
 const {readReview, verifyReview} = require('./review.cjs');
 const {CURRENT_THEME_VERSION, addTheme, removeTheme} = require('./theme.cjs');
+const {HEADER_SELECTOR_VERSION, addHeaderSelector, removeHeaderSelector} = require('./header-selector.cjs');
 const {addLegacyPresetLabel, removeLegacyPresetLabel} = require('./preset-label.cjs');
 
 const treeViewports = [[1440, 900], [1024, 768], [375, 812]];
@@ -37,6 +38,20 @@ function checkReady(run, {archived = false} = {}) {
   let reviewedSha = (archived && review.reviewed_preview_sha256) || built.hashes.preview;
   let layoutBuild = built;
   let html = built.html;
+  const migrated = review.header_selector_version !== undefined;
+  let migratedHtml;
+  if (migrated) {
+    if (!archived || uiVersion >= 3 || review.header_selector_version !== HEADER_SELECTOR_VERSION) {
+      throw Error('HEADER_SELECTOR_VERSION_UNSUPPORTED: ' + run);
+    }
+    migratedHtml = fs.readFileSync(preview, 'utf8');
+    html = removeHeaderSelector(migratedHtml);
+    if (migratedHtml !== addHeaderSelector(html)) throw Error('REBUILD_MISMATCH: ' + preview);
+    const headerEvidence = path.join(run, 'evidence', 'header-selector.json');
+    requireBrowserResults(headerEvidence, 'HEADER_SELECTOR_UNVERIFIED', studyViewports, result =>
+      result.build_sha256 === sha(withoutFontHref(migratedHtml)) &&
+      result.header_selector_checked === true && result.input_behavior_checked === true);
+  }
 
   // Reverse the scoped updates to check the exact layout that was reviewed,
   // even when its runtime assets differ from the current builder.
@@ -47,7 +62,7 @@ function checkReady(run, {archived = false} = {}) {
   }
   if (baseSha !== undefined) {
     if (!archived || themeVersion !== CURRENT_THEME_VERSION) throw Error('THEME_BASE_NOT_ARCHIVED: ' + run);
-    html = fs.readFileSync(preview, 'utf8');
+    if (!migrated) html = fs.readFileSync(preview, 'utf8');
     const beforeLabelUpdate = presetLabelRemoved ? addLegacyPresetLabel(html) : html;
     const base = removeTheme(beforeLabelUpdate);
     const restored = addTheme(base);
@@ -57,16 +72,17 @@ function checkReady(run, {archived = false} = {}) {
     layoutBuild = {...built, html: base};
     reviewedSha = review.reviewed_preview_sha256 || baseSha;
   } else {
-    requireBuildBytes(preview, html);
+    if (migrated && html !== built.html) throw Error('REBUILD_MISMATCH: ' + preview);
+    if (!migrated) requireBuildBytes(preview, html);
   }
   if (themeVersion) requireThemeEvidence(run, sha(withoutFontHref(html)), presetLabelRemoved);
   if (built.uiVersion !== 0) {
     requireStudyEvidence(evidence, layoutBuild, reviewedSha);
-    return html;
+    return migratedHtml ?? html;
   }
   if (built.graphView) {
     requireGraphEvidence(evidence, layoutBuild, reviewedSha);
-    return html;
+    return migratedHtml ?? html;
   }
 
   const checkpoints = Object.values(built.traces).reduce((total, {lineSteps}) => {
@@ -78,7 +94,7 @@ function checkReady(run, {archived = false} = {}) {
   if (checkpoints && (baseSha === undefined || /dataset\.currentNode|data-current-node/.test(layoutBuild.html))) {
     requireNodeEvidence(evidence, reviewedSha, checkpoints);
   }
-  return html;
+  return migratedHtml ?? html;
 }
 
 function requireThemeEvidence(run, buildSha, presetLabelRemoved) {
@@ -133,6 +149,7 @@ function requireStudyEvidence(file, built, previewSha) {
     result.ui_version === built.uiVersion && result.kind === built.kind &&
     result.layout_checked === true && result.controls_checked === true &&
     (built.uiVersion < 2 || result.preset_label_checked === true) &&
+    (built.uiVersion < 3 || (result.header_selector_checked === true && result.input_behavior_checked === true)) &&
     result.presets === traces.length && result.snapshots_checked === snapshots &&
     (result.viewport?.[0] !== 375 || JSON.stringify(result.mobile_first_screen) === JSON.stringify(mobileStages)),
   report => [report.console_errors, report.external_requests].every(list => Array.isArray(list) && list.length === 0));
