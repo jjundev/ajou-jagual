@@ -42,6 +42,8 @@ def main(root,scratch):
    ui_version=desktop.locator('#app').get_attribute('data-ui-version')
    viewports=(browser_study.VIEWPORTS if ui_version else
               GRAPH_VIEWPORTS if kind=='c-graph' else [(1440,900),(1024,768),(375,812)])
+   if ui_version and int(ui_version)>=5:
+    viewports=[*viewports,*browser_study.HEADER_VIEWPORTS]
    for width,height in viewports:
     page=touch if width<=375 and (ui_version or kind=='c-graph') else desktop
     for theme in ['light','dark']:
@@ -55,6 +57,9 @@ def main(root,scratch):
       topic=page.evaluate('DSInteractive.scenario.id')
       browser_study.check_layout(page, kind, width, height, theme)
       header_checked=check_header_selector(page) if int(ui_version)>=3 else {}
+      if int(ui_version)>=5:
+       browser_study.check_header_layout(page)
+       header_checked['header_layout_checked']=True
       mobile=browser_study.check_mobile_stages(page, kind, out, topic, theme) if width==375 else None
       if kind=='c-graph':
        view=page.locator('#app').get_attribute('data-graph-view')

@@ -10,6 +10,7 @@ const {addLegacyPresetLabel, removeLegacyPresetLabel} = require('./preset-label.
 const treeViewports = [[1440, 900], [1024, 768], [375, 812]];
 const graphViewports = [[1440, 900], [1280, 800], [1279, 800], [375, 812]];
 const studyViewports = [...graphViewports, [320, 812]];
+const studyHeaderViewports = [[720, 812], [721, 812], [900, 812], [901, 812]];
 const mobileStages = ['initial', 'middle', 'last'];
 
 function requiredCombinations(viewports) {
@@ -144,13 +145,15 @@ function requireStudyEvidence(file, built, previewSha) {
   const traces = Object.values(built.traces);
   const snapshots = traces.reduce((total, trace) => total + (trace.lineSteps || trace.snapshots).length, 0);
   const buildSha = sha(withoutFontHref(built.html));
-  requireBrowserResults(file, 'STUDY_UI_UNVERIFIED', studyViewports, result =>
+  const viewports = built.uiVersion >= 5 ? [...studyViewports, ...studyHeaderViewports] : studyViewports;
+  requireBrowserResults(file, 'STUDY_UI_UNVERIFIED', viewports, result =>
     result.sha256 === previewSha && result.build_sha256 === buildSha &&
     result.ui_version === built.uiVersion && result.kind === built.kind &&
     result.layout_checked === true && result.controls_checked === true &&
     (built.uiVersion < 2 || result.preset_label_checked === true) &&
     (built.uiVersion < 3 || (result.header_selector_checked === true && result.input_behavior_checked === true)) &&
     (built.uiVersion < 4 || built.kind !== 'c-graph' || result.graph_history_checked === true) &&
+    (built.uiVersion < 5 || result.header_layout_checked === true) &&
     result.presets === traces.length && result.snapshots_checked === snapshots &&
     (result.viewport?.[0] !== 375 || JSON.stringify(result.mobile_first_screen) === JSON.stringify(mobileStages)),
   report => [report.console_errors, report.external_requests].every(list => Array.isArray(list) && list.length === 0));

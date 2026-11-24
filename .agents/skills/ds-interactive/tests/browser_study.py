@@ -5,7 +5,35 @@ from browser_preset import check_preset_label
 from browser_graph_layout import open_options
 
 VIEWPORTS = [(1440, 900), (1280, 800), (1279, 800), (375, 812), (320, 812)]
+HEADER_VIEWPORTS = [(720, 812), (721, 812), (900, 812), (901, 812)]
 MOBILE_STAGES = ('initial', 'middle', 'last')
+
+
+def check_header_layout(page):
+    page.evaluate("""() => {
+      const header = document.querySelector('.topbar');
+      const selector = [...header.querySelectorAll('select')].find(control => control.checkVisibility());
+      const modes = header.querySelector('.modes');
+      const theme = header.querySelector('[data-action=theme]');
+      const caseControls = modes.checkVisibility() ? [selector, modes] : [selector];
+      const dropdown = selector.getBoundingClientRect();
+      const themeBox = theme.getBoundingClientRect();
+      if (innerWidth <= 900) {
+        const firstRowBottom = Math.max(themeBox.bottom, header.querySelector('.brand').getBoundingClientRect().bottom);
+        if (caseControls.some(control => control.getBoundingClientRect().top < firstRowBottom - 1)) {
+          throw Error('Study header: the case and mode controls must sit below the title and theme');
+        }
+        return;
+      }
+      const controls = [...caseControls, theme].map(control => control.getBoundingClientRect());
+      if (Math.abs((dropdown.top + dropdown.bottom) / 2 - (themeBox.top + themeBox.bottom) / 2) > 1 ||
+          controls.slice(1).some((control, index) => {
+            const gap = control.left - controls[index].right;
+            return gap < 0 || gap > 9 || control.top >= dropdown.bottom || control.bottom <= dropdown.top;
+          })) {
+        throw Error('Study header: the horizontal controls must stay together without an empty column');
+      }
+    }""")
 
 
 def check_controls(page):

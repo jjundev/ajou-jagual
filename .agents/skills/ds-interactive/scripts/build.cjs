@@ -3,7 +3,7 @@ const {fontHref}=require('./fonts.cjs');
 const {CURRENT_THEME_VERSION,addTheme}=require('./theme.cjs');
 const {addLegacyPresetLabel}=require('./preset-label.cjs');
 const {addHeaderSelector}=require('./header-selector.cjs');
-const UI_VERSIONS=[0,1,2,3,4];
+const UI_VERSIONS=[0,1,2,3,4,5];
 const CURRENT_UI_VERSION=UI_VERSIONS.at(-1);
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 // Graphs reuse the tree panel policy. Legacy tree and pointer bundles keep their original bytes.
@@ -49,7 +49,8 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,t
  const legacyPresetLabel=uiVersion<2;
  const graphHistory=graph&&uiVersion>=4;
  const css=['player.css',...(common?[ui+'study.css']:graph?['graph-shell.css']:[]),
-  ...(graph?[graphAsset+'.css']:[]),...(graphHistory?['ui/v4/graph-history.css']:[])].map(file=>{
+  ...(graph?[graphAsset+'.css']:[]),...(graphHistory?['ui/v4/graph-history.css']:[]),
+  ...(uiVersion>=5?['ui/v5/header.css']:[])].map(file=>{
   const stylesheet=read(file);
   return !legacyPresetLabel&&file===ui+'study.css'
    ?stylesheet.replaceAll('[data-ui-version="1"]','[data-ui-version="'+uiVersion+'"]')
