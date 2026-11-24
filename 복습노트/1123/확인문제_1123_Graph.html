@@ -625,7 +625,7 @@
         const empty = panels.right.querySelector('.panel-empty');
         const btn = document.getElementById('solved-btn');
         const groups = {};
-        const solved = new Set([].filter((id) => cards.some((c) => c.id === id)));
+        const solved = new Set();
         cards.forEach((card) => {
           const g = document.createElement('div');
           g.className = 'aid';
@@ -649,10 +649,19 @@
           btn.setAttribute('aria-pressed', String(on));
           btn.innerHTML = (on ? ICON_DONE : ICON_TODO) + '<span>' + (on ? '푼 문제 · 표시 해제' : '푼 문제로 표시') + '</span>';
         }
+        let storage;
+        const saveSolved = () => storage?.setItem(KEY, JSON.stringify(Array.from(solved)));
+        document.addEventListener('od:review-storage', ({detail}) => {
+          storage = detail;
+          const saved = JSON.parse(storage.getItem(KEY) || '[]');
+          cards.forEach(card => { if (saved.includes(card.id)) solved.add(card.id); });
+          markToc(solved, cards.length, '푼 문제');
+          if (curId) paintBtn();
+        }, {once: true});
         btn.addEventListener('click', () => {
           if (!curId) return;
           if (solved.has(curId)) solved.delete(curId); else solved.add(curId);
-          // concept-check: 푼 문제 기록은 저장하지 않는다
+          saveSolved();
           paintBtn();
           markToc(solved, cards.length, '푼 문제');
         });
@@ -661,7 +670,7 @@
           if (detail.restored && detail.selected !== null) return;
           if (detail.selected === null) solved.delete(detail.id);
           else solved.add(detail.id);
-          // 저장하지 않는다: 새로고침하면 진행이 초기화된다(ds-review-pack 템플릿엔 tabStore 가 없다).
+          saveSolved();
           if (curId) paintBtn();
           markToc(solved, cards.length, '푼 문제');
         });
@@ -1190,6 +1199,29 @@
     if (card.mode === 'ambiguous') return 'ambiguous';
     return selected === card.answer ? 'correct' : 'incorrect';
   }
+  function historyStore(win) {
+    const history = win.history;
+    const key = 'od-concept-check:v1';
+    const previous = history.state?.[key];
+    const returning = win.performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+    const values = new Map(Object.entries(returning ? previous || {} : {}));
+    function save() {
+      // Hash navigation creates additional history entries for the same quiz.
+      const state = {...history.state};
+      if (values.size) state[key] = Object.fromEntries(values);
+      else if (Object.hasOwn(state, key)) delete state[key];
+      else return;
+      try { history.replaceState(state, ''); } catch {}
+    }
+    if (previous && !returning) save();
+    win.document.addEventListener('od:screen', save);
+    win.addEventListener('pagehide', save);
+    return {
+      getItem(name) { return values.get(name) ?? null; },
+      setItem(name, value) { values.set(name, value); save(); },
+      removeItem(name) { values.delete(name); save(); }
+    };
+  }
   function storageKey(documentId, cardId) {
     return 'od-review-attempt:v1:' + encodeURIComponent(documentId) + ':' + encodeURIComponent(cardId);
   }
@@ -1514,7 +1546,7 @@
     if (prompt && exportCards.length && pager && !pager.querySelector('.review-export-bar')) {
       const ids = exportCards.map(el => el.id);
       const bar = element('div', 'review-export-bar');
-      bar.hidden = true;
+      bar.hidden = selectedById[ids.at(-1)] == null;
       const button = element('button', 'btn btn-ghost review-export', '복기 열기');
       button.type = 'button';
       button.setAttribute('aria-haspopup', 'dialog');
@@ -1556,7 +1588,7 @@
       });
     }
   }
-  const api = {stripDiagnosticPrefix, grade, storageKey, readAttempt, readUnsure, writeAttempt, mount,
+  const api = {stripDiagnosticPrefix, grade, storageKey, readAttempt, readUnsure, writeAttempt, historyStore, mount,
     captureCardText, buildPromptRecord};
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else scope.ReviewInteraction = api;
@@ -1566,7 +1598,8 @@
 <script>(function () {
       function start() {
         try {
-          const storage = null;
+          const storage = ReviewInteraction.historyStore(window);
+          document.dispatchEvent(new CustomEvent('od:review-storage', {detail: storage}));
           ReviewInteraction.mount(document, JSON.parse(document.getElementById('review-interaction-model').textContent), storage);
         } catch (error) { console.warn('복습문제 상호작용 초기화 실패:', error); }
       }

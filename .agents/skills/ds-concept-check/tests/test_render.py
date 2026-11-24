@@ -78,9 +78,9 @@ def test_card_renders_an_open_hint_before_the_solution():
         assert '<details class="hint"' not in render.card_html(item, OBJ, 1, NOTE)
 
 
-def test_install_boots_without_storage():
+def test_install_updates_the_interaction_block_in_place():
     out = interaction.install(TEMPLATE_WITH_CARD, "확인문제_t")
-    assert "storage = null" in out and "review-interaction-model" in out
+    assert interaction.install(out, "확인문제_t") == out
 
 
 def test_install_gaps_problem_from_choices():
