@@ -147,6 +147,7 @@ for(const [kind,example,transform] of [
    replace(375,{preset_label_checked:false}),
    replace(375,{header_selector_checked:false}),
    replace(375,{input_behavior_checked:false}),
+   ...(kind==='c-graph' ? [replace(375,{graph_history_checked:false})] : []),
    replace(375,{snapshots_checked:0}),
   ]){
    writeReport({results});

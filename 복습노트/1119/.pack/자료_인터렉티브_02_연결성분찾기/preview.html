@@ -467,13 +467,13 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   [data-kind=c-tree] .brand { white-space: normal; line-height: 1.35; }
 }
 
-[data-kind=c-graph] .topbar { padding: 6px 16px; }
-[data-kind=c-graph] .brand { display: block; }
-.graph-header-tools { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.graph-header-tools .configuration { margin: 0; border: 0; padding: 0; }
-.graph-header-tools label { min-width: 0; }
-:is(.graph-header-tools, .stage > .configuration) label:has(> select) { position: relative; }
-:is(.graph-header-tools, .stage > .configuration) label:has(> select)::after {
+[data-ui-version="4"] .topbar { padding: 6px 16px; }
+[data-ui-version="4"] .brand { display: block; }
+.study-header-tools { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.study-header-tools .configuration { margin: 0; border: 0; padding: 0; }
+.study-header-tools label { min-width: 0; }
+:is(.study-header-tools, .stage > .configuration) label:has(> select) { position: relative; }
+:is(.study-header-tools, .stage > .configuration) label:has(> select)::after {
   content: '';
   position: absolute;
   inset-inline-end: 12px;
@@ -485,7 +485,7 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   border: solid var(--ink-2);
   border-width: 0 1.5px 1.5px 0;
 }
-.graph-header-tools select {
+.study-header-tools select {
   max-width: 100%;
   min-height: 44px;
   padding: 6px 8px;
@@ -494,64 +494,64 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   background: var(--bg);
   font-size: 14px;
 }
-[data-kind=c-graph] .stage > .configuration {
+[data-ui-version="4"] .stage > .configuration {
   flex: none;
   margin: 0;
   padding: 6px 16px;
   border: 0;
   border-bottom: 1px solid var(--line);
 }
-[data-kind=c-graph] :is(.graph-header-tools, .stage > .configuration) select {
+[data-ui-version="4"] :is(.study-header-tools, .stage > .configuration) select {
   appearance: none;
   padding-inline: 12px 30px;
 }
-[data-kind=c-graph] .stage > .configuration input { padding-inline: 12px; }
-[data-kind=c-graph] .topbar .modes button { padding-inline: 16px; }
-[data-kind=c-graph] .configuration .input-error { margin: 0; }
-[data-kind=c-graph] .stage-viewport { padding: 16px; }
-[data-kind=c-graph] .pane-heading { margin-bottom: 8px; }
-[data-kind=c-graph] :is(.pane-heading h2, .source-pane h2, .graph-details > h2) { font-size: 16px; }
-[data-kind=c-graph] .memory-pane { container-type: inline-size; }
-[data-kind=c-graph] .memory { display: block; min-height: 0; padding: 0; }
-[data-kind=c-graph] .source-pane { margin: 0; padding: 0; border: 0; }
-[data-kind=c-graph] .code { max-height: min(35vh, 320px); }
-[data-kind=c-graph] .code-line { position: relative; min-width: 0; padding-left: 16px; white-space: pre-wrap; }
-[data-kind=c-graph] .code-line > :last-child { min-width: 0; overflow-wrap: anywhere; }
-[data-kind=c-graph] .code-line.current:not(.executed) { background: none; color: inherit; box-shadow: none; }
-.graph-next-source { color: var(--ink-2); }
-.graph-next-line::before {
+[data-ui-version="4"] .stage > .configuration input { padding-inline: 12px; }
+[data-ui-version="4"] .topbar .modes button { padding-inline: 16px; }
+[data-ui-version="4"] .configuration .input-error { margin: 0; }
+[data-ui-version="4"] .stage-viewport { padding: 16px; }
+[data-ui-version="4"] .pane-heading { margin-bottom: 8px; }
+[data-ui-version="4"] :is(.pane-heading h2, .source-pane h2, .study-details > h2) { font-size: 16px; }
+[data-ui-version="4"] .memory-pane { container-type: inline-size; }
+[data-ui-version="4"] .memory { display: block; min-height: 0; padding: 0; }
+[data-ui-version="4"] .source-pane { margin: 0; padding: 0; border: 0; }
+[data-ui-version="4"] .code { max-height: min(35vh, 320px); }
+[data-ui-version="4"] .code-line { position: relative; min-width: 0; padding-left: 16px; white-space: pre-wrap; }
+[data-ui-version="4"] .code-line > :last-child { min-width: 0; overflow-wrap: anywhere; }
+[data-ui-version="4"] .code-line.current:not(.executed) { background: none; color: inherit; box-shadow: none; }
+.study-next-source { color: var(--ink-2); }
+.study-next-line::before {
   content: '▶';
   position: absolute;
   left: 1px;
   color: var(--accent-ink);
 }
-[data-kind=c-graph] .layout:not(.is-docked) .panel-left { width: min(336px, 88vw); }
-[data-kind=c-graph] .layout:not(.is-docked) .panel-head { justify-content: flex-end; }
+[data-ui-version="4"] .layout:not(.is-docked) .panel-left { width: min(336px, 88vw); }
+[data-ui-version="4"] .layout:not(.is-docked) .panel-head { justify-content: flex-end; }
 
-.graph-history { position: relative; margin-top: 20px; }
-.graph-history h2 { margin: 0 0 8px; min-height: 44px; display: flex; align-items: center; }
-.graph-follow { position: absolute; inset: 0 0 auto auto; color: var(--accent-ink); }
-.graph-history .step-list {
+.study-history { position: relative; margin-top: 20px; }
+.study-history h2 { margin: 0 0 8px; min-height: 44px; display: flex; align-items: center; }
+.study-follow { position: absolute; inset: 0 0 auto auto; color: var(--accent-ink); }
+.study-history .step-list {
   height: 134px;
   margin: 0;
   gap: 0;
   overflow: auto;
   overscroll-behavior: contain;
 }
-.graph-history .step-list::after { content: ''; flex: 0 0 44px; }
-.graph-history .steps .btn { height: 44px; min-height: 44px; padding: 4px 6px; gap: 6px; }
-.graph-history .step-txt { flex-direction: row; align-items: baseline; gap: 5px; white-space: nowrap; }
-.graph-history .step-txt > * { overflow: hidden; text-overflow: ellipsis; font-size: 13px; }
-.graph-history .step-txt b { flex: 0 0 auto; max-width: 60%; }
-.graph-history .steps .btn[aria-pressed=true] { border-color: var(--accent); }
-.graph-explanation { margin-top: 12px; font-size: 14px; }
-.graph-explanation .explanation { line-height: 1.55; }
-.graph-detail-content > * { margin: 0; }
-.graph-changes { margin-top: 12px; }
-.graph-changes summary { cursor: pointer; min-height: 44px; padding-block: 8px; }
-[data-kind=c-graph] .provenance { margin-top: 20px; }
+.study-history .step-list::after { content: ''; flex: 0 0 44px; }
+.study-history .steps .btn { height: 44px; min-height: 44px; padding: 4px 6px; gap: 6px; }
+.study-history .step-txt { flex-direction: row; align-items: baseline; gap: 5px; white-space: nowrap; }
+.study-history .step-txt > * { overflow: hidden; text-overflow: ellipsis; font-size: 13px; }
+.study-history .step-txt b { flex: 0 0 auto; max-width: 60%; }
+.study-history .steps .btn[aria-pressed=true] { border-color: var(--accent); }
+.study-explanation { margin-top: 12px; font-size: 14px; }
+.study-explanation .explanation { line-height: 1.55; }
+.study-detail-content > * { margin: 0; }
+.study-changes { margin-top: 12px; }
+.study-changes summary { cursor: pointer; min-height: 44px; padding-block: 8px; }
+[data-ui-version="4"] .provenance { margin-top: 20px; }
 
-.graph-scene { display: grid; gap: 12px; }
+.study-scene { display: grid; gap: 12px; }
 .graph-overview {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -559,31 +559,31 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   gap: 12px;
 }
 .graph-overview > * { min-width: 0; }
-.graph-result, .graph-watch {
+.study-result, .study-watch {
   padding: 8px 12px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: var(--surface);
 }
-.graph-result h3 { margin: 0 0 5px; font-size: 14px; }
-.graph-watch {
+.study-result h3 { margin: 0 0 5px; font-size: 14px; }
+.study-watch {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
   margin: 0;
 }
-.graph-watch-entry { display: flex; flex-direction: column-reverse; gap: 3px; overflow-wrap: anywhere; }
-.graph-watch dt { font-size: 12px; color: var(--ink-2); }
-.graph-watch dd { margin: 0; font-size: 14px; }
-.graph-watch-value { font-variant-numeric: tabular-nums; }
-.graph-watch-entry[data-written] .graph-watch-value { outline: 1px solid var(--accent); outline-offset: 2px; }
+.study-watch-entry { display: flex; flex-direction: column-reverse; gap: 3px; overflow-wrap: anywhere; }
+.study-watch dt { font-size: 12px; color: var(--ink-2); }
+.study-watch dd { margin: 0; font-size: 14px; }
+.study-watch-value { font-variant-numeric: tabular-nums; }
+.study-watch-entry[data-written] .study-watch-value { outline: 1px solid var(--accent); outline-offset: 2px; }
 
-[data-kind=c-graph] .playbar { gap: 8px; margin-top: 8px; z-index: 5; }
-[data-kind=c-graph] .scrub { min-width: 0; order: 0; }
-[data-kind=c-graph] :is(.speeds, .topbar .modes) button { min-width: 44px; min-height: 44px; }
-.graph-speed-trigger { padding: 0 8px; }
-.graph-speed-trigger::after { content: '⌃'; margin-left: 4px; }
-.graph-playback-options {
+[data-ui-version="4"] .playbar { gap: 8px; margin-top: 8px; z-index: 5; }
+[data-ui-version="4"] .scrub { min-width: 0; order: 0; }
+[data-ui-version="4"] :is(.speeds, .topbar .modes) button { min-width: 44px; min-height: 44px; }
+.study-speed-trigger { padding: 0 8px; }
+.study-speed-trigger::after { content: '⌃'; margin-left: 4px; }
+.study-playback-options {
   position: absolute;
   inset: auto 0 calc(100% - 1px) auto;
   display: grid;
@@ -595,37 +595,87 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   background: var(--bg);
   box-shadow: 0 4px 20px #0002;
 }
-.graph-playback-options .speeds { justify-content: center; margin: 0; }
-.graph-playback-options button { min-height: 44px; }
-.graph-jumps, .graph-endpoints { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.study-playback-options .speeds { justify-content: center; margin: 0; }
+.study-playback-options button { min-height: 44px; }
+.study-jumps, .study-endpoints { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
 
 @container (width < 470px) {
   .graph-overview { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 720px) {
-  [data-kind=c-graph] .topbar {
+  [data-ui-version="4"] .topbar {
     display: grid;
     grid-template-columns: auto minmax(0,1fr) auto auto;
     padding: 4px 10px 8px;
     gap: 4px;
   }
-  [data-kind=c-graph] .brand { font-size: 15px; }
-  [data-kind=c-graph] .panel-toggle { justify-content: center; padding: 0; }
-  [data-kind=c-graph] .panel-toggle span { display: none; }
-  [data-kind=c-graph] .theme-toggle { grid-area: 1 / 3; }
-  [data-kind=c-graph] [data-action=toggle-right] { grid-area: 1 / 4; }
-  .graph-header-tools { grid-area: 2 / 2 / 3 / -1; flex-wrap: wrap; gap: 4px 6px; }
-  [data-kind=c-graph] .stage-viewport { padding: 12px; }
-  [data-kind=c-graph] .scene-note { display: none; }
-  [data-kind=c-graph] .playbar .scrub { order: 2; flex-basis: 100%; gap: 0; }
-  .graph-speed-trigger { margin-left: auto; }
+  [data-ui-version="4"] .brand { font-size: 15px; white-space: normal; overflow-wrap: anywhere; }
+  [data-ui-version="4"] .panel-toggle { justify-content: center; padding: 0; }
+  [data-ui-version="4"] .panel-toggle span { display: none; }
+  [data-ui-version="4"] .theme-toggle { grid-area: 1 / 3; }
+  [data-ui-version="4"] [data-action=toggle-right] { grid-area: 1 / 4; }
+  .study-header-tools { grid-area: 2 / 1 / 3 / -1; flex-wrap: wrap; gap: 4px 6px; }
+  [data-ui-version="4"] .stage-viewport { padding: 12px; }
+  [data-ui-version="4"] .scene-note { display: none; }
+  [data-ui-version="4"] .playbar .scrub { order: 2; flex-basis: 100%; gap: 0; }
+  .study-speed-trigger { margin-left: auto; }
 }
 @media (max-width: 480px) {
-  .graph-header-tools select { font-size: 13px; }
-  [data-kind=c-graph] .topbar .modes button { padding-inline: 12px; }
-  .graph-scene, .graph-overview { gap: 8px; }
-  .graph-result, .graph-watch { padding: 6px 10px; }
+  .study-header-tools select { font-size: 13px; }
+  [data-ui-version="4"] .topbar .modes button { padding-inline: 12px; }
+  .study-scene, .graph-overview { gap: 8px; }
+  .study-result, .study-watch { padding: 6px 10px; }
 }
+
+.study-header-tools select { width: fit-content; }
+.study-header-tools > label { max-width: 100%; }
+.study-header-tools > label > select { max-width: 100%; }
+[data-ui-version="4"] .modes { flex-wrap: wrap; max-width: 100%; }
+[data-ui-version="4"] .topbar .modes button { max-width: none; overflow-wrap: anywhere; }
+.study-stage-inputs .inputs { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%, 130px),1fr)); }
+.study-stage-inputs .inputs:not(:has(label:not([hidden]))),
+.study-stage-inputs:not(:has(.inputs:not([hidden]) label:not([hidden]))):has(.input-error:empty) { display: none; }
+.study-result-line { margin: 0; overflow-wrap: anywhere; }
+.study-memory-scroll, .study-tree-scroll { overflow: auto; overscroll-behavior: contain; }
+.study-memory-cells {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  align-items: start;
+  gap: 12px;
+  padding-inline-end: 12px;
+  position: relative;
+  zoom: var(--zoom,1);
+}
+.study-memory-cells .frame { overflow-wrap: anywhere; }
+.study-memory-cells .cell { min-height: 44px; }
+.study-details .opt { margin-block: 8px; }
+.study-details .view-btns { position: static; }
+@media(max-width: 720px) {
+  .study-memory-scroll, .study-tree-scroll { max-height: 234px; }
+  .study-stage-inputs .inputs { gap: 6px; }
+  .study-stage-inputs label { gap: 0; }
+}
+@media (max-width: 480px) {
+  [data-ui-version="4"] .study-stage-inputs { padding: 4px 10px; }
+  .study-stage-inputs :is(input, select) { font-size: 13px; }
+  .study-header-tools[data-primary=setup] .configuration { flex: 1 1 166px; min-width: 0; }
+  .study-header-tools[data-primary=setup] { justify-content: space-between; }
+  .study-header-tools[data-primary=setup] .inputs { display: flex; }
+  .study-memory-cells .cell { padding-block: 4px; }
+}
+
+[data-ui-version="4"] .provenance-text { white-space: pre-line; }
+[data-ui-version="4"] .tree-inspector[open] {
+  position: fixed;
+  inset: auto 0 0;
+  width: min(100%,580px);
+  max-height: min(75vh,500px);
+  margin: auto;
+}
+@media (min-width: 1280px) {
+  [data-ui-version="4"] .tree-inspector[open] { inset: 0; }
+}
+.study-header-tools select option { white-space: normal; }
 
 [data-kind=c-graph] {
   --graph-selected: color-mix(in srgb, var(--accent) 13%, var(--bg));
@@ -712,13 +762,79 @@ html[data-theme=dark] .app[data-kind=c-tree] {
   .graph-drawing { max-height: 138px; }
   .graph-result .graph-values li { padding: 1px 4px; min-width: 25px; }
 }
+
+.study-history .graph-history-source {
+  margin: 0 0 6px;
+  color: var(--ink-2);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.study-history .step-list {
+  --history-row-min: 60px;
+  height: calc(3 * var(--history-row-min) + 2px);
+  overflow-anchor: none;
+}
+
+.study-history .step-list::after {
+  flex-basis: calc(var(--history-row-min) + 1px);
+}
+
+.study-history .steps .btn {
+  flex: none;
+  height: auto;
+  min-height: var(--history-row-min);
+  padding: 12px 16px;
+}
+
+.study-history .step-num {
+  width: auto;
+  min-width: 3ch;
+  height: auto;
+  justify-content: flex-start;
+  border: 0;
+  font-size: 13px;
+}
+
+.study-history .step-txt {
+  display: grid;
+  grid-template-columns: minmax(4ch, max-content) minmax(0, 1fr);
+  flex: 1;
+  white-space: normal;
+}
+
+.study-history .step-txt > * {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.study-history .step-txt .graph-history-line {
+  max-width: none;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.graph-history-action,
+.graph-history-row-source {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.study-history .step-txt .graph-history-detail {
+  color: inherit;
+}
+
+.study-history .graph-history-row-source {
+  color: var(--ink-2);
+  font-size: 12px;
+}
 </style></head>
-<body><main id="app" class="app" data-addresses="true" data-arrows="true">
+<body><main id="app" data-ui-version="4" class="app" data-addresses="true" data-arrows="true">
 <header class="topbar"><button class="text-btn panel-toggle" data-action="toggle-left" aria-label="조작 패널" aria-expanded="true" aria-controls="panel-left"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="3" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M9 4v16"/></svg><span>조작</span></button><h1 class="brand"></h1><div class="seg modes" role="group" aria-label="보기 선택" hidden></div><button class="text-btn theme-toggle" data-action="theme" aria-label="어두운 테마로 전환" title="어두운 테마로 전환"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg></button><button class="text-btn panel-toggle" data-action="toggle-right" aria-label="설명 패널" aria-expanded="true" aria-controls="panel-right"><svg viewBox="0 0 24 24" aria-hidden="true"><rect class="strip" x="15" y="4" width="6" height="16" rx="1"/><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/></svg><span>설명</span></button></header>
 <div class="layout"><aside class="panel panel-left is-open" id="panel-left" aria-label="조작"><div class="panel-resize" data-resize="left" role="separator" aria-orientation="vertical" tabindex="0" aria-label="왼쪽 패널 너비 조절. 좌우 화살표, Home 기본 너비" aria-valuemin="220" aria-valuemax="480" aria-valuenow="220"></div>
 <div class="panel-inner"><div class="panel-head"><h2>조작</h2><button class="text-btn" data-action="close-panels">닫기</button></div>
 <section class="sec"><h2 class="sec-title">보기 옵션</h2><div class="opt"><button class="btn" data-action="option-addresses" aria-pressed="true"><span class="box" aria-hidden="true"></span>주소 표시</button><button class="btn" data-action="option-arrows" aria-pressed="true"><span class="box" aria-hidden="true"></span>화살표</button></div></section>
-<section class="sec configuration" aria-label="실행 조건"><h2 class="sec-title">실행 조건</h2><label> <select data-action="preset" aria-label="사례"></select></label><div class="inputs"></div><p class="input-error" role="alert"></p></section>
+<section class="sec configuration" aria-label="실행 조건"><h2 class="sec-title">실행 조건</h2><label><select data-action="preset" aria-label="사례"></select></label><div class="inputs"></div><p class="input-error" role="alert"></p></section>
 <section class="sec source-pane"><h2 class="sec-title">실행 코드 <span class="source-label"></span></h2><div class="code" tabindex="0" aria-label="실행 코드"></div><p class="source-note"></p></section>
 <section class="sec"><h2 class="sec-title">단계</h2><div class="steps step-list" aria-label="실행 단계 목록"></div></section>
 </div></aside>
@@ -906,39 +1022,35 @@ html[data-theme=dark] .app[data-kind=c-tree] {
  function mountShell(app,{onStep,onSpeed,redraw,onPanelsChange}){
   const q=s=>app.querySelector(s),listeners=[],on=(el,type,fn)=>{el.addEventListener(type,fn);listeners.push(()=>el.removeEventListener(type,fn));};
   const layout=q('.layout'),panels={left:q('.panel-left'),right:q('.panel-right')},toggles={left:q('[data-action=toggle-left]'),right:q('[data-action=toggle-right]')};
-  const tree=app.dataset.kind==='c-graph';
-  const compact=matchMedia(tree?'(width < 1280px)':'(width < 1024px)');
+  const compact=matchMedia('(width < 1280px)');
   const stage=q('.stage'),header=q('.topbar');
   const sides=['left','right'], sibling=side=>side==='left'?'right':'left';
   const limits={left:{min:220,max:480,prop:'--pl-user'},right:{min:280,max:720,prop:'--pr-user'}};
   const handles={left:q('[data-resize=left]'),right:q('[data-resize=right]')};
-  const treeWidthKey='ds-interactive:graph-panel-widths';
-  const treeDefaults={left:320,right:300};
-  const shown={...treeDefaults};
+  const widthKey='ds-interactive:study-panel-widths';
+  const defaults={left:320,right:300};
+  const shown={...defaults};
   const sceneMin=400;
   let narrow=compact.matches,drawer=null,open={left:true,right:true},widths={left:null,right:null},scale=1,trace=null,drag=null;
-  const defaults=side=>tree?treeDefaults[side]:side==='left'?Math.max(260,Math.min(320,innerWidth*.2)):Math.max(320,Math.min(400,innerWidth*.24));
-  if(tree){
-   try{
-    const saved=JSON.parse(localStorage.getItem(treeWidthKey));
-    for(const side of sides){
-     const value=saved?.[side], {min,max}=limits[side];
-     if(Number.isInteger(value)&&value>=min&&value<=max)widths[side]=value;
-    }
-   }catch{/* The current visit can still use custom widths. */}
+  try{
+   const saved=JSON.parse(localStorage.getItem(widthKey));
+   for(const side of sides){
+    const value=saved?.[side], {min,max}=limits[side];
+    if(Number.isInteger(value)&&value>=min&&value<=max)widths[side]=value;
+   }
+  }catch{/* The current visit retains the widths. */}
+  function saveWidths(){
+   try{localStorage.setItem(widthKey,JSON.stringify(widths));}catch{/* The current visit retains the widths. */}
   }
-  function saveTreeWidths(){
-   try{localStorage.setItem(treeWidthKey,JSON.stringify(widths));}catch{/* The current visit retains the widths. */}
-  }
-  function maxTreeWidth(side){
+  function maxWidth(side){
    const other=sibling(side),{min,max}=limits[side];
    return Math.max(min,Math.min(max,innerWidth-sceneMin-(open[other]?shown[other]:0)));
   }
-  function syncTreeWidths(){
+  function syncWidths(){
    if(narrow)return;
    // Fit the preferred widths for this viewport without changing stored values.
    const room=innerWidth-sceneMin;
-   for(const side of sides)shown[side]=widths[side]??defaults(side);
+   for(const side of sides)shown[side]=widths[side]??defaults[side];
    if(open.left&&open.right){
     shown.right=Math.max(limits.right.min,Math.min(shown.right,room-shown.left));
     shown.left=Math.max(limits.left.min,Math.min(shown.left,room-shown.right));
@@ -946,32 +1058,22 @@ html[data-theme=dark] .app[data-kind=c-tree] {
    for(const side of sides){
     layout.style.setProperty(limits[side].prop,shown[side]+'px');
     handles[side].setAttribute('aria-valuenow',String(shown[side]));
-    handles[side].setAttribute('aria-valuemax',String(maxTreeWidth(side)));
+    handles[side].setAttribute('aria-valuemax',String(maxWidth(side)));
    }
   }
   function setWidth(side,value){
-   if(tree){
-    const width=Math.round(Math.max(limits[side].min,Math.min(maxTreeWidth(side),value)));
-    if(width===shown[side])return;
-    widths[side]=width;
-    syncTreeWidths();
-    return;
-   }
-const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='left'?480:720;
-   const room=innerWidth-320-(open[other]?(widths[other]||defaults(other)):0);widths[side]=Math.max(lo,Math.min(hi,room,value));sync();}
+   const width=Math.round(Math.max(limits[side].min,Math.min(maxWidth(side),value)));
+   if(width===shown[side])return;
+   widths[side]=width;
+   syncWidths();
+  }
   function sync(){
    layout.classList.toggle('is-docked',!narrow);
-   // Reopening a dock or crossing the breakpoint can invalidate a width that
-   // was legal while its sibling was closed. Reserve the scene before layout.
-   if(!tree&&!narrow&&open.left&&open.right){const room=innerWidth-320;let left=widths.left||defaults('left'),right=widths.right||defaults('right');
-    if(left+right>room){right=Math.max(280,room-left);left=Math.max(220,Math.min(left,room-right));widths.left=left;widths.right=right;}}
-   if(tree)syncTreeWidths();
+   syncWidths();
    for(const side of sides){const active=narrow?drawer===side:open[side],panel=panels[side];panel.classList.toggle('is-open',active);panel.inert=!active;panel.setAttribute('aria-hidden',String(!active));toggles[side].setAttribute('aria-expanded',String(active));
     if(narrow&&active){panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');}else{panel.removeAttribute('role');panel.removeAttribute('aria-modal');}
     const handle=handles[side];handle.tabIndex=narrow?-1:0;
-    if(tree)continue;
-    handle.setAttribute('aria-valuenow',String(Math.round(widths[side]||defaults(side))));
-    if(widths[side])layout.style.setProperty(side==='left'?'--pl-user':'--pr-user',widths[side]+'px');else layout.style.removeProperty(side==='left'?'--pl-user':'--pr-user');
+
    }
    const modal=narrow&&drawer!==null;
    q('.scrim').classList.toggle('is-on',modal);
@@ -1004,31 +1106,29 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
    if(!drag)return;
    drag=null;
    layout.classList.remove('is-resizing');
-   if(tree)saveTreeWidths();
+   saveWidths();
   }
   for(const side of sides){
    const handle=handles[side], direction=side==='left'?1:-1;
    function resetWidth(){
     widths[side]=null;
-    if(tree){syncTreeWidths();saveTreeWidths();}else sync();
+    syncWidths();saveWidths();
    }
-   if(tree){
-    handle.setAttribute('aria-controls',panels[side].id);
-    on(handle,'dblclick',()=>{if(!narrow&&open[side])resetWidth();});
-   }
+   handle.setAttribute('aria-controls',panels[side].id);
+   on(handle,'dblclick',()=>{if(!narrow&&open[side])resetWidth();});
    on(handle,'keydown',e=>{
     if(narrow||!open[side]||!['ArrowLeft','ArrowRight','Home'].includes(e.key))return;
     e.preventDefault();e.stopPropagation();
     if(e.key==='Home'){resetWidth();return;}
-    const current=tree?shown[side]:(widths[side]||defaults(side));
-    const step=tree&&e.shiftKey?64:16;
+    const current=shown[side];
+    const step=e.shiftKey?64:16;
     setWidth(side,current+(e.key==='ArrowRight'?1:-1)*direction*step);
-    if(tree)saveTreeWidths();
+    saveWidths();
    });
    on(handle,'pointerdown',e=>{
     if(narrow||!open[side]||e.button!==0||drag)return;
     e.preventDefault();
-    const width=tree?panels[side].getBoundingClientRect().width:(widths[side]||defaults(side));
+    const width=panels[side].getBoundingClientRect().width;
     drag={side,id:e.pointerId,x:e.clientX,width};
     handle.setPointerCapture(e.pointerId);
     layout.classList.add('is-resizing');
@@ -1051,180 +1151,13 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
    sync();
    if(focused)toggles[focused===panels.left?'left':'right'].focus({preventScroll:true});
   });
-  on(window,'resize',()=>{
-   if(tree){syncTreeWidths();return;}
-   if(!narrow)for(const side of sides)if(widths[side])setWidth(side,widths[side]);
-   sync();
-  });
+  on(window,'resize',syncWidths);
   const observer=new ResizeObserver(redraw);observer.observe(q('.stage-viewport'));observer.observe(q('.memory'));sync();
-  return {update(next,entries,step,invalid=false){if(trace!==next){trace=next;const list=q('.step-list');list.replaceChildren(...entries.map((s,i)=>{const b=D.el('button','btn');b.dataset.action='step';b.dataset.stepIndex=i;const text=D.el('span','step-txt');const row=s.executed?.at||s.at;
-    const where=row?`${row.line}행 · ${s.diagnostic?'진단':s.phase==='before'?'실행 전':'실행 후'}`:'실행 전';
-    if(tree){
-     const frame=s.state.frames[s.executed?.frameId];
-     const call=frame?D.treeCallLabel(s.state,frame,trace.metadata.tree.fields.key):
-      trace.sources.find(source=>source.id===row?.sourceId)?.label;
-     const label=row?[call,row.line+'행'].filter(Boolean).join(' · '):'초기 상태';
-     text.append(D.el('b','',label));
-     if(row)text.append(D.el('span','',s.title));
-     b.append(D.el('span','num',i),text);
-    }else{
-     text.append(D.el('b','',s.title),D.el('span','',where));b.append(D.el('span','step-num num',i),text);
-    }
-    return b;}));}
+  return {update(next,entries,step,invalid=false){if(trace!==next){trace=next;const list=q('.step-list');list.replaceChildren(...D.graphHistoryRows(next, entries, list));}
    for(const b of app.querySelectorAll('[data-action=step]')){b.setAttribute('aria-pressed',String(Number(b.dataset.stepIndex)===step));b.disabled=invalid;}
   },destroy(){observer.disconnect();listeners.forEach(f=>f());stage.inert=header.inert=false;}};
  }
  D.mountShell=mountShell;
-})(globalThis);
-</script>
-<script>(function(root){
- const D=root.DSInteractive;
- function mountPlayer(app,scenario){
-  const renderer=D.renderers.get(scenario.kind);if(!renderer)throw Error(`Renderer missing: ${scenario.kind}`);
-  const tree=scenario.kind==='c-tree';
-  const defaults=Object.fromEntries(scenario.inputs.map(d=>[d.key,d.default]));
-  const byPreset=new Map(scenario.presets.map(p=>[p.id,p.input]));
-  const caseField=tree&&scenario.inputs.length===1&&scenario.inputs[0].type==='enum'&&scenario.inputs[0];
-  const casesCovered=caseField&&caseField.options.every(o=>o.value===caseField.default||
-   scenario.presets.some(p=>p.input[caseField.key]===o.value));
-  const q=s=>app.querySelector(s),listeners=[],on=(node,event,fn)=>{node.addEventListener(event,fn);listeners.push(()=>node.removeEventListener(event,fn));};
-  app.dataset.kind=scenario.kind;
-  if(tree){
-   for(const element of app.querySelectorAll('.tree-only'))element.hidden=false;
-   q('.stage').setAttribute('aria-label','트리 실행 보기');
-   q('.pane-heading h2').textContent='전체 트리';
-   q('.memory').setAttribute('aria-label','이진 트리와 현재 호출 경로');
-   q('[data-action=prev]').setAttribute('aria-label','이전 줄');
-   q('[data-action=next]').setAttribute('aria-label','다음 줄');
-   q('[data-action=option-arrows]').hidden=true;
-   q('[data-action=option-addresses]').closest('section').hidden=true;
-   if(casesCovered)q('.inputs').hidden=true;
-  }
-  let input={...defaults},trace,step=0,selection=null,timer=null,destroyed=false,speed=1;
-  q('h1').textContent=scenario.title;document.title=scenario.title;q('.takeaway').textContent=scenario.takeaway||'';
-  const preset=q('[data-action=preset]');preset.append(new Option(casesCovered?caseField.options.find(o=>o.value===caseField.default).label:'기본 입력','default'));for(const p of scenario.presets)preset.append(new Option(p.label,p.id));
-  for(const d of scenario.inputs){const label=D.el('label','',d.label);const field=d.type==='enum'?document.createElement('select'):document.createElement('input');field.dataset.input=d.key;field.setAttribute('aria-label',d.label);if(d.type==='integer'){field.type='number';field.min=d.min;field.max=d.max;field.step='1';}else for(const o of d.options)field.append(new Option(o.label,o.value));label.append(field);q('.inputs').append(label);if(d.type==='enum'&&d.key==='mode'){label.hidden=true;q('.modes').hidden=false;for(const o of d.options){const b=D.el('button','',o.label);b.dataset.action='mode';b.dataset.modeValue=o.value;q('.modes').append(b);}}const change=()=>{const value=d.type==='integer'?(field.value===''?NaN:Number(field.value)):field.value;if(Object.is(input[d.key],value))return;input[d.key]=value;preset.value='default';recompile();};on(field,'change',change);if(d.type==='integer')on(field,'input',change);}
-  const play=q('[data-action=play]');const playIcon=running=>{play.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(running?'<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>':'<path d="M7 5l12 7-12 7z"/>')+'</svg>';};
-  const entries=()=>trace.lineSteps||trace.snapshots;
-  function redraw(){if(trace&&!destroyed&&!tree)D.drawArrows(q('.memory'),entries()[step],selection);}
-  const treeUi=tree?D.mountTreeUi(app,{scenario,stop,refresh:paint}):null;
-  const shell=D.mountShell(app,{onStep:move,onSpeed:value=>{speed=value;if(timer!==null){stop();toggle();}},redraw,onPanelsChange:treeUi?.syncPanels});
-  function stop(){if(timer!==null)clearInterval(timer);timer=null;playIcon(false);play.setAttribute('aria-label','재생');app.dataset.playing='false';}
-  function printNeighbor(direction){
-   const steps=entries();
-   for(let i=step+direction;i>0&&i<steps.length;i+=direction){
-    if(steps[i].prints.length>steps[i-1].prints.length)return i;
-   }
-   return -1;
-  }
-  function paintCode(s){
-   const position=tree?s.next?.at:s.at;
-   const executed=tree?s.executed?.at:null;
-   const source=trace.sources.find(item=>item.id===(position||executed)?.sourceId)||trace.sources[0];
-   const code=q('.code');
-   code.replaceChildren();
-   const primary=trace.sources[0];
-   const auxiliary=tree?trace.sources.filter(item=>item!==primary&&
-    (item.id===position?.sourceId||item.id===executed?.sourceId)):[];
-   const shownSources=tree?[...auxiliary,primary]:[source];
-   for(const shown of shownSources){
-    for(const [i,line] of shown.text.split('\n').entries()){
-     const current=position?.sourceId===shown.id&&position.line===i+1;
-     const completed=executed?.sourceId===shown.id&&executed.line===i+1;
-     if(tree&&shown!==primary&&!current&&!completed)continue;
-     const row=D.el('div','code-line');
-     row.dataset.line=i+1;
-     row.dataset.sourceId=shown.id;
-     row.classList.toggle('current',current);
-     row.classList.toggle('executed',completed);
-     if(completed||current&&!executed)row.setAttribute('aria-current','step');
-     row.append(D.el('span','line-number',i+1),D.el('span','',line));
-     code.append(row);
-    }
-   }
-   code.dataset.step=s.id;
-   const active=code.querySelector('.executed')||code.querySelector('.current');
-   if(active){
-    const row=active.getBoundingClientRect(),box=code.getBoundingClientRect();
-    if(row.top<box.top)code.scrollTop+=row.top-box.top;
-    else if(row.bottom>box.bottom)code.scrollTop+=row.bottom-box.bottom;
-   }
-   if(tree)return;
-   q('.source-label').textContent=source.label||source.id;
-   q('.source-note').textContent=source.provenance?.note||
-    (source.provenance?.supplement?'학습용 보충 코드 · 강의 개념을 함수 호출로 확장했습니다.':'강의 swap 함수 · 호출자와 헤더는 검산용으로 보충했습니다.');
-   q('.phase').textContent=
-    `${source.label||source.id} · ${s.at.line}행 · ${s.phase==='diagnostic'?'진단 후 중단':s.phase==='before'?'실행 전':'실행 후'}`;
-  }
-  function paintTree(s,view){
-   treeUi.paint(s,view,trace.metadata,play.disabled);
-   app.dataset.activeFrame=s.state.activeFrame??'';
-   if(selection===null)delete app.dataset.selectedCell;else app.dataset.selectedCell=selection;
-   q('.stdout-value').textContent=s.state.stdout.join('');
-   q('[data-action=previous-output]').disabled=printNeighbor(-1)<0;
-   q('[data-action=next-output]').disabled=printNeighbor(1)<0;
-  }
-  function paint(){
-   if(destroyed)return;
-   const focused=document.activeElement, focusedCell=focused?.dataset.cellId;
-   const region=focused?.closest('.memory');
-   for(const b of app.querySelectorAll('[data-mode-value]'))b.setAttribute('aria-pressed',String(b.dataset.modeValue===input.mode));
-   const steps=entries(),s=steps[step];
-   app.dataset.snapshot=s.id;app.dataset.index=step;
-   q('output[data-step]').textContent=`${step} / ${steps.length-1}`;
-   q('output[data-step]').dataset.step=s.id;
-   const scrub=q('[data-action=scrub]');
-   scrub.max=steps.length-1;scrub.value=step;
-   paintCode(s);
-   const memory=q('.memory');
-   const view=tree?D.getTreeView(trace.metadata.tree,s):null;
-   if(tree)selection=treeUi.selection(s,view);
-   memory.replaceChildren(renderer.render(s,selection,trace.metadata,view));
-   memory.dataset.step=s.id;
-   if(tree)paintTree(s,view);else paintMemory(s);
-   for(const action of ['first','prev'])q(`[data-action=${action}]`).disabled=step===0;for(const action of ['last','next'])q(`[data-action=${action}]`).disabled=step===entries().length-1;
-   shell.update(trace,steps,step,play.disabled);
-   treeUi?.syncHistory();
-   if(focusedCell&&region)[...region.querySelectorAll('[data-cell-id]')].find(b=>b.dataset.cellId===focusedCell)?.focus({preventScroll:true});
-  }
-  function paintMemory(s){
-   redraw();
-   q('.step-title').textContent=s.title;q('.explanation').textContent=s.explanation;
-   q('.diagnostic').textContent=s.diagnostic?`${s.diagnostic.code}: ${s.diagnostic.message} 이후 실행은 진행하지 않습니다.`:'';
-   q('.changes').replaceChildren(...s.writes.map(w=>{const row=D.el('div','change');row.append(D.el('strong','',s.state.cells[w.cellId]?.name||w.cellId),D.el('div','',`${D.format(w.before)} → ${D.format(w.after)}`));return row;}));if(!s.writes.length)q('.changes').append(D.el('p','trace-message','이 단계에서는 저장 값이 바뀌지 않았습니다.'));
-   const c=s.state.cells[selection], desc=q('.selection');
-   desc.replaceChildren();
-   if(c){
-    desc.append(D.el('strong','',`${c.name} · ${c.id}`),document.createElement('br'),
-     document.createTextNode(`자신의 주소 ${c.address} / 저장 값 ${D.format(c.value)}`));
-    if(c.lifetime==='live'&&c.value.kind==='pointer'&&c.value.target){
-     const target=s.state.cells[c.value.target];
-     desc.append(document.createElement('br'),document.createTextNode(`대상 ${target.id}의 값 ${D.format(target.value)}`));
-    }
-   }else desc.textContent='변수를 선택하면 값과 주소를 구분해 볼 수 있습니다.';
-  }
-  function recompile(){stop();treeUi?.reset();step=0;selection=null;const issues=D.validateInput(scenario.inputs,input);q('.input-error').textContent=issues.map(i=>i.message).join(' ');for(const field of app.querySelectorAll('[data-input]')){const v=input[field.dataset.input];field.value=Number.isNaN(v)?'':v;field.setAttribute('aria-invalid',String(issues.some(i=>i.path===field.dataset.input)));}play.disabled=!!issues.length;
-   if(issues.length){if(trace)paint();for(const a of ['first','prev','next','last','scrub',...(tree?['previous-output','next-output']:[])])q(`[data-action=${a}]`).disabled=true;return;}q('[data-action=scrub]').disabled=false;trace=D.compileScenario(scenario,input);treeUi?.setTrace(trace);paint();}
-  function move(n){if(play.disabled)return;stop();step=Math.max(0,Math.min(entries().length-1,n));paint();}
-  function toggle(){if(play.disabled)return;if(timer!==null){stop();return;}if(step===entries().length-1)step=0;playIcon(true);play.setAttribute('aria-label','일시정지');app.dataset.playing='true';paint();timer=setInterval(()=>{step++;paint();if(step>=entries().length-1)stop();},900/speed);}
-  on(preset,'change',()=>{input={...(preset.value==='default'?defaults:byPreset.get(preset.value))};recompile();});
-  on(app,'click',e=>{const cell=e.target.closest('[data-cell-id]');if(cell&&!tree){selection=cell.dataset.cellId;paint();return;}const action=e.target.closest('[data-action]')?.dataset.action;
-   if(action==='mode'){const value=e.target.closest('[data-mode-value]').dataset.modeValue;input.mode=value;preset.value='default';recompile();}
-   if(action==='first')move(0);if(action==='prev')move(step-1);if(action==='next')move(step+1);if(action==='last')move(entries().length-1);if(action==='play')toggle();
-   if(tree&&(action==='previous-output'||action==='next-output')){
-    const next=printNeighbor(action==='previous-output'?-1:1);
-    if(next>=0)move(next);
-   }
-   if(action==='theme'){const dark=document.documentElement.dataset.theme!=='dark';document.documentElement.dataset.theme=dark?'dark':'light';q('[data-action=theme]').innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+(dark?'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>':'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>')+'</svg>';q('[data-action=theme]').setAttribute('aria-label',dark?'밝은 테마로 전환':'어두운 테마로 전환');}
-  });
-  on(q('[data-action=scrub]'),'input',e=>move(Number(e.target.value)));
-  on(document,'keydown',e=>{if(e.defaultPrevented||app.querySelector('dialog:modal,[aria-modal=true]')||/INPUT|SELECT|TEXTAREA|BUTTON|SUMMARY/.test(e.target.tagName)||e.target.matches?.('.tree-history .step-list'))return;if(['ArrowLeft','ArrowRight','Home','End',' '].includes(e.key)){e.preventDefault();if(e.key===' ')toggle();else move(e.key==='Home'?0:e.key==='End'?entries().length-1:step+(e.key==='ArrowRight'?1:-1));}});
-  on(window,'resize',redraw);
-  if(!tree){q('.provenance-text').textContent=scenario.sources.map(s=>`${s.label}: ${s.provenance?.path||'보충 예제'}${s.provenance?.page?' · p'+s.provenance.page:''}${s.provenance?.section?' · '+s.provenance.section:''}${s.provenance?.adjustments?' · '+s.provenance.adjustments:''}`).join('\n');q('.provenance-text').style.whiteSpace='pre-line';}
-  recompile();
-  return {destroy(){stop();destroyed=true;treeUi?.destroy();shell.destroy();listeners.forEach(f=>f());}};
- }
- D.mountPlayer=mountPlayer;
 })(globalThis);
 </script>
 <script>(function (root) {
@@ -1232,15 +1165,15 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
   const D = root.DSInteractive;
 
   function watchCard(entries, snapshot) {
-    const card = D.el('dl', 'graph-watch');
+    const card = D.el('dl', 'study-watch');
     card.setAttribute('aria-label', '현재 값');
     for (const {id, label, name, value, cell} of entries) {
-      const row = D.el('div', 'graph-watch-entry');
+      const row = D.el('div', 'study-watch-entry');
       const expression = D.el('dd');
-      row.dataset.graphWatch = id;
+      row.dataset.studyWatch = id;
       row.toggleAttribute('data-written', Boolean(cell && snapshot.writes.some(write => write.cellId === cell)));
       if (name) expression.append(D.el('code', '', name), ' = ');
-      const current = D.el('strong', 'graph-watch-value', value == null ? '—' : String(value));
+      const current = D.el('strong', 'study-watch-value', value == null ? '—' : String(value));
       expression.append(current);
       row.append(D.el('dt', '', label), expression);
       card.append(row);
@@ -1248,30 +1181,32 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
     return card;
   }
 
-  function mountPlayback(app, signal, hasOutput) {
+  function mountPlayback(app, signal, jumpOutput) {
     const bar = app.querySelector('.playbar');
-    const trigger = D.el('button', 'text-btn graph-speed-trigger', '1×');
+    const trigger = D.el('button', 'text-btn study-speed-trigger', '1×');
     trigger.type = 'button';
-    trigger.dataset.action = 'graph-options';
-    trigger.setAttribute('aria-controls', 'graph-playback-options');
-    const popup = D.el('div', 'graph-playback-options');
-    popup.id = 'graph-playback-options';
+    trigger.dataset.action = 'study-options';
+    trigger.setAttribute('aria-controls', 'study-playback-options');
+    const popup = D.el('div', 'study-playback-options');
+    popup.id = 'study-playback-options';
     popup.setAttribute('role', 'group');
     popup.setAttribute('aria-label', '재생 옵션');
     popup.append(bar.querySelector('.speeds'));
 
-    let jumps;
-    if (hasOutput) {
-      jumps = D.el('div', 'graph-jumps');
-      for (const [action, label] of [['previous-output', '이전 출력'], ['next-output', '다음 출력']]) {
-        const button = D.el('button', 'btn', label);
-        button.type = 'button';
-        button.dataset.action = action;
-        jumps.append(button);
-      }
-      popup.append(jumps);
+    const jumps = D.el('div', 'study-jumps');
+    jumps.hidden = true;
+    for (const [action, label] of [['previous-output', '이전 출력'], ['next-output', '다음 출력']]) {
+      const button = D.el('button', 'btn', label);
+      button.type = 'button';
+      button.dataset.action = action;
+      jumps.append(button);
     }
-    const endpoints = D.el('div', 'graph-endpoints');
+    popup.append(jumps);
+    jumps.addEventListener('click', event => {
+      const action = event.target.closest('button')?.dataset.action;
+      if (action) jumpOutput(action === 'previous-output' ? -1 : 1);
+    }, {signal});
+    const endpoints = D.el('div', 'study-endpoints');
     for (const button of bar.querySelectorAll('[data-action=first], [data-action=last]')) {
       button.classList.replace('icon-btn', 'btn');
       button.textContent = button.getAttribute('aria-label');
@@ -1317,25 +1252,26 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
       const button = event.target.closest('button');
       if (button?.dataset.speed) setSpeed(button);
     });
-    return jumps;
+    return {jumps, close() { pinned = false; show(false); }};
   }
 
-  function mountGraphShell(app, scenario, {render, heading, note, hasOutput = false}) {
+  function mountStudyUi(app, design, {jumpOutput, signal}) {
     const q = selector => app.querySelector(selector);
-    const events = new AbortController();
-    const on = (target, event, handler) => target.addEventListener(event, handler, {signal: events.signal});
+    const on = (target, event, handler) => target.addEventListener(event, handler, {signal});
+    const selection = q('.selection');
+    const viewOptions = q('[data-action=option-addresses]').closest('section');
     const left = q('#panel-left');
     const right = q('#panel-right');
     const code = q('.source-pane');
     const list = q('.step-list');
     const history = list.closest('section');
     const historyTitle = history.querySelector('h2');
-    const follow = D.el('button', 'text-btn graph-follow', '실행 위치로');
+    const follow = D.el('button', 'text-btn study-follow', '실행 위치로');
     follow.type = 'button';
     follow.hidden = true;
-    history.className = 'graph-history';
+    history.className = 'study-history';
     historyTitle.textContent = '줄 기록';
-    historyTitle.id = 'graph-history-title';
+    historyTitle.id = 'study-history-title';
     historyTitle.after(follow);
     list.tabIndex = 0;
     list.setAttribute('role', 'region');
@@ -1351,46 +1287,55 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
       panel.setAttribute('aria-label', label);
       panel.querySelector('.panel-head h2').remove();
     }
-    q('.pane-heading h2').textContent = heading;
-    q('.scene-note').textContent = note;
-    q('.stage').setAttribute('aria-label', '그래프 실행 보기');
+    q('.pane-heading h2').textContent = design.heading;
+    q('.scene-note').textContent = design.note || '';
+    q('.stage').setAttribute('aria-label', '실행 보기');
     const memory = q('.memory');
-    memory.setAttribute('aria-label', '그래프, 결과와 현재 값');
-    q('.view-btns').hidden = true;
+    memory.setAttribute('aria-label', '그림, 결과와 현재 값');
     q('.tree-output').remove();
 
     const header = q('.topbar');
     const configuration = q('.configuration');
     configuration.querySelector('h2').hidden = true;
-    const headerInputs = D.el('div', 'graph-header-tools');
+    const headerInputs = D.el('div', 'study-header-tools');
     headerInputs.append(q('.modes'));
     header.insertBefore(headerInputs, q('[data-action=theme]'));
     const viewport = q('.stage-viewport');
     const presetLabel = q('[data-action=preset]').closest('label');
     if (presetLabel.hidden) {
+      headerInputs.dataset.primary = 'setup';
+      const label = q('.inputs label:not([hidden])');
+      if (label?.firstChild?.nodeType === Node.TEXT_NODE) label.firstChild.remove();
       headerInputs.prepend(configuration);
     } else {
       headerInputs.prepend(presetLabel);
+      configuration.classList.add('study-stage-inputs');
       viewport.before(configuration);
     }
     viewport.tabIndex = 0;
     viewport.setAttribute('role', 'region');
-    viewport.setAttribute('aria-label', '그래프 단계');
+    viewport.setAttribute('aria-label', '실행 단계');
 
     const message = q('.explanation').closest('section');
-    message.className = 'graph-explanation';
+    message.className = 'study-explanation';
     message.querySelector('h2').hidden = true;
     message.querySelector('.phase').hidden = true;
     message.querySelector('.step-title').hidden = true;
     const changes = q('.changes').closest('section');
-    const changeDetails = D.el('details', 'graph-changes');
+    const changeDetails = D.el('details', 'study-changes');
     changeDetails.append(D.el('summary', '', changes.querySelector('h2').textContent), q('.changes'));
-    const details = D.el('section', 'graph-details');
+    const details = D.el('section', 'study-details');
     details.append(D.el('h2', 'sec-title', '실행 상태 상세'));
-    const state = D.el('div', 'graph-detail-content');
-    const selection = q('.selection');
-    selection.hidden = true;
-    details.append(state, changeDetails, selection);
+    const state = D.el('div', 'study-detail-content');
+    details.append(state);
+    const zoom = q('.view-btns');
+    if (design.memory) {
+      viewOptions.append(zoom);
+      details.append(selection, viewOptions);
+    } else {
+      zoom.remove();
+    }
+    details.append(changeDetails);
     const example = q('.provenance');
     example.querySelector('summary').textContent = '예제 정보';
     example.querySelector('p').textContent = '← / → 단계 이동 · Space 재생 · Home / End 처음과 마지막.';
@@ -1400,117 +1345,527 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
     right.querySelector('.panel-inner').replaceChildren(right.querySelector('.panel-head'), details, example);
     memory.after(message);
 
-    D.registerRenderer('c-graph', {render(snapshot) {
-      const {overview, result, current, detail} = render(snapshot);
-      const scene = D.el('div', 'graph-scene');
-      result.classList.add('graph-result');
-      scene.append(overview, result, watchCard(current, snapshot));
-      state.replaceChildren(detail);
-      return scene;
-    }});
-
-    let lastTrace;
+    const scene = D.el('div', 'study-scene');
+    memory.append(scene);
+    const playback = mountPlayback(app, signal, jumpOutput);
+    const {jumps} = playback;
     let followedTop = 0;
     let leftOpen = false;
-    const jumps = mountPlayback(app, events.signal, hasOutput);
-    let outputSteps = [];
-    let outputTargets = {};
     function noticeScroll() {
       const maxTop = list.scrollHeight - list.clientHeight;
       if (leftOpen && Math.abs(list.scrollTop - Math.min(followedTop, maxTop)) > 1) follow.hidden = false;
     }
-    function trackRow() {
+    function syncHistory() {
       if (!leftOpen || !follow.hidden) return;
       const row = list.querySelector('[aria-pressed=true]');
       if (!row) return;
       const position = row.getBoundingClientRect();
       const top = list.getBoundingClientRect().top + list.clientTop;
-      const center = top + (row.dataset.stepIndex === '0' ? position.height : list.clientHeight) / 2;
+      const center = top + (row.dataset.stepIndex === '0' ? position.height : Math.max(list.clientHeight, position.height)) / 2;
       list.scrollTop += Math.round(position.top + position.height / 2 - center);
       followedTop = list.scrollTop;
     }
     on(list, 'scroll', noticeScroll);
+    D.attachGraphHistory(list, syncHistory, signal);
     on(follow, 'click', () => {
       list.focus({preventScroll: true});
       follow.hidden = true;
-      trackRow();
+      syncHistory();
     });
 
-    // The shared player owns the clock and execution. Decorate its shell update
-    // to derive the graph controls from the exact entries it is displaying.
-    const mountShell = D.mountShell;
-    D.mountShell = (app, options) => {
-      const shell = mountShell(app, {...options, onPanelsChange({narrow, drawer, leftOpen: opened}) {
-        leftOpen = opened;
-        if (leftOpen) {
-          history.after(message);
-          trackRow();
-        } else {
-          memory.after(message);
-        }
-        if (narrow && drawer && app.dataset.playing === 'true') q('[data-action=play]').click();
-      }});
-      if (jumps) on(jumps, 'click', event => {
-        const target = outputTargets[event.target.closest('button')?.dataset.action];
-        if (target !== undefined) options.onStep(target);
-      });
-      return {
-        ...shell,
-        update(trace, entries, step, invalid) {
-          if (trace !== lastTrace) {
-            lastTrace = trace;
-            follow.hidden = true;
-            followedTop = list.scrollTop = 0;
-            if (jumps) outputSteps = entries.flatMap((entry, i) =>
-              i && entry.state.stdout.length > entries[i - 1].state.stdout.length ? [i] : []);
-          } else {
-            noticeScroll();
-          }
-          shell.update(trace, entries, step, invalid);
-          const shown = entries[step];
-          const next = shown.phase === 'before' ? shown : entries[step + 1];
-          const currentLine = q('.code-line.current');
-          if (shown.phase === 'after') currentLine?.classList.add('executed');
-          if (next && next.at.sourceId === currentLine?.dataset.sourceId) {
-            q('.code-line[data-line="' + next.at.line + '"]')?.classList.add('graph-next-line');
-          } else if (next) {
-            const source = trace.sources.find(source => source.id === next.at.sourceId);
-            const row = D.el('div', 'code-line graph-next-line graph-next-source');
-            row.dataset.sourceId = next.at.sourceId;
-            row.dataset.line = next.at.line;
-            row.append(D.el('span', 'line-number', next.at.line), D.el('span', '',
-              (source.label || source.id) + ' · ' + source.text.split('\n')[next.at.line - 1].trim()));
-            q('.code').prepend(row);
-          }
-          if (jumps) {
-            outputTargets = {
-              'previous-output': outputSteps.findLast(index => index < step),
-              'next-output': outputSteps.find(index => index > step),
-            };
-            for (const button of jumps.querySelectorAll('button')) {
-              button.disabled = invalid || outputTargets[button.dataset.action] === undefined;
-            }
-          }
-          trackRow();
-        },
-      };
-    };
-    let player;
-    try {
-      player = D.mountPlayer(app, scenario);
-      if (presetLabel.hidden) {
-        for (const label of configuration.querySelectorAll('.inputs label')) {
-          if (label.firstChild?.nodeType === Node.TEXT_NODE) label.firstChild.remove();
-        }
+    const explanation = message.querySelector('.explanation');
+    const diagnostic = message.querySelector('.diagnostic');
+    const changesList = changeDetails.querySelector('.changes');
+
+    function paint(snapshot, stateInfo) {
+      const focused = document.activeElement;
+      const id = focused?.dataset.cellId, frame = focused?.dataset.inspectFrame;
+      const node = focused?.dataset.nodeId;
+      const overviewOffset = scene.firstElementChild?.scrollTop || 0;
+      const {overview, result, current, detail} = design.render(snapshot, stateInfo);
+      result.classList.add('study-result');
+      scene.replaceChildren(overview, result, watchCard(current, snapshot));
+      overview.scrollTop = overviewOffset;
+      if (detail) state.replaceChildren(detail);
+      memory.dataset.step = snapshot.id;
+      explanation.textContent = snapshot.explanation || snapshot.title;
+      diagnostic.textContent = snapshot.diagnostic?.message || '';
+      changesList.replaceChildren(...snapshot.writes.map(write => {
+        const row = D.el('div', 'change');
+        row.append(D.el('strong', '', snapshot.state.cells[write.cellId]?.name || write.cellId),
+          D.el('div', '', D.format(write.before) + ' → ' + D.format(write.after)));
+        return row;
+      }));
+      if (!snapshot.writes.length) changesList.append(D.el('p', 'trace-message', '이 단계에서는 저장 값이 바뀌지 않았습니다.'));
+      if (design.memory) selection.replaceChildren(design.selectionDetails(snapshot, stateInfo.selection));
+      jumps.hidden = !stateInfo.hasOutput;
+      q('[data-action=previous-output]').disabled = stateInfo.blocked || !stateInfo.hasPreviousOutput;
+      q('[data-action=next-output]').disabled = stateInfo.blocked || !stateInfo.hasNextOutput;
+      if (id || frame || node) {
+        [...app.querySelectorAll('button[data-cell-id],button[data-inspect-frame],button[data-node-id]')]
+          .find(button => id && button.dataset.cellId === id || frame && button.dataset.inspectFrame === frame ||
+            node && button.dataset.nodeId === node)?.focus({preventScroll: true});
       }
-    } finally {
-      D.mountShell = mountShell;
     }
-    return {destroy() { events.abort(); player.destroy(); }};
+
+    return {
+      syncPanels({leftOpen: opened, drawer}) {
+        leftOpen = opened;
+        if (leftOpen) history.after(message);
+        else memory.after(message);
+        if (drawer) playback.close();
+        syncHistory();
+      },
+      paint,
+      syncHistory,
+      redraw() { design.redraw?.(); },
+      reset() {
+        playback.close();
+        design.reset?.();
+        follow.hidden = true;
+        followedTop = list.scrollTop = 0;
+      },
+      destroy() {
+        playback.close();
+        design.destroy?.();
+      },
+    };
   }
 
-  D.drawArrows = () => {};
-  D.mountGraphShell = mountGraphShell;
+  D.mountStudyUi = mountStudyUi;
+})(globalThis);
+</script>
+<script>(function (root) {
+  'use strict';
+  const D = root.DSInteractive;
+
+  function resultLine(title, text) {
+    const result = D.el('section');
+    result.append(D.el('h3', '', title), D.el('p', 'study-result-line', text));
+    return result;
+  }
+
+  function watchCells(entries, active, cells, exclude) {
+    return entries.flatMap(entry => {
+      const id = entry.cellId ?? active + '.' + entry.name;
+      if (exclude?.has(entry.name) && !entry.cellId) return [];
+      const cell = cells[id];
+      return [{id: entry.name, label: entry.label, name: entry.name, cell: id,
+        value: cell?.lifetime === 'live' ? D.format(cell.value) : '—'}];
+    });
+  }
+
+  function studyMemory(app, scenario) {
+    let latest, diagram;
+    const selectionDetails = ({state}, id) => {
+      const cell = state.cells[id];
+      if (!cell) return D.el('p', '', '메모리에서 변수를 선택하면 주소와 값을 확인할 수 있어요.');
+      const details = D.el('dl');
+      const add = (term, text) => details.append(D.el('dt', '', term), D.el('dd', '', text));
+      add(cell.name + '의 주소', cell.address);
+      add('저장 값', D.format(cell.value));
+      if (cell.lifetime === 'ended') add('수명', '종료');
+      if (cell.lifetime === 'live' && cell.value.kind === 'pointer' && cell.value.target !== null) {
+        const target = state.cells[cell.value.target];
+        if (target) add('대상의 값', D.format(target.value));
+      }
+      return details;
+    };
+    return {
+      heading: '호출과 메모리',
+      note: '주소는 기호로 표시',
+      memory: true,
+      selectionDetails,
+      redraw() { if (diagram?.isConnected) D.drawArrows(diagram, latest.snapshot, latest.selection); },
+      render(snapshot, {selection, trace}) {
+        const {state, writes} = snapshot;
+        const cells = Object.values(state.cells).filter(cell => cell.lifetime === 'live');
+        const selected = state.cells[selection];
+        const pointer = selected?.lifetime === 'live' && selected.value.kind === 'pointer' ? selected
+          : cells.find(cell => cell.owner === state.activeFrame && cell.value.kind === 'pointer')
+            || cells.find(cell => cell.value.kind === 'pointer');
+        const firstPointer = pointer || Object.values(trace.snapshots.at(-1).state.cells)
+          .find(cell => cell.value.kind === 'pointer');
+        const target = pointer ? state.cells[pointer.value.target] : undefined;
+        const current = [
+          {id: 'pointer', name: firstPointer?.name, label: '현재 포인터', cell: pointer?.id,
+            value: pointer && D.format(pointer.value)},
+          {id: 'target', name: target?.name, label: '대상의 값', cell: target?.id,
+            value: target && D.format(target.value)},
+          ...watchCells(scenario.watch || [], state.activeFrame, state.cells),
+        ];
+        const lastWrite = state.cells[writes.at(-1)?.cellId];
+        const persistent = cells.filter(cell => cell.value.kind === 'int' &&
+          (cell.owner === state.activeFrame || state.objects[cell.owner]));
+        const resultCells = target?.lifetime === 'live' ? [target]
+          : lastWrite?.lifetime === 'live' ? [lastWrite] : persistent.slice(0, 2);
+        const resultText = resultCells.map(cell => cell.name + ' = ' + D.format(cell.value)).join(' · ') || '아직 결과 없음';
+        const overview = D.el('div', 'study-memory-scroll');
+        overview.tabIndex = 0;
+        overview.setAttribute('role', 'region');
+        overview.setAttribute('aria-label', '호출과 메모리 그림');
+        diagram = D.el('div', 'study-memory-cells');
+        diagram.append(D.memoryRenderer.render(snapshot, selection));
+        overview.append(diagram);
+        latest = {snapshot, selection};
+        requestAnimationFrame(() => { if (diagram.isConnected) D.drawArrows(diagram, latest.snapshot, latest.selection); });
+        const detail = D.el('p', '', state.frames[state.activeFrame]?.functionId
+          ? '현재 호출 · ' + state.frames[state.activeFrame].functionId : '현재 활성 호출 없음');
+        const result = state.stdout.length ? resultLine('출력', state.stdout.join('')) : resultLine('실행 결과', resultText);
+        return {overview, result, current, detail};
+      },
+    };
+  }
+
+  function studyTree(app, scenario, {stop, repaint}) {
+    const renderer = D.renderers.get('c-tree');
+    const events = new AbortController();
+    let expanded, node, opener;
+    const dialog = D.el('dialog', 'tree-inspector');
+    const heading = D.el('h2', '', '노드 메모리');
+    heading.id = 'study-inspector-title';
+    dialog.setAttribute('aria-labelledby', heading.id);
+    const header = D.el('div', 'tree-inspector-head');
+    const close = D.el('button', 'text-btn', '닫기');
+    close.type = 'button';
+    header.append(heading, close);
+    const body = D.el('div', 'tree-inspector-body');
+    dialog.append(header, body);
+    // A node opens a modal detail on both desktop and mobile.
+    app.append(dialog);
+    close.addEventListener('click', () => dialog.close(), {signal: events.signal});
+    dialog.addEventListener('close', () => {
+      node = null;
+      [...app.querySelectorAll('button[data-node-id]')]
+        .find(button => button.dataset.nodeId === opener)?.focus({preventScroll: true});
+      opener = null;
+    }, {signal: events.signal});
+    app.addEventListener('click', event => {
+      const button = event.target.closest('button');
+      if (button?.dataset.inspectFrame) {
+        expanded = expanded === button.dataset.inspectFrame ? null : button.dataset.inspectFrame;
+        repaint();
+      }
+      if (button?.dataset.nodeId) {
+        stop();
+        node = opener = button.dataset.nodeId;
+        repaint();
+        dialog.showModal();
+        close.focus({preventScroll: true});
+      }
+    }, {signal: events.signal});
+
+    return {
+      heading: '전체 트리',
+      reset() {
+        expanded = opener = node = null;
+        if (dialog.open) dialog.close();
+      },
+      destroy() {
+        events.abort();
+        dialog.remove();
+      },
+      render(snapshot, {trace}) {
+        const {state} = snapshot;
+        const metadata = trace.metadata;
+        const view = D.getTreeView(metadata.tree, snapshot);
+        const parameterId = view.stack[0]?.parameterCellId;
+        const parameter = state.cells[parameterId];
+        const final = trace.lineSteps.at(-1).state;
+        const names = new Set(Object.values(final.frames).filter(frame => frame.parameterCellId)
+          .map(frame => final.cells[frame.parameterCellId].name));
+        const pointer = parameter?.value;
+        const targetCell = pointer && state.cells[pointer.target];
+        const target = targetCell && view.nodes.find(item => item.id === targetCell.owner);
+        const current = [{id: 'node', label: '현재 호출이 가리키는 노드', cell: parameterId,
+          name: parameter?.name || (names.size === 1 ? [...names][0] : undefined),
+          value: target ? target.key + '번 노드' : D.format(pointer)}];
+        current.push(...watchCells(scenario.watch || [], state.activeFrame, state.cells, names));
+        const overview = D.el('div', 'study-tree-scroll');
+        overview.tabIndex = 0;
+        overview.setAttribute('role', 'region');
+        overview.setAttribute('aria-label', '트리 그림');
+        overview.append(renderer.render(snapshot, null, metadata, view));
+        const detail = D.el('section');
+        const ended = state.frames[snapshot.executed?.frameId];
+        detail.append(D.el('h3', '', '호출 스택'), D.renderStackDetails(snapshot, view, expanded,
+          !snapshot.diagnostic && ended?.lifetime === 'ended' ? ended : null, metadata.tree.fields.key));
+        if (node) body.replaceChildren(D.renderNodeDetails(snapshot, view, node));
+        return {overview, result: resultLine('출력', state.stdout.join('') || '아직 출력 없음'), current, detail};
+      },
+    };
+  }
+
+  Object.assign(D, {studyMemory, studyTree});
+})(globalThis);
+</script>
+<script>(function (root) {
+  'use strict';
+  const D = root.DSInteractive;
+
+  function mountPlayer(app, scenario, graph) {
+    const q = selector => app.querySelector(selector);
+    const events = new AbortController();
+    const on = (target, event, listener) => target.addEventListener(event, listener, {signal: events.signal});
+    const tree = scenario.kind === 'c-tree';
+    const defaults = Object.fromEntries(scenario.inputs.map(field => [field.key, field.default]));
+    const presets = new Map(scenario.presets.map(item => [item.id, item.input]));
+    const [onlyField] = scenario.inputs;
+    const presetCoversTree = tree && scenario.inputs.length === 1 && onlyField.type === 'enum' &&
+      onlyField.options.every(option => option.value === onlyField.default ||
+        scenario.presets.some(item => item.input[onlyField.key] === option.value));
+    const play = q('[data-action=play]');
+    const scrub = q('[data-action=scrub]');
+    const preset = q('[data-action=preset]');
+    const modes = q('.modes');
+    let input = {...defaults};
+    let trace, selection;
+    let step = 0;
+    let speed = 1;
+    let timer = null;
+    app.dataset.kind = scenario.kind;
+    q('h1').textContent = document.title = scenario.title;
+    q('.takeaway').textContent = scenario.takeaway || '';
+    q('.provenance-text').textContent = scenario.sources.map(source =>
+      [source.label || source.id, source.provenance?.path, source.provenance?.page && 'p' + source.provenance.page,
+        source.provenance?.section, source.provenance?.adjustments].filter(Boolean).join(' · ')).join('\n');
+
+    const defaultLabel = presetCoversTree ? onlyField.options.find(option => option.value === onlyField.default).label : '기본 입력';
+    preset.append(new Option(defaultLabel, 'default'));
+    for (const item of scenario.presets) preset.append(new Option(item.label, item.id));
+    if (presetCoversTree) q('.inputs').hidden = true;
+
+    for (const field of scenario.inputs) {
+      const label = D.el('label', '', field.label);
+      const control = document.createElement(field.type === 'enum' ? 'select' : 'input');
+      control.dataset.input = field.key;
+      control.setAttribute('aria-label', field.label);
+      if (field.type === 'integer') {
+        control.type = 'number';
+        control.min = field.min;
+        control.max = field.max;
+        control.step = 1;
+      } else {
+        for (const option of field.options) control.append(new Option(option.label, option.value));
+      }
+      if (field.type === 'enum' && field.key === 'mode') {
+        label.hidden = true;
+        modes.hidden = false;
+        for (const option of field.options) {
+          const button = D.el('button', '', option.label);
+          button.type = 'button';
+          button.dataset.modeValue = option.value;
+          modes.append(button);
+        }
+      }
+      label.append(control);
+      q('.inputs').append(label);
+      const change = () => {
+        input[field.key] = field.type === 'integer' ? control.valueAsNumber : control.value;
+        preset.value = 'default';
+        recompile();
+      };
+      on(control, field.type === 'integer' ? 'input' : 'change', change);
+    }
+
+    const design = graph || (tree ? D.studyTree(app, scenario, {stop, repaint: paint}) :
+      D.studyMemory(app, scenario));
+    const ui = D.mountStudyUi(app, design, {jumpOutput, signal: events.signal});
+    const shell = D.mountShell(app, {
+      onStep: move,
+      onSpeed(value) {
+        speed = value;
+        if (timer !== null) {
+          clearInterval(timer);
+          timer = setInterval(advance, 900 / speed);
+        }
+      },
+      redraw: ui.redraw,
+      onPanelsChange(state) {
+        ui.syncPanels(state);
+        if (state.drawer) stop();
+      },
+    });
+    const entries = () => trace.lineSteps || trace.snapshots;
+
+    function updatePlay(playing) {
+      app.dataset.playing = String(playing);
+      play.setAttribute('aria-label', playing ? '일시정지' : '재생');
+      play.innerHTML = playing
+        ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM14 5h4v14h-4z"/></svg>'
+        : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>';
+    }
+    function stop() {
+      clearInterval(timer);
+      timer = null;
+      updatePlay(false);
+    }
+    function advance() {
+      step++;
+      paint();
+      if (step >= entries().length - 1) stop();
+    }
+    function toggle() {
+      if (play.disabled) return;
+      if (timer !== null) { stop(); return; }
+      if (entries().length === 1) return;
+      if (step === entries().length - 1) step = 0;
+      updatePlay(true);
+      paint();
+      timer = setInterval(advance, 900 / speed);
+    }
+    function move(index) {
+      if (play.disabled) return;
+      stop();
+      step = Math.max(0, Math.min(entries().length - 1, index));
+      paint();
+    }
+    function outputStep(direction) {
+      const steps = entries();
+      for (let i = step + direction; i > 0 && i < steps.length; i += direction) {
+        if (steps[i].state.stdout.length > steps[i - 1].state.stdout.length) return i;
+      }
+      return -1;
+    }
+    function jumpOutput(direction) {
+      const target = outputStep(direction);
+      if (target >= 0) move(target);
+    }
+
+    function paintCode(snapshot, following) {
+      const executed = tree ? snapshot.executed?.at : snapshot.phase !== 'before' && snapshot.at;
+      const next = tree ? snapshot.next?.at : snapshot.phase === 'before' ? snapshot.at : following?.at;
+      const primary = trace.sources.find(source => source.id === (executed || next)?.sourceId) || trace.sources[0];
+      const code = q('.code');
+      const currentRow = location => {
+        const source = trace.sources.find(item => item.id === location.sourceId);
+        return codeRow(source, location.line, source.text.split('\n')[location.line - 1]);
+      };
+      function codeRow(source, line, text) {
+        const same = loc => loc?.sourceId === source.id && loc?.line === line;
+        const row = D.el('div', 'code-line');
+        row.dataset.sourceId = source.id;
+        row.dataset.line = line;
+        row.classList.toggle('current', same(executed || next));
+        row.classList.toggle('executed', same(executed));
+        row.classList.toggle('study-next-line', same(next));
+        if (same(executed || next)) row.setAttribute('aria-current', 'step');
+        row.append(D.el('span', 'line-number', line), D.el('span', '', text));
+        return row;
+      }
+      const lines = primary.text.split('\n').map((line, index) => codeRow(primary, index + 1, line));
+      if (next && next.sourceId !== primary.id) {
+        const auxiliary = currentRow(next);
+        auxiliary.classList.add('study-next-source');
+        const source = trace.sources.find(item => item.id === next.sourceId);
+        auxiliary.lastElementChild.prepend((source.label || source.id) + ' · ');
+        lines.unshift(auxiliary);
+      }
+      code.replaceChildren(...lines);
+      code.dataset.step = snapshot.id;
+      const active = code.querySelector('.current');
+      if (active) {
+        const row = active.getBoundingClientRect(), visible = code.getBoundingClientRect();
+        if (row.top < visible.top) code.scrollTop += row.top - visible.top;
+        else if (row.bottom > visible.bottom) code.scrollTop += row.bottom - visible.bottom;
+      }
+    }
+
+    function paint() {
+      const steps = entries();
+      const snapshot = steps[step];
+      app.dataset.snapshot = snapshot.id;
+      app.dataset.index = step;
+      app.dataset.activeFrame = snapshot.state.activeFrame ?? '';
+      q('output[data-step]').textContent = `${step} / ${steps.length - 1}`;
+      q('output[data-step]').dataset.step = snapshot.id;
+      scrub.max = steps.length - 1;
+      scrub.value = step;
+      for (const button of modes.querySelectorAll('button')) {
+        button.setAttribute('aria-pressed', String(button.dataset.modeValue === input.mode));
+      }
+      paintCode(snapshot, steps[step + 1]);
+      ui.paint(snapshot, {selection, trace, blocked: play.disabled,
+        hasOutput: steps.at(-1).state.stdout.length > steps[0].state.stdout.length,
+        hasPreviousOutput: outputStep(-1) >= 0, hasNextOutput: outputStep(1) >= 0});
+      for (const action of ['first', 'prev']) q('[data-action=' + action + ']').disabled = step === 0 || play.disabled;
+      for (const action of ['last', 'next']) q('[data-action=' + action + ']').disabled = step === steps.length - 1 || play.disabled;
+      shell.update(trace, steps, step, play.disabled);
+      ui.syncHistory();
+    }
+
+    function recompile() {
+      stop();
+      selection = null;
+      step = 0;
+      ui.reset();
+      const issues = D.validateInput(scenario.inputs, input);
+      q('.input-error').textContent = issues.map(issue => issue.message).join(' ');
+      for (const control of app.querySelectorAll('[data-input]')) {
+        const value = input[control.dataset.input];
+        control.value = Number.isNaN(value) ? '' : value;
+        control.setAttribute('aria-invalid', String(issues.some(issue => issue.path === control.dataset.input)));
+      }
+      play.disabled = scrub.disabled = Boolean(issues.length);
+      if (!issues.length) trace = D.compileScenario(scenario, input);
+      paint();
+    }
+
+    on(preset, 'change', () => {
+      input = {...(preset.value === 'default' ? defaults : presets.get(preset.value))};
+      recompile();
+    });
+    on(scrub, 'input', () => move(Number(scrub.value)));
+    on(app, 'click', event => {
+      const button = event.target.closest('button');
+      if (button?.matches('.study-memory-cells button[data-cell-id]')) {
+        selection = button.dataset.cellId;
+        paint();
+      }
+      if (button?.dataset.modeValue !== undefined) {
+        input.mode = button.dataset.modeValue;
+        preset.value = 'default';
+        recompile();
+      }
+      switch (button?.dataset.action) {
+        case 'first': move(0); break;
+        case 'prev': move(step - 1); break;
+        case 'next': move(step + 1); break;
+        case 'last': move(entries().length - 1); break;
+        case 'play': toggle(); break;
+        case 'theme': {
+          const dark = document.documentElement.dataset.theme !== 'dark';
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+          button.innerHTML = dark
+            ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 4l2 2m12 12 2 2M2 12h2m16 0h2M4 20l2-2M18 6l2-2"/></svg>'
+            : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>';
+          button.setAttribute('aria-label', dark ? '밝은 테마로 전환' : '어두운 테마로 전환');
+          button.title = button.getAttribute('aria-label');
+          break;
+        }
+      }
+    });
+    on(document, 'keydown', event => {
+      if (event.defaultPrevented || app.querySelector('dialog:modal,[aria-modal=true]') ||
+        event.target.matches?.('input,select,textarea,button,summary,.step-list')) return;
+      const actions = {
+        ' ': toggle, ArrowLeft: () => move(step - 1), ArrowRight: () => move(step + 1),
+        Home: () => move(0), End: () => move(entries().length - 1),
+      };
+      if (Object.hasOwn(actions, event.key)) { event.preventDefault(); actions[event.key](); }
+    });
+    recompile();
+    return {destroy() {
+      stop();
+      shell.destroy();
+      ui.destroy();
+      events.abort();
+    }};
+  }
+
+  D.mountPlayer = mountPlayer;
+  // Existing graph renderers already supply the four view regions.
+  D.mountGraphShell = mountPlayer;
 })(globalThis);
 </script>
 <script>(function (root) {
@@ -1689,6 +2044,51 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
   }
 
   D.mountGraphPlayer = mountGraphPlayer;
+})(globalThis);
+</script>
+<script>(function (root) {
+  'use strict';
+  const D = root.DSInteractive;
+
+  function graphHistoryRows(trace, entries, list) {
+    const locations = entries.map(entry => entry.executed?.at ?? entry.at);
+    const sources = new Map(trace.sources.map(source => [source.id, source.label || source.id]));
+    const sourceIds = new Set(locations.map(location => location?.sourceId).filter(Boolean));
+    const header = list.previousElementSibling;
+    header.hidden = sourceIds.size !== 1;
+    header.textContent = header.hidden ? '' : sources.get(sourceIds.values().next().value);
+
+    return entries.map((entry, index) => {
+      const location = locations[index];
+      const source = sources.get(location?.sourceId);
+      const line = location ? location.line + '행' : '';
+      const button = D.el('button', 'btn');
+      button.type = 'button';
+      button.dataset.action = 'step';
+      button.dataset.stepIndex = index;
+      button.setAttribute('aria-label', [index, source, line, entry.title].filter(value => value != null && value !== '').join(' '));
+
+      const text = D.el('span', 'step-txt');
+      const detail = D.el('span', 'graph-history-detail');
+      detail.append(D.el('span', 'graph-history-action', entry.title));
+      if (source && sourceIds.size > 1) detail.append(D.el('span', 'graph-history-row-source', source));
+      text.append(D.el('b', 'graph-history-line', line), detail);
+      button.append(D.el('span', 'step-num num', index), text);
+      return button;
+    });
+  }
+
+  function attachGraphHistory(list, syncHistory, signal) {
+    const source = D.el('p', 'graph-history-source');
+    source.hidden = true;
+    list.before(source);
+    const observer = new ResizeObserver(syncHistory);
+    observer.observe(list);
+    signal.addEventListener('abort', () => observer.disconnect(), {once: true});
+  }
+
+  D.graphHistoryRows = graphHistoryRows;
+  D.attachGraphHistory = attachGraphHistory;
 })(globalThis);
 </script>
 <script>(function () {
@@ -1911,4 +2311,138 @@ const other=side==='left'?'right':'left',lo=side==='left'?220:280,hi=side==='lef
 })();
 </script>
 <script>DSInteractive.player=DSInteractive.mountGraphPlayer(document.querySelector('#app'),DSInteractive.scenario);</script>
+<!-- ds-interactive:header-selector:v1 -->
+<style>.topbar > .header-case-moved {
+  display: block;
+  flex: 0 1 19rem;
+  min-width: 0;
+}
+.topbar > .header-case-moved select {
+  width: 100%;
+  min-height: 44px;
+}
+@media (max-width: 720px) {
+  .topbar:has(> .header-case-moved) {
+    flex-wrap: wrap;
+  }
+  .topbar > .header-case-moved {
+    order: 1;
+    flex-basis: 100%;
+  }
+  .topbar .graph-header-tools {
+    grid-column-start: 1;
+  }
+}
+</style>
+<script>(() => {
+  const app = document.querySelector('#app');
+  const header = app.querySelector('.topbar');
+  const preset = app.querySelector('[data-action=preset]');
+  const fields = [...app.querySelectorAll('[data-input]')];
+
+  // Graph traversal already exposes its single setup selector in the header.
+  if (preset.closest('label').hidden) return;
+
+  const label = preset.closest('label');
+  if (!header.contains(preset)) {
+    label.classList.add('header-case-moved');
+    header.insertBefore(label, header.querySelector('[data-action=theme]'));
+  }
+
+  const enums = fields.filter(field => field.tagName === 'SELECT' && !field.closest('[hidden]'));
+  const {inputs, presets} = DSInteractive.scenario;
+  const defaults = Object.fromEntries(inputs.map(field => [field.key, field.default]));
+  const cases = new Map([['default', defaults], ...presets.map(item => [item.id, item.input])]);
+  const combinations = new Map();
+  const savedLabels = new Set([...preset.options].map(option => option.label));
+  let nextChoice = 0;
+
+  if (enums.length) {
+    const configuration = enums[0].closest('.configuration');
+    const addOptions = (index, values, names, parent) => {
+      if (index === enums.length) {
+        let id;
+        do { id = 'header-choice-' + nextChoice++; } while (cases.has(id));
+        combinations.set(id, values);
+        const caption = names.join(' · ');
+        const option = new Option(savedLabels.has(caption) ? caption + ' · 입력 유지' : caption, id);
+        option.dataset.headerChoice = '';
+        parent.append(option);
+        return;
+      }
+      const field = enums[index];
+      for (const option of field.options) {
+        addOptions(index + 1, [...values, option.value], [...names, option.label], parent);
+      }
+    };
+
+    if (enums.length === 1) {
+      const group = document.createElement('optgroup');
+      group.label = enums[0].getAttribute('aria-label');
+      addOptions(0, [], [], group);
+      preset.append(group);
+    } else {
+      for (const option of enums[0].options) {
+        const group = document.createElement('optgroup');
+        group.label = option.label;
+        addOptions(1, [option.value], [option.label], group);
+        preset.append(group);
+      }
+    }
+
+    for (const field of enums) field.closest('label').hidden = true;
+    if (!fields.some(field => configuration.contains(field) && !field.closest('[hidden]'))) {
+      configuration.hidden = true;
+    }
+  }
+
+  if (!fields.some(field => !field.closest('[hidden]')) && !combinations.size) return;
+  let custom = [...preset.options].find(option => option.disabled && option.value === 'custom');
+  if (!custom) {
+    let id = 'custom';
+    while (cases.has(id)) id += '-';
+    custom = new Option('직접 설정', id);
+    custom.disabled = true;
+    preset.append(custom);
+  }
+
+  const matchesInput = input => input && fields.every(field =>
+    field.value === String(input[field.dataset.input]));
+
+  function sync(preferred = preset.value) {
+    if (matchesInput(cases.get(preferred))) {
+      preset.value = preferred;
+      return;
+    }
+    const match = [...cases].find(([, input]) => matchesInput(input));
+    const context = enums.map(field => field.selectedOptions[0]?.label).filter(Boolean);
+    custom.textContent = ['직접 설정', ...context].join(' · ');
+    preset.value = match?.[0] ?? custom.value;
+  }
+
+  preset.addEventListener('change', event => {
+    const choice = preset.value;
+    const values = combinations.get(choice);
+    if (!values) return;
+    event.stopImmediatePropagation();
+    for (const [index, field] of enums.entries()) {
+      if (field.value === values[index]) continue;
+      field.value = values[index];
+      field.dispatchEvent(new Event('change', {bubbles: true}));
+    }
+    preset.value = choice;
+  }, {capture: true});
+
+  // The player updates the backing controls synchronously before these listeners.
+  app.addEventListener('change', event => {
+    if (event.target.matches('[data-input]')) sync();
+  });
+  app.addEventListener('input', event => {
+    if (event.target.matches('input[data-input]')) sync();
+  });
+  app.addEventListener('click', event => {
+    if (event.target.closest('[data-mode-value]')) sync();
+  });
+})();
+</script>
 </body></html>

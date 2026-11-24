@@ -156,7 +156,11 @@ def check_layout(page, kind, width, height, theme):
     boxes = [left.locator(selector).bounding_box() for selector in ('.code', '.study-history', '.study-explanation')]
     assert all(boxes) and all(a['y'] + a['height'] <= b['y'] + 1 for a, b in zip(boxes, boxes[1:])), boxes
     listing = left.locator('.step-list')
-    assert abs(listing.bounding_box()['height'] - 3 * listing.locator('button').first.bounding_box()['height']) <= 2
+    if kind == 'c-graph' and ui_version >= 4:
+        from browser_graph_history import check_graph_history
+        check_graph_history(page)
+    else:
+        assert abs(listing.bounding_box()['height'] - 3 * listing.locator('button').first.bounding_box()['height']) <= 2
     if listing.evaluate('e => e.scrollHeight > e.clientHeight'):
         listing.evaluate('e => e.scrollTop = e.scrollHeight')
         follow = left.locator('.study-follow')

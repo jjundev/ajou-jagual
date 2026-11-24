@@ -3,7 +3,7 @@ const {fontHref}=require('./fonts.cjs');
 const {CURRENT_THEME_VERSION,addTheme}=require('./theme.cjs');
 const {addLegacyPresetLabel}=require('./preset-label.cjs');
 const {addHeaderSelector}=require('./header-selector.cjs');
-const UI_VERSIONS=[0,1,2,3];
+const UI_VERSIONS=[0,1,2,3,4];
 const CURRENT_UI_VERSION=UI_VERSIONS.at(-1);
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 // Graphs reuse the tree panel policy. Legacy tree and pointer bundles keep their original bytes.
@@ -13,6 +13,25 @@ function graphPanelShell(source) {
  if (!source.includes(profile) || !source.includes(storage)) throw Error('Graph panel profile could not be applied');
  return source.replace(profile, "const tree=app.dataset.kind==='c-graph';")
   .replace(storage, "const treeWidthKey='ds-interactive:graph-panel-widths';");
+}
+// Compose v4 graph history with the shared runtime while retaining the reviewed v1–v3 bytes.
+function addGraphHistoryHooks(file, source) {
+ const hooks = {
+  'ui/v1/shell.js': [
+   [/list\.replaceChildren\(\.\.\.entries\.map\(\(s,i\)=>\{[\s\S]*?return b;\}\)\);/, 'list.replaceChildren(...D.graphHistoryRows(next, entries, list));'],
+  ],
+  'ui/v1/study.js': [
+   ["on(list, 'scroll', noticeScroll);", "on(list, 'scroll', noticeScroll);\n    D.attachGraphHistory(list, syncHistory, signal);"],
+   ["const center = top + (row.dataset.stepIndex === '0' ? position.height : list.clientHeight) / 2;",
+    "const center = top + (row.dataset.stepIndex === '0' ? position.height : Math.max(list.clientHeight, position.height)) / 2;"],
+  ],
+ };
+ for (const [before, after] of hooks[file] || []) {
+  const updated = source.replace(before, after);
+  if (updated === source) throw Error('Graph history hook missing in ' + file);
+  source = updated;
+ }
+ return source;
 }
 function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,themeVersion=CURRENT_THEME_VERSION}){
  if(![0,CURRENT_THEME_VERSION].includes(themeVersion))throw Error('THEME_VERSION_UNSUPPORTED: '+themeVersion);
@@ -28,8 +47,9 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,t
  const graphAsset=decisions?'graph-decisions':inspection?'graph-inspection':'graph';
  const common=uiVersion!==0, ui='ui/v1/';
  const legacyPresetLabel=uiVersion<2;
+ const graphHistory=graph&&uiVersion>=4;
  const css=['player.css',...(common?[ui+'study.css']:graph?['graph-shell.css']:[]),
-  ...(graph?[graphAsset+'.css']:[])].map(file=>{
+  ...(graph?[graphAsset+'.css']:[]),...(graphHistory?['ui/v4/graph-history.css']:[])].map(file=>{
   const stylesheet=read(file);
   return !legacyPresetLabel&&file===ui+'study.css'
    ?stylesheet.replaceAll('[data-ui-version="1"]','[data-ui-version="'+uiVersion+'"]')
@@ -42,8 +62,12 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,t
  const runtime=common?[ui+'shell.js',ui+'study.js',ui+'adapters.js',ui+'player.js']:
   [...(tree?['tree-ui.js']:[]),'shell.js','player.js',...(graph?['graph-shell.js']:[])];
  const list=['engine/contract.js','engine/memory.js',...(tree?['engine/line-steps.js','engine/tree.js']:[]),
-  'engine/trace.js','memory-svg.js',...(tree?['tree-svg.js']:[]),...runtime,...(graph?[graphAsset+'.js']:[])]
-  .map(file=>!common&&graph&&file==='shell.js'?graphPanelShell(read(file)):read(file));
+  'engine/trace.js','memory-svg.js',...(tree?['tree-svg.js']:[]),...runtime,...(graph?[graphAsset+'.js']:[]),...(graphHistory?['ui/v4/graph-history.js']:[])]
+  .map(file=>{
+   const source=read(file);
+   if(!common&&graph&&file==='shell.js')return graphPanelShell(source);
+   return graphHistory?addGraphHistoryHooks(file,source):source;
+  });
  // Browser must take the browser branch; the Node source remains byte-equivalent inside the script.
  list.push(sourceText);list.push(`DSInteractive.player=DSInteractive.${graph?'mountGraphPlayer':'mountPlayer'}(document.querySelector('#app'),DSInteractive.scenario);`);
  html=html.replace('<!--SCRIPTS-->',list.map(js=>`<script>${js.replace(/<\/script/gi,'<\\/script')}</script>`).join('\n'));

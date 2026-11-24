@@ -31,7 +31,10 @@ test('inorder build embeds the tree renderer and compiles offline',()=>{
 test('graph build embeds the graph player and keeps the graph layout in the scenario',()=>{
  const {buildPage}=require('../scripts/build.cjs');
  const graphText=text.replace("kind:'c-memory'","kind:'c-graph',graph:{positions:[[40,40],[100,100]]}");
- const {html,traces}=buildPage({scenario:{sourceText:graphText}});
+ const scenario={sourceText:graphText};
+ const {html,traces}=buildPage({scenario});
+ a.match(html,/D\.graphHistoryRows\(next, entries, list\)/);
+ a.doesNotMatch(buildPage({scenario,uiVersion:3}).html,/graph-history-row-source/);
  a.doesNotMatch(html,/<script[^>]+src=|@import|fetch\(/i);
  a.equal(traces.default.kind,'c-graph');
  const ctx={structuredClone};
@@ -45,10 +48,10 @@ test('a new build uses the versioned common UI by default',()=>{
  const {buildPage}=require('../scripts/build.cjs');
  const sourceText=require('node:fs').readFileSync(require.resolve('../examples/0928/value-address.cjs'),'utf8');
  const build=buildPage({scenario:{sourceText}});
- a.equal(build.uiVersion,3);
- a.match(build.html,/data-ui-version="3"/);
+ a.equal(build.uiVersion,4);
+ a.match(build.html,/data-ui-version="4"/);
  a.match(build.html,/<label><select data-action="preset" aria-label="사례">/);
- a.match(build.html,/\[data-ui-version="3"\] \.topbar/);
+ a.match(build.html,/\[data-ui-version="4"\] \.topbar/);
  a.match(build.html,/ds-interactive:header-selector:v1/);
  const archived=buildPage({scenario:{sourceText},uiVersion:1});
  a.match(archived.html,/<label>사례<select data-action="preset" aria-label="사례">/);

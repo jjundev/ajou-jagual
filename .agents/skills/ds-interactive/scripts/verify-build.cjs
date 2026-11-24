@@ -150,6 +150,7 @@ function requireStudyEvidence(file, built, previewSha) {
     result.layout_checked === true && result.controls_checked === true &&
     (built.uiVersion < 2 || result.preset_label_checked === true) &&
     (built.uiVersion < 3 || (result.header_selector_checked === true && result.input_behavior_checked === true)) &&
+    (built.uiVersion < 4 || built.kind !== 'c-graph' || result.graph_history_checked === true) &&
     result.presets === traces.length && result.snapshots_checked === snapshots &&
     (result.viewport?.[0] !== 375 || JSON.stringify(result.mobile_first_screen) === JSON.stringify(mobileStages)),
   report => [report.console_errors, report.external_requests].every(list => Array.isArray(list) && list.length === 0));

@@ -1,0 +1,65 @@
+.study-history .graph-history-source {
+  margin: 0 0 6px;
+  color: var(--ink-2);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.study-history .step-list {
+  --history-row-min: 60px;
+  height: calc(3 * var(--history-row-min) + 2px);
+  overflow-anchor: none;
+}
+
+.study-history .step-list::after {
+  flex-basis: calc(var(--history-row-min) + 1px);
+}
+
+.study-history .steps .btn {
+  flex: none;
+  height: auto;
+  min-height: var(--history-row-min);
+  padding: 12px 16px;
+}
+
+.study-history .step-num {
+  width: auto;
+  min-width: 3ch;
+  height: auto;
+  justify-content: flex-start;
+  border: 0;
+  font-size: 13px;
+}
+
+.study-history .step-txt {
+  display: grid;
+  grid-template-columns: minmax(4ch, max-content) minmax(0, 1fr);
+  flex: 1;
+  white-space: normal;
+}
+
+.study-history .step-txt > * {
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.study-history .step-txt .graph-history-line {
+  max-width: none;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.graph-history-action,
+.graph-history-row-source {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.study-history .step-txt .graph-history-detail {
+  color: inherit;
+}
+
+.study-history .graph-history-row-source {
+  color: var(--ink-2);
+  font-size: 12px;
+}

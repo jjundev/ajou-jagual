@@ -73,6 +73,7 @@ def main(root,scratch):
                       'viewport':[width,height],'theme':theme,'kind':kind,'ui_version':int(ui_version),
                       'layout_checked':True,'controls_checked':True,'mobile_first_screen':mobile,
                       'preset_label_checked':int(ui_version)>=2,**header_checked,
+                      **({'graph_history_checked': True} if kind=='c-graph' and int(ui_version)>=4 else {}),
                       'presets':count,'snapshots_checked':checked,'status':'pass'})
       print(f'{topic} {width} {theme}: common UI and {checked} snapshots',flush=True)
       continue

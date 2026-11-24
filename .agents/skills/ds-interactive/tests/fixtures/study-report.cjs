@@ -16,6 +16,7 @@ function fixtureReport(run) {
       preset_label_checked: uiVersion >= 2,
       header_selector_checked: uiVersion >= 3,
       input_behavior_checked: uiVersion >= 3,
+      graph_history_checked: uiVersion >= 4 && traces[0].kind === 'c-graph',
       sha256: hash(preview), build_sha256: hash(withoutFontHref(preview)),
       layout_checked: true, controls_checked: true, presets: traces.length, snapshots_checked: snapshots,
       mobile_first_screen: viewport[0] === 375 ? ['initial','middle','last'] : null,
