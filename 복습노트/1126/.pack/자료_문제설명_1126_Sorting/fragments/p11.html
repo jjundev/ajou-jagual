@@ -1,0 +1,7 @@
+<div class="layer eli5" data-explanation="understand"><h4>문제의 단서</h4><p>삽입 정렬이 효율적인 입력 조건을 보기 하나에서 고르세요.</p><ul><li>앞쪽 정렬 구간에서 삽입할 위치까지 얼마나 멀리 이동해야 하는지 보세요.</li></ul></div>
+<div class="layer formal" data-explanation="recall"><h4>이 문제를 봤을 때 떠올릴 개념과 공식</h4><p>‘어느 정도 정렬’은 앞에 더 큰 키가 적은 경우를 가리켜요. 삽입 정렬(insertion sort)에서 오른쪽 이동 1회는 앞의 큰 키와 뒤의 작은 키로 이루어진 역전 쌍 하나에 대응해요.</p><p>정리노트 · <a href="정리노트_1126_Sorting.html#s0-insertion-cost">삽입 정렬 비용</a></p></div>
+<div class="layer formal" data-explanation="start"><h4>종이에 적을 첫 줄</h4><p><code>[1,3,2,4]</code>에서 2를 넣으면 3 하나만 오른쪽으로 밀어요.</p></div>
+<div class="layer formal" data-explanation="solve"><h4>단계별 풀이</h4><div data-subpart="main"><ul><li>① 역순의 다음 키는 매번 앞 구간 전체를 지나므로 이동이 가장 많아요.</li><li>② 어느 정도 정렬된 배열은 일반적으로 이동할 큰 선행 키가 적어 유리해요.</li><li>③ 레코드가 크면 각 이동 비용이 커져요. 큰 레코드 자체가 이동을 줄여주지는 않아요.</li><li>④ 메모리 여유는 이 방식의 반복과 이동 조건을 바꾸지 않아요.</li></ul></div></div>
+<div class="layer formal" data-explanation="verify"><h4>완성 답과 검산</h4><div data-subpart="main"><p>길이가 같은 <code>[1,3,2,4]</code>에는 역전 쌍 (3,2) 하나, <code>[4,3,2,1]</code>에는 3+2+1=6개가 있어요. 두 배열의 이동 수가 각각 1과 6이므로 레코드 수가 같아도 초기 키 순서가 비용을 바꿔요.</p></div></div>
+<div class="layer warn" data-explanation="pitfall"><h4>헷갈리는 지점</h4><ul><li>항상 같은 수의 키를 삽입하므로 실행 비용이 같다고 보면 키별 이동이 0회일 때와 앞 구간 길이만큼일 때의 차이를 놓쳐요.</li></ul></div>
+<div class="layer formal" data-explanation="retry"><h4>해설 없이 다시 풀기</h4><ul><li>‘어떤 입력이 빠른가’를 보면 새 키 앞에 있는 더 큰 키 쌍을 먼저 세어 봐요.</li></ul></div><div class="sum" hidden><div class="summary-group"><h4>입력과 이동</h4><p>이미 순서가 대체로 맞아 앞쪽의 큰 키가 적은 ②가 유리해요.</p></div></div>

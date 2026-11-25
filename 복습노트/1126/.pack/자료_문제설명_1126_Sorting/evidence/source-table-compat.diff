@@ -1,0 +1,17 @@
+--- official/mpe_render.py
++++ scratch/mpe_render.py
+@@ -89,10 +89,12 @@
+             allowed = (node.tag == 'figure' and value == 'margin:16px 0') or (
+                 node.tag == 'p' and value == 'white-space:pre-wrap') or (
+                 node.tag == 'div' and 'table-wrap' in node.classes and
+-                value == 'overflow-x:auto') or (
++                value in ('overflow-x:auto', 'max-width:100%;overflow:auto')) or (
++                node.tag == 'td' and value in ('white-space:nowrap;min-width:2.65rem',
++                                              'white-space:nowrap;min-width:2ch')) or (
+                 node.tag == 'table' and re.fullmatch(r'min-width:[1-9][0-9]{0,3}px', value)) or (
+                 node.tag == 'div' and 'figure-scroll' in node.classes and
+-                value in ('max-width:100%;overflow-x:auto',
++                value in ('max-width:100%;overflow:auto', 'max-width:100%;overflow-x:auto',
+                           'max-width:100%;overflow-x:auto;background:white')) or (
+                 node.tag == 'svg' and re.fullmatch(
+                     r'(?:background:white;)?width:[1-9][0-9]{0,3}px;max-width:none;height:auto', value))

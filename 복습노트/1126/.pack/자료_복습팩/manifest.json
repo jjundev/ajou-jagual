@@ -1,0 +1,502 @@
+{
+  "course": "자료구조및알고리즘이해",
+  "range": "1126",
+  "slug": "Sorting",
+  "note_title": "정렬 알고리즘 — 5살도 이해하는 정리노트",
+  "note_subtitle": "이정원 교수님 자료구조및알고리즘이해 · 1126 수업 (Software_9 Sorting)",
+  "review_title": "복습문제 11선 — 1126 수업 범위",
+  "review_intro": "이정원 교수님 기출 2개, 다른 기출 2개, 강의 예제 기반 자체 출제 3개, 교과서 원문 4개예요. 먼저 풀어 보고, 막히면 힌트를 열어 보세요.",
+  "footer_note": "출처: 이정원 교수님 강의록(Software_9 Sorting) · 수업 녹음 전사(1126).",
+  "footer_review": "출처: 2015 기출(이정원) · 2016 기말(이정원) · 2017 기말(김도희, 출제자 미상) · Software_9 Sorting · 자료구조 교과서 12장 정렬. 답은 Python 추적, C11 실행과 강의 근거 대조로 확인했습니다.",
+  "rules": [
+    "trace-v1",
+    "layout-v2"
+  ],
+  "sessions": [
+    {
+      "date": "1126",
+      "stt": "STT/1126 자구알.md",
+      "summary": "summaries/stt-1126.md",
+      "slides": "S9 p1–25, p27"
+    }
+  ],
+  "sections": [
+    {
+      "id": "s0",
+      "title": "1. 정렬의 기준과 기본 정렬",
+      "short": "1 기본 정렬",
+      "topics": [
+        {
+          "id": "s0-keys",
+          "title": "레코드와 정렬 기준",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "레코드",
+            "필드",
+            "키",
+            "사전",
+            "비교 횟수",
+            "이동 횟수"
+          ]
+        },
+        {
+          "id": "s0-selection",
+          "title": "선택 정렬과 안정성",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "선택 정렬",
+            "최솟값",
+            "벽",
+            "안정성",
+            "n(n-1)/2"
+          ]
+        },
+        {
+          "id": "s0-insertion",
+          "title": "삽입 정렬과 정렬된 구간",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "삽입 정렬",
+            "카드",
+            "key = list[i];",
+            "list[j+1] = key;",
+            "오른쪽 이동"
+          ]
+        },
+        {
+          "id": "s0-insertion-cost",
+          "title": "삽입 정렬의 비교와 이동",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "삽입 정렬",
+            "n-1",
+            "2(n-1)",
+            "역순",
+            "안정성"
+          ]
+        },
+        {
+          "id": "s0-bubble",
+          "title": "버블 정렬과 패스의 끝",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "버블 정렬",
+            "인접",
+            "SWAP",
+            "버블",
+            "n(n-1)/2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "2. 쉘 정렬과 분할 정복",
+      "short": "2 쉘·합병·퀵",
+      "topics": [
+        {
+          "id": "s1-shell",
+          "title": "쉘 정렬과 간격",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "쉘 정렬",
+            "간격",
+            "부분 리스트",
+            "gap",
+            "삽입 정렬"
+          ]
+        },
+        {
+          "id": "s1-merge-divide",
+          "title": "합병 정렬의 분할·정복·결합",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "합병 정렬",
+            "분할",
+            "정복",
+            "결합",
+            "재귀 호출",
+            "27"
+          ]
+        },
+        {
+          "id": "s1-merge-join",
+          "title": "정렬된 두 부분을 합치는 방법",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "합병",
+            "b1",
+            "b2",
+            "sorted",
+            "남은"
+          ]
+        },
+        {
+          "id": "s1-merge-cost",
+          "title": "합병 정렬의 비용과 안정성",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "합병 정렬",
+            "O(n\\log n)",
+            "안정성",
+            "연결 리스트"
+          ]
+        },
+        {
+          "id": "s1-quick",
+          "title": "퀵 정렬의 분할과 재귀 호출",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "퀵 정렬",
+            "피벗",
+            "partition",
+            "left",
+            "right",
+            "q-1",
+            "q+1"
+          ]
+        },
+        {
+          "id": "s1-partition",
+          "title": "low와 high의 이동 및 피벗 확정",
+          "layers": [
+            "eli5",
+            "formal",
+            "prof"
+          ],
+          "supp": false,
+          "required_terms": [
+            "low",
+            "high",
+            "피벗",
+            "교차",
+            "교환"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "title": "요약 · 예고",
+      "short": "요약 · 예고",
+      "topics": [
+        {
+          "id": "s2-cheatsheet",
+          "title": "한눈에 보는 정렬 기준과 알고리즘",
+          "layers": [],
+          "supp": false,
+          "required_terms": []
+        },
+        {
+          "id": "s2-next",
+          "title": "다음에 볼 내용",
+          "layers": [],
+          "supp": false,
+          "required_terms": []
+        },
+        {
+          "id": "s2-links",
+          "title": "관련 자료",
+          "layers": [],
+          "supp": false,
+          "required_terms": []
+        }
+      ]
+    }
+  ],
+  "preview_topic": "s2-next",
+  "forbidden_outside_preview": [
+    "기수 정렬",
+    "히프 정렬",
+    "힙 정렬",
+    "중간값 피벗",
+    "해시 함수"
+  ],
+  "parts": [
+    {
+      "id": "partA",
+      "title": "A. 이정원 교수님 기출",
+      "short": "A 이정원 기출"
+    },
+    {
+      "id": "partB",
+      "title": "B. 다른 기출",
+      "short": "B 다른 기출"
+    },
+    {
+      "id": "partL",
+      "title": "강의 예제 기반 자체 출제",
+      "short": "강의 예제"
+    },
+    {
+      "id": "partD",
+      "title": "D. 교과서 연습문제",
+      "short": "D 교과서"
+    }
+  ],
+  "problems": [
+    {
+      "id": "p1",
+      "source": "2016-final-ljw-q2",
+      "source_kind": "past-exam",
+      "part": "partA",
+      "variant": false,
+      "anchor": "s1-partition",
+      "level": 2,
+      "date": "1126",
+      "terms": [
+        "2 4 12 16 18 27 37 49 59 62"
+      ],
+      "answer": "(12) 4 18 2 16 27 (59) 62 49 37 / (2) 4 12 (18) 16 27 (49) 37 59 62 / 2 4 12 16 18 27 37 49 59 62"
+    },
+    {
+      "id": "p2",
+      "source": "2015-ljw-q5",
+      "source_kind": "past-exam",
+      "part": "partA",
+      "variant": false,
+      "anchor": "s1-shell",
+      "level": 3,
+      "date": "1126",
+      "terms": [
+        "5 6 14 18 27 31 35 37 43 88"
+      ],
+      "answer": "14 5 43 6 18 31 37 88 27 35 / 6 5 27 14 18 31 35 88 43 37 / 5 6 14 18 27 31 35 37 43 88 / 9→1, 42 · 42→30, 72 · 30→17, 32 · 32→39 · 72→46, 100 · 100→73 · 73→82 · 82→80"
+    },
+    {
+      "id": "p3",
+      "source": "2017-final2-q2",
+      "source_kind": "past-exam",
+      "part": "partB",
+      "variant": false,
+      "anchor": "s0-insertion",
+      "level": 2,
+      "date": "1126",
+      "terms": [
+        "9 8 7 6 4 3"
+      ],
+      "answer": "7 9 4 6 3 8 / 9 7 4 6 3 8 / 9 7 6 4 3 8 / 9 7 6 4 8 3 / 9 7 6 8 4 3 / 9 7 8 6 4 3 / 9 8 7 6 4 3"
+    },
+    {
+      "id": "p4",
+      "source": "2017-final-kdh-q2",
+      "source_kind": "past-exam",
+      "part": "partB",
+      "variant": false,
+      "anchor": "s1-partition",
+      "level": 2,
+      "date": "1126",
+      "terms": [
+        "3 9 15 25 46 50 72"
+      ],
+      "answer": "25 3 15 72 9 46 50 / 25 3 15 9 72 46 50 / 9 3 15 25 72 46 50 / 3 9 15 25 72 46 50 / 3 9 15 25 50 46 72 / 3 9 15 25 46 50 72"
+    },
+    {
+      "id": "p5",
+      "source": "lecture-s09-p5-sort-stability",
+      "source_kind": "lecture-code",
+      "part": "partL",
+      "variant": false,
+      "anchor": "s0-selection",
+      "level": 2,
+      "date": "1126",
+      "terms": [
+        "선택 2B 2A (불안정) / 삽입 2A 2B (안정)"
+      ],
+      "answer": "선택 2B 2A (불안정) / 삽입 2A 2B (안정)",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_9_Sorting.pdf",
+        "pdf_page": 5,
+        "sha256": "f24fa0f39ec39b47dd942eac1a1ab81fdeb592fb608c0d6248a4299266827cac",
+        "example": "선택 정렬에서 끝점 교환과 안정성, 삽입 정렬의 엄격한 비교",
+        "taught_on": "1126",
+        "extra_pages": [
+          8
+        ]
+      },
+      "objectives": [
+        "정렬 키와 레코드의 구별",
+        "선택 정렬과 삽입 정렬의 안정성 검증"
+      ],
+      "task_family": "equal-keys-stability"
+    },
+    {
+      "id": "p6",
+      "source": "lecture-s09-p12-bubble-count",
+      "source_kind": "lecture-code",
+      "part": "partL",
+      "variant": false,
+      "anchor": "s0-bubble",
+      "level": 2,
+      "date": "1126",
+      "terms": [
+        "비교 10회·이동 0회 / 비교 10회·이동 30회"
+      ],
+      "answer": "비교 10회·이동 0회 / 비교 10회·이동 30회",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_9_Sorting.pdf",
+        "pdf_page": 12,
+        "sha256": "f24fa0f39ec39b47dd942eac1a1ab81fdeb592fb608c0d6248a4299266827cac",
+        "example": "버블 정렬 이중 반복과 SWAP 매크로",
+        "taught_on": "1126",
+        "extra_pages": [
+          11,
+          13
+        ]
+      },
+      "objectives": [
+        "버블 정렬의 비교 횟수와 데이터 이동 횟수를 따로 계산"
+      ],
+      "task_family": "bubble-loop-cost"
+    },
+    {
+      "id": "p7",
+      "source": "lecture-s09-p21-merge-heads",
+      "source_kind": "lecture-code",
+      "part": "partL",
+      "variant": false,
+      "anchor": "s1-merge-join",
+      "level": 2,
+      "date": "1126",
+      "terms": [
+        "1 2 4 5A 5B 7 / 비교 5회 / 7 복사 / 오른쪽 우선 5B 5A / 3패스·48회 이동"
+      ],
+      "answer": "1 2 4 5A 5B 7 / 비교 5회 / 7 복사 / 오른쪽 우선 5B 5A / 3패스·48회 이동",
+      "lecture_ref": {
+        "path": "자료구조_강의록_2026/Software_9_Sorting.pdf",
+        "pdf_page": 21,
+        "sha256": "f24fa0f39ec39b47dd942eac1a1ab81fdeb592fb608c0d6248a4299266827cac",
+        "example": "정렬된 두 연속 부분 배열의 합병과 복사",
+        "taught_on": "1126",
+        "extra_pages": [
+          19,
+          20,
+          22
+        ]
+      },
+      "objectives": [
+        "합병의 앞 원소 비교와 남은 꼬리 복사",
+        "동률 처리와 합병 정렬 안정성",
+        "비교와 배열 복사를 구분",
+        "절반 분할 깊이와 층당 이동 횟수를 계산"
+      ],
+      "task_family": "stable-merge"
+    },
+    {
+      "id": "p8",
+      "source": "textbook-ch12-q02",
+      "source_kind": "textbook",
+      "part": "partD",
+      "variant": false,
+      "anchor": "s0-bubble",
+      "level": 1,
+      "date": "1126",
+      "terms": [
+        "② 6 7 3 5 9"
+      ],
+      "answer": "② 6 7 3 5 9"
+    },
+    {
+      "id": "p9",
+      "source": "textbook-ch12-q03",
+      "source_kind": "textbook",
+      "part": "partD",
+      "variant": false,
+      "anchor": "s0-selection",
+      "level": 1,
+      "date": "1126",
+      "terms": [
+        "① 3 4 7 9 8"
+      ],
+      "answer": "① 3 4 7 9 8"
+    },
+    {
+      "id": "p10",
+      "source": "textbook-ch12-q04",
+      "source_kind": "textbook",
+      "part": "partD",
+      "variant": false,
+      "anchor": "s0-insertion",
+      "level": 1,
+      "date": "1126",
+      "terms": [
+        "④ (4) / j>=0 && key < A[j] / A[j+1]=A[j];"
+      ],
+      "answer": "④ (4) / j>=0 && key < A[j] / A[j+1]=A[j];"
+    },
+    {
+      "id": "p11",
+      "source": "textbook-ch12-q10",
+      "source_kind": "textbook",
+      "part": "partD",
+      "variant": false,
+      "anchor": "s0-insertion-cost",
+      "level": 1,
+      "date": "1126",
+      "terms": [
+        "2번 / 어느 정도 정렬되어 있다."
+      ],
+      "answer": "2번 / 어느 정도 정렬되어 있다."
+    }
+  ],
+  "links": [
+    {
+      "topic": "s2-links",
+      "href": "../1112/정리노트_1112_Heap.html"
+    },
+    {
+      "topic": "s2-links",
+      "href": "../0917/정리노트_0917_Recursion.html"
+    }
+  ]
+}
