@@ -3,7 +3,8 @@ const {fontHref}=require('./fonts.cjs');
 const {CURRENT_THEME_VERSION,addTheme}=require('./theme.cjs');
 const {addLegacyPresetLabel}=require('./preset-label.cjs');
 const {addHeaderSelector}=require('./header-selector.cjs');
-const UI_VERSIONS=[0,1,2,3,4,5];
+const HEADER_PADDING_UI_VERSION=7;
+const UI_VERSIONS=[0,1,2,3,4,5,HEADER_PADDING_UI_VERSION];
 const CURRENT_UI_VERSION=UI_VERSIONS.at(-1);
 const sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 // Graphs reuse the tree panel policy. Legacy tree and pointer bundles keep their original bytes.
@@ -50,11 +51,12 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,t
  const graphHistory=graph&&uiVersion>=4;
  const css=['player.css',...(common?[ui+'study.css']:graph?['graph-shell.css']:[]),
   ...(graph?[graphAsset+'.css']:[]),...(graphHistory?['ui/v4/graph-history.css']:[]),
-  ...(uiVersion>=5?['ui/v5/header.css']:[])].map(file=>{
+  ...(uiVersion>=5?['ui/v5/header.css']:[]),
+  ...(uiVersion>=HEADER_PADDING_UI_VERSION?['ui/v7/header.css']:[])].map(file=>{
   const stylesheet=read(file);
-  return !legacyPresetLabel&&file===ui+'study.css'
-   ?stylesheet.replaceAll('[data-ui-version="1"]','[data-ui-version="'+uiVersion+'"]')
-   :stylesheet;
+  if(!legacyPresetLabel&&file===ui+'study.css')return stylesheet.replaceAll('[data-ui-version="1"]','[data-ui-version="'+uiVersion+'"]');
+  if(uiVersion>5&&file==='ui/v5/header.css')return stylesheet.replaceAll('[data-ui-version="5"]','[data-ui-version="'+uiVersion+'"]');
+  return stylesheet;
  }).join('\n');
  let html=read('shell.html').replace('/*FONT_HREF*/',fontHref(outDir)).replace('/*CSS*/',css);
  if(common)html=html.replace('id="app"','id="app" data-ui-version="'+uiVersion+'"');
@@ -76,5 +78,5 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,t
  if(themeVersion)html=addTheme(html);
  return {html,uiVersion,themeVersion,kind:s.kind,traces:result.traces,graphView:graph?(decisions||inspection?s.graph.view:'traversal'):null,hashes:{scenario:sha(sourceText),trace:sha(JSON.stringify(result.traces,null,2)),preview:sha(html)}};
 }
-module.exports={buildPage,sha,CURRENT_UI_VERSION};
+module.exports={buildPage,sha,CURRENT_UI_VERSION,HEADER_PADDING_UI_VERSION};
 if(require.main===module){const file=p.resolve(process.argv[2]),r=buildPage({outDir:p.dirname(p.resolve(process.argv[3])),scenario:{sourceText:fs.readFileSync(file,'utf8')}});fs.writeFileSync(process.argv[3],r.html);console.log(JSON.stringify({file:process.argv[3],ui_version:r.uiVersion,hashes:r.hashes}));}

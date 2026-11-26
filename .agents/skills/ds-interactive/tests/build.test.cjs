@@ -48,10 +48,13 @@ test('a new build uses the versioned common UI by default',()=>{
  const {buildPage}=require('../scripts/build.cjs');
  const sourceText=require('node:fs').readFileSync(require.resolve('../examples/0928/value-address.cjs'),'utf8');
  const build=buildPage({scenario:{sourceText}});
- a.equal(build.uiVersion,5);
- a.match(build.html,/data-ui-version="5"/);
+ a.equal(build.uiVersion,7);
+ a.match(build.html,/data-ui-version="7"/);
  a.match(build.html,/<label><select data-action="preset" aria-label="사례">/);
- a.match(build.html,/\[data-ui-version="5"\] \.topbar/);
+ a.match(build.html,/\[data-ui-version="7"\] \.topbar/);
+ a.match(build.html,/padding-inline-end: 34px/);
+ a.match(build.html,/inset-inline-end: 16px/);
+ a.doesNotMatch(buildPage({scenario:{sourceText},uiVersion:5}).html,/padding-inline-end: 34px/);
  a.match(build.html,/@media \(720px < width <= 900px\)/);
  a.doesNotMatch(buildPage({scenario:{sourceText},uiVersion:4}).html,/@media \(720px < width <= 900px\)/);
  a.match(build.html,/ds-interactive:header-selector:v1/);

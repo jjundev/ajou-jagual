@@ -149,6 +149,7 @@ for(const [kind,example,transform] of [
    replace(375,{input_behavior_checked:false}),
    report.results.filter(row=>row.viewport[0]!==901),
    replace(901,{header_layout_checked:false}),
+   replace(901,{header_padding_checked:false}),
    ...(kind==='c-graph' ? [replace(375,{graph_history_checked:false})] : []),
    replace(375,{snapshots_checked:0}),
   ]){
@@ -260,4 +261,39 @@ test('archived preset label updates preserve the selector and require browser ev
  a.throws(()=>checkReady(run,{archived:true}),/THEME_UNVERIFIED/);
  writeReview(true);
  a.equal(checkReady(run,{archived:true}),html);
+});
+
+
+test('archived header padding requires browser evidence for the final HTML', t=>{
+ const dir=tmp();
+ t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const run=runFixture(dir,'../examples/0928/value-address.cjs',source=>source,5);
+ const {checkReady}=require('../scripts/verify-build.cjs');
+ const {currentHashes,readReview}=require('../scripts/review.cjs');
+ const {withoutFontHref}=require('../scripts/fonts.cjs');
+ const preview=p.join(run,'preview.html');
+ const original=fs.readFileSync(preview,'utf8');
+ const verify=()=>checkReady(run,{archived:true});
+ const viewports=[[1440,900],[1280,800],[1279,800],[375,812],[320,812]];
+ const {addHeaderPadding,removeHeaderPadding}=require('../scripts/header-padding.cjs');
+ const padded=addHeaderPadding(original);
+ a.equal(removeHeaderPadding(padded),original);
+ fs.writeFileSync(preview,padded);
+ const paddingEvidence=p.join(run,'evidence/header-padding.json');
+ const writePaddingEvidence=buildSha=>{
+  const results=[...viewports,[720,812],[721,812],[900,812],[901,812]]
+   .flatMap(viewport=>['light','dark'].map(theme=>({
+    status:'pass',viewport,theme,header_padding_checked:true,
+    header_selector_checked:true,input_behavior_checked:true,build_sha256:buildSha,
+   })));
+  fs.writeFileSync(paddingEvidence,JSON.stringify({status:'pass',results}));
+  const review=readReview(run);
+  review.header_padding_version=1;
+  review.hashes=currentHashes(run);
+  fs.writeFileSync(p.join(run,'review.json'),JSON.stringify(review));
+ };
+ writePaddingEvidence(hash(withoutFontHref(original)));
+ a.throws(verify,/HEADER_PADDING_UNVERIFIED/);
+ writePaddingEvidence(hash(withoutFontHref(padded)));
+ a.equal(verify(),padded);
 });

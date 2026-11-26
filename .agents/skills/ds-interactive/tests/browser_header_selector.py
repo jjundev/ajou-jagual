@@ -78,17 +78,50 @@ def check_header_selector(page):
     }""")
 
 
-def check_preview(page, preview):
+def check_header_padding(page):
+    page.evaluate("""() => {
+      const select = [...document.querySelectorAll('.topbar select')].find(control => control.checkVisibility());
+      const style = getComputedStyle(select);
+      const arrow = getComputedStyle(select.parentElement, '::after');
+      if (style.paddingInlineEnd !== '34px' || arrow.insetInlineEnd !== '16px' ||
+          arrow.content === 'none' || style.appearance !== 'none') {
+        throw Error('Incorrect closed header selector padding or arrow offset');
+      }
+      const text = document.createElement('span');
+      Object.assign(text.style, {position: 'fixed', visibility: 'hidden', whiteSpace: 'pre',
+        fontFamily: style.fontFamily, fontSize: style.fontSize, fontWeight: style.fontWeight,
+        letterSpacing: style.letterSpacing});
+      document.body.append(text);
+      try {
+        const room = select.clientWidth - parseFloat(style.paddingInlineStart) - parseFloat(style.paddingInlineEnd);
+        for (const option of select.options) {
+          text.textContent = option.label;
+          if (text.getBoundingClientRect().width > room + 1) throw Error('Truncated header option: ' + option.label);
+        }
+      } finally {
+        text.remove();
+      }
+    }""")
+    return {'header_padding_checked': True}
+
+
+def check_preview(page, preview, *, padding=False):
     normalized = re.sub(rb'(data-ds-interactive-font href=")[^"]*', rb'\g<1>', preview.read_bytes(), count=1)
     digest = hashlib.sha256(normalized).hexdigest()
     results = []
-    for width, height in ((1440, 900), (1280, 800), (1279, 800), (375, 812), (320, 812)):
+    viewports = [(1440, 900), (1280, 800), (1279, 800), (375, 812), (320, 812)]
+    if padding:
+        from browser_study import HEADER_VIEWPORTS
+        viewports.extend(HEADER_VIEWPORTS)
+    for width, height in viewports:
         for theme in ('light', 'dark'):
             page.emulate_media(color_scheme=theme)
             page.set_viewport_size({'width': width, 'height': height})
             page.goto(preview.resolve().as_uri())
             page.evaluate('document.fonts.ready')
             checks = check_header_selector(page)
+            if padding:
+                checks.update(check_header_padding(page))
             results.append(dict(checks, status='pass', viewport=[width, height], theme=theme, build_sha256=digest))
     return {'status': 'pass', 'results': results}
 
@@ -102,7 +135,7 @@ if __name__ == '__main__':
         page.on('pageerror', lambda error: errors.append(str(error)))
         for entry in manifest:
             preview = Path(entry['preview'])
-            report = check_preview(page, preview)
+            report = check_preview(page, preview, padding=entry.get('padding', False))
             assert not errors, (preview, errors)
             if entry.get('evidence'):
                 Path(entry['evidence']).write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')

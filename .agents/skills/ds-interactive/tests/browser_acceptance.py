@@ -60,6 +60,8 @@ def main(root,scratch):
       if int(ui_version)>=5:
        browser_study.check_header_layout(page)
        header_checked['header_layout_checked']=True
+      if int(ui_version)>=7:
+       header_checked['header_padding_checked']=True
       mobile=browser_study.check_mobile_stages(page, kind, out, topic, theme) if width==375 else None
       if kind=='c-graph':
        view=page.locator('#app').get_attribute('data-graph-view')

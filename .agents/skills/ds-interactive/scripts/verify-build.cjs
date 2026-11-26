@@ -1,11 +1,12 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const {buildPage, sha, CURRENT_UI_VERSION} = require('./build.cjs');
+const {buildPage, sha, CURRENT_UI_VERSION, HEADER_PADDING_UI_VERSION} = require('./build.cjs');
 const {rebaseFont, withoutFontHref} = require('./fonts.cjs');
 const {readReview, verifyReview} = require('./review.cjs');
 const {CURRENT_THEME_VERSION, addTheme, removeTheme} = require('./theme.cjs');
 const {HEADER_SELECTOR_VERSION, addHeaderSelector, removeHeaderSelector} = require('./header-selector.cjs');
 const {addLegacyPresetLabel, removeLegacyPresetLabel} = require('./preset-label.cjs');
+const {HEADER_PADDING_VERSION, addHeaderPadding, removeHeaderPadding} = require('./header-padding.cjs');
 
 const treeViewports = [[1440, 900], [1024, 768], [375, 812]];
 const graphViewports = [[1440, 900], [1280, 800], [1279, 800], [375, 812]];
@@ -40,12 +41,31 @@ function checkReady(run, {archived = false} = {}) {
   let layoutBuild = built;
   let html = built.html;
   const migrated = review.header_selector_version !== undefined;
+  let archivedPreview = fs.readFileSync(preview, 'utf8');
+  const migratedPadding = review.header_padding_version !== undefined;
+  if (migratedPadding) {
+    if (!archived || uiVersion >= HEADER_PADDING_UI_VERSION || review.header_padding_version !== HEADER_PADDING_VERSION) {
+      throw Error('HEADER_PADDING_UPDATE_NOT_ARCHIVED: ' + run);
+    }
+    const baseline = removeHeaderPadding(archivedPreview);
+    if (archivedPreview !== addHeaderPadding(baseline)) throw Error('REBUILD_MISMATCH: ' + preview);
+    const digest = sha(withoutFontHref(archivedPreview));
+    requireBrowserResults(path.join(run, 'evidence', 'header-padding.json'), 'HEADER_PADDING_UNVERIFIED',
+      [...studyViewports, ...studyHeaderViewports], result => result.build_sha256 === digest &&
+        result.header_padding_checked === true && result.header_selector_checked === true &&
+        result.input_behavior_checked === true);
+    archivedPreview = baseline;
+  }
+
+  function published(html) {
+    return migratedPadding ? addHeaderPadding(html) : html;
+  }
   let migratedHtml;
   if (migrated) {
     if (!archived || uiVersion >= 3 || review.header_selector_version !== HEADER_SELECTOR_VERSION) {
       throw Error('HEADER_SELECTOR_VERSION_UNSUPPORTED: ' + run);
     }
-    migratedHtml = fs.readFileSync(preview, 'utf8');
+    migratedHtml = archivedPreview;
     html = removeHeaderSelector(migratedHtml);
     if (migratedHtml !== addHeaderSelector(html)) throw Error('REBUILD_MISMATCH: ' + preview);
     const headerEvidence = path.join(run, 'evidence', 'header-selector.json');
@@ -63,7 +83,7 @@ function checkReady(run, {archived = false} = {}) {
   }
   if (baseSha !== undefined) {
     if (!archived || themeVersion !== CURRENT_THEME_VERSION) throw Error('THEME_BASE_NOT_ARCHIVED: ' + run);
-    if (!migrated) html = fs.readFileSync(preview, 'utf8');
+    if (!migrated) html = archivedPreview;
     const beforeLabelUpdate = presetLabelRemoved ? addLegacyPresetLabel(html) : html;
     const base = removeTheme(beforeLabelUpdate);
     const restored = addTheme(base);
@@ -74,16 +94,16 @@ function checkReady(run, {archived = false} = {}) {
     reviewedSha = review.reviewed_preview_sha256 || baseSha;
   } else {
     if (migrated && html !== built.html) throw Error('REBUILD_MISMATCH: ' + preview);
-    if (!migrated) requireBuildBytes(preview, html);
+    if (!migrated && archivedPreview !== html) throw Error('REBUILD_MISMATCH: ' + preview);
   }
   if (themeVersion) requireThemeEvidence(run, sha(withoutFontHref(html)), presetLabelRemoved);
   if (built.uiVersion !== 0) {
     requireStudyEvidence(evidence, layoutBuild, reviewedSha);
-    return migratedHtml ?? html;
+    return published(migratedHtml ?? html);
   }
   if (built.graphView) {
     requireGraphEvidence(evidence, layoutBuild, reviewedSha);
-    return migratedHtml ?? html;
+    return published(migratedHtml ?? html);
   }
 
   const checkpoints = Object.values(built.traces).reduce((total, {lineSteps}) => {
@@ -95,7 +115,7 @@ function checkReady(run, {archived = false} = {}) {
   if (checkpoints && (baseSha === undefined || /dataset\.currentNode|data-current-node/.test(layoutBuild.html))) {
     requireNodeEvidence(evidence, reviewedSha, checkpoints);
   }
-  return migratedHtml ?? html;
+  return published(migratedHtml ?? html);
 }
 
 function requireThemeEvidence(run, buildSha, presetLabelRemoved) {
@@ -154,6 +174,7 @@ function requireStudyEvidence(file, built, previewSha) {
     (built.uiVersion < 3 || (result.header_selector_checked === true && result.input_behavior_checked === true)) &&
     (built.uiVersion < 4 || built.kind !== 'c-graph' || result.graph_history_checked === true) &&
     (built.uiVersion < 5 || result.header_layout_checked === true) &&
+    (built.uiVersion < HEADER_PADDING_UI_VERSION || result.header_padding_checked === true) &&
     result.presets === traces.length && result.snapshots_checked === snapshots &&
     (result.viewport?.[0] !== 375 || JSON.stringify(result.mobile_first_screen) === JSON.stringify(mobileStages)),
   report => [report.console_errors, report.external_requests].every(list => Array.isArray(list) && list.length === 0));

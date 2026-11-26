@@ -77,12 +77,14 @@ def check_controls(page):
             verify(at === control || control.contains(at), label + ' is covered');
           }
           const padding = control.matches('button') && innerWidth > 480 ? 16 : 12;
-          const arrowSpace = control.matches('select') ? 30 : padding;
+          const headerSelect = control.matches('.study-header-tools select') &&
+            Number(document.querySelector('#app').dataset.uiVersion) >= 7;
+          const arrowSpace = control.matches('select') ? (headerSelect ? 34 : 30) : padding;
           verify(parseFloat(style.paddingInlineStart) === padding && parseFloat(style.paddingInlineEnd) === arrowSpace,
             label + ' has incorrect horizontal padding');
           if (control.matches('select')) {
             const arrow = getComputedStyle(control.parentElement, '::after');
-            verify(arrow.insetInlineEnd === '12px' && arrow.pointerEvents === 'none',
+            verify(arrow.insetInlineEnd === (headerSelect ? '16px' : '12px') && arrow.pointerEvents === 'none',
               label + ' has incorrect arrow spacing');
             Object.assign(measured.style, {
               fontFamily: style.fontFamily, fontSize: style.fontSize, fontWeight: style.fontWeight,
