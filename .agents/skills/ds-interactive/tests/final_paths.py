@@ -17,12 +17,14 @@ PACKS = {
     '1116': ('정리노트_1116_Graph.html', 2, 3),
     '1119': ('정리노트_1119_Graph.html', 2, 4),
     '1123': ('정리노트_1123_Graph.html', 2, 5),
+    '1126': ('정리노트_1126_Sorting.html', 2, 2),
 }
 LINK_SECTIONS = {
     '1105': ['s0-inorder'],
     '1116': ['s1-euler', 's2-terms', 's3-adj-matrix'],
     '1119': ['s0-dfs-not-done', 's1-bfs-trace', 's1-compare', 's2-components'],
     '1123': ['s1-kruskal', 's1-union', 's2-prim', 's3-removal', 's3-cycle'],
+    '1126': ['s1-merge-join', 's1-partition'],
 }
 INORDER_FILE = '인터렉티브_01_중위순회_실행.html'
 FONT_HREF = rb'(data-ds-interactive-font href=")[^"]+'
@@ -75,6 +77,14 @@ def check_public_files(browser, files):
                     expect(page.locator('[data-decision-state=mst-result]')).to_contain_text('총비용 102')
                 if graph_view == 'topo':
                     expect(page.locator('[data-decision-state=cycle]')).to_have_text('0 → 2 → 5 → 0')
+            if page.locator('.study-arrays').count():
+                page.locator('[data-action=preset]').select_option(index=1)
+                expect(page.locator('#app')).to_have_attribute('data-index', '0')
+                page.locator('[data-action=play]').click()
+                expect(page.locator('#app')).to_have_attribute('data-index', '1')
+                page.locator('[data-action=preset]').select_option('default')
+                expect(page.locator('#app')).to_have_attribute('data-playing', 'false')
+                expect(page.locator('#app')).to_have_attribute('data-index', '0')
             rows.append({'file': file.name, 'sha256': hashlib.sha256(public).hexdigest(),
                          'content_matches_reviewed_preview': True, 'final_playback': 'pass'})
     return rows

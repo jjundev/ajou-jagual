@@ -79,3 +79,7 @@ watch: [
 그래프 셸과 반응형 배치는 [그래프 배치](design.md)를 공통으로 따른다. `graph.view: 'bridges'`는 이동 기록과 차수, `graph.view: 'degree'`는 방향 그래프, 인접 행렬과 진출·진입 차수를 표시한다. `graph.view` 생략 시 DFS·BFS·연결 성분에 쓰는 탐색 장면을 사용한다.
 
 최소 비용 신장 트리와 위상 정렬에는 공통 UI의 `graph.view: 'mst'`와 `graph.view: 'topo'`를 사용한다. `graph.vertices`는 `[정점 ID, x, y]`, `graph.edges`는 `[출발, 도착, 가중치?]`의 배열이다. MST는 `edge.<index>`의 양수 채택 순번·0 미검사·−1 제외에서 연결 요소와 비용을 계산한다. 위상 정렬은 `edge.<index>`와 `node.<id>`의 잔존 여부에서 진입 차수와 후보를 계산하고 `stdout`에서 출력을 읽는다. 두 장면에는 인접 행렬이 없다.
+
+## 배열의 읽기와 쓰기
+
+`c-memory` 시나리오에서 `array`를 지정하면 공통 셸의 중심 장면에 배열을 그린다. `rows`는 `{label, cells}` 배열이며 `cells`는 인덱스 순서의 Cell ID 목록이다. `splits`에는 표시할 행 번호와 오른쪽 부분 배열의 시작 인덱스를 지정한다. `markers`는 `{cellId, label, row, min?, max?}`이고, 인덱스가 해당 행의 유효 범위 안에 있을 때만 표시한다. `watch`는 `{name, label, cellId}`, `title`과 `result(step)`는 결과 카드 제목과 해당 단계의 결과 문구다. 배열 표시, 읽기·쓰기 강조, 인덱스는 모두 같은 Snapshot에서 읽는다.

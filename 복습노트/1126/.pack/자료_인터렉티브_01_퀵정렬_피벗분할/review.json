@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "ui_version": 7,
+  "theme_version": 1,
+  "hashes": {
+    "brief.md": "adcc23a0a0284c7e0c5b3490521cf62532a27547d147a93bb935da54ebbbaf92",
+    "evidence/browser.json": "dcbbed47186a443c23ebba6b4a9b88303809c1097313a5a22fdaf9e6fe2ac611",
+    "evidence/c-accesses.txt": "dda75ed3ba9464b7a07de43c9f0319465cac87c7109fc65cd159869ce667c102",
+    "evidence/content.md": "1e6f0e9b190630bae8a9249211a947b1e85fdf80a27d497c66ece0059edfb0ac",
+    "evidence/independent.py": "c515fb5715906e60858061596d03d6623208434961101f49999852a0b0618aae",
+    "evidence/independent.txt": "3f2346a293f6643d9867b87253e4cb0abd6de59885c55d349b8b00eb600d0304",
+    "evidence/observe.c": "16de023a2a3e9d2dba1304bf3f3e25cdb3bea3aa323f6c13b32c77031a47a6a1",
+    "evidence/schema.json": "ce526271b5062eace403bb38f25878179235c545ea0a1178e04355e84eeed027",
+    "evidence/theme.json": "b2bc1682b159afb88dd46aca398c9c19aa082a29d9947144829b1340d6b4683e",
+    "preview.html": "faa64e15c072e4bac62e1cc4d19dfbfb88a656690724131de3151fa005eee460",
+    "scenario.cjs": "3f6469fb501faa7688776f1e1fb011821ee14d4a729ef4d7c109fb80e6c575a4",
+    "source.c": "dd55a23ad88c6438516a301b7a85d373c0b998f8b8e19300e132ae5f6c83b79a",
+    "source.json": "ac82b24c998ab5b5051dd51bb616a310719287c5713e8cbca8b3c7a15936bc2c",
+    "trace.json": "65efc380b19eedd66288e2c490d558294bf6cec16ab83116071a600846693ccc"
+  },
+  "checks": {
+    "schema": {
+      "status": "pass",
+      "evidence": "evidence/schema.json",
+      "notes": "기본값과 세 추가 사례를 엔진에서 실행하고 예상 반환값과 최종 저장 값을 비교했다."
+    },
+    "content": {
+      "status": "pass",
+      "evidence": "evidence/content.md",
+      "notes": "S9의 실제 페이지 그림, 코드 또는 의사코드와 정리노트 및 STT를 확인해 실행 줄과 배열 읽기·쓰기 순서를 대조했다."
+    },
+    "independent": {
+      "status": "pass",
+      "evidence": "evidence/independent.txt",
+      "notes": "C11 원본 또는 보충 함수를 컴파일했다. 관측용 사본은 UBSan으로 실행해 배열 읽기와 주요 쓰기를 순서대로 대조하고 최종 배열까지 검산했다."
+    },
+    "browser": {
+      "status": "pass",
+      "evidence": "evidence/browser.json",
+      "notes": "Chromium 오프라인에서 화면 너비 9종과 두 테마, 모든 사례의 전체 스냅샷, 헤더와 우측 패널, 375×812 첫 화면을 확인했다. 데스크톱 및 모바일 캡처를 시각 확인했다."
+    }
+  },
+  "reviewed_preview_sha256": "a6f04d16770071e6e492bc84f01ea31a40e128a87ee2e6315127685cb2d17061"
+}

@@ -311,6 +311,24 @@ CHECK_CASE = r"""({input, kind}) => {
       const node = tree.nodes.find(node => node.id === targetCell?.owner);
       same(watch('node'), node ? node.key + '번 노드' : format(parameter?.value), 'node card');
       same(result, stdout.join('') || '아직 출력 없음', 'tree output');
+    } else if (DSInteractive.scenario.array) {
+      const {rows, watch: entries, result: output} = DSInteractive.scenario.array;
+      for (const [rowIndex, row] of rows.entries()) {
+        const rendered = all('[data-array-row="' + rowIndex + '"] [data-array-cell]');
+        same(rendered.map(element => element.dataset.arrayCell), row.cells, 'array cells');
+        for (const element of rendered) {
+          const id = element.dataset.arrayCell;
+          same(element.querySelector('.array-value').textContent,
+            cells[id]?.lifetime === 'live' && cells[id].value.kind === 'int' ? format(cells[id].value) : '—', 'array value ' + id);
+          same(element.hasAttribute('data-read'), step.reads.includes(id), 'array read ' + id);
+          same(element.hasAttribute('data-written'), step.writes.some(write => write.cellId === id), 'array write ' + id);
+        }
+      }
+      for (const entry of entries) {
+        const value = cells[entry.cellId]?.value;
+        same(watch(entry.name), cells[entry.cellId]?.lifetime === 'live' && value.kind === 'int' ? format(value) : '—', 'index ' + entry.name);
+      }
+      same(result, output(step), 'array result');
     } else {
       const rendered = Object.fromEntries(all('.study-memory-cells [data-cell-id]').map(element =>
         [element.dataset.cellId, element.querySelector('.cell-value').textContent]));
@@ -358,7 +376,7 @@ def check_tree_or_memory(page, kind, width):
             expect(page.locator('.tree-inspector[open] .tree-fields')).to_be_visible()
             page.keyboard.press('Escape')
             expect(node).to_be_focused()
-    else:
+    elif not page.evaluate('Boolean(DSInteractive.scenario.array)'):
         number = page.locator('.study-stage-inputs input[type=number]').first
         if number.count():
             number.fill('')

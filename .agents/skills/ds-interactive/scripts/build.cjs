@@ -16,7 +16,7 @@ function graphPanelShell(source) {
   .replace(storage, "const treeWidthKey='ds-interactive:graph-panel-widths';");
 }
 // Compose v4 graph history with the shared runtime while retaining the reviewed v1–v3 bytes.
-function addGraphHistoryHooks(file, source) {
+function addHistoryHooks(file, source) {
  const hooks = {
   'ui/v1/shell.js': [
    [/list\.replaceChildren\(\.\.\.entries\.map\(\(s,i\)=>\{[\s\S]*?return b;\}\)\);/, 'list.replaceChildren(...D.graphHistoryRows(next, entries, list));'],
@@ -47,10 +47,12 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,t
  if(decisions&&uiVersion===0)throw Error('UI_VERSION_UNSUPPORTED: '+uiVersion+' for '+s.graph.view);
  const graphAsset=decisions?'graph-decisions':inspection?'graph-inspection':'graph';
  const common=uiVersion!==0, ui='ui/v1/';
+ const array=s.kind==='c-memory'&&s.array;
+ if(array&&!common)throw Error('Array scenes require the common UI');
  const legacyPresetLabel=uiVersion<2;
- const graphHistory=graph&&uiVersion>=4;
+ const detailedHistory=(graph||array)&&uiVersion>=4;
  const css=['player.css',...(common?[ui+'study.css']:graph?['graph-shell.css']:[]),
-  ...(graph?[graphAsset+'.css']:[]),...(graphHistory?['ui/v4/graph-history.css']:[]),
+  ...(graph?[graphAsset+'.css']:[]),...(detailedHistory?['ui/v4/graph-history.css']:[]),...(array?[ui+'array.css']:[]),
   ...(uiVersion>=5?['ui/v5/header.css']:[]),
   ...(uiVersion>=HEADER_PADDING_UI_VERSION?['ui/v7/header.css']:[])].map(file=>{
   const stylesheet=read(file);
@@ -62,17 +64,23 @@ function buildPage({scenario,outDir=process.cwd(),uiVersion=CURRENT_UI_VERSION,t
  if(common)html=html.replace('id="app"','id="app" data-ui-version="'+uiVersion+'"');
  // Preserve the original markup when reproducing old reviews.
  if(legacyPresetLabel)html=addLegacyPresetLabel(html);
- const runtime=common?[ui+'shell.js',ui+'study.js',ui+'adapters.js',ui+'player.js']:
+ const runtime=common?[ui+'shell.js',ui+'study.js',ui+'adapters.js',...(array?[ui+'array.js']:[]),ui+'player.js']:
   [...(tree?['tree-ui.js']:[]),'shell.js','player.js',...(graph?['graph-shell.js']:[])];
  const list=['engine/contract.js','engine/memory.js',...(tree?['engine/line-steps.js','engine/tree.js']:[]),
-  'engine/trace.js','memory-svg.js',...(tree?['tree-svg.js']:[]),...runtime,...(graph?[graphAsset+'.js']:[]),...(graphHistory?['ui/v4/graph-history.js']:[])]
+  'engine/trace.js','memory-svg.js',...(tree?['tree-svg.js']:[]),...runtime,...(graph?[graphAsset+'.js']:[]),...(detailedHistory?['ui/v4/graph-history.js']:[])]
   .map(file=>{
    const source=read(file);
+   if(array&&file===ui+'player.js') {
+    const adapter='D.studyMemory(app, scenario)';
+    if(!source.includes(adapter))throw Error('Array adapter hook missing');
+    return source.replace(adapter,'D.studyArray(scenario)');
+   }
    if(!common&&graph&&file==='shell.js')return graphPanelShell(source);
-   return graphHistory?addGraphHistoryHooks(file,source):source;
+   return detailedHistory?addHistoryHooks(file,source):source;
   });
  // Browser must take the browser branch; the Node source remains byte-equivalent inside the script.
  list.push(sourceText);list.push(`DSInteractive.player=DSInteractive.${graph?'mountGraphPlayer':'mountPlayer'}(document.querySelector('#app'),DSInteractive.scenario);`);
+ if(array)list.push("DSInteractive.configureArrayCases(document.querySelector('#app'),DSInteractive.scenario);");
  html=html.replace('<!--SCRIPTS-->',list.map(js=>`<script>${js.replace(/<\/script/gi,'<\\/script')}</script>`).join('\n'));
  if(uiVersion>=3)html=addHeaderSelector(html);
  if(themeVersion)html=addTheme(html);
