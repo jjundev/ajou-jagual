@@ -2,7 +2,7 @@
 
 저작 단위는 버전 1의 신뢰된 `.cjs` 파일이다. 외부 require/import 없이 Node에서는 `module.exports=scenario`, 브라우저에서는 `globalThis.DSInteractive.scenario=scenario`로 등록한다. [포인터 예제](../examples/0928/value-address.cjs) 또는 [중위 순회 예제](../examples/1105/inorder.cjs)를 복사해 실제 근거·주제에 맞게 작성한다. C를 자동 파싱하지 않는다.
 
-Scenario 필드: `version:1,id,title,kind:'c-memory'|'c-tree'|'c-graph',sources,inputs,presets,initialState(input),generateEvents(input),expected`. 선택 사항 intro/takeaway는 학습 안내다.
+Scenario 필드: `version:1,id,title,kind:'c-memory'|'c-tree'|'c-graph',sources,inputs,presets,initialState(input),generateEvents(input),expected`. `intro`는 학습 안내다. 신규 자료의 `takeaway`에는 우측 예제 정보에 표시할 관찰 문구 한 문장을 작성한다.
 
 | 형식 | 필드 |
 |---|---|

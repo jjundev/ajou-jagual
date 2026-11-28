@@ -8,6 +8,8 @@ const {HEADER_SELECTOR_VERSION, addHeaderSelector, removeHeaderSelector} = requi
 const {addLegacyPresetLabel, removeLegacyPresetLabel} = require('./preset-label.cjs');
 const {HEADER_PADDING_VERSION, addHeaderPadding, removeHeaderPadding} = require('./header-padding.cjs');
 
+const {RIGHT_PANEL_UI_VERSION, addRightPanel, removeRightPanel} = require('./right-panel.cjs');
+
 const treeViewports = [[1440, 900], [1024, 768], [375, 812]];
 const graphViewports = [[1440, 900], [1280, 800], [1279, 800], [375, 812]];
 const studyViewports = [...graphViewports, [320, 812]];
@@ -35,12 +37,19 @@ function checkReady(run, {archived = false} = {}) {
   if (!archived && themeVersion !== CURRENT_THEME_VERSION) throw Error('NEW_THEME_REQUIRED: ' + run);
   const sourceText = fs.readFileSync(path.join(run, 'scenario.cjs'), 'utf8');
   const preview = path.join(run, 'preview.html');
-  const built = buildPage({scenario: {sourceText}, outDir: run, uiVersion, themeVersion});
+  const panelSummary = review.right_panel_summary;
+  if (panelSummary !== undefined && (typeof panelSummary !== 'string' || !panelSummary.trim())) {
+    throw Error('RIGHT_PANEL_SUMMARY_INVALID: ' + run);
+  }
+  const embeddedPanelSummary = uiVersion >= HEADER_PADDING_UI_VERSION ? panelSummary : undefined;
+  const built = buildPage({scenario: {sourceText}, outDir: run, uiVersion, themeVersion,
+    rightPanelSummary: embeddedPanelSummary});
   const evidence = path.join(run, review.checks.browser.evidence);
   let reviewedSha = (archived && review.reviewed_preview_sha256) || built.hashes.preview;
   let layoutBuild = built;
   let html = built.html;
   const migrated = review.header_selector_version !== undefined;
+  const migratedPanel = panelSummary !== undefined && embeddedPanelSummary === undefined;
   let archivedPreview = fs.readFileSync(preview, 'utf8');
   const migratedPadding = review.header_padding_version !== undefined;
   if (migratedPadding) {
@@ -56,9 +65,20 @@ function checkReady(run, {archived = false} = {}) {
         result.input_behavior_checked === true);
     archivedPreview = baseline;
   }
-
+  if (migratedPanel) {
+    if (!archived || uiVersion >= RIGHT_PANEL_UI_VERSION) {
+      throw Error('RIGHT_PANEL_UPDATE_NOT_ARCHIVED: ' + run);
+    }
+    const baseline = removeRightPanel(archivedPreview);
+    if (archivedPreview !== addRightPanel(baseline, panelSummary)) throw Error('REBUILD_MISMATCH: ' + preview);
+    const digest = sha(withoutFontHref(archivedPreview));
+    requireBrowserResults(path.join(run, 'evidence', 'right-panel.json'), 'RIGHT_PANEL_UNVERIFIED',
+      studyViewports, result => result.build_sha256 === digest && result.right_panel_checked === true);
+    archivedPreview = baseline;
+  }
   function published(html) {
-    return migratedPadding ? addHeaderPadding(html) : html;
+    const withPanel = migratedPanel ? addRightPanel(html, panelSummary) : html;
+    return migratedPadding ? addHeaderPadding(withPanel) : withPanel;
   }
   let migratedHtml;
   if (migrated) {
@@ -175,6 +195,7 @@ function requireStudyEvidence(file, built, previewSha) {
     (built.uiVersion < 4 || built.kind !== 'c-graph' || result.graph_history_checked === true) &&
     (built.uiVersion < 5 || result.header_layout_checked === true) &&
     (built.uiVersion < HEADER_PADDING_UI_VERSION || result.header_padding_checked === true) &&
+    (built.uiVersion < RIGHT_PANEL_UI_VERSION || result.right_panel_checked === true) &&
     result.presets === traces.length && result.snapshots_checked === snapshots &&
     (result.viewport?.[0] !== 375 || JSON.stringify(result.mobile_first_screen) === JSON.stringify(mobileStages)),
   report => [report.console_errors, report.external_requests].every(list => Array.isArray(list) && list.length === 0));

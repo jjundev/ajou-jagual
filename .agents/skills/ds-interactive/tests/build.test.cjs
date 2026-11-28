@@ -6,8 +6,8 @@ test('builder links the shared font, embeds the engine and safely serializes clo
  a.match(r.html, /<link rel="stylesheet" data-ds-interactive-font href="[^"]+\/pretendard\/pretendard\.css">/);
  a.doesNotMatch(r.html, /data:font\/|<script[^>]+src=|@import|fetch\(/i);
  a.ok(!r.html.includes('// </script> & <img>'));
- // The final two scripts mount the player and its header control in the browser.
- const scripts=[...r.html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);const ctx={structuredClone,module:undefined};for(const src of scripts.slice(0,-2))vm.runInNewContext(src,ctx);
+ // The final three scripts mount the player and its UI in the browser.
+ const scripts=[...r.html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);const ctx={structuredClone,module:undefined};for(const src of scripts.slice(0,-3))vm.runInNewContext(src,ctx);
  a.equal(ctx.DSInteractive.scenario.sources[0].text,'// </script> & <img>');a.equal(ctx.DSInteractive.compileScenario(ctx.DSInteractive.scenario,{}).snapshots.length,1);
 });
 test('build rejects source mismatch, imports and invalid source line',()=>{
@@ -23,7 +23,7 @@ test('inorder build embeds the tree renderer and compiles offline',()=>{
  a.doesNotMatch(html,/<script[^>]+src=|@import|fetch\(/i);
  const ctx={structuredClone};
  const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
- for(const script of scripts.slice(0,-2))vm.runInNewContext(script,ctx);
+ for(const script of scripts.slice(0,-3))vm.runInNewContext(script,ctx);
  const api=ctx.DSInteractive, trace=api.compileScenario(api.scenario,{treeCase:'lecture'});
  a.equal(trace.lineSteps.at(-1).state.stdout.join(''),'3 7 12 18 26 27 31 ');
  a.equal(typeof api.renderers.get('c-tree')?.render,'function');
@@ -39,7 +39,7 @@ test('graph build embeds the graph player and keeps the graph layout in the scen
  a.equal(traces.default.kind,'c-graph');
  const ctx={structuredClone};
  const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(x=>x[1]);
- for(const script of scripts.slice(0,-2))vm.runInNewContext(script,ctx);
+ for(const script of scripts.slice(0,-3))vm.runInNewContext(script,ctx);
  a.equal(typeof ctx.DSInteractive.mountGraphPlayer,'function');
  a.equal(JSON.stringify(ctx.DSInteractive.scenario.graph),JSON.stringify({positions:[[40,40],[100,100]]}));
 });
@@ -52,12 +52,15 @@ test('a new build uses the versioned common UI by default',()=>{
  a.match(build.html,/data-ui-version="7"/);
  a.match(build.html,/<label><select data-action="preset" aria-label="사례">/);
  a.match(build.html,/\[data-ui-version="7"\] \.topbar/);
+ a.match(build.html,/\[data-ui-version="7"\] \.topbar \.brand/);
  a.match(build.html,/padding-inline-end: 34px/);
  a.match(build.html,/inset-inline-end: 16px/);
- a.doesNotMatch(buildPage({scenario:{sourceText},uiVersion:5}).html,/padding-inline-end: 34px/);
+ a.doesNotMatch(buildPage({scenario:{sourceText},uiVersion:6}).html,/padding-inline-end: 34px/);
  a.match(build.html,/@media \(720px < width <= 900px\)/);
  a.doesNotMatch(buildPage({scenario:{sourceText},uiVersion:4}).html,/@media \(720px < width <= 900px\)/);
  a.match(build.html,/ds-interactive:header-selector:v1/);
+ a.match(build.html,/ds-interactive:right-panel:v1/);
+ a.doesNotMatch(buildPage({scenario:{sourceText},uiVersion:5}).html,/ds-interactive:right-panel:v1/);
  const archived=buildPage({scenario:{sourceText},uiVersion:1});
  a.match(archived.html,/<label>사례<select data-action="preset" aria-label="사례">/);
  const legacy=buildPage({scenario:{sourceText},uiVersion:0});

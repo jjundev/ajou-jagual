@@ -8,6 +8,8 @@ description: Use when 자구알(자료구조및알고리즘이해)의 인터랙�
 자구알의 개념을 입력·사례·실행 단계로 탐색하는 **오프라인 HTML**을 만든다. 신규 그래프·트리·포인터 자료는 빌더가 [공통 학습 UI](references/design.md)를 기본 적용한다. 상단은 제목·사례 선택기·모드, 왼쪽은 코드·줄 기록 목록·단계 설명, 중앙은 그림·결과·현재 값 카드, 오른쪽은 실행 상태 상세·접힌 예제 정보다. 1280px 미만에서는 서랍을 닫고 시작한다. 375×812 터치 화면에서 결과와 현재 값 카드를 모두 첫 화면에 표시한다. 그래프의 정점·차수, 트리의 현재 노드, 포인터의 주소 값·대상 값은 같은 실행 상태에서 읽는다. 화면에 표시하는 실행 조건 드롭다운은 헤더에 하나만 둔다. 모바일에서는 헤더 안에서 줄바꿈할 수 있다. 본문이나 서랍에 같은 선택 목록을 두는 대신, 기존 사례와 직접 입력에서 고를 수 있었던 열거형 조합을 헤더 메뉴에 묶는다. 직접 조합을 선택할 때 숫자 입력은 유지한다. 숫자나 모드를 바꾸면 일치하는 사례를 표시하고, 일치하는 사례가 없으면 `직접 설정`을 표시한다. 드롭다운 옆에 보이는 ‘사례’ 문구 없이 선택값을 표시하며, `aria-label="사례"` 또는 단일 실행 조건의 구체적인 접근성 이름을 쓴다. 새 제작과 기존 자료 갱신 모두 실제 브라우저에서 드롭다운의 수와 위치, 접근성 이름, 사례와 직접 조합 전환을 확인한다.
 
 
+우측 패널의 화면 문구와 상태 값·인덱스에는 Pretendard를 적용한다. 실행 상태 상세는 21px Bold, 호출 스택·큐·`visited`·`변경 전 → 후`는 16px Bold로 쓴다. 변경 항목명은 14px SemiBold, 변경 값은 14px Regular로 쓰고 내용은 상시 노출한다. `변경 전 → 후` 영역 안쪽에는 위아래 8px 여백을 둔다. 변경 행 사이와 예제 정보 위에 구분선을 두며 마지막 변경 행 아래의 테두리는 제거한다. 첫 저장 값은 실행 이벤트에 따라 전달 전·선언 전·할당 전으로 구분하고, 기존 값의 갱신에는 실제 이전 값을 표시한다. 접힌 예제 정보에는 예제에서 무엇을 관찰할지 `takeaway` 한 문장으로 쓴다. 출처·페이지·구현 보충 내용은 검토 자료에 기록한다. 단축키는 화면 문구 없이 동작한다. 발행 전에 펼친 예제 정보와 상태 값에서 실제 글꼴·문구를 확인한다.
+
 ## 요청 해석
 
 `/ds-interactive 0928`, 날짜 범위, 주제, C 파일 경로, 붙여 넣은 함수 코드를 받는다. 기존 자료 연결만 요청하면 생성하지 말고 `relink`를 쓴다. 먼저 저장된 자료와 근거를 확인해 같은 자료를 중복 생성하지 않는다.
@@ -30,7 +32,7 @@ description: Use when 자구알(자료구조및알고리즘이해)의 인터랙�
 5. 실제 C 컴파일러로 정의된 코드의 bind/write와 결과를 독립 검산한다. 없으면 별도 Python 표를 사용하고 `compiler_unavailable`을 기록한다. UB를 실행해 정답을 정하지 않는다. 포인터 예제는 `python3 "S/tests/independent.py" "EVIDENCE"`, 중위 순회는 `python3 "S/tests/inorder_oracle.py" "RUN/trace.json"`으로 재검산할 수 있다.
 6. `node "S/scripts/build.cjs" "RUN/scenario.cjs" "RUN/preview.html"`. 최신 공통 UI를 사용하고 CSS와 JS를 HTML에 포함한다. Pretendard는 복습노트 공용 자원을 상대 경로로 참조한다. [design](references/design.md)의 배치·접근성 기준과 [verification](references/verification.md)의 브라우저 검사를 적용한다. 시나리오 내용 변경 후 다시 build/check/검산한다.
 7. `node "S/scripts/review.cjs" init "RUN"`은 현재 `ui_version`과 `not_run` 검토를 만든다. 이미 있으면 검토 파일을 보존하고 새 현재 해시로 재검토한다. schema/content/independent/browser 각각 실제 증거와 사람이 읽을 판정 이유를 남긴다. `createReview`는 합격을 판정하지 않는다. 내용 검토는 각 줄의 복사·읽기·쓰기가 C 의미와 맞는지 검토한다. 자동 구조 검사로 대체하지 않는다.
-8. 모든 검토를 마치면 `node "S/scripts/verify-build.cjs" "RUN"`을 통과시키고 `node "S/scripts/save.cjs" "RUN" "대상폴더" "자료이름"`으로 저장한다. 실제 Chromium으로 기본 화면 크기 5종과 UI v5의 헤더 경계 4종, 밝은·어두운 테마에서 패널·조작부 패딩·선택 항목 잘림·중앙 배치를 검사하고 375×812 초기·중간·종료 단계의 첫 화면을 확인한다. 현재 빌드의 `browser.json`을 RUN의 evidence에 보관하고 browser 판정에 연결한다. 필수 검사가 빠진 자료는 발행하지 않는다. [검토·저장 계약](references/verification.md)을 따른다.
+8. 모든 검토를 마치면 `node "S/scripts/verify-build.cjs" "RUN"`을 통과시키고 `node "S/scripts/save.cjs" "RUN" "대상폴더" "자료이름"`으로 저장한다. 실제 Chromium으로 기본 화면 크기 5종과 UI v5부터 적용되는 헤더 경계 4종, 밝은·어두운 테마에서 패널·조작부 패딩·선택 항목 잘림·중앙 배치를 검사하고 375×812 초기·중간·종료 단계의 첫 화면을 확인한다. 현재 빌드의 `browser.json`을 RUN의 evidence에 보관하고 browser 판정에 연결한다. 필수 검사가 빠진 자료는 발행하지 않는다. [검토·저장 계약](references/verification.md)을 따른다.
 9. 관련 절에 [note-links](references/note-links.md)의 관찰 문맥 링크만 dry-run 후 추가한다. `target="_self"`, URL 인코딩한 상대 경로이며 기존 노트는 백업한다. 노트 재생성 후 `node "S/scripts/relink.cjs" "REPO" 0928`로 복원한다. 누락·모호한 절은 해당 연결만 skipped로 보고한다.
 
 ### 테마 동작 확인

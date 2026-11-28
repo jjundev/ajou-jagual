@@ -150,6 +150,7 @@ for(const [kind,example,transform] of [
    report.results.filter(row=>row.viewport[0]!==901),
    replace(901,{header_layout_checked:false}),
    replace(901,{header_padding_checked:false}),
+   replace(375,{right_panel_checked:false}),
    ...(kind==='c-graph' ? [replace(375,{graph_history_checked:false})] : []),
    replace(375,{snapshots_checked:0}),
   ]){
@@ -263,21 +264,45 @@ test('archived preset label updates preserve the selector and require browser ev
  a.equal(checkReady(run,{archived:true}),html);
 });
 
-
-test('archived header padding requires browser evidence for the final HTML', t=>{
+test('archived right panels require browser evidence for the exact updated HTML', t=>{
  const dir=tmp();
  t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
  const run=runFixture(dir,'../examples/0928/value-address.cjs',source=>source,5);
  const {checkReady}=require('../scripts/verify-build.cjs');
  const {currentHashes,readReview}=require('../scripts/review.cjs');
+ const {addRightPanel,removeRightPanel}=require('../scripts/right-panel.cjs');
  const {withoutFontHref}=require('../scripts/fonts.cjs');
  const preview=p.join(run,'preview.html');
  const original=fs.readFileSync(preview,'utf8');
+ const summary='첫 단계와 끝 단계에서 &a와 <경계>를 비교하세요.';
+ const updated=addRightPanel(original,summary);
+ a.match(updated,/&amp;a와 &lt;경계&gt;/);
+ a.equal(removeRightPanel(updated),original);
+ fs.writeFileSync(preview,updated);
+ const writeReview=()=>{
+  const review=readReview(run);
+  review.right_panel_summary=summary;
+  review.hashes=currentHashes(run);
+  fs.writeFileSync(p.join(run,'review.json'),JSON.stringify(review));
+ };
+ writeReview();
  const verify=()=>checkReady(run,{archived:true});
+ a.throws(verify,/RIGHT_PANEL_UNVERIFIED/);
+ const file=p.join(run,'evidence/right-panel.json');
  const viewports=[[1440,900],[1280,800],[1279,800],[375,812],[320,812]];
+ const rows=viewports.flatMap(viewport=>['light','dark'].map(theme=>({
+  status:'pass', viewport, theme, right_panel_checked:true, build_sha256:hash(withoutFontHref(updated)),
+ })));
+ fs.writeFileSync(file,JSON.stringify({status:'pass',results:rows.slice(1)}));
+ writeReview();
+ a.throws(verify,/RIGHT_PANEL_UNVERIFIED/);
+ fs.writeFileSync(file,JSON.stringify({status:'pass',results:rows}));
+ writeReview();
+ a.equal(verify(),updated);
+
  const {addHeaderPadding,removeHeaderPadding}=require('../scripts/header-padding.cjs');
- const padded=addHeaderPadding(original);
- a.equal(removeHeaderPadding(padded),original);
+ const padded=addHeaderPadding(updated);
+ a.equal(removeHeaderPadding(padded),updated);
  fs.writeFileSync(preview,padded);
  const paddingEvidence=p.join(run,'evidence/header-padding.json');
  const writePaddingEvidence=buildSha=>{
@@ -292,7 +317,7 @@ test('archived header padding requires browser evidence for the final HTML', t=>
   review.hashes=currentHashes(run);
   fs.writeFileSync(p.join(run,'review.json'),JSON.stringify(review));
  };
- writePaddingEvidence(hash(withoutFontHref(original)));
+ writePaddingEvidence(hash(withoutFontHref(updated)));
  a.throws(verify,/HEADER_PADDING_UNVERIFIED/);
  writePaddingEvidence(hash(withoutFontHref(padded)));
  a.equal(verify(),padded);

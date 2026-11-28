@@ -5,6 +5,7 @@ from playwright.sync_api import sync_playwright
 from browser_tree import check_history_touch, check_tree_case
 import browser_study
 from browser_header_selector import check_header_selector
+from browser_right_panel import check_right_panel
 from browser_graph_traversal import check_page as check_graph_traversal
 from browser_graph_inspection import check_page as check_graph_inspection
 from browser_graph_decisions import check_page as check_graph_decisions
@@ -62,6 +63,9 @@ def main(root,scratch):
        header_checked['header_layout_checked']=True
       if int(ui_version)>=7:
        header_checked['header_padding_checked']=True
+      panel_checked=check_right_panel(page, page.evaluate("""() =>
+       document.querySelector('#interactive-example-copy').textContent.trim() || DSInteractive.scenario.takeaway
+      """)) if int(ui_version)>=6 else {}
       mobile=browser_study.check_mobile_stages(page, kind, out, topic, theme) if width==375 else None
       if kind=='c-graph':
        view=page.locator('#app').get_attribute('data-graph-view')
@@ -79,7 +83,7 @@ def main(root,scratch):
       results.append({'topic':topic,'file':file.name,'sha256':digest,'build_sha256':build,
                       'viewport':[width,height],'theme':theme,'kind':kind,'ui_version':int(ui_version),
                       'layout_checked':True,'controls_checked':True,'mobile_first_screen':mobile,
-                      'preset_label_checked':int(ui_version)>=2,**header_checked,
+                      'preset_label_checked':int(ui_version)>=2,**header_checked,**panel_checked,
                       **({'graph_history_checked': True} if kind=='c-graph' and int(ui_version)>=4 else {}),
                       'presets':count,'snapshots_checked':checked,'status':'pass'})
       print(f'{topic} {width} {theme}: common UI and {checked} snapshots',flush=True)
