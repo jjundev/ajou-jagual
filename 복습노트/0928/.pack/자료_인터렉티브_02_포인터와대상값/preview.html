@@ -428,7 +428,7 @@ html{height:100%}body{height:100%;margin:0}
    q('.source-label').textContent=source.label||source.id;q('.source-note').textContent=source.provenance?.supplement?'학습용 보충 코드 · 강의 개념을 함수 호출로 확장했습니다.':'강의 swap 함수 · 호출자와 헤더는 검산용으로 보충했습니다.';
    const memory=q('.memory');memory.replaceChildren(renderer.render(s,selection));memory.dataset.step=s.id;D.drawArrows(memory,s,selection);
    q('.phase').textContent=`${source.label||source.id} · ${s.at.line}행 · ${s.phase==='diagnostic'?'진단 후 중단':s.phase==='before'?'실행 전':'실행 후'}`;q('.step-title').textContent=s.title;q('.explanation').textContent=s.explanation;q('.diagnostic').textContent=s.diagnostic?`${s.diagnostic.code}: ${s.diagnostic.message} 이후 실행은 진행하지 않습니다.`:'';
-   q('.changes').replaceChildren(...s.writes.map(w=>{const row=D.el('div','change');row.append(D.el('strong','',s.state.cells[w.cellId]?.name||w.cellId),D.el('div','',`${D.format(w.before)} → ${D.format(w.after)}`));return row;}));if(!s.writes.length)q('.changes').append(D.el('p','trace-message','이 단계에서는 저장 값이 바뀌지 않았습니다.'));
+   D.renderPanelChanges(q('.changes'), s);
    const c=s.state.cells[selection];const desc=q('.selection');desc.replaceChildren();if(c){desc.append(D.el('strong','',`${c.name} · ${c.id}`),document.createElement('br'),document.createTextNode(`자신의 주소 ${c.address} / 저장 값 ${D.format(c.value)}`));if(c.lifetime==='live'&&c.value.kind==='pointer'&&c.value.target){desc.append(document.createElement('br'),document.createTextNode(`대상 ${c.value.target}의 값 ${D.format(s.state.cells[c.value.target]?.value)}`));}}else desc.textContent='변수를 선택하면 값과 주소를 구분해 볼 수 있습니다.';
    for(const action of ['first','prev'])q(`[data-action=${action}]`).disabled=step===0;for(const action of ['last','next'])q(`[data-action=${action}]`).disabled=step===trace.snapshots.length-1;
    shell.update(trace,step,play.disabled);
@@ -471,6 +471,60 @@ html{height:100%}body{height:100%;margin:0}
  expected:[{presetId:'default',checks:[{step:'last',cellId:'main.a',value:I(20)},{step:'last',cellId:'main.q',value:P('main.a')}]},{presetId:'null',checks:[],diagnosticCode:'NULL_DEREFERENCE'}]};
  if(typeof module!=='undefined'&&module.exports)module.exports=scenario;else root.DSInteractive.scenario=scenario;
 })(globalThis);
+</script>
+<!-- ds-interactive:panel-changes -->
+<script>(function (D) {
+  'use strict';
+
+  // Keep the origin of a new cell available even when a tree groups several events into one line.
+  const applyEvent = D.applyEvent;
+  D.applyEvent = (state, event, limits) => {
+    const result = applyEvent(state, event, limits);
+    for (const write of result.writes) {
+      if (write.before === null) {
+        result.state.cells[write.cellId].creation = {kind: event.kind, label: event.label};
+      }
+    }
+    return result;
+  };
+
+  const beforeCreation = {
+    bind: '전달 전',
+    declare: '선언 전',
+    allocate: '할당 전',
+  };
+
+  function format(value, state) {
+    if (value?.kind !== 'pointer' || value.target === null) return D.format(value);
+    const target = state.cells[value.target];
+    const object = state.objects[target?.owner];
+    if (object?.type === 'GraphType' && object.cellIds[0] === target.id) return '그래프 주소';
+    return target?.address?.startsWith('&') ? target.address : D.format(value);
+  }
+
+  function renderPanelChanges(container, {state, writes}) {
+    container.replaceChildren(...writes.map(write => {
+      const cell = state.cells[write.cellId];
+      const creation = write.before === null ? cell?.creation : null;
+      const before = write.before === null ? beforeCreation[creation?.kind] ?? '저장 공간 없음' :
+        format(write.before, state);
+      const after = format(write.after, state);
+      const name = cell?.name ?? write.cellId;
+      let role;
+      if (creation?.kind === 'bind') {
+        if (after === '그래프 주소') role = '그래프 포인터';
+        else if (creation.label === '정점 번호 전달') role = '정점 번호';
+      }
+      const row = D.el('div', 'change');
+      row.append(D.el('strong', '', role ? name + ' (' + role + ')' : name),
+        D.el('div', '', before + ' → ' + after));
+      return row;
+    }));
+    if (!writes.length) container.append(D.el('p', 'trace-message', '이 단계에서는 저장 값이 바뀌지 않았습니다.'));
+  }
+
+  D.renderPanelChanges = renderPanelChanges;
+})(DSInteractive);
 </script>
 <script>DSInteractive.player=DSInteractive.mountPlayer(document.querySelector('#app'),DSInteractive.scenario);</script>
 <!-- ds-interactive:header-selector:v1 -->
@@ -606,5 +660,89 @@ html{height:100%}body{height:100%;margin:0}
     if (event.target.closest('[data-mode-value]')) sync();
   });
 })();
+</script>
+<!-- ds-interactive:right-panel:v1 -->
+<style>#panel-right,
+#panel-right :where(*) {
+  font-family: Pretendard, system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+#panel-right .example-summary {
+  margin: 4px 0 0;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+
+#panel-right .panel-changes {
+  margin-top: 12px;
+}
+
+#panel-right :has(> .panel-changes-title) {
+  padding-block: 8px;
+}
+
+#panel-right :is(.graph-details, .study-details) > .sec-title {
+  font-size: 21px;
+  font-weight: 700;
+}
+
+#panel-right :is(.graph-state h3, .panel-changes-title) {
+  margin: 0 0 5px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+#panel-right .changes > .change {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+#panel-right .changes > .change > strong {
+  font-weight: 600;
+}
+
+#panel-right .changes > .change:last-child {
+  border-bottom: 0;
+}
+</style>
+<span id="interactive-example-copy" hidden>포인터 변수에 쓸 때와 그 포인터가 가리키는 대상에 쓸 때를 비교하세요.</span>
+<script>(function () {
+  const panel = document.querySelector('#panel-right');
+  const changes = panel.querySelector('.changes');
+  if (changes) {
+    const container = changes.parentElement;
+    const title = document.createElement('h3');
+    title.className = 'panel-changes-title';
+    title.textContent = container.firstElementChild.textContent;
+
+    if (container.matches('details')) {
+      const section = document.createElement('section');
+      section.className = 'panel-changes';
+      section.append(title, changes);
+      container.replaceWith(section);
+    } else {
+      container.firstElementChild.replaceWith(title);
+    }
+  }
+
+  const example = panel.querySelector('.tree-example, .provenance');
+  const summary = example.querySelector('summary');
+  const oldTakeaway = panel.querySelector('.takeaway');
+  const copy = document.querySelector('#interactive-example-copy').textContent.trim() ||
+    DSInteractive.scenario.takeaway?.trim();
+
+  oldTakeaway?.closest('section').remove();
+  if (!copy) {
+    example.remove();
+    return;
+  }
+
+  summary.textContent = '예제 정보';
+  const message = document.createElement('p');
+  message.className = 'example-summary';
+  message.textContent = copy;
+  example.replaceChildren(summary, message);
+}());
 </script>
 </body></html>
